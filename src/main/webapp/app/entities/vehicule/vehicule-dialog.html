@@ -1,0 +1,94 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myVehiculeLabel" data-translate="aditumApp.vehicule.home.createOrEditLabel">Create or edit a Vehicule</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.vehicule.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.vehicule.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.vehicule.licenseplate" for="field_licenseplate">Licenseplate</label>
+            <input type="text" class="form-control" name="licenseplate" id="field_licenseplate"
+                    ng-model="vm.vehicule.licenseplate"
+                    required/>
+            <div ng-show="editForm.licenseplate.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.licenseplate.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.vehicule.brand" for="field_brand">Brand</label>
+            <input type="text" class="form-control" name="brand" id="field_brand"
+                    ng-model="vm.vehicule.brand"
+                    required/>
+            <div ng-show="editForm.brand.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.brand.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.vehicule.color" for="field_color">Color</label>
+            <input type="text" class="form-control" name="color" id="field_color"
+                    ng-model="vm.vehicule.color"
+                    required/>
+            <div ng-show="editForm.color.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.color.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.vehicule.enabled" for="field_enabled">Enabled</label>
+            <input type="number" class="form-control" name="enabled" id="field_enabled"
+                    ng-model="vm.vehicule.enabled"
+                    min="0" max="1"/>
+            <div ng-show="editForm.enabled.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.enabled.$error.min" data-translate="entity.validation.min" translate-value-min="0">
+                    This field should be at least 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.enabled.$error.max" data-translate="entity.validation.max" translate-value-max="1">
+                    This field cannot be more than 1.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.enabled.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.vehicule.house" for="field_house">House</label>
+            <select class="form-control" id="field_house" name="house" ng-model="vm.vehicule.houseId" ng-options="house.id as house.id for house in vm.houses"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.vehicule.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.vehicule.companyId" ng-options="company.id as company.id for company in vm.companies"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

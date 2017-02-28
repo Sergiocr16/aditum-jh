@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "note" : {
+            "home": {
+                "title": "Notes",
+                "createLabel": "Crear nuevo Note",
+                "createOrEditLabel": "Crear o editar Note"
+            },
+            "created": "Un nuevo Note ha sido creado con el identificador {{ param }}",
+            "updated": "Un Note ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Note ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Note {{ id }}?"
+            },
+            "detail": {
+                "title": "Note"
+            },
+            "description": "Description",
+            "notetype": "Notetype",
+            "creationdate": "Creationdate",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}

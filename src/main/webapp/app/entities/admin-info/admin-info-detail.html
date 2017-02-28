@@ -1,0 +1,60 @@
+
+<div>
+    <h2><span data-translate="aditumApp.adminInfo.detail.title">Admin Info</span> {{vm.adminInfo.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.adminInfo.name">Name</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.email">Email</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.image">Image</span></dt>
+        <dd>
+            <div ng-if="vm.adminInfo.image">
+                <a ng-click="vm.openFile(vm.adminInfo.imageContentType, vm.adminInfo.image)">
+                    <img data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}" style="max-width: 100%;" alt="adminInfo image"/>
+                </a>
+                {{vm.adminInfo.imageContentType}}, {{vm.byteSize(vm.adminInfo.image)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.adminInfo.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.user">User</span></dt>
+        <dd>
+            {{vm.adminInfo.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.adminInfo.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.adminInfo.companyId})">{{vm.adminInfo.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="admin-info-detail.edit({id:vm.adminInfo.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

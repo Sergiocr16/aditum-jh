@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "emergency" : {
+            "home": {
+                "title": "Emergencies",
+                "createLabel": "Crear nuevo Emergency",
+                "createOrEditLabel": "Crear o editar Emergency"
+            },
+            "created": "Un nuevo Emergency ha sido creado con el identificador {{ param }}",
+            "updated": "Un Emergency ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Emergency ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Emergency {{ id }}?"
+            },
+            "detail": {
+                "title": "Emergency"
+            },
+            "observation": "Observation",
+            "isAttended": "Is Attended",
+            "company": "Company",
+            "house": "House"
+        }
+    }
+}

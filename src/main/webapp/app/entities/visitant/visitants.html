@@ -1,0 +1,86 @@
+<div>
+    <h2 data-translate="aditumApp.visitant.home.title">Visitants</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="visitant.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.visitant.home.createLabel">
+                        Create new Visitant
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="aditumApp.visitant.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastname"><span data-translate="aditumApp.visitant.lastname">Lastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="secondlastname"><span data-translate="aditumApp.visitant.secondlastname">Secondlastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="identificationnumber"><span data-translate="aditumApp.visitant.identificationnumber">Identificationnumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="arrivaltime"><span data-translate="aditumApp.visitant.arrivaltime">Arrivaltime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="invitationstaringtime"><span data-translate="aditumApp.visitant.invitationstaringtime">Invitationstaringtime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="invitationlimittime"><span data-translate="aditumApp.visitant.invitationlimittime">Invitationlimittime</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="licenseplate"><span data-translate="aditumApp.visitant.licenseplate">Licenseplate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="isinvited"><span data-translate="aditumApp.visitant.isinvited">Isinvited</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="responsableofficer"><span data-translate="aditumApp.visitant.responsableofficer">Responsableofficer</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="houseId"><span data-translate="aditumApp.visitant.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.visitant.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="visitant in vm.visitants track by visitant.id">
+                    <td><a ui-sref="visitant-detail({id:visitant.id})">{{visitant.id}}</a></td>
+                    <td>{{visitant.name}}</td>
+                    <td>{{visitant.lastname}}</td>
+                    <td>{{visitant.secondlastname}}</td>
+                    <td>{{visitant.identificationnumber}}</td>
+                    <td>{{visitant.arrivaltime | date:'medium'}}</td>
+                    <td>{{visitant.invitationstaringtime | date:'medium'}}</td>
+                    <td>{{visitant.invitationlimittime | date:'medium'}}</td>
+                    <td>{{visitant.licenseplate}}</td>
+                    <td>{{visitant.isinvited}}</td>
+                    <td>{{visitant.responsableofficer}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:visitant.houseId})">{{visitant.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:visitant.companyId})">{{visitant.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="visitant-detail({id:visitant.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="visitant.edit({id:visitant.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="visitant.delete({id:visitant.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

@@ -5,6 +5,29 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="classpath:config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Note.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_AccessDoor.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Company.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Emergency.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_House.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_AdminInfo.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Officer.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Resident.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Vehicule.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Visitant.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Watch.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Emergency.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_House.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AdminInfo.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Officer.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Resident.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Vehicule.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Visitant.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Watch.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

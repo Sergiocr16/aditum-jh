@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "accessDoor" : {
+            "home": {
+                "title": "Access Doors",
+                "createLabel": "Crear nuevo Access Door",
+                "createOrEditLabel": "Crear o editar Access Door"
+            },
+            "created": "Un nuevo Access Door ha sido creado con el identificador {{ param }}",
+            "updated": "Un Access Door ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Access Door ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Access Door {{ id }}?"
+            },
+            "detail": {
+                "title": "Access Door"
+            },
+            "name": "Name",
+            "company": "Company",
+            "watch": "Watch"
+        }
+    }
+}

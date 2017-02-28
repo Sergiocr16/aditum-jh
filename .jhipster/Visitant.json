@@ -1,0 +1,83 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "secondlastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "identificationnumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "arrivaltime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "invitationstaringtime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "invitationlimittime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "licenseplate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isinvited",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "responsableofficer",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170228214136",
+    "entityTableName": "visitant",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceClass"
+}

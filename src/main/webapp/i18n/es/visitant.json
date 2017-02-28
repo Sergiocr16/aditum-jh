@@ -1,0 +1,32 @@
+{
+    "aditumApp": {
+        "visitant" : {
+            "home": {
+                "title": "Visitants",
+                "createLabel": "Crear nuevo Visitant",
+                "createOrEditLabel": "Crear o editar Visitant"
+            },
+            "created": "Un nuevo Visitant ha sido creado con el identificador {{ param }}",
+            "updated": "Un Visitant ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Visitant ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Visitant {{ id }}?"
+            },
+            "detail": {
+                "title": "Visitant"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "identificationnumber": "Identificationnumber",
+            "arrivaltime": "Arrivaltime",
+            "invitationstaringtime": "Invitationstaringtime",
+            "invitationlimittime": "Invitationlimittime",
+            "licenseplate": "Licenseplate",
+            "isinvited": "Isinvited",
+            "responsableofficer": "Responsableofficer",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}

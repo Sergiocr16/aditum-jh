@@ -1,0 +1,67 @@
+
+<div>
+    <h2><span data-translate="aditumApp.visitant.detail.title">Visitant</span> {{vm.visitant.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.visitant.name">Name</span></dt>
+        <dd>
+            <span>{{vm.visitant.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.visitant.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.visitant.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.visitant.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.arrivaltime">Arrivaltime</span></dt>
+        <dd>
+            <span>{{vm.visitant.arrivaltime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.invitationstaringtime">Invitationstaringtime</span></dt>
+        <dd>
+            <span>{{vm.visitant.invitationstaringtime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.invitationlimittime">Invitationlimittime</span></dt>
+        <dd>
+            <span>{{vm.visitant.invitationlimittime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.licenseplate">Licenseplate</span></dt>
+        <dd>
+            <span>{{vm.visitant.licenseplate}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.isinvited">Isinvited</span></dt>
+        <dd>
+            <span>{{vm.visitant.isinvited}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.responsableofficer">Responsableofficer</span></dt>
+        <dd>
+            <span>{{vm.visitant.responsableofficer}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.visitant.houseId})">{{vm.visitant.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.visitant.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.visitant.companyId})">{{vm.visitant.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="visitant-detail.edit({id:vm.visitant.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,85 @@
+<div>
+    <h2 data-translate="aditumApp.officer.home.title">Officers</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="officer.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.officer.home.createLabel">
+                        Create new Officer
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="aditumApp.officer.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastname"><span data-translate="aditumApp.officer.lastname">Lastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="secondlastname"><span data-translate="aditumApp.officer.secondlastname">Secondlastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="image"><span data-translate="aditumApp.officer.image">Image</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="email"><span data-translate="aditumApp.officer.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="identificationnumber"><span data-translate="aditumApp.officer.identificationnumber">Identificationnumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="inservice"><span data-translate="aditumApp.officer.inservice">Inservice</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.officer.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.officer.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="officer in vm.officers track by officer.id">
+                    <td><a ui-sref="officer-detail({id:officer.id})">{{officer.id}}</a></td>
+                    <td>{{officer.name}}</td>
+                    <td>{{officer.lastname}}</td>
+                    <td>{{officer.secondlastname}}</td>
+                    <td>
+                        <a ng-if="officer.image" ng-click="vm.openFile(officer.imageContentType, officer.image)">
+                            <img data-ng-src="{{'data:' + officer.imageContentType + ';base64,' + officer.image}}" style="max-height: 30px;" alt="officer image"/>
+                        </a>
+                        <span ng-if="officer.image">{{officer.imageContentType}}, {{vm.byteSize(officer.image)}}</span>
+                    </td>
+                    <td>{{officer.email}}</td>
+                    <td>{{officer.identificationnumber}}</td>
+                    <td>{{officer.inservice}}</td>
+                    <td>
+                        {{officer.userLogin}}
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:officer.companyId})">{{officer.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="officer-detail({id:officer.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="officer.edit({id:officer.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="officer.delete({id:officer.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

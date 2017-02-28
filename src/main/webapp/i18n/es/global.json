@@ -7,6 +7,18 @@
             "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
             "entities": {
                 "main": "Entidades",
+                "note": "Note",
+                "accessDoor": "Access Door",
+                "company": "Company",
+                "companyConfiguration": "Company Configuration",
+                "emergency": "Emergency",
+                "house": "House",
+                "adminInfo": "Admin Info",
+                "officer": "Officer",
+                "resident": "Resident",
+                "vehicule": "Vehicule",
+                "visitant": "Visitant",
+                "watch": "Watch",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

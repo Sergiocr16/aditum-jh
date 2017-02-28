@@ -1,0 +1,135 @@
+
+entity AccessDoor{
+name String required
+}
+
+entity Company {
+	name String required,
+    active Integer required min(0) max(1)
+}
+
+// an ignored comment
+/** not an ignored comment */
+entity CompanyConfiguration {
+	quantity_houses Integer required,
+	quantity_admins Integer required,
+	quantity_access_door Integer required
+}
+
+entity Emergency {
+	observation Integer,
+    isAttended Integer required min(0) max(1)
+}
+entity House {
+	house_number String required,
+    extension String,
+    is_desocupated Integer required min(0) max(1),
+    desocupation_initial_time ZonedDateTime,
+    desocupation_final_time ZonedDateTime,
+    securityKey String,
+    emergencyKey String
+}
+entity Note {
+	description String required,
+    note_type Integer required,
+    creation_date ZonedDateTime required
+}
+entity Officer {
+	name String required,
+    last_name String required,
+    second_last_name String required,
+    image ImageBlob,
+    email String required,
+    identification_number String required,
+    in_service Integer required min(0) max(1)
+}
+entity Resident {
+	name String required,
+    last_name String required,
+    second_last_name String required,
+    identification_number String required,
+    phone_number String,
+    image ImageBlob,
+    email String,
+    isOwner Integer min(0) max(1),
+    enabled Integer min(0) max(1)
+}
+entity AdminInfo{
+	name String,
+    last_name String,
+    second_last_name String,
+    identification_number String,
+    email String,
+    image ImageBlob,
+    enabled Integer min(0) max(1)
+}
+entity Vehicule {
+	license_plate String required,
+    brand String required,
+    color String required,
+    enabled Integer min(0) max(1)
+}
+entity Visitant {
+	name String required,
+    last_name String required,
+    second_last_name String required,
+    identification_number String required,
+    arrival_time ZonedDateTime,
+    invitation_staring_time ZonedDateTime,
+    invitation_limit_time ZonedDateTime,
+    license_plate String,
+  	is_invited Integer required min(0) max(1),
+    responsable_officer String
+}
+entity Watch {
+	initial_time ZonedDateTime,
+    final_time ZonedDateTime,
+    responsable_officer String required
+}
+
+relationship OneToOne {
+	AdminInfo{user(login)} to User,
+    Resident{user(login)} to User,
+    Officer{user(login)} to User
+}
+
+relationship ManyToOne {
+	Resident{company} to Company,
+    Officer{company} to Company,
+    House{company} to Company,
+    Vehicule{company} to Company,
+    Visitant{company} to Company,
+    Emergency{company} to Company,
+    AccessDoor{company} to Company,
+    Watch{company} to Company,
+    Note{company} to Company,
+    CompanyConfiguration{company} to Company,
+    AdminInfo{company} to Company
+}
+relationship OneToMany{
+	House{vehicules} to Vehicule,
+    House{visitants} to Visitant,
+	House{notes} to Note,
+    House{residents} to Resident{house},
+    House{emergencies} to Emergency{house}
+}
+relationship OneToMany{
+	Watch{accessDoor} to AccessDoor
+}
+// defining multiple OneToMany relationships with comments
+
+
+// defining multiple oneToOne relationships
+
+
+//paginacion para todas las entidades de angular
+paginate * with pager
+//Agrega dto a todas las entidades
+dto * with mapstruct
+
+// Crea los servicios sin interfaces.
+service all with serviceClass //serviceImpl
+
+#title: ProyectoAditum
+#zoom: 1
+
