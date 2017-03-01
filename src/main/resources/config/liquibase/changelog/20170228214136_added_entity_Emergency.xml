@@ -22,12 +22,12 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="observation" type="integer">
-                <constraints nullable="true" />
-            </column>
-
             <column name="is_attended" type="integer">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="observation" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="company_id" type="bigint">

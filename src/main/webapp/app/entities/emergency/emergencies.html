@@ -19,8 +19,8 @@
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="observation"><span data-translate="aditumApp.emergency.observation">Observation</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="isAttended"><span data-translate="aditumApp.emergency.isAttended">Is Attended</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="observation"><span data-translate="aditumApp.emergency.observation">Observation</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyId"><span data-translate="aditumApp.emergency.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="houseId"><span data-translate="aditumApp.emergency.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
@@ -29,8 +29,8 @@
             <tbody>
                 <tr ng-repeat="emergency in vm.emergencies track by emergency.id">
                     <td><a ui-sref="emergency-detail({id:emergency.id})">{{emergency.id}}</a></td>
-                    <td>{{emergency.observation}}</td>
                     <td>{{emergency.isAttended}}</td>
+                    <td>{{emergency.observation}}</td>
                     <td>
                         <a ui-sref="company-detail({id:emergency.companyId})">{{emergency.companyId}}</a>
                     </td>

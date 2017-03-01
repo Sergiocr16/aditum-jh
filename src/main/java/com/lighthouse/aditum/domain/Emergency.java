@@ -19,14 +19,14 @@ public class Emergency implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "observation")
-    private Integer observation;
-
     @NotNull
     @Min(value = 0)
     @Max(value = 1)
     @Column(name = "is_attended", nullable = false)
     private Integer isAttended;
+
+    @Column(name = "observation")
+    private String observation;
 
     @ManyToOne
     private Company company;
@@ -42,19 +42,6 @@ public class Emergency implements Serializable {
         this.id = id;
     }
 
-    public Integer getObservation() {
-        return observation;
-    }
-
-    public Emergency observation(Integer observation) {
-        this.observation = observation;
-        return this;
-    }
-
-    public void setObservation(Integer observation) {
-        this.observation = observation;
-    }
-
     public Integer getIsAttended() {
         return isAttended;
     }
@@ -66,6 +53,19 @@ public class Emergency implements Serializable {
 
     public void setIsAttended(Integer isAttended) {
         this.isAttended = isAttended;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public Emergency observation(String observation) {
+        this.observation = observation;
+        return this;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
     public Company getCompany() {
@@ -118,8 +118,8 @@ public class Emergency implements Serializable {
     public String toString() {
         return "Emergency{" +
             "id=" + id +
-            ", observation='" + observation + "'" +
             ", isAttended='" + isAttended + "'" +
+            ", observation='" + observation + "'" +
             '}';
     }
 }

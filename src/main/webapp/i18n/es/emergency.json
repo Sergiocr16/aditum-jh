@@ -15,8 +15,8 @@
             "detail": {
                 "title": "Emergency"
             },
-            "observation": "Observation",
             "isAttended": "Is Attended",
+            "observation": "Observation",
             "company": "Company",
             "house": "House"
         }

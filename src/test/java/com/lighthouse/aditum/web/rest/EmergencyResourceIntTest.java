@@ -40,11 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = AditumApp.class)
 public class EmergencyResourceIntTest {
 
-    private static final Integer DEFAULT_OBSERVATION = 1;
-    private static final Integer UPDATED_OBSERVATION = 2;
-
     private static final Integer DEFAULT_IS_ATTENDED = 0;
     private static final Integer UPDATED_IS_ATTENDED = 1;
+
+    private static final String DEFAULT_OBSERVATION = "AAAAAAAAAA";
+    private static final String UPDATED_OBSERVATION = "BBBBBBBBBB";
 
     @Autowired
     private EmergencyRepository emergencyRepository;
@@ -89,8 +89,8 @@ public class EmergencyResourceIntTest {
      */
     public static Emergency createEntity(EntityManager em) {
         Emergency emergency = new Emergency()
-                .observation(DEFAULT_OBSERVATION)
-                .isAttended(DEFAULT_IS_ATTENDED);
+                .isAttended(DEFAULT_IS_ATTENDED)
+                .observation(DEFAULT_OBSERVATION);
         return emergency;
     }
 
@@ -116,8 +116,8 @@ public class EmergencyResourceIntTest {
         List<Emergency> emergencyList = emergencyRepository.findAll();
         assertThat(emergencyList).hasSize(databaseSizeBeforeCreate + 1);
         Emergency testEmergency = emergencyList.get(emergencyList.size() - 1);
-        assertThat(testEmergency.getObservation()).isEqualTo(DEFAULT_OBSERVATION);
         assertThat(testEmergency.getIsAttended()).isEqualTo(DEFAULT_IS_ATTENDED);
+        assertThat(testEmergency.getObservation()).isEqualTo(DEFAULT_OBSERVATION);
     }
 
     @Test
@@ -171,8 +171,8 @@ public class EmergencyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(emergency.getId().intValue())))
-            .andExpect(jsonPath("$.[*].observation").value(hasItem(DEFAULT_OBSERVATION)))
-            .andExpect(jsonPath("$.[*].isAttended").value(hasItem(DEFAULT_IS_ATTENDED)));
+            .andExpect(jsonPath("$.[*].isAttended").value(hasItem(DEFAULT_IS_ATTENDED)))
+            .andExpect(jsonPath("$.[*].observation").value(hasItem(DEFAULT_OBSERVATION.toString())));
     }
 
     @Test
@@ -186,8 +186,8 @@ public class EmergencyResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(emergency.getId().intValue()))
-            .andExpect(jsonPath("$.observation").value(DEFAULT_OBSERVATION))
-            .andExpect(jsonPath("$.isAttended").value(DEFAULT_IS_ATTENDED));
+            .andExpect(jsonPath("$.isAttended").value(DEFAULT_IS_ATTENDED))
+            .andExpect(jsonPath("$.observation").value(DEFAULT_OBSERVATION.toString()));
     }
 
     @Test
@@ -208,8 +208,8 @@ public class EmergencyResourceIntTest {
         // Update the emergency
         Emergency updatedEmergency = emergencyRepository.findOne(emergency.getId());
         updatedEmergency
-                .observation(UPDATED_OBSERVATION)
-                .isAttended(UPDATED_IS_ATTENDED);
+                .isAttended(UPDATED_IS_ATTENDED)
+                .observation(UPDATED_OBSERVATION);
         EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(updatedEmergency);
 
         restEmergencyMockMvc.perform(put("/api/emergencies")
@@ -221,8 +221,8 @@ public class EmergencyResourceIntTest {
         List<Emergency> emergencyList = emergencyRepository.findAll();
         assertThat(emergencyList).hasSize(databaseSizeBeforeUpdate);
         Emergency testEmergency = emergencyList.get(emergencyList.size() - 1);
-        assertThat(testEmergency.getObservation()).isEqualTo(UPDATED_OBSERVATION);
         assertThat(testEmergency.getIsAttended()).isEqualTo(UPDATED_IS_ATTENDED);
+        assertThat(testEmergency.getObservation()).isEqualTo(UPDATED_OBSERVATION);
     }
 
     @Test

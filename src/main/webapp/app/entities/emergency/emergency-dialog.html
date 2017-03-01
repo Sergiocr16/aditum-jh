@@ -14,12 +14,6 @@
                     ng-model="vm.emergency.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.emergency.observation" for="field_observation">Observation</label>
-            <input type="number" class="form-control" name="observation" id="field_observation"
-                    ng-model="vm.emergency.observation"
-                    />
-        </div>
-        <div class="form-group">
             <label class="control-label" data-translate="aditumApp.emergency.isAttended" for="field_isAttended">Is Attended</label>
             <input type="number" class="form-control" name="isAttended" id="field_isAttended"
                     ng-model="vm.emergency.isAttended"
@@ -42,6 +36,12 @@
                     This field should be a number.
                 </p>
             </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.emergency.observation" for="field_observation">Observation</label>
+            <input type="text" class="form-control" name="observation" id="field_observation"
+                    ng-model="vm.emergency.observation"
+                    />
         </div>
 
         <div class="form-group">

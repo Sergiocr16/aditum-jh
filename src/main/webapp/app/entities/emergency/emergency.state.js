@@ -124,8 +124,8 @@
                     resolve: {
                         entity: function () {
                             return {
-                                observation: null,
                                 isAttended: null,
+                                observation: null,
                                 id: null
                             };
                         }

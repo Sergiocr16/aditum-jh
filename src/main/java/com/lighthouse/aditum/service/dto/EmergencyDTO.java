@@ -14,12 +14,12 @@ public class EmergencyDTO implements Serializable {
 
     private Long id;
 
-    private Integer observation;
-
     @NotNull
     @Min(value = 0)
     @Max(value = 1)
     private Integer isAttended;
+
+    private String observation;
 
     private Long companyId;
 
@@ -32,19 +32,19 @@ public class EmergencyDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    public Integer getObservation() {
-        return observation;
-    }
-
-    public void setObservation(Integer observation) {
-        this.observation = observation;
-    }
     public Integer getIsAttended() {
         return isAttended;
     }
 
     public void setIsAttended(Integer isAttended) {
         this.isAttended = isAttended;
+    }
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
     }
 
     public Long getCompanyId() {
@@ -88,8 +88,8 @@ public class EmergencyDTO implements Serializable {
     public String toString() {
         return "EmergencyDTO{" +
             "id=" + id +
-            ", observation='" + observation + "'" +
             ", isAttended='" + isAttended + "'" +
+            ", observation='" + observation + "'" +
             '}';
     }
 }
