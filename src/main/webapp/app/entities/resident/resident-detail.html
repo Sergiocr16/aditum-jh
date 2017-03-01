@@ -1,0 +1,72 @@
+
+<div>
+    <h2><span data-translate="aditumApp.resident.detail.title">Resident</span> {{vm.resident.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.resident.name">Name</span></dt>
+        <dd>
+            <span>{{vm.resident.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.resident.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.resident.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.resident.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.phonenumber">Phonenumber</span></dt>
+        <dd>
+            <span>{{vm.resident.phonenumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.image">Image</span></dt>
+        <dd>
+            <div ng-if="vm.resident.image">
+                <a ng-click="vm.openFile(vm.resident.imageContentType, vm.resident.image)">
+                    <img data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}" style="max-width: 100%;" alt="resident image"/>
+                </a>
+                {{vm.resident.imageContentType}}, {{vm.byteSize(vm.resident.image)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.email">Email</span></dt>
+        <dd>
+            <span>{{vm.resident.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.isOwner">Is Owner</span></dt>
+        <dd>
+            <span>{{vm.resident.isOwner}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.resident.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.user">User</span></dt>
+        <dd>
+            {{vm.resident.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.resident.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.resident.companyId})">{{vm.resident.companyId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.resident.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.resident.houseId})">{{vm.resident.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="resident-detail.edit({id:vm.resident.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

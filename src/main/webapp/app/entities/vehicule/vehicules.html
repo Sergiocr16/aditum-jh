@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.vehicule.home.title">Vehicules</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="vehicule.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.vehicule.home.createLabel">
+                        Create new Vehicule
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="licenseplate"><span data-translate="aditumApp.vehicule.licenseplate">Licenseplate</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="brand"><span data-translate="aditumApp.vehicule.brand">Brand</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="color"><span data-translate="aditumApp.vehicule.color">Color</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="enabled"><span data-translate="aditumApp.vehicule.enabled">Enabled</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="houseId"><span data-translate="aditumApp.vehicule.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.vehicule.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="vehicule in vm.vehicules track by vehicule.id">
+                    <td><a ui-sref="vehicule-detail({id:vehicule.id})">{{vehicule.id}}</a></td>
+                    <td>{{vehicule.licenseplate}}</td>
+                    <td>{{vehicule.brand}}</td>
+                    <td>{{vehicule.color}}</td>
+                    <td>{{vehicule.enabled}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:vehicule.houseId})">{{vehicule.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:vehicule.companyId})">{{vehicule.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="vehicule-detail({id:vehicule.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="vehicule.edit({id:vehicule.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="vehicule.delete({id:vehicule.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

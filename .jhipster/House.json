@@ -1,0 +1,86 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "vehicules",
+            "otherEntityName": "vehicule",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "visitants",
+            "otherEntityName": "visitant",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "notes",
+            "otherEntityName": "note",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "residents",
+            "otherEntityName": "resident",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "emergencies",
+            "otherEntityName": "emergency",
+            "otherEntityRelationshipName": "house"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "housenumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "extension",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "isdesocupated",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required",
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "desocupationinitialtime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "desocupationfinaltime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "securityKey",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "emergencyKey",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20170228214136",
+    "entityTableName": "house",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceClass"
+}

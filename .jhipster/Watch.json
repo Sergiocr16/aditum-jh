@@ -1,0 +1,39 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "accessDoor",
+            "otherEntityName": "accessDoor",
+            "otherEntityRelationshipName": "watch"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "initialtime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "finaltime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "responsableofficer",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20170228214136",
+    "entityTableName": "watch",
+    "dto": "mapstruct",
+    "pagination": "pager",
+    "service": "serviceClass"
+}

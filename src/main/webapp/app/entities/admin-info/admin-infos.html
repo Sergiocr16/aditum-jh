@@ -1,0 +1,85 @@
+<div>
+    <h2 data-translate="aditumApp.adminInfo.home.title">Admin Infos</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="admin-info.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.adminInfo.home.createLabel">
+                        Create new Admin Info
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="aditumApp.adminInfo.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastname"><span data-translate="aditumApp.adminInfo.lastname">Lastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="secondlastname"><span data-translate="aditumApp.adminInfo.secondlastname">Secondlastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="identificationnumber"><span data-translate="aditumApp.adminInfo.identificationnumber">Identificationnumber</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="email"><span data-translate="aditumApp.adminInfo.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="image"><span data-translate="aditumApp.adminInfo.image">Image</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="enabled"><span data-translate="aditumApp.adminInfo.enabled">Enabled</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.adminInfo.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.adminInfo.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="adminInfo in vm.adminInfos track by adminInfo.id">
+                    <td><a ui-sref="admin-info-detail({id:adminInfo.id})">{{adminInfo.id}}</a></td>
+                    <td>{{adminInfo.name}}</td>
+                    <td>{{adminInfo.lastname}}</td>
+                    <td>{{adminInfo.secondlastname}}</td>
+                    <td>{{adminInfo.identificationnumber}}</td>
+                    <td>{{adminInfo.email}}</td>
+                    <td>
+                        <a ng-if="adminInfo.image" ng-click="vm.openFile(adminInfo.imageContentType, adminInfo.image)">
+                            <img data-ng-src="{{'data:' + adminInfo.imageContentType + ';base64,' + adminInfo.image}}" style="max-height: 30px;" alt="adminInfo image"/>
+                        </a>
+                        <span ng-if="adminInfo.image">{{adminInfo.imageContentType}}, {{vm.byteSize(adminInfo.image)}}</span>
+                    </td>
+                    <td>{{adminInfo.enabled}}</td>
+                    <td>
+                        {{adminInfo.userLogin}}
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:adminInfo.companyId})">{{adminInfo.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="admin-info-detail({id:adminInfo.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="admin-info.edit({id:adminInfo.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="admin-info.delete({id:adminInfo.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

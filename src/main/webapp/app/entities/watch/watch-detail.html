@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.watch.detail.title">Watch</span> {{vm.watch.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.watch.initialtime">Initialtime</span></dt>
+        <dd>
+            <span>{{vm.watch.initialtime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.watch.finaltime">Finaltime</span></dt>
+        <dd>
+            <span>{{vm.watch.finaltime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.watch.responsableofficer">Responsableofficer</span></dt>
+        <dd>
+            <span>{{vm.watch.responsableofficer}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.watch.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.watch.companyId})">{{vm.watch.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="watch-detail.edit({id:vm.watch.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

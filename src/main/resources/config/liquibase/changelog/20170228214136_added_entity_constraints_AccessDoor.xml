@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity AccessDoor.
+    -->
+    <changeSet id="20170228214136-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="access_door"
+                                 constraintName="fk_access_door_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="watch_id"
+                                 baseTableName="access_door"
+                                 constraintName="fk_access_door_watch_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="watch"/>
+
+    </changeSet>
+</databaseChangeLog>
