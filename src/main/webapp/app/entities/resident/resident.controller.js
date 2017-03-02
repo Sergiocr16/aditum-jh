@@ -5,11 +5,12 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    ResidentController.$inject = ['DataUtils', 'Resident', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function ResidentController(DataUtils, Resident, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function ResidentController(DataUtils, Resident, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
+        vm.isAuthenticated = Principal.isAuthenticated;
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;

@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('CompanyController', CompanyController);
 
-    CompanyController.$inject = ['Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    CompanyController.$inject = ['Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function CompanyController(Company, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function CompanyController(Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -15,7 +15,24 @@
                     templateUrl: 'app/layouts/navbar/navbar.html',
                     controller: 'NavbarController',
                     controllerAs: 'vm'
-                }
+                },
+                'menu@': {
+                    templateUrl: 'app/layouts/navbar/menu.html',
+                    controller: 'NavbarController',
+                    controllerAs: 'vm'
+                },
+                'footer@': {
+                    templateUrl: 'app/layouts/navbar/footer.html',
+                    controller: 'NavbarController',
+                    controllerAs: 'vm'
+                },
+                 'login@': {
+                    templateUrl: 'app/components/login/login.html',
+                    controller: 'LoginController',
+                    controllerAs: 'vm'
+                },
+
+
             },
             resolve: {
                 authorize: ['Auth',

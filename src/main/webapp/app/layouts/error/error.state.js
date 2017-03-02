@@ -36,7 +36,9 @@
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/layouts/error/accessdenied.html'
+                        templateUrl: 'app/layouts/error/accessdenied.html',
+                         controller: 'NavbarController',
+                                           controllerAs: 'vm'
                     }
                 },
                 resolve: {

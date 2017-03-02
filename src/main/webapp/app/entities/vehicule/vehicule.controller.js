@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['Vehicule', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    VehiculeController.$inject = ['Vehicule', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function VehiculeController(Vehicule, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function VehiculeController(Vehicule, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -1,22 +1,24 @@
 <!doctype html>
-<html class="no-js">
+<html >
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Aditum</title>
     <meta name="description" content="">
     <meta name="google" value="notranslate">
+    <link rel="shortcut icon" href="content/images/casco_aditum.png">
     <meta name="viewport" content="width=device-width">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css content/css/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
     <link rel="stylesheet" href="content/css/main.css">
-    <!--<link rel="stylesheet" href="content/css/main.css">-->
+    <link rel="stylesheet" href="content/css/layout.css">
     <link rel="stylesheet" href="content/css/media-main.css">
     <link rel="stylesheet" href="content/css/components.css">
     <link rel="stylesheet" href="content/css/simple-line-icons.min.css">
@@ -31,23 +33,27 @@
     <link rel="stylesheet" href="content/css/plugins.css">
     <link rel="stylesheet" href="content/css/plugins-md.css">
     <link rel="stylesheet" href="content/css/toaster.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
-<body ng-app="aditumApp" ng-strict-di>
-    <!--[if lt IE 9]>
-        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-    <![endif]-->
-    <page-ribbon></page-ribbon>
-    <div ui-view="navbar" ng-cloak></div>
-    <div class="container">
-        <div class="well" ui-view="content">
-            <!-- Angular views -->
-        </div>
 
-        <div class="footer" ng-cloak>
-            <p data-translate="footer">This is your footer</p>
+<body ng-app="aditumApp" class="gray">
+<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"></div>
+    <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
+    </div>
+    <div class="page-content-wrapper">
+        <div  ui-view="login">
+        </div>
+        <div class="page-content">
+            <div ui-view="content" ng-show="vm.isAuthenticated() == true">
+            </div>
+        </div>
+        <div ui-view="footer " ng-show="vm.isAuthenticated() == true">
         </div>
     </div>
+
+
+
 
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
@@ -84,6 +90,8 @@
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="content/js/toaster.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -93,7 +101,6 @@
     <script src="content/js/bootstrap-switch.min.js"></script>
     <script src="content/js/bootstrap-hover-dropdown.js"></script>
     <script src="content/js/jquery.slimscroll.min.js"></script>
-    <script src="content/js/toaster.js"></script>
     <script src="content/js/metronic.js"></script>
     <script src="content/js/layout.js"></script>
     <script src="content/js/quick-sidebar.js"></script>
@@ -282,6 +289,7 @@
     <script src="app/account/account.state.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
+
 
 </body>
 </html>

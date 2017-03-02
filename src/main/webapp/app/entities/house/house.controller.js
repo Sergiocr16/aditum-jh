@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    HouseController.$inject = ['House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function HouseController(House, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function HouseController(House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

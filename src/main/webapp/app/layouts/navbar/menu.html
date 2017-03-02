@@ -19,10 +19,62 @@
             <li class="sidebar-search-wrapper height-6 hidden-xs hidden-sm">
 
             </li>
-            // es admin
+            <!--// es admin-->
+            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
+                    <span class="title">Administración</span>
+                    <span class="arrow "></span>
+                    <span class="selected "></span>
+                </a>
+
+
+                <ul class="sub-menu">
+                    <li ui-sref="user-management" ng-class="{ 'active' : active === 'residents' }">
+                        <a ui-sref="user-management">
+                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Gestión de usuarios
+                        </a>
+                    </li>
+                    <li ui-sref="jhi-tracker" ng-class="{ 'active' : active === 'houses' }">
+                        <a ui-sref="jhi-tracker">
+                            <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Seguimiento
+                        </a>
+                    </li>
+                    <li ui-sref="jhi-metrics" ng-class="{ 'active' : active === 'vehicules'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i> Métricas
+                        </a>
+                    </li>
+                    <li ui-sref="jhi-health" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-heart" aria-hidden="true"></i> Salud
+                        </a>
+                    </li>
+                    <li ui-sref="jhi-configuration" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i> Configuración
+                        </a>
+                    </li>
+                    <li ui-sref="audits" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-bell" aria-hidden="true"></i> Auditorías
+                        </a>
+                    </li>
+                    <li ui-sref="logs" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Logs
+                        </a>
+                    </li>
+                    <li ui-sref="docs" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="glyphicon glyphicon-book" aria-hidden="true"></i> API
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
                 <a href="javascript:;">
-                    <i class="icon-home" aria-hidden="true"></i>
+                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
                     <span class="title">Condominio</span>
                     <span class="arrow "></span>
                     <span class="selected "></span>
@@ -30,29 +82,29 @@
 
 
                 <ul class="sub-menu">
-                    <li ui-sref="residents()" ng-class="{ 'active' : active === 'residents' }">
+                    <li ui-sref="resident" ng-class="{ 'active' : active === 'residents' }">
                         <a href="">
                             <i class="fa fa-users" aria-hidden="true"></i> Residentes
                         </a>
                     </li>
-                    <li ui-sref="houses()" ng-class="{ 'active' : active === 'houses' }">
+                    <li ui-sref="house" ng-class="{ 'active' : active === 'houses' }">
                         <a href="">
                             <i class="fa fa-home fa-lg" aria-hidden="true"></i> Casas
                         </a>
                     </li>
-                    <li ui-sref="vehicules()" ng-class="{ 'active' : active === 'vehicules'}">
+                    <li ui-sref="vehicule" ng-class="{ 'active' : active === 'vehicules'}">
                         <a href="">
                             <i class="fa fa-car " aria-hidden="true"></i> Vehículos
                         </a>
                     </li>
-                    <li ui-sref="adminVisitors()" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="visitant" ng-class="{ 'active' : active === 'adminVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitantes
                         </a>
                     </li>
                 </ul>
             </li>
-            //es admin
+            <!--//es admin-->
             <li  class="start" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
                 <a href="javascript:;">
                     <i class="fa fa-lock" aria-hidden="true"></i>
@@ -61,12 +113,12 @@
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="officers()" ng-class="{ 'active' : active === 'officers'}">
+                    <li ui-sref="officer" ng-class="{ 'active' : active === 'officers'}">
                         <a href="">
                             <i class="fa fa-shield" aria-hidden="true"></i> Oficiales
                         </a>
                     </li>
-                    <li ui-sref="watches()" ng-class="{ 'active' : active === 'watches'}">
+                    <li ui-sref="watch" ng-class="{ 'active' : active === 'watches'}">
                         <a href="">
                             <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
                         </a>
@@ -75,7 +127,7 @@
 
             </li>
 
-            //es residnete
+            <!--//es residnete-->
             <li  class="start" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
                 <a href="javascript:;">
                     <i class="icon-home" aria-hidden="true"></i>
@@ -84,22 +136,22 @@
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="condominos()" ng-class="{ 'active' : active === 'residentsHouses'}">
+                    <li ui-sref="resident" ng-class="{ 'active' : active === 'residentsHouses'}">
                         <a href="">
                             <i class="fa fa-users" aria-hidden="true"></i> Residentes
                         </a>
                     </li>
-                    <li ui-sref="residents_vehicules()" ng-class="{ 'active' : active === 'vehiculesHouses'}">
+                    <li ui-sref="vehicules" ng-class="{ 'active' : active === 'vehiculesHouses'}">
                         <a href="">
                             <i class="fa fa-car" aria-hidden="true"></i> Vehiculos
                         </a>
                     </li>
-                    <li ui-sref="condominoVisitors()" ng-class="{'active' : active === 'residentsVisitors'}">
+                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitantes
                         </a>
                     </li>
-                    <li ui-sref="condominoInvitedVisitors()" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
+                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitantes invitados
                         </a>
@@ -111,7 +163,7 @@
                     </li>
                 </ul>
             </li>
-             //es residente
+             <!--//es residente-->
             <li  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'reportHomeService' ||  active === 'reportAbsence' || active === 'reportEmergency'}">
                 <a href="javascript:;">
                     <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -137,7 +189,7 @@
                     </li>
                 </ul>
             </li>
-            //es residente
+            <!--//es residente-->
             <li ui-sref="reportEmergency()" class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
                 <a href="javascript:;">
                     <i class="fa fa-ambulance" aria-hidden="true"></i>
@@ -151,12 +203,11 @@
     </div>
 </div>
 <script>
-(function() {
-   Metronic.init(); // init metronic core components
-        Layout.init(); // init current layout
-        QuickSidebar.init(); // init quick sidebar
-        Demo.init(); // init demo features
-
-})();
-
+    $( document ).ready(function() {
+        Metronic.init(); // init metronic core components
+    Layout.init(); // init current layout
+    QuickSidebar.init(); // init quick sidebar
+    Demo.init(); // init demo features
+    console.log( "ready!" );
+    });
 </script>

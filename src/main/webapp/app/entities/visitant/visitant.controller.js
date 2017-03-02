@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('VisitantController', VisitantController);
 
-    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.Principal;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -9,6 +9,12 @@
 	z-index: 9999;
 	background: url(http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_11.gif) center no-repeat #fff;
 }
+.carrousel-height{
+height:659px !important;
+}
+.gray {
+    background-color: #364150 !important;
+}
 .dark-blue-border{
 	border: solid 1px #2b3643;
 }

@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('JhiHealthCheckController', JhiHealthCheckController);
 
-    JhiHealthCheckController.$inject = ['JhiHealthService', '$uibModal'];
+    JhiHealthCheckController.$inject = ['JhiHealthService', '$uibModal','Principal'];
 
-    function JhiHealthCheckController (JhiHealthService, $uibModal) {
+    function JhiHealthCheckController (JhiHealthService, $uibModal,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.updatingHealth = true;
         vm.getLabelClass = getLabelClass;
         vm.refresh = refresh;
