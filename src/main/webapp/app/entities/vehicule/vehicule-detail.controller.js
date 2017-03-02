@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('VehiculeDetailController', VehiculeDetailController);
 
-    VehiculeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Vehicule', 'House', 'Company'];
+    VehiculeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Vehicule', 'House', 'Company','Principal'];
 
-    function VehiculeDetailController($scope, $rootScope, $stateParams, previousState, entity, Vehicule, House, Company) {
+    function VehiculeDetailController($scope, $rootScope, $stateParams, previousState, entity, Vehicule, House, Company,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
         vm.previousState = previousState.name;
 

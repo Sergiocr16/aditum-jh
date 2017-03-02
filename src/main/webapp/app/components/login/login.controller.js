@@ -5,11 +5,17 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', '$timeout', 'Auth', '$uibModalInstance'];
+    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth'];
 
-    function LoginController ($rootScope, $state, $timeout, Auth, $uibModalInstance) {
+    function LoginController ($rootScope, $state,Principal, $timeout, Auth) {
+    angular.element(document).ready(function () {
+             $('.carousel').fadeIn("slow");
+                   $('.carousel').carousel({
+                       intervals: 2000
+                   });
+        });
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.authenticationError = false;
         vm.cancel = cancel;
         vm.credentials = {};
@@ -29,7 +35,7 @@
                 rememberMe: true
             };
             vm.authenticationError = false;
-            $uibModalInstance.dismiss('cancel');
+//            $uibModalInstance.dismiss('cancel');
         }
 
         function login (event) {
@@ -40,7 +46,7 @@
                 rememberMe: vm.rememberMe
             }).then(function () {
                 vm.authenticationError = false;
-                $uibModalInstance.close();
+//                $uibModalInstance.close();
                 if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                     $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                     $state.go('home');
@@ -57,16 +63,35 @@
                 }
             }).catch(function () {
                 vm.authenticationError = true;
+                console.log("bad");
+                toastr.options = {
+                  "closeButton": false,
+                  "debug": false,
+                  "newestOnTop": false,
+                  "progressBar": false,
+                  "positionClass": "toast-top-right",
+                  "preventDuplicates": false,
+                  "onclick": null,
+                  "showDuration": "300",
+                  "hideDuration": "1000",
+                  "timeOut": "5000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                }
+                toastr["success"]("My name is Inigo Montoya. You killed my father. Prepare to die!")
             });
         }
 
         function register () {
-            $uibModalInstance.dismiss('cancel');
+//            $uibModalInstance.dismiss('cancel');
             $state.go('register');
         }
 
         function requestResetPassword () {
-            $uibModalInstance.dismiss('cancel');
+//            $uibModalInstance.dismiss('cancel');
             $state.go('requestReset');
         }
     }

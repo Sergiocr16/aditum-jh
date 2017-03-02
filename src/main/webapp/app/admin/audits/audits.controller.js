@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('AuditsController', AuditsController);
 
-    AuditsController.$inject = ['$filter', 'AuditsService', 'ParseLinks'];
+    AuditsController.$inject = ['$filter', 'AuditsService', 'ParseLinks','Principal'];
 
-    function AuditsController ($filter, AuditsService, ParseLinks) {
+    function AuditsController ($filter, AuditsService, ParseLinks,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.audits = null;
         vm.fromDate = null;
         vm.links = null;

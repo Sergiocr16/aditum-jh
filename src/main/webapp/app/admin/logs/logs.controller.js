@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('LogsController', LogsController);
 
-    LogsController.$inject = ['LogsService'];
+    LogsController.$inject = ['LogsService','Principal'];
 
-    function LogsController (LogsService) {
+    function LogsController (LogsService,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.changeLevel = changeLevel;
         vm.loggers = LogsService.findAll();
 

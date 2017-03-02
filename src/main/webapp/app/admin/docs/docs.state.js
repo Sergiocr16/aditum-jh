@@ -17,7 +17,9 @@
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/admin/docs/docs.html'
+                    templateUrl: 'app/admin/docs/docs.html',
+                    controller: 'AuditsController',
+                    controllerAs: 'vm'
                 }
             },
             resolve: {

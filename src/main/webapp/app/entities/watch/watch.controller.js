@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('WatchController', WatchController);
 
-    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('JhiMetricsMonitoringController', JhiMetricsMonitoringController);
 
-    JhiMetricsMonitoringController.$inject = ['$scope','JhiMetricsService', '$uibModal'];
+    JhiMetricsMonitoringController.$inject = ['$scope','JhiMetricsService', '$uibModal','Principal'];
 
-    function JhiMetricsMonitoringController ($scope, JhiMetricsService, $uibModal) {
+    function JhiMetricsMonitoringController ($scope, JhiMetricsService, $uibModal,Principal) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.metrics = {};
         vm.refresh = refresh;
         vm.refreshThreadDumpData = refreshThreadDumpData;

@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('OfficerController', OfficerController);
 
-    OfficerController.$inject = ['DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    OfficerController.$inject = ['DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function OfficerController(DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function OfficerController(DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
