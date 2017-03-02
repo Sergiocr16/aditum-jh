@@ -1,0 +1,468 @@
+.no-js #loader { display: none;  }
+.js #loader { display: block; position: absolute; left: 100px; top: 0; }
+.se-pre-con {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: url(http://smallenvelop.com/wp-content/uploads/2014/08/Preloader_11.gif) center no-repeat #fff;
+}
+.dark-blue-border{
+	border: solid 1px #2b3643;
+}
+.light-gray-font{
+	color: #b4bcc8 !important;
+}
+.color-pickerr{
+	margin-top: -20px!important;
+}
+.font-60{
+	font-size: 1px;
+}
+.text-right{
+	text-align: right;
+}
+.pointer{
+	cursor: pointer;
+}
+.dark-blue{
+	background-color: #2b3643;
+}
+.nothing{
+	border: none;
+	background-color: transparent;
+	color: red;
+}
+#login {
+    background-color: white !important;
+
+}
+
+.bg-peace{
+    background-color: white !important;
+}
+
+.carousel-inner>.item>a>img, .carousel-inner>.item>img, .img-responsive, .thumbnail a>img, .thumbnail>img {
+    height: 100%;
+    width: 100%;
+}
+
+#access_key_button{
+	height: 38px;
+}
+#delete_space_button{
+	height: 40px;
+}
+#tableVehiculesByKey{
+	height:16%;
+	overflow-y: scroll;
+}
+#tableResidentsByKey{
+	height:22%;
+	overflow-y: scroll;
+}
+
+.scroll{
+	overflow-y: scroll;
+}
+.light-gray-background{
+   background-color: #FAFAFA !important;
+}
+.no-bold{
+  font-weight: normal !important;
+}
+.gray-background{
+  background-color: #364150 !important;
+}
+
+body {
+    background-color: white !important;
+}
+.white-color{
+	color: white !important;
+}
+.max-width{
+  width: 100% !important;
+}
+a {
+    color: #a4aab2;
+    /* blue colors for links too */
+    text-decoration: none;
+    /* no underline */
+}
+
+a:hover {
+    color: #337ab7;
+    text-decoration: none;
+}
+.no-shadow{
+	box-shadow: none !important;
+}
+.hide{
+display: none;
+}
+.loading{
+  display: none;
+}
+.marging-top-20{
+  margin-top: 20px;
+}
+.marging-top-40{
+  margin-top: 40px;
+}
+
+.blue {
+    background-color: #3598dc
+}
+.blue-font{
+	  color: #3598dc
+}
+.invert-blue {
+  color:#3598dc;
+  border: 1px solid #3598dc;
+  background-color: #fff;
+  transition: 0.5s;
+}
+.invert-blue:hover{
+  background-color: #3598dc;
+  color:white;
+  transition: 0.5s;
+}
+.float-right {
+    float: right;
+}
+
+.huge-margin-top {
+    margin-top: 50px;
+}
+#residents_container{
+	min-height: 363px;
+}
+.display-none{
+	display: none;
+}
+.loading{
+  margin-top: 100px;
+}
+.medium-magin-top {
+    margin-top: 20px;
+}
+.small-margin-top{
+  margin-top: 20px !important;
+}
+.small-margin-bottom {
+    margin-bottom: 15px;
+}
+.small-margin-right{
+
+  margin-right: 15px;
+}
+.marging-top-100{
+	margin-top: 100px;
+}
+.marging-top-2-percent{
+	margin-top: 2%;
+}
+.medium-padding {
+    padding: 70px !important;
+}
+
+.login-hide-2 {
+    height: 170px;
+}
+
+.login-hide-1 {
+    height: 170px;
+}
+
+.gray {
+    background-color: #364150 !important;
+}
+.height-39-pixel{
+	height: 40px;
+}
+.height-41-pixel{
+	height: 41px;
+}
+.height-21-percent{
+  height: 26%;
+}
+.height-14-percent{
+  height: 14%;
+}
+.height-2-percent{
+  height: 2%;
+}
+.height-100-percent{
+height: 100%;
+}
+.height-3-percent{
+  height: 3% !important;
+}
+.height-5-percent{
+  height: 5%;
+}
+.height-4-percent{
+  height: 4%;
+}
+.height-1-percent{
+  height: 1%;
+}
+.height-6-percent{
+  height: 6%;
+}
+.height-7-percent{
+  height: 7%;
+}
+.height-12-percent{
+  height: 12%;
+}
+.height-10-percent{
+  height: 10%;
+}
+.height-8-percent{
+  height: 8%;
+}
+.height-80-percent{
+  height: 80%;
+}
+.height-6{
+	height: 37px !important;
+}
+#fail-icon{
+  font-size: 250px !important;
+  color: #C62828;
+
+}
+.text-center {
+    text-align: center;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.no-padding {
+    padding: 0 !important;
+}
+
+.absolute {
+    position: absolute !important;
+}
+
+.route-title {
+    margin: -24px -20px;
+    padding: 0px 15px !important;
+}
+
+#imgInp {
+    opacity: 0;
+    position: absolute;
+    z-index: -1;
+
+}
+
+.text-right {
+    text-align: right;
+}
+
+
+.font-11 {
+    font-size: 12px !important;
+}
+.font-12 {
+    font-size: 13px !important;
+    color: #616161 !important;
+}
+.font-19{
+    font-size: 19px !important;
+}
+.font-15{
+  font-size: 15px !important;
+
+}
+.font-16{
+  font-size: 16px !important;
+
+}
+.font-17{
+  font-size: 17px !important;
+
+}
+.font-20{
+  font-size: 20px !important;
+
+}
+.font-22{
+  font-size: 22px !important;
+
+}
+.font-30{
+  font-size: 30px;
+
+}
+.font-35{
+  font-size: 35px !important;
+
+}
+.font-24{
+	font-size: 24px !important;
+}
+.margin-right-10{
+  margin-right: 10px;
+}
+.font-back{
+	font-size: 40px !important;
+	margin-top: 10px;
+}
+.font-60{
+  font-size: 60px !important;
+}
+.font-80{
+  font-size: 70px !important;
+}
+.search-bar {
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 10px;
+    outline: none;
+    margin-bottom: 10px;
+}
+.access-container{
+    margin-top: 2%;
+    background-color: #F5F5F5 ;
+}
+.access_officer_table{
+
+	height:35%;
+	overflow-y: scroll;
+}
+.access-back{
+    /*height: 100vh;*/
+		    height: 100%;
+    width: 100%;
+    background-image: url("http://www.carvarisa.com/wp-content/uploads/via_nova_2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.opacity{
+      background: rgba(0, 0, 0, 0.7);
+      height: 100%;
+}
+.access-search-container{
+  background-color: #F5F5F5 ;
+  margin-top: 2% !important;
+}
+
+.access-result-search-container{
+  margin-top: 1%;
+
+}
+.green{
+  background-color: #009688;
+}
+.font-green{
+color: #009688;
+}
+.access-information-result-container{
+  background-color: #E0E0E0;
+  margin-top: 1%;
+  min-height: 69%;
+
+}
+.bold{
+  font-weight: bold;
+}
+.red{
+color: #C62828;
+
+}
+.red-font{
+	color: #C62828 !important;
+}
+#emergencyContainer{
+ border: 3px solid #ff0000;
+ border-radius: 15px;
+ background-color:  #ff3333;
+	min-height: 500px;
+
+}
+.left-padding-10{
+ padding-left: 13px !important;
+}
+.rojoOscuro{
+	background-color: black !important;
+  transition: all 3s ease !important;
+
+}
+
+.result-image{
+  background-repeat: no-repeat;
+  background-size: cover;
+   margin: 0 auto;
+}
+.float-left{
+	float: right !important;
+}
+.green-font{
+  color: green !important;
+}
+#error-image{
+background-image: url("http://www.clipartbest.com/cliparts/9i4/zry/9i4zryxAT.png");
+height: 190px;
+width: 190px;
+margin-top: 30px;
+}
+#color-circle{
+
+  height: 13%;
+
+}
+#headerAccess{
+	height: 49px;
+	background-color: rgb(43, 54, 67);
+}
+#success-car-image{
+background-image: url("../../../assets/global/img/check-300x300.png") !important;
+height: 150px;
+width: 150px;
+}
+
+#disabled-car-image{
+background-image: url("../../../assets/global/img/disabled-car-image.jpg") !important;
+height: 150px;
+width: 150px;
+}
+#success-resident-image{
+height: 200px;
+width: 200px;
+margin: 0 auto;
+}
+.gray-font{
+  color:#616161 !important;
+}
+
+
+.access_car_information{
+ margin-bottom: 17px;
+}
+
+.blabla{
+  height: aut
+}
+  .center{
+
+    margin: 0 auto !important;
+  }
+
+  #toast-container * {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      border-radius: 5px !important;
+      opacity: 1 !important;
+
+  }

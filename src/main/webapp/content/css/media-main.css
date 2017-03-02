@@ -1,0 +1,177 @@
+
+@media only screen and  (max-width: 995px)  {
+  #raccess_tittle{
+    font-size: 25px !important;
+    margin-top: 20px;
+  }
+  #registered_access_tittle{
+    font-size: 20px !important;
+    margin-top: 20px;
+  }
+  .access-container{
+      margin-top: 0% ;
+  }
+  #error-image{
+    height: 150px;
+    width: 150px;
+
+  }
+  #success-car-image{
+    height: 130px;
+    width: 130px;
+  }
+  #success-resident-image{
+  height: 170px;
+  width: 170px;
+
+  }
+  .height-10-percent{
+    height: 7%;
+  }
+  .font-30{
+    font-size: 25px ;
+  }
+
+.access_car_information{
+ margin-bottom: 8px;
+ font-size: 17px !important;
+}
+
+.font-35{
+  font-size: 32px;
+}
+.access-information-result-container{
+    padding: 0 !important;
+    min-height: 75%;
+
+}
+.access-result-search-container{
+  margin-top: 2%;
+}
+#access-door-container {
+  margin-top: 2%;
+}
+#color-circle{
+  margin-bottom:  4%;
+  height: 10%;
+}
+}
+
+
+@media only screen and (max-width: 770px)  {
+  .access-information-result-container{
+
+    margin-top: 100px;
+  }
+  .access-container{
+      margin-top: 0% ;
+  }
+  #error-image{
+    height: 180px;
+    width: 180px;
+    margin-top: 30px;
+  }
+  #success-car-image{
+    height: 120px !important;
+    width: 120px;
+  }
+  #success-resident-image{
+  height: 100px;
+  width: 100px;
+
+  }
+  .height-7-percent{
+    margin-bottom: 3%;
+    height: 6%;
+  }
+  .height-12-percent{
+    height: 8% !important;
+  }
+  .access-back{
+  	margin-top: -20px;
+  }
+  .font-30{
+    font-size: 20px !important;
+  }
+  .small-margin-top{
+    margin-top:5px !important;
+  }
+  #access_tittle{
+    font-size: 25px !important;
+  }
+  #index-search-bar{
+    padding: 0 !important;
+  }
+  .access-information-result-container{
+    min-height: 20% !important;
+    margin-top: 2% !important;
+  }
+}
+
+@media only screen and  (max-width: 500px)  {
+  #error-image{
+    height: 110px;
+    width: 110px;
+    margin-top: 10px;
+  }
+  #success-car-image{
+    height: 50px !important;
+    width: 50px !important;
+
+  }
+  #access_tittle{
+    font-size: 24px !important;
+    margin-top: 6px;
+  }
+.height-media-percent{
+  height: 0px;
+}
+
+.access-search-container{
+  margin-bottom: 4% !important;
+}
+.access-result-search-container{
+padding: 0;
+
+}
+.access-information-result-container{
+  min-height: 0% !important;
+  margin-top: 2% !important;
+padding-bottom: 10px !important;
+}
+.page-title{
+  font-size: 25px !important;
+
+}
+.input_id{
+  font-size:  17px !important;
+  height: 10% !important;
+
+}
+.btn-access-door{
+  font-size: 13px !important;
+}
+
+#credencial_field{
+  padding: 0 !important;
+  margin:  0 !important
+}
+#color-circle{
+  margin-bottom:  3%!important;
+  margin-top: -20px;
+  height: 17% !important;
+}
+#index-search-bar{
+  padding: 0 !important;
+}
+#house_number_span{
+  font-size: 20px;
+}
+#access_key_button{
+  height: 35px;
+}
+#car-icon-font{
+  margin-top: 2px;
+  margin-bottom: 10px;
+}
+}
