@@ -5,11 +5,19 @@
         .module('aditumApp')
         .controller('ResetFinishController', ResetFinishController);
 
-    ResetFinishController.$inject = ['$stateParams', '$timeout', 'Auth', 'LoginService'];
+    ResetFinishController.$inject = ['$stateParams','$rootScope', '$timeout', 'Auth', 'LoginService','Principal','$state'];
 
-    function ResetFinishController ($stateParams, $timeout, Auth, LoginService) {
+    function ResetFinishController ($stateParams,$rootScope, $timeout, Auth, LoginService,Principal,$state) {
+       angular.element(document).ready(function () {
+                       $('body').removeClass("gray");
+                       $('#page-content').hide();
+                  });
         var vm = this;
 
+        vm.signIn = function(){
+         $state.go('login')
+        }
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.keyMissing = angular.isUndefined($stateParams.key);
         vm.confirmPassword = null;
         vm.doNotMatch = null;

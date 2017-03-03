@@ -1,5 +1,5 @@
 <!doctype html>
-<html >
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +11,7 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css content/css/vendor.css -->
     <!-- bower:css -->
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
@@ -32,19 +33,21 @@
     <link rel="stylesheet" href="content/css/original-aditum.css">
     <link rel="stylesheet" href="content/css/plugins.css">
     <link rel="stylesheet" href="content/css/plugins-md.css">
-    <link rel="stylesheet" href="content/css/toaster.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" media="screen" title="no title">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp" class="gray">
+<body ng-app="aditumApp">
+<div  ui-view="reset">
+</div>
 <div ui-view="navbar" ng-show="vm.isAuthenticated() == true"></div>
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
-    <div class="page-content-wrapper">
-        <div  ui-view="login">
+    <div id="page-content" class="page-content-wrapper">
+        <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
         </div>
-        <div class="page-content">
+        <div class="page-content" >
             <div ui-view="content" ng-show="vm.isAuthenticated() == true">
             </div>
         </div>

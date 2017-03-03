@@ -7,7 +7,9 @@
 
     LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth'];
 
-    function LoginController ($rootScope, $state,Principal, $timeout, Auth) {
+    function LoginController ($rootScope, $state,Principal, $timeout, Auth,rc) {
+
+
     angular.element(document).ready(function () {
              $('.carousel').fadeIn("slow");
                    $('.carousel').carousel({
@@ -15,6 +17,9 @@
                    });
         });
         var vm = this;
+        vm.isIdentityResolved = Principal.isIdentityResolved;
+        vm.isChangingPassword = $state.includes('finishReset');
+        vm.isResetPassword = $state.includes('requestReset');
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.authenticationError = false;
         vm.cancel = cancel;
@@ -53,7 +58,7 @@
                 }
 
                 $rootScope.$broadcast('authenticationSuccess');
-
+                $('body').addClass("gray");
                 // previousState was set in the authExpiredInterceptor before being redirected to login modal.
                 // since login is successful, go to stored previousState and clear previousState
                 if (Auth.getPreviousState()) {
@@ -63,25 +68,7 @@
                 }
             }).catch(function () {
                 vm.authenticationError = true;
-                console.log("bad");
-                toastr.options = {
-                  "closeButton": false,
-                  "debug": false,
-                  "newestOnTop": false,
-                  "progressBar": false,
-                  "positionClass": "toast-top-right",
-                  "preventDuplicates": false,
-                  "onclick": null,
-                  "showDuration": "300",
-                  "hideDuration": "1000",
-                  "timeOut": "5000",
-                  "extendedTimeOut": "1000",
-                  "showEasing": "swing",
-                  "hideEasing": "linear",
-                  "showMethod": "fadeIn",
-                  "hideMethod": "fadeOut"
-                }
-                toastr["success"]("My name is Inigo Montoya. You killed my father. Prepare to die!")
+                toastr["error"]("Por favor verifique sus credenciales");
             });
         }
 
