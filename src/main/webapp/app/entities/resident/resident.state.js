@@ -13,12 +13,12 @@
             parent: 'entity',
             url: '/resident?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.resident.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/resident/residents.html',
+                    templateUrl: 'app/entities/resident/resident-index.html',
                     controller: 'ResidentController',
                     controllerAs: 'vm'
                 }
