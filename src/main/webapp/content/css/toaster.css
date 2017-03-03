@@ -1,13 +1,13 @@
 !
   bootstrap-fileinput v4.3.4
   httpplugins.krajee.comfile-input
- 
+
   Author Kartik Visweswaran
   Copyright 2014 - 2016, Kartik Visweswaran, Krajee.com
- 
+
   Licensed under the BSD 3-Clause
   httpsgithub.comkartik-vbootstrap-fileinputblobmasterLICENSE.md
- 
+
 .file-loading {
     top 0;
     right 0;
@@ -154,7 +154,7 @@
     font-size 4.8em;
 }
 
- noinspection CssOverwrittenProperties 
+ noinspection CssOverwrittenProperties
 .file-zoom-dialog .file-other-icon {
     font-size 8em;
     font-size 55vmin;
@@ -393,7 +393,7 @@
     background-color #eee;
 }
 
- IE 10 fix 
+ IE 10 fix
 .btn-file -ms-browse {
     width 100%;
     height 100%;

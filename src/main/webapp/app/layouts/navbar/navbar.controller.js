@@ -10,7 +10,9 @@
     function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
 
         var vm = this;
-
+      angular.element(document).ready(function () {
+                 $('body').addClass("gray");
+       });
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
         ProfileService.getProfileInfo().then(function(response) {

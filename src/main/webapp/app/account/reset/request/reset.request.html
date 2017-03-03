@@ -1,25 +1,32 @@
 <div>
-    <div class="row">
+    <div class="row" style="background-color:white;">
+        <h2 class="text-center big-padding-top"><img src="content/images/casco_aditum.png" alt="" height="100px"/></h2>
         <div class="col-md-8 col-md-offset-2">
-            <h1 data-translate="reset.request.title">Reset your password</h1>
+            <h3 >Restablezca su contraseña</h3>
 
             <div class="alert alert-danger" data-translate="reset.request.messages.notfound" ng-show="vm.errorEmailNotExists">
                 <strong>E-Mail address isn't registered!</strong> Please check and try again.
             </div>
 
-            <div class="alert alert-warning" ng-hide="vm.success">
-                <p data-translate="reset.request.messages.info">Enter the e-mail address you used to register.</p>
+            <div style="margin-top:50px" ng-hide="vm.success">
+                <h4 data-translate="reset.request.messages.info">Enter the e-mail address you used to register.</h4>
             </div>
 
-            <div class="alert alert-success" ng-show="vm.success == 'OK'">
-                <p data-translate="reset.request.messages.success">Check your e-mails for details on how to reset your password.</p>
+            <div class="alert alert-success" style="height:100px" ng-show="vm.success == 'OK'">
+                <h4>¡No te preocupes!</h4>
+                <p>Se ha enviado un link para restablecer tu contraseña a tu correo electrónico</p>
             </div>
 
-            <form ng-show="!vm.success" name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
+            <form  name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
+                <div ng-show="!vm.success">
+
+
                 <div class="form-group">
-                    <label class="control-label" for="email" data-translate="global.form.email">E-mail</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
-                           ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required>
+                    <div class="form-group form-md-line-input small-margin-top">
+                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required name="email" id="email" type="email" class="form-control" placeholder="Digita el correo electrónico asociado a tu cuenta" required title="Input required" required>
+                        <label for="email">Correo electrónico</label>
+                    </div>
+
                     <div ng-show="form.email.$dirty && form.email.$invalid">
                         <p class="help-block"
                            ng-show="form.email.$error.required" data-translate="global.messages.validate.email.required">
@@ -39,9 +46,23 @@
                         </p>
                     </div>
                 </div>
-                <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="reset.request.form.button">Reset</button>
+
+                </div>
+                <h1 class="col-md-12">
+                    <form action="https://aditum.herokuapp.com">
+                        <a ng-show="!vm.success" class="btn invert-blue" href="https://aditum.herokuapp.com">Atrás</a>
+                        <a ng-show="vm.success" class="btn btn-primary" href="https://aditum.herokuapp.com">Vuelve a nuestra página de inicio</a>
+                    </form>
+                    <button ng-show="!vm.success" type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="reset.request.form.button">Reset</button>
+                </h1>
             </form>
 
         </div>
+    </div>
+    <div style="background-color:white;height:230px;">
+
+    </div>
+    <div ng-show="vm.success == 'OK'" style="background-color:white;height:44px;">
+
     </div>
 </div>

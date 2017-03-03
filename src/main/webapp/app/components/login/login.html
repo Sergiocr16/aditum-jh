@@ -1,4 +1,4 @@
-<div id="login" ng-hide="vm.isAuthenticated() == true" class="col-md-12 no-margin no-padding">
+<div id="login" class="col-md-12 no-margin no-padding">
     <div class="col-md-6 col-sm-12">
         <!-- <div class="col-lg-10 login-hide-1 hidden-xs hidden-md hidden-sm">
 
@@ -27,7 +27,7 @@
                             </div>
                         </div>
                     </div>
-                    <h5 class="text-center"><a href="#" class="col-md-8 col-sm-8 col-xs-12 small-margin-bottom" ng-click='requestPassword()'>¿Olvidaste tu contraseña?</a></h5>
+                    <h5 class="text-center"><a href="#" class="col-md-8 col-sm-8 col-xs-12 small-margin-bottom" ng-click="vm.requestResetPassword()">¿Olvidaste tu contraseña?</a></h5>
 
                     <button type="submit" class="btn blue col-md-4 col-sm-4 col-xs-12" name="button">Iniciar sesión</button>
                 </form>

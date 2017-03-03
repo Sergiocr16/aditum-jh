@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
+    HomeController.$inject = ['$scope','$rootScope', 'Principal', 'LoginService', '$state'];
 
-    function HomeController ($scope, Principal, LoginService, $state) {
+    function HomeController ($scope,$rootScope, Principal, LoginService, $state) {
         var vm = this;
-
+        vm.isInLogin = $state.includes('home');
         vm.account = null;
         vm.isAuthenticated = null;
         vm.login = LoginService.open;

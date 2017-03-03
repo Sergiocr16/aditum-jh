@@ -1,24 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <title th:text="#{email.activation.title}">JHipster creation</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    </head>
-    <body>
-        <p th:text="#{email.activation.greeting(${user.login})}">
-            Dear
-        </p>
-        <p th:text="#{email.creation.text1}">
-            Your JHipster account has been created, please click on the URL below to access it:
-        </p>
-        <p>
-          <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}"
-             th:text="|${user.login}|">login</a>
-        </p>
-        <p>
-            <span th:text="#{email.activation.text2}">Regards, </span>
-            <br/>
-            <em th:text="#{email.signature}">JHipster.</em>
-        </p>
-    </body>
+
+<head>
+    <title th:text="#{email.activation.title}">JHipster creation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<body style="margin:0;padding:15px;background-color:rgb(43, 54, 67);font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
+<h1 style="text-align:center;">ADI<span style="color:red">TUM</span></h1>
+<div style="margin:10px 5px 5px 10px;background-color:white;padding:10px;border-radius:10px;color:#6a6c6f!important;">
+    <h2>Bienvenido(a)</h2>
+    <p>Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
+    <p>¡Tu cuenta en Aditum ha sido creada exitosamente! :)</p>
+    <p>Tu nombre de usuario para iniciar en nuestra página web es el siguiente:</p>
+    <h2 th:text="|${user.login}|" style="text-align:center">User</h2>
+    <p style="text-align:center">
+        <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">¡Has click aquí para activar tu cuenta!</a>
+    </p>
+</div>
+<span th:text="#{email.activation.text2}">Regards, </span>
+<br/>
+<em>Lighthouse Software</em>
+
+</body>
+
 </html>

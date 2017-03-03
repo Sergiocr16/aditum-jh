@@ -20,10 +20,12 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler'];
+    run.$inject = ['stateHandler', 'translationHandler','$state','$rootScope'];
 
-    function run(stateHandler, translationHandler) {
+    function run(stateHandler, translationHandler,$state,vm) {
         stateHandler.initialize();
         translationHandler.initialize();
+        vm.isInLogin = $state.includes('home');
+        console.log($state.includes('home'));
     }
 })();
