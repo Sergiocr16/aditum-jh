@@ -8,8 +8,11 @@
     RequestResetController.$inject = ['$timeout', 'Auth'];
 
     function RequestResetController ($timeout, Auth) {
+      angular.element(document).ready(function () {
+                           $('body').removeClass("gray");
+                           $('#page-content').hide();
+                      });
         var vm = this;
-
         vm.error = null;
         vm.errorEmailNotExists = null;
         vm.requestReset = requestReset;

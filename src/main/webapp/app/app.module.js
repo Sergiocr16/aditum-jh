@@ -20,9 +20,9 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler'];
+    run.$inject = ['stateHandler', 'translationHandler','$state','$rootScope'];
 
-    function run(stateHandler, translationHandler) {
+    function run(stateHandler, translationHandler,$state,vm) {
         stateHandler.initialize();
         translationHandler.initialize();
         toastr.options = {
@@ -42,5 +42,7 @@
                           "showMethod": "fadeIn",
                           "hideMethod": "fadeOut"
                         }
+        vm.isInLogin = $state.includes('home');
+
     }
 })();
