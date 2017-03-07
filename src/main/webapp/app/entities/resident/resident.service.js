@@ -20,7 +20,9 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'residentsEnabled': { method: 'GET',  url: 'api/residentsEnabled',isArray: true},
+            'residentsDisabled': { method: 'GET',  url: 'api/residentsDisabled',isArray: true}
         });
     }
 })();

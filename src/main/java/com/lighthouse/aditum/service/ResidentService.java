@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class ResidentService {
 
     private final Logger log = LoggerFactory.getLogger(ResidentService.class);
-    
+
     private final ResidentRepository residentRepository;
 
     private final ResidentMapper residentMapper;
@@ -49,7 +50,7 @@ public class ResidentService {
 
     /**
      *  Get all the residents.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
@@ -82,5 +83,20 @@ public class ResidentService {
     public void delete(Long id) {
         log.debug("Request to delete Resident : {}", id);
         residentRepository.delete(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findEnabled(Pageable pageable) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,Long.valueOf(1));
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+
+    }
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findDisabled(Pageable pageable) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,Long.valueOf(1));
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+
     }
 }

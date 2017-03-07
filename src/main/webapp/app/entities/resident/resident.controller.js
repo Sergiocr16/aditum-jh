@@ -31,27 +31,30 @@
                 vm.actionButtonTitle = "Habilitar";
             }
         }
-
         loadHouses();
-
         function loadHouses() {
             House.query({}, onSuccessHouses);
-
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
-                loadResidentsEnabled();
+                loadResidents();
             }
         }
-
-        function loadResidentsEnabled() {
-
-            vm.changesTitles();
-            Resident.query({
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-                sort: sort()
-            }, onSuccess, onError);
-
+        function loadResidents() {
+            if(enabledOptions){
+              vm.changesTitles();
+                Resident.residentsEnabled({
+                    page: pagingParams.page - 1,
+                    size: vm.itemsPerPage,
+                    sort: sort()
+                }, onSuccess, onError);
+            } else {
+                vm.changesTitles();
+                Resident.residentsDisabled({
+                    page: pagingParams.page - 1,
+                    size: vm.itemsPerPage,
+                    sort: sort()
+                }, onSuccess, onError);
+            }
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -59,7 +62,6 @@
                 }
                 return result;
             }
-
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -71,27 +73,26 @@
                     $("#tableData").fadeIn(300);
                 }, 200)
             }
-
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-
+    vm.switchEnabledDisabledResidents = function() {
+        enabledOptions = !enabledOptions;
+        vm.findResidentsByHouse(vm.houses);
+    }
         vm.findResidentsByHouse = function(house) {
 
             var residentsByHouse = [];
             if (house == undefined) {
-                if (enabledOptions) {
-                    loadResidentsEnabled();
-                } else {
-                    loadResidentsDisabled();
-                }
+               $("#tableData").fadeOut(0);
+                    loadResidents();
             } else {
                 $("#tableData").fadeOut(0);
 
                 if (enabledOptions) {
                     vm.changesTitles();
-                    Resident.query({
+                    Resident.residentsEnabled({
                         page: pagingParams.page - 1,
                         size: vm.itemsPerPage
 
@@ -107,7 +108,6 @@
                             }
                         }
                         vm.residents = formatResidents(residentsByHouse);
-                        console.log('aqui');
 
                         setTimeout(function() {
                             $("#tableData").fadeIn(300);
@@ -116,12 +116,12 @@
 
 
                 } else {
-                    $scope.changesTitles();
-                    Resident.query({
-                        page: pagingParams.page - 1,
-                        size: vm.itemsPerPage
+                    vm.changesTitles();
+                  Resident.residentsDisabled({
+                      page: pagingParams.page - 1,
+                      size: vm.itemsPerPage
 
-                    }, onSuccess);
+                  }, onSuccess);
 
                     function onSuccess(data, headers) {
                         vm.residents = data;
@@ -139,6 +139,20 @@
                 }
             }
         }
+
+        function formatResidents(residents) {
+                var formattedResidents = [];
+                for (var i = 0; i < residents.length; i++) {
+
+                    for (var e = 0; e < vm.houses.length; e++) {
+                        if (residents[i].houseId == vm.houses[e].id) {
+                            residents[i].house_id = vm.houses[e].housenumber;
+                        }
+                    }
+                }
+                return residents;
+            }
+
         vm.deleteResident = function(id_resident, name,lastname) {
             bootbox.confirm({
                 message: "¿Está seguro que desea eliminar al residente " + name + " " + lastname +"?",
@@ -245,20 +259,7 @@
             }
         });
     };
-        function formatResidents(residents) {
-            var formattedResidents = [];
-            for (var i = 0; i < residents.length; i++) {
 
-                for (var e = 0; e < vm.houses.length; e++) {
-                    if (residents[i].houseId == vm.houses[e].id) {
-
-                        residents[i].house_id = vm.houses[e].housenumber;
-                    }
-                }
-
-            }
-            return residents;
-        }
 
         function loadPage(page) {
             vm.page = page;
