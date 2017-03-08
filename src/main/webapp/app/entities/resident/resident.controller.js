@@ -79,12 +79,13 @@
         }
     vm.switchEnabledDisabledResidents = function() {
         enabledOptions = !enabledOptions;
-        vm.findResidentsByHouse(vm.houses);
+        vm.findResidentsByHouse(vm.house);
     }
         vm.findResidentsByHouse = function(house) {
 
             var residentsByHouse = [];
             if (house == undefined) {
+
                $("#tableData").fadeOut(0);
                     loadResidents();
             } else {
@@ -102,7 +103,6 @@
 
                         vm.residents = data;
                         for (var i = 0; i < vm.residents.length; i++) {
-
                             if (house.id === vm.residents[i].houseId) {
                                 residentsByHouse.push(vm.residents[i])
                             }
@@ -150,6 +150,7 @@
                         }
                     }
                 }
+
                 return residents;
             }
 
@@ -175,12 +176,7 @@
 
                         function onSuccess(data, headers) {
                             toastr["success"]("Se ha eliminado el residente correctamente.");
-                            if (enabledOptions) {
-                                loadResidentsEnabled();
-                            } else {
-
-
-                            }
+                              loadResidents();
                         }
                     }
                 }
@@ -217,40 +213,42 @@
                         resident.enabled = 0;
                         Resident.update(resident,onSuccess);
                            function onSuccess(data, headers) {
+                              if(resident.isOwner==1){
                               User.getUserById({id: resident.userId},onSuccess);
                                  function onSuccess(data, headers) {
-                                  if(resident.isOwner==1){
                                   data.activated = 0;
                                     User.update(data,onSuccessUser);
                                      function onSuccessUser(data, headers) {
                                          toastr["success"]("Se ha deshabilitado el residente correctamente.");
                                          bootbox.hideAll();
                                      }
-                                  } else{
-                                       toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                       bootbox.hideAll();
+
                                   }
-                                  }
+                                   } else{
+                                   loadResidents();
+                                 toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                                 bootbox.hideAll();
+                            }
                             }
 
                     } else {
                        resident.enabled = 1;
                        Resident.update(resident,onSuccess);
                           function onSuccess(data, headers) {
+                              if(resident.isOwner==1){
                              User.getUserById({id: resident.userId},onSuccess);
                                 function onSuccess(data, headers) {
-                                 if(resident.isOwner==1){
                                  data.activated = 1;
                                    User.update(data,onSuccessUser);
                                     function onSuccessUser(data, headers) {
                                         toastr["success"]("Se ha habilitado el residente correctamente.");
                                         bootbox.hideAll();
                                     }
-                                 } else{
-                                      toastr["success"]("Se ha habilitado el residente correctamente.");
-                                      bootbox.hideAll();
                                  }
-
+                                } else{
+                                     bootbox.hideAll();
+                                     toastr["success"]("Se ha habilitado el residente correctamente.");
+                                     loadResidents();
                                  }
                            }
                     }

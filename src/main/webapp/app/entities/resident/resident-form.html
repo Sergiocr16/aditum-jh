@@ -40,7 +40,7 @@
                             <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Autorizado de filial: </span>
                             <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
                                 <div class="md-checkbox">
-                                    <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
+                                    <input type="checkbox" id="checkbox1" ng-model="vm.resident.isOwner" class="md-check">
                                     <label for="checkbox1">
                                         <span></span>
                                         <span class="check"></span>
@@ -116,7 +116,7 @@
                                 <!--<label for="form_control_1 " class="font-15 ">Número de casa</label >-->
                             <!--</div>-->
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                            <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses"            >
+                            <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses" required>
                                 <option value="">Seleccione una casa</option>
                             </select>
                                 <label class="font-15 ">Número de casa</label >
@@ -126,7 +126,7 @@
 
                         <div class="form-actions noborder">
                             <h3 class="text-right ">
-                                <button type="submit" class="btn blue"><i class="fa fa-pencil "ng-show="button=='Editar'"></i> {{vm.button}}</button>
+                                <button type="submit" class="btn blue"><i class="fa fa-pencil " ng-disabled="editForm.$invalid || vm.isSaving"  ng-show="button=='Editar'"></i> {{vm.button}}</button>
                                 <button type="button" ui-sref="residents()" class="btn red default">Cancelar</button>
                             </h3>
                         </div>

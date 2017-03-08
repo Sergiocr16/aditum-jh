@@ -12,16 +12,17 @@
                validateName: validateName,
                 waitingMessage: waitingMessage,
                 validateLetters: validateLetters,
-                validateNumbers: validateNumbers
+                validateNumbers: validateNumbers,
+                validateRepeat: validateRepeat
             };
             function validateName (items, name) {
                 var condition = true;
-                               angular.forEach(items, function(item, index) {
-                                   if (item.name.toUpperCase() == name.toUpperCase()) {
-                                       condition = false;
-                                   }
-                               });
-                               return condition;
+                   angular.forEach(items, function(item, index) {
+                       if (item.name.toUpperCase() == name.toUpperCase()) {
+                           condition = false;
+                       }
+                   });
+                   return condition;
             }
            function waitingMessage(message) {
                  bootbox.dialog({
@@ -34,45 +35,115 @@
                     if (tecla.charCode < 48 || tecla.charCode > 57) return false;
                 });
             }
-               function validateLetters() {
-                     $(".letters").keypress(function(key) {
-                         if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas
-                             &&
-                             (key.charCode < 65 || key.charCode > 90) //letras minusculas
-                             &&
-                             (key.charCode != 45) //retroceso
-                             &&
-                             (key.charCode != 241) //ñ
-                             &&
-                             (key.charCode != 209) //Ñ
-                             &&
-                             (key.charCode != 32) //espacio
-                             &&
-                             (key.charCode != 225) //á
-                             &&
-                             (key.charCode != 233) //é
-                             &&
-                             (key.charCode != 237) //í
-                             &&
-                             (key.charCode != 243) //ó
-                             &&
-                             (key.charCode != 250) //ú
-                             &&
-                             (key.charCode != 193) //Á
-                             &&
-                             (key.charCode != 201) //É
-                             &&
-                             (key.charCode != 205) //Í
-                             &&
-                             (key.charCode != 211) //Ó
-                             &&
-                             (key.charCode != 218) //Ú
+             function validateRepeat(items, itemToValidate, criteria) {
+                 var condition = false;
+                 angular.forEach(items, function(item, index) {
+                     switch (criteria) {
+                         case 1:
+                             if (item.identification_number == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 2:
+                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                 condition = true;
+                             }
+                             break;
+                         case 3:
+                             if (item.house_number == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 4:
+                             if (item.license_plate == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 5:
+                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                 condition = true;
+                             }
+                             break;
+                     }
 
-                         )
-                             return false;
-                     });
-                }
 
+                 });
+                 return condition;
+             }
+            function validateLetters() {
+                 $(".letters").keypress(function(key) {
+                     if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas
+                         &&
+                         (key.charCode < 65 || key.charCode > 90) //letras minusculas
+                         &&
+                         (key.charCode != 45) //retroceso
+                         &&
+                         (key.charCode != 241) //ñ
+                         &&
+                         (key.charCode != 209) //Ñ
+                         &&
+                         (key.charCode != 32) //espacio
+                         &&
+                         (key.charCode != 225) //á
+                         &&
+                         (key.charCode != 233) //é
+                         &&
+                         (key.charCode != 237) //í
+                         &&
+                         (key.charCode != 243) //ó
+                         &&
+                         (key.charCode != 250) //ú
+                         &&
+                         (key.charCode != 193) //Á
+                         &&
+                         (key.charCode != 201) //É
+                         &&
+                         (key.charCode != 205) //Í
+                         &&
+                         (key.charCode != 211) //Ó
+                         &&
+                         (key.charCode != 218) //Ú
+
+                     )
+                         return false;
+                 });
+            }
+             function validateRepeat(items, itemToValidate, criteria) {
+                 var condition = false;
+                 angular.forEach(items, function(item, index) {
+                      console.log(criteria);
+                     switch (criteria) {
+                         case 1:
+                             if (item.identificationnumber == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 2:
+                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                 condition = true;
+                             }
+                             break;
+                         case 3:
+                             if (item.housenumber == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 4:
+                             if (item.licenseplate == itemToValidate) {
+                                 condition = true;
+                             }
+                             break;
+                         case 5:
+                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                 condition = true;
+                             }
+                             break;
+                     }
+
+
+                 });
+                 return condition;
+             }
 
       }
 
@@ -110,54 +181,13 @@
 //                     //     'box-shadow': '0px 0px 0px #999'
 //                     // });
 //             },
-//             validateLetters: function() {
-//                 $(".letters").keypress(function(key) {
-//                     if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas
-//                         &&
-//                         (key.charCode < 65 || key.charCode > 90) //letras minusculas
-//                         &&
-//                         (key.charCode != 45) //retroceso
-//                         &&
-//                         (key.charCode != 241) //ñ
-//                         &&
-//                         (key.charCode != 209) //Ñ
-//                         &&
-//                         (key.charCode != 32) //espacio
-//                         &&
-//                         (key.charCode != 225) //á
-//                         &&
-//                         (key.charCode != 233) //é
-//                         &&
-//                         (key.charCode != 237) //í
-//                         &&
-//                         (key.charCode != 243) //ó
-//                         &&
-//                         (key.charCode != 250) //ú
-//                         &&
-//                         (key.charCode != 193) //Á
-//                         &&
-//                         (key.charCode != 201) //É
-//                         &&
-//                         (key.charCode != 205) //Í
-//                         &&
-//                         (key.charCode != 211) //Ó
-//                         &&
-//                         (key.charCode != 218) //Ú
-//
-//                     )
-//                         return false;
-//                 });
-//             },
+
 //             validateSpecialCharacters: function() {
 //                 jQuery('.specialCharacters').keypress(function(tecla) {
 //                     if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65)) return false;
 //                 });
 //             },
-//             validateNumbers: function() {
-//                 jQuery('.numbers').keypress(function(tecla) {
-//                     if (tecla.charCode < 48 || tecla.charCode > 57) return false;
-//                 });
-//             },
+//
 //             validateRepeat: function(items, itemToValidate, criteria) {
 //                 var condition = false;
 //                 angular.forEach(items, function(item, index) {
