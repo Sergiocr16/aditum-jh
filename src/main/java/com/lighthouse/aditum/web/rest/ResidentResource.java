@@ -34,7 +34,7 @@ public class ResidentResource {
     private final Logger log = LoggerFactory.getLogger(ResidentResource.class);
 
     private static final String ENTITY_NAME = "resident";
-        
+
     private final ResidentService residentService;
 
     public ResidentResource(ResidentService residentService) {
@@ -100,6 +100,26 @@ public class ResidentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+    @GetMapping("/residentsEnabled")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> getEnabledResidents(@ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findEnabled(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsEnabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/residentsDisabled")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> getDisabledResidents(@ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findDisabled(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /residents/:id : get the "id" resident.
      *

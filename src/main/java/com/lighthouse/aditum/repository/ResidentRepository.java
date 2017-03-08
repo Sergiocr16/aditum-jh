@@ -2,6 +2,8 @@ package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Resident;
 
+import com.lighthouse.aditum.domain.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -14,6 +16,6 @@ import java.util.Optional;
 public interface ResidentRepository extends JpaRepository<Resident,Long> {
     Optional<Resident> findOneByUserId(Long id);
 
-//    @Query("select u.companyId from User u inner join u.area ar where ar.idArea = :idArea")
-//
+    List<Resident> findByEnabledAndCompanyId(Integer state, Long companyId);
+
 }
