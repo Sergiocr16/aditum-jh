@@ -13,7 +13,8 @@
                 waitingMessage: waitingMessage,
                 validateLetters: validateLetters,
                 validateNumbers: validateNumbers,
-                validateRepeat: validateRepeat
+                validateRepeat: validateRepeat,
+                capitalizeFirstLetter: capitalizeFirstLetter
             };
             function validateName (items, name) {
                 var condition = true;
@@ -108,6 +109,9 @@
                          return false;
                  });
             }
+             function capitalizeFirstLetter(string) {
+                     return string.charAt(0).toUpperCase() + string.slice(1);
+             }
              function validateRepeat(items, itemToValidate, criteria) {
                  var condition = false;
                  angular.forEach(items, function(item, index) {

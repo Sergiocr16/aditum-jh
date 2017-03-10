@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/resident?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.resident.home.title'
             },
             views: {
@@ -55,7 +55,7 @@
             parent: 'resident',
             url: '/resident/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+               authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.resident.detail.title'
             },
             views: {
@@ -87,11 +87,11 @@
             parent: 'resident-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+             authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/resident/resident-dialog.html',
+                    templateUrl: 'app/entities/resident/resident-form.html',
                     controller: 'ResidentDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
@@ -112,7 +112,7 @@
           parent: 'resident',
                     url: '/new',
                     data: {
-                        authorities: ['ROLE_MANAGER'],
+                      authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                         pageTitle: 'aditumApp.resident.detail.title'
                     },
                     views: {
@@ -152,76 +152,64 @@
                             return currentStateData;
                         }]
                     }
+        })
+        .state('resident.edit', {
+
+         parent: 'resident',
+            url: '/{id}/edit',
+            data: {
+             authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                pageTitle: 'aditumApp.resident.detail.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/resident/resident-form.html',
+                    controller: 'ResidentDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                          entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
+                                    return Resident.get({id : $stateParams.id}).$promise;
+                                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'resident',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+
+  })
+
+
+//
 //            parent: 'resident',
-//            url: '/new',
+//            url: '/{id}/edit',
 //            data: {
-//                authorities: ['ROLE_MANAGER']
-//            } ,
-//                   onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-//            views: {
-//                             'content@': {
-//                                 templateUrl: 'app/entities/resident/resident-form.html',
-//                                 controller: 'ResidentDialogController',
-//                                 controllerAs: 'vm'
-//                             }
-//                         }
-//                            }]
+//                authorities: ['ROLE_USER']
+//            },
 //            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
 //                $uibModal.open({
 //                    templateUrl: 'app/entities/resident/resident-form.html',
-//                    controller: 'ResidentDialogController',
+//                    controller: 'ResidentUpdateController',
 //                    controllerAs: 'vm',
 //                    backdrop: 'static',
 //                    size: 'lg',
 //                    resolve: {
-//                        entity: function () {
-//                            return {
-//                                name: null,
-//                                lastname: null,
-//                                secondlastname: null,
-//                                identificationnumber: null,
-//                                phonenumber: null,
-//                                image: null,
-//                                imageContentType: null,
-//                                email: null,
-//                                isOwner: null,
-//                                enabled: null,
-//                                id: null
-//                            };
-//                        }
+//                        entity: ['Resident', function(Resident) {
+//                            return Resident.get({id : $stateParams.id}).$promise;
+//                        }]
 //                    }
 //                }).result.then(function() {
 //                    $state.go('resident', null, { reload: 'resident' });
 //                }, function() {
-//                    $state.go('resident');
+//                    $state.go('^');
 //                });
 //            }]
-        })
-        .state('resident.edit', {
-            parent: 'resident',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/resident/resident-dialog.html',
-                    controller: 'ResidentDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Resident', function(Resident) {
-                            return Resident.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('resident', null, { reload: 'resident' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
+//        })
         .state('resident.delete', {
             parent: 'resident',
             url: '/{id}/delete',

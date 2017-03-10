@@ -43,7 +43,7 @@
             <div class="form-group col-md-3 col-sm-3 col-xs-5" id="index-search-bar">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control " placeholder="Buscar residente" ng-model="search">
+                    <input type="text" class="form-control " placeholder="Buscar por nombre" ng-model="vm.query">
                 </div>
             </div>
             <button type="submit" class="btn green col-md-2 col-sm-3 col-xs-12 small-margin-bottom" ui-sref="resident.new()">Registrar residente</button>
@@ -65,14 +65,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="resident in vm.residents | filter:search | orderBy:'name'">
-                                <td>{{resident.name}} {{resident.lastname}}</td>
+                            <tr ng-repeat="resident in vm.residents | filter:vm.search | orderBy:'name'">
+                                <td>{{resident.name}} </td>
                                 <td>{{resident.identificationnumber}}</td>
                                 <td>{{resident.phonenumber}}</td>
                                 <td>{{resident.email}}</td>
                                 <td>{{resident.house_id}}</td>
-                                <td><a ui-sref="viewResident({id:resident.id})">Ver detalle</a></td>
-                                <td> <a ui-sref="editResident({id:resident.id})">Editar</a></td>
+                                <td><a  ui-sref="resident-detail({id:resident.id})">Ver detalle</a></td>
+                                <td> <a ui-sref="resident.edit({id:resident.id})">Editar</a></td>
                                 <td> <a ng-click="vm.disableEnabledResident(resident)">{{vm.actionButtonTitle}}</a></td>
                                 <td> <a ng-click="vm.deleteResident(resident.id, resident.name, resident.lastname)">Eliminar</a></td>
                             </tr>

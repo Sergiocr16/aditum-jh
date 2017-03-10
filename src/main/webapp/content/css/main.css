@@ -97,6 +97,11 @@ Main page styles
     letter-spacing: -1px;
 }
 
+.margin-top-30{
+    margin-top: 30px;
+}
+
+
 .hipster {
     display: inline-block;
     width: 347px;
