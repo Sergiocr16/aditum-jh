@@ -9,7 +9,6 @@
 
     function HouseDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company) {
         var vm = this;
-
         vm.house = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};

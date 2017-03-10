@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class HouseService {
 
     private final Logger log = LoggerFactory.getLogger(HouseService.class);
-    
+
     private final HouseRepository houseRepository;
 
     private final HouseMapper houseMapper;
@@ -49,14 +49,14 @@ public class HouseService {
 
     /**
      *  Get all the houses.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<HouseDTO> findAll(Pageable pageable) {
+    public Page<HouseDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Houses");
-        Page<House> result = houseRepository.findAll(pageable);
+        Page<House> result = houseRepository.findByCompanyId(pageable,companyId);
         return result.map(house -> houseMapper.houseToHouseDTO(house));
     }
 

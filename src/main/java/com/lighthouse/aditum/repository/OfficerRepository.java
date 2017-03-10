@@ -2,6 +2,8 @@ package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Officer;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -12,5 +14,6 @@ import java.util.Optional;
  */
 @SuppressWarnings("unused")
 public interface OfficerRepository extends JpaRepository<Officer,Long> {
-    Optional<Officer> findOneByUserId(Long id);
+    Officer findOneByUserId(Long id);
+    Page<Officer> findByCompanyId(Pageable pageable, Long companyId);
 }

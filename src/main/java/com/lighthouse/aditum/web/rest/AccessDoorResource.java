@@ -34,7 +34,7 @@ public class AccessDoorResource {
     private final Logger log = LoggerFactory.getLogger(AccessDoorResource.class);
 
     private static final String ENTITY_NAME = "accessDoor";
-        
+
     private final AccessDoorService accessDoorService;
 
     public AccessDoorResource(AccessDoorService accessDoorService) {
@@ -92,10 +92,10 @@ public class AccessDoorResource {
      */
     @GetMapping("/access-doors")
     @Timed
-    public ResponseEntity<List<AccessDoorDTO>> getAllAccessDoors(@ApiParam Pageable pageable)
+    public ResponseEntity<List<AccessDoorDTO>> getAllAccessDoors(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of AccessDoors");
-        Page<AccessDoorDTO> page = accessDoorService.findAll(pageable);
+        Page<AccessDoorDTO> page = accessDoorService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/access-doors");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

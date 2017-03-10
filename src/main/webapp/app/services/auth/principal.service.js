@@ -5,9 +5,9 @@
         .module('aditumApp')
         .factory('Principal', Principal);
 
-    Principal.$inject = ['$q', 'Account', 'JhiTrackerService'];
+    Principal.$inject = ['$q', 'Account', 'JhiTrackerService','Company'];
 
-    function Principal ($q, Account, JhiTrackerService) {
+    function Principal ($q, Account, JhiTrackerService,Company) {
         var _identity,
             _authenticated = false;
 

@@ -5,12 +5,13 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService','companyUser','$rootScope'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
-
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService,companyUser,$rootScope) {
+     $rootScope.companyUser = companyUser;
+     $rootScope.companyId = companyUser.companyId;
         var vm = this;
-      angular.element(document).ready(function () {
+        angular.element(document).ready(function () {
                  $('body').addClass("gray");
        });
         vm.isNavbarCollapsed = true;
@@ -35,6 +36,7 @@
             collapseNavbar();
             Auth.logout();
             $state.go('home');
+
         }
 
         function toggleNavbar() {

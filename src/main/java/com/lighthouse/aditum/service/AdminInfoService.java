@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AdminInfoService {
 
     private final Logger log = LoggerFactory.getLogger(AdminInfoService.class);
-    
+
     private final AdminInfoRepository adminInfoRepository;
 
     private final AdminInfoMapper adminInfoMapper;
@@ -49,14 +49,14 @@ public class AdminInfoService {
 
     /**
      *  Get all the adminInfos.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<AdminInfoDTO> findAll(Pageable pageable) {
+    public Page<AdminInfoDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all AdminInfos");
-        Page<AdminInfo> result = adminInfoRepository.findAll(pageable);
+        Page<AdminInfo> result = adminInfoRepository.findByCompanyId(pageable, companyId);
         return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
     }
 
@@ -70,6 +70,14 @@ public class AdminInfoService {
     public AdminInfoDTO findOne(Long id) {
         log.debug("Request to get AdminInfo : {}", id);
         AdminInfo adminInfo = adminInfoRepository.findOne(id);
+        AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
+        return adminInfoDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public AdminInfoDTO findOneByUserId(Long id) {
+        log.debug("Request to get AdminInfo : {}", id);
+        AdminInfo adminInfo = adminInfoRepository.findOneByUserId(id);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         return adminInfoDTO;
     }

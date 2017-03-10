@@ -34,7 +34,7 @@ public class WatchResource {
     private final Logger log = LoggerFactory.getLogger(WatchResource.class);
 
     private static final String ENTITY_NAME = "watch";
-        
+
     private final WatchService watchService;
 
     public WatchResource(WatchService watchService) {
@@ -92,10 +92,10 @@ public class WatchResource {
      */
     @GetMapping("/watches")
     @Timed
-    public ResponseEntity<List<WatchDTO>> getAllWatches(@ApiParam Pageable pageable)
+    public ResponseEntity<List<WatchDTO>> getAllWatches(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Watches");
-        Page<WatchDTO> page = watchService.findAll(pageable);
+        Page<WatchDTO> page = watchService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/watches");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -99,6 +99,9 @@
                     resolve: {
                         entity: ['Resident', function(Resident) {
                             return Resident.get({id : $stateParams.id}).$promise;
+                        }],
+                        companyUser: ['MultiCompany',function(MultiCompany){
+                                         return MultiCompany.getCurrentUserCompany()
                         }]
                     }
                 }).result.then(function() {
@@ -143,6 +146,9 @@
 
                             };
                         },
+                        companyUser: ['MultiCompany',function(MultiCompany){
+                            return MultiCompany.getCurrentUserCompany()
+                        }],
                         previousState: ["$state", function ($state) {
                             var currentStateData = {
                                 name: $state.current.name || 'resident',

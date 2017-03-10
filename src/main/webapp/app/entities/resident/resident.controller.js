@@ -5,13 +5,13 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User','CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal'];
+    ResidentController.$inject = ['DataUtils', 'Resident', 'User','CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal','Company','MultiCompany','$rootScope'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal) {
+    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal,Company,MultiCompany,$rootScope) {
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-
+        console.log($rootScope.companyId)
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -33,7 +33,10 @@
         }
         loadHouses();
         function loadHouses() {
-            House.query({}, onSuccessHouses);
+
+
+
+            House.query({companyId: $rootScope.companyId}, onSuccessHouses);
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
                 loadResidents();
@@ -45,14 +48,16 @@
                 Resident.residentsEnabled({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    sort: sort()
+                    sort: sort(),
+                    companyId: $rootScope.companyId,
                 }, onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Resident.residentsDisabled({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
-                    sort: sort()
+                    sort: sort(),
+                    companyId: $rootScope.companyId,
                 }, onSuccess, onError);
             }
             function sort() {

@@ -55,9 +55,9 @@ public class ResidentService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findAll(Pageable pageable) {
+    public Page<ResidentDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        Page<Resident> result = residentRepository.findAll(pageable);
+        Page<Resident> result = residentRepository.findByCompanyId(pageable,companyId);
         return result.map(resident -> residentMapper.residentToResidentDTO(resident));
     }
 
@@ -75,6 +75,14 @@ public class ResidentService {
         return residentDTO;
     }
 
+    @Transactional(readOnly = true)
+    public ResidentDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        Resident resident = residentRepository.findOneByUserId(id);
+        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        return residentDTO;
+    }
+
     /**
      *  Delete the  resident by id.
      *
@@ -86,16 +94,15 @@ public class ResidentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findEnabled(Pageable pageable) {
+    public Page<ResidentDTO> findEnabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,Long.valueOf(1));
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
         return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
-
     }
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findDisabled(Pageable pageable) {
+    public Page<ResidentDTO> findDisabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,Long.valueOf(1));
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,companyId);
         return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
 
     }

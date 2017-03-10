@@ -34,7 +34,7 @@ public class AdminInfoResource {
     private final Logger log = LoggerFactory.getLogger(AdminInfoResource.class);
 
     private static final String ENTITY_NAME = "adminInfo";
-        
+
     private final AdminInfoService adminInfoService;
 
     public AdminInfoResource(AdminInfoService adminInfoService) {
@@ -92,10 +92,10 @@ public class AdminInfoResource {
      */
     @GetMapping("/admin-infos")
     @Timed
-    public ResponseEntity<List<AdminInfoDTO>> getAllAdminInfos(@ApiParam Pageable pageable)
+    public ResponseEntity<List<AdminInfoDTO>> getAllAdminInfos(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of AdminInfos");
-        Page<AdminInfoDTO> page = adminInfoService.findAll(pageable);
+        Page<AdminInfoDTO> page = adminInfoService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/admin-infos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,6 +111,14 @@ public class AdminInfoResource {
     public ResponseEntity<AdminInfoDTO> getAdminInfo(@PathVariable Long id) {
         log.debug("REST request to get AdminInfo : {}", id);
         AdminInfoDTO adminInfoDTO = adminInfoService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(adminInfoDTO));
+    }
+
+    @GetMapping("/admin-infos/findByUserId/{id}")
+    @Timed
+    public ResponseEntity<AdminInfoDTO> getAdminInfoByUserId(@PathVariable Long id) {
+        log.debug("REST request to get AdminInfo : {}", id);
+        AdminInfoDTO adminInfoDTO = adminInfoService.findOneByUserId(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(adminInfoDTO));
     }
 
