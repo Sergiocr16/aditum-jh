@@ -8,8 +8,10 @@
     NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService','companyUser','$rootScope'];
 
     function NavbarController ($state, Auth, Principal, ProfileService, LoginService,companyUser,$rootScope) {
+    if(companyUser!=undefined){
      $rootScope.companyUser = companyUser;
      $rootScope.companyId = companyUser.companyId;
+     }
         var vm = this;
         angular.element(document).ready(function () {
                  $('body').addClass("gray");
