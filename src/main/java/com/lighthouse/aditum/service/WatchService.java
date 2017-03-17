@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class WatchService {
 
     private final Logger log = LoggerFactory.getLogger(WatchService.class);
-    
+
     private final WatchRepository watchRepository;
 
     private final WatchMapper watchMapper;
@@ -49,14 +49,14 @@ public class WatchService {
 
     /**
      *  Get all the watches.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<WatchDTO> findAll(Pageable pageable) {
+    public Page<WatchDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Watches");
-        Page<Watch> result = watchRepository.findAll(pageable);
+        Page<Watch> result = watchRepository.findByCompanyId(pageable,companyId);
         return result.map(watch -> watchMapper.watchToWatchDTO(watch));
     }
 

@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class VisitantService {
 
     private final Logger log = LoggerFactory.getLogger(VisitantService.class);
-    
+
     private final VisitantRepository visitantRepository;
 
     private final VisitantMapper visitantMapper;
@@ -49,14 +49,14 @@ public class VisitantService {
 
     /**
      *  Get all the visitants.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findAll(Pageable pageable) {
+    public Page<VisitantDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Visitants");
-        Page<Visitant> result = visitantRepository.findAll(pageable);
+        Page<Visitant> result = visitantRepository.findByCompanyId(pageable,companyId);
         return result.map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 

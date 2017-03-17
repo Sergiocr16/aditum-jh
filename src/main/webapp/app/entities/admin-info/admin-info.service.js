@@ -20,7 +20,11 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'findByUserId':{
+                method:'GET',
+                url:'api/admin-infos/findByUserId/:id'
+            }
         });
     }
 })();

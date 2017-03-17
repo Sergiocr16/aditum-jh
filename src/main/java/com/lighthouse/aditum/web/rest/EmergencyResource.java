@@ -34,7 +34,7 @@ public class EmergencyResource {
     private final Logger log = LoggerFactory.getLogger(EmergencyResource.class);
 
     private static final String ENTITY_NAME = "emergency";
-        
+
     private final EmergencyService emergencyService;
 
     public EmergencyResource(EmergencyService emergencyService) {
@@ -92,10 +92,10 @@ public class EmergencyResource {
      */
     @GetMapping("/emergencies")
     @Timed
-    public ResponseEntity<List<EmergencyDTO>> getAllEmergencies(@ApiParam Pageable pageable)
+    public ResponseEntity<List<EmergencyDTO>> getAllEmergencies(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Emergencies");
-        Page<EmergencyDTO> page = emergencyService.findAll(pageable);
+        Page<EmergencyDTO> page = emergencyService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/emergencies");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

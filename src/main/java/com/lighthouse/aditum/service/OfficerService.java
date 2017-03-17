@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class OfficerService {
 
     private final Logger log = LoggerFactory.getLogger(OfficerService.class);
-    
+
     private final OfficerRepository officerRepository;
 
     private final OfficerMapper officerMapper;
@@ -49,14 +49,14 @@ public class OfficerService {
 
     /**
      *  Get all the officers.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<OfficerDTO> findAll(Pageable pageable) {
+    public Page<OfficerDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Officers");
-        Page<Officer> result = officerRepository.findAll(pageable);
+        Page<Officer> result = officerRepository.findByCompanyId(pageable,companyId);
         return result.map(officer -> officerMapper.officerToOfficerDTO(officer));
     }
 
@@ -70,6 +70,14 @@ public class OfficerService {
     public OfficerDTO findOne(Long id) {
         log.debug("Request to get Officer : {}", id);
         Officer officer = officerRepository.findOne(id);
+        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        return officerDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public OfficerDTO findOneByUserId(Long id) {
+        log.debug("Request to get Officer : {}", id);
+        Officer officer = officerRepository.findOneByUserId(id);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         return officerDTO;
     }

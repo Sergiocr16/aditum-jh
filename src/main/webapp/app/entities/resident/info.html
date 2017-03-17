@@ -1,0 +1,106 @@
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Residentes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Ver detalle</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"> </div>
+    </div>
+</div>
+<div class="loading col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <h1 class="text-center">
+        <img src="../../assets/global/img/loader4.gif" alt="" />
+
+    </h1>
+</div>
+<div class="display-none" id="tableData">
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="actionButton()">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="fa fa-user font-green-haze"></i>
+                            <span class="caption-subject bold uppercase">{{title}}</span>
+                        </div>
+                        <div class="actions">
+                            <span class="font-15 gray-font">Autorizado de filial: <span class="bold">{{authorizer}}</span> </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div ng-show="permisson===2" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
+                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Administrador de filial: </span>
+                            <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
+                                <div class="md-checkbox">
+                                    <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
+                                    <label for="checkbox1">
+                                      <span></span>
+                                      <span class="check"></span>
+                                      <span class="box"></span>
+                                       </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+                            <h3 class="text-center"><img id="blah" src="../../assets/global/img/nobody_m.original.jpg" alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                        </div>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="height-5-percent col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                <span class="font-15 gray-font">Nombre: {{name}} {{last_name}} {{second_last_name}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <span class="font-15 gray-font">Fecha nacimiento: {{birthday}}</span>
+                            </div>
+                            <div class="height-5-percent col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                <span class="font-15 gray-font">Número de cédula: {{identification_number}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <span class="font-15 gray-font">Número de celular: {{phone_number}}</span>
+                            </div>
+                            <div class="height-5-percent col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                <span class="font-15 gray-font">Email: {{email}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <span class="font-15 gray-font">Número de casa: {{house_id}}</span>
+                            </div>
+                            <div class="height-5-percent col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+                                <span class="font-15 gray-font">Clave de seguridad: {{security_key}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
+                                <span class="font-15 gray-font">Clave de emergencia: {{emergency_key}}</span>
+                            </div>
+                        </div>
+                        <div class="hidden-xs col-md-3 col-sm-3">
+                            <h3 class="text-center"><img id="blah" src="../../assets/global/img/nobody_m.original.jpg" alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                        </div>
+                        <div class="form-actions noborder ">
+                            <h3 class="text-right ">
+                            <button type="button" ui-sref="residents()" class="btn red default">Volver</button>
+                          </h3>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function() {
+        $("#loadingIcon").fadeIn("slow");
+    });
+</script>

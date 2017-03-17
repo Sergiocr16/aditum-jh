@@ -17,6 +17,16 @@
                     return data;
                 }
             },
+            'getUserById': {
+                method: 'GET',
+                url: 'api/users/:id',
+
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+
+            },
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}

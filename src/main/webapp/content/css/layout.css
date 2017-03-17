@@ -9,6 +9,7 @@
 
   .page-bar {
     display: none;
+
   }
 
   .page-sidebar-wrapper {
@@ -483,8 +484,8 @@ Page Header
     margin-left: 0;
   }
 }
-/*** 
-Horizontal Menu 
+/***
+Horizontal Menu
 ***/
 .page-header.navbar {
   /* Header container */
@@ -1700,8 +1701,8 @@ Quick Sidebar Layout
   right: 0;
 }
 
-/*** 
-Quick Sidebar Toggler 
+/***
+Quick Sidebar Toggler
 ***/
 .page-quick-sidebar-toggler {
   overflow: hidden;
@@ -2110,7 +2111,7 @@ Page content
 .page-bar {
   padding: 0px;
   background-color: #f7f7f7;
-  margin-bottom: 25px;
+  margin-bottom: 25px !important;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -ms-border-radius: 4px;
@@ -2603,8 +2604,8 @@ Theme Panel
   margin-right: 255px;
 }
 
-/***  
-Page Loading       
+/***
+Page Loading
 ***/
 .page-on-load {
   background: #fefefe;

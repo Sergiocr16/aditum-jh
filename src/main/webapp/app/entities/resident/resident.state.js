@@ -13,12 +13,12 @@
             parent: 'entity',
             url: '/resident?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.resident.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/resident/residents.html',
+                    templateUrl: 'app/entities/resident/resident-index.html',
                     controller: 'ResidentController',
                     controllerAs: 'vm'
                 }
@@ -99,6 +99,9 @@
                     resolve: {
                         entity: ['Resident', function(Resident) {
                             return Resident.get({id : $stateParams.id}).$promise;
+                        }],
+                        companyUser: ['MultiCompany',function(MultiCompany){
+                                         return MultiCompany.getCurrentUserCompany()
                         }]
                     }
                 }).result.then(function() {
@@ -109,20 +112,25 @@
             }]
         })
         .state('resident.new', {
-            parent: 'resident',
-            url: '/new',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/resident/resident-dialog.html',
-                    controller: 'ResidentDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
+          parent: 'resident',
+                    url: '/new',
+                    data: {
+                        authorities: ['ROLE_MANAGER'],
+                        pageTitle: 'aditumApp.resident.detail.title'
+                    },
+                    views: {
+                        'content@': {
+               templateUrl: 'app/entities/resident/resident-form.html',
+                                controller: 'ResidentDialogController',
+                            controllerAs: 'vm'
+                        }
+                    },
                     resolve: {
-                        entity: function () {
+                        translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                            $translatePartialLoader.addPart('resident');
+                            return $translate.refresh();
+                        }],
+                          entity: function () {
                             return {
                                 name: null,
                                 lastname: null,
@@ -135,15 +143,65 @@
                                 isOwner: null,
                                 enabled: null,
                                 id: null
+
                             };
-                        }
+                        },
+                        companyUser: ['MultiCompany',function(MultiCompany){
+                            return MultiCompany.getCurrentUserCompany()
+                        }],
+                        previousState: ["$state", function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'resident',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
+                        }]
                     }
-                }).result.then(function() {
-                    $state.go('resident', null, { reload: 'resident' });
-                }, function() {
-                    $state.go('resident');
-                });
-            }]
+//            parent: 'resident',
+//            url: '/new',
+//            data: {
+//                authorities: ['ROLE_MANAGER']
+//            } ,
+//                   onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+//            views: {
+//                             'content@': {
+//                                 templateUrl: 'app/entities/resident/resident-form.html',
+//                                 controller: 'ResidentDialogController',
+//                                 controllerAs: 'vm'
+//                             }
+//                         }
+//                            }]
+//            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+//                $uibModal.open({
+//                    templateUrl: 'app/entities/resident/resident-form.html',
+//                    controller: 'ResidentDialogController',
+//                    controllerAs: 'vm',
+//                    backdrop: 'static',
+//                    size: 'lg',
+//                    resolve: {
+//                        entity: function () {
+//                            return {
+//                                name: null,
+//                                lastname: null,
+//                                secondlastname: null,
+//                                identificationnumber: null,
+//                                phonenumber: null,
+//                                image: null,
+//                                imageContentType: null,
+//                                email: null,
+//                                isOwner: null,
+//                                enabled: null,
+//                                id: null
+//                            };
+//                        }
+//                    }
+//                }).result.then(function() {
+//                    $state.go('resident', null, { reload: 'resident' });
+//                }, function() {
+//                    $state.go('resident');
+//                });
+//            }]
         })
         .state('resident.edit', {
             parent: 'resident',

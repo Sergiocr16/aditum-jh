@@ -39,6 +39,8 @@
             if (vm.user.id !== null) {
                 User.update(vm.user, onSaveSuccess, onSaveError);
             } else {
+                console.log(vm.user.email);
+                console.log(vm.user.authorities);
                 User.save(vm.user, onSaveSuccess, onSaveError);
             }
         }

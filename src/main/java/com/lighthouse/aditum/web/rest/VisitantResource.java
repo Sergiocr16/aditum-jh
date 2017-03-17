@@ -34,7 +34,7 @@ public class VisitantResource {
     private final Logger log = LoggerFactory.getLogger(VisitantResource.class);
 
     private static final String ENTITY_NAME = "visitant";
-        
+
     private final VisitantService visitantService;
 
     public VisitantResource(VisitantService visitantService) {
@@ -92,10 +92,10 @@ public class VisitantResource {
      */
     @GetMapping("/visitants")
     @Timed
-    public ResponseEntity<List<VisitantDTO>> getAllVisitants(@ApiParam Pageable pageable)
+    public ResponseEntity<List<VisitantDTO>> getAllVisitants(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Visitants");
-        Page<VisitantDTO> page = visitantService.findAll(pageable);
+        Page<VisitantDTO> page = visitantService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

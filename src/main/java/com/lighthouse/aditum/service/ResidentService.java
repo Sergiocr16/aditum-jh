@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class ResidentService {
 
     private final Logger log = LoggerFactory.getLogger(ResidentService.class);
-    
+
     private final ResidentRepository residentRepository;
 
     private final ResidentMapper residentMapper;
@@ -49,14 +50,14 @@ public class ResidentService {
 
     /**
      *  Get all the residents.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findAll(Pageable pageable) {
+    public Page<ResidentDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        Page<Resident> result = residentRepository.findAll(pageable);
+        Page<Resident> result = residentRepository.findByCompanyId(pageable,companyId);
         return result.map(resident -> residentMapper.residentToResidentDTO(resident));
     }
 
@@ -74,6 +75,14 @@ public class ResidentService {
         return residentDTO;
     }
 
+    @Transactional(readOnly = true)
+    public ResidentDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        Resident resident = residentRepository.findOneByUserId(id);
+        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        return residentDTO;
+    }
+
     /**
      *  Delete the  resident by id.
      *
@@ -82,5 +91,19 @@ public class ResidentService {
     public void delete(Long id) {
         log.debug("Request to delete Resident : {}", id);
         residentRepository.delete(id);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findEnabled(Pageable pageable,Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+    }
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findDisabled(Pageable pageable,Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,companyId);
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+
     }
 }

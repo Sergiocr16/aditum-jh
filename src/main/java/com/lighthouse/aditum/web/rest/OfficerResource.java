@@ -34,7 +34,7 @@ public class OfficerResource {
     private final Logger log = LoggerFactory.getLogger(OfficerResource.class);
 
     private static final String ENTITY_NAME = "officer";
-        
+
     private final OfficerService officerService;
 
     public OfficerResource(OfficerService officerService) {
@@ -92,10 +92,10 @@ public class OfficerResource {
      */
     @GetMapping("/officers")
     @Timed
-    public ResponseEntity<List<OfficerDTO>> getAllOfficers(@ApiParam Pageable pageable)
+    public ResponseEntity<List<OfficerDTO>> getAllOfficers(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Officers");
-        Page<OfficerDTO> page = officerService.findAll(pageable);
+        Page<OfficerDTO> page = officerService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officers");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,6 +111,14 @@ public class OfficerResource {
     public ResponseEntity<OfficerDTO> getOfficer(@PathVariable Long id) {
         log.debug("REST request to get Officer : {}", id);
         OfficerDTO officerDTO = officerService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerDTO));
+    }
+
+    @GetMapping("/officers/findByUserId/{id}")
+    @Timed
+    public ResponseEntity<OfficerDTO> getOfficerByUserId(@PathVariable Long id) {
+        log.debug("REST request to get Officer : {}", id);
+        OfficerDTO officerDTO = officerService.findOneByUserId(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerDTO));
     }
 
