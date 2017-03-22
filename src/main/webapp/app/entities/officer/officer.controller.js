@@ -35,10 +35,15 @@
                 return result;
             }
             function onSuccess(data, headers) {
+               vm.officers = data;
+                $("#loadingIcon").fadeOut(0);
+                setTimeout(function() {
+                    $("#tableData").fadeIn(300);
+                }, 200)
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.officers = data;
+
                 vm.page = pagingParams.page;
             }
             function onError(error) {

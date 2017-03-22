@@ -38,6 +38,10 @@
                 vm.queryCount = vm.totalItems;
                 vm.houses = data;
                 vm.page = pagingParams.page;
+                   $("#loadingIcon").fadeOut(0);
+                    setTimeout(function() {
+                        $("#tableData").fadeIn(500);
+                    }, 200)
             }
             function onError(error) {
                 AlertService.error(error.data.message);

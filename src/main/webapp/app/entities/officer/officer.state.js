@@ -13,8 +13,7 @@
             parent: 'entity',
             url: '/officer?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.officer.home.title'
+                 authorities: ['ROLE_ADMIN','ROLE_MANAGER']
             },
             views: {
                 'content@': {
@@ -51,43 +50,44 @@
                 }]
             }
         })
-        .state('officer-detail', {
-            parent: 'officer',
-            url: '/officer/{id}',
-            data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.officer.detail.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/officer/officer-detail.html',
-                    controller: 'OfficerDetailController',
-                    controllerAs: 'vm'
+
+            .state('officer-detail', {
+                parent: 'officer',
+                url: '/officer/{id}',
+                data: {
+                   authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                },
+                views: {
+                    'content@': {
+                       templateUrl: 'app/entities/officer/officer-detail.html',
+                       controller: 'OfficerDetailController',
+                       controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('officer');
+                        return $translate.refresh();
+                    }],
+                    entity: ['$stateParams', 'officer', function($stateParams, Resident) {
+                        return Officer.get({id : $stateParams.id}).$promise;
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'officer',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
                 }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('officer');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams', 'Officer', function($stateParams, Officer) {
-                    return Officer.get({id : $stateParams.id}).$promise;
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'officer',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
+            })
+
         .state('officer-detail.edit', {
             parent: 'officer-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+               authorities: ['ROLE_ADMIN','ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -109,70 +109,78 @@
             }]
         })
         .state('officer.new', {
-            parent: 'officer',
-            url: '/new',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/officer/officer-dialog.html',
-                    controller: 'OfficerDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                lastname: null,
-                                secondlastname: null,
-                                image: null,
-                                imageContentType: null,
-                                email: null,
-                                identificationnumber: null,
-                                inservice: null,
-                                id: null
-                            };
+              parent: 'officer',
+                    url: '/new',
+                    data: {
+                      authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                    },
+                    views: {
+                        'content@': {
+              templateUrl: 'app/entities/officer/officer-dialog.html',
+                                controller: 'OfficerDialogController',
+                            controllerAs: 'vm'
                         }
-                    }
-                }).result.then(function() {
-                    $state.go('officer', null, { reload: 'officer' });
-                }, function() {
-                    $state.go('officer');
-                });
-            }]
-        })
-        .state('officer.edit', {
-            parent: 'officer',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/officer/officer-dialog.html',
-                    controller: 'OfficerDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
+                    },
                     resolve: {
-                        entity: ['Officer', function(Officer) {
-                            return Officer.get({id : $stateParams.id}).$promise;
+
+                          entity: function () {
+                           return {
+                              name: null,
+                              lastname: null,
+                              secondlastname: null,
+                              image: null,
+                              imageContentType: null,
+                              email: null,
+                              identificationnumber: null,
+                              inservice: null,
+                              id: null
+                           };
+                       },
+                        previousState: ["$state", function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'officer',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
                         }]
-                    }
-                }).result.then(function() {
-                    $state.go('officer', null, { reload: 'officer' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
+
+       }
+         })
+          .state('officer.edit', {
+                   parent: 'officer',
+                   url: '/{id}/edit',
+                     data: {
+                     authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                     },
+                     views: {
+                         'content@': {
+                            templateUrl: 'app/entities/officer/officer-dialog.html',
+                            controller: 'OfficerDialogController',
+                             controllerAs: 'vm'
+                         }
+                     },
+                     resolve: {
+                                   entity: ['$stateParams', 'Officer', function($stateParams, Officer) {
+                                             return Officer.get({id : $stateParams.id}).$promise;
+                                         }],
+                         previousState: ["$state", function ($state) {
+                             var currentStateData = {
+                                 name: $state.current.name || 'officer',
+                                 params: $state.params,
+                                 url: $state.href($state.current.name, $state.params)
+                             };
+                             return currentStateData;
+                         }]
+                     }
+
+           })
+
         .state('officer.delete', {
             parent: 'officer',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                 authorities: ['ROLE_ADMIN','ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

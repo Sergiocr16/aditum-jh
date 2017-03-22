@@ -5,60 +5,118 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
+    OfficerDialogController.$inject = ['$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
 
-    function OfficerDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, Officer, User, Company) {
+    function OfficerDialogController ($state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.officer = entity;
-        vm.clear = clear;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
-        vm.users = User.query();
-        vm.companies = Company.query();
+        vm.user = entity;
+        CommonMethods.validateLetters();
+        vm.loginStringCount = 0;
+        CommonMethods.validateNumbers();
 
-        $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
-        });
-
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
+        if(vm.officer.id !== null){
+            vm.title = "Editar oficial";
+            vm.button = "Editar";
+        } else{
+            vm.title = "Registrar oficial";
+            vm.button = "Registrar";
         }
 
+        setTimeout(function() {
+            $("#edit_officer_form").fadeIn(300);
+        }, 200)
         function save () {
             vm.isSaving = true;
             if (vm.officer.id !== null) {
-                Officer.update(vm.officer, onSaveSuccess, onSaveError);
+                updateAccount();
             } else {
-                Officer.save(vm.officer, onSaveSuccess, onSaveError);
+                createAccount();
             }
-        }
-
-        function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:officerUpdate', result);
-            $uibModalInstance.close(result);
-            vm.isSaving = false;
         }
 
         function onSaveError () {
             vm.isSaving = false;
         }
 
+        function createAccount(){
+            vm.officer.inservice = 1;
+            vm.officer.companyId = 1;
+            vm.user.activated = true;
+            var authorities = ["ROLE_USER"];
+            vm.user.authorities = authorities;
+            vm.user.firstName =  vm.officer.name;
+            vm.user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
+            vm.user.email = vm.officer.email;
+            vm.user.login = generateLogin(0);
+            User.save(vm.user, onSaveUser, onSaveLoginError);
+            function onSaveUser (result) {
+                 vm.officer.userId = result.id;
+                 Officer.save(vm.officer, onSaveSuccess, onSaveError);
+                 vm.isSaving = false;
+            }
+        }
+          function updateAccount(){
+             User.getUserById({id: vm.officer.userId},onSuccess);
+             function onSuccess(user, headers) {
+                 user.id = vm.officer.userId;
+                 user.firstName =  vm.officer.name;
+                 user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
+                 user.email = vm.officer.email;
+                 User.update(user,onSuccessUser);
+                 function onSuccessUser(data, headers) {
 
-        vm.setImage = function ($file, officer) {
+                    Officer.update(vm.officer, onUpdateSuccess, onSaveError);
+
+                  }
+              }
+
+            }
+        function onUpdateSuccess (result) {
+                vm.isSaving = false;
+                $state.go('officer');
+                toastr["success"]("Se ha editado el oficial correctamente.");
+            }
+        function onSaveSuccess (result) {
+            $state.go('officer');
+            vm.isSaving = false;
+        }
+
+        function generateLogin(config){
+              var firstletterFirstName = vm.officer.name.charAt(0);
+              var firstletterSecondName = vm.officer.secondlastname.charAt(0);
+              if(config==1){
+              vm.loginStringCount = vm.loginStringCount + 1;
+              return firstletterFirstName+vm.officer.lastname+firstletterSecondName+vm.loginStringCount;
+              }
+              return firstletterFirstName+vm.officer.lastname+firstletterSecondName;
+        }
+
+        function onSaveLoginError () {
+            vm.isSaving = false;
+            vm.user.login = generateLogin(1);
+            User.save(vm.user, onSaveUser, onSaveLoginError);
+             function onSaveUser (result) {
+                   $state.go('resident');
+
+             }
+        }
+        vm.setImage = function ($file, resident) {
             if ($file && $file.$error === 'pattern') {
                 return;
             }
             if ($file) {
                 DataUtils.toBase64($file, function(base64Data) {
                     $scope.$apply(function() {
-                        officer.image = base64Data;
-                        officer.imageContentType = $file.type;
+                        resident.image = base64Data;
+                        resident.imageContentType = $file.type;
                     });
                 });
             }
         };
-
     }
 })();

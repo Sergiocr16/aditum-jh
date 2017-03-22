@@ -5,23 +5,21 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'House', 'Vehicule', 'Visitant', 'Note', 'Resident', 'Emergency', 'Company'];
+    HouseDialogController.$inject = ['Principal','$timeout', '$scope', '$stateParams', 'entity', 'House', 'Vehicule', 'Visitant', 'Note', 'Resident', 'Emergency', 'Company'];
 
-    function HouseDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company) {
+    function HouseDialogController (Principal,$timeout, $scope, $stateParams,  entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company) {
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.vehicules = Vehicule.query();
-        vm.visitants = Visitant.query();
-        vm.notes = Note.query();
-        vm.residents = Resident.query();
-        vm.emergencies = Emergency.query();
-        vm.companies = Company.query();
-
+        vm.title = "Registrar casa";
+        vm.button = "Registrar";
+             setTimeout(function() {
+            $("#edit_house_form").fadeIn(600);
+         }, 200)
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
