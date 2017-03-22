@@ -9,7 +9,9 @@
 
     function HouseDialogController (Principal,$timeout, $scope, $stateParams,  entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company) {
         var vm = this;
+
         vm.isAuthenticated = Principal.isAuthenticated;
+
         vm.house = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};

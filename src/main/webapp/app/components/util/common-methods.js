@@ -4,6 +4,8 @@
     angular
         .module('aditumApp')
         .provider('CommonMethods', CommonMethods);
+
+
     function CommonMethods () {
      this.$get = getService;
 
@@ -71,6 +73,9 @@
                  });
                  return condition;
              }
+
+
+
             function validateLetters() {
                  $(".letters").keypress(function(key) {
                      if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas

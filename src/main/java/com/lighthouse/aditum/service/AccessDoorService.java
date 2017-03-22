@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class AccessDoorService {
 
     private final Logger log = LoggerFactory.getLogger(AccessDoorService.class);
-    
+
     private final AccessDoorRepository accessDoorRepository;
 
     private final AccessDoorMapper accessDoorMapper;
@@ -49,14 +49,14 @@ public class AccessDoorService {
 
     /**
      *  Get all the accessDoors.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<AccessDoorDTO> findAll(Pageable pageable) {
+    public Page<AccessDoorDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all AccessDoors");
-        Page<AccessDoor> result = accessDoorRepository.findAll(pageable);
+        Page<AccessDoor> result = accessDoorRepository.findByCompanyId(pageable,companyId);
         return result.map(accessDoor -> accessDoorMapper.accessDoorToAccessDoorDTO(accessDoor));
     }
 

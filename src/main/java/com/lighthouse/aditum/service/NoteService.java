@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class NoteService {
 
     private final Logger log = LoggerFactory.getLogger(NoteService.class);
-    
+
     private final NoteRepository noteRepository;
 
     private final NoteMapper noteMapper;
@@ -49,14 +49,14 @@ public class NoteService {
 
     /**
      *  Get all the notes.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<NoteDTO> findAll(Pageable pageable) {
+    public Page<NoteDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Notes");
-        Page<Note> result = noteRepository.findAll(pageable);
+        Page<Note> result = noteRepository.findByCompanyId(pageable, companyId);
         return result.map(note -> noteMapper.noteToNoteDTO(note));
     }
 

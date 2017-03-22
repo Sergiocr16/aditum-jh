@@ -34,7 +34,7 @@ public class HouseResource {
     private final Logger log = LoggerFactory.getLogger(HouseResource.class);
 
     private static final String ENTITY_NAME = "house";
-        
+
     private final HouseService houseService;
 
     public HouseResource(HouseService houseService) {
@@ -92,10 +92,10 @@ public class HouseResource {
      */
     @GetMapping("/houses")
     @Timed
-    public ResponseEntity<List<HouseDTO>> getAllHouses(@ApiParam Pageable pageable)
+    public ResponseEntity<List<HouseDTO>> getAllHouses(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Houses");
-        Page<HouseDTO> page = houseService.findAll(pageable);
+        Page<HouseDTO> page = houseService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/houses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -2,6 +2,8 @@ package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Note;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -11,5 +13,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface NoteRepository extends JpaRepository<Note,Long> {
-
+    Page<Note> findByCompanyId(Pageable pageable, Long companyId);
 }

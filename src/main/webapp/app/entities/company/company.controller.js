@@ -17,9 +17,14 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        loadAll();
-
+       loadAll();
+       function getCurrentUserCompanyId(){
+            Principal.identity().then(function(account){
+            console.log(account)
+            })
+        }
         function loadAll () {
+
             Company.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,

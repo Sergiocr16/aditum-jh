@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class VehiculeService {
 
     private final Logger log = LoggerFactory.getLogger(VehiculeService.class);
-    
+
     private final VehiculeRepository vehiculeRepository;
 
     private final VehiculeMapper vehiculeMapper;
@@ -49,14 +49,14 @@ public class VehiculeService {
 
     /**
      *  Get all the vehicules.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findAll(Pageable pageable) {
+    public Page<VehiculeDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Vehicules");
-        Page<Vehicule> result = vehiculeRepository.findAll(pageable);
+        Page<Vehicule> result = vehiculeRepository.findByCompanyId(pageable,companyId);
         return result.map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
     }
 

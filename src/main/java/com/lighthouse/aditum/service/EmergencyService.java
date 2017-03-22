@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class EmergencyService {
 
     private final Logger log = LoggerFactory.getLogger(EmergencyService.class);
-    
+
     private final EmergencyRepository emergencyRepository;
 
     private final EmergencyMapper emergencyMapper;
@@ -49,14 +49,14 @@ public class EmergencyService {
 
     /**
      *  Get all the emergencies.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<EmergencyDTO> findAll(Pageable pageable) {
+    public Page<EmergencyDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Emergencies");
-        Page<Emergency> result = emergencyRepository.findAll(pageable);
+        Page<Emergency> result = emergencyRepository.findByCompanyId(pageable,companyId);
         return result.map(emergency -> emergencyMapper.emergencyToEmergencyDTO(emergency));
     }
 

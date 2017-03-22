@@ -7,13 +7,17 @@ import com.lighthouse.aditum.service.mapper.WatchMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Array;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing Watch.
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
 public class WatchService {
 
     private final Logger log = LoggerFactory.getLogger(WatchService.class);
-    
+
     private final WatchRepository watchRepository;
 
     private final WatchMapper watchMapper;
@@ -47,17 +51,44 @@ public class WatchService {
         return result;
     }
 
+    @Transactional(readOnly = true)
+    public WatchDTO findLastWatch(Long companyId) {
+        log.debug("Request to get Watch : {}");
+        Watch watch = null;
+        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
+             watch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
+        }
+        WatchDTO watchDTO = watchMapper.watchToWatchDTO(watch);
+        return watchDTO;
+    }
     /**
      *  Get all the watches.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<WatchDTO> findAll(Pageable pageable) {
+    public Page<WatchDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Watches");
-        Page<Watch> result = watchRepository.findAll(pageable);
+        Page<Watch> result = watchRepository.findByCompanyId(pageable,companyId);
         return result.map(watch -> watchMapper.watchToWatchDTO(watch));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<WatchDTO> findBetweenDates(String initialTime,String finalTime,Long companyId) {
+        log.debug("Request to get all Watches");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        List<Watch> result = watchRepository.findByDatesBetween(zd_initialTime,zd_finalTime,companyId);
+        Watch lastWatch = null;
+        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
+            lastWatch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
+            if(lastWatch.getInitialtime().isAfter(zd_initialTime) && zd_finalTime.isAfter(ZonedDateTime.now())){
+                result.add(lastWatch);
+            }
+        }
+        Collections.reverse(result);
+        return new PageImpl<Watch>(result).map(watch -> watchMapper.watchToWatchDTO(watch));
     }
 
     /**

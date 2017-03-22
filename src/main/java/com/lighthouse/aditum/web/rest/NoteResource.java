@@ -34,7 +34,7 @@ public class NoteResource {
     private final Logger log = LoggerFactory.getLogger(NoteResource.class);
 
     private static final String ENTITY_NAME = "note";
-        
+
     private final NoteService noteService;
 
     public NoteResource(NoteService noteService) {
@@ -92,10 +92,10 @@ public class NoteResource {
      */
     @GetMapping("/notes")
     @Timed
-    public ResponseEntity<List<NoteDTO>> getAllNotes(@ApiParam Pageable pageable)
+    public ResponseEntity<List<NoteDTO>> getAllNotes(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Notes");
-        Page<NoteDTO> page = noteService.findAll(pageable);
+        Page<NoteDTO> page = noteService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
