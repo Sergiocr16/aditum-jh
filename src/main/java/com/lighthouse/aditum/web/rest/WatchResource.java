@@ -19,10 +19,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing Watch.
@@ -54,6 +53,14 @@ public class WatchResource {
         log.debug("REST request to save Watch : {}", watchDTO);
         if (watchDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new watch cannot already have an ID")).body(null);
+        }
+        WatchDTO previousWatch = watchService.findLastWatch(watchDTO.getCompanyId());
+        ZonedDateTime currentTime = ZonedDateTime.now();
+        watchDTO.setInitialtime(currentTime);
+        watchDTO.setFinaltime(null);
+        if(previousWatch!=null) {
+            previousWatch.setFinaltime(currentTime);
+            watchService.save(previousWatch);
         }
         WatchDTO result = watchService.save(watchDTO);
         return ResponseEntity.created(new URI("/api/watches/" + result.getId()))
@@ -100,6 +107,19 @@ public class WatchResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/watches/between/{initial_time}/{final_time}/{companyId}")
+    @Timed
+    public ResponseEntity<List<WatchDTO>> getBetweenDate(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<WatchDTO> page = watchService.findBetweenDates(initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/watches");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /watches/:id : get the "id" watch.
      *
@@ -111,6 +131,14 @@ public class WatchResource {
     public ResponseEntity<WatchDTO> getWatch(@PathVariable Long id) {
         log.debug("REST request to get Watch : {}", id);
         WatchDTO watchDTO = watchService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(watchDTO));
+    }
+
+    @GetMapping("/watches/current/{companyId}")
+    @Timed
+    public ResponseEntity<WatchDTO> getCurrentWatch(@PathVariable Long companyId) {
+        log.debug("REST request to get current Watch : {}", companyId);
+        WatchDTO watchDTO = watchService.findLastWatch(companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(watchDTO));
     }
 
