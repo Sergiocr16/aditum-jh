@@ -152,6 +152,7 @@
                     for (var e = 0; e < vm.houses.length; e++) {
                         if (residents[i].houseId == vm.houses[e].id) {
                             residents[i].house_id = vm.houses[e].housenumber;
+                            residents[i].name = residents[i].name + " " + residents[i].lastname;
                         }
                     }
                 }
@@ -189,6 +190,18 @@
 
 
         };
+          vm.query = '';
+          vm.search = function(resident) {
+          var query = vm.query.toLowerCase(),
+          fullname = resident.name.toLowerCase() + ' ' + resident.lastname.toLowerCase();
+
+          if (fullname.indexOf(query) != -1) {
+            return true;
+          }
+          return false;
+        };
+
+
     vm.disableEnabledResident = function(resident) {
 
         var correctMessage;
@@ -227,7 +240,6 @@
                                          toastr["success"]("Se ha deshabilitado el residente correctamente.");
                                          bootbox.hideAll();
                                      }
-
                                   }
                                    } else{
                                    loadResidents();

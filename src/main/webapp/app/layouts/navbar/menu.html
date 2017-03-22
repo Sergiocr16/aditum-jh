@@ -72,7 +72,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
+            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
                     <span class="title">Condominio</span>
@@ -105,7 +105,7 @@
                 </ul>
             </li>
             <!--//es admin-->
-            <li  class="start" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
+            <li  class="start" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
                 <a href="javascript:;">
                     <i class="fa fa-lock" aria-hidden="true"></i>
                     <span class="title "> Seguridad</span>
@@ -130,13 +130,13 @@
             <!--//es residnete-->
             <li  class="start" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
                 <a href="javascript:;">
-                    <i class="icon-home" aria-hidden="true"></i>
+                    <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="title "> Administrar</span>
                     <span class="arrow "></span>
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="resident" ng-class="{ 'active' : active === 'residentsHouses'}">
+                    <li ui-sref="residentByHouse" ng-class="{ 'active' : active === 'residentsHouses'}">
                         <a href="">
                             <i class="fa fa-users" aria-hidden="true"></i> Residentes
                         </a>
