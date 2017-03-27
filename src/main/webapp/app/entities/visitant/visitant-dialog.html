@@ -1,152 +1,244 @@
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Reportar</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Visitante</a>
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+        </li>
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myVisitantLabel" data-translate="aditumApp.visitant.home.createOrEditLabel">Create or edit a Visitant</h4>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"> </div>
     </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.visitant.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.visitant.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.visitant.name"
-                    required/>
-            <div ng-show="editForm.name.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.lastname" for="field_lastname">Lastname</label>
-            <input type="text" class="form-control" name="lastname" id="field_lastname"
-                    ng-model="vm.visitant.lastname"
-                    required/>
-            <div ng-show="editForm.lastname.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.lastname.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.secondlastname" for="field_secondlastname">Secondlastname</label>
-            <input type="text" class="form-control" name="secondlastname" id="field_secondlastname"
-                    ng-model="vm.visitant.secondlastname"
-                    required/>
-            <div ng-show="editForm.secondlastname.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.secondlastname.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.identificationnumber" for="field_identificationnumber">Identificationnumber</label>
-            <input type="text" class="form-control" name="identificationnumber" id="field_identificationnumber"
-                    ng-model="vm.visitant.identificationnumber"
-                    required/>
-            <div ng-show="editForm.identificationnumber.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.identificationnumber.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.arrivaltime" for="field_arrivaltime">Arrivaltime</label>
-                <div class="input-group">
-                    <input id="field_arrivaltime" type="text" class="form-control" name="arrivaltime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.arrivaltime" is-open="vm.datePickerOpenStatus.arrivaltime"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('arrivaltime')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+</div>
+<div class="row display-none" id="all">
+    <div class="col-md-12">
+        <form ng-submit="vm.save()">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+                        <i class="fa fa-user font-green-haze"></i>
+                        <span class="caption-subject bold uppercase">Reportar visitante</span>
+                    </div>
                 </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.invitationstaringtime" for="field_invitationstaringtime">Invitationstaringtime</label>
-                <div class="input-group">
-                    <input id="field_invitationstaringtime" type="text" class="form-control" name="invitationstaringtime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationstaringtime" is-open="vm.datePickerOpenStatus.invitationstaringtime"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationstaringtime')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.invitationlimittime" for="field_invitationlimittime">Invitationlimittime</label>
-                <div class="input-group">
-                    <input id="field_invitationlimittime" type="text" class="form-control" name="invitationlimittime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationlimittime" is-open="vm.datePickerOpenStatus.invitationlimittime"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationlimittime')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.licenseplate" for="field_licenseplate">Licenseplate</label>
-            <input type="text" class="form-control" name="licenseplate" id="field_licenseplate"
-                    ng-model="vm.visitant.licenseplate"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.isinvited" for="field_isinvited">Isinvited</label>
-            <input type="number" class="form-control" name="isinvited" id="field_isinvited"
-                    ng-model="vm.visitant.isinvited"
-                    required min="0" max="1"/>
-            <div ng-show="editForm.isinvited.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.isinvited.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.isinvited.$error.min" data-translate="entity.validation.min" translate-value-min="0">
-                    This field should be at least 0.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.isinvited.$error.max" data-translate="entity.validation.max" translate-value-max="1">
-                    This field cannot be more than 1.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.isinvited.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.visitant.responsableofficer" for="field_responsableofficer">Responsableofficer</label>
-            <input type="text" class="form-control" name="responsableofficer" id="field_responsableofficer"
-                    ng-model="vm.visitant.responsableofficer"
-                    />
-        </div>
+                <div class="portlet-body form">
+                    <div class="col-md-6 col-sm-6 marging-top-20">
+                        <div class="form-group form-md-line-input">
+                            <input ng-model="vm.visitor.identificationnumber" ng-change="findVisitor()" type="text" class="form-control numbers gray-font" required>
+                            <label class="font-15">Número de cédula</label>
+                        </div>
+                        <div class="form-group form-md-line-input">
+                            <input ng-model="vm.visitor.name" type="text" style="text-transform: capitalize" class="form-control letters gray-font" required>
+                            <label class="font-15">Nombre</label>
+                        </div>
+                        <div class="form-group form-md-line-input">
+                            <input ng-model="vm.visitor.lastname" type="text" style="text-transform: capitalize" class="form-control letters gray-font">
+                            <label class="font-15">Primer Apellido</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6  marging-top-20">
+                        <div class="form-group form-md-line-input">
+                            <input ng-model="vm.visitor.secondlastname" style="text-transform: capitalize" type="text" class="form-control letters gray-font" required>
+                            <label class="font-15">Segundo Apellido</label>
+                        </div>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.visitant.house" for="field_house">House</label>
-            <select class="form-control" id="field_house" name="house" ng-model="vm.visitant.houseId" ng-options="house.id as house.id for house in vm.houses"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.visitant.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.visitant.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
-        </div>
+                        <div class="form-group form-md-line-input">
+                            <input ng-model="vm.visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
+                            <label class="font-15">Número de placa (opcional)</label>
+                            <span class="help-block">Sin guiones</span>
+                        </div>
+
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
+                                <div class="form-group form-md-line-input">
+                                    <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendarInit('initialtime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                                           type="text" class="form-control letters gray-font text-center dating" required>
+                                    <label class="font-15">Fecha inicial:</label>
+                                    <span class="help-block">De la fecha y hora actual en adelante</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+                                <div class="form-group form-md-line-input">
+                                    <input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                                           class="form-control letters gray-font text-center dating" required> <label  class="font-15">Fecha final:</label>
+                                    <label class="font-15">Fecha final:</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions noborder">
+                        <h3 class="text-right">
+                            <button type="submit" class="btn blue"><i class="fa fa-pencil"></i> Reportar</button>
+                            <button type="button" ui-sref="visitant" class=" btn btn-danger">Cancelar</button>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+
+
+
+
+
+
+
+
+
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+<!--ng-click="vm.clear()">&times;</button>-->
+<!--<h4 class="modal-title" id="myVisitantLabel" data-translate="aditumApp.visitant.home.createOrEditLabel">Create or edit a Visitant</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<jhi-alert-error></jhi-alert-error>-->
+<!--<div class="form-group" ng-show="vm.visitant.id">-->
+<!--<label for="id" data-translate="global.field.id">ID</label>-->
+<!--<input type="text" class="form-control" id="id" name="id"-->
+<!--ng-model="vm.visitant.id" readonly />-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.name" for="field_name">Name</label>-->
+<!--<input type="text" class="form-control" name="name" id="field_name"-->
+<!--ng-model="vm.visitant.name"-->
+<!--required/>-->
+<!--<div ng-show="editForm.name.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.name.$error.required" data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.lastname" for="field_lastname">Lastname</label>-->
+<!--<input type="text" class="form-control" name="lastname" id="field_lastname"-->
+<!--ng-model="vm.visitant.lastname"-->
+<!--required/>-->
+<!--<div ng-show="editForm.lastname.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.lastname.$error.required" data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.secondlastname" for="field_secondlastname">Secondlastname</label>-->
+<!--<input type="text" class="form-control" name="secondlastname" id="field_secondlastname"-->
+<!--ng-model="vm.visitant.secondlastname"-->
+<!--required/>-->
+<!--<div ng-show="editForm.secondlastname.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.secondlastname.$error.required" data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.identificationnumber" for="field_identificationnumber">Identificationnumber</label>-->
+<!--<input type="text" class="form-control" name="identificationnumber" id="field_identificationnumber"-->
+<!--ng-model="vm.visitant.identificationnumber"-->
+<!--required/>-->
+<!--<div ng-show="editForm.identificationnumber.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.identificationnumber.$error.required" data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.arrivaltime" for="field_arrivaltime">Arrivaltime</label>-->
+<!--<div class="input-group">-->
+<!--<input id="field_arrivaltime" type="text" class="form-control" name="arrivaltime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.arrivaltime" is-open="vm.datePickerOpenStatus.arrivaltime"-->
+<!--/>-->
+<!--<span class="input-group-btn">-->
+<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('arrivaltime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+<!--</span>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.invitationstaringtime" for="field_invitationstaringtime">Invitationstaringtime</label>-->
+<!--<div class="input-group">-->
+<!--<input id="field_invitationstaringtime" type="text" class="form-control" name="invitationstaringtime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationstaringtime" is-open="vm.datePickerOpenStatus.invitationstaringtime"-->
+<!--/>-->
+<!--<span class="input-group-btn">-->
+<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationstaringtime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+<!--</span>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.invitationlimittime" for="field_invitationlimittime">Invitationlimittime</label>-->
+<!--<div class="input-group">-->
+<!--<input id="field_invitationlimittime" type="text" class="form-control" name="invitationlimittime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationlimittime" is-open="vm.datePickerOpenStatus.invitationlimittime"-->
+<!--/>-->
+<!--<span class="input-group-btn">-->
+<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationlimittime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+<!--</span>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.licenseplate" for="field_licenseplate">Licenseplate</label>-->
+<!--<input type="text" class="form-control" name="licenseplate" id="field_licenseplate"-->
+<!--ng-model="vm.visitant.licenseplate"-->
+<!--/>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.isinvited" for="field_isinvited">Isinvited</label>-->
+<!--<input type="number" class="form-control" name="isinvited" id="field_isinvited"-->
+<!--ng-model="vm.visitant.isinvited"-->
+<!--required min="0" max="1"/>-->
+<!--<div ng-show="editForm.isinvited.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.isinvited.$error.required" data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.isinvited.$error.min" data-translate="entity.validation.min" translate-value-min="0">-->
+<!--This field should be at least 0.-->
+<!--</p>-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.isinvited.$error.max" data-translate="entity.validation.max" translate-value-max="1">-->
+<!--This field cannot be more than 1.-->
+<!--</p>-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.isinvited.$error.number" data-translate="entity.validation.number">-->
+<!--This field should be a number.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label class="control-label" data-translate="aditumApp.visitant.responsableofficer" for="field_responsableofficer">Responsableofficer</label>-->
+<!--<input type="text" class="form-control" name="responsableofficer" id="field_responsableofficer"-->
+<!--ng-model="vm.visitant.responsableofficer"-->
+<!--/>-->
+<!--</div>-->
+
+<!--<div class="form-group">-->
+<!--<label data-translate="aditumApp.visitant.house" for="field_house">House</label>-->
+<!--<select class="form-control" id="field_house" name="house" ng-model="vm.visitant.houseId" ng-options="house.id as house.id for house in vm.houses"            >-->
+<!--<option value=""></option>-->
+<!--</select>-->
+<!--</div>-->
+<!--<div class="form-group">-->
+<!--<label data-translate="aditumApp.visitant.company" for="field_company">Company</label>-->
+<!--<select class="form-control" id="field_company" name="company" ng-model="vm.visitant.companyId" ng-options="company.id as company.id for company in vm.companies"            >-->
+<!--<option value=""></option>-->
+<!--</select>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+<!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+<!--</button>-->
+<!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+<!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+<!--</button>-->
+<!--</div>-->
+<!--</form>-->

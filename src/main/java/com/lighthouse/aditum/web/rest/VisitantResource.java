@@ -114,6 +114,17 @@ public class VisitantResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
     }
 
+
+    @GetMapping("/visitants/invited/findByHouse/{identificationNumber}/{houseId}/{companyId}")
+    @Timed
+    public ResponseEntity<VisitantDTO> getVisitantByHouse( @PathVariable (value = "identificationNumber")  String identificationNumber,
+                                                           @PathVariable(value = "houseId")  Long  houseId,
+                                                           @PathVariable(value = "companyId")  Long companyId) {
+        log.debug("REST invited visitant in specific house with this idenfiticacion : {}", identificationNumber);
+        VisitantDTO visitantDTO = visitantService.findInvitedVisitorByHouse(identificationNumber,houseId,companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
+    }
+
     /**
      * DELETE  /visitants/:id : delete the "id" visitant.
      *

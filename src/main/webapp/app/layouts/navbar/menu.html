@@ -105,7 +105,7 @@
                 </ul>
             </li>
             <!--//es admin-->
-            <li  class="start" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
+            <li  class="start" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
                 <a href="javascript:;">
                     <i class="fa fa-lock" aria-hidden="true"></i>
                     <span class="title "> Seguridad</span>
@@ -172,7 +172,7 @@
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="condominoRegisterVisitor()" ng-class="{'active' : active === 'reportInvitation'}">
+                    <li ui-sref="visitant.new" ng-class="{'active' : active === 'reportInvitation'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitante
                         </a>

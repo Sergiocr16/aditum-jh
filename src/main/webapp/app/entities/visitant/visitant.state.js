@@ -112,38 +112,34 @@
             parent: 'visitant',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER'],
+                pageTitle: 'aditumApp.visitant.detail.title'
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/visitant/visitant-dialog.html',
-                    controller: 'VisitantDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                lastname: null,
-                                secondlastname: null,
-                                identificationnumber: null,
-                                arrivaltime: null,
-                                invitationstaringtime: null,
-                                invitationlimittime: null,
-                                licenseplate: null,
-                                isinvited: null,
-                                responsableofficer: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('visitant', null, { reload: 'visitant' });
-                }, function() {
-                    $state.go('visitant');
-                });
-            }]
+               views: {
+                   'content@': {
+                       templateUrl: 'app/entities/visitant/visitant-dialog.html',
+                       controller: 'VisitantDialogController',
+                       controllerAs: 'vm'
+                   }
+             },
+             resolve: {
+                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                     $translatePartialLoader.addPart('visitant');
+                     return $translate.refresh();
+                 }],
+//                 entity: ['$stateParams', 'Visitant', function($stateParams, Visitant) {
+//                     return Visitant.get({id : $stateParams.id}).$promise;
+//                 }],
+                 previousState: ["$state", function ($state) {
+                     var currentStateData = {
+                         name: $state.current.name || 'visitant',
+                         params: $state.params,
+                         url: $state.href($state.current.name, $state.params)
+                     };
+                     return currentStateData;
+                 }]
+             }
+
         })
         .state('visitant.edit', {
             parent: 'visitant',

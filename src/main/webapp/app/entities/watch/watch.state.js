@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/watch?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_ADMIN'],
                 pageTitle: 'aditumApp.watch.home.title'
             },
             views: {

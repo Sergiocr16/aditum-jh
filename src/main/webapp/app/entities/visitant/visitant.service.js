@@ -23,6 +23,23 @@
                     return data;
                 }
             },
+            'findInvitedByHouseAndIdentificationNumber':{
+            url: 'api/visitants/invited/findByHouse/:identificationNumber/:houseId/:companyId',
+             method: 'GET',
+             params:{
+                   identificationNumber:'@identificationNumber',
+                   houseId: '@houseId',
+                   companyId: '@companyId',
+                 },
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.invitationstaringtime = DateUtils.convertDateTimeFromServer(data.invitationstaringtime);
+                        data.invitationlimittime = DateUtils.convertDateTimeFromServer(data.invitationlimittime);
+                    }
+                    return data;
+                }
+            },
             'update': { method:'PUT' }
         });
     }

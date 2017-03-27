@@ -74,6 +74,14 @@ public class VisitantService {
         return visitantDTO;
     }
 
+    @Transactional(readOnly = true)
+    public VisitantDTO findInvitedVisitorByHouse(String identificationNumber,Long houseId,Long companyId) {
+        log.debug("Request to find if there is already a registered visitor with this identification number : {}", identificationNumber);
+        Visitant visitant = visitantRepository.findByIdentificationnumberAndHouseIdAndCompanyId(identificationNumber,houseId,companyId);
+        VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+        return visitantDTO;
+    }
+
     /**
      *  Delete the  visitant by id.
      *
