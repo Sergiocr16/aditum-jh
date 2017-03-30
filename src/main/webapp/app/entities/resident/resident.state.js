@@ -171,9 +171,9 @@
                 }
             },
             resolve: {
-                          entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
-                                    return Resident.get({id : $stateParams.id}).$promise;
-                                }],
+              entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
+                        return Resident.get({id : $stateParams.id}).$promise;
+                    }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
                         name: $state.current.name || 'resident',
@@ -186,69 +186,43 @@
 
   })
    .state('residentByHouse', {
-              parent: 'entity',
-              url: '/residents?page&sort&search',
-              data: {
-                  authorities: ['ROLE_USER']
-              },
-              views: {
-                  'content@': {
-                      templateUrl: 'app/entities/resident/resident-by-house-index.html',
-                      controller: 'ResidentController',
-                      controllerAs: 'vm'
-                  }
-              },
-              params: {
-                  page: {
-                      value: '1',
-                      squash: true
-                  },
-                  sort: {
-                      value: 'id,asc',
-                      squash: true
-                  },
-                  search: null
-              },
-              resolve: {
-                  pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                      return {
-                          page: PaginationUtil.parsePage($stateParams.page),
-                          sort: $stateParams.sort,
-                          predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                          ascending: PaginationUtil.parseAscending($stateParams.sort),
-                          search: $stateParams.search
-                      };
-                  }]
-
+      parent: 'entity',
+             url: '/residentsByHouse?page&sort&search',
+             data: {
+                 authorities: ['ROLE_USER']
+             },
+             views: {
+                 'content@': {
+                     templateUrl: 'app/entities/resident/resident-by-house.html',
+                     controller: 'ResidentByHouseController',
+                     controllerAs: 'vm'
+                 }
+             },
+             params: {
+                 page: {
+                     value: '1',
+                     squash: true
+                 },
+                 sort: {
+                     value: 'id,asc',
+                     squash: true
+                 },
+                 search: null
+             },
+             resolve: {
+                 pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                     return {
+                         page: PaginationUtil.parsePage($stateParams.page),
+                         sort: $stateParams.sort,
+                         predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                         ascending: PaginationUtil.parseAscending($stateParams.sort),
+                         search: $stateParams.search
+                     };
+                 }]
               }
           })
 
 
-//
-//            parent: 'resident',
-//            url: '/{id}/edit',
-//            data: {
-//                authorities: ['ROLE_USER']
-//            },
-//            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-//                $uibModal.open({
-//                    templateUrl: 'app/entities/resident/resident-form.html',
-//                    controller: 'ResidentUpdateController',
-//                    controllerAs: 'vm',
-//                    backdrop: 'static',
-//                    size: 'lg',
-//                    resolve: {
-//                        entity: ['Resident', function(Resident) {
-//                            return Resident.get({id : $stateParams.id}).$promise;
-//                        }]
-//                    }
-//                }).result.then(function() {
-//                    $state.go('resident', null, { reload: 'resident' });
-//                }, function() {
-//                    $state.go('^');
-//                });
-//            }]
-//        })
         .state('resident.delete', {
             parent: 'resident',
             url: '/{id}/delete',

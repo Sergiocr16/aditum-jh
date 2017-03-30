@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/vehicule?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.vehicule.home.title'
             },
             views: {
@@ -55,7 +55,7 @@
             parent: 'vehicule',
             url: '/vehicule/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.vehicule.detail.title'
             },
             views: {
@@ -87,7 +87,7 @@
             parent: 'vehicule-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -108,67 +108,82 @@
                 });
             }]
         })
-        .state('vehicule.new', {
-            parent: 'vehicule',
-            url: '/new',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
-                    controller: 'VehiculeDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                licenseplate: null,
-                                brand: null,
-                                color: null,
-                                enabled: null,
-                                id: null
-                            };
+               .state('vehicule.new', {
+                  parent: 'vehicule',
+                            url: '/new',
+                            data: {
+                              authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                            },
+                            views: {
+                                'content@': {
+                       templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
+                                        controller: 'VehiculeDialogController',
+                                    controllerAs: 'vm'
+                                }
+                            },
+                            resolve: {
+
+                                  entity: function () {
+                                    return {
+                                        licenseplate: null,
+                                        brand: null,
+                                        color: null,
+                                        enabled: null,
+                                        id: null
+
+                                    };
+                                },
+                                companyUser: ['MultiCompany',function(MultiCompany){
+                                    return MultiCompany.getCurrentUserCompany()
+                                }],
+                                previousState: ["$state", function ($state) {
+                                    var currentStateData = {
+                                        name: $state.current.name || 'vehicule',
+                                        params: $state.params,
+                                        url: $state.href($state.current.name, $state.params)
+                                    };
+                                    return currentStateData;
+                                }]
+                            }
+                })
+
+         .state('vehicule.edit', {
+                 parent: 'vehicule',
+                    url: '/{id}/edit',
+                    data: {
+                     authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                      pageTitle: 'aditumApp.resident.detail.title'
+                    },
+                    views: {
+                        'content@': {
+                          templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
+                            controller: 'VehiculeDialogController',
+                            controllerAs: 'vm'
                         }
-                    }
-                }).result.then(function() {
-                    $state.go('vehicule', null, { reload: 'vehicule' });
-                }, function() {
-                    $state.go('vehicule');
-                });
-            }]
-        })
-        .state('vehicule.edit', {
-            parent: 'vehicule',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
-                    controller: 'VehiculeDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
+                    },
                     resolve: {
-                        entity: ['Vehicule', function(Vehicule) {
-                            return Vehicule.get({id : $stateParams.id}).$promise;
+                            entity: ['$stateParams', 'Vehicule', function($stateParams, Vehicule) {
+                                return Vehicule.get({id : $stateParams.id}).$promise;
+                            }],
+                        previousState: ["$state", function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'vehicule',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
                         }]
                     }
-                }).result.then(function() {
-                    $state.go('vehicule', null, { reload: 'vehicule' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
+
+          })
+
+
+
         .state('vehicule.delete', {
             parent: 'vehicule',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

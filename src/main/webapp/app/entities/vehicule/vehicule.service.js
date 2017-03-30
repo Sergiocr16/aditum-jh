@@ -20,7 +20,16 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+              'vehiculesEnabled': {
+                    method: 'GET',
+                    url: 'api/vehiculesEnabled',
+                    isArray: true
+                 },'vehiculesDisabled': {
+                    method: 'GET',
+                    url: 'api/vehiculesDisabled',
+                    isArray: true
+                }
         });
     }
 })();

@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('ResidentController', ResidentController);
+        .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
+    ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+    function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -31,38 +31,17 @@
                 vm.actionButtonTitle = "Habilitar";
             }
         }
-        loadHouses();
+        loadResidents();
 
-        function loadHouses() {
-            House.query({
-                companyId: $rootScope.companyId
-            }).$promise.then(onSuccessHouses);
+        function loadResidents() {
 
-            function onSuccessHouses(data, headers) {
-                vm.houses = data;
-                loadResidents();
-            }
-
-        }
-
-        function loadResidents(option) {
-            if (enabledOptions) {
-                vm.changesTitles();
-                Resident.residentsEnabled({
+                Resident.findResidentesByHouseId({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort(),
-                    companyId: $rootScope.companyId,
+                    houseId: $rootScope.companyUser.houseId
                 }).$promise.then(onSuccess, onError);
-            } else {
-                vm.changesTitles();
-                Resident.residentsDisabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
-                    companyId: $rootScope.companyId,
-                }).$promise.then(onSuccess, onError);
-            }
+
 
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -73,24 +52,13 @@
             }
 
             function onSuccess(data) {
-                if (option !== 1) {
-                    vm.queryCount = vm.totalItems;
-                    vm.page = pagingParams.page;
-                    vm.residents = formatResidents(data);
-                      console.log(vm.residents)
-                } else {
-                    var residentsByHouse = [];
-                    vm.residents = data;
-                    for (var i = 0; i < vm.residents.length; i++) {
-                        if (vm.house.id === vm.residents[i].houseId) {
-                            residentsByHouse.push(vm.residents[i])
-                        }
-                    }
-                    vm.residents = formatResidents(residentsByHouse);
-                }
+              vm.queryCount = vm.totalItems;
+              vm.page = pagingParams.page;
+               vm.residents = data;
+               console.log(vm.residents)
                 $("#loadingIcon").fadeOut(0);
                 setTimeout(function() {
-                    $("#tableData").fadeIn(300);
+                    $("#residents_container").fadeIn(300);
                 }, 200)
             }
 
@@ -98,66 +66,6 @@
                 AlertService.error(error.data.message);
             }
         }
-        vm.switchEnabledDisabledResidents = function() {
-            enabledOptions = !enabledOptions;
-            vm.findResidentsByHouse(vm.house);
-        }
-        vm.findResidentsByHouse = function(house) {
-            vm.house = house;
-             $("#tableData").fadeOut(300);
-            if (house == undefined) {
-                loadResidents();
-            } else {
-                loadResidents(1);
-            }
-        }
-
-        function formatResidents(residents) {
-            var formattedResidents = [];
-            for (var i = 0; i < residents.length; i++) {
-
-                for (var e = 0; e < vm.houses.length; e++) {
-                    if (residents[i].houseId == vm.houses[e].id) {
-                        residents[i].house_id = vm.houses[e].housenumber;
-                        residents[i].name = residents[i].name + " " + residents[i].lastname;
-                    }
-                }
-            }
-
-            return residents;
-        }
-
-        vm.deleteResident = function(id_resident, name, lastname) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar al residente " + name + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-
-                        Resident.delete({
-                            id: id_resident
-                        }, onSuccess);
-
-                        function onSuccess(data, headers) {
-                            toastr["success"]("Se ha eliminado el residente correctamente.");
-                            loadResidents();
-                        }
-                    }
-                }
-            });
-
-
-        };
-
 
         vm.disableEnabledResident = function(resident) {
 

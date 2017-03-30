@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['Vehicule', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    VehiculeController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function VehiculeController(Vehicule, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
-
+    function VehiculeController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+     var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -17,14 +17,47 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        loadAll();
 
-        function loadAll () {
-            Vehicule.query({
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-                sort: sort()
-            }, onSuccess, onError);
+         vm.changesTitles = function() {
+            if (enabledOptions) {
+                vm.title = "Vehículos habilitados";
+                vm.buttonTitle = "Ver vehículos deshabilitados";
+                vm.actionButtonTitle = "Deshabilitar";
+            } else {
+                vm.title = "Vehículos deshabilitados";
+                vm.buttonTitle = "Ver vehículos habilitados";
+                vm.actionButtonTitle = "Habilitar";
+            }
+          }
+
+        loadHouses();
+        function loadHouses() {
+            House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+            function onSuccessHouses(data, headers) {
+                vm.houses = data;
+                loadVehicules();
+            }
+
+        }
+
+        function loadVehicules(option) {
+            if(enabledOptions){
+              vm.changesTitles();
+                Vehicule.vehiculesEnabled({
+                    page: pagingParams.page - 1,
+                    size: vm.itemsPerPage,
+                    sort: sort(),
+                    companyId: $rootScope.companyId,
+               }).$promise.then(onSuccess, onError);
+            } else {
+                vm.changesTitles();
+                Vehicule.vehiculesDisabled({
+                    page: pagingParams.page - 1,
+                    size: vm.itemsPerPage,
+                    sort: sort(),
+                    companyId: $rootScope.companyId,
+                }).$promise.then(onSuccess, onError);
+            }
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -32,18 +65,140 @@
                 }
                 return result;
             }
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.vehicules = data;
-                vm.page = pagingParams.page;
-            }
+              function onSuccess(data) {
+                   if (option !== 1) {
+                       vm.queryCount = vm.totalItems;
+                       vm.page = pagingParams.page;
+                       vm.vehicules = formatVehicules(data);
+                   } else {
+                       var vehiculesByHouse = [];
+                       vm.vehicules = data;
+                       for (var i = 0; i < vm.vehicules.length; i++) {
+                           if (vm.house.id === vm.vehicules[i].houseId) {
+                               vehiculesByHouse.push(vm.vehicules[i])
+                           }
+                       }
+                       vm.vehicules = formatVehicules(vehiculesByHouse);
+                   }
+                   $("#loadingIcon").fadeOut(0);
+                   setTimeout(function() {
+                       $("#tableData").fadeIn(300);
+                   }, 200)
+               }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+
         }
 
+        vm.switchEnabledDisabledResidents = function() {
+            enabledOptions = !enabledOptions;
+            vm.findVehiculesByHouse(vm.house);
+        }
+
+
+        vm.findVehiculesByHouse = function(house) {
+            vm.house = house;
+             $("#tableData").fadeOut(300);
+            if (house == undefined) {
+                loadVehicules();
+            } else {
+                loadVehicules(1);
+            }
+        }
+        function formatVehicules(vehicules) {
+            var formattedVehicules = [];
+            for (var i = 0; i < vehicules.length; i++) {
+
+                for (var e = 0; e < vm.houses.length; e++) {
+                    if (vehicules[i].houseId == vm.houses[e].id) {
+                        vehicules[i].house_id = vm.houses[e].housenumber;
+                    }
+                }
+            }
+
+            return vehicules;
+        }
+         vm.deleteVehicule = function(id_vehicule, license_plate) {
+             bootbox.confirm({
+                       message: "¿Está seguro que desea eliminar al vehículo " + license_plate + "?",
+                       buttons: {
+                           confirm: {
+                               label: 'Aceptar',
+                               className: 'btn-success'
+                           },
+                           cancel: {
+                               label: 'Cancelar',
+                               className: 'btn-danger'
+                           }
+                       },
+                callback: function(result) {
+                    if (result) {
+
+                        Vehicule.delete({
+                            id: id_vehicule
+                        }, onSuccess);
+
+                        function onSuccess(data, headers) {
+                            toastr["success"]("Se ha eliminado el vehículo correctamente.");
+                            loadVehicules();
+                        }
+                    }
+                }
+            });
+
+
+        };
+
+           vm.disableEnabledVehicule = function(vehicule) {
+
+                    var correctMessage;
+                    if (enabledOptions) {
+                        correctMessage = "¿Está seguro que desea deshabilitar al vehículo " + vehicule.licenseplate + "?";
+                      } else {
+                          correctMessage = "¿Está seguro que desea habilitar al vehículo " + vehicule.licenseplate + "?";
+                    }
+                    bootbox.confirm({
+
+                        message: correctMessage,
+
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+                                CommonMethods.waitingMessage();
+                                if (enabledOptions) {
+                                    vehicule.enabled = 0;
+                                    Vehicule.update(vehicule, onSuccess);
+                                    function onSuccess(data, headers) {
+                                            loadVehicules();
+                                            toastr["success"]("Se ha deshabilitado el vehículo correctamente.");
+                                            bootbox.hideAll();
+                                    }
+
+                                } else {
+                                    vehicule.enabled = 1;
+                                    Vehicule.update(vehicule, onSuccess);
+                                    function onSuccess(data, headers) {
+                                            bootbox.hideAll();
+                                            toastr["success"]("Se ha habilitado el vehículo correctamente.");
+                                            loadVehicules();
+
+                                    }
+                                }
+
+                            }
+                        }
+                    });
+                };
         function loadPage(page) {
             vm.page = page;
             vm.transition();

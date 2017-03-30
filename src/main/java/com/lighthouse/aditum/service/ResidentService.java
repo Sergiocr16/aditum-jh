@@ -60,7 +60,12 @@ public class ResidentService {
         Page<Resident> result = residentRepository.findByCompanyId(pageable,companyId);
         return result.map(resident -> residentMapper.residentToResidentDTO(resident));
     }
-
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findByHouseId(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByHouseId(pageable,houseId);
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+    }
     /**
      *  Get one resident by id.
      *
@@ -99,6 +104,7 @@ public class ResidentService {
         List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
         return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
     }
+
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");

@@ -18,4 +18,5 @@ public interface ResidentRepository extends JpaRepository<Resident,Long> {
     Resident findOneByUserId(Long id);
     List<Resident> findByEnabledAndCompanyId(Integer state, Long companyId);
     Page<Resident> findByCompanyId(Pageable pageable, Long companyId);
+    List<Resident> findByHouseId(Pageable pageable,Long houseId);
 }

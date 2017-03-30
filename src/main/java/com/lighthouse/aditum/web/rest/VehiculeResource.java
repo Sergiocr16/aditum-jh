@@ -82,7 +82,25 @@ public class VehiculeResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vehiculeDTO.getId().toString()))
             .body(result);
     }
+    @GetMapping("/vehiculesEnabled")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getEnabledVehicules(@ApiParam Pageable pageable,Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findEnabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesEnabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    @GetMapping("/vehiculesDisabled")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getDisabledVehicules(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findDisabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /vehicules : get all the vehicules.
      *

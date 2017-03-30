@@ -37,7 +37,11 @@
                     }
                     return data;
                 }
-            }
+            },'findResidentesByHouseId': {
+                 method: 'GET',
+                 url: 'api/residents/byHouse',
+                 isArray: true
+             }
         });
     }
 })();

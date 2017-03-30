@@ -9,20 +9,14 @@
 
     function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser) {
         var vm = this;
-        console.log(companyUser);
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
-        vm.clear = clear;
         vm.save = save;
         vm.user = entity;
-        vm.users = User.query();
-        vm.companies = Company.query();
 
-        CommonMethods.validateLetters();
-        CommonMethods.validateNumbers();
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
@@ -41,7 +35,7 @@
         }
 
 
-        House.query({},onSuccessHouses);
+        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
              setTimeout(function() {
@@ -53,9 +47,6 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
 
         function save () {
             vm.isSaving = true;
@@ -134,7 +125,7 @@
             }
         function insertResident(id){
             vm.resident.enabled = 1;
-            vm.resident.companyId = 1;
+            vm.resident.companyId = $rootScope.companyId;
             vm.resident.userId = id;
             if(vm.resident.isOwner){
             vm.resident.isOwner = 1;
