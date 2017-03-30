@@ -3,21 +3,19 @@
 
     angular
         .module('aditumApp')
-        .controller('VisitantDialogController', VisitantDialogController);
+        .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods'];
+    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods','entity','$uibModalInstance'];
 
-    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods) {
+    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods,entity,$uibModalInstance) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-        //        vm.visitant = entity;
+        vm.visitor = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
-        vm.houses = House.query();
-        vm.companies = Company.query();
         vm.dates = {
             initial_time: new Date(),
             final_time: new Date()
@@ -37,9 +35,9 @@
             });
         });
 
-        $timeout(function() {
-            angular.element('#focusMe').focus();
-        });
+       $timeout(function() {
+           angular.element('#focusMe').focus();
+       });
 
         function clear() {
             $uibModalInstance.dismiss('cancel');
@@ -72,11 +70,9 @@
         }
 
         function formatVisitor() {
-            vm.visitor.isinvited = 1;
-            vm.visitor.houseId = $rootScope.companyUser.houseId;
-            vm.visitor.invitationstaringtime = vm.dates.initial_time;
-            vm.visitor.invitationlimittime = vm.dates.final_time;
-            vm.visitor.companyId = $rootScope.companyId;
+            vm.visitor.isinvited=1;
+                  vm.visitor.invitationstaringtime = vm.dates.initial_time;
+                         vm.visitor.invitationlimittime = vm.dates.final_time;
             if (vm.visitor.licenseplate != undefined) {
                 vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
             }
@@ -84,57 +80,16 @@
 
         function save() {
             if (isValidDates()) {
-                Visitant.findInvitedByHouseAndIdentificationNumber({
-                    identificationNumber: vm.visitor.identificationnumber,
-                    houseId: $rootScope.companyUser.houseId,
-                    companyId: $rootScope.companyId,
-                }, success, error)
-
-                function success(data) {
-                    bootbox.confirm({
-                        message: "Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-                                vm.visitor.id = data.id;
-                                formatVisitor();
-                                Visitant.update(vm.visitor, onSuccess, onSaveError);
-
-                                function onSuccess() {
-                                  $state.go('visitant-user')
-                                    toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-                                }
-                            } else {
-                                bootbox.hideAll();
-                            }
-                        }
-                    });
-                }
-
-                function error() {
-                    formatVisitor();
-                    vm.isSaving = true;
-                    Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
-                }
+                formatVisitor();
+                Visitant.update(vm.visitor, onSuccess, onSaveError);
+                 function onSuccess(result) {
+                        toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                       $scope.$emit('aditumApp:visitantUpdate', result);
+                       $state.reload();
+                       $uibModalInstance.close(result);
+                  }
 
             }
-        }
-
-
-        function onSaveSuccess(result) {
-            $scope.$emit('aditumApp:visitantUpdate', result);
-            $state.go('visitant-user')
-            toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-            vm.isSaving = false;
         }
 
         function onSaveError() {

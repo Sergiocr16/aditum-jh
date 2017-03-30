@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.VisitantMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,13 @@ public class VisitantService {
         log.debug("Request to get all Visitants");
         Page<Visitant> result = visitantRepository.findByCompanyId(pageable,companyId);
         return result.map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findInvitedVisitorsByHouse(Long companyId, Long houseId) {
+        log.debug("Request to get all Visitants");
+        List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(companyId,houseId,1,2);
+        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 
     /**

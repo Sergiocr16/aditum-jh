@@ -9,6 +9,7 @@
         return formatDateFilter;
 
         function formatDateFilter (input) {
+        moment.locale('es')
             if(input==null){
              return "Aún en progreso";
             }else{

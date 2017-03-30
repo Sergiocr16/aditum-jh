@@ -16,7 +16,9 @@
                 validateLetters: validateLetters,
                 validateNumbers: validateNumbers,
                 validateRepeat: validateRepeat,
-                capitalizeFirstLetter: capitalizeFirstLetter
+                capitalizeFirstLetter: capitalizeFirstLetter,
+                encryptIdUrl,
+                decryptIdUrl,
             };
             function validateName (items, name) {
                 var condition = true;
@@ -74,7 +76,14 @@
                  return condition;
              }
 
+            function encryptIdUrl(id){
+            return CryptoJS.AES.encrypt(id.toString(), "Ankara").toString();
+            }
 
+            function decryptIdUrl(encryptedId){
+              return  CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara").toString(CryptoJS.enc.Utf8);
+
+            }
 
             function validateLetters() {
                  $(".letters").keypress(function(key) {

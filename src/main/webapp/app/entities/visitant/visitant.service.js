@@ -24,7 +24,7 @@
                 }
             },
             'findInvitedByHouseAndIdentificationNumber':{
-            url: 'api/visitants/invited/findByHouse/:identificationNumber/:houseId/:companyId',
+            url: 'api/visitants/invited/findOneByHouse/:identificationNumber/:houseId/:companyId',
              method: 'GET',
              params:{
                    identificationNumber:'@identificationNumber',
@@ -40,7 +40,17 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'findInvitedByHouse':{
+            url: 'api/visitants/invited/finByHouse/:houseId/:companyId',
+             method: 'GET',
+             params:{
+                   houseId: '@houseId',
+                   companyId: '@companyId',
+                 },
+              isArray: true,
+            },
+            'update': { method:'PUT' },
+            'delete': { method:'DELETE' }
         });
     }
 })();
