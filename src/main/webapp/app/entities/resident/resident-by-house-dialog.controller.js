@@ -12,7 +12,6 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
-        vm.required = 1;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -64,6 +63,7 @@
                 Resident.update(vm.resident, onSuccess, onSaveError);
              } else{
                 vm.resident.enabled = 1;
+                 vm.resident.isOwner = 0;
                 vm.resident.companyId = $rootScope.companyId;
                 vm.resident.houseId = $rootScope.companyUser.houseId
                 Resident.save(vm.resident, onSuccess, onSaveError);
@@ -75,7 +75,12 @@
             function onSuccess (result) {
                 vm.isSaving = false;
                 $state.go('residentByHouse');
-                toastr["success"]("Se ha editado el residente correctamente.");
+                  if(vm.resident.id !== null){
+                    toastr["success"]("Se ha editado el residente correctamente.");
+                  }else{
+                     toastr["success"]("Se ha registrado el residente correctamente.");
+                  }
+
             }
 
         function onSaveError () {
