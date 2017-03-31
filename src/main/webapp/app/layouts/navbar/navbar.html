@@ -19,9 +19,9 @@
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="content/images/avatar3_small.jpg">
+                            <img ng-hide="vm.currentUser.image" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.currentUser.imageContentType + ';base64,' + vm.currentUser.image}}"   ng-if="vm.currentUser.image" id="blah"  alt="your image"  class="img-circle"/>
                             <span class="username username-hide-on-mobile ng-binding">
-					Alonso Carvajal / Casa 1</span>
+					        {{' '+vm.currentUser.name +' '+ vm.currentUser.lastname}}{{vm.contextLiving}}</span>
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default ">

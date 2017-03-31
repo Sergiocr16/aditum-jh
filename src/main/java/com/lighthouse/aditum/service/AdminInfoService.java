@@ -54,9 +54,9 @@ public class AdminInfoService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<AdminInfoDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<AdminInfoDTO> findAll(Pageable pageable) {
         log.debug("Request to get all AdminInfos");
-        Page<AdminInfo> result = adminInfoRepository.findByCompanyId(pageable, companyId);
+        Page<AdminInfo> result = adminInfoRepository.findAll(pageable);
         return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
     }
 

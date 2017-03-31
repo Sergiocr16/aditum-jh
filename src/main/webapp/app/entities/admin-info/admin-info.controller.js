@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdminInfoController', AdminInfoController);
 
-    AdminInfoController.$inject = ['DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    AdminInfoController.$inject = ['DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function AdminInfoController(DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+    function AdminInfoController(DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;

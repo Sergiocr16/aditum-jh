@@ -92,10 +92,10 @@ public class AdminInfoResource {
      */
     @GetMapping("/admin-infos")
     @Timed
-    public ResponseEntity<List<AdminInfoDTO>> getAllAdminInfos(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<AdminInfoDTO>> getAllAdminInfos(@ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of AdminInfos");
-        Page<AdminInfoDTO> page = adminInfoService.findAll(pageable,companyId);
+        Page<AdminInfoDTO> page = adminInfoService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/admin-infos");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
