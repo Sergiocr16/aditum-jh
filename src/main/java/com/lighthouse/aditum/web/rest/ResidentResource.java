@@ -99,7 +99,25 @@ public class ResidentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/residentsEnabled/byHouse")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> findResidentesEnabledByHouseId(@ApiParam Pageable pageable, Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsEnabled/byHouse");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    @GetMapping("/residentsDisabled/byHouse")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> findResidentesDisabledByHouseId(@ApiParam Pageable pageable, Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<ResidentDTO> page = residentService.findDisabledByHouseId(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsDisabled/byHouse");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     @GetMapping("/residentsEnabled")
     @Timed
@@ -120,6 +138,7 @@ public class ResidentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsDisabled");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     /**
      * GET  /residents/:id : get the "id" resident.
      *

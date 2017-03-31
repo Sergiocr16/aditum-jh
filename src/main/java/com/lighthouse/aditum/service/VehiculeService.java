@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.VehiculeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -83,4 +84,35 @@ public class VehiculeService {
         log.debug("Request to delete Vehicule : {}", id);
         vehiculeRepository.delete(id);
     }
+
+
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findEnabled(Pageable pageable,Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyId(1,companyId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+    }
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findDisabled(Pageable pageable,Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyId(0,companyId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+
+    }
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findEnabledByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(1,houseId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+
+    }
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findDisabledByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(0,houseId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+
+    }
+
+
 }

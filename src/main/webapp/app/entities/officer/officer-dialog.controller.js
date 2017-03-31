@@ -101,7 +101,7 @@
             vm.user.login = generateLogin(1);
             User.save(vm.user, onSaveUser, onSaveLoginError);
              function onSaveUser (result) {
-                   $state.go('resident');
+                    $state.go('officer');
 
              }
         }

@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-colorpicker/css/colorpicker.css">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -35,7 +36,7 @@
     <link rel="stylesheet" href="content/css/plugins.css">
     <link rel="stylesheet" href="content/css/plugins-md.css">
     <link rel="stylesheet" href="content/css/toaster.css">
-
+    <link rel="stylesheet" href="content/css/components-md.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" media="screen" title="no title">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <!-- endbuild -->
@@ -97,6 +98,7 @@
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bower_components/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
     <script src="content/js/toaster.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
@@ -111,6 +113,8 @@
     <script src="content/js/layout.js"></script>
     <script src="content/js/quick-sidebar.js"></script>
     <script src="content/js/bootbox.js"></script>
+    <script src="content/js/color-picker.js"></script>
+    <script src="content/js/jscolor.js"></script>
     <script src="content/js/demo.js"></script>
     <script src="content/js/moment.js"></script>
     <script src="content/js/encryption-aes.js"></script>
@@ -161,12 +165,16 @@
     <script src="app/entities/vehicule/vehicule.state.js"></script>
     <script src="app/entities/vehicule/vehicule.service.js"></script>
     <script src="app/entities/vehicule/vehicule.controller.js"></script>
+    <script src="app/entities/vehicule/vehicule-by-house.controller.js"></script>
+    <script src="app/entities/vehicule/vehicule-by-house-dialog.controller.js"></script>
     <script src="app/entities/resident/resident-dialog.controller.js"></script>
     <script src="app/entities/resident/resident-detail.controller.js"></script>
     <script src="app/entities/resident/resident-delete-dialog.controller.js"></script>
     <script src="app/entities/resident/resident.state.js"></script>
     <script src="app/entities/resident/resident.service.js"></script>
     <script src="app/entities/resident/resident.controller.js"></script>
+    <script src="app/entities/resident/residentByHouse.controller.js"></script>
+    <script src="app/entities/resident/resident-by-house-dialog.controller.js"></script>
     <script src="app/entities/officer/officer-dialog.controller.js"></script>
     <script src="app/entities/officer/officer-detail.controller.js"></script>
     <script src="app/entities/officer/officer-delete-dialog.controller.js"></script>
@@ -185,6 +193,7 @@
     <script src="app/entities/house/house.state.js"></script>
     <script src="app/entities/house/house.service.js"></script>
     <script src="app/entities/house/house.controller.js"></script>
+    <script src="app/entities/house/keyConfiguration.controller.js"></script>
     <script src="app/entities/entity.state.js"></script>
     <script src="app/entities/emergency/emergency-dialog.controller.js"></script>
     <script src="app/entities/emergency/emergency-detail.controller.js"></script>
@@ -227,6 +236,7 @@
     <script src="app/components/util/data-util.service.js"></script>
     <script src="app/components/util/common-methods.js"></script>
     <script src="app/components/util/capitalize.filter.js"></script>
+    <script src="app/components/util/house-number-util.filter.js"></script>
     <script src="app/components/util/date-watch-util.filter.js"></script>
     <script src="app/components/util/base64.service.js"></script>
     <script src="app/components/login/login.service.js"></script>

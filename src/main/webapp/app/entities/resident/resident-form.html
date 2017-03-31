@@ -72,7 +72,7 @@
                                 <input ng-model="vm.resident.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
                                 <label class="font-15">Segundo Apellido</label>
                             </div>
-                            <div class="form-group form-md-line-input">
+                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
                                 <input ng-model="vm.resident.identificationnumber" type="text" class="form-control numbers gray-font" required>
                                 <label  class="font-15">Número de cédula</label>
                             </div>
@@ -89,8 +89,13 @@
                                 <label class="font-15">Correo electrónico</label>
                             </div>
 
+                            <div has-authority="ROLE_USER" class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <label  class="font-15">Número de cédula</label>
+                            </div>
+
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                            <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses" required>
+                            <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses"  ng-required='vm.required==1'>
                                 <option value="">Seleccione una casa</option>
                             </select>
                                 <label class="font-15 ">Número de casa</label >
@@ -101,7 +106,8 @@
                         <div class="form-actions noborder">
                             <h3 class="text-right ">
                                 <button type="submit" class="btn blue"><i class="fa fa-pencil " ng-disabled="editForm.$invalid || vm.isSaving"  ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                <button type="button" ui-sref="resident()" class="btn red default">Cancelar</button>
+                                <button has-authority="ROLE_MANAGER" type="button" ui-sref="resident()" class="btn red default">Cancelar</button>
+                                <button has-authority="ROLE_USER" type="button" ui-sref="residentByHouse()" class="btn red default">Cancelar</button>
                             </h3>
                         </div>
                     </div>

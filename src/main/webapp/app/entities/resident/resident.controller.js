@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User','CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal','Company','MultiCompany','$rootScope'];
+    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal,Company,MultiCompany,$rootScope) {
+    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+         $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-        console.log($rootScope.companyId)
+
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -32,25 +33,28 @@
             }
         }
         loadHouses();
+
         function loadHouses() {
+            House.query({
+                companyId: $rootScope.companyId
+            }).$promise.then(onSuccessHouses);
 
-
-
-            House.query({companyId: $rootScope.companyId}, onSuccessHouses);
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
                 loadResidents();
             }
+
         }
-        function loadResidents() {
-            if(enabledOptions){
-              vm.changesTitles();
+
+        function loadResidents(option) {
+            if (enabledOptions) {
+                vm.changesTitles();
                 Resident.residentsEnabled({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort(),
                     companyId: $rootScope.companyId,
-                }, onSuccess, onError);
+                }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Resident.residentsDisabled({
@@ -58,8 +62,9 @@
                     size: vm.itemsPerPage,
                     sort: sort(),
                     companyId: $rootScope.companyId,
-                }, onSuccess, onError);
+                }).$promise.then(onSuccess, onError);
             }
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -67,102 +72,72 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.residents = formatResidents(data);
-                vm.page = pagingParams.page;
-                $("#loadingIcon").fadeOut(0);
+                if (option !== 1) {
+                    vm.queryCount = data.length;
+
+                    vm.page = pagingParams.page;
+                    vm.residents = formatResidents(data);
+                      console.log(vm.residents)
+                } else {
+                    var residentsByHouse = [];
+                    vm.residents = data;
+                    for (var i = 0; i < vm.residents.length; i++) {
+                        if (vm.house.id === vm.residents[i].houseId) {
+                            residentsByHouse.push(vm.residents[i])
+                        }
+                    }
+                    vm.residents = formatResidents(residentsByHouse);
+                }
+
                 setTimeout(function() {
-                    $("#tableData").fadeIn(300);
-                }, 200)
+                          $("#loadingIcon").fadeOut(300);
+                }, 400)
+                 setTimeout(function() {
+                     $("#tableData").fadeIn('slow');
+                 },700 )
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-    vm.switchEnabledDisabledResidents = function() {
-        enabledOptions = !enabledOptions;
-        vm.findResidentsByHouse(vm.house);
-    }
+        vm.switchEnabledDisabledResidents = function() {
+            enabledOptions = !enabledOptions;
+            vm.findResidentsByHouse(vm.house);
+        }
         vm.findResidentsByHouse = function(house) {
-
-            var residentsByHouse = [];
+             $("#tableData").fadeOut(0);
+             setTimeout(function() {
+                 $("#loadingIcon").fadeIn(100);
+             }, 200)
+            vm.house = house;
             if (house == undefined) {
-
-               $("#tableData").fadeOut(0);
-                    loadResidents();
+                loadResidents();
             } else {
-                $("#tableData").fadeOut(0);
-
-                if (enabledOptions) {
-                    vm.changesTitles();
-                    Resident.residentsEnabled({
-                        page: pagingParams.page - 1,
-                        size: vm.itemsPerPage
-
-                    }, onSuccess);
-
-                    function onSuccess(data, headers) {
-
-                        vm.residents = data;
-                        for (var i = 0; i < vm.residents.length; i++) {
-                            if (house.id === vm.residents[i].houseId) {
-                                residentsByHouse.push(vm.residents[i])
-                            }
-                        }
-                        vm.residents = formatResidents(residentsByHouse);
-
-                        setTimeout(function() {
-                            $("#tableData").fadeIn(300);
-                        }, 200)
-                    }
-
-
-                } else {
-                    vm.changesTitles();
-                  Resident.residentsDisabled({
-                      page: pagingParams.page - 1,
-                      size: vm.itemsPerPage
-
-                  }, onSuccess);
-
-                    function onSuccess(data, headers) {
-                        vm.residents = data;
-                        for (var i = 0; i < vm.residents.length; i++) {
-                            if (house.id === vm.residents[i].houseId) {
-                                residentsByHouse.push(vm.residents[i])
-                            }
-                        }
-                        vm.residents = formatResidents(residentsByHouse);
-                        $("#loadingIcon").fadeOut(0);
-                        setTimeout(function() {
-                            $("#tableData").fadeIn(300);
-                        }, 200)
-                    }
-                }
+                loadResidents(1);
             }
         }
 
         function formatResidents(residents) {
-                var formattedResidents = [];
-                for (var i = 0; i < residents.length; i++) {
+            var formattedResidents = [];
+            for (var i = 0; i < residents.length; i++) {
 
-                    for (var e = 0; e < vm.houses.length; e++) {
-                        if (residents[i].houseId == vm.houses[e].id) {
-                            residents[i].house_id = vm.houses[e].housenumber;
-                            residents[i].name = residents[i].name + " " + residents[i].lastname;
-                        }
+                for (var e = 0; e < vm.houses.length; e++) {
+                    if (residents[i].houseId == vm.houses[e].id) {
+                        residents[i].house_id = vm.houses[e].housenumber;
+                        residents[i].name = residents[i].name + " " + residents[i].lastname;
                     }
                 }
-
-                return residents;
             }
 
-        vm.deleteResident = function(id_resident, name,lastname) {
+            return residents;
+        }
+
+        vm.deleteResident = function(id_resident, name, lastname) {
             bootbox.confirm({
-                message: "¿Está seguro que desea eliminar al residente " + name + " " + lastname +"?",
+                message: "¿Está seguro que desea eliminar al residente " + name + "?",
                 buttons: {
                     confirm: {
                         label: 'Aceptar',
@@ -182,7 +157,7 @@
 
                         function onSuccess(data, headers) {
                             toastr["success"]("Se ha eliminado el residente correctamente.");
-                              loadResidents();
+                            loadResidents();
                         }
                     }
                 }
@@ -190,90 +165,100 @@
 
 
         };
-          vm.query = '';
-          vm.search = function(resident) {
-          var query = vm.query.toLowerCase(),
-          fullname = resident.name.toLowerCase() + ' ' + resident.lastname.toLowerCase();
-
-          if (fullname.indexOf(query) != -1) {
-            return true;
-          }
-          return false;
-        };
 
 
-    vm.disableEnabledResident = function(resident) {
+        vm.disableEnabledResident = function(residentInfo) {
 
-        var correctMessage;
-        if (enabledOptions) {
-            correctMessage = "¿Está seguro que desea deshabilitar al residente " + resident.name + " " + resident.lastname + "?";
-        } else {
-            correctMessage = "¿Está seguro que desea habilitar al residente " + resident.name  + "?";
-        }
-        bootbox.confirm({
+            var correctMessage;
+            if (enabledOptions) {
+                correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
+            } else {
+                correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
+            }
+            bootbox.confirm({
 
-            message: correctMessage,
+                message: correctMessage,
 
-            buttons: {
-                confirm: {
-                    label: 'Aceptar',
-                    className: 'btn-success'
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
                 },
-                cancel: {
-                    label: 'Cancelar',
-                    className: 'btn-danger'
-                }
-            },
-            callback: function(result) {
-                if (result) {
-                    CommonMethods.waitingMessage();
-                    if (enabledOptions) {
-                        resident.enabled = 0;
-                        Resident.update(resident,onSuccess);
-                           function onSuccess(data, headers) {
-                              if(resident.isOwner==1){
-                              User.getUserById({id: resident.userId},onSuccess);
+                callback: function(result) {
+                    if (result) {
+                           CommonMethods.waitingMessage();
+                        Resident.get({id: residentInfo.id}).$promise.then(onSuccess);
+                        function onSuccess (result) {
+                            enabledDisabledResident(result);
+                         }
+
+                         function enabledDisabledResident(resident){
+                             if (enabledOptions) {
+                                 resident.enabled = 0;
+                                 Resident.update(resident, onSuccess);
+
                                  function onSuccess(data, headers) {
-                                  data.activated = 0;
-                                    User.update(data,onSuccessUser);
-                                     function onSuccessUser(data, headers) {
+                                     if (resident.isOwner == 1) {
+                                         User.getUserById({
+                                             id: residentInfo.userId
+                                         }, onSuccess);
+
+                                         function onSuccess(data, headers) {
+                                             data.activated = 0;
+                                             User.update(data, onSuccessUser);
+
+                                             function onSuccessUser(data, headers) {
+                                                 toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                                                 bootbox.hideAll();
+                                                  loadResidents();
+                                             }
+                                         }
+                                     } else {
+                                         loadResidents();
                                          toastr["success"]("Se ha deshabilitado el residente correctamente.");
                                          bootbox.hideAll();
                                      }
-                                  }
-                                   } else{
-                                   loadResidents();
-                                 toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                 bootbox.hideAll();
-                            }
-                            }
+                                 }
 
-                    } else {
-                       resident.enabled = 1;
-                       Resident.update(resident,onSuccess);
-                          function onSuccess(data, headers) {
-                              if(resident.isOwner==1){
-                             User.getUserById({id: resident.userId},onSuccess);
-                                function onSuccess(data, headers) {
-                                 data.activated = 1;
-                                   User.update(data,onSuccessUser);
-                                    function onSuccessUser(data, headers) {
-                                        toastr["success"]("Se ha habilitado el residente correctamente.");
-                                        bootbox.hideAll();
-                                    }
+                             } else {
+                                 resident.enabled = 1;
+                                 Resident.update(resident, onSuccess);
+
+                                 function onSuccess(data, headers) {
+                                     if (resident.isOwner == 1) {
+                                         User.getUserById({
+                                             id: resident.userId
+                                         }, onSuccess);
+
+                                         function onSuccess(data, headers) {
+                                             data.activated = 1;
+                                             User.update(data, onSuccessUser);
+
+                                             function onSuccessUser(data, headers) {
+                                                 toastr["success"]("Se ha habilitado el residente correctamente.");
+                                                 bootbox.hideAll();
+                                                    loadResidents();
+                                             }
+                                         }
+                                     } else {
+                                         bootbox.hideAll();
+                                         toastr["success"]("Se ha habilitado el residente correctamente.");
+                                         loadResidents();
+                                     }
                                  }
-                                } else{
-                                     bootbox.hideAll();
-                                     toastr["success"]("Se ha habilitado el residente correctamente.");
-                                     loadResidents();
-                                 }
-                           }
+                             }
+                         }
+
+
                     }
-
                 }
-            }
-        });
-    };
+            });
+        };
 
 
         function loadPage(page) {

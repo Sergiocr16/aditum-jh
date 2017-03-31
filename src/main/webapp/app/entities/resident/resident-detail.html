@@ -1,77 +1,4 @@
 
-<!--<div>-->
-    <!--<h2><span data-translate="aditumApp.resident.detail.title">Resident</span> {{vm.resident.id}}</h2>-->
-    <!--<hr>-->
-    <!--<jhi-alert-error></jhi-alert-error>-->
-    <!--<dl class="row jh-entity-details">-->
-        <!--<dt><span data-translate="aditumApp.resident.name">Name</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.name}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.lastname">Lastname</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.lastname}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.secondlastname">Secondlastname</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.secondlastname}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.identificationnumber">Identificationnumber</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.identificationnumber}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.phonenumber">Phonenumber</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.phonenumber}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.image">Image</span></dt>-->
-        <!--<dd>-->
-            <!--<div ng-if="vm.resident.image">-->
-                <!--<a ng-click="vm.openFile(vm.resident.imageContentType, vm.resident.image)">-->
-                    <!--<img data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}" style="max-width: 100%;" alt="resident image"/>-->
-                <!--</a>-->
-                <!--{{vm.resident.imageContentType}}, {{vm.byteSize(vm.resident.image)}}-->
-            <!--</div>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.email">Email</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.email}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.isOwner">Is Owner</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.isOwner}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.enabled">Enabled</span></dt>-->
-        <!--<dd>-->
-            <!--<span>{{vm.resident.enabled}}</span>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.user">User</span></dt>-->
-        <!--<dd>-->
-            <!--{{vm.resident.userLogin}}-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.company">Company</span></dt>-->
-        <!--<dd>-->
-            <!--<a ui-sref="company-detail({id:vm.resident.companyId})">{{vm.resident.companyId}}</a>-->
-        <!--</dd>-->
-        <!--<dt><span data-translate="aditumApp.resident.house">House</span></dt>-->
-        <!--<dd>-->
-            <!--<a ui-sref="house-detail({id:vm.resident.houseId})">{{vm.resident.houseId}}</a>-->
-        <!--</dd>-->
-    <!--</dl>-->
-
-    <!--<button type="submit"-->
-            <!--ui-sref="{{ vm.previousState }}"-->
-            <!--class="btn btn-info">-->
-        <!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
-    <!--</button>-->
-
-    <!--<button type="button" ui-sref="resident-detail.edit({id:vm.resident.id})" class="btn btn-primary">-->
-        <!--<span class="glyphicon glyphicon-pencil"></span>-->
-        <!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
-    <!--</button>-->
-<!--</div>-->
-
-
 <div class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
@@ -91,12 +18,7 @@
         <div class="btn-group pull-right"> </div>
     </div>
 </div>
-<!--<div class="loading col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">-->
-    <!--<h1 class="text-center">-->
-        <!--<img src="../../assets/global/img/loader4.gif" alt="" />-->
 
-    <!--</h1>-->
-<!--</div>-->
 <div class="display-none" id="residentInformation">
 <div>
     <div class="row">
@@ -133,7 +55,7 @@
                         <div class="col-md-9 col-sm-9 col-xs-12">
                             <div class="margin-top-30 col-md-12 col-sm-12 col-xs-12 text-center"></div>
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
-                                <span class="font-15 gray-font">Nombre: {{vm.resident.name}} {{vm.resident.lastname}} {{vm.resident.secondlastname}}</span>
+                                <span class="font-15 gray-font" style="text-transform: capitalize;">Nombre: {{vm.resident.name}} {{vm.resident.lastname}} {{vm.resident.secondlastname}}</span>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30 ">
                                 <span class="font-15 gray-font">Número de celular: {{vm.resident.phonenumber}}</span>

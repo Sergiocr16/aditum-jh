@@ -9,7 +9,7 @@
     function House ($resource, DateUtils) {
         var resourceUrl =  'api/houses/:id';
 
-        return $resource(resourceUrl, {companyId: 1}, {
+        return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',

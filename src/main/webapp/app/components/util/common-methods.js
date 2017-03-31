@@ -19,6 +19,8 @@
                 capitalizeFirstLetter: capitalizeFirstLetter,
                 encryptIdUrl,
                 decryptIdUrl,
+                validateSpecialCharacters: validateSpecialCharacters,
+                getCarBrands: getCarBrands
             };
             function validateName (items, name) {
                 var condition = true;
@@ -126,6 +128,95 @@
              function capitalizeFirstLetter(string) {
                      return string.charAt(0).toUpperCase() + string.slice(1);
              }
+             function getCarBrands() {
+                var brands = {
+                    data: [{
+
+                        name: "Audi"
+                    }, {
+                        name: "Alfa Romeo"
+                    }, {
+                        name: "BMW"
+                    }, {
+                        name: "BYD"
+                    }, {
+                        name: "Chevrolet"
+                    }, {
+                        name: "Citroen"
+                    }, {
+                        name: "Daewoo"
+                    }, {
+                        name: "Daihatsu"
+                    }, {
+                        name: "Dodge"
+                    }, {
+                        name: "Fiat"
+                    }, {
+                        name: "Ford"
+                    }, {
+                        name: "Honda"
+                    }, {
+                        name: "Hummer"
+                    }, {
+                        name: "Hyundai"
+                    }, {
+                        name: "Izuzu"
+                    }, {
+                        name: "Jaguar"
+                    }, {
+                        name: "JAC"
+                    }, {
+                        name: "Jeep"
+                    }, {
+                        name: "Kia"
+                    }, {
+                        name: "Land Rover"
+                    }, {
+                        name: "Lexus"
+                    }, {
+                        name: "Maserati"
+                    }, {
+                        name: "Mazda"
+                    }, {
+                        name: "Mercedes Benz"
+                    }, {
+                        name: "Mini"
+                    }, {
+                        name: "Mitsubishi"
+                    }, {
+                        name: "Nissan"
+                    }, {
+                        name: "Peugeot"
+                    }, {
+                        name: "Porshe"
+                    }, {
+                        name: "Renault"
+                    }, {
+                        name: "Rolls Royce"
+                    }, {
+                        name: "Ssanyong"
+                    }, {
+                        name: "Subaru"
+                    }, {
+                        name: "Suzuki"
+                    }, {
+                        name: "Toyota"
+                    }, {
+                        name: "Volkswagen"
+                    }, {
+                        name: "Volvo"
+
+                    }, ]
+                }
+
+                return brands;
+              }
+              function validateSpecialCharacters() {
+                 jQuery('.specialCharacters').keypress(function(tecla) {
+                 if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65)) return false;
+                 });
+              }
+
              function validateRepeat(items, itemToValidate, criteria) {
                  var condition = false;
                  angular.forEach(items, function(item, index) {

@@ -5,43 +5,54 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['Principal','$timeout', '$scope', '$stateParams', 'entity', 'House', 'Vehicule', 'Visitant', 'Note', 'Resident', 'Emergency', 'Company'];
+    HouseDialogController.$inject = ['CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House'];
 
-    function HouseDialogController (Principal,$timeout, $scope, $stateParams,  entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company) {
+    function HouseDialogController (CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House) {
         var vm = this;
-
+  $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
 
         vm.house = entity;
-        vm.clear = clear;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.title = "Registrar casa";
-        vm.button = "Registrar";
+
+        if(vm.house.id !== null){
+            vm.title = "Editar house";
+            vm.button = "Editar";
+
+        } else{
+          vm.title = "Registrar casa";
+          vm.button = "Registrar";
+        }
+
+
              setTimeout(function() {
             $("#edit_house_form").fadeIn(600);
          }, 200)
-        $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
-        });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
 
         function save () {
+        CommonMethods.waitingMessage();
             vm.isSaving = true;
             if (vm.house.id !== null) {
                 House.update(vm.house, onSaveSuccess, onSaveError);
             } else {
+                vm.house.companyId = $rootScope.companyId;
+                vm.house.isdesocupated = 0;
+                 vm.house.desocupationinitialtime = new Date();
+                 vm.house.desocupationfinaltime = new Date();
                 House.save(vm.house, onSaveSuccess, onSaveError);
             }
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:houseUpdate', result);
-            $uibModalInstance.close(result);
+            $state.go('house');
+            bootbox.hideAll();
+               if(vm.house.id !== null){
+                    toastr["success"]("Se editó la casa correctamente");
+                } else{
+                    toastr["success"]("Se registró la casa correctamente");
+                }
+
             vm.isSaving = false;
         }
 
@@ -49,11 +60,5 @@
             vm.isSaving = false;
         }
 
-        vm.datePickerOpenStatus.desocupationinitialtime = false;
-        vm.datePickerOpenStatus.desocupationfinaltime = false;
-
-        function openCalendar (date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

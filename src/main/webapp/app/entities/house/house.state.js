@@ -55,8 +55,7 @@
                 parent: 'house',
                 url: '/house/{id}',
                 data: {
-                    authorities: ['ROLE_USER'],
-                    pageTitle: 'aditumApp.house.detail.title'
+                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
@@ -89,7 +88,7 @@
                 parent: 'house-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_USER']
+                         authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -150,69 +149,73 @@
                         return currentStateData;
                     }]
                 }
-                //
-                //            parent: 'house',
-                //            url: '/new',
-                //            data: {
-                //                authorities: ['ROLE_USER']
-                //            },
-                //            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                //                $uibModal.open({
-                //                    templateUrl: 'app/entities/house/house-dialog.html',
-                //                    controller: 'HouseDialogController',
-                //                    controllerAs: 'vm',
-                //                    backdrop: 'static',
-                //                    size: 'lg',
-                //                    resolve: {
-                //                        entity: function () {
-                //                            return {
-                //                                housenumber: null,
-                //                                extension: null,
-                //                                isdesocupated: null,
-                //                                desocupationinitialtime: null,
-                //                                desocupationfinaltime: null,
-                //                                securityKey: null,
-                //                                emergencyKey: null,
-                //                                id: null
-                //                            };
-                //                        }
-                //                    }
-                //                }).result.then(function() {
-                //                    $state.go('house', null, { reload: 'house' });
-                //                }, function() {
-                //                    $state.go('house');
-                //                });
-                //            }]
+
             })
             .state('house.edit', {
-                parent: 'house',
-                url: '/{id}/edit',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/house/house-dialog.html',
-                        controller: 'HouseDialogController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
+                   parent: 'house',
+                        url: '/{id}/edit',
+                        data: {
+                         authorities: ['ROLE_ADMIN','ROLE_MANAGER']
+                        },
+                        views: {
+                            'content@': {
+                                templateUrl: 'app/entities/house/house-form.html',
+                                controller: 'HouseDialogController',
+                                controllerAs: 'vm'
+                            }
+                        },
                         resolve: {
-                            entity: ['House', function(House) {
-                                return House.get({
-                                    id: $stateParams.id
-                                }).$promise;
+                              entity: ['$stateParams', 'House', function($stateParams, House) {
+                                        return House.get({id : $stateParams.id}).$promise;
+                                    }],
+                            previousState: ["$state", function ($state) {
+                                var currentStateData = {
+                                    name: $state.current.name || 'house',
+                                    params: $state.params,
+                                    url: $state.href($state.current.name, $state.params)
+                                };
+                                return currentStateData;
                             }]
                         }
-                    }).result.then(function() {
-                        $state.go('house', null, {
-                            reload: 'house'
-                        });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
             })
+             .state('keysConguration', {
+                    parent: 'house',
+                    url: '/keysConguration',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: 'app/entities/house/keyConfiguration.html',
+                            controller: 'KeyConfigurationController',
+                            controllerAs: 'vm'
+                        }
+                    },
+                    resolve: {
+
+                        entity: function() {
+                            return {
+                                housenumber: null,
+                                extension: null,
+                                isdesocupated: null,
+                                desocupationinitialtime: null,
+                                desocupationfinaltime: null,
+                                securityKey: null,
+                                emergencyKey: null,
+                                id: null
+                            };
+                        },
+                        previousState: ["$state", function($state) {
+                            var currentStateData = {
+                                name: $state.current.name || '',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
+                        }]
+                    }
+
+                })
             .state('house.delete', {
                 parent: 'house',
                 url: '/{id}/delete',
