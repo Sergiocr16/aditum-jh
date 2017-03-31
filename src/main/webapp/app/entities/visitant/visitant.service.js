@@ -41,13 +41,30 @@
                 }
             },
             'findInvitedByHouse':{
-            url: 'api/visitants/invited/finByHouse/:houseId/:companyId',
+            url: 'api/visitants/finByHouse/lastMonth/:houseId',
              method: 'GET',
              params:{
-                   houseId: '@houseId',
-                   companyId: '@companyId',
+                   houseId: '@houseId'
                  },
               isArray: true,
+            },
+            'findByHouseInLastMonth':{
+            url: 'api/visitants/finByHouse/lastMonth/:houseId',
+             method: 'GET',
+             params:{
+                   houseId: '@houseId'
+                 },
+              isArray: true,
+            },
+            'findBetweenDatesByHouse':{
+                 method: 'GET',
+                 url: 'api/visitant/between/:initial_time/:final_time/byHouse/:houseId',
+                 isArray: true,
+                 params:{
+                  initial_time:'@initial_time',
+                  final_time: '@final_time',
+                  houseId: '@houseId',
+                }
             },
             'update': { method:'PUT' },
             'delete': { method:'DELETE' }

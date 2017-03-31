@@ -51,17 +51,17 @@
                     }]
                 }
             })
-            .state('visitant-user', {
+            .state('visitant-invited-user', {
                 parent: 'entity',
-                url: '/visitant/user/?page&sort&search',
+                url: '/visitant/invited/user/?page&sort&search',
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'aditumApp.visitant.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/visitant/visitants-user.html',
-                        controller: 'VisitantUserController',
+                        templateUrl: 'app/entities/visitant/visitants-user-invited.html',
+                        controller: 'VisitantInvitedUserController',
                         controllerAs: 'vm'
                     }
                 },
@@ -127,8 +127,8 @@
                     }]
                 }
             })
-            .state('visitant-user.edit', {
-                parent: 'visitant-user',
+            .state('visitant-invited-user.edit', {
+                parent: 'visitant-invited-user',
                 url: 'renew/:id',
                 data: {
                     authorities: ['ROLE_USER']

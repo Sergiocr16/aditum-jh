@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('VisitantUserController', VisitantUserController);
+        .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods'];
+    VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods'];
 
-    function VisitantUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods) {
+    function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods) {
 
         var vm = this;
         vm.Principal;
@@ -17,8 +17,8 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        setTimeout(function(){loadAll();},300)
 
-        loadAll();
         angular.element(document).ready(function() {
             $("#all").fadeIn("slow");
         });
@@ -77,7 +77,7 @@
 
         vm.renewVisitor = function(visitor) {
             var encryptedId = CommonMethods.encryptIdUrl(visitor.id)
-            $state.go('visitant-user.edit', {
+            $state.go('visitant-invited-user.edit', {
                 id: encryptedId
             })
         }

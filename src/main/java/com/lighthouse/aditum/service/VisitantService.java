@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -58,7 +60,26 @@ public class VisitantService {
     public Page<VisitantDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Visitants");
         Page<Visitant> result = visitantRepository.findByCompanyId(pageable,companyId);
+
         return result.map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findByDatesBetweenAndHouse(String initialTime,String finalTime,Long houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        List<Visitant> result = visitantRepository.findByDatesBetweenAndHouse(zd_initialTime,zd_finalTime,houseId,3);
+        Collections.reverse(result);
+        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findByHouseInLastMonth(Long houseId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        List<Visitant> result = visitantRepository.findByHouseInLastMonth(firstDayOfMonth,houseId,3);
+        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 
     @Transactional(readOnly = true)

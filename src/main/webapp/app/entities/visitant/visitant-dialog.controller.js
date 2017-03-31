@@ -132,7 +132,7 @@
 
         function onSaveSuccess(result) {
             $scope.$emit('aditumApp:visitantUpdate', result);
-            $state.go('visitant-user')
+            $state.go('visitant-invited-user')
             toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }
