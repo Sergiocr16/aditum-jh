@@ -121,7 +121,7 @@ public class VisitantResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/visitant/between/{initial_time}/{final_time}/byHouse/{houseId}")
+    @GetMapping("/visitants/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndHouse(
         @PathVariable (value = "initial_time")  String initial_time,
@@ -130,6 +130,30 @@ public class VisitantResource {
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/visitants/finByCompany/lastMonth/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsByCompanyInLastMonth(@PathVariable Long  companyId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findByCompanyInLastMonth(companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/visitants/between/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByDatesBetweenAndCompany(initial_time,final_time,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

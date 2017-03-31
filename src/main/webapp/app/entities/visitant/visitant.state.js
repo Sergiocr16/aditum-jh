@@ -51,6 +51,48 @@
                     }]
                 }
             })
+            .state('visitant-admin', {
+                parent: 'entity',
+                url: '/visitant/manage/?page&sort&search',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.visitant.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/visitant/visitants-admin.html',
+                        controller: 'VisitantAdminController',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('visitant');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('visitant-invited-user', {
                 parent: 'entity',
                 url: '/visitant/invited/user/?page&sort&search',
@@ -159,9 +201,9 @@
                     });
                 }]
             })
-            .state('visitant.new', {
-                parent: 'visitant',
-                url: '/new',
+            .state('visitant-invited-user.new', {
+                parent: 'visitant-invited-user',
+                url: 'new',
                 data: {
                     authorities: ['ROLE_USER'],
                     pageTitle: 'aditumApp.visitant.detail.title'

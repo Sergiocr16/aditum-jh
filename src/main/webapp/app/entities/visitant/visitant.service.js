@@ -41,10 +41,11 @@
                 }
             },
             'findInvitedByHouse':{
-            url: 'api/visitants/finByHouse/lastMonth/:houseId',
+            url: 'api/visitants/invited/finByHouse/:companyId/:houseId',
              method: 'GET',
              params:{
-                   houseId: '@houseId'
+                   houseId: '@houseId',
+                   companyId: '@companyId',
                  },
               isArray: true,
             },
@@ -58,12 +59,30 @@
             },
             'findBetweenDatesByHouse':{
                  method: 'GET',
-                 url: 'api/visitant/between/:initial_time/:final_time/byHouse/:houseId',
+                 url: 'api/visitants/between/:initial_time/:final_time/byHouse/:houseId',
                  isArray: true,
                  params:{
                   initial_time:'@initial_time',
                   final_time: '@final_time',
                   houseId: '@houseId',
+                }
+            },
+            'findByCompanyInLastMonth':{
+            url: 'api/visitants/finByCompany/lastMonth/:companyId',
+             method: 'GET',
+             params:{
+                   companyId: '@companyId'
+                 },
+              isArray: true,
+            },
+            'findBetweenDatesByCompany':{
+                 method: 'GET',
+                 url: 'api/visitants/between/:initial_time/:final_time/byCompany/:companyId',
+                 isArray: true,
+                 params:{
+                  initial_time:'@initial_time',
+                  final_time: '@final_time',
+                  companyId: '@companyId',
                 }
             },
             'update': { method:'PUT' },

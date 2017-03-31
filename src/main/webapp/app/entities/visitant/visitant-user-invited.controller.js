@@ -8,7 +8,6 @@
     VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods'];
 
     function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods) {
-
         var vm = this;
         vm.Principal;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -38,6 +37,7 @@
             }
 
             function onSuccess(data) {
+            console.log(data)
                 angular.forEach(data, function(value, key) {
                     value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
                 })

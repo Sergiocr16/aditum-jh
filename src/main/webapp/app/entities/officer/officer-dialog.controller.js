@@ -47,7 +47,7 @@
             vm.officer.inservice = 1;
             vm.officer.companyId = 1;
             vm.user.activated = true;
-            var authorities = ["ROLE_USER"];
+            var authorities = ["ROLE_OFFICER"];
             vm.user.authorities = authorities;
             vm.user.firstName =  vm.officer.name;
             vm.user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;

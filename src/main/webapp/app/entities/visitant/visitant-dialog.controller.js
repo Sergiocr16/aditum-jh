@@ -110,7 +110,7 @@
                                 Visitant.update(vm.visitor, onSuccess, onSaveError);
 
                                 function onSuccess() {
-                                  $state.go('visitant-user')
+                                  $state.go('visitant-invited-user')
                                     toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                                 }
                             } else {
