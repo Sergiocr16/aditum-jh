@@ -36,6 +36,7 @@
             $state.go('residentByHouse');
             bootbox.hideAll();
              toastr["success"]("Se establecieron las claves de seguridad correctamente");
+
             vm.isSaving = false;
         }
 
