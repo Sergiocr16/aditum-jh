@@ -60,7 +60,7 @@
         vm.currentUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
-            $rootScope.CompanyUser = data;
+            $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
             vm.currentUser = data;
              getContextLiving();

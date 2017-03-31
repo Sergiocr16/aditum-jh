@@ -100,6 +100,64 @@ public class VisitantResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/visitants/invited/finByHouse/{companyId}/{houseId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getInvitedVisitorsByHouse(@PathVariable(value = "houseId")  Long  houseId,
+                                                                       @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findInvitedVisitorsByHouse(companyId, houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/visitants/finByHouse/lastMonth/{houseId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsByHouseInLastMonth(@PathVariable Long  houseId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findByHouseInLastMonth(houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/visitants/between/{initial_time}/{final_time}/byHouse/{houseId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndHouse(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "houseId")  Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/visitants/finByCompany/lastMonth/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsByCompanyInLastMonth(@PathVariable Long  companyId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findByCompanyInLastMonth(companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/visitants/between/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByDatesBetweenAndCompany(initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /visitants/:id : get the "id" visitant.
      *
@@ -111,6 +169,17 @@ public class VisitantResource {
     public ResponseEntity<VisitantDTO> getVisitant(@PathVariable Long id) {
         log.debug("REST request to get Visitant : {}", id);
         VisitantDTO visitantDTO = visitantService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
+    }
+
+
+    @GetMapping("/visitants/invited/findOneByHouse/{identificationNumber}/{houseId}/{companyId}")
+    @Timed
+    public ResponseEntity<VisitantDTO> getVisitantByHouse( @PathVariable (value = "identificationNumber")  String identificationNumber,
+                                                           @PathVariable(value = "houseId")  Long  houseId,
+                                                           @PathVariable(value = "companyId")  Long companyId) {
+        log.debug("REST invited visitant in specific house with this idenfiticacion : {}", identificationNumber);
+        VisitantDTO visitantDTO = visitantService.findInvitedVisitorByHouse(identificationNumber,houseId,companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(visitantDTO));
     }
 

@@ -72,7 +72,8 @@
                     </li>
                 </ul>
             </li>
-            <li class="" has-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
+
+            <li class="" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
                     <span class="title">Condominio</span>
@@ -97,7 +98,7 @@
                             <i class="fa fa-car " aria-hidden="true"></i> Vehículos
                         </a>
                     </li>
-                    <li ui-sref="visitant" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="visitant-admin" ng-class="{ 'active' : active === 'adminVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitantes
                         </a>
@@ -105,7 +106,9 @@
                 </ul>
             </li>
             <!--//es admin-->
-            <li  class="start" has-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
+
+            <li  class="start" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
+
                 <a href="javascript:;">
                     <i class="fa fa-lock" aria-hidden="true"></i>
                     <span class="title "> Seguridad</span>
@@ -128,7 +131,9 @@
             </li>
 
             <!--//es residnete-->
-            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
+
+            <li  class="start"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
+
                 <a href="javascript:;">
                     <i class="fa fa-home" aria-hidden="true"></i>
                     <span class="title "> Administrar</span>
@@ -148,10 +153,10 @@
                     </li>
                     <li ui-sref="visitant" ng-class="{'active' : active === 'residentsVisitors'}">
                         <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Visitantes
+                            <i class="fa fa-user" aria-hidden="true"></i> Reporte de visitantes
                         </a>
                     </li>
-                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
+                    <li ui-sref="visitant-invited-user" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitantes invitados
                         </a>
@@ -165,6 +170,7 @@
             </li>
              <!--//es residente-->
             <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'reportHomeService' ||  active === 'reportAbsence' || active === 'reportEmergency'}">
+
                 <a href="javascript:;">
                     <i class="fa fa-flag-o" aria-hidden="true"></i>
                     <span class="title "> Reportar</span>
@@ -172,7 +178,7 @@
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="condominoRegisterVisitor()" ng-class="{'active' : active === 'reportInvitation'}">
+                    <li ui-sref="visitant-invited-user.new" ng-class="{'active' : active === 'reportInvitation'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Visitante
                         </a>
@@ -190,7 +196,8 @@
                 </ul>
             </li>
             <!--//es residente-->
-            <li  has-authority="ROLE_USER"  ui-sref="reportEmergency()" class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
+
+            <li ui-sref="reportEmergency()" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
                 <a href="javascript:;">
                     <i class="fa fa-ambulance" aria-hidden="true"></i>
                     <span class="title "> Reportar emergencia</span>

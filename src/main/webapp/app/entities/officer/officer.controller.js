@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerController', OfficerController);
 
-    OfficerController.$inject = ['DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    OfficerController.$inject = ['DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function OfficerController(DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+    function OfficerController(DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -22,9 +22,7 @@
 
         function loadAll () {
             Officer.query({
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-                sort: sort()
+               companyId: $rootScope.companyId
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];

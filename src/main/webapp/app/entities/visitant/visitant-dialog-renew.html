@@ -1,20 +1,4 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Reportar</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Visitante</a>
 
-        </li>
-
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
-</div>
 <div class="row display-none" id="all">
     <div class="col-md-12">
         <form ng-submit="vm.save()">
@@ -22,32 +6,32 @@
                 <div class="portlet-title">
                     <div class="caption font-green-haze">
                         <i class="fa fa-user font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Reportar visitante</span>
+                        <span class="caption-subject bold uppercase">Renovar invitación de visitante</span>
                     </div>
                 </div>
                 <div class="portlet-body form">
                     <div class="col-md-6 col-sm-6 marging-top-20">
                         <div class="form-group form-md-line-input">
-                            <input id="focusMe" ng-model="vm.visitor.identificationnumber" ng-change="findVisitor()" type="text" class="form-control numbers gray-font" required>
+                            <input ng-model="vm.visitor.identificationnumber" ng-change="findVisitor()" type="text" class="form-control numbers gray-font" disabled>
                             <label class="font-15">Número de cédula</label>
                         </div>
                         <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.name" type="text" style="text-transform: capitalize" class="form-control letters gray-font" required>
+                            <input ng-model="vm.visitor.name" type="text" style="text-transform: capitalize" class="form-control letters gray-font" disabled>
                             <label class="font-15">Nombre</label>
                         </div>
                         <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.lastname" type="text" style="text-transform: capitalize" class="form-control letters gray-font" required>
+                            <input ng-model="vm.visitor.lastname" type="text" style="text-transform: capitalize" class="form-control letters gray-font" disabled>
                             <label class="font-15">Primer Apellido</label>
                         </div>
                     </div>
                     <div class="col-md-6 col-sm-6  marging-top-20">
                         <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.secondlastname" style="text-transform: capitalize" type="text" class="form-control letters gray-font" required>
+                            <input ng-model="vm.visitor.secondlastname" style="text-transform: capitalize" type="text" class="form-control letters gray-font" disabled>
                             <label class="font-15">Segundo Apellido</label>
                         </div>
 
                         <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
+                            <input id="focusMe" ng-model="vm.visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
                             <label class="font-15">Número de placa (opcional)</label>
                             <span class="help-block">Sin guiones</span>
                         </div>
@@ -72,8 +56,8 @@
                     </div>
                     <div class="form-actions noborder">
                         <h3 class="text-right">
-                            <button type="submit" class="btn blue"><i class="fa fa-pencil"></i> Reportar</button>
-                            <button type="button" ui-sref="visitant-invited-user" class=" btn btn-danger">Cancelar</button>
+                            <button type="submit" class="btn blue"><i class="fa fa-pencil"></i> Renovar</button>
+                            <button type="button" data-dismiss="modal" ng-click="vm.clear()" class=" btn btn-danger">Cancelar</button>
                         </h3>
                     </div>
                 </div>

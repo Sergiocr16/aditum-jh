@@ -5,9 +5,9 @@
         .module('aditumApp')
         .service('MultiCompany', MultiCompany);
 
-    MultiCompany.$inject = ['Principal','AdminInfo','Resident','$rootScope'];
+    MultiCompany.$inject = ['Principal','AdminInfo','Resident','Officer','$rootScope'];
 
-    function MultiCompany (Principal,AdminInfo,Resident,$rootScope) {
+    function MultiCompany (Principal,AdminInfo,Resident,Officer,$rootScope) {
 
         var companyId;
         var service = {

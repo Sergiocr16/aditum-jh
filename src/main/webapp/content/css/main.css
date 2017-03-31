@@ -33,6 +33,16 @@ Development Ribbon
     z-index: 9999;
     pointer-events: none;
 }
+.bold-font{
+font-weight:bold;
+}
+.nice-label{
+  color:white;
+  border-radius:6px!important;
+  padding: 10px 5px;
+  text-align:center;
+  margin: 0px;
+}
 
 .ribbon a {
     border: 1px solid #faa;

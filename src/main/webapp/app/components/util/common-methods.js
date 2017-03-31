@@ -17,6 +17,8 @@
                 validateNumbers: validateNumbers,
                 validateRepeat: validateRepeat,
                 capitalizeFirstLetter: capitalizeFirstLetter,
+                encryptIdUrl,
+                decryptIdUrl,
                 validateSpecialCharacters: validateSpecialCharacters,
                 getCarBrands: getCarBrands
             };
@@ -76,7 +78,14 @@
                  return condition;
              }
 
+            function encryptIdUrl(id){
+            return CryptoJS.AES.encrypt(id.toString(), "Ankara").toString();
+            }
 
+            function decryptIdUrl(encryptedId){
+              return  CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara").toString(CryptoJS.enc.Utf8);
+
+            }
 
             function validateLetters() {
                  $(".letters").keypress(function(key) {

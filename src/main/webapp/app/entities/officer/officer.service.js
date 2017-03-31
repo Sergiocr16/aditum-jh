@@ -19,7 +19,16 @@
                     }
                     return data;
                 }
-            },
+            },'findByUserId':{
+                            url:'api/officers/findByUserId/:id',
+                            method:'GET',
+                            transformResponse: function (data) {
+                                if (data) {
+                                    data = angular.fromJson(data);
+                                }
+                                return data;
+                            }
+                        },
             'update': { method:'PUT' }
         });
     }
