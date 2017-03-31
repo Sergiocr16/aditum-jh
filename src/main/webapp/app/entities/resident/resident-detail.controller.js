@@ -22,7 +22,7 @@
         }
         House.get({id:vm.resident.houseId},onSuccessHouses);
         function onSuccessHouses(house, headers) {
-        console.log(house);
+  
             vm.resident.houseId = house.housenumber;
             $("#residentInformation").fadeIn(300);
             if (house.securityKey == null) {

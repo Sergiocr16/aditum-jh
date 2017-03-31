@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function HouseController(House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
-
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope ) {
+    $rootScope.active = "houses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -23,7 +23,8 @@
             House.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
-                sort: sort()
+                sort: sort(),
+                companyId: $rootScope.companyId
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -38,10 +39,12 @@
                 vm.queryCount = vm.totalItems;
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                   $("#loadingIcon").fadeOut(0);
-                    setTimeout(function() {
-                        $("#tableData").fadeIn(500);
-                    }, 200)
+                  setTimeout(function() {
+                            $("#loadingIcon").fadeOut(300);
+                  }, 400)
+                   setTimeout(function() {
+                       $("#tableData").fadeIn('slow');
+                   },700 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -60,5 +63,29 @@
                 search: vm.currentSearch
             });
         }
+
+
+
+       vm.showKeys = function(house_number, securityKey, emergencyKey) {
+            if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "" ) {
+                toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas.");
+            } else {
+                bootbox.dialog({
+                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de seguridad: <span class="font-20 bold" id="security_key">1134314</span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de emergencia: <span class="font-20 bold" id="emergency_key">1134314</span></h1></div>',
+                    closeButton: false,
+                    buttons: {
+                        confirm: {
+                            label: 'Ocultar',
+                            className: 'btn-success'
+                        }
+                    },
+                })
+                document.getElementById("key_id_house").innerHTML = "" + house_number;
+                document.getElementById("security_key").innerHTML = "" + securityKey;
+                document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
+            }
+        }
+
+
     }
 })();

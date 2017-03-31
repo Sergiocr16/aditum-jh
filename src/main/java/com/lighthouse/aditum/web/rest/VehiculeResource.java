@@ -82,7 +82,44 @@ public class VehiculeResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vehiculeDTO.getId().toString()))
             .body(result);
     }
+    @GetMapping("/vehiculesEnabled/byHouse")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getEnabledVehiculesByHouse(@ApiParam Pageable pageable,Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findEnabledByHouse(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesEnabled/byHouse");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
+    @GetMapping("/vehiculesDisabled/byHouse")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getDisabledVehiculesByHouse(@ApiParam Pageable pageable,Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findDisabledByHouse(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesDisabled/byHouse");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/vehiculesEnabled")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getEnabledVehicules(@ApiParam Pageable pageable,Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findEnabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesEnabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/vehiculesDisabled")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getDisabledVehicules(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findDisabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /vehicules : get all the vehicules.
      *
