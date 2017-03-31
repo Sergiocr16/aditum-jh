@@ -66,9 +66,9 @@
                             <td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>
                             <td>{{vehicule.brand}}</td>
                             <td>{{vehicule.house_id}}</td>
-                            <td> <a ui-sref="vehicule.edit({id:vehicule.id})">Editar</a></td>
-                            <td> <a ng-click="vm.disableEnabledVehicule(vehicule)">{{vm.actionButtonTitle}}</a></td>
-                            <td> <a ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">Eliminar</a></td>
+                            <td> <a class="light-gray-font" ui-sref="vehicule.edit({id:vehicule.id})">Editar</a></td>
+                            <td> <a class="light-gray-font" ng-click="vm.disableEnabledVehicule(vehicule)">{{vm.actionButtonTitle}}</a></td>
+                            <td> <a class="light-gray-font" ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">Eliminar</a></td>
                         </tr>
                         </tbody>
                     </table>

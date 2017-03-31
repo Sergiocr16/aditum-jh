@@ -3,90 +3,59 @@
 
     angular
         .module('aditumApp')
-        .controller('VehiculeController', VehiculeController);
+        .controller('VehiculeByHouseController', VehiculeByHouseController);
 
-    VehiculeController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    VehiculeByHouseController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function VehiculeController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
-         $rootScope.active = "vehicules";
+    function VehiculeByHouseController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+     $rootScope.active = "vehiculesHouses";
      var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-        vm.predicate = pagingParams.predicate;
-        vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
 
 
          vm.changesTitles = function() {
             if (enabledOptions) {
-                vm.title = "Vehículos habilitados";
-                vm.buttonTitle = "Ver vehículos deshabilitados";
-                vm.actionButtonTitle = "Deshabilitar";
+                vm.buttonDisabledEnabledVehicules = "Vehículos deshabilitados";
+                            vm.titleVehiculeIndex = "Mis vehículos ";
+                            vm.titleDisabledButton = "Deshabilitar vehículo";
+                            vm.iconDisabled = "fa fa-user-times";
+                            vm.color = "red";
             } else {
-                vm.title = "Vehículos deshabilitados";
-                vm.buttonTitle = "Ver vehículos habilitados";
-                vm.actionButtonTitle = "Habilitar";
+              vm.buttonDisabledEnabledVehicules = "Vehículos habilitados";
+                           vm.titleVehiculeIndex = "Mis vehículos (deshabilitados)";
+                           vm.titleDisabledButton = "Habilitar vehículo";
+                           vm.iconDisabled = "fa fa-undo";
+                           vm.color = "green";
             }
           }
 
-        loadHouses();
-        function loadHouses() {
-            House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
-            function onSuccessHouses(data, headers) {
-                vm.houses = data;
-                loadVehicules();
-            }
+        loadVehicules();
 
-        }
 
-        function loadVehicules(option) {
+        function loadVehicules() {
             if(enabledOptions){
               vm.changesTitles();
-                Vehicule.vehiculesEnabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
-                    companyId: $rootScope.companyId,
+                Vehicule.findVehiculesEnabledByHouseId({
+                    houseId: $rootScope.companyUser.houseId
                }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
-                Vehicule.vehiculesDisabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
-                    companyId: $rootScope.companyId,
+                Vehicule.findVehiculesDisabledByHouseId({
+                    houseId: $rootScope.companyUser.houseId
                 }).$promise.then(onSuccess, onError);
             }
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
-            }
+
               function onSuccess(data) {
-                   if (option !== 1) {
-                       vm.queryCount = vm.totalItems;
-                       vm.page = pagingParams.page;
-                       vm.vehicules = formatVehicules(data);
-                   } else {
-                       var vehiculesByHouse = [];
-                       vm.vehicules = data;
-                       for (var i = 0; i < vm.vehicules.length; i++) {
-                           if (vm.house.id === vm.vehicules[i].houseId) {
-                               vehiculesByHouse.push(vm.vehicules[i])
-                           }
-                       }
-                       vm.vehicules = formatVehicules(vehiculesByHouse);
-                   }
-                  setTimeout(function() {
-                             $("#loadingIcon").fadeOut(300);
-                   }, 400)
-                    setTimeout(function() {
-                        $("#tableData").fadeIn('slow');
-                    },700 )
+
+                  vm.vehicules = data;
+               setTimeout(function() {
+                         $("#loadingIcon").fadeOut(300);
+               }, 400)
+                setTimeout(function() {
+                    $("#vehicules_container").fadeIn('slow');
+                },700 )
                }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -94,38 +63,15 @@
 
         }
 
-        vm.switchEnabledDisabledResidents = function() {
+        vm.swithEnabledDisabledVehicules = function() {
+             $("#vehicules_container").fadeOut(0);
+                      setTimeout(function() {
+                          $("#loadingIcon").fadeIn(100);
+                      }, 200)
             enabledOptions = !enabledOptions;
-            vm.findVehiculesByHouse(vm.house);
+            loadVehicules();
         }
 
-
-        vm.findVehiculesByHouse = function(house) {
-             $("#tableData").fadeOut(0);
-             setTimeout(function() {
-                 $("#loadingIcon").fadeIn(100);
-             }, 200)
-            vm.house = house;
-
-            if (house == undefined) {
-                loadVehicules();
-            } else {
-                loadVehicules(1);
-            }
-        }
-        function formatVehicules(vehicules) {
-            var formattedVehicules = [];
-            for (var i = 0; i < vehicules.length; i++) {
-
-                for (var e = 0; e < vm.houses.length; e++) {
-                    if (vehicules[i].houseId == vm.houses[e].id) {
-                        vehicules[i].house_id = vm.houses[e].housenumber;
-                    }
-                }
-            }
-
-            return vehicules;
-        }
          vm.deleteVehicule = function(id_vehicule, license_plate) {
              bootbox.confirm({
                        message: "¿Está seguro que desea eliminar al vehículo " + license_plate + "?",
@@ -161,9 +107,9 @@
 
                     var correctMessage;
                     if (enabledOptions) {
-                        correctMessage = "¿Está seguro que desea deshabilitar al vehículo " + vehicule.licenseplate + "?";
+                        correctMessage = "¿Está seguro que desea deshabilitar al vehículo " + vehicule.licenseplate.toUpperCase() + "?";
                       } else {
-                          correctMessage = "¿Está seguro que desea habilitar al vehículo " + vehicule.licenseplate + "?";
+                          correctMessage = "¿Está seguro que desea habilitar al vehículo " + vehicule.licenseplate.toUpperCase() + "?";
                     }
                     bootbox.confirm({
 

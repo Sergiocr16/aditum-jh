@@ -3,12 +3,12 @@
 
     angular
         .module('aditumApp')
-        .controller('VehiculeDialogController', VehiculeDialogController);
+        .controller('VehiculeByHouseDialogController', VehiculeByHouseDialogController);
 
-    VehiculeDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company'];
+    VehiculeByHouseDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company'];
 
-    function VehiculeDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company) {
-         $rootScope.active = "vehicules";
+    function VehiculeByHouseDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company) {
+        $rootScope.active = "vehiculesHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
@@ -55,13 +55,13 @@
             } else {
                 vm.vehicule.enabled = 1;
                 vm.vehicule.companyId = $rootScope.companyId;
-
+                vm.vehicule.houseId = $rootScope.companyUser.houseId
                 Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
             }
         }
 
         function onSaveSuccess (result) {
-              $state.go('vehicule');
+              $state.go('vehiculeByHouse');
                   toastr["success"]("Se ha registrado el vehículo correctamente.");
 
             vm.isSaving = false;

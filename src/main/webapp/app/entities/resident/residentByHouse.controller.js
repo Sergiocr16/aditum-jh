@@ -8,58 +8,55 @@
     ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
 
     function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+            $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
 
+        vm.userId = $rootScope.companyUser.id;
         vm.loadPage = loadPage;
-        vm.predicate = pagingParams.predicate;
-        vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
 
         vm.changesTitles = function() {
             if (enabledOptions) {
-                vm.title = "Residentes habilitados";
+                vm.titleCondominosIndex = "Residentes de la filial ";
                 vm.buttonTitle = "Ver residentes deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
+                 vm.iconDisabled = "fa fa-user-times";
+                 vm.color = "red";
             } else {
-                vm.title = "Residentes deshabilitados";
+                vm.titleCondominosIndex = "Residentes de la filial (deshabilitados)";
                 vm.buttonTitle = "Ver residentes habilitados";
                 vm.actionButtonTitle = "Habilitar";
+               vm.iconDisabled = "fa fa-undo";
+                 vm.color = "green";
             }
         }
         loadResidents();
 
         function loadResidents() {
 
-                Resident.findResidentesByHouseId({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
+            if (enabledOptions) {
+                vm.changesTitles();
+                Resident.findResidentesEnabledByHouseId({
                     houseId: $rootScope.companyUser.houseId
                 }).$promise.then(onSuccess, onError);
-
-
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
+            } else {
+                vm.changesTitles();
+                Resident.findResidentesDisabledByHouseId({
+                    houseId: $rootScope.companyUser.houseId
+                }).$promise.then(onSuccess, onError);
             }
 
             function onSuccess(data) {
-              vm.queryCount = vm.totalItems;
-              vm.page = pagingParams.page;
                vm.residents = data;
-               console.log(vm.residents)
-                $("#loadingIcon").fadeOut(0);
-                setTimeout(function() {
-                    $("#residents_container").fadeIn(300);
-                }, 200)
+                   setTimeout(function() {
+                             $("#loadingIcon").fadeOut(300);
+                   }, 400)
+                    setTimeout(function() {
+                        $("#residents_container").fadeIn('slow');
+                    },700 )
             }
 
             function onError(error) {
@@ -67,6 +64,14 @@
             }
         }
 
+        vm.switchEnabledDisabledResidents = function() {
+             $("#residents_container").fadeOut(0);
+             setTimeout(function() {
+                 $("#loadingIcon").fadeIn(100);
+             }, 200)
+            enabledOptions = !enabledOptions;
+            loadResidents();
+        }
         vm.disableEnabledResident = function(resident) {
 
             var correctMessage;
@@ -91,17 +96,14 @@
                 },
                 callback: function(result) {
                     if (result) {
-                        CommonMethods.waitingMessage();
                         if (enabledOptions) {
                             resident.enabled = 0;
                             Resident.update(resident, onSuccess);
-
                             function onSuccess(data, headers) {
                                 if (resident.isOwner == 1) {
                                     User.getUserById({
                                         id: resident.userId
                                     }, onSuccess);
-
                                     function onSuccess(data, headers) {
                                         data.activated = 0;
                                         User.update(data, onSuccessUser);

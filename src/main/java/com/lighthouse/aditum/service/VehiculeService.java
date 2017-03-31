@@ -99,4 +99,20 @@ public class VehiculeService {
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
 
     }
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findEnabledByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(1,houseId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+
+    }
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findDisabledByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(0,houseId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+
+    }
+
+
 }

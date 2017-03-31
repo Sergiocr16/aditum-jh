@@ -8,6 +8,7 @@
     ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
 
     function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+         $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -72,9 +73,10 @@
                 return result;
             }
 
-            function onSuccess(data) {
+            function onSuccess(data, headers) {
                 if (option !== 1) {
-                    vm.queryCount = vm.totalItems;
+                    vm.queryCount = data.length;
+
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
                       console.log(vm.residents)
@@ -88,10 +90,13 @@
                     }
                     vm.residents = formatResidents(residentsByHouse);
                 }
-                $("#loadingIcon").fadeOut(0);
+
                 setTimeout(function() {
-                    $("#tableData").fadeIn(300);
-                }, 200)
+                          $("#loadingIcon").fadeOut(300);
+                }, 400)
+                 setTimeout(function() {
+                     $("#tableData").fadeIn('slow');
+                 },700 )
             }
 
             function onError(error) {
@@ -103,8 +108,11 @@
             vm.findResidentsByHouse(vm.house);
         }
         vm.findResidentsByHouse = function(house) {
+             $("#tableData").fadeOut(0);
+             setTimeout(function() {
+                 $("#loadingIcon").fadeIn(100);
+             }, 200)
             vm.house = house;
-             $("#tableData").fadeOut(300);
             if (house == undefined) {
                 loadResidents();
             } else {
@@ -159,13 +167,13 @@
         };
 
 
-        vm.disableEnabledResident = function(resident) {
+        vm.disableEnabledResident = function(residentInfo) {
 
             var correctMessage;
             if (enabledOptions) {
-                correctMessage = "¿Está seguro que desea deshabilitar al residente " + resident.name + "?";
+                correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
             } else {
-                correctMessage = "¿Está seguro que desea habilitar al residente " + resident.name + "?";
+                correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
             }
             bootbox.confirm({
 
@@ -183,59 +191,69 @@
                 },
                 callback: function(result) {
                     if (result) {
-                        CommonMethods.waitingMessage();
-                        if (enabledOptions) {
-                            resident.enabled = 0;
-                            Resident.update(resident, onSuccess);
+                           CommonMethods.waitingMessage();
+                        Resident.get({id: residentInfo.id}).$promise.then(onSuccess);
+                        function onSuccess (result) {
+                            enabledDisabledResident(result);
+                         }
 
-                            function onSuccess(data, headers) {
-                                if (resident.isOwner == 1) {
-                                    User.getUserById({
-                                        id: resident.userId
-                                    }, onSuccess);
+                         function enabledDisabledResident(resident){
+                             if (enabledOptions) {
+                                 resident.enabled = 0;
+                                 Resident.update(resident, onSuccess);
 
-                                    function onSuccess(data, headers) {
-                                        data.activated = 0;
-                                        User.update(data, onSuccessUser);
+                                 function onSuccess(data, headers) {
+                                     if (resident.isOwner == 1) {
+                                         User.getUserById({
+                                             id: residentInfo.userId
+                                         }, onSuccess);
 
-                                        function onSuccessUser(data, headers) {
-                                            toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                            bootbox.hideAll();
-                                        }
-                                    }
-                                } else {
-                                    loadResidents();
-                                    toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                    bootbox.hideAll();
-                                }
-                            }
+                                         function onSuccess(data, headers) {
+                                             data.activated = 0;
+                                             User.update(data, onSuccessUser);
 
-                        } else {
-                            resident.enabled = 1;
-                            Resident.update(resident, onSuccess);
+                                             function onSuccessUser(data, headers) {
+                                                 toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                                                 bootbox.hideAll();
+                                                  loadResidents();
+                                             }
+                                         }
+                                     } else {
+                                         loadResidents();
+                                         toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                                         bootbox.hideAll();
+                                     }
+                                 }
 
-                            function onSuccess(data, headers) {
-                                if (resident.isOwner == 1) {
-                                    User.getUserById({
-                                        id: resident.userId
-                                    }, onSuccess);
+                             } else {
+                                 resident.enabled = 1;
+                                 Resident.update(resident, onSuccess);
 
-                                    function onSuccess(data, headers) {
-                                        data.activated = 1;
-                                        User.update(data, onSuccessUser);
+                                 function onSuccess(data, headers) {
+                                     if (resident.isOwner == 1) {
+                                         User.getUserById({
+                                             id: resident.userId
+                                         }, onSuccess);
 
-                                        function onSuccessUser(data, headers) {
-                                            toastr["success"]("Se ha habilitado el residente correctamente.");
-                                            bootbox.hideAll();
-                                        }
-                                    }
-                                } else {
-                                    bootbox.hideAll();
-                                    toastr["success"]("Se ha habilitado el residente correctamente.");
-                                    loadResidents();
-                                }
-                            }
-                        }
+                                         function onSuccess(data, headers) {
+                                             data.activated = 1;
+                                             User.update(data, onSuccessUser);
+
+                                             function onSuccessUser(data, headers) {
+                                                 toastr["success"]("Se ha habilitado el residente correctamente.");
+                                                 bootbox.hideAll();
+                                                    loadResidents();
+                                             }
+                                         }
+                                     } else {
+                                         bootbox.hideAll();
+                                         toastr["success"]("Se ha habilitado el residente correctamente.");
+                                         loadResidents();
+                                     }
+                                 }
+                             }
+                         }
+
 
                     }
                 }

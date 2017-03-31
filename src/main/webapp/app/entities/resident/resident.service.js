@@ -37,11 +37,15 @@
                     }
                     return data;
                 }
-            },'findResidentesByHouseId': {
+            },'findResidentesEnabledByHouseId': {
                  method: 'GET',
-                 url: 'api/residents/byHouse',
+                 url: 'api/residentsEnabled/byHouse',
                  isArray: true
-             }
+             },'findResidentesDisabledByHouseId': {
+                   method: 'GET',
+                   url: 'api/residentsDisabled/byHouse',
+                   isArray: true
+               }
         });
     }
 })();

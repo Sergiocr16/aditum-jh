@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function HouseController(House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope ) {
-
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope ) {
+    $rootScope.active = "houses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -39,10 +39,12 @@
                 vm.queryCount = vm.totalItems;
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                   $("#loadingIcon").fadeOut(0);
-                    setTimeout(function() {
-                        $("#tableData").fadeIn(500);
-                    }, 200)
+                  setTimeout(function() {
+                            $("#loadingIcon").fadeOut(300);
+                  }, 400)
+                   setTimeout(function() {
+                       $("#tableData").fadeIn('slow');
+                   },700 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);

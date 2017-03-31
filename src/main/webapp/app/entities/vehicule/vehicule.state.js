@@ -51,6 +51,47 @@
                 }]
             }
         })
+                .state('vehiculeByHouse', {
+                    parent: 'entity',
+                    url: '/vehiculeByHouse?page&sort&search',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: 'app/entities/vehicule/vehicule-by-house.html',
+                            controller: 'VehiculeByHouseController',
+                            controllerAs: 'vm'
+                        }
+                    },
+                    params: {
+                        page: {
+                            value: '1',
+                            squash: true
+                        },
+                        sort: {
+                            value: 'id,asc',
+                            squash: true
+                        },
+                        search: null
+                    },
+                    resolve: {
+                        pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                            return {
+                                page: PaginationUtil.parsePage($stateParams.page),
+                                sort: $stateParams.sort,
+                                predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                                ascending: PaginationUtil.parseAscending($stateParams.sort),
+                                search: $stateParams.search
+                            };
+                        }],
+                        translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                            $translatePartialLoader.addPart('vehicule');
+                            $translatePartialLoader.addPart('global');
+                            return $translate.refresh();
+                        }]
+                    }
+                })
         .state('vehicule-detail', {
             parent: 'vehicule',
             url: '/vehicule/{id}',
@@ -146,7 +187,44 @@
                                 }]
                             }
                 })
+                .state('vehiculeByHouse.new', {
+                  parent: 'vehiculeByHouse',
+                            url: '/new',
+                            data: {
+                              authorities: ['ROLE_USER']
+                            },
+                            views: {
+                                'content@': {
+                       templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
+                                        controller: 'VehiculeByHouseDialogController',
+                                    controllerAs: 'vm'
+                                }
+                            },
+                            resolve: {
 
+                                  entity: function () {
+                                    return {
+                                        licenseplate: null,
+                                        brand: null,
+                                        color: null,
+                                        enabled: null,
+                                        id: null
+
+                                    };
+                                },
+                                companyUser: ['MultiCompany',function(MultiCompany){
+                                    return MultiCompany.getCurrentUserCompany()
+                                }],
+                                previousState: ["$state", function ($state) {
+                                    var currentStateData = {
+                                        name: $state.current.name || 'vehiculeByHouse',
+                                        params: $state.params,
+                                        url: $state.href($state.current.name, $state.params)
+                                    };
+                                    return currentStateData;
+                                }]
+                            }
+                })
          .state('vehicule.edit', {
                  parent: 'vehicule',
                     url: '/{id}/edit',
@@ -176,7 +254,34 @@
                     }
 
           })
+       .state('vehiculeByHouse.edit', {
+                 parent: 'vehiculeByHouse',
+                    url: '/{id}/edit',
+                    data: {
+                     authorities: ['ROLE_USER']
+                    },
+                    views: {
+                        'content@': {
+                          templateUrl: 'app/entities/vehicule/vehicule-dialog.html',
+                            controller: 'VehiculeByHouseDialogController',
+                            controllerAs: 'vm'
+                        }
+                    },
+                    resolve: {
+                            entity: ['$stateParams', 'Vehicule', function($stateParams, Vehicule) {
+                                return Vehicule.get({id : $stateParams.id}).$promise;
+                            }],
+                        previousState: ["$state", function ($state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'vehiculeByHouse',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
+                        }]
+                    }
 
+          })
 
 
         .state('vehicule.delete', {

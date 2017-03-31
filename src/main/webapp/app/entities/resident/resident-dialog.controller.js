@@ -8,15 +8,16 @@
     ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser'];
 
     function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser) {
+          $rootScope.active = "residents";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
+        vm.required = 1;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
-
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
@@ -49,6 +50,9 @@
 
 
         function save () {
+            vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
+            vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
+            vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
             vm.isSaving = true;
             if (vm.resident.id !== null) {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {

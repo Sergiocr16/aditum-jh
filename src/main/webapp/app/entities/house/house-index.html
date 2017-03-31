@@ -41,7 +41,7 @@
                     <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
                     <table ng-show="vm.houses.length>0" class="table table-striped table-hover font-12">
                         <thead>
-                        <tr>
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                             <th>Número</th>
                             <th>Extensión</th>
                             <th>Ver claves de seguridad</th>
@@ -53,13 +53,17 @@
                         <tr ng-repeat="house in vm.houses | filter:search">
                             <td>{{house.housenumber}}</td>
                             <td>{{house.extension}}</td>
-                            <td><a ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
-                            <td> <a ui-sref="house.edit({id:house.id})">Editar</a></td>
+                            <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
+                            <td> <a class="light-gray-font" ui-sref="house.edit({id:house.id})">Editar</a></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
+            <div class="text-center gray-font">
+                <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+            </div>
+            <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
         </div>
     </div>
 </div>

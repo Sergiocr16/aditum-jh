@@ -178,6 +178,44 @@
                             }]
                         }
             })
+             .state('keysConguration', {
+                    parent: 'house',
+                    url: '/keysConguration',
+                    data: {
+                        authorities: ['ROLE_USER']
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: 'app/entities/house/keyConfiguration.html',
+                            controller: 'KeyConfigurationController',
+                            controllerAs: 'vm'
+                        }
+                    },
+                    resolve: {
+
+                        entity: function() {
+                            return {
+                                housenumber: null,
+                                extension: null,
+                                isdesocupated: null,
+                                desocupationinitialtime: null,
+                                desocupationfinaltime: null,
+                                securityKey: null,
+                                emergencyKey: null,
+                                id: null
+                            };
+                        },
+                        previousState: ["$state", function($state) {
+                            var currentStateData = {
+                                name: $state.current.name || '',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
+                        }]
+                    }
+
+                })
             .state('house.delete', {
                 parent: 'house',
                 url: '/{id}/delete',

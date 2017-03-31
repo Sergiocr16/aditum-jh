@@ -61,9 +61,15 @@ public class ResidentService {
         return result.map(resident -> residentMapper.residentToResidentDTO(resident));
     }
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findByHouseId(Pageable pageable,Long houseId) {
+    public Page<ResidentDTO> findEnabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByHouseId(pageable,houseId);
+        List<Resident> result = residentRepository.findByEnabledAndHouseId(1,houseId);
+        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+    }
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findDisabledByHouseId(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByEnabledAndHouseId(0,houseId);
         return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
     }
     /**
@@ -102,7 +108,7 @@ public class ResidentService {
     public Page<ResidentDTO> findEnabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<> (result).map(resident -> resident.image(null)).map(resident -> residentMapper.residentToResidentDTO(resident));
     }
 
     @Transactional(readOnly = true)

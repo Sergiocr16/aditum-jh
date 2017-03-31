@@ -49,26 +49,32 @@
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <div class="form-group form-md-line-input has-info">
-                                    <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.vehicule.houseId" ng-options="house.id as house.housenumber for house in vm.houses" required>
+                                <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
+                                    <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.vehicule.houseId" ng-options="house.id as house.housenumber for house in vm.houses" ng-required='vm.required==1'>
                                         <option value="">Seleccione una casa</option>
                                     </select>
                                     <label for="form_control_1" class="font-15">Número de casa</label>
                                 </div>
                                 <div class="form-group form-md-line-input has-info color-pickerr">
-                                    <label class="font-15 gray-font no-margin">Color del vehículo</label>
-                                    <div style="background-color:{{vm.vehicule.color}}" class="input-group color colorpicker-default col-lg-12" data-color="#ffff" data-color-format="rgba">
-                                        <input ng-model="vm.vehicule.color" ng-show="false" type="text" class="form-control" value="#ffff" readonly>
+
+                                    <label class="gray-font">Color del vehículo</label>
+                                    <div style="background-color:{{vm.vehicule.color}};border: 1px solid #E6E6E6!important" class="input-group color colorpicker-default col-lg-12" data-color="#ffff" data-color-format="rgba">
+                                        <input ng-model="vm.vehicule.color" ng-show="false" type="text" class="form-control gray-font"  value="#ffff" readonly required>
+
                                         <span class="input-group-btn">
                               <button ng-blur="vm.submitColor()" class="btn default form-control no-padding" type="button"><i id="color" style="background-color: #ffff;"></i>&nbsp;</button>
                               </span>
                                     </div>
                                 </div>
+                                <div has-authority="ROLE_USER" class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>
+
                             </div>
                             <div class="form-actions noborder">
                                 <h3 class="text-right">
                                     <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button type="button" ui-sref="vehicules()"  class="btn red default">Cancelar</button>
+                                    <button has-authority="ROLE_USER" type="button" ui-sref="vehiculeByHouse()"  class="btn red default">Cancelar</button>
+                                    <button has-authority="ROLE_MANAGER" type="button" ui-sref="vehicules()"  class="btn red default">Cancelar</button>
+
                                 </h3>
                             </div>
                         </div>

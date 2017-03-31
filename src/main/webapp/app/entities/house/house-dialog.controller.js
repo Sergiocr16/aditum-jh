@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House', 'Resident', 'Emergency', 'Company'];
+    HouseDialogController.$inject = ['CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House'];
 
-    function HouseDialogController (CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House, Resident, Emergency, Company) {
+    function HouseDialogController (CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House) {
         var vm = this;
-
+  $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
 
         vm.house = entity;

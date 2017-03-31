@@ -29,6 +29,14 @@
                     method: 'GET',
                     url: 'api/vehiculesDisabled',
                     isArray: true
+                },'findVehiculesEnabledByHouseId': {
+                  method: 'GET',
+                  url: 'api/vehiculesEnabled/byHouse',
+                  isArray: true
+              },'findVehiculesDisabledByHouseId': {
+                    method: 'GET',
+                    url: 'api/vehiculesDisabled/byHouse',
+                    isArray: true
                 }
         });
     }

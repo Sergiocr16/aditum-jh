@@ -155,6 +155,50 @@
                         }]
                     }
         })
+           .state('residentByHouse.new', {
+                  parent: 'residentByHouse',
+                            url: '/new',
+                            data: {
+                              authorities: ['ROLE_USER']
+                            },
+                            views: {
+                                'content@': {
+                       templateUrl: 'app/entities/resident/resident-form.html',
+                                        controller: 'ResidentByHouseDialogController',
+                                    controllerAs: 'vm'
+                                }
+                            },
+                            resolve: {
+
+                                  entity: function () {
+                                    return {
+                                        name: null,
+                                        lastname: null,
+                                        secondlastname: null,
+                                        identificationnumber: null,
+                                        phonenumber: null,
+                                        image: null,
+                                        imageContentType: null,
+                                        email: null,
+                                        isOwner: null,
+                                        enabled: null,
+                                        id: null
+
+                                    };
+                                },
+                                companyUser: ['MultiCompany',function(MultiCompany){
+                                    return MultiCompany.getCurrentUserCompany()
+                                }],
+                                previousState: ["$state", function ($state) {
+                                    var currentStateData = {
+                                        name: $state.current.name || 'resident',
+                                        params: $state.params,
+                                        url: $state.href($state.current.name, $state.params)
+                                    };
+                                    return currentStateData;
+                                }]
+                            }
+                })
         .state('resident.edit', {
 
          parent: 'resident',
@@ -185,6 +229,35 @@
             }
 
   })
+        .state('residentByHouse.edit', {
+
+           parent: 'residentByHouse',
+              url: '/{id}/edit',
+              data: {
+               authorities: ['ROLE_USER']
+              },
+              views: {
+                  'content@': {
+                      templateUrl: 'app/entities/resident/resident-form.html',
+                      controller: 'ResidentByHouseDialogController',
+                      controllerAs: 'vm'
+                  }
+              },
+              resolve: {
+                entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
+                          return Resident.get({id : $stateParams.id}).$promise;
+                      }],
+                  previousState: ["$state", function ($state) {
+                      var currentStateData = {
+                          name: $state.current.name || 'residentByHouse',
+                          params: $state.params,
+                          url: $state.href($state.current.name, $state.params)
+                      };
+                      return currentStateData;
+                  }]
+              }
+
+    })
    .state('residentByHouse', {
       parent: 'entity',
              url: '/residentsByHouse?page&sort&search',
