@@ -5,39 +5,42 @@
         .module('aditumApp')
         .controller('NoteDialogController', NoteDialogController);
 
-    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Note', 'House', 'Company'];
+    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Note','Principal','JhiTrackerService','$rootScope','$state'];
 
-    function NoteDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Note, House, Company) {
+    function NoteDialogController ($timeout, $scope, $stateParams, Note,Principal,JhiTrackerService,$rootScope,$state) {
         var vm = this;
-
-        vm.note = entity;
-        vm.clear = clear;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
-        vm.houses = House.query();
-        vm.companies = Company.query();
+        function populateValidNote(){
+        vm.note.creationdate = moment(new Date()).format();
+        vm.note.companyId = $rootScope.companyId;
+        vm.note.notetype = 1;
+        vm.note.houseId = $rootScope.companyUser.houseId;
+        }
 
+         angular.element(document).ready(function(){
+         $("#all").fadeIn("slow");
+         })
         $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
+            angular.element('#focus').focus();
         });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
 
         function save () {
             vm.isSaving = true;
             if (vm.note.id !== null) {
-                Note.update(vm.note, onSaveSuccess, onSaveError);
-            } else {
-                Note.save(vm.note, onSaveSuccess, onSaveError);
+            populateValidNote()
+            JhiTrackerService.sendHomeService(vm.note,onSaveSuccess);
+            toastr['success']("Has reportado el servicio a domicilio correctamente");
+            vm.note = undefined;
+            $state.go('residentByHouse');
             }
         }
 
         function onSaveSuccess (result) {
+        console.log('a')
             $scope.$emit('aditumApp:noteUpdate', result);
-            $uibModalInstance.close(result);
+
             vm.isSaving = false;
         }
 
@@ -45,10 +48,5 @@
             vm.isSaving = false;
         }
 
-        vm.datePickerOpenStatus.creationdate = false;
-
-        function openCalendar (date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

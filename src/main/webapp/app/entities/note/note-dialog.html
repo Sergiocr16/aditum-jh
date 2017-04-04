@@ -1,86 +1,157 @@
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Reportar</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Servicio a domicilio</a>
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+        </li>
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myNoteLabel" data-translate="aditumApp.note.home.createOrEditLabel">Create or edit a Note</h4>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"> </div>
     </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.note.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.note.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.note.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description"
-                    ng-model="vm.note.description"
-                    required/>
-            <div ng-show="editForm.description.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.description.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.note.notetype" for="field_notetype">Notetype</label>
-            <input type="number" class="form-control" name="notetype" id="field_notetype"
-                    ng-model="vm.note.notetype"
-                    required/>
-            <div ng-show="editForm.notetype.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.notetype.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.notetype.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.note.creationdate" for="field_creationdate">Creationdate</label>
-                <div class="input-group">
-                    <input id="field_creationdate" type="text" class="form-control" name="creationdate" datetime-picker="{{dateformat}}" ng-model="vm.note.creationdate" is-open="vm.datePickerOpenStatus.creationdate"
-                    required/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('creationdate')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+</div>
+<div class="row display-none" id="all">
+    <div class="col-md-12">
+        <form ng-submit="vm.save()">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+                        <i class="fa fa-motorcycle font-green-haze"></i>
+                        <span class="caption-subject bold uppercase">Reportar Servicio a domicilio</span>
+                    </div>
                 </div>
-            <div ng-show="editForm.creationdate.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.creationdate.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.creationdate.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </p>
+                <div class="portlet-body form gray-font">
+                    <div class="">
+                        <p>
+                            Mediante esta página podrás reportar la llegada de un servicio a domicilio a tu casa.
+                        </p>
+                        <p>
+                            Recuerda especificar la compañia de donde proviene.
+                        </p>
+                        <p>
+                            <b>
+                                El reporte será válido por la próxima hora, después de eso ya no tendrá validez.</b>
+                        </p>
+                    </div>
+                    <hr>
+                    <div class="form-group form-md-line-input">
+                        <textarea id="focus" class="form-control gray-font" ng-model="vm.note.description" rows="3" placeholder="Describe quien vendrá" required></textarea>
+                        <label >Descripción</label>
+                    </div>
+                </div>
+                <div class="form-actions noborder">
+                    <h3 class="text-right">
+                        <button type="submit" class="btn blue">Reportar</button>
+                        <button type="button" ui-sref="condominos()" class="btn btn-danger">Cancelar</button>
+                    </h3>
+                </div>
             </div>
-        </div>
+    </div>
+    </form>
+</div>
+</div>
+<!--<script type="text/javascript">-->
+    <!--$(function() {-->
+        <!--$("#all").fadeIn("slow");-->
+    <!--})-->
+<!--</script>-->
 
-        <div class="form-group">
-            <label data-translate="aditumApp.note.house" for="field_house">House</label>
-            <select class="form-control" id="field_house" name="house" ng-model="vm.note.houseId" ng-options="house.id as house.id for house in vm.houses"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.note.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.note.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+
+
+
+
+
+
+
+
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myNoteLabel" data-translate="aditumApp.note.home.createOrEditLabel">Create or edit a Note</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<jhi-alert-error></jhi-alert-error>-->
+        <!--<div class="form-group" ng-show="vm.note.id">-->
+            <!--<label for="id" data-translate="global.field.id">ID</label>-->
+            <!--<input type="text" class="form-control" id="id" name="id"-->
+                    <!--ng-model="vm.note.id" readonly />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.note.description" for="field_description">Description</label>-->
+            <!--<input type="text" class="form-control" name="description" id="field_description"-->
+                    <!--ng-model="vm.note.description"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.description.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.description.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.note.notetype" for="field_notetype">Notetype</label>-->
+            <!--<input type="number" class="form-control" name="notetype" id="field_notetype"-->
+                    <!--ng-model="vm.note.notetype"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.notetype.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.notetype.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.notetype.$error.number" data-translate="entity.validation.number">-->
+                    <!--This field should be a number.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.note.creationdate" for="field_creationdate">Creationdate</label>-->
+                <!--<div class="input-group">-->
+                    <!--<input id="field_creationdate" type="text" class="form-control" name="creationdate" datetime-picker="{{dateformat}}" ng-model="vm.note.creationdate" is-open="vm.datePickerOpenStatus.creationdate"-->
+                    <!--required/>-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('creationdate')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--<div ng-show="editForm.creationdate.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.creationdate.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.creationdate.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">-->
+                    <!--This field should be a date and time.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.note.house" for="field_house">House</label>-->
+            <!--<select class="form-control" id="field_house" name="house" ng-model="vm.note.houseId" ng-options="house.id as house.id for house in vm.houses"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.note.company" for="field_company">Company</label>-->
+            <!--<select class="form-control" id="field_company" name="company" ng-model="vm.note.companyId" ng-options="company.id as company.id for company in vm.companies"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->

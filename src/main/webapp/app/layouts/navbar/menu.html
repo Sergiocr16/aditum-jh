@@ -183,7 +183,7 @@
                             <i class="fa fa-user" aria-hidden="true"></i> Visitante
                         </a>
                     </li>
-                    <li ui-sref="homeService()" ng-class="{'active' : active === 'reportHomeService'}">
+                    <li ui-sref="note.new" ng-class="{'active' : active === 'reportHomeService'}">
                         <a href="">
                             <i class="fa fa-cutlery" aria-hidden="true"></i> Servicio a domicilio
                         </a>
@@ -197,7 +197,7 @@
             </li>
             <!--//es residente-->
 
-            <li ui-sref="reportEmergency()" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
+            <li ui-sref="emergency.new" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
                 <a href="javascript:;">
                     <i class="fa fa-ambulance" aria-hidden="true"></i>
                     <span class="title "> Reportar emergencia</span>

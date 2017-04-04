@@ -10,8 +10,10 @@
 
     function JhiTrackerService ($rootScope, $window, $cookies, $http, $q, AuthServerProvider) {
         var stompClient = null;
-        var subscriber = null;
+        var subscribers = [];
         var listener = $q.defer();
+        var listenerHomeService = $q.defer();
+        var listenerEmergency = $q.defer();
         var connected = $q.defer();
         var alreadyConnectedOnce = false;
 
@@ -20,6 +22,12 @@
             disconnect: disconnect,
             receive: receive,
             sendActivity: sendActivity,
+            subscribeToGetHomeServices: subscribeToGetHomeServices,
+            receiveHomeService: receiveHomeService,
+            sendHomeService: sendHomeService,
+            subscribeToGetEmergencies:subscribeToGetEmergencies,
+            receiveEmergency:receiveEmergency,
+            reportEmergency:reportEmergency,
             subscribe: subscribe,
             unsubscribe: unsubscribe
         };
@@ -74,20 +82,71 @@
                     angular.toJson({'page': $rootScope.toState.name}));
             }
         }
-
         function subscribe () {
             connected.promise.then(function() {
-                subscriber = stompClient.subscribe('/topic/tracker', function(data) {
+                subscribers.push(stompClient.subscribe('/topic/tracker', function(data) {
                     listener.notify(angular.fromJson(data.body));
-                });
+                }));
             }, null, null);
         }
 
+//EMERGENCY WB
+    function receiveEmergency () {
+         return listenerEmergency.promise;
+    }
+    function reportEmergency(emergency) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/reportEmergency/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(emergency));
+              }
+          }
+
+        function subscribeToGetEmergencies() {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/Emergency/'+$rootScope.companyId, function(data) {
+                             listenerEmergency.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END EMERGENCY WB
+
+
+
+
+
+//HOME SERVICE WB
+    function receiveHomeService () {
+         return listenerHomeService.promise;
+    }
+    function sendHomeService(note) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/saveHomeService/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(note));
+              }
+          }
+
+        function subscribeToGetHomeServices () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/HomeService/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END HOME SERVICE WB
+
         function unsubscribe () {
-            if (subscriber !== null) {
-                subscriber.unsubscribe();
+            if (subscribers.length > 0) {
+            angular.forEach(subscribers,function(sub,value){
+             sub.unsubscribe();
+            })
             }
+            subscribers = [];
             listener = $q.defer();
+            listenerHomeService = $q.defer();
         }
     }
 })();

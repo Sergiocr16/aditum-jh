@@ -5,32 +5,50 @@
         .module('aditumApp')
         .controller('EmergencyDialogController', EmergencyDialogController);
 
-    EmergencyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Emergency', 'Company', 'House'];
+    EmergencyDialogController.$inject = ['$timeout', '$scope','$state','$stateParams', 'Principal','JhiTrackerService','$rootScope'];
 
-    function EmergencyDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Emergency, Company, House) {
+    function EmergencyDialogController ($timeout, $scope,$state, $stateParams, Principal,JhiTrackerService,$rootScope) {
         var vm = this;
+        vm.isAuthenticated = Principal.isAuthenticated;
+        vm.reportEmergency = save;
 
-        vm.emergency = entity;
-        vm.clear = clear;
-        vm.save = save;
-        vm.companies = Company.query();
-        vm.houses = House.query();
+       angular.element(document).ready(function(){
+        $("#all").fadeIn("slow");
+       })
 
-        $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
-        });
-
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
+       function formatValidEmergency(){
+       vm.emergency = {};
+       vm.emergency.companyId = $rootScope.companyId;
+       vm.emergency.houseId = $rootScope.companyUser.houseId;
+       vm.emergency.isAttended = 0;
+       }
 
         function save () {
-            vm.isSaving = true;
-            if (vm.emergency.id !== null) {
-                Emergency.update(vm.emergency, onSaveSuccess, onSaveError);
-            } else {
-                Emergency.save(vm.emergency, onSaveSuccess, onSaveError);
-            }
+       bootbox.confirm({
+           message: '<div class="gray-font font-15">¿Seguro que desea reportar una emergencia?</div>',
+           closeButton: false,
+
+           buttons: {
+               confirm: {
+                   label: 'Reportar emergencia',
+                   className: 'btn-success'
+               },
+               cancel: {
+                   label: 'Cancelar',
+                   className: 'btn-danger'
+               }
+           },
+           callback: function(result) {
+               if (result) {
+               formatValidEmergency();
+                 JhiTrackerService.reportEmergency(vm.emergency);
+                        toastr["success"]("Se ha reportado la emergencia, enseguida será notificada a los oficiales");
+                        vm.emergency = undefined;
+                        $state.go('residentByHouse');
+               }
+           }
+       })
+
         }
 
         function onSaveSuccess (result) {
