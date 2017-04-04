@@ -110,33 +110,23 @@
         })
         .state('note.new', {
             parent: 'note',
-            url: '/new',
+            url: '/home-service/new',
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/note/note-dialog.html',
                     controller: 'NoteDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                description: null,
-                                notetype: null,
-                                creationdate: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('note', null, { reload: 'note' });
-                }, function() {
-                    $state.go('note');
-                });
-            }]
+                    controllerAs: 'vm'
+                }
+            },
+            onEnter: ['JhiTrackerService', function(JhiTrackerService) {
+              JhiTrackerService.subscribeToGetHomeServices();
+            }],
+             onExit: ['JhiTrackerService', function(JhiTrackerService) {
+                          JhiTrackerService.unsubscribe();
+                        }]
         })
         .state('note.edit', {
             parent: 'note',
