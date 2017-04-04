@@ -1,7 +1,14 @@
 package com.lighthouse.aditum.web.rest;
 
+import com.lighthouse.aditum.domain.Authority;
+import com.lighthouse.aditum.domain.User;
+import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.jwt.JWTConfigurer;
 import com.lighthouse.aditum.security.jwt.TokenProvider;
+import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.dto.AdminInfoDTO;
+import com.lighthouse.aditum.service.dto.OfficerDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.web.rest.vm.LoginVM;
 
 import java.util.Collections;
@@ -27,9 +34,24 @@ public class UserJWTController {
 
     private final AuthenticationManager authenticationManager;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager) {
+    private UserService userService;
+
+    private OfficerService officerService;
+
+    private AdminInfoService managerService;
+
+    private CompanyService companyService;
+
+    private ResidentService residentService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerService officerService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.officerService = officerService;
+        this.companyService = companyService;
+        this.managerService = managerService;
+        this.residentService = residentService;
     }
 
     @PostMapping("/authenticate")
@@ -45,7 +67,38 @@ public class UserJWTController {
             boolean rememberMe = (loginVM.isRememberMe() == null) ? false : loginVM.isRememberMe();
             String jwt = tokenProvider.createToken(authentication, rememberMe);
             response.addHeader(JWTConfigurer.AUTHORIZATION_HEADER, "Bearer " + jwt);
-            return ResponseEntity.ok(new JWTToken(jwt));
+             boolean  activeCompany = false;
+             User user = this.userService.getUserWithAuthoritiesByLogin(loginVM.getUsername()).get();
+            for(Authority a : user.getAuthorities()) {
+                switch (a.getName()){
+                    case AuthoritiesConstants.ADMIN:
+                        activeCompany = true;
+                        break;
+                    case AuthoritiesConstants.OFFICER:
+                         OfficerDTO officer = officerService.findOneByUserId(user.getId());
+                         if(this.companyService.findOne(officer.getCompanyId()).getActive() == 1){
+                             activeCompany = true;
+                         }
+                        break;
+                    case AuthoritiesConstants.MANAGER:
+                        AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.USER:
+                        ResidentDTO resident = residentService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(resident.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                }
+            }
+            if(activeCompany) {
+                return ResponseEntity.ok(new JWTToken(jwt));
+            }else{
+                return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",null), HttpStatus.UNAUTHORIZED);
+            }
         } catch (AuthenticationException exception) {
             return new ResponseEntity<>(Collections.singletonMap("AuthenticationException",exception.getLocalizedMessage()), HttpStatus.UNAUTHORIZED);
         }
