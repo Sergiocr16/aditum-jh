@@ -47,21 +47,20 @@
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
-    <div id="page-content" class="page-content-wrapper" >
 
-        <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
+<div id="page-content" class="page-content-wrapper" >
+
+    <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
+    </div>
+
+
+    <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
+    <div class="clear-fix"></div>
+
+    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+
+        <div ui-view="content" ng-show="vm.isAuthenticated() == true">
         </div>
-
-
-        <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
-        <div class="clear-fix"></div>
-
-        <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
-
-            <div ui-view="content" ng-show="vm.isAuthenticated() == true">
-            </div>
-        </div>
-
     </div>
     <div ui-view="footer " ng-show="vm.isAuthenticated() == true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
     </div>
@@ -107,7 +106,6 @@
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
 
-
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -124,6 +122,8 @@
     <script src="app/services/profiles/page-ribbon.directive.js"></script>
 
     <script src="app/services/multicompany/multi-company.service.js"></script>
+
+    <script src="app/services/customjs/y-bootstrap-colorpicker.js"></script>
 
     <script src="app/services/customjs/v-bootstrap.min.js"></script>
 
