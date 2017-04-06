@@ -44,7 +44,7 @@
 <div ui-view="navbar" ng-show="isAuthenticated() == true"></div>
     <div ui-view="menu" ng-show="isAuthenticated() == true">
     </div>
-    <div id="page-content" style="background-color:white!important" class="page-content-wrapper">
+    <div id="page-content" class="page-content-wrapper">
         <div  ui-view="login" ng-hide="isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
         </div>
         <div class="page-content" ng-show="isAuthenticated() == true" >
