@@ -47,20 +47,21 @@
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
+    <div id="page-content" class="page-content-wrapper" >
 
-<div id="page-content" class="page-content-wrapper" >
-
-    <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
-    </div>
-
-
-    <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
-    <div class="clear-fix"></div>
-
-    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
-
-        <div ui-view="content" ng-show="vm.isAuthenticated() == true">
+        <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
         </div>
+
+
+        <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
+        <div class="clear-fix"></div>
+
+        <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+
+            <div ui-view="content" ng-show="vm.isAuthenticated() == true">
+            </div>
+        </div>
+
     </div>
     <div ui-view="footer " ng-show="vm.isAuthenticated() == true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
     </div>
@@ -353,11 +354,17 @@
     <script src="app/entities/access-door/access-door.service.js"></script>
 
     <script src="app/entities/access-door/access-door.controller.js"></script>
+<<<<<<< HEAD
 
 <script src="app/entities/access-door/change-watches.controller.js"></script>
 
 
 
+=======
+<script src="app/entities/access-door/change-watches.controller.js"></script>
+
+
+>>>>>>> 54b7c16a5d97f1758455f58055328da64d860773
     <script src="app/components/util/truncate-words.filter.js"></script>
 
     <script src="app/components/util/truncate-characters.filter.js"></script>

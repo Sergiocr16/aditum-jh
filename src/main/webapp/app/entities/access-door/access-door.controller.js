@@ -35,6 +35,7 @@
               housesList = houses;
               loadVehicules()
            }
+
         }
 
         function loadVehicules() {
@@ -203,6 +204,7 @@
                 vm.show = 5;
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+
                 clearInputs();
                 if (vm.id_number == undefined || vm.id_number == "") {
 
@@ -274,6 +276,7 @@
                   function onSaveError () {
                             vm.isSaving = false;
                         }
+
             vm.deleteResidentVehiculeSpots = function() {
                 $("#vehicule_license_plate").css("text-transform", "none");
                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
