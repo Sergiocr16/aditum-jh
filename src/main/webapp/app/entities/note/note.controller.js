@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('NoteController', NoteController);
 
-    NoteController.$inject = ['Note', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    NoteController.$inject = ['Note', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function NoteController(Note, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function NoteController(Note, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
-
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.web.websocket;
 
 import com.lighthouse.aditum.security.SecurityUtils;
+import com.lighthouse.aditum.service.NoteService;
+import com.lighthouse.aditum.service.dto.NoteDTO;
 import com.lighthouse.aditum.web.websocket.dto.ActivityDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,10 +32,13 @@ public class ActivityService implements ApplicationListener<SessionDisconnectEve
 
     private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
+    private NoteService noteService;
+
     private final SimpMessageSendingOperations messagingTemplate;
 
-    public ActivityService(SimpMessageSendingOperations messagingTemplate) {
+    public ActivityService(SimpMessageSendingOperations messagingTemplate,NoteService noteService) {
         this.messagingTemplate = messagingTemplate;
+        this.noteService = noteService;
     }
 
     @SubscribeMapping("/topic/activity")

@@ -114,28 +114,13 @@
             data: {
                 authorities: ['ROLE_USER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+             views: {
+                'content@': {
                     templateUrl: 'app/entities/emergency/emergency-dialog.html',
                     controller: 'EmergencyDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                isAttended: null,
-                                observation: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('emergency', null, { reload: 'emergency' });
-                }, function() {
-                    $state.go('emergency');
-                });
-            }]
+                    controllerAs: 'vm'
+                }
+            }
         })
         .state('emergency.edit', {
             parent: 'emergency',
