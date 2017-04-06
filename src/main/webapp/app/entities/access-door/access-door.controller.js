@@ -203,52 +203,77 @@
                 vm.show = 5;
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
-//
                 clearInputs();
-//
-//                if ($scope.id_number == undefined || $scope.id_number == "") {
-//
-//                } else {
-//
-//                    $scope.visitor_id_number = $scope.id_number;
-//                    angular.forEach(visitorsList, function(itemVisitor, index) {
-//                        if (itemVisitor.identification_number == $scope.visitor_id_number && itemVisitor.is_invited == 0) {
-//
-//                            $scope.visitor_name = itemVisitor.name;
-//                            $scope.visitor_last_name = itemVisitor.last_name;
-//                            $scope.visitor_second_last_name = itemVisitor.second_last_name;
-//                            $scope.visitor_license_plate = itemVisitor.license_plate;
-//
-                            vm.houses = housesList;
-//                            var house = $scope.houses.filter(function(el) {
-//                                return el.id == itemVisitor.id_house;
-//                            });
-//                            $scope.house = house[0];
-//
-//                        }
-//                    });
-//                }
-//
-//                if ($scope.id_vehicule == undefined || $scope.id_vehicule == "") {} else {
-//
-//                    $scope.visitor_license_plate = $scope.id_vehicule;
-//                    angular.forEach(visitorsList, function(itemVisitor, index) {
-//                        if (itemVisitor.license_plate == $scope.visitor_license_plate && itemVisitor.is_invited == 0) {
-//                            $scope.visitor_name = itemVisitor.name;
-//                            $scope.visitor_last_name = itemVisitor.last_name;
-//                            $scope.visitor_second_last_name = itemVisitor.second_last_name;
-//                            $scope.visitor_license_plate = itemVisitor.license_plate;
-//                            $scope.visitor_id_number = itemVisitor.identification_number;
-//                            $scope.houses = housesPrueba;
-//                            var house = $scope.houses.filter(function(el) {
-//                                return el.id == itemVisitor.id_house;
-//                            });
-//                            $scope.house = house[0];
-//
-//                        }
-//                    });
-//                }
+                if (vm.id_number == undefined || vm.id_number == "") {
+
+                } else {
+
+                    vm.visitor_id_number = vm.id_number;
+                    angular.forEach(visitorsList, function(itemVisitor, index) {
+                        if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
+                        console.log('aa');
+                            vm.visitor_name = itemVisitor.name;
+                            vm.visitor_last_name = itemVisitor.lastname;
+                            vm.visitor_second_last_name = itemVisitor.secondlastname;
+                            vm.visitor_license_plate = itemVisitor.licenseplate;
+                             setHouse(itemVisitor.houseId);
+
+
+                        }
+                    });
+                }
+
+
+                if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {
+                    vm.visitor_license_plate = vm.id_vehicule;
+                    angular.forEach(visitorsList, function(itemVisitor, index) {
+                        if (itemVisitor.licenseplate == vm.visitor_license_plate && itemVisitor.isinvited == 3) {
+                         vm.visitor_name = itemVisitor.name;
+                            vm.visitor_last_name = itemVisitor.lastname;
+                            vm.visitor_second_last_name = itemVisitor.secondlastname;
+                            vm.visitor_license_plate = itemVisitor.licenseplate;
+                            vm.visitor_id_number = itemVisitor.identificationnumber;
+                             setHouse(itemVisitor.houseId);
+
+                        }
+                    });
+                }
             }
+
+            function setHouse(house){
+               vm.houses = housesList;
+                for(var i=0;i<housesList.length;i++){
+                   if(housesList[i].id==house){
+                       vm.house = vm.houses[i];
+                   }
+                }
+            }
+
+            vm.insertVisitor = function() {
+                var visitant = {
+                    name: CommonMethods.capitalizeFirstLetter(vm.visitor_name),
+                    lastname: CommonMethods.capitalizeFirstLetter(vm.visitor_last_name),
+                    secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitor_second_last_name),
+                    identificationnumber: vm.visitor_id_number,
+                    licenseplate: vm.visitor_license_plate,
+                    companyId: $rootScope.companyId,
+                    isinvited: 3,
+                    arrivaltime: moment(new Date()).format(),
+                    houseId: vm.house.id
+                }
+                    Visitant.save(visitant, onSaveSuccess, onSaveError);
+
+            }
+
+                function onSaveSuccess (result) {
+                vm.show=4;
+                    vm.isSaving = false;
+                    toastr["success"]("Se registró la entrada del visitante correctamente.");
+                }
+
+                  function onSaveError () {
+                            vm.isSaving = false;
+                        }
             vm.deleteResidentVehiculeSpots = function() {
                 $("#vehicule_license_plate").css("text-transform", "none");
                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");

@@ -60,7 +60,7 @@ height:659px !important;
 }
 
 #access_key_button{
-	height: 38px;
+	height: 35px;
 }
 #delete_space_button{
 	height: 40px;
@@ -363,7 +363,7 @@ height: 100%;
       background: rgba(0, 0, 0, 0.7);
       height: 100%;
 }
-.access-search-containeraccess-search-container{
+.access-search-container access-search-container{
   background-color: #F5F5F5 ;
 
 }
@@ -376,7 +376,7 @@ color: #009688;
 }
 .access-information-result-container{
   background-color: #E0E0E0;
-  margin-top: 20px;
+
   min-height: 448px;
 
 }

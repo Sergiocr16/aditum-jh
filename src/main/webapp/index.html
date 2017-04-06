@@ -47,23 +47,25 @@
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
-    <div id="page-content" class="page-content-wrapper" >
 
-        <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
-        </div>
+<div id="page-content" class="page-content-wrapper" >
+
+    <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
+    </div>
 
 
-        <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
-        <div class="clear-fix"></div>
+    <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
+    <div class="clear-fix"></div>
 
-        <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
 
-            <div ui-view="content" ng-show="vm.isAuthenticated() == true">
-            </div>
-        </div>
-
+        <div ui-view="content" ng-show="vm.isAuthenticated() == true">
         </div>
     </div>
+    <div ui-view="footer " ng-show="vm.isAuthenticated() == true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+    </div>
+</div>
+
 
 
 
