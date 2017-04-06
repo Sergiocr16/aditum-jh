@@ -19,7 +19,7 @@
     <link href="content/css/google-font.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="content/css/main.css">
     <link rel="stylesheet" href="content/css/layout.css">
-    <link rel="stylesheet" href="content/css/media-main.css">
+
     <link rel="stylesheet" href="content/css/components.css">
     <link rel="stylesheet" href="content/css/simple-line-icons.min.css">
     <link rel="stylesheet" href="content/css/components-rounded.css">
@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="content/css/documentation.css">
     <link rel="stylesheet" href="content/css/google-font.css">
     <link rel="stylesheet" href="content/css/original-aditum.css">
+    <link rel="stylesheet" href="content/css/media-main.css">
     <link rel="stylesheet" href="content/css/plugins.css">
     <link rel="stylesheet" href="content/css/plugins-md.css">
     <link rel="stylesheet" href="content/css/toaster.css">
@@ -41,19 +42,30 @@
 <body ng-app="aditumApp">
 <div  ui-view="reset">
 </div>
-<div ui-view="navbar" ng-show="isAuthenticated() == true"></div>
-    <div ui-view="menu" ng-show="isAuthenticated() == true">
+
+<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
+    <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
-    <div id="page-content" class="page-content-wrapper">
-        <div  ui-view="login" ng-hide="isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
-        </div>
-        <div class="page-content" ng-show="isAuthenticated() == true" >
-            <div ui-view="content">
-            </div>
-        </div>
-        <div ui-view="footer " ng-show="isAuthenticated() == true">
+
+
+<div id="page-content" class="page-content-wrapper" >
+
+    <div  ui-view="login" ng-hide="vm.isAuthenticated() === true || vm.isChangingPassword === true || vm.isResetPassword == true">
+    </div>
+
+
+    <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
+    <div class="clear-fix"></div>
+
+    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+
+        <div ui-view="content" ng-show="vm.isAuthenticated() == true">
         </div>
     </div>
+    <div ui-view="footer " ng-show="vm.isAuthenticated() == true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+    </div>
+</div>
+
 
 
 
@@ -93,8 +105,9 @@
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
+
     <!-- endinject -->
-<!-- endbuild -->
+    <!-- endbuild -->
 
 
 <!-- build:js app/app.js  -->
@@ -339,6 +352,9 @@
     <script src="app/entities/access-door/access-door.service.js"></script>
 
     <script src="app/entities/access-door/access-door.controller.js"></script>
+
+
+<script src="app/entities/access-door/change-watches.controller.js"></script>
 
     <script src="app/components/util/truncate-words.filter.js"></script>
 

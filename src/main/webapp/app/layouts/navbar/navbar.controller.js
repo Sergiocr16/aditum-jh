@@ -33,6 +33,8 @@
     if(companyUser!=undefined){
      $rootScope.companyUser = companyUser;
      $rootScope.companyId = companyUser.companyId;
+     $rootScope.currentUserImage = companyUser.image;
+     $rootScope.currentUserImageContentType = companyUser.imageContentType;
       vm.currentUser = companyUser;
       getContextLiving();
      }else{
@@ -60,13 +62,13 @@
          var subLogin = $scope.$on('authenticationSuccess', getAccount);
          var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
         function getAccount(){
-        vm.currentUser=undefined;
+            vm.currentUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
             $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
             vm.currentUser = data;
-             getContextLiving();
+            getContextLiving();
              }else{
              vm.contextLiving = "Dios de Aditum"
              }

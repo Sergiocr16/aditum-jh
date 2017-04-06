@@ -14,7 +14,8 @@
                 'navbar@': {
                     templateUrl: 'app/layouts/navbar/navbar.html',
                     controller: 'NavbarController',
-                    controllerAs: 'vm'
+                    controllerAs: 'vm',
+                       data: {authorities: ['ROLE_USER','ROLE_MANAGER','ROLE_ADMIN']}
                 },
                 'menu@': {
                     templateUrl: 'app/layouts/navbar/menu.html',
@@ -31,6 +32,13 @@
                     controller: 'LoginController',
                     controllerAs: 'vm'
                 },
+                 'access_door@': {
+                  templateUrl: 'app/entities/access-door/main-access-door.html',
+                  controller: 'AccessDoorController',
+                  controllerAs: 'vm',
+                       data: {authorities: ['ROLE_OFFICER']}
+
+                  }
 
 
             },
