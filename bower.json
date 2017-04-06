@@ -55,6 +55,13 @@
       "main": [
         "dist/css/bootstrap.css"
       ]
+    },
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css",
+        "scss/font-awesome.scss",
+        "less/font-awesome.less"
+      ]
     }
   },
   "resolutions": {

@@ -9,7 +9,7 @@
 
     function NavbarController ($state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
-
+ $rootScope.isAuthenticated = Principal.isAuthenticated;
    function getContextLiving(){
        if(vm.currentUser!=undefined){
             if(vm.currentUser.houseId == undefined){
