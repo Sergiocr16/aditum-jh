@@ -17,8 +17,8 @@
                 validateNumbers: validateNumbers,
                 validateRepeat: validateRepeat,
                 capitalizeFirstLetter: capitalizeFirstLetter,
-                encryptIdUrl,
-                decryptIdUrl,
+                encryptIdUrl:encryptIdUrl,
+                decryptIdUrl:decryptIdUrl,
                 validateSpecialCharacters: validateSpecialCharacters,
                 getCarBrands: getCarBrands
             };

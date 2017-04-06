@@ -11,7 +11,7 @@
 
         var companyId;
         var service = {
-            getCurrentUserCompany,
+            getCurrentUserCompany:getCurrentUserCompany,
         };
 
         return service;
