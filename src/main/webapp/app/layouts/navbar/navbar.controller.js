@@ -57,7 +57,7 @@
          var subLogin = $scope.$on('authenticationSuccess', getAccount);
          var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
         function getAccount(){
-        vm.currentUser=undefined;
+            vm.currentUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
             $rootScope.companyUser = data;

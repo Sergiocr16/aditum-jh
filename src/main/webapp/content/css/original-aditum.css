@@ -227,7 +227,7 @@ height: 100%;
   height: 7%;
 }
 .height-12-percent{
-  height: 12%;
+  height: 12%!important;
 }
 .height-10-percent{
   height: 10%;
@@ -343,36 +343,31 @@ height: 100%;
     margin-bottom: 10px;
 }
 .access-container{
-    margin-top: 2%;
+    padding-top:20px;
     background-color: #F5F5F5 ;
 }
 .access_officer_table{
 
-	height:35%;
+	height:200px;
 	overflow-y: scroll;
 }
 .access-back{
-    /*height: 100vh;*/
-		    height: 100%;
+    height: 100vh;
     width: 100%;
     background-image: url("http://www.carvarisa.com/wp-content/uploads/via_nova_2.jpg");
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat-y;
 }
 
 .opacity{
       background: rgba(0, 0, 0, 0.7);
       height: 100%;
 }
-.access-search-container{
+.access-search-containeraccess-search-container{
   background-color: #F5F5F5 ;
-  margin-top: 2% !important;
-}
-
-.access-result-search-container{
-  margin-top: 1%;
 
 }
+
 .green{
   background-color: #009688;
 }
@@ -381,8 +376,8 @@ color: #009688;
 }
 .access-information-result-container{
   background-color: #E0E0E0;
-  margin-top: 1%;
-  min-height: 69%;
+  margin-top: 20px;
+  min-height: 448px;
 
 }
 .bold{
@@ -423,7 +418,7 @@ color: #C62828;
   color: green !important;
 }
 #error-image{
-background-image: url("http://www.clipartbest.com/cliparts/9i4/zry/9i4zryxAT.png");
+background-image: url("../../content/images/error-icon-4.png");
 height: 190px;
 width: 190px;
 margin-top: 30px;
@@ -438,17 +433,17 @@ margin-top: 30px;
 	background-color: rgb(43, 54, 67);
 }
 #success-car-image{
-background-image: url("../../../assets/global/img/check-300x300.png") !important;
+background-image: url("../../content/images/check.png") !important;
 height: 150px;
 width: 150px;
 }
 
 #disabled-car-image{
-background-image: url("../../../assets/global/img/disabled-car-image.jpg") !important;
+background-image: url("../../content/images/disabled-car-image.jpg") !important;
 height: 150px;
 width: 150px;
 }
-#success-resident-image{
+.success-resident-image{
 height: 200px;
 width: 200px;
 margin: 0 auto;
@@ -478,3 +473,23 @@ margin: 0 auto;
       opacity: 1 !important;
 
   }
+
+
+.height-80-pixel{
+    height:80px!important;
+}
+.height-30-pixel{
+    height:30px!important;
+}
+
+.height-10-pixel{
+    height:10px!important;
+}
+
+.height-20-pixel{
+    height:20px!important;
+}
+
+.page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle{
+    background-color: rgba(0,0,0,0);
+}

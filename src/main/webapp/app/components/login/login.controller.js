@@ -49,13 +49,24 @@
                 username: vm.username,
                 password: vm.password,
                 rememberMe: vm.rememberMe
-            }).then(function () {
+            }).then(function (data) {
+
                 vm.authenticationError = false;
-//                $uibModalInstance.close();
-                if ($state.current.name === 'register' || $state.current.name === 'activate' ||
-                    $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
-                    $state.go('home');
-                }
+
+                   Principal.identity().then(function(account){
+
+                    if(account.authorities[0]=='ROLE_OFFICER'){
+
+                      $state.go('main-access-door');
+                    } else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
+                          $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
+                          $state.go('home');    }
+
+
+
+
+                })
+
 
                 $rootScope.$broadcast('authenticationSuccess');
                 $('body').addClass("gray");

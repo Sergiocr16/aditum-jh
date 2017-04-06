@@ -56,6 +56,9 @@
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
                  vm.officer.userId = result.id;
+                 vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
+                 vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
+                 vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
                  Officer.save(vm.officer, onSaveSuccess, onSaveError);
                  vm.isSaving = false;
             }
