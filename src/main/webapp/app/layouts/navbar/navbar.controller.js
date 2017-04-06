@@ -33,6 +33,8 @@
     if(companyUser!=undefined){
      $rootScope.companyUser = companyUser;
      $rootScope.companyId = companyUser.companyId;
+     $rootScope.currentUserImage = companyUser.image;
+     $rootScope.currentUserImageContentType = companyUser.imageContentType;
       vm.currentUser = companyUser;
       getContextLiving();
      }else{
@@ -66,7 +68,7 @@
             $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
             vm.currentUser = data;
-             getContextLiving();
+            getContextLiving();
              }else{
              vm.contextLiving = "Dios de Aditum"
              }

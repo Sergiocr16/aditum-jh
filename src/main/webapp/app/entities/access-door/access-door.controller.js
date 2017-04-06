@@ -8,6 +8,9 @@
     AccessDoorController.$inject = ['Auth','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal'];
 
     function AccessDoorController(Auth,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal) {
+        CommonMethods.validateLetters();
+        CommonMethods.validateNumbers();
+        CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
         var securityKey, emergencyKey, housenumber;
         var vm = this;
@@ -169,7 +172,15 @@
 //                    }
                 }
             };
+            vm.capitalize = function(){
+                if (vm.visitor_license_plate != "") {
+                        $("#license_plate").css("text-transform", "uppercase");
+                    } else {
+                        $("#license_plate").css("text-transform", "none");
+                        $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
 
+                    }
+            }
             vm.getKeys = function() {
                 if (securityKey == null || emergencyKey == null) {
                     toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas");
