@@ -136,6 +136,34 @@
                 });
             }]
         })
+                .state('main-access-door.newWatch', {
+                    parent: 'main-access-door',
+                    url: '/change-watch',
+                    data: {
+                        authorities: ['ROLE_OFFICER']
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/access-door/change-watches.html',
+                            controller: 'ChangeWatchesController',
+                            controllerAs: 'vm',
+                            backdrop: 'static',
+                            size: 'lg',
+                            resolve: {
+                                entity: function () {
+                                    return {
+                                        name: null,
+                                        id: null
+                                    };
+                                }
+                            }
+                        }).result.then(function() {
+                            $state.go('access-door', null, { reload: 'access-door' });
+                        }, function() {
+                            $state.go('access-door');
+                        });
+                    }]
+                })
         .state('access-door.edit', {
             parent: 'access-door',
             url: '/{id}/edit',
@@ -184,7 +212,21 @@
                     $state.go('^');
                 });
             }]
-        });
+        }).state('main-access-door', {
+               parent: 'entity',
+               url: '/main-access-door',
+               data: {
+                   authorities: ['ROLE_OFFICER']
+               },
+               views: {
+                   'access_door@': {
+                       templateUrl: 'app/entities/access-door/main-access-door.html',
+                       controller: 'AccessDoorController',
+                       controllerAs: 'vm'
+                   }
+               }
+
+           })
     }
 
 })();
