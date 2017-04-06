@@ -15,6 +15,9 @@
             if(vm.currentUser.houseId == undefined){
              Company.get({id: vm.currentUser.companyId},function(condo){
              vm.contextLiving = " / "+ condo.name;
+             if(condo.active == 0){
+              logout();
+             }
              })
             }else{
              House.get({id: vm.currentUser.houseId},function(house){
