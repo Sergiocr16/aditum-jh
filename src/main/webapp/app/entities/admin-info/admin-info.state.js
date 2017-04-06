@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/admin-info?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'aditumApp.adminInfo.home.title'
             },
             views: {
@@ -55,7 +55,7 @@
             parent: 'admin-info',
             url: '/admin-info/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'aditumApp.adminInfo.detail.title'
             },
             views: {
@@ -87,7 +87,7 @@
             parent: 'admin-info-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -112,7 +112,7 @@
             parent: 'admin-info',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -147,7 +147,7 @@
             parent: 'admin-info',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -172,7 +172,7 @@
             parent: 'admin-info',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
