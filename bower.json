@@ -65,7 +65,7 @@
     },
     "bootstrap-colorpicker": {
       "main": [
-        "/css/olorpicker.css",
+        "/css/colorpicker.css"
       ]
     }
   },
