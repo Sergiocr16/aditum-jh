@@ -47,6 +47,7 @@ public class HouseService {
         return result;
     }
 
+
     /**
      *  Get all the houses.
      *

@@ -22,6 +22,7 @@
                     return data;
                 }
             },
+            'reportAbsence': { method:'PUT',url:'api/houses/report/absence'},
             'update': { method:'PUT' }
         });
     }

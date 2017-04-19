@@ -60,6 +60,13 @@ public class AdminInfoService {
         return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
     }
 
+    @Transactional(readOnly = true)
+    public Page<AdminInfoDTO> findAllByCompany(Pageable pageable,Long companyId) {
+        log.debug("Request to get all AdminInfos");
+        Page<AdminInfo> result = adminInfoRepository.findByCompanyId(pageable,companyId);
+        return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
+    }
+
     /**
      *  Get one adminInfo by id.
      *
