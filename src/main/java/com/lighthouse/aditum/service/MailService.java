@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.AdminInfo;
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.User;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -16,6 +18,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import javax.mail.internet.MimeMessage;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
@@ -31,6 +34,12 @@ public class MailService {
 
     private static final String USER = "user";
 
+    private static final String HOUSE = "house";
+
+    private static final String INITIALTIME = "initialTime";
+
+    private static final String FINALTIME = "finalTime";
+
     private static final String BASE_URL = "baseUrl";
 
     private final JHipsterProperties jHipsterProperties;
@@ -41,6 +50,8 @@ public class MailService {
 
     private final SpringTemplateEngine templateEngine;
 
+
+
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
             MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
@@ -48,6 +59,7 @@ public class MailService {
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
+
     }
 
     @Async
@@ -90,7 +102,22 @@ public class MailService {
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("creationEmail", context);
-        String subject = messageSource.getMessage("email.activation.title", null, locale);
+        String subject = messageSource.getMessage("Una casa se ha desocupado", null, locale);
+        sendEmail(user.getEmail(), subject, content, false, true);
+    }
+
+    @Async
+    public void sendAbsenceEmail(House house,User user,String companyName) {
+        log.debug("Sending creation e-mail to '{}'", house.getId());
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(HOUSE, house);
+        context.setVariable(INITIALTIME, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(house.getDesocupationinitialtime()));
+        context.setVariable(FINALTIME, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(house.getDesocupationfinaltime()));
+        context.setVariable(USER, user);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process("absenceEmail", context);
+        String subject = "Reporte de ausencia en filial en condominio "+companyName;
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 

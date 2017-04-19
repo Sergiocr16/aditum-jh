@@ -113,6 +113,30 @@
                     });
                 }]
             })
+           .state('house.reportAbsence', {
+                parent: 'entity',
+                url: '/report/absence',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/house/house-absence.html',
+                        controller: 'HouseAbsenceController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    previousState: ["$state", function($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'house',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
             .state('house.new', {
                 parent: 'house',
                 url: '/new',

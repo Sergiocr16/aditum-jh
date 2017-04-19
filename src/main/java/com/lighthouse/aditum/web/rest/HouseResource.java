@@ -1,7 +1,11 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lighthouse.aditum.service.HouseService;
+import com.lighthouse.aditum.domain.AdminInfo;
+import com.lighthouse.aditum.domain.House;
+import com.lighthouse.aditum.domain.User;
+import com.lighthouse.aditum.service.*;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.HouseDTO;
@@ -37,8 +41,24 @@ public class HouseResource {
 
     private final HouseService houseService;
 
-    public HouseResource(HouseService houseService) {
+    private final MailService mailService;
+
+    private final AdminInfoService adminInfoService;
+
+    private final UserService userService;
+
+    private final HouseMapper houseMapper;
+
+    private final CompanyService companyService;
+
+    public HouseResource(HouseService houseService,MailService mailService, AdminInfoService adminInfoService ,UserService userService,HouseMapper houseMapper,CompanyService companyService) {
+
         this.houseService = houseService;
+        this.mailService = mailService;
+        this.adminInfoService = adminInfoService;
+        this.userService = userService;
+        this.houseMapper=houseMapper;
+        this.companyService = companyService;
     }
 
     /**
@@ -82,6 +102,27 @@ public class HouseResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, houseDTO.getId().toString()))
             .body(result);
     }
+
+    @PutMapping("/houses/report/absence")
+    @Timed
+    public ResponseEntity<HouseDTO> reportHouseAbsence(@Valid @RequestBody HouseDTO houseDTO) throws URISyntaxException {
+        log.debug("REST request to update House : {}", houseDTO);
+        if (houseDTO.getId() == null) {
+            return createHouse(houseDTO);
+        }
+        HouseDTO result = houseService.save(houseDTO);
+        String companyName =  this.companyService.findOne(houseDTO.getCompanyId()).getName();
+        this.adminInfoService.findAllByCompany(null,houseDTO.getCompanyId()).forEach(adminInfoDTO -> {
+           Optional<User> user = this.userService.getUserWithAuthorities(adminInfoDTO.getUserId());
+            House house = houseMapper.houseDTOToHouse(houseDTO);
+            mailService.sendAbsenceEmail(house,user.get(),companyName);
+        });
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, houseDTO.getId().toString()))
+            .body(result);
+    }
+
 
     /**
      * GET  /houses : get all the houses.

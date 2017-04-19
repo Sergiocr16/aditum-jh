@@ -4,7 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.HouseRepository;
-import com.lighthouse.aditum.service.HouseService;
+import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -70,10 +70,23 @@ public class HouseResourceIntTest {
     private HouseRepository houseRepository;
 
     @Autowired
+    private MailService mailService;
+
+
+    @Autowired
+    private AdminInfoService adminInfoService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
     private HouseMapper houseMapper;
 
     @Autowired
     private HouseService houseService;
+
+    @Autowired
+    private CompanyService companyService;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -94,7 +107,7 @@ public class HouseResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        HouseResource houseResource = new HouseResource(houseService);
+        HouseResource houseResource = new HouseResource(houseService,mailService,adminInfoService,userService,houseMapper,companyService);
         this.restHouseMockMvc = MockMvcBuilders.standaloneSetup(houseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
