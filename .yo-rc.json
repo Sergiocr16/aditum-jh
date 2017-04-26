@@ -28,6 +28,7 @@
     "nativeLanguage": "es",
     "languages": [
       "es"
-    ]
+    ],
+    "herokuAppName": "aditum-jh"
   }
 }

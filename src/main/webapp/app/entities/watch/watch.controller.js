@@ -241,16 +241,4 @@
     }
 })();
 
-//         FUNCION PARA SERIALIZAR OFICIALES
-//         function serializeOfficers(officers){
-//             var responsableofficers = "";
-//
-//             function formatOfficer(officer){
-//               var fullName = officer.name+" "+officer.lastname+" "+officer.secondlastname;
-//               return officer.id+";"+officer.identificationnumber+";"+fullName;
-//             }
-//             angular.forEach(officers,function(officer,key){
-//                responsableofficers += formatOfficer(officer)+"||";
-//             })
-//           return responsableofficers;
-//         }
+
