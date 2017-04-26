@@ -28,6 +28,8 @@ public class HouseService {
 
     private final HouseMapper houseMapper;
 
+
+
     public HouseService(HouseRepository houseRepository, HouseMapper houseMapper) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;

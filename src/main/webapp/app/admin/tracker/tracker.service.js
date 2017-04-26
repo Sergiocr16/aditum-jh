@@ -138,6 +138,119 @@
         }
 //END HOME SERVICE WB
 
+
+//RESIDENT SERVICE WB
+    function receiveResident () {
+         return listenerHomeService.promise;
+    }
+    function sendResident(resident) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/saveResident/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(resident));
+              }
+          }
+
+        function subscribeToGetResidents () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/resident/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END RESIDENT SERVICE WB
+
+
+//VEHICLE SERVICE WB
+    function receiveVehicle () {
+         return listenerHomeService.promise;
+    }
+    function sendVehicle(vehicle) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/saveVehicle/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(vehicle));
+              }
+          }
+
+        function subscribeToGetVehicles () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/vehicle/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END VEHICLE SERVICE WB
+
+//VISITOR SERVICE WB
+    function receiveVisitor () {
+         return listenerHomeService.promise;
+    }
+    function sendVisitor(visitor) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/saveVisitor/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(visitor));
+              }
+          }
+
+        function subscribeToGetVisitors () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/visitor/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END VISITOR SERVICE WB
+
+//HOUSE SERVICE WB
+    function receiveHouse () {
+         return listenerHomeService.promise;
+    }
+    function sendHouse(house) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/saveHouse/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(house));
+              }
+          }
+
+        function subscribeToGetHouses () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/house/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END HOUSE SERVICE WB
+
+//DELETED ENTITY SERVICE WB
+    function receiveDeletedEntity () {
+         return listenerHomeService.promise;
+    }
+    function sendDeletedEntity(entity) {
+              if (stompClient !== null && stompClient.connected) {
+                  stompClient
+                      .send('/topic/deleteEntity/'+$rootScope.companyId,
+                      {},
+                      angular.toJson(entity));
+              }
+          }
+
+        function subscribeToGetDeletedEntities () {
+                     connected.promise.then(function() {
+                         subscribers.push(stompClient.subscribe('/topic/deletedEntity/'+$rootScope.companyId, function(data) {
+                             listenerHomeService.notify(angular.fromJson(data.body));
+                         }));
+                     },null,null);
+        }
+//END HOUSE SERVICE WB
+
+
         function unsubscribe () {
             if (subscribers.length > 0) {
             angular.forEach(subscribers,function(sub,value){

@@ -43,7 +43,6 @@
                             if (result) {
                                vm.house.desocupationinitialtime = vm.consulting_initial_time;
                                 vm.house.desocupationfinaltime = vm.consulting_final_time;
-
                                 var house = vm.house;
                                 house.isdesocupated = 1;
                                 House.reportAbsence(house,onSuccessReport,onError);

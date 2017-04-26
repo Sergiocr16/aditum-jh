@@ -60,8 +60,8 @@ public class RealTimeEmergency {
         this.emergencyService = emergencyService;
     }
 
-    @SubscribeMapping("/topic/reportEmergency/{idCompany}")
-    @SendTo("/topic/Emergency/{idCompany}")
+    @SubscribeMapping("/topic/Emergency/{idCompany}")
+    @SendTo("topic/reportEmergency/{idCompany}")
     public EmergencyDTO removeViewedMessage(EmergencyDTO emergencyDTO){
         return this.emergencyService.save(emergencyDTO);
     }
