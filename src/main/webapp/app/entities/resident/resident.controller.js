@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
+    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','JhiTrackerService'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,JhiTrackerService) {
          $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
@@ -158,6 +158,8 @@
                         function onSuccess(data, headers) {
                             toastr["success"]("Se ha eliminado el residente correctamente.");
                             loadResidents();
+                            console.log("here")
+                            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
                         }
                     }
                 }
@@ -203,6 +205,7 @@
                                  Resident.update(resident, onSuccess);
 
                                  function onSuccess(data, headers) {
+                                    JhiTrackerService.sendResident(data);
                                      if (resident.isOwner == 1) {
                                          User.getUserById({
                                              id: residentInfo.userId
@@ -213,6 +216,7 @@
                                              User.update(data, onSuccessUser);
 
                                              function onSuccessUser(data, headers) {
+
                                                  toastr["success"]("Se ha deshabilitado el residente correctamente.");
                                                  bootbox.hideAll();
                                                   loadResidents();
@@ -220,6 +224,7 @@
                                          }
                                      } else {
                                          loadResidents();
+
                                          toastr["success"]("Se ha deshabilitado el residente correctamente.");
                                          bootbox.hideAll();
                                      }
@@ -230,6 +235,7 @@
                                  Resident.update(resident, onSuccess);
 
                                  function onSuccess(data, headers) {
+                                  JhiTrackerService.sendResident(data);
                                      if (resident.isOwner == 1) {
                                          User.getUserById({
                                              id: resident.userId

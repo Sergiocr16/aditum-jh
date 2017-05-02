@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser'];
+    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','JhiTrackerService'];
 
-    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser) {
+    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,JhiTrackerService) {
           $rootScope.active = "residents";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -93,6 +93,7 @@
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
+             JhiTrackerService.sendResident(result);
                if(opcion==1){
                    insertResident(result.id)
                }
@@ -108,6 +109,7 @@
          function updateAccount(status){
              User.getUserById({id: vm.resident.userId},onSuccess);
              function onSuccess(user, headers) {
+             JhiTrackerService.sendResident(user);
                  user.id = vm.resident.userId;
                  user.activated = status;
                  user.firstName =  vm.resident.name;
@@ -138,6 +140,7 @@
             }
             Resident.save(vm.resident, onSaveSuccess, onSaveError);
              function onSaveSuccess (result) {
+             JhiTrackerService.sendResident(result);
                   vm.isSaving = false;
                   $state.go('resident');
                   toastr["success"]("Se ha registrado el residente correctamente.");

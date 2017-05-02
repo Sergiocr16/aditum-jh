@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods'];
+    VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods','JhiTrackerService'];
 
-    function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods) {
+    function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods,JhiTrackerService) {
         var vm = this;
         vm.Principal;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -107,6 +107,7 @@
                             $("#all").fadeIn();
                             toastr["success"]("Se ha eliminado el registro correctamente");
                             bootbox.hideAll();
+                             JhiTrackerService.sendDeletedEntity({type:'visitor',id:visitor.id})
                         }
                     }
                 }
@@ -134,6 +135,7 @@
                         Visitant.update(visitor, success)
 
                         function success(data) {
+                        JhiTrackerService.sendVisitor(data);
                             bootbox.hideAll();
                             toastr["success"]("Se ha cancelado la invitación correctamente");
                         }

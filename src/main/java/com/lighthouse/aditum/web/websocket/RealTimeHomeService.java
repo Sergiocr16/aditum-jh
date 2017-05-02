@@ -60,7 +60,7 @@ public class RealTimeHomeService {
 
     @SubscribeMapping("/topic/saveHomeService/{idCompany}")
     @SendTo("/topic/HomeService/{idCompany}")
-    public NoteDTO removeViewedMessage(NoteDTO noteDTO){
+    public NoteDTO saveHomeService(NoteDTO noteDTO){
           return this.noteService.save(noteDTO);
     }
 

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    VehiculeController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','JhiTrackerService'];
 
-    function VehiculeController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+    function VehiculeController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,JhiTrackerService) {
          $rootScope.active = "vehicules";
      var enabledOptions = true;
         var vm = this;
@@ -149,6 +149,7 @@
                         function onSuccess(data, headers) {
                             toastr["success"]("Se ha eliminado el vehículo correctamente.");
                             loadVehicules();
+                            JhiTrackerService.sendDeletedEntity({type:'vehicle',id:id_vehicule})
                         }
                     }
                 }
@@ -186,6 +187,7 @@
                                     vehicule.enabled = 0;
                                     Vehicule.update(vehicule, onSuccess);
                                     function onSuccess(data, headers) {
+                                     JhiTrackerService.sendVehicle(data);
                                             loadVehicules();
                                             toastr["success"]("Se ha deshabilitado el vehículo correctamente.");
                                             bootbox.hideAll();
@@ -195,6 +197,7 @@
                                     vehicule.enabled = 1;
                                     Vehicule.update(vehicule, onSuccess);
                                     function onSuccess(data, headers) {
+                                    JhiTrackerService.sendVehicle(data);
                                             bootbox.hideAll();
                                             toastr["success"]("Se ha habilitado el vehículo correctamente.");
                                             loadVehicules();
