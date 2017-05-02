@@ -5,15 +5,16 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal'];
+    AccessDoorController.$inject = ['Auth','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal','JhiTrackerService','$filter'];
 
-    function AccessDoorController(Auth,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal) {
+    function AccessDoorController(Auth,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal,JhiTrackerService,$filter) {
+        var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
         var securityKey, emergencyKey, housenumber;
-        var vm = this;
+
           vm.logout = logout;
               vm.show = 4;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -247,7 +248,6 @@
                             vm.visitor_license_plate = itemVisitor.licenseplate;
                             vm.visitor_id_number = itemVisitor.identificationnumber;
                              setHouse(itemVisitor.houseId);
-
                         }
                     });
                 }
@@ -296,5 +296,77 @@
                 vm.show = 4;
 
             }
+
+
+//BEGIN WEB SOCKETS
+JhiTrackerService.receiveEmergency().then(null, null, receiveEmergency);
+JhiTrackerService.receiveResident().then(null, null, receiveResident);
+JhiTrackerService.receiveVehicle().then(null, null, receiveVehicle);
+JhiTrackerService.receiveHouse().then(null, null, receiveHouse);
+JhiTrackerService.receiveVisitor().then(null, null, receiveVisitor);
+JhiTrackerService.receiveHomeService().then(null, null, receiveHomeService);
+JhiTrackerService.receiveDeletedEntity().then(null, null, receiveDeletedEntity);
+
+function receiveEmergency(emergency){
+console.log(emergency);
+}
+function receiveVisitor(visitor){
+var result = visitorsList.indexOf(visitor);
+if(result!==-1){
+visitorsList[result] = visitor;
+}else{
+visitorsList.push(visitor);
+}
+}
+function receiveHomeService(homeService){
+console.log(homeService);
+}
+
+function receiveResident(resident){
+var result = residentsList.indexOf(resident);
+if(result!==-1){
+residentsList[result] = resident;
+}else{
+residentsList.push(resident);
+}
+}
+
+function receiveVehicle(vehicle){
+var result = vehiculesList.indexOf(vehicle);
+if(result!==-1){
+vehiculesList[result] = vehicle;
+}else{
+vehiculesList.push(vehicle);
+}
+}
+
+function receiveHouse(house){
+var result = housesList.indexOf(house);
+if(result!==-1){
+housesList[result] = house;
+}else{
+housesList.push(house);
+}
+}
+function receiveDeletedEntity(entity){
+    switch(entity.type){
+        case 'resident':
+            residentsList = $filter('filter')(residentsList, function (item) {
+               return item.id !== entity.id;
+           });
+        break;
+        case 'vehicle':
+        vehiculesList = $filter('filter')(vehiculesList, function (item) {
+                       return item.id !== entity.id;
+           });
+        break;
+        case 'visitor':
+            visitorsList = $filter('filter')(visitorsList, function (item) {
+                 return item.id !== entity.id;
+           });
+        break;
     }
+}
+//END WEBSOCKETS
+}
 })();

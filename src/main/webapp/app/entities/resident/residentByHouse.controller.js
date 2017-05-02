@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope'];
+    ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','JhiTrackerService'];
 
-    function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope) {
+    function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,JhiTrackerService) {
             $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
@@ -100,6 +100,7 @@
                             resident.enabled = 0;
                             Resident.update(resident, onSuccess);
                             function onSuccess(data, headers) {
+                            JhiTrackerService.sendResident(data);
                                 if (resident.isOwner == 1) {
                                     User.getUserById({
                                         id: resident.userId
@@ -125,6 +126,7 @@
                             Resident.update(resident, onSuccess);
 
                             function onSuccess(data, headers) {
+                            JhiTrackerService.sendResident(data);
                                 if (resident.isOwner == 1) {
                                     User.getUserById({
                                         id: resident.userId

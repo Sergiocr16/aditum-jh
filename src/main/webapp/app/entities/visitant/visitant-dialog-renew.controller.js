@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods','entity','$uibModalInstance'];
+    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods','entity','$uibModalInstance','JhiTrackerService'];
 
-    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods,entity,$uibModalInstance) {
+    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods,entity,$uibModalInstance,JhiTrackerService) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
@@ -83,6 +83,7 @@
                 formatVisitor();
                 Visitant.update(vm.visitor, onSuccess, onSaveError);
                  function onSuccess(result) {
+                 JhiTrackerService.sendVisitor(result);
                         toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                        $scope.$emit('aditumApp:visitantUpdate', result);
                        $state.reload();

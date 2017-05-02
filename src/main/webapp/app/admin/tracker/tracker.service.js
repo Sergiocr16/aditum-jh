@@ -28,6 +28,21 @@
             subscribeToGetEmergencies:subscribeToGetEmergencies,
             receiveEmergency:receiveEmergency,
             reportEmergency:reportEmergency,
+            subscribeToGetResidents:subscribeToGetResidents,
+            receiveResident:receiveResident,
+            sendResident:sendResident,
+            subscribeToGetVehicles:subscribeToGetVehicles,
+            receiveVehicle:receiveVehicle,
+            sendVehicle:sendVehicle,
+            subscribeToGetVisitors:subscribeToGetVisitors,
+            receiveVisitor:receiveVisitor,
+            sendVisitor:sendVisitor,
+            subscribeToGetHouses:subscribeToGetHouses,
+            receiveHouse:receiveHouse,
+            sendHouse:sendHouse,
+            subscribeToGetDeletedEntities:subscribeToGetDeletedEntities,
+            receiveDeletedEntity:receiveDeletedEntity,
+            sendDeletedEntity:sendDeletedEntity,
             subscribe: subscribe,
             unsubscribe: unsubscribe
         };
@@ -92,7 +107,7 @@
 
 //EMERGENCY WB
     function receiveEmergency () {
-         return listenerEmergency.promise;
+         return listenerHomeService.promise;
     }
     function reportEmergency(emergency) {
               if (stompClient !== null && stompClient.connected) {
