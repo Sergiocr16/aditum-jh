@@ -23,7 +23,7 @@
 
             </li>
             <!--// es admin-->
-            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
+            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'administraton' ||  active === 'user-managment' ||  active === 'tracker' || active === 'metrics'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
                     <span class="title">Administración</span>
@@ -33,42 +33,52 @@
 
 
                 <ul class="sub-menu">
-                    <li ui-sref="user-management" ng-class="{ 'active' : active === 'residents' }">
+                    <li ui-sref="company" ng-class="{ 'active' : active === 'user-managment' }">
+                        <a ui-sref="company">
+                            <i class="glyphicon glyphicon-home" aria-hidden="true"></i> Gestión de condominios
+                        </a>
+                    </li>
+                    <li ui-sref="admin-info" ng-class="{ 'active' : active === 'user-managment' }">
+                        <a ui-sref="admin-info">
+                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Administradores
+                        </a>
+                    </li>
+                    <li ui-sref="user-management" ng-class="{ 'active' : active === 'user-managment' }">
                         <a ui-sref="user-management">
                             <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Gestión de usuarios
                         </a>
                     </li>
-                    <li ui-sref="jhi-tracker" ng-class="{ 'active' : active === 'houses' }">
+                    <li ui-sref="jhi-tracker" ng-class="{ 'active' : active === 'tracker' }">
                         <a ui-sref="jhi-tracker">
                             <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Seguimiento
                         </a>
                     </li>
-                    <li ui-sref="jhi-metrics" ng-class="{ 'active' : active === 'vehicules'}">
+                    <li ui-sref="jhi-metrics" ng-class="{ 'active' : active === 'metrics'}">
                         <a href="">
                             <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i> Métricas
                         </a>
                     </li>
-                    <li ui-sref="jhi-health" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="jhi-health" ng-class="{ 'active' : active === 'health'}">
                         <a href="">
                             <i class="glyphicon glyphicon-heart" aria-hidden="true"></i> Salud
                         </a>
                     </li>
-                    <li ui-sref="jhi-configuration" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="jhi-configuration" ng-class="{ 'active' : active === 'configuration'}">
                         <a href="">
                             <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i> Configuración
                         </a>
                     </li>
-                    <li ui-sref="audits" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="audits" ng-class="{ 'active' : active === 'audits'}">
                         <a href="">
                             <i class="glyphicon glyphicon-bell" aria-hidden="true"></i> Auditorías
                         </a>
                     </li>
-                    <li ui-sref="logs" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="logs" ng-class="{ 'active' : active === 'logs'}">
                         <a href="">
                             <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Logs
                         </a>
                     </li>
-                    <li ui-sref="docs" ng-class="{ 'active' : active === 'adminVisitors'}">
+                    <li ui-sref="docs" ng-class="{ 'active' : active === 'api'}">
                         <a href="">
                             <i class="glyphicon glyphicon-book" aria-hidden="true"></i> API
                         </a>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdminInfoController', AdminInfoController);
 
-    AdminInfoController.$inject = ['DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    AdminInfoController.$inject = ['Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function AdminInfoController(DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function AdminInfoController(Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -18,7 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-
+        var admins = [];
         loadAll();
 
         function loadAll () {
@@ -38,14 +38,32 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.adminInfos = data;
                 vm.page = pagingParams.page;
+                Company.query(onSuccessCompany, onError);
+                admins = data;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
-        }
+            function onSuccessCompany(data) {
+                vm.companies = data;
+                vm.adminInfos = formatAdminInfo();
+            }
 
+        }
+        function formatAdminInfo() {
+            for (var i = 0; i < admins.length; i++) {
+
+                for (var e = 0; e < vm.companies.length; e++) {
+                    if (admins[i].companyId == vm.companies[e].id) {
+                        admins[i].companyId = vm.companies[e].name;
+                        admins[i].name = admins[i].name + " " + admins[i].lastname + " " + admins[i].secondlastname ;
+                    }
+                }
+            }
+
+            return admins;
+        }
         function loadPage(page) {
             vm.page = page;
             vm.transition();
