@@ -311,6 +311,7 @@ function receiveEmergency(emergency){
 console.log(emergency);
 }
 function receiveVisitor(visitor){
+if(visitorsList!==undefined){
 var result = visitorsList.indexOf(visitor);
 if(result!==-1){
 visitorsList[result] = visitor;
@@ -318,11 +319,13 @@ visitorsList[result] = visitor;
 visitorsList.push(visitor);
 }
 }
+}
 function receiveHomeService(homeService){
 console.log(homeService);
 }
 
 function receiveResident(resident){
+if(residentsList!==undefined){
 var result = residentsList.indexOf(resident);
 if(result!==-1){
 residentsList[result] = resident;
@@ -330,8 +333,10 @@ residentsList[result] = resident;
 residentsList.push(resident);
 }
 }
+}
 
 function receiveVehicle(vehicle){
+if(vehiculesList!==undefined){
 var result = vehiculesList.indexOf(vehicle);
 if(result!==-1){
 vehiculesList[result] = vehicle;
@@ -339,8 +344,10 @@ vehiculesList[result] = vehicle;
 vehiculesList.push(vehicle);
 }
 }
+}
 
 function receiveHouse(house){
+if(housesList!==undefined){
 var result = housesList.indexOf(house);
 if(result!==-1){
 housesList[result] = house;
@@ -348,22 +355,29 @@ housesList[result] = house;
 housesList.push(house);
 }
 }
+}
 function receiveDeletedEntity(entity){
     switch(entity.type){
         case 'resident':
+        if(residentsList!==undefined){
             residentsList = $filter('filter')(residentsList, function (item) {
                return item.id !== entity.id;
            });
+         }
         break;
         case 'vehicle':
+         if(vehiculesList!==undefined){
         vehiculesList = $filter('filter')(vehiculesList, function (item) {
                        return item.id !== entity.id;
            });
+        }
         break;
         case 'visitor':
+          if(visitorsList!==undefined){
             visitorsList = $filter('filter')(visitorsList, function (item) {
                  return item.id !== entity.id;
            });
+        }
         break;
     }
 }
