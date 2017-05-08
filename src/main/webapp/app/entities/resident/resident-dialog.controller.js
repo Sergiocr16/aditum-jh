@@ -93,7 +93,7 @@
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
-             JhiTrackerService.sendResident(result);
+
                if(opcion==1){
                    insertResident(result.id)
                }
@@ -109,7 +109,7 @@
          function updateAccount(status){
              User.getUserById({id: vm.resident.userId},onSuccess);
              function onSuccess(user, headers) {
-             JhiTrackerService.sendResident(user);
+
                  user.id = vm.resident.userId;
                  user.activated = status;
                  user.firstName =  vm.resident.name;
@@ -125,6 +125,7 @@
 
             }
             function onUpdateSuccess (result) {
+            JhiTrackerService.sendResident(result);
                 vm.isSaving = false;
                 $state.go('resident');
                 toastr["success"]("Se ha editado el residente correctamente.");
