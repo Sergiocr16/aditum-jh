@@ -5,17 +5,23 @@
         .module('aditumApp')
         .controller('HouseAbsenceController', HouseAbsenceController);
 
-    HouseAbsenceController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'House'];
+    HouseAbsenceController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'House','Principal'];
 
-    function HouseAbsenceController($scope, $rootScope, $stateParams, previousState,House) {
+    function HouseAbsenceController($scope, $rootScope, $stateParams, previousState,House,Principal) {
         moment.locale('es');
         var vm = this;
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.consulting_initial_time = new Date();
         vm.consulting_final_time = new Date();
         House.get({id: $rootScope.companyUser.houseId},onSuccess,onError);
-
+angular.element(document).ready(function () {
+          $("#all").fadeIn("slow");
+                $('.dating').keydown(function() {
+                    return false;
+                });
+    });
         function onSuccess(house){
           vm.house=house;
           vm.house.finaltime = moment(house.desocupationfinaltime).format('LL');
