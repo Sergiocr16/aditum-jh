@@ -15,8 +15,8 @@
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
         var securityKey, emergencyKey, housenumber;
 
-          vm.logout = logout;
-              vm.show = 4;
+        vm.logout = logout;
+        vm.show = 4;
         vm.isAuthenticated = Principal.isAuthenticated;
         function logout() {
             Auth.logout();
@@ -85,8 +85,6 @@
                                 $("#vehiculeAccess").fadeIn(100);
                                 vm.show = 2;
                                 vm.vehicule = item;
-
-
                                 angular.forEach(housesList, function(itemHouse, index) {
                                     if (itemHouse.id == item.houseId) {
                                         vm.SelectedHouse = itemHouse.housenumber;
@@ -119,11 +117,8 @@
                         if (item.identificationnumber == vm.id_number) {
                             vm.residentRegisteredTitle = "Residente registrado"
                             vm.colorResidentRegistered = "green-font"
-                            console.log(item.enabled)
                             $("#residentAccess").fadeIn(100);
                             vm.show = 1;
-                            vm.name = item.name + " " + item.lastname + " " + item.secondlastname;
-                            vm.indentification = item.identificationnumber;
                             vm.resident = item;
                             angular.forEach(housesList, function(itemHouse, index) {
                                 if (itemHouse.id == item.houseId) {
@@ -216,27 +211,21 @@
                 vm.show = 5;
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
-
                 clearInputs();
+                vm.houses = housesList;
                 if (vm.id_number == undefined || vm.id_number == "") {
-
                 } else {
-
                     vm.visitor_id_number = vm.id_number;
                     angular.forEach(visitorsList, function(itemVisitor, index) {
                         if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
-                        console.log('aa');
                             vm.visitor_name = itemVisitor.name;
                             vm.visitor_last_name = itemVisitor.lastname;
                             vm.visitor_second_last_name = itemVisitor.secondlastname;
                             vm.visitor_license_plate = itemVisitor.licenseplate;
-                             setHouse(itemVisitor.houseId);
-
-
+                            setHouse(itemVisitor.houseId);
                         }
                     });
                 }
-
 
                 if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {
                     vm.visitor_license_plate = vm.id_vehicule;
@@ -278,15 +267,15 @@
 
             }
 
-                function onSaveSuccess (result) {
+             function onSaveSuccess (result) {
                 vm.show=4;
-                    vm.isSaving = false;
-                    toastr["success"]("Se registró la entrada del visitante correctamente.");
-                }
+                 vm.isSaving = false;
+                 toastr["success"]("Se registró la entrada del visitante correctamente.");
+             }
 
-                  function onSaveError () {
-                            vm.isSaving = false;
-                        }
+             function onSaveError () {
+                vm.isSaving = false;
+            }
 
             vm.deleteResidentVehiculeSpots = function() {
                 $("#vehicule_license_plate").css("text-transform", "none");
