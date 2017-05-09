@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EmergencyDialogController', EmergencyDialogController);
 
-    EmergencyDialogController.$inject = ['$timeout', '$scope','$state','$stateParams', 'Principal','JhiTrackerService','$rootScope'];
+    EmergencyDialogController.$inject = ['$timeout', '$scope','$state','$stateParams', 'Principal','WSEmergency','$rootScope'];
 
-    function EmergencyDialogController ($timeout, $scope,$state, $stateParams, Principal,JhiTrackerService,$rootScope) {
+    function EmergencyDialogController ($timeout, $scope,$state, $stateParams, Principal,WSEmergency,$rootScope) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.reportEmergency = save;
@@ -41,7 +41,7 @@
            callback: function(result) {
                if (result) {
                formatValidEmergency();
-                 JhiTrackerService.reportEmergency(vm.emergency);
+                 WSEmergency.sendActivity(vm.emergency);
                         toastr["success"]("Se ha reportado la emergencia, enseguida será notificada a los oficiales");
                         vm.emergency = undefined;
                         $state.go('residentByHouse');

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal','JhiTrackerService','$filter'];
+    AccessDoorController.$inject = ['Auth','$state','$scope','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal','$filter','companyUser','WSDeleteEntity','WSEmergency','WSHouse','WSResident','WSVehicle','WSNote','WSVisitor'];
 
-    function AccessDoorController(Auth,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal,JhiTrackerService,$filter) {
+    function AccessDoorController(Auth,$state,$scope,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal,$filter,companyUser,WSDeleteEntity,WSEmergency,WSHouse,WSResident,WSVehicle,WSNote,WSVisitor) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -15,16 +15,27 @@
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
         var securityKey, emergencyKey, housenumber;
 
-          vm.logout = logout;
-              vm.show = 4;
+        vm.logout = logout;
+        vm.show = 4;
+
         vm.isAuthenticated = Principal.isAuthenticated;
         function logout() {
             Auth.logout();
             $rootScope.companyUser = undefined;
-
+            $state.go('home');
+            unsubscribe();
         }
         loadResidents();
 
+       function unsubscribe(){
+       WSDeleteEntity.unsubscribe($rootScope.companyId);
+       WSEmergency.unsubscribe($rootScope.companyId);
+       WSHouse.unsubscribe($rootScope.companyId);
+       WSResident.unsubscribe($rootScope.companyId);
+       WSVehicle.unsubscribe($rootScope.companyId);
+       WSNote.unsubscribe($rootScope.companyId);
+       WSVisitor.unsubscribe($rootScope.companyId);
+       }
         function loadResidents() {
             Resident.query({companyId: $rootScope.companyId}, onSuccessResident, onError);
             function onSuccessResident(residents, headers) {
@@ -54,14 +65,27 @@
            Visitant.query({companyId: $rootScope.companyId}, onSuccessVisitor, onError);
            function onSuccessVisitor(visitors, headers) {
               visitorsList = visitors;
-              showLists()
+              subscribe()
            }
         }
-        function showLists(){
-            console.log(residentsList);
-               console.log(housesList);
-                  console.log(vehiculesList);
-                      console.log(visitorsList);
+        function subscribe(){
+          if($state.current.name==="main-access-door"){
+                WSDeleteEntity.subscribe($rootScope.companyId);
+                WSEmergency.subscribe($rootScope.companyId);
+                WSHouse.subscribe($rootScope.companyId);
+                WSResident.subscribe($rootScope.companyId);
+                WSVehicle.subscribe($rootScope.companyId);
+                WSNote.subscribe($rootScope.companyId);
+                WSVisitor.subscribe($rootScope.companyId);
+                WSDeleteEntity.receive().then(null, null, receiveDeletedEntity);
+                WSEmergency.receive().then(null, null, receiveEmergency);
+                WSHouse.receive().then(null, null, receiveHouse);
+                WSResident.receive().then(null, null, receiveResident);
+                WSVehicle.receive().then(null, null, receiveVehicle);
+                WSNote.receive().then(null, null, receiveHomeService);
+                WSVisitor.receive().then(null, null, receiveVisitor);
+           }
+
         }
         function onError(error) {
             AlertService.error(error.data.message);
@@ -299,13 +323,13 @@
 
 
 //BEGIN WEB SOCKETS
-JhiTrackerService.receiveEmergency().then(null, null, receiveEmergency);
-JhiTrackerService.receiveResident().then(null, null, receiveResident);
-JhiTrackerService.receiveVehicle().then(null, null, receiveVehicle);
-JhiTrackerService.receiveHouse().then(null, null, receiveHouse);
-JhiTrackerService.receiveVisitor().then(null, null, receiveVisitor);
-JhiTrackerService.receiveHomeService().then(null, null, receiveHomeService);
-JhiTrackerService.receiveDeletedEntity().then(null, null, receiveDeletedEntity);
+
+//JhiTrackerService.receiveResident().then(null, null, receiveResident);
+//JhiTrackerService.receiveVehicle().then(null, null, receiveVehicle);
+//JhiTrackerService.receiveHouse().then(null, null, receiveHouse);
+//JhiTrackerService.receiveVisitor().then(null, null, receiveVisitor);
+//JhiTrackerService.receiveHomeService().then(null, null, receiveHomeService);
+//JhiTrackerService.receiveDeletedEntity().then(null, null, receiveDeletedEntity);
 
 function receiveEmergency(emergency){
 console.log(emergency);

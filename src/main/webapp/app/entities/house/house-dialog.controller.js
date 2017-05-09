@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House','JhiTrackerService'];
+    HouseDialogController.$inject = ['CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House','WSHouse'];
 
-    function HouseDialogController (CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House,JhiTrackerService) {
+    function HouseDialogController (CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House,WSHouse) {
         var vm = this;
   $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -45,7 +45,7 @@
         }
 
         function onSaveSuccess (result) {
-        JhiTrackerService.sendHouse(result);
+        WSHouse.sendActivity(result);
             $state.go('house');
             bootbox.hideAll();
                if(vm.house.id !== null){
