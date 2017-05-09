@@ -26,7 +26,14 @@
                     $translatePartialLoader.addPart('reset');
                     return $translate.refresh();
                 }]
-            }
+            },
+           onEnter: ['$rootScope', function($rootScope) {
+              $rootScope.showLogin= false;
+
+           }],
+           onExit: ['$rootScope', function($rootScope) {
+             $rootScope.showLogin= true;
+          }]
         });
     }
 })();

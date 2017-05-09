@@ -43,6 +43,6 @@
                           "hideMethod": "fadeOut"
                         }
         vm.isInLogin = $state.includes('home');
-
+       $('body').removeClass("gray");
     }
 })();

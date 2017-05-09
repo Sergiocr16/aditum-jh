@@ -60,7 +60,7 @@
         vm.$state = $state;
 
          var subLogin = $scope.$on('authenticationSuccess', getAccount);
-         var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
+//         var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
         function getAccount(){
             vm.currentUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
@@ -69,9 +69,14 @@
             $rootScope.companyId = data.companyId;
             vm.currentUser = data;
             getContextLiving();
+            $rootScope.currentUserImage = data.image;
+            $rootScope.currentUserImageContentType = data.imageContentType;
              }else{
              vm.contextLiving = "Dios de Aditum"
+              $rootScope.currentUserImage = undefined;
+              $rootScope.currentUserImageContentType = undefined;
              }
+
             })
         }
 
@@ -85,7 +90,8 @@
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
-
+            vm.currentUser = undefined;
+             $rootScope.showLogin = true;
         }
 
         function toggleNavbar() {
@@ -96,7 +102,7 @@
             vm.isNavbarCollapsed = true;
         }
 
-        $scope.$on('$destroy', subChangeState);
+//        $scope.$on('$destroy', subChangeState);
         $scope.$on('$destroy', subLogin);
     }
 })();

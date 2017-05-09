@@ -20,7 +20,7 @@
 
             <div class="alert text-center alert-success" ng-show="vm.success">
                 <p data-translate="reset.finish.messages.success" translate-compile><strong>Your password has been reset.</strong> Please <a class="alert-link">sign in</a>.</p>
-                <h1 class="text-center" style="margin-top:50px"><a class="btn btn-success" href="https://aditum-jh.herokuapp.com/">Iniciar sesión</a></h1>
+                <h1 class="text-center" style="margin-top:50px"><a class="btn btn-success" ng-click="vm.signIn()">Iniciar sesión</a></h1>
             </div>
             <div style="background-color:white;height:180px" ng-show="vm.success"></div>
 
