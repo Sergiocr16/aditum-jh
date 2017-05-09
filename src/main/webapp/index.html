@@ -54,7 +54,7 @@
     </div>
 
 
-    <div ui-view="access_door" ng-show="vm.isAuthenticated() == true" has-authority="ROLE_OFFICER">   </div>
+    <div ui-view="access_door"  ng-show="vm.isAuthenticated() === true" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
     <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
@@ -115,6 +115,10 @@
     <script src="app/app.module.js"></script>
 
     <script src="app/services/user/user.service.js"></script>
+
+    <script src="app/services/websockets/stomp-manager.service.js"></script>
+
+     <script src="app/services/websockets/ws-delete-entity.service.js"></script>
 
     <script src="app/services/profiles/profile.service.js"></script>
 
@@ -202,6 +206,8 @@
 
     <script src="app/entities/watch/watch.controller.js"></script>
 
+<script src="app/entities/visitant/ws-visitor.service.js"></script>
+
     <script src="app/entities/visitant/visitant-user-invited.controller.js"></script>
 
     <script src="app/entities/visitant/visitant-dialog-renew.controller.js"></script>
@@ -220,6 +226,8 @@
 
     <script src="app/entities/visitant/visitant.controller.js"></script>
 
+<script src="app/entities/vehicule/ws-vehicle.service.js"></script>
+
     <script src="app/entities/vehicule/vehicule-dialog.controller.js"></script>
 
     <script src="app/entities/vehicule/vehicule-detail.controller.js"></script>
@@ -235,6 +243,8 @@
     <script src="app/entities/vehicule/vehicule.service.js"></script>
 
     <script src="app/entities/vehicule/vehicule.controller.js"></script>
+
+    <script src="app/entities/resident/ws-resident-service.controller.js"></script>
 
     <script src="app/entities/resident/residentByHouse.controller.js"></script>
 
@@ -264,6 +274,8 @@
 
     <script src="app/entities/officer/officer.controller.js"></script>
 
+<script src="app/entities/note/ws-note.service.js"></script>
+
     <script src="app/entities/note/note-dialog.controller.js"></script>
 
     <script src="app/entities/note/note-detail.controller.js"></script>
@@ -275,6 +287,8 @@
     <script src="app/entities/note/note.service.js"></script>
 
     <script src="app/entities/note/note.controller.js"></script>
+
+    <script src="app/entities/house/ws-house.service.js"></script>
 
     <script src="app/entities/house/keyConfiguration.controller.js"></script>
 
@@ -293,6 +307,8 @@
     <script src="app/entities/house/house.controller.js"></script>
 
     <script src="app/entities/entity.state.js"></script>
+
+    <script src="app/entities/emergency/ws-emergency.service.js"></script>
 
     <script src="app/entities/emergency/emergency-dialog.controller.js"></script>
 

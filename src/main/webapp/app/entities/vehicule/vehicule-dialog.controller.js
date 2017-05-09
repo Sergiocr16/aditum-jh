@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeDialogController', VehiculeDialogController);
 
-    VehiculeDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','JhiTrackerService'];
+    VehiculeDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle'];
 
-    function VehiculeDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,JhiTrackerService) {
+    function VehiculeDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle) {
          $rootScope.active = "vehicules";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -61,7 +61,7 @@
         }
 
         function onSaveSuccess (result) {
-        JhiTrackerService.sendVehicle(result);
+        WSVehicle.sendActivity(result);
               $state.go('vehicule');
                   toastr["success"]("Se ha registrado el vehículo correctamente.");
 

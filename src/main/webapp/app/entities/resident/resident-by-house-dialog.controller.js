@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','JhiTrackerService'];
+    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
 
-    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,JhiTrackerService) {
+    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
           $rootScope.active = "residentsHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -73,7 +73,7 @@
 
         }
             function onSuccess (result) {
-               JhiTrackerService.sendResident(result);
+               WSResident.sendActivity(result);
                 vm.isSaving = false;
                 $state.go('residentByHouse');
                   if(vm.resident.id !== null){
