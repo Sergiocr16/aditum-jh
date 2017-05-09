@@ -9,13 +9,14 @@
 
     function ResetFinishController ($stateParams,$rootScope, $timeout, Auth, LoginService,Principal,$state) {
        angular.element(document).ready(function () {
-                       $('body').removeClass("gray");
+
                        $('#page-content').hide();
                   });
         var vm = this;
 
         vm.signIn = function(){
-         $state.go('login')
+         $state.go('home');
+         $('#page-content').show();
         }
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.keyMissing = angular.isUndefined($stateParams.key);

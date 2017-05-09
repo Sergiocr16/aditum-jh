@@ -23,6 +23,7 @@
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
+            $rootScope.showLogin = true;
             unsubscribe();
         }
         loadResidents();
@@ -65,7 +66,7 @@
            Visitant.query({companyId: $rootScope.companyId}, onSuccessVisitor, onError);
            function onSuccessVisitor(visitors, headers) {
               visitorsList = visitors;
-              subscribe()
+              subscribe();
            }
         }
         function subscribe(){

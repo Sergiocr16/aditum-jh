@@ -11,6 +11,7 @@
 
 
     angular.element(document).ready(function () {
+         $('body').removeClass("gray");
              $('.carousel').fadeIn("slow");
                    $('.carousel').carousel({
                        intervals: 2000
@@ -18,6 +19,10 @@
         });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
+
+
+        $rootScope.showLogin = true;
+
         vm.isChangingPassword = $state.includes('finishReset');
         vm.isResetPassword = $state.includes('requestReset');
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -26,7 +31,7 @@
         vm.credentials = {};
         vm.login = login;
         vm.password = null;
-        vm.register = register;
+//        vm.register = register;
         vm.rememberMe = true;
         vm.requestResetPassword = requestResetPassword;
         vm.username = null;
@@ -54,7 +59,7 @@
                 vm.authenticationError = false;
 
                    Principal.identity().then(function(account){
-
+                    $rootScope.showLogin = false;
                     if(account.authorities[0]=='ROLE_OFFICER'){
 
                       $state.go('main-access-door');
@@ -83,13 +88,12 @@
             });
         }
 
-        function register () {
-//            $uibModalInstance.dismiss('cancel');
-            $state.go('register');
-        }
+//        function register () {
+////            $uibModalInstance.dismiss('cancel');
+//            $state.go('register');
+//        }
 
         function requestResetPassword () {
-//            $uibModalInstance.dismiss('cancel');
             $state.go('requestReset');
         }
     }
