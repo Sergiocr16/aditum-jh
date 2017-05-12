@@ -217,9 +217,9 @@
 
         function onSuccessDisabledResident(data, headers) {
             JhiTrackerService.sendResident(data);
-            if (resident.isOwner == 1) {
+            if (data.isOwner == 1) {
                 User.getUserById({
-                    id: residentInfo.userId
+                    id: data.userId
                 }, onSuccessGetDisabledUser);
 
             } else {
@@ -245,9 +245,9 @@
 
         function onSuccess(data, headers) {
             JhiTrackerService.sendResident(data);
-            if (resident.isOwner == 1) {
+            if (data.isOwner == 1) {
                 User.getUserById({
-                    id: resident.userId
+                    id: data.userId
                 }, onSuccessGetEnabledUser);
 
             } else {
