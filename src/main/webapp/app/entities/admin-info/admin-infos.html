@@ -19,7 +19,7 @@
                     <input type="text" class="form-control " placeholder="Buscar por nombre" ng-model="vm.query">
                 </div>
             </div>
-            <button type="submit" class="btn green col-md-2 col-sm-3 col-xs-12 small-margin-bottom" ui-sref="adminInfo.new()">Registrar administrador</button>
+            <button type="submit" class="btn green col-md-2 col-sm-3 col-xs-12 small-margin-bottom" ui-sref="admin-info.new()">Registrar administrador</button>
             <div class="portlet-body ">
                 <div class="table-scrollable">
                     <h2 ng-show="vm.adminInfos.length==0" class="text-center gray-font ">No existen residentes registrados</h2>
@@ -44,17 +44,16 @@
                             <td style="text-transform: capitalize;">{{adminInfo.name}}</td>
                             <td>{{adminInfo.identificationnumber}}</td>
                             <td>{{adminInfo.email}}</td>
-
                             <td>
                                 {{adminInfo.userLogin}}
                             </td>
                             <td>
                                 {{adminInfo.companyId}}
                             </td>
-                            <td><a class="light-gray-font"  ui-sref="resident-detail({id:resident.id})">Ver detalle</a></td>
-                            <td> <a class="light-gray-font"  ui-sref="adminInfo.edit({id:resident.id})">Editar</a></td>
+                            <td><a class="light-gray-font"  ui-sref="admin-info-detail({id:adminInfo.id})">Ver detalle</a></td>
+                            <td> <a class="light-gray-font"  ui-sref="admin-info.edit({id:resident.id})">Editar</a></td>
                             <td> <a  class="light-gray-font" ng-click="vm.disableEnabledResident(resident)">Habilitar/Deshabilitar</a></td>
-                            <td> <a class="light-gray-font"   ng-click="vm.deleteResident(resident.id, resident.name)">Eliminar</a></td>
+                            <td> <a class="light-gray-font"   ng-click="vm.deleteAdmin(adminInfo)">Eliminar</a></td>
                             <td><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
 
                         </tr>

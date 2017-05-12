@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdminInfoController', AdminInfoController);
 
-    AdminInfoController.$inject = ['Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    AdminInfoController.$inject = ['User','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function AdminInfoController(Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function AdminInfoController(User,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -69,6 +69,39 @@
             vm.transition();
         }
 
+        vm.deleteAdmin = function(admin) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea eliminar al residente " + admin.name + "?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        vm.login = admin.userLogin;
+                        AdminInfo.delete({
+                            id: admin.id
+                        }, onSuccessDelete);
+                    }
+                }
+            });
+
+
+        };
+
+        function onSuccessDelete () {
+            User.delete({login: vm.login},
+                function () {
+                    toastr["success"]("Se ha eliminado el administrador correctamente.");
+                    loadAll();
+                });
+        }
         function transition() {
             $state.transitionTo($state.$current, {
                 page: vm.page,

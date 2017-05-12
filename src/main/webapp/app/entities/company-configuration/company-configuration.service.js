@@ -19,7 +19,13 @@
                     }
                     return data;
                 }
-            },
+            }
+
+            ,'getByCompanyId': {
+            method: 'GET',
+                url: 'api/getByCompanyId',
+                isArray: true
+        },
             'update': { method:'PUT' }
         });
     }

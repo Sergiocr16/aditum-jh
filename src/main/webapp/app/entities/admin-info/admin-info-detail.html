@@ -1,60 +1,137 @@
+<div class="display-none" id="adminInformation">
 
-<div>
-    <h2><span data-translate="aditumApp.adminInfo.detail.title">Admin Info</span> {{vm.adminInfo.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="row jh-entity-details">
-        <dt><span data-translate="aditumApp.adminInfo.name">Name</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.name}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.lastname">Lastname</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.lastname}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.secondlastname">Secondlastname</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.secondlastname}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.identificationnumber">Identificationnumber</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.identificationnumber}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.email">Email</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.email}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.image">Image</span></dt>
-        <dd>
-            <div ng-if="vm.adminInfo.image">
-                <a ng-click="vm.openFile(vm.adminInfo.imageContentType, vm.adminInfo.image)">
-                    <img data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}" style="max-width: 100%;" alt="adminInfo image"/>
-                </a>
-                {{vm.adminInfo.imageContentType}}, {{vm.byteSize(vm.adminInfo.image)}}
-            </div>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.enabled">Enabled</span></dt>
-        <dd>
-            <span>{{vm.adminInfo.enabled}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.user">User</span></dt>
-        <dd>
-            {{vm.adminInfo.userLogin}}
-        </dd>
-        <dt><span data-translate="aditumApp.adminInfo.company">Company</span></dt>
-        <dd>
-            <a ui-sref="company-detail({id:vm.adminInfo.companyId})">{{vm.adminInfo.companyId}}</a>
-        </dd>
-    </dl>
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="actionButton()">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="fa fa-user font-green-haze"></i>
+                            <span class="caption-subject bold uppercase">{{vm.title}}</span>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div ng-show="permisson===2" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
+                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Administrador de filial: </span>
+                            <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
+                                <div class="md-checkbox">
+                                    <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
+                                    <label for="checkbox1">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+                            <h3 class="text-center"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                        </div>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="margin-top-30 col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                                <span class="font-15 gray-font" style="text-transform: capitalize;">Nombre: {{vm.adminInfo.name}} {{vm.adminInfo.lastname}} {{vm.adminInfo.secondlastname}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30 ">
+                                <span class="font-15 gray-font">Login: {{vm.adminInfo.userLogin}}</span>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Número de cédula: {{vm.adminInfo.identificationnumber}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Condominio: {{vm.company.name}}</span>
+                            </div>
 
-    <button type="button" ui-sref="admin-info-detail.edit({id:vm.adminInfo.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                                <span class="font-15 gray-font">Email: {{vm.adminInfo.email}}</span>
+                            </div>
+
+
+                        </div>
+                        <div class="hidden-xs col-md-3 col-sm-3">
+                            <h3 class="text-center"> <a ng-click="vm.openFile(vm.resident.imageContentType, vm.resident.image)"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" alt="your image" width="200px" height="200px" class="img-circle"/></a></h3>
+                        </div>
+                        <div class="form-actions noborder ">
+                            <h3 class="text-right ">
+                                <button type="button" ui-sref="admin-info()" class="btn red default">Volver</button>
+                            </h3>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div>-->
+    <!--<h2><span data-translate="aditumApp.adminInfo.detail.title">Admin Info</span> {{vm.adminInfo.id}}</h2>-->
+    <!--<hr>-->
+    <!--<jhi-alert-error></jhi-alert-error>-->
+    <!--<dl class="row jh-entity-details">-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.name">Name</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.name}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.lastname">Lastname</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.lastname}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.secondlastname">Secondlastname</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.secondlastname}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.identificationnumber">Identificationnumber</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.identificationnumber}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.email">Email</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.email}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.image">Image</span></dt>-->
+        <!--<dd>-->
+            <!--<div ng-if="vm.adminInfo.image">-->
+                <!--<a ng-click="vm.openFile(vm.adminInfo.imageContentType, vm.adminInfo.image)">-->
+                    <!--<img data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}" style="max-width: 100%;" alt="adminInfo image"/>-->
+                <!--</a>-->
+                <!--{{vm.adminInfo.imageContentType}}, {{vm.byteSize(vm.adminInfo.image)}}-->
+            <!--</div>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.enabled">Enabled</span></dt>-->
+        <!--<dd>-->
+            <!--<span>{{vm.adminInfo.enabled}}</span>-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.user">User</span></dt>-->
+        <!--<dd>-->
+            <!--{{vm.adminInfo.userLogin}}-->
+        <!--</dd>-->
+        <!--<dt><span data-translate="aditumApp.adminInfo.company">Company</span></dt>-->
+        <!--<dd>-->
+            <!--<a ui-sref="company-detail({id:vm.adminInfo.companyId})">{{vm.adminInfo.companyId}}</a>-->
+        <!--</dd>-->
+    <!--</dl>-->
+
+    <!--<button type="submit"-->
+            <!--ui-sref="{{ vm.previousState }}"-->
+            <!--class="btn btn-info">-->
+        <!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
+    <!--</button>-->
+
+    <!--<button type="button" ui-sref="admin-info-detail.edit({id:vm.adminInfo.id})" class="btn btn-primary">-->
+        <!--<span class="glyphicon glyphicon-pencil"></span>-->
+        <!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
+    <!--</button>-->
+<!--</div>-->

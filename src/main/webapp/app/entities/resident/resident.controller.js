@@ -153,14 +153,7 @@
 
                         Resident.delete({
                             id: id_resident
-                        }, onSuccess);
-
-                        function onSuccess(data, headers) {
-                            toastr["success"]("Se ha eliminado el residente correctamente.");
-                            loadResidents();
-                            console.log("here")
-                            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
-                        }
+                        }, onSuccessDelete);
                     }
                 }
             });
@@ -168,6 +161,12 @@
 
         };
 
+        function onSuccessDelete(data, headers) {
+            toastr["success"]("Se ha eliminado el residente correctamente.");
+            loadResidents();
+            console.log("here")
+            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
+        }
 
         vm.disableEnabledResident = function(residentInfo) {
 
@@ -193,80 +192,81 @@
                 },
                 callback: function(result) {
                     if (result) {
-                           CommonMethods.waitingMessage();
-                        Resident.get({id: residentInfo.id}).$promise.then(onSuccess);
-                        function onSuccess (result) {
-                            enabledDisabledResident(result);
-                         }
-
-                         function enabledDisabledResident(resident){
-                             if (enabledOptions) {
-                                 resident.enabled = 0;
-                                 Resident.update(resident, onSuccess);
-
-                                 function onSuccess(data, headers) {
-                                    JhiTrackerService.sendResident(data);
-                                     if (resident.isOwner == 1) {
-                                         User.getUserById({
-                                             id: residentInfo.userId
-                                         }, onSuccess);
-
-                                         function onSuccess(data, headers) {
-                                             data.activated = 0;
-                                             User.update(data, onSuccessUser);
-
-                                             function onSuccessUser(data, headers) {
-
-                                                 toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                                 bootbox.hideAll();
-                                                  loadResidents();
-                                             }
-                                         }
-                                     } else {
-                                         loadResidents();
-
-                                         toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                                         bootbox.hideAll();
-                                     }
-                                 }
-
-                             } else {
-                                 resident.enabled = 1;
-                                 Resident.update(resident, onSuccess);
-
-                                 function onSuccess(data, headers) {
-                                  JhiTrackerService.sendResident(data);
-                                     if (resident.isOwner == 1) {
-                                         User.getUserById({
-                                             id: resident.userId
-                                         }, onSuccess);
-
-                                         function onSuccess(data, headers) {
-                                             data.activated = 1;
-                                             User.update(data, onSuccessUser);
-
-                                             function onSuccessUser(data, headers) {
-                                                 toastr["success"]("Se ha habilitado el residente correctamente.");
-                                                 bootbox.hideAll();
-                                                    loadResidents();
-                                             }
-                                         }
-                                     } else {
-                                         bootbox.hideAll();
-                                         toastr["success"]("Se ha habilitado el residente correctamente.");
-                                         loadResidents();
-                                     }
-                                 }
-                             }
-                         }
-
-
+                        CommonMethods.waitingMessage();
+                        Resident.get({id: residentInfo.id}).$promise.then(onSuccessGetResident);
                     }
                 }
             });
         };
 
 
+        function onSuccessGetResident (result) {
+            enabledDisabledResident(result);
+        }
+
+        function enabledDisabledResident(resident){
+            if (enabledOptions) {
+                resident.enabled = 0;
+                Resident.update(resident, onSuccessDisabledResident);
+            } else {
+                resident.enabled = 1;
+                Resident.update(resident, onSuccess);
+
+            }
+        }
+
+        function onSuccessDisabledResident(data, headers) {
+            JhiTrackerService.sendResident(data);
+            if (resident.isOwner == 1) {
+                User.getUserById({
+                    id: residentInfo.userId
+                }, onSuccessGetDisabledUser);
+
+            } else {
+                loadResidents();
+
+                toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                bootbox.hideAll();
+            }
+        }
+
+        function onSuccessGetDisabledUser(data, headers) {
+            data.activated = 0;
+            User.update(data, onSuccessDisabledUser);
+
+            function onSuccessDisabledUser(data, headers) {
+
+                toastr["success"]("Se ha deshabilitado el residente correctamente.");
+                bootbox.hideAll();
+                loadResidents();
+            }
+        }
+
+
+        function onSuccess(data, headers) {
+            JhiTrackerService.sendResident(data);
+            if (resident.isOwner == 1) {
+                User.getUserById({
+                    id: resident.userId
+                }, onSuccessGetEnabledUser);
+
+            } else {
+                bootbox.hideAll();
+                toastr["success"]("Se ha habilitado el residente correctamente.");
+                loadResidents();
+            }
+        }
+
+        function onSuccessGetEnabledUser(data, headers) {
+            data.activated = 1;
+            User.update(data, onSuccessEnabledUser);
+
+            function onSuccessEnabledUser(data, headers) {
+                toastr["success"]("Se ha habilitado el residente correctamente.");
+                bootbox.hideAll();
+                loadResidents();
+            }
+        }
         function loadPage(page) {
             vm.page = page;
             vm.transition();

@@ -13,5 +13,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface CompanyConfigurationRepository extends JpaRepository<CompanyConfiguration,Long> {
-    Page<CompanyConfiguration> findByCompanyId(Pageable pageable, Long companyId);
+    List<CompanyConfiguration> findByCompanyId(Long companyId);
 }

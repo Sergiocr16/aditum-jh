@@ -1,110 +1,62 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+<form name="editForm" role="form" ng-submit="vm.save()">
 
     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myAdminInfoLabel" data-translate="aditumApp.adminInfo.home.createOrEditLabel">Create or edit a Admin Info</h4>
+        <div class="caption font-green-haze margin-top-10">
+            <i class="fa fa-user font-green-haze"></i>
+            <span class="caption-subject bold uppercase">Registrar o editar administrador</span>
+        </div>
     </div>
     <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.adminInfo.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.adminInfo.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.adminInfo.name"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.lastname" for="field_lastname">Lastname</label>
-            <input type="text" class="form-control" name="lastname" id="field_lastname"
-                    ng-model="vm.adminInfo.lastname"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.secondlastname" for="field_secondlastname">Secondlastname</label>
-            <input type="text" class="form-control" name="secondlastname" id="field_secondlastname"
-                    ng-model="vm.adminInfo.secondlastname"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.identificationnumber" for="field_identificationnumber">Identificationnumber</label>
-            <input type="text" class="form-control" name="identificationnumber" id="field_identificationnumber"
-                    ng-model="vm.adminInfo.identificationnumber"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.email" for="field_email">Email</label>
-            <input type="text" class="form-control" name="email" id="field_email"
-                    ng-model="vm.adminInfo.email"
-                    />
-        </div>
-        <div class="form-group" ngf-drop ngf-change="vm.setImage($file, vm.adminInfo)" ngf-pattern="'image/*'">
-            <label class="control-label" data-translate="aditumApp.adminInfo.image" for="field_image">Image</label>
-            <div>
-                <img data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}" style="max-height: 100px;" ng-if="vm.adminInfo.image" alt="adminInfo image"/>
-                <div ng-if="vm.adminInfo.image" class="help-block clearfix">
-                    <span class="pull-left">{{vm.adminInfo.imageContentType}}, {{vm.byteSize(vm.adminInfo.image)}}</span>
-                    <button type="button" ng-click="vm.adminInfo.image=null;vm.adminInfo.imageContentType=null;"
-                            class="btn btn-default btn-xs pull-right">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                </div>
-                <button type="button" ngf-select class="btn btn-default btn-block"
-                        ngf-change="vm.setImage($file, vm.adminInfo)" accept="image/*" data-translate="entity.action.addimage">
-                    Add image
-                </button>
+        <h3 ngf-change="vm.setImage($file, vm.resident)" class="text-center"><img ng-hide="vm.resident.image" width="150px" height="150px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+
+        <h3 class="text-center">
+            <button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                    ngf-change="vm.setImage($file, vm.resident)" accept="image/*" >
+                Subir imagen
+            </button>
+        </h3>
+        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+            <div class="form-group form-md-line-input">
+                <input ng-model="vm.adminInfo.name" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                <label  class="font-15">Nombre</label>
             </div>
-            <input type="hidden" class="form-control" name="image" id="field_image"
-                    ng-model="vm.adminInfo.image"
-                    />
-            <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
-                    ng-model="vm.adminInfo.imageContentType" />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.adminInfo.enabled" for="field_enabled">Enabled</label>
-            <input type="number" class="form-control" name="enabled" id="field_enabled"
-                    ng-model="vm.adminInfo.enabled"
-                    min="0" max="1"/>
-            <div ng-show="editForm.enabled.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.enabled.$error.min" data-translate="entity.validation.min" translate-value-min="0">
-                    This field should be at least 0.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.enabled.$error.max" data-translate="entity.validation.max" translate-value-max="1">
-                    This field cannot be more than 1.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.enabled.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
+            <div class="form-group form-md-line-input">
+                <input ng-model="vm.adminInfo.lastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                <label  class="font-15">Primer Apellido</label>
             </div>
+            <div class="form-group form-md-line-input">
+                <input ng-model="vm.adminInfo.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                <label class="font-15">Segundo Apellido</label>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.adminInfo.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" ng-model="vm.adminInfo.userId" ng-options="user.id as user.login for user in vm.users"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.adminInfo.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.adminInfo.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
+        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+
+            <div class="form-group form-md-line-input ">
+                <input ng-model="vm.adminInfo.email" type="email" class="form-control gray-font" placeholder="">
+                <label class="font-15">Correo electrónico</label>
+            </div>
+
+            <div class="form-group form-md-line-input has-info">
+                <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses"  ng-required='vm.required==1'>
+                    <option value="">Seleccione el condominio</option>
+                </select>
+                <label class="font-15 ">Condominio</label >
+            </div>
+            <div class="form-group form-md-line-input">
+                <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                <label  class="font-15">Número de cédula</label>
+            </div>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span >Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        <button type="button" class="btn btn-primary" ng-click="vm.save()">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span >Save</span>
         </button>
     </div>
 </form>

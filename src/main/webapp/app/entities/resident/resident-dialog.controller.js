@@ -69,7 +69,7 @@
                     changeStatusIsOwner();
                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                 }
-             } else {
+            } else {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
                     toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
                 } else if(vm.resident.isOwner == 1){

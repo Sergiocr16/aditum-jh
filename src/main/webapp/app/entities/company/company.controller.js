@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CompanyController', CompanyController);
 
-    CompanyController.$inject = ['Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    CompanyController.$inject = ['$state','CompanyConfiguration','Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function CompanyController(Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+    function CompanyController($state,CompanyConfiguration,Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -47,6 +47,20 @@
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+        vm.getCompanyConfiguration = function(idCompany) {
+            CompanyConfiguration.getByCompanyId({companyId:idCompany}).$promise.then(onSuccessCompany, onError);
+        }
+        function onSuccessCompany (data) {
+            angular.forEach(data, function(configuration, key) {
+                vm.companyConfiguration = configuration;
+                $state.go('companyConfiguration', { 'id':configuration.id});
+            });
+
+        }
+
+        function onError () {
+
         }
 
         function loadPage(page) {
