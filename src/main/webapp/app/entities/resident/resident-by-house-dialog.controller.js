@@ -71,6 +71,11 @@
         }
             function onSuccess (result) {
                WSResident.sendActivity(result);
+               if($rootScope.companyUser.id === result.id){
+                $rootScope.companyUser = result;
+                $rootScope.currentUserImage = result.image;
+                $rootScope.currentUserImageContentType = result.imageContentType;
+               }
                 vm.isSaving = false;
                 $state.go('residentByHouse');
                   if(vm.resident.id !== null){
