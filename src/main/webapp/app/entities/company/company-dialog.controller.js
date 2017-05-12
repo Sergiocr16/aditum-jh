@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CompanyDialogController', CompanyDialogController);
 
-    CompanyDialogController.$inject = ['House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
+    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
 
-    function CompanyDialogController (House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
+    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
         var vm = this;
 
         vm.company = entity;
@@ -23,6 +23,16 @@
         }
         function onSuccess(data) {
             vm.houseQuantity = data.length;
+            getAdmins();
+        }
+
+        function getAdmins(){
+            AdminInfo.getAdminsByCompanyId({
+                companyId: vm.company.id
+            }, onSuccess);
+            function onSuccess(data) {
+                vm.adminsQuantity = data.length;
+            }
         }
         function clear () {
             $uibModalInstance.dismiss('cancel');

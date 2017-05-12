@@ -8,7 +8,7 @@
     AdminInfoController.$inject = ['CommonMethods','User','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
     function AdminInfoController(CommonMethods,User,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
-
+        $rootScope.active = "admins";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;

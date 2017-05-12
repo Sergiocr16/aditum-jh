@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('CompanyController', CompanyController);
 
-    CompanyController.$inject = ['$state','CompanyConfiguration','Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    CompanyController.$inject = ['$rootScope','$state','CompanyConfiguration','Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
 
-    function CompanyController($state,CompanyConfiguration,Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
-
+    function CompanyController($rootScope,$state,CompanyConfiguration,Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+        $rootScope.active = "condons";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;

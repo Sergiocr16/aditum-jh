@@ -63,7 +63,7 @@
         <div class="form-group col-md-6 col-sm-6">
             <label class="control-label" for="field_quantityadmins">Cantidad límite de administradores</label>
             <input type="number" class="form-control" name="quantityadmins" id="field_quantityadmins"
-                   ng-model="vm.companyConfiguration.quantityadmins"
+                   ng-model="vm.companyConfiguration.quantityadmins" min="{{vm.adminsQuantity}}"
                    required/>
             <div ng-show="editForm.quantityadmins.$invalid">
                 <p class="help-block"

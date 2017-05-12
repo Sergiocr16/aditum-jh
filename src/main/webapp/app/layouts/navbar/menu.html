@@ -23,7 +23,7 @@
 
             </li>
             <!--// es admin-->
-            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'administraton' ||  active === 'user-managment' ||  active === 'tracker' || active === 'metrics'}">
+            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'condons' || active === 'admins' ||  active === 'user-managment' ||  active === 'tracker' || active === 'metrics'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
                     <span class="title">Administración</span>
@@ -33,12 +33,12 @@
 
 
                 <ul class="sub-menu">
-                    <li ui-sref="company" ng-class="{ 'active' : active === 'user-managment' }">
+                    <li ui-sref="company" ng-class="{ 'active' : active === 'condons' }">
                         <a ui-sref="company">
                             <i class="glyphicon glyphicon-home" aria-hidden="true"></i> Gestión de condominios
                         </a>
                     </li>
-                    <li ui-sref="admin-info" ng-class="{ 'active' : active === 'user-managment' }">
+                    <li ui-sref="admin-info" ng-class="{ 'active' : active === 'admins' }">
                         <a ui-sref="admin-info">
                             <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Administradores
                         </a>
