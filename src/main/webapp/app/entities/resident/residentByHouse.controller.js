@@ -5,13 +5,19 @@
         .module('aditumApp')
         .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident'];
+    ResidentByHouseController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident'];
 
-    function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident) {
+    function ResidentByHouseController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident) {
             $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+        vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+        $state.go('residentByHouse.edit', {
+            id: encryptedId
+        })
+        }
 
         vm.userId = $rootScope.companyUser.id;
         vm.loadPage = loadPage;

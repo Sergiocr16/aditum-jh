@@ -20,7 +20,7 @@
         return service;
 
         function open () {
-        toastr['error']('No tienes permiso para esa acción o debes de iniciar sesión primeramente')
+        toastr['error']('No tienes permiso para esa acción o debes de iniciar sesión para realizarla')
 //            if (modalInstance !== null) return;
 //            modalInstance = $uibModal.open({
 //                animation: true,

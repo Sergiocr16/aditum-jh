@@ -167,9 +167,10 @@
                     }
                 },
                 resolve: {
-                    entity: ['$stateParams', 'Officer', function($stateParams, Officer) {
+                    entity: ['$stateParams', 'Officer','CommonMethods', function($stateParams, Officer, CommonMethods) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
                         return Officer.get({
-                            id: $stateParams.id
+                            id: id
                         }).$promise;
                     }],
                     previousState: ["$state", function($state) {

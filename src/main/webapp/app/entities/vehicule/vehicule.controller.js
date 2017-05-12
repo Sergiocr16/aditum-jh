@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle','WSDeleteEntity'];
+    VehiculeController.$inject = ['$state','CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle','WSDeleteEntity'];
 
-    function VehiculeController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle,WSDeleteEntity) {
+    function VehiculeController($state,CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle,WSDeleteEntity) {
          $rootScope.active = "vehicules";
      var enabledOptions = true;
         var vm = this;
@@ -18,7 +18,13 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
+        vm.editVehicle = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('vehicule.edit', {
+                id: encryptedId
+            })
 
+        }
          vm.changesTitles = function() {
             if (enabledOptions) {
                 vm.title = "Vehículos habilitados";

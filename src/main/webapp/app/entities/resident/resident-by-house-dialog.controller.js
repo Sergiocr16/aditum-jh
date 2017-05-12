@@ -17,7 +17,6 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
-
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
@@ -67,8 +66,6 @@
                 vm.resident.companyId = $rootScope.companyId;
                 vm.resident.houseId = $rootScope.companyUser.houseId
                 Resident.save(vm.resident, onSuccess, onSaveError);
-
-
              }
 
         }

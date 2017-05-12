@@ -54,7 +54,7 @@
                             <td>{{house.housenumber}}</td>
                             <td>{{house.extension}}</td>
                             <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
-                            <td> <a class="light-gray-font" ui-sref="house.edit({id:house.id})">Editar</a></td>
+                            <td> <a class="light-gray-font" ng-click="vm.editHouse(house.id)">Editar</a></td>
                         </tr>
                         </tbody>
                     </table>
