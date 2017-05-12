@@ -148,9 +148,9 @@
             return residents;
         }
 
-        vm.deleteResident = function(id_resident, name, lastname) {
+        vm.deleteResident = function(resident) {
             bootbox.confirm({
-                message: "¿Está seguro que desea eliminar al residente " + name + "?",
+                message: "¿Está seguro que desea eliminar al residente " + resident.name + "?",
                 buttons: {
                     confirm: {
                         label: 'Aceptar',
@@ -163,10 +163,9 @@
                 },
                 callback: function(result) {
                     if (result) {
-
+                        vm.login = resident.userLogin;
                         Resident.delete({
-                            id: id_resident
-
+                            id: resident.id
                         }, onSuccessDelete);
 
                     }
@@ -175,13 +174,22 @@
 
 
         };
+        function onSuccessDelete () {
+            if(vm.login!==null){
+                User.delete({login: vm.login},
+                    function () {
+                        toastr["success"]("Se ha eliminado el residente correctamente.");
+                        loadResidents();
+                        JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+                    });
+            } else {
+                toastr["success"]("Se ha eliminado el residente correctamente.");
+                loadResidents();
+                JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+            }
 
-        function onSuccessDelete(data, headers) {
-            toastr["success"]("Se ha eliminado el residente correctamente.");
-            loadResidents();
-            console.log("here")
-            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
         }
+
 
         vm.disableEnabledResident = function(residentInfo) {
 
