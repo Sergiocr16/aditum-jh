@@ -70,8 +70,9 @@
                     $translatePartialLoader.addPart('resident');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
-                    return Resident.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Resident','CommonMethods', function($stateParams, Resident, CommonMethods) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
+                    return Resident.get({id : id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
@@ -97,8 +98,9 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Resident', function(Resident) {
-                            return Resident.get({id : $stateParams.id}).$promise;
+                        entity: ['Resident','CommonMethods', function(Resident,CommonMethods) {
+                         var id = CommonMethods.decryptIdUrl($stateParams.id)
+                            return Resident.get({id : id}).$promise;
                         }],
                         companyUser: ['MultiCompany',function(MultiCompany){
                                          return MultiCompany.getCurrentUserCompany()
@@ -169,7 +171,6 @@
                                 }
                             },
                             resolve: {
-
                                   entity: function () {
                                     return {
                                         name: null,
@@ -215,8 +216,9 @@
                 }
             },
             resolve: {
-              entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
-                        return Resident.get({id : $stateParams.id}).$promise;
+              entity: ['$stateParams', 'Resident','CommonMethods', function($stateParams, Resident,CommonMethods) {
+               var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id : id}).$promise;
                     }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
@@ -244,8 +246,9 @@
                   }
               },
               resolve: {
-                entity: ['$stateParams', 'Resident', function($stateParams, Resident) {
-                          return Resident.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Resident','CommonMethods', function($stateParams, Resident,CommonMethods) {
+                var id = CommonMethods.decryptIdUrl($stateParams.id)
+                          return Resident.get({id : id}).$promise;
                       }],
                   previousState: ["$state", function ($state) {
                       var currentStateData = {

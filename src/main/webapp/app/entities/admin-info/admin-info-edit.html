@@ -1,0 +1,94 @@
+
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-user"></i>
+            <a>Mi perfil</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a >Administrar</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Información</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"> </div>
+    </div>
+</div>
+<div class="loading col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <h1 class="text-center">
+        <img src="content/images/nobody-image.jpg" alt="" />
+
+    </h1>
+</div>
+<div class="display-none" id="myInfo">
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="vm.save()">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="fa fa-user font-green-haze"></i>
+                            <span class="caption-subject bold uppercase">Editar mi información</span>
+                        </div>
+
+                    </div>
+                    <div class="portlet-body form">
+                        <h3 ngf-change="vm.setImage($file, vm.adminInfo)" class="text-center"><img ng-hide="vm.adminInfo.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}"   ng-if="vm.adminInfo.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+
+                        <h3 class="text-center">
+                            <button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                    ngf-change="vm.setImage($file, vm.adminInfo)" accept="image/*" >
+                                Subir imagen
+                            </button>
+                        </h3>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.name" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label  class="font-15">Nombre</label>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.lastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label  class="font-15">Primer Apellido</label>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label class="font-15">Segundo Apellido</label>
+                            </div>
+                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <label  class="font-15">Número de cédula</label>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+
+                            <div class="form-group form-md-line-input ">
+                                <input ng-model="vm.adminInfo.email" type="email" class="form-control gray-font" placeholder="">
+                                <label class="font-15">Correo electrónico</label>
+                            </div>
+
+                            <div has-authority="ROLE_USER" class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <label  class="font-15">Número de cédula</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>
+
+                        <div class="form-actions noborder">
+                            <h3 class="text-right ">
+                                <button type="submit" class="btn blue"><i class="fa fa-pencil " ng-disabled="editForm.$invalid || vm.isSaving" ></i> Editar mi información</button>
+                                <button has-authority="ROLE_MANAGER" type="button" ui-sref="resident()" class="btn red default">Cancelar</button>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

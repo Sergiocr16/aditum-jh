@@ -11,9 +11,9 @@
         $stateProvider
         .state('admin-info', {
             parent: 'entity',
-            url: '/admin-info?page&sort&search',
+            url: '/admin-infos?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.adminInfo.home.title'
             },
             views: {
@@ -46,6 +46,51 @@
                 }]
             }
         })
+        .state('admin-info-edit', {
+            parent: 'entity',
+            url: '/admin-info',
+            data: {
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                pageTitle: 'aditumApp.adminInfo.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/admin-info/admin-info-edit.html',
+                    controller: 'AdminInfoDialogController',
+                    controllerAs: 'vm'
+                }
+            },
+        })
+
+       .state('admin-info-edit-a', {
+                   parent: 'entity',
+                      url: '/admin-info',
+                      data: {
+                       authorities: ['ROLE_MANAGER']
+                      },
+                      views: {
+                          'content@': {
+                              templateUrl: 'app/entities/admin-info/admin-info-edit.html',
+                              controller: 'AdminInfoDialogController',
+                              controllerAs: 'vm'
+                          }
+                      },
+                      resolve: {
+                        entity: ['$stateParams', 'AdminInfo','CommonMethods', function($stateParams, Resident,CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                  return AdminInfo.get({id : id}).$promise;
+                              }],
+                          previousState: ["$state", function ($state) {
+                              var currentStateData = {
+                                  name: $state.current.name || 'my-admin-info-edit',
+                                  params: $state.params,
+                                  url: $state.href($state.current.name, $state.params)
+                              };
+                              return currentStateData;
+                          }]
+                      }
+
+                    })
         .state('admin-info-detail', {
             parent: 'admin-info',
             url: '/admin-info/{id}',

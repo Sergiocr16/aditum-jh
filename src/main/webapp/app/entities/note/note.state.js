@@ -121,12 +121,6 @@
                     controllerAs: 'vm'
                 }
             },
-            onEnter: ['JhiTrackerService', function(JhiTrackerService) {
-              JhiTrackerService.subscribeToGetHomeServices();
-            }],
-             onExit: ['JhiTrackerService', function(JhiTrackerService) {
-                          JhiTrackerService.unsubscribe();
-                        }]
         })
         .state('note.edit', {
             parent: 'note',

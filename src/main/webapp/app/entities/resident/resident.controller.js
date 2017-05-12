@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','JhiTrackerService'];
+    ResidentController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','WSDeleteEntity'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,JhiTrackerService) {
+    function ResidentController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,WSDeleteEntity) {
          $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
@@ -20,6 +20,20 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+
+        vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+                   $state.go('resident.edit', {
+                       id: encryptedId
+                   })
+        }
+
+        vm.detailResident = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+                    $state.go('resident-detail', {
+                        id: encryptedId
+                    })
+        }
 
         vm.changesTitles = function() {
             if (enabledOptions) {
@@ -79,7 +93,6 @@
 
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
-                      console.log(vm.residents)
                 } else {
                     var residentsByHouse = [];
                     vm.residents = data;
@@ -153,7 +166,9 @@
 
                         Resident.delete({
                             id: id_resident
+
                         }, onSuccessDelete);
+
                     }
                 }
             });
@@ -192,8 +207,10 @@
                 },
                 callback: function(result) {
                     if (result) {
+
                         CommonMethods.waitingMessage();
                         Resident.get({id: residentInfo.id}).$promise.then(onSuccessGetResident);
+
                     }
                 }
             });

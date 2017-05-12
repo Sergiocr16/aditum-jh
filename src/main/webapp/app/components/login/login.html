@@ -17,19 +17,19 @@
                     <div class="col-md-12 no-padding">
                         <div class="col-md-6 col-sm-6" style="padding: 0 5px 0 0;">
                             <div class="form-group form-md-line-input small-margin-top ">
-                                <input ng-model="vm.username" type="text" class="form-control input-sm gray-font" id="form_control_1" placeholder="Digite su correo electronico" required title="Input required">
-                                <label for="form_control_1">Correo electrónico</label>
+                                <input ng-model="vm.username" type="text" class="form-control input-sm gray-font" id="form_control_1" placeholder="Digite su nombre de usuario" required title="Input required">
+                                <label for="form_control_1">Usuario</label>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6" style="padding: 0 0 0 0;">
                             <div class="form-group form-md-line-input small-margin-top">
-                                <input ng-model="vm.password" type="password" class="form-control input-sm gray-font" id="form_control_2" placeholder="Digite su correo contraseña" required title="Input required">
+                                <input ng-model="vm.password" type="password" class="form-control input-sm gray-font" id="form_control_2" placeholder="Digite su contraseña" required title="Input required">
                                 <label for="form_control_2">Contraseña</label>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12">
-                    <h5 class="text-center"><a href="#" class="col-md-8 col-sm-8 col-xs-12 small-margin-bottom" ng-click="vm.requestResetPassword()">¿Olvidaste tu contraseña?</a></h5>
+                    <h5 class="text-center"><a href="#" class="col-md-8 col-sm-8 col-xs-12 small-margin-bottom" ui-sref="requestReset">¿Olvidaste tu contraseña?</a></h5>
 
                     <button type="submit" class="btn blue col-md-4 col-sm-4 col-xs-12" name="button">Iniciar sesión</button>
                     </div>

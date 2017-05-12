@@ -21,13 +21,21 @@
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + currentUserImageContentType + ';base64,' + currentUserImage}}"   ng-if="currentUserImage" id="blah"  alt="your image"  width="33" class="img-circle"/>
                             <span class="username username-hide-on-mobile ng-binding">
-					        {{' '+vm.currentUser.name +' '+ vm.currentUser.lastname}}{{vm.contextLiving}}</span>
+					        {{' '+companyUser.name +' '+ companyUser.lastname}}{{vm.contextLiving}}</span>
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default ">
                             <li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()" href="#/usuario/perfil/editar/32" class="ng-hide">
                                 <a href="">
                                     <i class="icon-user"></i> Mi perfil </a>
+                            </li>
+                            <li has-authority="ROLE_USER">
+                                <a ng-click="vm.editMyInfoAsUser()" >
+                                    <i class="fa fa-user"></i>Editar mi información</a>
+                            </li>
+                            <li has-authority="ROLE_MANAGER">
+                                <a ng-click="vm.editMyInfoAsManager()" >
+                                    <i class="fa fa-user"></i>Editar mi información</a>
                             </li>
                             <li>
                                 <a ui-sref="password" >

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','JhiTrackerService'];
+    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
 
-    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,JhiTrackerService) {
+    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
           $rootScope.active = "residentsHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -17,7 +17,6 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
-
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
@@ -67,13 +66,16 @@
                 vm.resident.companyId = $rootScope.companyId;
                 vm.resident.houseId = $rootScope.companyUser.houseId
                 Resident.save(vm.resident, onSuccess, onSaveError);
-
-
              }
 
         }
             function onSuccess (result) {
-               JhiTrackerService.sendResident(result);
+               WSResident.sendActivity(result);
+               if($rootScope.companyUser.id === result.id){
+                $rootScope.companyUser = result;
+                $rootScope.currentUserImage = result.image;
+                $rootScope.currentUserImageContentType = result.imageContentType;
+               }
                 vm.isSaving = false;
                 $state.go('residentByHouse');
                   if(vm.resident.id !== null){

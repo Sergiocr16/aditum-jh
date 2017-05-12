@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('NoteDialogController', NoteDialogController);
 
-    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Note','Principal','JhiTrackerService','$rootScope','$state'];
+    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Note','Principal','WSNote','$rootScope','$state'];
 
-    function NoteDialogController ($timeout, $scope, $stateParams, Note,Principal,JhiTrackerService,$rootScope,$state) {
+    function NoteDialogController ($timeout, $scope, $stateParams, Note,Principal,WSNote,$rootScope,$state) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
@@ -30,7 +30,7 @@
             vm.isSaving = true;
             if (vm.note.id !== null) {
             populateValidNote()
-            JhiTrackerService.sendHomeService(vm.note,onSaveSuccess);
+            WSNote.sendActivity(vm.note,onSaveSuccess);
             toastr['success']("Has reportado el servicio a domicilio correctamente");
             vm.note = undefined;
             $state.go('residentByHouse');

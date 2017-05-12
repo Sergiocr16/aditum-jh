@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','JhiTrackerService'];
+    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','WSVisitor'];
 
-    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,JhiTrackerService) {
+    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,WSVisitor) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         //        vm.visitant = entity;
@@ -110,7 +110,7 @@
                                 Visitant.update(vm.visitor, onSuccess, onSaveError);
 
                                 function onSuccess(data) {
-                                JhiTrackerService.sendVisitor(data);
+                                WSVisitor.sendActivity(data);
                                   $state.go('visitant-invited-user')
                                     toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                                 }
@@ -132,7 +132,7 @@
 
 
         function onSaveSuccess(result) {
-        JhiTrackerService.sendVisitor(result);
+        WSVisitor.sendActivity(result);
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.go('visitant-invited-user')
             toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");

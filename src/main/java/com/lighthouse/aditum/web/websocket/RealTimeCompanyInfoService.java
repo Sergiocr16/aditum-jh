@@ -28,25 +28,25 @@ public class RealTimeCompanyInfoService {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @SubscribeMapping("/topic/saveResident/{idCompany}")
+    @SubscribeMapping("/topic/sendResident/{idCompany}")
     @SendTo("/topic/resident/{idCompany}")
     public ResidentDTO addResident(ResidentDTO residentDTO){
         return residentDTO;
     }
 
-    @SubscribeMapping("/topic/saveVehicle/{idCompany}")
+    @SubscribeMapping("/topic/sendVehicle/{idCompany}")
     @SendTo("/topic/vehicle/{idCompany}")
     public VehiculeDTO addVehicule(VehiculeDTO vehicleDTO){
         return vehicleDTO;
     }
 
-    @SubscribeMapping("/topic/saveVisitor/{idCompany}")
+    @SubscribeMapping("/topic/sendVisitor/{idCompany}")
     @SendTo("/topic/visitor/{idCompany}")
     public VisitantDTO addVisitor(VisitantDTO visitorDTO){
         return visitorDTO;
     }
 
-    @SubscribeMapping("/topic/saveHouse/{idCompany}")
+    @SubscribeMapping("/topic/sendHouse/{idCompany}")
     @SendTo("/topic/house/{idCompany}")
     public HouseDTO addHouse(HouseDTO houseDTO){
         return houseDTO;

@@ -58,8 +58,8 @@ public class RealTimeHomeService {
         this.noteService = noteService;
     }
 
-    @SubscribeMapping("/topic/saveHomeService/{idCompany}")
-    @SendTo("/topic/HomeService/{idCompany}")
+    @SubscribeMapping("/topic/sendHomeService/{idCompany}")
+    @SendTo("/topic/homeService/{idCompany}")
     public NoteDTO saveHomeService(NoteDTO noteDTO){
           return this.noteService.save(noteDTO);
     }

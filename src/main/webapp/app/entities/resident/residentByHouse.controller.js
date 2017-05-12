@@ -5,13 +5,19 @@
         .module('aditumApp')
         .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentByHouseController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','JhiTrackerService'];
+    ResidentByHouseController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident'];
 
-    function ResidentByHouseController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,JhiTrackerService) {
+    function ResidentByHouseController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident) {
             $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+        vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+        $state.go('residentByHouse.edit', {
+            id: encryptedId
+        })
+        }
 
         vm.userId = $rootScope.companyUser.id;
         vm.loadPage = loadPage;
@@ -100,7 +106,7 @@
                             resident.enabled = 0;
                             Resident.update(resident, onSuccess);
                             function onSuccess(data, headers) {
-                            JhiTrackerService.sendResident(data);
+                            WSResident.sendActivity(data);
                                 if (resident.isOwner == 1) {
                                     User.getUserById({
                                         id: resident.userId
@@ -126,7 +132,7 @@
                             Resident.update(resident, onSuccess);
 
                             function onSuccess(data, headers) {
-                            JhiTrackerService.sendResident(data);
+                            WSResident.sendActivity(data);
                                 if (resident.isOwner == 1) {
                                     User.getUserById({
                                         id: resident.userId

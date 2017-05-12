@@ -5,13 +5,13 @@
         .module('aditumApp')
         .controller('AdminInfoDialogController', AdminInfoDialogController);
 
-    AdminInfoDialogController.$inject = ['$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company'];
 
-    function AdminInfoDialogController ($state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
+    AdminInfoDialogController.$inject = [$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company'];
+
+    function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
         var vm = this;
 
-        vm.adminInfo = entity;
-        vm.clear = clear;
+        vm.adminInfo =$rootScope.companyUser;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
@@ -38,6 +38,19 @@
             $uibModalInstance.dismiss('cancel');
         }
 
+        vm.save = updateAccount;
+        vm.isAuthenticated = Principal.isAuthenticated;
+        angular.element(document).ready(function () {
+            $("#myInfo").fadeIn(600);
+        });
+
+          User.getUserById({id: vm.adminInfo.userId},onSuccess);
+
+
+             function onSuccess(user, headers) {
+                 vm.user = user;
+                 vm.adminInfo.email  = vm.user.email;
+                 }
         function save () {
             vm.isSaving = true;
             if (vm.adminInfo.id !== null) {
@@ -123,13 +136,29 @@
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:adminInfoUpdate', result);
-            $uibModalInstance.close(result);
+            $state.go('home');
+            toastr["success"]("Se ha editado tu información correctamente.");
+         $rootScope.companyUser = result;
+                        $rootScope.currentUserImage = result.image;
+                        $rootScope.currentUserImageContentType = result.imageContentType;
             vm.isSaving = false;
         }
 
         function onSaveError () {
             vm.isSaving = false;
         }
+        function updateAccount(){
+                 vm.user.id = vm.adminInfo.userId;
+                 vm.user.activated = 1;
+                 vm.user.firstName =  vm.adminInfo.name;
+                 vm.user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
+                 vm.user.email = vm.adminInfo.email;
+                 User.update(vm.user,onSuccessUser);
+                 function onSuccessUser(data, headers) {
+                    save();
+                  }
+              }
+
 
     
         vm.setImage = function ($file, adminInfo) {
