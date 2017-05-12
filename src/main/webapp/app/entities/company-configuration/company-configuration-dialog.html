@@ -4,18 +4,13 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myCompanyConfigurationLabel" data-translate="aditumApp.companyConfiguration.home.createOrEditLabel">Create or edit a Company Configuration</h4>
+        <h4 class="modal-title" id="myCompanyConfigurationLabel">Configuración del condominio</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.companyConfiguration.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.companyConfiguration.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.companyConfiguration.quantityhouses" for="field_quantityhouses">Quantityhouses</label>
-            <input type="number" class="form-control" name="quantityhouses" id="field_quantityhouses"
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label"  for="field_quantityhouses">Cantidad límite de casas</label>
+            <input type="number" class="form-control" name="quantityhouses" id="field_quantityhouses" min="{{vm.houseQuantity}}"
                     ng-model="vm.companyConfiguration.quantityhouses"
                     required/>
             <div ng-show="editForm.quantityhouses.$invalid">
@@ -29,8 +24,8 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.companyConfiguration.quantityadmins" for="field_quantityadmins">Quantityadmins</label>
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="field_quantityadmins">Quantityadmins</label>
             <input type="number" class="form-control" name="quantityadmins" id="field_quantityadmins"
                     ng-model="vm.companyConfiguration.quantityadmins"
                     required/>
@@ -45,8 +40,8 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.companyConfiguration.quantityaccessdoor" for="field_quantityaccessdoor">Quantityaccessdoor</label>
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label"  for="field_quantityaccessdoor">Quantityaccessdoor</label>
             <input type="number" class="form-control" name="quantityaccessdoor" id="field_quantityaccessdoor"
                     ng-model="vm.companyConfiguration.quantityaccessdoor"
                     required/>
@@ -62,8 +57,8 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.companyConfiguration.company" for="field_company">Company</label>
+        <div class="form-group col-md-6 col-sm-6">
+            <label for="field_company">Company</label>
             <select class="form-control" id="field_company" name="company" ng-model="vm.companyConfiguration.companyId" ng-options="company.id as company.id for company in vm.companies"            >
                 <option value=""></option>
             </select>

@@ -130,6 +130,7 @@
                             };
                         }
                     }
+
                 }).result.then(function() {
                     $state.go('company', null, { reload: 'company' });
                 }, function() {
@@ -162,6 +163,52 @@
                 });
             }]
         })
+            .state('companyConfiguration', {
+                parent: 'company',
+                url: '/configuration/{id}',
+                data: {
+                    authorities: ['ROLE_ADMIN']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/company-configuration/company-configuration-dialog.html',
+                        controller: 'CompanyConfigurationDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['CompanyConfiguration', function(CompanyConfiguration) {
+                                return CompanyConfiguration.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('company', null, { reload: 'company' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
+            .state('admins', {
+                parent: 'company',
+                url: '/admins/:companyId',
+                data: {
+                    authorities: ['ROLE_ADMIN']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/admin-info/admins-by-company.html',
+                        controller: 'AdminsByCompanyController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+
+                    }).result.then(function() {
+                        $state.go('', null, { reload: true });
+                    }, function() {
+                        $state.go('');
+                    });
+                }]
+            })
         .state('company.delete', {
             parent: 'company',
             url: '/{id}/delete',
@@ -186,6 +233,7 @@
                 });
             }]
         });
+
     }
 
 })();
