@@ -203,9 +203,9 @@
                         size: 'lg',
 
                     }).result.then(function() {
-                        $state.go('company', null, { reload: true });
+                        $state.go('', null, { reload: true });
                     }, function() {
-                        $state.go('^');
+                        $state.go('');
                     });
                 }]
             })

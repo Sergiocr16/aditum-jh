@@ -11,21 +11,9 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <div ng-show="permisson===2" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
-                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Administrador de filial: </span>
-                            <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
-                                <div class="md-checkbox">
-                                    <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
-                                    <label for="checkbox1">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+
                         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                            <h3 class="text-center"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                            <h3 class="text-center"><img ng-hide="vm.adminInfo.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}"   ng-if="vm.adminInfo.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
                         </div>
 
                         <div class="col-md-9 col-sm-9 col-xs-12">
@@ -50,7 +38,7 @@
 
                         </div>
                         <div class="hidden-xs col-md-3 col-sm-3">
-                            <h3 class="text-center"> <a ng-click="vm.openFile(vm.resident.imageContentType, vm.resident.image)"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" alt="your image" width="200px" height="200px" class="img-circle"/></a></h3>
+                            <h3 class="text-center"> <a ng-click="vm.openFile(vm.adminInfo.imageContentType, vm.adminInfo.image)"><img ng-hide="vm.adminInfo.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.adminInfo.imageContentType + ';base64,' + vm.adminInfo.image}}"   ng-if="vm.adminInfo.image" alt="your image" width="200px" height="200px" class="img-circle"/></a></h3>
                         </div>
                         <div class="form-actions noborder ">
                             <h3 class="text-right ">

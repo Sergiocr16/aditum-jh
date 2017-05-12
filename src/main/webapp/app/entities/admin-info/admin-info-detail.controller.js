@@ -16,6 +16,7 @@
         vm.openFile = DataUtils.openFile;
         $("#adminInformation").fadeIn(300);
 
+
         Company.get({id:vm.adminInfo.companyId},onSuccess)
         function onSuccess (data){
             vm.company = data;

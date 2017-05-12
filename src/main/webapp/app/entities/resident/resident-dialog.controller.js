@@ -123,7 +123,7 @@
                   }
               }
 
-            }
+         }
             function onUpdateSuccess (result) {
             JhiTrackerService.sendResident(result);
                 vm.isSaving = false;

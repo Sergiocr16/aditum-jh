@@ -7,7 +7,7 @@
             <div class="form-group col-md-offset-2 col-md-4 col-sm-offset-1 col-sm-5 col-xs-12 no-padding">
                 <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por condominio</label>
                 <div class="col-md-7 col-sm-7 col-xs-8 ">
-                    <select class="form-control gray-font" ng-change="vm.findResidentsByCondo(vm.condominio)" data-ng-model="vm.condominio" ng-options="company.name for company in vm.companies | orderBy: 'id' track by company.id" required>
+                    <select class="form-control gray-font" ng-change="vm.findAdminsByCondo(vm.condominio)" data-ng-model="vm.condominio" ng-options="company.name for company in vm.companies | orderBy: 'id' track by company.id" required>
                         <option value="">Todos</option>
                     </select>
                 </div>
@@ -51,8 +51,8 @@
                                 {{adminInfo.companyId}}
                             </td>
                             <td><a class="light-gray-font"  ui-sref="admin-info-detail({id:adminInfo.id})">Ver detalle</a></td>
-                            <td> <a class="light-gray-font"  ui-sref="admin-info.edit({id:resident.id})">Editar</a></td>
-                            <td> <a  class="light-gray-font" ng-click="vm.disableEnabledResident(resident)">Habilitar/Deshabilitar</a></td>
+                            <td> <a class="light-gray-font"  ui-sref="admin-info.edit({id:adminInfo.id})">Editar</a></td>
+                            <td> <a  class="light-gray-font" ng-click="vm.disableEnabledAdmin(adminInfo)">Habilitar/Deshabilitar</a></td>
                             <td> <a class="light-gray-font"   ng-click="vm.deleteAdmin(adminInfo)">Eliminar</a></td>
                             <td><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
 

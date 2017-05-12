@@ -16,12 +16,23 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
+        vm.required = 1;
         vm.users = User.query();
         vm.companies = Company.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
+
+        Company.query({
+        }, onSuccess);
+
+        function onSuccess(data, headers) {
+            vm.company = data;
+            setTimeout(function() {
+                $("#admin_form").fadeIn(600);
+            }, 200)
+        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
@@ -31,6 +42,7 @@
             vm.isSaving = true;
             if (vm.adminInfo.id !== null) {
                 AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                updateAccount();
             } else {
                 vm.adminInfo.name = CommonMethods.capitalizeFirstLetter(vm.adminInfo.name);
                 vm.adminInfo.lastname = CommonMethods.capitalizeFirstLetter(vm.adminInfo.lastname);
@@ -64,14 +76,37 @@
         }
         function insertResident(id){
             vm.adminInfo.enabled = 1;
-            vm.adminInfo.companyId = 1;
+            vm.adminInfo.companyId = vm.adminInfo.companyId;
             vm.adminInfo.userId = id;
             AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
             function onSaveSuccess (result) {
                 vm.isSaving = false;
-                $state.go('admin-info');
+                $uibModalInstance.close(result);
                 toastr["success"]("Se ha registrado el administrador correctamente.");
+
             }
+        }
+
+        function updateAccount(){
+            User.getUserById({id: vm.adminInfo.userId},onSuccess);
+            function onSuccess(user, headers) {
+                user.id = vm.adminInfo.userId;
+                user.activated = vm.adminInfo.enabled;
+                user.firstName =  vm.adminInfo.name;
+                user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
+                user.email = vm.adminInfo.email;
+                User.update(user,onSuccessUser);
+                function onSuccessUser(data, headers) {
+                    AdminInfo.update(vm.adminInfo, onUpdateSuccess, onSaveError);
+
+                }
+            }
+
+        }
+        function onUpdateSuccess (result) {
+            vm.isSaving = false;
+            $uibModalInstance.close(result);
+            toastr["success"]("Se ha editado el administrador correctamente.");
         }
 
         function onSaveError () {
@@ -96,7 +131,7 @@
             vm.isSaving = false;
         }
 
-
+    
         vm.setImage = function ($file, adminInfo) {
             if ($file && $file.$error === 'pattern') {
                 return;
