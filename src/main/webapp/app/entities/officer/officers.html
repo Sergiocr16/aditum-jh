@@ -58,7 +58,7 @@
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
                             <td>{{officer.email}}</td>
-                            <td> <a ui-sref="officer.edit({id:officer.id})">Editar</a></td>
+                            <td> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
                             <td> <a ui-sref="officer.delete({id:officer.id})">Eliminar</a></td>
                         </tr>
                         </tbody>

@@ -5,15 +5,21 @@
         .module('aditumApp')
         .controller('VehiculeByHouseController', VehiculeByHouseController);
 
-    VehiculeByHouseController.$inject = ['CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle'];
+    VehiculeByHouseController.$inject = ['$state','CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle'];
 
-    function VehiculeByHouseController(CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle) {
+    function VehiculeByHouseController($state,CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle) {
      $rootScope.active = "vehiculesHouses";
      var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
 
+        vm.editVehicle = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('vehiculeByHouse.edit', {
+                id: encryptedId
+            })
+        }
 
          vm.changesTitles = function() {
             if (enabledOptions) {

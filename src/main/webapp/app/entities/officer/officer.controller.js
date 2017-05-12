@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerController', OfficerController);
 
-    OfficerController.$inject = ['DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    OfficerController.$inject = ['$state','CommonMethods','DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function OfficerController(DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function OfficerController($state,CommonMethods,DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -19,6 +19,13 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         loadAll();
+
+        vm.editOfficer = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('officer.edit', {
+                id: encryptedId
+          })
+        }
 
         function loadAll () {
             Officer.query({

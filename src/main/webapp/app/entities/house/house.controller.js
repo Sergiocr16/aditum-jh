@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
 
-    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope ) {
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
     $rootScope.active = "houses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -19,6 +19,12 @@
 
         loadAll();
 
+        vm.editHouse = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+                    $state.go('house.edit', {
+                        id: encryptedId
+                    })
+        }
         function loadAll () {
             House.query({
                 page: pagingParams.page - 1,
