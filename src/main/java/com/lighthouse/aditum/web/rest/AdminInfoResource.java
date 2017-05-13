@@ -136,4 +136,14 @@ public class AdminInfoResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
+    @GetMapping("/getAdminsByCompanyId")
+    @Timed
+    public ResponseEntity<List<AdminInfoDTO>> getByCompanyId(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<AdminInfoDTO> page = adminInfoService.findAllByCompany(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/getAdminsByCompanyId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 }

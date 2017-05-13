@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.CompanyConfigurationMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
 public class CompanyConfigurationService {
 
     private final Logger log = LoggerFactory.getLogger(CompanyConfigurationService.class);
-    
+
     private final CompanyConfigurationRepository companyConfigurationRepository;
 
     private final CompanyConfigurationMapper companyConfigurationMapper;
@@ -49,7 +50,7 @@ public class CompanyConfigurationService {
 
     /**
      *  Get all the companyConfigurations.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
@@ -73,7 +74,14 @@ public class CompanyConfigurationService {
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
         return companyConfigurationDTO;
     }
+    @Transactional(readOnly = true)
+    public Page<CompanyConfigurationDTO> getByCompanyId(Pageable pageable,Long companyId) {
+        log.debug("Request to get all Residents");
+        List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
+        return new PageImpl<>(result).map(configuration->companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(configuration));
 
+
+    }
     /**
      *  Delete the  companyConfiguration by id.
      *

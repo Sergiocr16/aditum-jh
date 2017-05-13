@@ -4,17 +4,12 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myCompanyLabel" data-translate="aditumApp.company.home.createOrEditLabel">Create or edit a Company</h4>
+        <h4 class="modal-title" id="myCompanyLabel" >Crear un condominio</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.company.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.company.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.company.name" for="field_name">Name</label>
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="field_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.company.name"
                     required/>
@@ -25,8 +20,8 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.company.active" for="field_active">Active</label>
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="field_active">Activo</label>
             <input type="number" class="form-control" name="active" id="field_active"
                     ng-model="vm.company.active"
                     required min="0" max="1"/>
@@ -49,7 +44,57 @@
                 </p>
             </div>
         </div>
-
+        <div class="form-group col-md-6 col-sm-6" ng-hide="$state.includes('company')">
+            <label class="control-label"  for="field_quantityhouses">Cantidad límite de casas</label>
+            <input type="number" class="form-control" name="quantityhouses" id="field_quantityhouses"
+                   ng-model="vm.companyConfiguration.quantityhouses" min="{{vm.houseQuantity}}"
+                   required/>
+            <div ng-show="editForm.quantityhouses.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.quantityhouses.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.quantityhouses.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="field_quantityadmins">Cantidad límite de administradores</label>
+            <input type="number" class="form-control" name="quantityadmins" id="field_quantityadmins"
+                   ng-model="vm.companyConfiguration.quantityadmins" min="{{vm.adminsQuantity}}"
+                   required/>
+            <div ng-show="editForm.quantityadmins.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.quantityadmins.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.quantityadmins.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 no-padding">
+        <div class="form-group col-md-6 col-sm-6 ">
+            <label class="control-label"  for="field_quantityaccessdoor">Cantidad límite ded puertas de acceso</label>
+            <input type="number" class="form-control" name="quantityaccessdoor" id="field_quantityaccessdoor"
+                   ng-model="vm.companyConfiguration.quantityaccessdoor"
+                   required/>
+            <div ng-show="editForm.quantityaccessdoor.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.quantityaccessdoor.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.quantityaccessdoor.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        </div>
+    </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">

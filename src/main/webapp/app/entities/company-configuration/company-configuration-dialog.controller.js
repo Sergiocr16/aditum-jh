@@ -5,16 +5,25 @@
         .module('aditumApp')
         .controller('CompanyConfigurationDialogController', CompanyConfigurationDialogController);
 
-    CompanyConfigurationDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CompanyConfiguration', 'Company'];
+    CompanyConfigurationDialogController.$inject = ['House','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CompanyConfiguration', 'Company'];
 
-    function CompanyConfigurationDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CompanyConfiguration, Company) {
+    function CompanyConfigurationDialogController (House,$timeout, $scope, $stateParams, $uibModalInstance, entity, CompanyConfiguration, Company) {
         var vm = this;
 
         vm.companyConfiguration = entity;
         vm.clear = clear;
         vm.save = save;
         vm.companies = Company.query();
-
+        loadQuantities();
+        function loadQuantities(){
+            House.query({ companyId: vm.companyConfiguration.companyId}, onSuccess, onError);
+        }
+        function onSuccess(data) {
+            vm.houseQuantity = data.length;
+        }
+        function onError(error) {
+            AlertService.error(error.data.message);
+        }
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });

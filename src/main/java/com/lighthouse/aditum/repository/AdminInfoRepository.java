@@ -16,4 +16,5 @@ import java.util.Optional;
 public interface AdminInfoRepository extends JpaRepository<AdminInfo,Long> {
     AdminInfo findOneByUserId(Long id);
     Page<AdminInfo> findByCompanyId(Pageable pageable, Long companyId);
+
 }

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CompanyDialogController', CompanyDialogController);
 
-    CompanyDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
+    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
 
-    function CompanyDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
+    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
         var vm = this;
 
         vm.company = entity;
@@ -17,26 +17,62 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
+        loadQuantities();
+        function loadQuantities(){
+            House.query({ companyId: vm.company.id}, onSuccess, onError);
+        }
+        function onSuccess(data) {
+            vm.houseQuantity = data.length;
+            getAdmins();
+        }
 
+        function getAdmins(){
+            AdminInfo.getAdminsByCompanyId({
+                companyId: vm.company.id
+            }, onSuccess);
+            function onSuccess(data) {
+                vm.adminsQuantity = data.length;
+            }
+        }
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
+        getConfiguration();
+        function getConfiguration(){
+            CompanyConfiguration.getByCompanyId({companyId:vm.company.id}).$promise.then(onSuccessCompany, onError);
+        }
+        function onSuccessCompany (data) {
+            angular.forEach(data, function(configuration, key) {
+                vm.companyConfiguration = configuration;
+            });
 
+            console.log(data);
+        }
+
+        function onError () {
+
+        }
         function save () {
             vm.isSaving = true;
             if (vm.company.id !== null) {
-                Company.update(vm.company, onSaveSuccess, onSaveError);
+                Company.update(vm.company, onUpdateSuccess, onSaveError);
             } else {
-                Company.save(vm.company, onSaveSuccess, onSaveError);
+                Company.save(vm.company, onSaveCompanySuccess, onSaveError);
+
             }
         }
-
+        function onUpdateSuccess (result) {
+            CompanyConfiguration.update(vm.companyConfiguration, onSaveSuccess, onSaveError);
+        }
+        function onSaveCompanySuccess (result) {
+            vm.companyConfiguration.companyId = result.id;
+            CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
+        }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:companyUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
-
         function onSaveError () {
             vm.isSaving = false;
         }

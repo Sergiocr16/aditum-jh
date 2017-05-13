@@ -34,7 +34,7 @@ public class CompanyConfigurationResource {
     private final Logger log = LoggerFactory.getLogger(CompanyConfigurationResource.class);
 
     private static final String ENTITY_NAME = "companyConfiguration";
-        
+
     private final CompanyConfigurationService companyConfigurationService;
 
     public CompanyConfigurationResource(CompanyConfigurationService companyConfigurationService) {
@@ -126,6 +126,16 @@ public class CompanyConfigurationResource {
         log.debug("REST request to delete CompanyConfiguration : {}", id);
         companyConfigurationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/getByCompanyId")
+    @Timed
+    public ResponseEntity<List<CompanyConfigurationDTO>> getByCompanyId(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<CompanyConfigurationDTO> page = companyConfigurationService.getByCompanyId(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/getByCompanyId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 }

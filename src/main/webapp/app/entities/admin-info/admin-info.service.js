@@ -19,7 +19,13 @@
                     }
                     return data;
                 }
-            },
+            }
+
+            ,'getAdminsByCompanyId': {
+            method: 'GET',
+                url: 'api/getAdminsByCompanyId',
+                isArray: true
+          },
             'update': { method:'PUT' },
             'findByUserId':{
                 method:'GET',
