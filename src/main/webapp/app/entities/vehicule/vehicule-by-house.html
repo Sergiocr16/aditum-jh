@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 small-margin-top ">
-                        <button type="submit" ui-sref="vehiculeByHouse.edit({id:vehicule.id})" class="col-md-5 btn blue "><i class="fa fa-pencil "></i></button>
+                        <button type="submit" ng-click="vm.editVehicle(vehicule.id)" class="col-md-5 btn blue "><i class="fa fa-pencil "></i></button>
                         <button type="submit"  class="col-md-5 btn {{vm.color}}"  ng-click="vm.disableEnabledVehicule(vehicule)" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>
                     </div>
 

@@ -189,8 +189,9 @@
                             }
                         },
                         resolve: {
-                              entity: ['$stateParams', 'House', function($stateParams, House) {
-                                        return House.get({id : $stateParams.id}).$promise;
+                              entity: ['$stateParams', 'House','CommonMethods', function($stateParams, House, CommonMethods) {
+                                  var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                        return House.get({id : id}).$promise;
                                     }],
                             previousState: ["$state", function ($state) {
                                 var currentStateData = {

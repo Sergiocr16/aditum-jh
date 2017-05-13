@@ -225,15 +225,6 @@
                        controllerAs: 'vm'
                    }
                },
-               onEnter: ['JhiTrackerService', function(JhiTrackerService) {
-                JhiTrackerService.subscribeToGetEmergencies();
-                JhiTrackerService.subscribeToGetResidents();
-                JhiTrackerService.subscribeToGetVehicles();
-                JhiTrackerService.subscribeToGetHouses();
-                JhiTrackerService.subscribeToGetVisitors();
-                JhiTrackerService.subscribeToGetHomeServices();
-                JhiTrackerService.subscribeToGetDeletedEntities();
-               }]
            })
     }
 

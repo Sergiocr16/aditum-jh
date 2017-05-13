@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','JhiTrackerService'];
+    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
 
-    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,JhiTrackerService) {
+    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
           $rootScope.active = "residents";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -125,7 +125,7 @@
 
          }
             function onUpdateSuccess (result) {
-            JhiTrackerService.sendResident(result);
+            WSResident.sendActivity(result);
                 vm.isSaving = false;
                 $state.go('resident');
                 toastr["success"]("Se ha editado el residente correctamente.");
@@ -141,7 +141,7 @@
             }
             Resident.save(vm.resident, onSaveSuccess, onSaveError);
              function onSaveSuccess (result) {
-             JhiTrackerService.sendResident(result);
+             WSResident.sendActivity(result);
                   vm.isSaving = false;
                   $state.go('resident');
                   toastr["success"]("Se ha registrado el residente correctamente.");

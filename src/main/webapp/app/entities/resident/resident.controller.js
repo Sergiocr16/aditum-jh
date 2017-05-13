@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','JhiTrackerService'];
+    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','WSDeleteEntity'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,JhiTrackerService) {
+    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,WSDeleteEntity) {
          $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
@@ -165,7 +165,7 @@
             toastr["success"]("Se ha eliminado el residente correctamente.");
             loadResidents();
             console.log("here")
-            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
+             WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
         }
 
         vm.disableEnabledResident = function(residentInfo) {
@@ -216,7 +216,7 @@
         }
 
         function onSuccessDisabledResident(data, headers) {
-            JhiTrackerService.sendResident(data);
+           WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -244,7 +244,7 @@
 
 
         function onSuccess(data, headers) {
-            JhiTrackerService.sendResident(data);
+            WSResident.sendResident(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -262,6 +262,7 @@
             User.update(data, onSuccessEnabledUser);
 
             function onSuccessEnabledUser(data, headers) {
+              WSResident.sendActivity(data);
                 toastr["success"]("Se ha habilitado el residente correctamente.");
                 bootbox.hideAll();
                 loadResidents();

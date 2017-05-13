@@ -5,22 +5,34 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService','MultiCompany','$rootScope','$scope','companyUser','Company','House'];
+    NavbarController.$inject = ['CommonMethods','$state', 'Auth', 'Principal', 'ProfileService', 'LoginService','MultiCompany','$rootScope','$scope','companyUser','Company','House'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
+    function NavbarController (CommonMethods,$state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
  $rootScope.isAuthenticated = Principal.isAuthenticated;
+
+ vm.editMyInfoAsUser = function(){
+    var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyUser.id)
+        $state.go('residentByHouse.edit', {
+            id: encryptedId
+        })
+ }
+
+  vm.editMyInfoAsManager = function(){
+         $state.go('admin-info-edit')
+  }
+
    function getContextLiving(){
-       if(vm.currentUser!=undefined){
-            if(vm.currentUser.houseId == undefined){
-             Company.get({id: vm.currentUser.companyId},function(condo){
+       if($rootScope.companyUser!=undefined){
+            if($rootScope.companyUser.houseId == undefined){
+             Company.get({id: $rootScope.companyUser.companyId},function(condo){
              vm.contextLiving = " / "+ condo.name;
              if(condo.active == 0){
               logout();
              }
              })
             }else{
-             House.get({id: vm.currentUser.houseId},function(house){
+             House.get({id: $rootScope.companyUser.houseId},function(house){
                      vm.contextLiving = " / Casa " + house.housenumber;
              })
             }
@@ -35,7 +47,7 @@
      $rootScope.companyId = companyUser.companyId;
      $rootScope.currentUserImage = companyUser.image;
      $rootScope.currentUserImageContentType = companyUser.imageContentType;
-      vm.currentUser = companyUser;
+      $rootScope.companyUser = companyUser;
       getContextLiving();
      }else{
       vm.contextLiving = "Dios de Aditum"
@@ -60,18 +72,23 @@
         vm.$state = $state;
 
          var subLogin = $scope.$on('authenticationSuccess', getAccount);
-         var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
+//         var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
         function getAccount(){
-            vm.currentUser=undefined;
+            $rootScope.companyUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
             $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
-            vm.currentUser = data;
+            $rootScope.companyUser = $rootScope.companyUser;
             getContextLiving();
+            $rootScope.currentUserImage = data.image;
+            $rootScope.currentUserImageContentType = data.imageContentType;
              }else{
              vm.contextLiving = "Dios de Aditum"
+              $rootScope.currentUserImage = undefined;
+              $rootScope.currentUserImageContentType = undefined;
              }
+
             })
         }
 
@@ -85,7 +102,8 @@
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
-
+            $rootScope.companyUser = undefined;
+             $rootScope.showLogin = true;
         }
 
         function toggleNavbar() {
@@ -96,7 +114,7 @@
             vm.isNavbarCollapsed = true;
         }
 
-        $scope.$on('$destroy', subChangeState);
+//        $scope.$on('$destroy', subChangeState);
         $scope.$on('$destroy', subLogin);
     }
 })();

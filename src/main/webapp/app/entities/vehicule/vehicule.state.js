@@ -240,8 +240,9 @@
                         }
                     },
                     resolve: {
-                            entity: ['$stateParams', 'Vehicule', function($stateParams, Vehicule) {
-                                return Vehicule.get({id : $stateParams.id}).$promise;
+                            entity: ['$stateParams', 'Vehicule','CommonMethods', function($stateParams, Vehicule, CommonMethods) {
+                             var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                return Vehicule.get({id : id}).$promise;
                             }],
                         previousState: ["$state", function ($state) {
                             var currentStateData = {
@@ -268,8 +269,9 @@
                         }
                     },
                     resolve: {
-                            entity: ['$stateParams', 'Vehicule', function($stateParams, Vehicule) {
-                                return Vehicule.get({id : $stateParams.id}).$promise;
+                            entity: ['$stateParams', 'Vehicule','CommonMethods', function($stateParams, Vehicule,CommonMethods) {
+                                var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                return Vehicule.get({id : id}).$promise;
                             }],
                         previousState: ["$state", function ($state) {
                             var currentStateData = {

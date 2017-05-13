@@ -1,6 +1,6 @@
 
 <div class="page-bar route-title">
-    <ul class="page-breadcrumb">
+    <ul ng-if="companyUser.id !== vm.resident.id" class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
             <a ui-sref="home()">Condominio</a>
@@ -12,6 +12,20 @@
         </li>
         <li>
             <a href="">{{vm.title}}</a>
+        </li>
+    </ul>
+    <ul ng-if="companyUser.id === vm.resident.id" class="page-breadcrumb">
+        <li>
+            <i class="fa fa-user"></i>
+            <a>Mi perfil</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a >Administrar</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Información</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -32,7 +46,8 @@
                     <div class="portlet-title">
                         <div class="caption font-green-haze">
                             <i class="fa fa-user font-green-haze"></i>
-                            <span class="caption-subject bold uppercase">{{vm.title}}</span>
+                            <span ng-if="companyUser.id !== vm.resident.id" class="caption-subject bold uppercase">{{vm.title}}</span>
+                            <span ng-if="companyUser.id === vm.resident.id" class="caption-subject bold uppercase">Editar mi información</span>
                         </div>
 
                     </div>

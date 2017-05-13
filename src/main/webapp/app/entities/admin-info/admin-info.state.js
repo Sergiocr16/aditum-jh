@@ -11,9 +11,9 @@
         $stateProvider
         .state('admin-info', {
             parent: 'entity',
-            url: '/admin-info?page&sort&search',
+            url: '/admin-infos?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.adminInfo.home.title'
             },
             views: {
@@ -45,6 +45,21 @@
                     };
                 }]
             }
+        })
+        .state('admin-info-edit', {
+            parent: 'entity',
+            url: '/admin-info',
+            data: {
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                pageTitle: 'aditumApp.adminInfo.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/admin-info/admin-info-edit.html',
+                    controller: 'AdminInfoEditDialogController',
+                    controllerAs: 'vm'
+                }
+            },
         })
         .state('admin-info-detail', {
             parent: 'admin-info',
