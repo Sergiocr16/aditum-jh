@@ -5,14 +5,26 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','WSDeleteEntity'];
+    ResidentController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','WSDeleteEntity'];
 
-    function ResidentController(DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,WSDeleteEntity) {
+    function ResidentController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,WSDeleteEntity) {
          $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+                   $state.go('resident.edit', {
+                       id: encryptedId
+                   })
+        }
 
+        vm.detailResident = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+                    $state.go('resident-detail', {
+                        id: encryptedId
+                    })
+        }
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -79,7 +91,7 @@
 
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
-                      console.log(vm.residents)
+
                 } else {
                     var residentsByHouse = [];
                     vm.residents = data;
@@ -164,7 +176,7 @@
         function onSuccessDelete(data, headers) {
             toastr["success"]("Se ha eliminado el residente correctamente.");
             loadResidents();
-            console.log("here")
+
              WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
         }
 
@@ -244,7 +256,7 @@
 
 
         function onSuccess(data, headers) {
-            WSResident.sendResident(data);
+             WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -260,9 +272,8 @@
         function onSuccessGetEnabledUser(data, headers) {
             data.activated = 1;
             User.update(data, onSuccessEnabledUser);
-
             function onSuccessEnabledUser(data, headers) {
-              WSResident.sendActivity(data);
+
                 toastr["success"]("Se ha habilitado el residente correctamente.");
                 bootbox.hideAll();
                 loadResidents();

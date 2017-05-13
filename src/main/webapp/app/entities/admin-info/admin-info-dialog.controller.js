@@ -10,7 +10,7 @@
 
     function AdminInfoDialogController ($state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
         var vm = this;
-
+        vm.loginStringCount = 0;
         vm.adminInfo = entity;
         vm.clear = clear;
         vm.byteSize = DataUtils.byteSize;
@@ -52,7 +52,7 @@
             }
         }
         function createAccount(){
-            var authorities = ["ROLE_USER"];
+            var authorities = ["ROLE_MANAGER"];
             vm.user.firstName =  vm.adminInfo.name;
             vm.user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
             vm.user.email = vm.adminInfo.email;
@@ -114,6 +114,7 @@
             vm.isSaving = false;
         }
         function generateLogin(config){
+
             var firstletterFirstName = vm.adminInfo.name.charAt(0);
             var firstletterSecondName = vm.adminInfo.secondlastname.charAt(0);
             if(config==1){
@@ -132,7 +133,7 @@
             vm.isSaving = false;
         }
 
-    
+
         vm.setImage = function ($file, adminInfo) {
             if ($file && $file.$error === 'pattern') {
                 return;

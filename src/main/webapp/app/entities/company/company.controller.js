@@ -52,9 +52,10 @@
             CompanyConfiguration.getByCompanyId({companyId:idCompany}).$promise.then(onSuccessCompany, onError);
         }
         function onSuccessCompany (data) {
+        console.log(data)
             angular.forEach(data, function(configuration, key) {
                 vm.companyConfiguration = configuration;
-                $state.go('companyConfiguration', { 'id':configuration.id});
+                $state.go('companyConfiguration', { id :configuration.id});
             });
 
         }
