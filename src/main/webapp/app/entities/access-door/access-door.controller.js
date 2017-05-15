@@ -17,6 +17,7 @@
 
         vm.logout = logout;
         vm.show = 4;
+
         vm.isAuthenticated = Principal.isAuthenticated;
         function logout() {
             Auth.logout();

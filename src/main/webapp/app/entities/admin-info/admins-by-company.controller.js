@@ -16,6 +16,7 @@
         vm.clear = clear;
         function clear () {
             $uibModalInstance.dismiss('cancel');
+            $state.go('company');
         }
 
         loadAll ();

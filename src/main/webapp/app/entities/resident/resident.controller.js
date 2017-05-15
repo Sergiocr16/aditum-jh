@@ -12,7 +12,19 @@
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+                   $state.go('resident.edit', {
+                       id: encryptedId
+                   })
+        }
 
+        vm.detailResident = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+                    $state.go('resident-detail', {
+                        id: encryptedId
+                    })
+        }
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -188,6 +200,12 @@
                 JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
             }
 
+        function onSuccessDelete(data, headers) {
+            toastr["success"]("Se ha eliminado el residente correctamente.");
+            loadResidents();
+
+             WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
+
         }
 
 
@@ -241,7 +259,7 @@
         }
 
         function onSuccessDisabledResident(data, headers) {
-            JhiTrackerService.sendResident(data);
+           WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -269,7 +287,7 @@
 
 
         function onSuccess(data, headers) {
-            JhiTrackerService.sendResident(data);
+             WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -285,8 +303,8 @@
         function onSuccessGetEnabledUser(data, headers) {
             data.activated = 1;
             User.update(data, onSuccessEnabledUser);
-
             function onSuccessEnabledUser(data, headers) {
+
                 toastr["success"]("Se ha habilitado el residente correctamente.");
                 bootbox.hideAll();
                 loadResidents();

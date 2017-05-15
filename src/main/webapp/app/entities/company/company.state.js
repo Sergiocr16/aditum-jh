@@ -203,9 +203,9 @@
                         size: 'lg',
 
                     }).result.then(function() {
-                        $state.go('', null, { reload: true });
+
                     }, function() {
-                        $state.go('');
+
                     });
                 }]
             })
