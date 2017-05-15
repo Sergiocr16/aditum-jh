@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.service.AdminInfoService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -50,6 +52,7 @@ public class AdminInfoResource {
      */
     @PostMapping("/admin-infos")
     @Timed
+    @Secured({AuthoritiesConstants.ADMIN})
     public ResponseEntity<AdminInfoDTO> createAdminInfo(@Valid @RequestBody AdminInfoDTO adminInfoDTO) throws URISyntaxException {
         log.debug("REST request to save AdminInfo : {}", adminInfoDTO);
         if (adminInfoDTO.getId() != null) {

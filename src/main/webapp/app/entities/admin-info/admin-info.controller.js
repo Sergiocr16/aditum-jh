@@ -53,7 +53,7 @@
                     var adminsByCondo = [];
 
                     for (var i = 0; i < admins.length; i++) {
-                        console.log(vm.condo.id)
+
                         if (vm.condo.id === admins[i].companyId) {
                             adminsByCondo.push(admins[i])
                         }
@@ -68,7 +68,7 @@
 
         }
         function formatAdminInfo(adminstrators) {
-            console.log(adminstrators);
+
             for (var i = 0; i < adminstrators.length; i++) {
 
                 for (var e = 0; e < vm.companies.length; e++) {
@@ -165,7 +165,7 @@
         }
 
         function onSuccessDisabledAdmin(data, headers) {
-            console.log('punto 1');
+
             User.getUserById({
                 id: data.userId
             }, onSuccessGetDisabledUser);
@@ -177,7 +177,7 @@
             } else {
                 data.activated = 1;
             }
-            console.log('punto 2');
+
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {

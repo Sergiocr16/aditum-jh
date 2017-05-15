@@ -45,7 +45,7 @@
 
         function createAccount(){
             vm.officer.inservice = 1;
-            vm.officer.companyId = 1;
+            vm.officer.companyId = $rootScope.companyId;
             vm.user.activated = true;
             var authorities = ["ROLE_OFFICER"];
             vm.user.authorities = authorities;

@@ -102,7 +102,7 @@ public class MailService {
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("creationEmail", context);
-        String subject = messageSource.getMessage("Una casa se ha desocupado", null, locale);
+        String subject = user.getFirstName()+ ", Bienvenido(a) a Aditum ";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 

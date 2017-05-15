@@ -56,41 +56,11 @@
             views: {
                 'content@': {
                     templateUrl: 'app/entities/admin-info/admin-info-edit.html',
-                    controller: 'AdminInfoDialogController',
+                    controller: 'AdminInfoEditDialogController',
                     controllerAs: 'vm'
                 }
             },
         })
-
-       .state('admin-info-edit-a', {
-                   parent: 'entity',
-                      url: '/admin-info',
-                      data: {
-                       authorities: ['ROLE_MANAGER']
-                      },
-                      views: {
-                          'content@': {
-                              templateUrl: 'app/entities/admin-info/admin-info-edit.html',
-                              controller: 'AdminInfoDialogController',
-                              controllerAs: 'vm'
-                          }
-                      },
-                      resolve: {
-                        entity: ['$stateParams', 'AdminInfo','CommonMethods', function($stateParams, Resident,CommonMethods) {
-                        var id = CommonMethods.decryptIdUrl($stateParams.id)
-                                  return AdminInfo.get({id : id}).$promise;
-                              }],
-                          previousState: ["$state", function ($state) {
-                              var currentStateData = {
-                                  name: $state.current.name || 'my-admin-info-edit',
-                                  params: $state.params,
-                                  url: $state.href($state.current.name, $state.params)
-                              };
-                              return currentStateData;
-                          }]
-                      }
-
-                    })
         .state('admin-info-detail', {
             parent: 'admin-info',
             url: '/admin-info/{id}',

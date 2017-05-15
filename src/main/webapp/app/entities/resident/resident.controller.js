@@ -12,15 +12,6 @@
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-
-        vm.loadPage = loadPage;
-        vm.predicate = pagingParams.predicate;
-        vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.openFile = DataUtils.openFile;
-        vm.byteSize = DataUtils.byteSize;
-
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
                    $state.go('resident.edit', {
@@ -34,6 +25,13 @@
                         id: encryptedId
                     })
         }
+        vm.loadPage = loadPage;
+        vm.predicate = pagingParams.predicate;
+        vm.reverse = pagingParams.ascending;
+        vm.transition = transition;
+        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.openFile = DataUtils.openFile;
+        vm.byteSize = DataUtils.byteSize;
 
         vm.changesTitles = function() {
             if (enabledOptions) {
@@ -93,6 +91,7 @@
 
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
+
                 } else {
                     var residentsByHouse = [];
                     vm.residents = data;
@@ -167,7 +166,9 @@
                         Resident.delete({
                             id: id_resident
 
+
                         }, onSuccessDelete);
+
 
                     }
                 }
@@ -179,8 +180,8 @@
         function onSuccessDelete(data, headers) {
             toastr["success"]("Se ha eliminado el residente correctamente.");
             loadResidents();
-            console.log("here")
-            JhiTrackerService.sendDeletedEntity({type:'resident',id:id_resident})
+
+             WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
         }
 
         vm.disableEnabledResident = function(residentInfo) {
@@ -207,7 +208,6 @@
                 },
                 callback: function(result) {
                     if (result) {
-
                         CommonMethods.waitingMessage();
                         Resident.get({id: residentInfo.id}).$promise.then(onSuccessGetResident);
 
@@ -233,7 +233,7 @@
         }
 
         function onSuccessDisabledResident(data, headers) {
-            JhiTrackerService.sendResident(data);
+           WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -261,7 +261,7 @@
 
 
         function onSuccess(data, headers) {
-            JhiTrackerService.sendResident(data);
+             WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
@@ -277,8 +277,8 @@
         function onSuccessGetEnabledUser(data, headers) {
             data.activated = 1;
             User.update(data, onSuccessEnabledUser);
-
             function onSuccessEnabledUser(data, headers) {
+
                 toastr["success"]("Se ha habilitado el residente correctamente.");
                 bootbox.hideAll();
                 loadResidents();
