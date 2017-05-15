@@ -57,10 +57,12 @@
                 'content@': {
                     templateUrl: 'app/entities/admin-info/admin-info-edit.html',
                     controller: 'AdminInfoEditDialogController',
+
                     controllerAs: 'vm'
                 }
             },
         })
+
         .state('admin-info-detail', {
             parent: 'admin-info',
             url: '/admin-info/{id}',

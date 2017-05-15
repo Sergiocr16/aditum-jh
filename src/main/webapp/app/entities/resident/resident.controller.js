@@ -33,6 +33,20 @@ vm.editResident = function(id){
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
 
+        vm.editResident = function(id){
+        var encryptedId = CommonMethods.encryptIdUrl(id)
+                   $state.go('resident.edit', {
+                       id: encryptedId
+                   })
+        }
+
+        vm.detailResident = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+                    $state.go('resident-detail', {
+                        id: encryptedId
+                    })
+        }
+
         vm.changesTitles = function() {
             if (enabledOptions) {
                 vm.title = "Residentes habilitados";
@@ -91,7 +105,6 @@ vm.editResident = function(id){
 
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
-
                 } else {
                     var residentsByHouse = [];
                     vm.residents = data;
@@ -147,9 +160,9 @@ vm.editResident = function(id){
             return residents;
         }
 
-        vm.deleteResident = function(id_resident, name, lastname) {
+        vm.deleteResident = function(resident) {
             bootbox.confirm({
-                message: "¿Está seguro que desea eliminar al residente " + name + "?",
+                message: "¿Está seguro que desea eliminar al residente " + resident.name + "?",
                 buttons: {
                     confirm: {
                         label: 'Aceptar',
@@ -162,23 +175,39 @@ vm.editResident = function(id){
                 },
                 callback: function(result) {
                     if (result) {
-
+                        vm.login = resident.userLogin;
                         Resident.delete({
-                            id: id_resident
+                            id: resident.id
                         }, onSuccessDelete);
+
                     }
                 }
             });
 
 
         };
+        function onSuccessDelete () {
+            if(vm.login!==null){
+                User.delete({login: vm.login},
+                    function () {
+                        toastr["success"]("Se ha eliminado el residente correctamente.");
+                        loadResidents();
+                        JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+                    });
+            } else {
+                toastr["success"]("Se ha eliminado el residente correctamente.");
+                loadResidents();
+                JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+            }
 
         function onSuccessDelete(data, headers) {
             toastr["success"]("Se ha eliminado el residente correctamente.");
             loadResidents();
 
              WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
+
         }
+
 
         vm.disableEnabledResident = function(residentInfo) {
 
@@ -204,8 +233,10 @@ vm.editResident = function(id){
                 },
                 callback: function(result) {
                     if (result) {
+
                         CommonMethods.waitingMessage();
                         Resident.get({id: residentInfo.id}).$promise.then(onSuccessGetResident);
+
                     }
                 }
             });
