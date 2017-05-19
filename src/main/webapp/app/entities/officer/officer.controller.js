@@ -18,6 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+        $rootScope.active = "officers";
         loadAll();
 
         vm.editOfficer = function(id){

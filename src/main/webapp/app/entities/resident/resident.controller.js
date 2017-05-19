@@ -153,6 +153,7 @@
                     if (residents[i].houseId == vm.houses[e].id) {
                         residents[i].house_id = vm.houses[e].housenumber;
                         residents[i].name = residents[i].name + " " + residents[i].lastname;
+                        if(residents[i].email==null || residents[i].email==""){residents[i].email = "No registrado"};
                     }
                 }
             }

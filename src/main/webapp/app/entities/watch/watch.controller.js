@@ -23,7 +23,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
 
-
+        $rootScope.active = "watches";
         angular.element(document).ready(function() {
             $('.dating').keydown(function() {
                 return false;

@@ -8,7 +8,7 @@
     ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
 
     function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
-          $rootScope.active = "residents";
+        $rootScope.active = "residents";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -23,6 +23,7 @@
         vm.SaveUserError = false;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
+
         if(vm.resident.id !== null){
             vm.title = "Editar residente";
             vm.button = "Editar";
@@ -30,7 +31,6 @@
             if(vm.resident.isOwner==1){
                  vm.resident.isOwner=true;
             }
-
         } else{
             vm.title = "Registrar residente";
             vm.button = "Registrar";
@@ -49,7 +49,6 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-
         function save () {
             vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
             vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
@@ -66,9 +65,11 @@
                      } else{
                          createAccount(2);
                      }
-                } else {
+                } else if(vm.resident.isOwner==false){
                     changeStatusIsOwner();
                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                }else{
+                    updateAccount(vm.resident.enabled);
                 }
             } else {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
@@ -94,7 +95,6 @@
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
-
                if(opcion==1){
                    insertResident(result.id)
                }
@@ -110,7 +110,6 @@
          function updateAccount(status){
              User.getUserById({id: vm.resident.userId},onSuccess);
              function onSuccess(user, headers) {
-
                  user.id = vm.resident.userId;
                  user.activated = status;
                  user.firstName =  vm.resident.name;
@@ -119,6 +118,7 @@
                  User.update(user,onSuccessUser);
                  function onSuccessUser(data, headers) {
                     changeStatusIsOwner();
+                    console.log('se actualizo');
                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
 
                   }

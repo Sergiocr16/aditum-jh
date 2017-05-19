@@ -6,8 +6,12 @@
             <a ui-sref="home()">Condominio</a>
             <i class="fa fa-angle-right"></i>
         </li>
-        <li>
+        <li has-authority="ROLE_MANAGER">
             <a href="" ui-sref="resident()">Residentes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li has-authority="ROLE_USER">
+            <a href="" ui-sref="residentByHouse()">Residentes</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>

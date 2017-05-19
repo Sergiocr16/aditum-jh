@@ -4,15 +4,15 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="index.html">Condominio</a>
+            <a ui-sref="home()">Condominio</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">Oficiales</a>
+            <a ui-sref="officer()">Oficiales</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">Consultar</a>
+            <a ui-sref="officer()">Consultar</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -49,6 +49,7 @@
                             <th>Nombre completo</th>
                             <th>Cédula</th>
                             <th>Email</th>
+                            <th>Login</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
                         </tr>
@@ -58,6 +59,7 @@
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
                             <td>{{officer.email}}</td>
+                            <td>{{officer.userLogin}}</td>
                             <td> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
                             <td> <a ui-sref="officer.delete({id:officer.id})">Eliminar</a></td>
                         </tr>

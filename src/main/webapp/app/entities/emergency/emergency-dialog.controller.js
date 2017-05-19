@@ -11,7 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.reportEmergency = save;
-
+        $rootScope.active = "reportemergencyactive";
        angular.element(document).ready(function(){
         $("#all").fadeIn("slow");
        })

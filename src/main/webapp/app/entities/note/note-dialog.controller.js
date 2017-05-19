@@ -11,6 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
+        $rootScope.active = "reportHomeService";
         function populateValidNote(){
         vm.note.creationdate = moment(new Date()).format();
         vm.note.companyId = $rootScope.companyId;

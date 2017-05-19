@@ -6,8 +6,13 @@
             <a href="index.html">Condominio</a>
             <i class="fa fa-angle-right"></i>
         </li>
-        <li>
-            <a href="#">Vehículos</a>
+        <li has-authority="ROLE_MANAGER">
+            <a ui-sref="vehicule()">Vehículos</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+
+        <li has-authority="ROLE_USER">
+            <a href="" ui-sref="vehiculeByHouse()">Vehículos</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>

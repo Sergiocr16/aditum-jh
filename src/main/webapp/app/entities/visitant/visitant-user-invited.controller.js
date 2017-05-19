@@ -10,6 +10,7 @@
     function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods,WSVisitor,WSDeleteEntity) {
         var vm = this;
         vm.Principal;
+        $rootScope.active = "residentsInvitedVisitors";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -102,17 +103,18 @@
                             id: visitor.id
                         }, success);
 
-                        function success(data) {
-                            loadAll();
-                            $("#all").fadeIn();
-                            toastr["success"]("Se ha eliminado el registro correctamente");
-                            bootbox.hideAll();
-                             WSDeleteEntity.sendDeletedEntity({type:'visitor',id:visitor.id})
-                        }
+
                     }
                 }
-            });
 
+            });
+            function success(data) {
+                loadAll();
+                $("#all").fadeIn();
+                toastr["success"]("Se ha eliminado el registro correctamente");
+                bootbox.hideAll();
+                WSDeleteEntity.sendDeletedEntity({type:'visitor',id:visitor.id})
+            }
         }
 
 
@@ -134,14 +136,15 @@
                         visitor.isinvited = 2;
                         Visitant.update(visitor, success)
 
-                        function success(data) {
-                        WSVisitor.sendActivity(data);
-                            bootbox.hideAll();
-                            toastr["success"]("Se ha cancelado la invitación correctamente");
-                        }
+
                     }
                 }
             });
+        }
+        function success(data) {
+            WSVisitor.sendActivity(data);
+            bootbox.hideAll();
+            toastr["success"]("Se ha cancelado la invitación correctamente");
         }
 
     }

@@ -12,6 +12,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         //        vm.visitant = entity;
         vm.clear = clear;
+        $rootScope.active = "reportInvitation";
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
@@ -90,43 +91,47 @@
                     companyId: $rootScope.companyId,
                 }, success, error)
 
-                function success(data) {
-                    bootbox.confirm({
-                        message: "Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
+
+
+
+
+            }
+            function success(data) {
+                bootbox.confirm({
+                    message: "Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
                         },
-                        callback: function(result) {
-                            if (result) {
-                                vm.visitor.id = data.id;
-                                formatVisitor();
-                                Visitant.update(vm.visitor, onSuccess, onSaveError);
-
-                                function onSuccess(data) {
-                                WSVisitor.sendActivity(data);
-                                  $state.go('visitant-invited-user')
-                                    toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-                                }
-                            } else {
-                                bootbox.hideAll();
-                            }
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
                         }
-                    });
-                }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            vm.visitor.id = data.id;
+                            formatVisitor();
+                            Visitant.update(vm.visitor, onSuccess, onSaveError);
 
-                function error() {
-                    formatVisitor();
-                    vm.isSaving = true;
-                    Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
-                }
+                        } else {
+                            bootbox.hideAll();
+                        }
 
+                        function onSuccess(data) {
+                            WSVisitor.sendActivity(data);
+                            $state.go('visitant-invited-user')
+                            toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                        }
+                    }
+                });
+            }
+
+            function error() {
+                formatVisitor();
+                vm.isSaving = true;
+                Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
             }
         }
 

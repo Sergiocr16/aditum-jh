@@ -11,6 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
+
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
@@ -82,14 +83,15 @@
             if (isValidDates()) {
                 formatVisitor();
                 Visitant.update(vm.visitor, onSuccess, onSaveError);
-                 function onSuccess(result) {
-                 WSVisitor.sendActivity(result);
-                        toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-                       $scope.$emit('aditumApp:visitantUpdate', result);
-                       $state.reload();
-                       $uibModalInstance.close(result);
-                  }
 
+
+            }
+            function onSuccess(result) {
+                WSVisitor.sendActivity(result);
+                toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                $scope.$emit('aditumApp:visitantUpdate', result);
+                $state.reload();
+                $uibModalInstance.close(result);
             }
         }
 
