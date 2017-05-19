@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
+    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
 
-    function OfficerDialogController ($state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company) {
+    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.officer = entity;
@@ -18,7 +18,7 @@
         CommonMethods.validateLetters();
         vm.loginStringCount = 0;
         CommonMethods.validateNumbers();
-
+        $rootScope.active = "officers";
         if(vm.officer.id !== null){
             vm.title = "Editar oficial";
             vm.button = "Editar";
@@ -30,11 +30,16 @@
         setTimeout(function() {
             $("#edit_officer_form").fadeIn(300);
         }, 200)
+
+
         function save () {
             vm.isSaving = true;
             if (vm.officer.id !== null) {
                 updateAccount();
             } else {
+                vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
+                vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
+                vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
                 createAccount();
             }
         }
@@ -44,41 +49,46 @@
         }
 
         function createAccount(){
-            vm.officer.inservice = 1;
-            vm.officer.companyId = $rootScope.companyId;
-            vm.user.activated = true;
             var authorities = ["ROLE_OFFICER"];
-            vm.user.authorities = authorities;
             vm.user.firstName =  vm.officer.name;
             vm.user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
             vm.user.email = vm.officer.email;
+            vm.user.activated = true;
+            vm.user.authorities = authorities;
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
-                 vm.officer.userId = result.id;
-                 vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
-                 vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
-                 vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
-                 Officer.save(vm.officer, onSaveSuccess, onSaveError);
-                 vm.isSaving = false;
+                insertOfficer(result.id)
+                vm.isSaving = false;
+            }
+
+        }
+        function insertOfficer(id){
+            vm.officer.companyId = $rootScope.companyId;
+            vm.officer.userId = id;
+            vm.officer.inservice = 0;
+            Officer.save(vm.officer, onSaveSuccess, onSaveError);
+            function onSaveSuccess (result) {
+                vm.isSaving = false;
+                $state.go('officer');
+                toastr["success"]("Se ha registrado el oficial correctamente.");
+
             }
         }
-          function updateAccount(){
-             User.getUserById({id: vm.officer.userId},onSuccess);
-             function onSuccess(user, headers) {
-                 user.id = vm.officer.userId;
-                 user.firstName =  vm.officer.name;
-                 user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
-                 user.email = vm.officer.email;
-                 User.update(user,onSuccessUser);
-                 function onSuccessUser(data, headers) {
-
+        function updateAccount(){
+            User.getUserById({id: vm.officer.userId},onSuccess);
+            function onSuccess(user, headers) {
+                user.id = vm.officer.userId;
+                user.firstName =  vm.officer.name;
+                user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
+                user.email = vm.officer.email;
+                User.update(user,onSuccessUser);
+                function onSuccessUser(data, headers) {
                     Officer.update(vm.officer, onUpdateSuccess, onSaveError);
-
-                  }
-              }
-
+                }
             }
+
+        }
         function onUpdateSuccess (result) {
                 vm.isSaving = false;
                 $state.go('officer');
@@ -108,6 +118,13 @@
 
              }
         }
+
+
+
+
+
+
+
         vm.setImage = function ($file, resident) {
             if ($file && $file.$error === 'pattern') {
                 return;

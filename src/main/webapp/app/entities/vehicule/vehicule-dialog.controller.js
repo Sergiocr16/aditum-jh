@@ -14,6 +14,7 @@
         vm.vehicule = entity;
          vm.brands = CommonMethods.getCarBrands();
         vm.save = save;
+        vm.required = 1;
         vm.houses = House.query();
         CommonMethods.validateSpecialCharacters();
         angular.element(document).ready(function () {

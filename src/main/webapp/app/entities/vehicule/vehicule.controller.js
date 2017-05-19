@@ -150,17 +150,16 @@
 
                         Vehicule.delete({
                             id: id_vehicule
-                        }, onSuccess);
-
-                        function onSuccess(data, headers) {
-                            toastr["success"]("Se ha eliminado el vehículo correctamente.");
-                            loadVehicules();
-                            WSDeleteEntity.sendActivity({type:'vehicle',id:id_vehicule})
-                        }
+                        }, onSuccessDelete);
                     }
                 }
             });
 
+             function onSuccessDelete(data, headers) {
+                 toastr["success"]("Se ha eliminado el vehículo correctamente.");
+                 loadVehicules();
+                 WSDeleteEntity.sendActivity({type:'vehicle',id:id_vehicule})
+             }
 
         };
 
@@ -191,29 +190,32 @@
                                 CommonMethods.waitingMessage();
                                 if (enabledOptions) {
                                     vehicule.enabled = 0;
-                                    Vehicule.update(vehicule, onSuccess);
-                                    function onSuccess(data, headers) {
-                                     WSVehicle.sendActivity(data);
-                                            loadVehicules();
-                                            toastr["success"]("Se ha deshabilitado el vehículo correctamente.");
-                                            bootbox.hideAll();
-                                    }
+                                    Vehicule.update(vehicule, onSuccessDisable);
+
 
                                 } else {
                                     vehicule.enabled = 1;
-                                    Vehicule.update(vehicule, onSuccess);
-                                    function onSuccess(data, headers) {
-                                    WSVehicle.sendActivity(data);
-                                            bootbox.hideAll();
-                                            toastr["success"]("Se ha habilitado el vehículo correctamente.");
-                                            loadVehicules();
+                                    Vehicule.update(vehicule, onSuccessEnable);
 
-                                    }
                                 }
 
                             }
                         }
                     });
+               function onSuccessEnable(data, headers) {
+                   WSVehicle.sendActivity(data);
+                   bootbox.hideAll();
+                   toastr["success"]("Se ha habilitado el vehículo correctamente.");
+                   loadVehicules();
+
+               }
+
+               function onSuccessDisable(data, headers) {
+                   WSVehicle.sendActivity(data);
+                   loadVehicules();
+                   toastr["success"]("Se ha deshabilitado el vehículo correctamente.");
+                   bootbox.hideAll();
+               }
                 };
         function loadPage(page) {
             vm.page = page;

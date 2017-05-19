@@ -2,11 +2,11 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="index.html">Condominio</a>
+            <a ui-sref="home()">Condominio</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">Residentes</a>
+            <a ui-sref="officer()">Oficiales</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -64,10 +64,6 @@
                                     <input ng-model="vm.officer.lastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
                                     <label class="font-15">Primer Apellido</label>
                                 </div>
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
-                                    <label class="font-15">Segundo Apellido</label>
-                                </div>
                             </div>
                             <div class="col-md-6 col-sm-6 marging-top-20">
 
@@ -82,6 +78,12 @@
                                     <label class="font-15">Cédula</label>
                                 </div>
 
+                            </div>
+                            <div class="col-md-12 col-sm-12 marging-top-20">
+                                <div class="col-md-6 col-sm-6  form-group form-md-line-input no-padding-left no-padding-right">
+                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
+                                    <label class="font-15">Segundo Apellido</label>
+                                </div>
                             </div>
                         </div>
                         <div class="form-actions noborder">

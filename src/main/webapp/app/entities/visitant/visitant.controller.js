@@ -8,7 +8,7 @@
     VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
     function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
-
+        $rootScope.active = "residentsVisitors";
         var vm = this;
         vm.Principal;
         vm.isAuthenticated = Principal.isAuthenticated;
