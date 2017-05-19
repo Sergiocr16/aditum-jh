@@ -155,6 +155,31 @@ public class HouseResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
     }
 
+    @GetMapping("/houses/validate/{houseNumber}/{extension}/{companyId}")
+    @Timed
+    public ResponseEntity<HouseDTO> validateHouse(
+        @PathVariable (value = "houseNumber")  String houseNumber,
+        @PathVariable(value = "extension")  String  extension,
+        @PathVariable(value = "companyId")  Long  companyId
+    ) {
+        HouseDTO houseDTO = houseService.validateHouse(houseNumber,extension,companyId);
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
+    }
+
+    @GetMapping("/houses/validateUpdate/{houseId}/{houseNumber}/{extension}/{companyId}")
+    @Timed
+    public ResponseEntity<HouseDTO> validateHuseUpdate(
+        @PathVariable (value = "houseId")  Long houseId,
+        @PathVariable (value = "houseNumber")  String houseNumber,
+        @PathVariable(value = "extension")  String  extension,
+        @PathVariable(value = "companyId")  Long  companyId
+    ) {
+        HouseDTO houseDTO = houseService.validateUpdatedHouse(houseId,houseNumber,extension,companyId);
+String a = "a";
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
+    }
+
     /**
      * DELETE  /houses/:id : delete the "id" house.
      *

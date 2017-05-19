@@ -12,7 +12,7 @@
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-vm.editResident = function(id){
+        vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
                    $state.go('resident.edit', {
                        id: encryptedId
