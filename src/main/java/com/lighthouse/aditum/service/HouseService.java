@@ -77,6 +77,43 @@ public class HouseService {
         return houseDTO;
     }
 
+
+    @Transactional(readOnly = true)
+    public HouseDTO validateHouse(String houseNumber,String extension,Long companyId) {
+        House rHouse = null;
+        House house = houseRepository.findByhousenumberAndCompanyId(houseNumber,companyId);
+        House house1 = houseRepository.findByExtensionAndCompanyId(extension,companyId);
+
+        if(house!=null){
+            rHouse= house;
+        }
+        if(house1!=null){
+            rHouse= house1;
+        }
+        HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
+        return houseDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public HouseDTO validateUpdatedHouse(Long houseId,String houseNumber,String extension,Long companyId) {
+        House rHouse = null;
+        House house = houseRepository.findByhousenumberAndAndCompanyIdAndIdNot(houseNumber,companyId,houseId);
+        House house1 = houseRepository.findByExtensionAndCompanyIdAndIdNot(extension,companyId,houseId);
+
+        if(house!=null){
+            rHouse= house;
+        }
+        if(house1!=null){
+            rHouse= house1;
+        }
+        HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
+        return houseDTO;
+    }
+
+
+
+
+
     /**
      *  Delete the  house by id.
      *
