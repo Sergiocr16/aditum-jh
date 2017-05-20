@@ -11,7 +11,7 @@
 
         function getService () {
             return {
-               validateName: validateName,
+               validateName:validateName,
                 waitingMessage: waitingMessage,
                 validateLetters: validateLetters,
                 validateNumbers: validateNumbers,
@@ -132,79 +132,79 @@
                 var brands = {
                     data: [{
 
-                        name: "Audi"
+                        brand:"Audi"
                     }, {
-                        name: "Alfa Romeo"
+                        brand:"Alfa Romeo"
                     }, {
-                        name: "BMW"
+                        brand:"BMW"
                     }, {
-                        name: "BYD"
+                        brand:"BYD"
                     }, {
-                        name: "Chevrolet"
+                        brand:"Chevrolet"
                     }, {
-                        name: "Citroen"
+                        brand:"Citroen"
                     }, {
-                        name: "Daewoo"
+                        brand:"Daewoo"
                     }, {
-                        name: "Daihatsu"
+                        brand:"Daihatsu"
                     }, {
-                        name: "Dodge"
+                        brand:"Dodge"
                     }, {
-                        name: "Fiat"
+                        brand:"Fiat"
                     }, {
-                        name: "Ford"
+                        brand:"Ford"
                     }, {
-                        name: "Honda"
+                        brand:"Honda"
                     }, {
-                        name: "Hummer"
+                        brand:"Hummer"
                     }, {
-                        name: "Hyundai"
+                        brand:"Hyundai"
                     }, {
-                        name: "Izuzu"
+                        brand:"Izuzu"
                     }, {
-                        name: "Jaguar"
+                        brand:"Jaguar"
                     }, {
-                        name: "JAC"
+                        brand:"JAC"
                     }, {
-                        name: "Jeep"
+                        brand:"Jeep"
                     }, {
-                        name: "Kia"
+                        brand:"Kia"
                     }, {
-                        name: "Land Rover"
+                        brand:"Land Rover"
                     }, {
-                        name: "Lexus"
+                        brand:"Lexus"
                     }, {
-                        name: "Maserati"
+                        brand:"Maserati"
                     }, {
-                        name: "Mazda"
+                        brand:"Mazda"
                     }, {
-                        name: "Mercedes Benz"
+                        brand:"Mercedes Benz"
                     }, {
-                        name: "Mini"
+                        brand:"Mini"
                     }, {
-                        name: "Mitsubishi"
+                        brand:"Mitsubishi"
                     }, {
-                        name: "Nissan"
+                        brand:"Nissan"
                     }, {
-                        name: "Peugeot"
+                        brand:"Peugeot"
                     }, {
-                        name: "Porshe"
+                        brand:"Porshe"
                     }, {
-                        name: "Renault"
+                        brand:"Renault"
                     }, {
-                        name: "Rolls Royce"
+                        brand:"Rolls Royce"
                     }, {
-                        name: "Ssanyong"
+                        brand:"Ssanyong"
                     }, {
-                        name: "Subaru"
+                        brand:"Subaru"
                     }, {
-                        name: "Suzuki"
+                        brand:"Suzuki"
                     }, {
-                        name: "Toyota"
+                        brand:"Toyota"
                     }, {
-                        name: "Volkswagen"
+                        brand:"Volkswagen"
                     }, {
-                        name: "Volvo"
+                        brand:"Volvo"
 
                     }, ]
                 }
@@ -266,7 +266,7 @@
 //
 //         return {
 //
-//             validateName: function(items, name) {
+//             validatebrand:function(items, name) {
 //                 var condition = true;
 //                 angular.forEach(items, function(item, index) {
 //                     if (item.name.toUpperCase() == name.toUpperCase()) {
@@ -343,9 +343,9 @@
 //                 itemsToLink.splice(index, 1);
 //                 var item = {
 //                     id: item.id,
-//                     name: item.name,
-//                     last_name: item.last_name,
-//                     second_last_name: item.second_last_name,
+//                     brand:item.name,
+//                     last_brand:item.last_name,
+//                     second_last_brand:item.second_last_name,
 //                     identification_number: item.identification_number
 //                 }
 //                 itemsLinked.push(item);

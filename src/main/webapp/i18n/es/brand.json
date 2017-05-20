@@ -1,0 +1,21 @@
+{
+    "aditumApp": {
+        "brand" : {
+            "home": {
+                "title": "Brands",
+                "createLabel": "Crear nuevo Brand",
+                "createOrEditLabel": "Crear o editar Brand"
+            },
+            "created": "Un nuevo Brand ha sido creado con el identificador {{ param }}",
+            "updated": "Un Brand ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Brand ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Brand {{ id }}?"
+            },
+            "detail": {
+                "title": "Brand"
+            },
+            "brand": "Brand"
+        }
+    }
+}

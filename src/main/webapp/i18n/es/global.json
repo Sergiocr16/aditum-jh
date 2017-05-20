@@ -19,6 +19,7 @@
                 "vehicule": "Vehicule",
                 "visitant": "Visitant",
                 "watch": "Watch",
+                "brand": "Brand",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
