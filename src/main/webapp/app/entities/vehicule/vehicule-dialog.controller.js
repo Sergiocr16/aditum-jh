@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('VehiculeDialogController', VehiculeDialogController);
 
-    VehiculeDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle'];
+    VehiculeDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle','Brand'];
 
-    function VehiculeDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle) {
+    function VehiculeDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle,Brand) {
          $rootScope.active = "vehicules";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-         vm.brands = CommonMethods.getCarBrands();
+//         vm.brands = CommonMethods.getCarBrands();
         vm.save = save;
         vm.required = 1;
         vm.houses = House.query();
@@ -20,22 +20,24 @@
         angular.element(document).ready(function () {
         ColorPicker.init();
          });
+           Brand.query({}, onSuccessBrand);
+
+           function onSuccessBrand(brands){
+           vm.brands = brands;
+
         if(vm.vehicule.id !== null){
-            vm.title = "Editar vehículos";
+            vm.title = "Editar vehículo";
             vm.button = "Editar";
-
-                for(var i=0;i<vm.brands.data.length;i++){
-                    if(vm.brands.data[i].name==vm.vehicule.brand){
-                        vm.vehicule.brand = vm.brands.data[i];
-                    }
+            angular.forEach(vm.brands,function(brand,i){
+               if(brand.brand===vm.vehicule.brand){
+                    vm.vehicule.brand = brand;
                 }
-
-
+            })
         } else{
             vm.title = "Registrar vehículo";
             vm.button = "Registrar";
         }
-
+ }
         House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
@@ -49,7 +51,7 @@
            vm.vehicule.color = $('#color').css('background-color');
          }
         function save () {
-         vm.vehicule.brand = vm.vehicule.brand.name;
+         vm.vehicule.brand = vm.vehicule.brand.brand;
             vm.isSaving = true;
             if (vm.vehicule.id !== null) {
                 Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
