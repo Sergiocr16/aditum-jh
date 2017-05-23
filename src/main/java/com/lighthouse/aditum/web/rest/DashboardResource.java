@@ -62,7 +62,7 @@ public class DashboardResource {
         this.officerService = officerService;
     }
     @Timed
-    @Secured({AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
     @GetMapping("/dashboard/{companyId}")
     public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
