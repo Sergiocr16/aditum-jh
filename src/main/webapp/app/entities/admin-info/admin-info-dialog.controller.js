@@ -10,6 +10,7 @@
 
     function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company, Principal) {
 
+
         var vm = this;
         vm.loginStringCount = 0;
         vm.adminInfo = entity;

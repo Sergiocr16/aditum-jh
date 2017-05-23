@@ -9,6 +9,7 @@
 
     function VisitantAdminController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,House,$scope) {
 
+        $rootScope.active = "adminVisitors";
         var vm = this;
         vm.Principal;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -54,6 +55,7 @@
 
             function onSuccess(data) {
                 vm.visitants = data;
+                vm.queryCount = data.length;
                 vm.page = pagingParams.page;
                 vm.title = 'Visitantes del mes';
                 vm.isConsulting = false;
@@ -155,6 +157,7 @@
             function onSuccess(data) {
                 vm.visitants = data;
                 vm.page = pagingParams.page;
+                vm.queryCount = data.length;
                 vm.title = 'Visitantes entre:';
                 vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " +moment(vm.dates.final_time).format("LL");
                 vm.isConsulting = true;
@@ -191,6 +194,7 @@
 
             function onSuccess(data) {
                 vm.visitants = data;
+                vm.queryCount = data.length;
                 vm.page = pagingParams.page;
                 vm.title = 'Visitantes del mes';
                 vm.isConsulting = false;

@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('OfficerController', OfficerController);
 
-    OfficerController.$inject = ['$state','CommonMethods','DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    OfficerController.$inject = ['User','$state','CommonMethods','DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function OfficerController($state,CommonMethods,DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
-
+    function OfficerController(User,$state,CommonMethods,DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+        var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -27,32 +27,176 @@
                 id: encryptedId
           })
         }
-
+        vm.switchEnabledDisabledOfficers = function() {
+            enabledOptions = !enabledOptions;
+            loadAll();
+        }
         function loadAll () {
-            Officer.query({
-               companyId: $rootScope.companyId
-            }, onSuccess, onError);
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
+            if (enabledOptions) {
+                changesTitles();
+                Officer.officersEnabled({
+                    companyId: $rootScope.companyId,
+                }).$promise.then(onSuccess, onError);
+            } else {
+                changesTitles();
+                Officer.officersDisabled({
+                    companyId: $rootScope.companyId,
+                }).$promise.then(onSuccess, onError);
             }
-            function onSuccess(data, headers) {
+
+            function onSuccess(data) {
                vm.officers = data;
                 $("#loadingIcon").fadeOut(0);
                 setTimeout(function() {
                     $("#tableData").fadeIn(300);
                 }, 200)
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
 
-                vm.page = pagingParams.page;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
+            }
+
+            function changesTitles () {
+                if (!enabledOptions) {
+                    vm.title = "Oficiales habilitados";
+                    vm.buttonTitle = "Ver oficiales deshabilitados";
+                    vm.actionButtonTitle = "Deshabilitar";
+                } else {
+                    vm.title = "Oficiales deshabilitados";
+                    vm.buttonTitle = "Ver oficiales habilitados";
+                    vm.actionButtonTitle = "Habilitar";
+                }
+            }
+        }
+
+
+
+        vm.deleteOfficer = function(officer) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea eliminar al oficial " + officer.name + " " + officer.lastname +"?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        vm.login = officer.userLogin;
+                        Officer.delete({
+                            id: officer.id
+                        }, onSuccessDelete);
+
+
+                    }
+                }
+            });
+
+            function onSuccessDelete () {
+                    User.delete({login: vm.login},
+                        function () {
+                            toastr["success"]("Se ha eliminado el oficial correctamente.");
+                            loadAll();
+                        });
+
+            }
+
+        };
+
+        vm.disableEnabledOfficer = function(officerInfo) {
+
+            var correctMessage;
+            if (enabledOptions) {
+                correctMessage = "¿Está seguro que desea deshabilitar al residente " + officerInfo.name + "?";
+            } else {
+                correctMessage = "¿Está seguro que desea habilitar al residente " + officerInfo.name + "?";
+            }
+            bootbox.confirm({
+
+                message: correctMessage,
+
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        CommonMethods.waitingMessage();
+                        Officer.get({id: officerInfo.id}).$promise.then(onSuccessGetOfficer);
+
+                    }
+                }
+            });
+        };
+        function onSuccessGetOfficer (result) {
+            enabledDisabledOfficer(result);
+        }
+
+        function enabledDisabledOfficer(officer){
+            if (enabledOptions) {
+                officer.enabled = 0;
+                Officer.update(officer, onSuccessDisabledOfficer);
+            } else {
+                officer.enabled = 1;
+                Officer.update(officer, onSuccessEnabledOfficer);
+
+            }
+        }
+
+        function onSuccessDisabledOfficer(data, headers) {
+            if (data.isOwner == 1) {
+                User.getUserById({
+                    id: data.userId
+                }, onSuccessGetDisabledUser);
+
+            } else {
+                loadAll();
+                toastr["success"]("Se ha deshabilitado el oficial correctamente.");
+                bootbox.hideAll();
+            }
+        }
+
+        function onSuccessGetDisabledUser(data, headers) {
+            data.activated = 0;
+            User.update(data, onSuccessDisabledUser);
+
+            function onSuccessDisabledUser(data, headers) {
+                toastr["success"]("Se ha deshabilitado el oficial correctamente.");
+                bootbox.hideAll();
+                loadAll();
+            }
+        }
+
+        function onSuccessEnabledOfficer(data, headers) {
+            if (data.isOwner == 1) {
+                User.getUserById({
+                    id: data.userId
+                }, onSuccessGetEnabledUser);
+
+            } else {
+                bootbox.hideAll();
+                toastr["success"]("Se ha habilitado el oficial correctamente.");
+                loadAll();
+            }
+        }
+
+        function onSuccessGetEnabledUser(data, headers) {
+            data.activated = 1;
+            User.update(data, onSuccessEnabledUser);
+            function onSuccessEnabledUser(data, headers) {
+                toastr["success"]("Se ha habilitado el oficial correctamente.");
+                bootbox.hideAll();
+                loadAll();
             }
         }
 
