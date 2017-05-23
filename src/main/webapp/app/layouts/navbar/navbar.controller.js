@@ -27,6 +27,7 @@
             if($rootScope.companyUser.houseId == undefined){
              Company.get({id: $rootScope.companyUser.companyId},function(condo){
              vm.contextLiving = " / "+ condo.name;
+             $rootScope.contextLiving = vm.contextLiving;
              if(condo.active == 0){
               logout();
              }
@@ -34,6 +35,7 @@
             }else{
              House.get({id: $rootScope.companyUser.houseId},function(house){
                      vm.contextLiving = " / Casa " + house.housenumber;
+                     $rootScope.contextLiving = vm.contextLiving;
              })
             }
        }
@@ -51,6 +53,7 @@
       getContextLiving();
      }else{
       vm.contextLiving = "Dios de Aditum"
+      $rootScope.contextLiving = vm.contextLiving;
      }
         var vm = this;
         angular.element(document).ready(function () {
@@ -86,6 +89,7 @@
             $rootScope.currentUserImageContentType = data.imageContentType;
              }else{
              vm.contextLiving = "Dios de Aditum"
+             $rootScope.contextLiving = vm.contextLiving;
               $rootScope.currentUserImage = undefined;
               $rootScope.currentUserImageContentType = undefined;
              }

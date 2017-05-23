@@ -438,12 +438,38 @@
 //JhiTrackerService.receiveHomeService().then(null, null, receiveHomeService);
 //JhiTrackerService.receiveDeletedEntity().then(null, null, receiveDeletedEntity);
 
-function receiveEmergency(emergency){
-    vm.getEmergency(emergency);
+
+vm.attendEmergency = function(){
+var codeEmegency = $rootScope.companyId+""+vm.emergency.houseId;
+vm.emergency.isattended = 1;
+WSEmergency.sendActivityAttended(codeEmegency,vm.emergency);
 }
+
+
+function receiveEmergency(emergency){
+
+    vm.getEmergency(emergency);
+
+vm.emergency = emergency;
+
+}
+
+var hasExistance = function(array,id) {
+var index = undefined;
+   angular.forEach(array,function(item,i){
+           if (item.id === id) {
+               index = i;
+           }else{
+           index = -1;
+          }
+   })
+return index;
+};
+
+
 function receiveVisitor(visitor){
 if(visitorsList!==undefined){
-var result = visitorsList.indexOf(visitor);
+var result = hasExistance(visitorsList,visitor.id)
 if(result!==-1){
 visitorsList[result] = visitor;
 }else{
@@ -457,7 +483,7 @@ console.log(homeService);
 
 function receiveResident(resident){
 if(residentsList!==undefined){
-var result = residentsList.indexOf(resident);
+var result = hasExistance(residentsList,resident.id)
 if(result!==-1){
 residentsList[result] = resident;
 }else{
@@ -468,7 +494,8 @@ residentsList.push(resident);
 
 function receiveVehicle(vehicle){
 if(vehiculesList!==undefined){
-var result = vehiculesList.indexOf(vehicle);
+var result =  hasExistance(vehiculesList,vehicle.id)
+console.log()
 if(result!==-1){
 vehiculesList[result] = vehicle;
 }else{
@@ -479,7 +506,7 @@ vehiculesList.push(vehicle);
 
 function receiveHouse(house){
 if(housesList!==undefined){
-var result = housesList.indexOf(house);
+var result = hasExistance(housesList,house.id)
 if(result!==-1){
 housesList[result] = house;
 }else{

@@ -17,6 +17,7 @@
 </div>
 <div class="row display-none" id="all">
    <div class="col-md-12">
+
         <form ng-submit="vm.reportEmergency()">
             <div class="portlet light bordered">
                 <div class="portlet-title">
@@ -27,6 +28,12 @@
                 </div>
 
                 <div class="portlet-body form ">
+                    <div  id="calma" class="display-none">
+                        <h1 class="text-center" style="margin-top:20px">Mantén la calma</h1>
+                        <h4 class="text-center" style="margin-top:50px">Los oficiales han reportado que vienen de camino</h4>
+                        <h1 class="text-center"><button class="btn blue" type="button" ng-click="vm.closeIt()">Aceptar</button></h1>
+                    </div>
+                    <div  id="normal" class="display-none">
                     <p class="font-15 gray-font">
                         Las claves de seguridad son utilizadas para
                     </p>
@@ -38,7 +45,7 @@
                         <button type="submit" class="btn red default col-md-offset-4 col-md-4 font-15 height-12-percent"><i class="fa fa-exclamation-triangle font-22"></i> Reportar emergencia</button>
                     </h3>
                     </div>
-
+</div>
                 </div>
             </div>
         </form>
