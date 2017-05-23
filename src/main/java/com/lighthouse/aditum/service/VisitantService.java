@@ -109,7 +109,13 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
-
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findAllInvited(Long companyId) {
+        log.debug("Request to get all Visitants");
+        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrIsinvited(companyId,1,2);
+        Collections.reverse(result);
+        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+    }
     /**
      *  Get one visitant by id.
      *

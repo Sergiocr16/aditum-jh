@@ -15,6 +15,8 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface VisitantRepository extends JpaRepository<Visitant,Long> {
     Page<Visitant> findByCompanyId(Pageable pageable, Long companyId);
+    List<Visitant> findByCompanyIdAndIsinvitedOrIsinvited(Long companyId,Integer isInvited,Integer isInvited2);
+
     Visitant findByIdentificationnumberAndHouseIdAndCompanyId(String identificationNumber, Long houseId, Long companyId );
     List<Visitant> findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(Long companyId, Long houseId,Integer isInvited,Integer isInvited2);
     @Query("select v from Visitant v " +

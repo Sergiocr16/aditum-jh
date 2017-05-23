@@ -3,7 +3,7 @@
 <div has-authority="ROLE_OFFICER" id="headerAccess" class="col-md-12 page-header md-shadow-z-1-i navbar navbar-fixed-top">
     <div class="col-md-9 col-sm-9 col-xs-7 page-header-inner">
         <div class="page-logo">
-            <a href="index.html">
+            <a>
                 <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">
             </a>
         </div>
@@ -16,7 +16,7 @@
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                         <i class="fa fa-bell-o"></i>
                         <span class="badge badge-default">
-            {{  vm.countNotes}} </span>
+            {{vm.countNotes}} </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="external">
@@ -256,7 +256,7 @@
                                             <input type="text" ng-model="vm.security_key" class="form-control gray-font height-12-percent font-19 " id="identification_number" placeholder="Clave de seguridad o emergencia">
                                         </div>
                                         <h3 class="text-right ">
-                                            <button type="submit" class="btn blue "><i class="fa fa-pencil "></i>Consultar</button>
+                                            <button type="submit" class="btn blue "><i class="fa fa-pencil "></i> Consultar</button>
                                             <button  type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cancelar</button>
                                         </h3>
                                     </div>
@@ -328,7 +328,7 @@
                                     </div>
                                     <div class="form-group  col-md-12" style="margin-bottom:0px!important;">
                                         <h3 class="text-right">
-                                            <button type="submit" class="btn blue">Registrar</button>
+                                            <button type="submit" class="btn blue"> Registrar</button>
                                             <button type="button" ng-click="vm.show=4" class="btn default gray-font">Cancelar</button>
                                         </h3>
                                     </div>

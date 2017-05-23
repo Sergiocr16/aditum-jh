@@ -12,7 +12,7 @@
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
-        var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
+        var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
         var notesList = [];
         vm.notes = notesList;
         vm.countNotes = vm.notes.length;
@@ -69,8 +69,17 @@
            function onSuccessVisitor(visitors, headers) {
               visitorsList = visitors;
               subscribe();
+               loadInvited();
            }
+    }
+        function loadInvited() {
+            Visitant.findAllInvited({companyId: $rootScope.companyId}, onSuccessInvited, onError);
+            function onSuccessInvited(visitors, headers) {
+                invitedList = visitors;
+                subscribe();
+            }
         }
+
         function subscribe(){
           if($state.current.name==="main-access-door"){
                 WSDeleteEntity.subscribe($rootScope.companyId);
@@ -125,7 +134,7 @@
                             }
                         });
                         if (vm.id_vehicule >= 5) {
-                            angular.forEach(visitorsList, function(itemVisitor, index) {
+                            angular.forEach(invitedList, function(itemVisitor, index) {
                                 if (itemVisitor.licenseplate == vm.id_vehicule && itemVisitor.isinvited == 1) {
                                     vm.invited_visitant_name = itemVisitor.name;
                                     vm.invited_visitant_last_name = itemVisitor.lastname;
@@ -239,8 +248,11 @@
                     });
 
                    if (vm.id_number.length >= 6) {
-                       angular.forEach(visitorsList, function(itemVisitor, index) {
+                       angular.forEach(invitedList, function(itemVisitor, index) {
+
+
                            if (itemVisitor.identificationnumber == vm.id_number && itemVisitor.isinvited == 1) {
+                               console.log('el estado es'+itemVisitor.isinvited);
                                vm.invited_visitant_name = itemVisitor.name;
                                vm.invited_visitant_last_name = itemVisitor.lastname;
                                vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
@@ -472,40 +484,60 @@ return index;
 
 
 function receiveVisitor(visitor){
-if(visitorsList!==undefined){
-    var result = undefined;
-    angular.forEach(visitorsList,function(item,i){
-        if (item.id === visitor.id) {
-            result = i;
+
+
+    if(invitedList!==undefined){
+        var result = hasExistance(invitedList,visitor.id)
+        if(result!==-1){
+            invitedList[result] = visitor;
         }else{
-            result = -1;
+            invitedList.push(visitor);
         }
-    })
-    console.log(visitorsList);
-if(result!==-1){
-visitorsList[result] = visitor;
-}else{
-visitorsList.push(visitor);
-}
-}
+
+    }
+
+
+// if(invitedList!==undefined){
+//     var result = undefined;
+//     angular.forEach(invitedList,function(item,i){
+//         if (item.id === visitor.id) {
+//             result = i;
+//         }else{
+//             result = -1;
+//         }
+//     });
+// if(result!==-1){
+//     invitedList[result] = visitor;
+// }else{
+//     invitedList.push(visitor);
+// }
+// }
 }
 
 function receiveHomeService(homeService){
-    notesList.push(homeService);
-    vm.countNotes = vm.notes.length;
+
+    if(notesList!==undefined){
+        var result = hasExistance(notesList,homeService.id)
+        console.log('asdasr'+result);
+        if(result==undefined||result==-1){
+            notesList.push(homeService);
+            vm.countNotes = vm.notes.length;
+        }
+
+    }
 }
 
 
 
 function receiveResident(resident){
-if(residentsList!==undefined){
-var result = hasExistance(residentsList,resident.id)
-if(result!==-1){
-residentsList[result] = resident;
-}else{
-residentsList.push(resident);
-}
-}
+        if(residentsList!==undefined){
+            var result = hasExistance(residentsList,resident.id)
+            if(result!==-1){
+                  residentsList[result] = resident;
+            }else{
+                  residentsList.push(resident);
+            }
+        }
 }
 
 function receiveVehicle(vehicle){

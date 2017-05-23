@@ -49,6 +49,14 @@
                  },
               isArray: true,
             },
+            'findAllInvited':{
+                url: 'api/visitants/invited/all/:companyId/',
+                method: 'GET',
+                params:{
+                    companyId: '@companyId',
+                },
+                isArray: true,
+            },
             'findByHouseInLastMonth':{
             url: 'api/visitants/finByHouse/lastMonth/:houseId',
              method: 'GET',

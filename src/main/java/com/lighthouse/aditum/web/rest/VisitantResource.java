@@ -100,6 +100,15 @@ public class VisitantResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/visitants/invited/all/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> findAllInvited(@PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findAllInvited(companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     @GetMapping("/visitants/invited/finByHouse/{companyId}/{houseId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getInvitedVisitorsByHouse(@PathVariable(value = "houseId")  Long  houseId,
@@ -110,7 +119,6 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
     @GetMapping("/visitants/finByHouse/lastMonth/{houseId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getVisitorsByHouseInLastMonth(@PathVariable Long  houseId )
