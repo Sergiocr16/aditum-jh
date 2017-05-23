@@ -60,7 +60,6 @@ public class VisitantService {
     public Page<VisitantDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Visitants");
         Page<Visitant> result = visitantRepository.findByCompanyId(pageable,companyId);
-
         return result.map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 
@@ -79,6 +78,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<Visitant> result = visitantRepository.findByHouseInLastMonth(firstDayOfMonth,houseId,3);
+        Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 
@@ -98,6 +98,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
         List<Visitant> result = visitantRepository.findByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+        Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
     @Transactional(readOnly = true)
@@ -123,9 +124,16 @@ public class VisitantService {
     public Page<VisitantDTO> findInvitedVisitorsByHouse(Long companyId, Long houseId) {
         log.debug("Request to get all Visitants");
         List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(companyId,houseId,1,2);
+        Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
-
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findAllInvited(Long companyId) {
+        log.debug("Request to get all Visitants");
+        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrIsinvited(companyId,1,2);
+        Collections.reverse(result);
+        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+    }
     /**
      *  Get one visitant by id.
      *

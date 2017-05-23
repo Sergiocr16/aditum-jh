@@ -29,6 +29,10 @@
         }
         vm.switchEnabledDisabledOfficers = function() {
             enabledOptions = !enabledOptions;
+            $("#tableData").fadeOut(0);
+            setTimeout(function() {
+                $("#loadingIcon").fadeIn(100);
+            }, 200)
             loadAll();
         }
         function loadAll () {
@@ -46,18 +50,26 @@
 
             function onSuccess(data) {
                vm.officers = data;
-                $("#loadingIcon").fadeOut(0);
                 setTimeout(function() {
-                    $("#tableData").fadeIn(300);
-                }, 200)
+                    $("#loadingIcon").fadeOut(300);
+                }, 400)
+                setTimeout(function() {
+                    $("#tableData").fadeIn('slow');
+                },700 )
 
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
 
+            vm.detailOfficer= function(id){
+                var encryptedId = CommonMethods.encryptIdUrl(id)
+                $state.go('officer.details', {
+                    id: encryptedId
+                })
+            }
             function changesTitles () {
-                if (!enabledOptions) {
+                if (enabledOptions) {
                     vm.title = "Oficiales habilitados";
                     vm.buttonTitle = "Ver oficiales deshabilitados";
                     vm.actionButtonTitle = "Deshabilitar";
@@ -144,10 +156,10 @@
 
         function enabledDisabledOfficer(officer){
             if (enabledOptions) {
-                officer.enabled = 0;
+                officer.enable = false;
                 Officer.update(officer, onSuccessDisabledOfficer);
             } else {
-                officer.enabled = 1;
+                officer.enable = true;
                 Officer.update(officer, onSuccessEnabledOfficer);
 
             }

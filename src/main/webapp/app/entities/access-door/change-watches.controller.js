@@ -48,13 +48,12 @@
                     vm.officers.splice(index, 1);
                     var item = {
                         id: officer.id,
-                        name: officer.name,
-                        lastname: officer.lastname,
-                        secondlastname: officer.secondlastname,
+                        name: CommonMethods.capitalizeFirstLetter(officer.name),
+                        lastname: CommonMethods.capitalizeFirstLetter(officer.lastname),
+                        secondlastname: CommonMethods.capitalizeFirstLetter(officer.secondlastname),
                         identificationnumber: officer.identificationnumber
                     }
                     vm.officersLinked.push(item);
-                    console.log(vm.officersLinked);
              }
 
                 vm.reportTurn = function() {

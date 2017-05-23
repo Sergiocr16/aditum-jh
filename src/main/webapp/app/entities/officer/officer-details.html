@@ -1,0 +1,73 @@
+
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="" ui-sref="resident()">Residentes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Ver detalle</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"> </div>
+    </div>
+</div>
+
+<div class="display-none" id="officerInformation">
+
+    <div class="row">
+        <div class="col-md-12">
+            <form ng-submit="actionButton()">
+                <div class="portlet light bordered">
+                    <div class="portlet-title">
+                        <div class="caption font-green-haze">
+                            <i class="fa fa-user font-green-haze"></i>
+                            <span class="caption-subject bold uppercase">{{vm.title}} <span ng-show="vm.officer.enable==false">(Deshabilitado)</span> </span>
+                        </div>
+                    </div>
+                    <div class="portlet-body form">
+                        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
+                            <h3 class="text-center"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                        </div>
+
+                        <div class="col-md-9 col-sm-9 col-xs-12">
+                            <div class="margin-top-30 col-md-12 col-sm-12 col-xs-12 text-center"></div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
+                                <span class="font-15 gray-font" style="text-transform: capitalize;">Nombre: {{vm.title}}</span>
+                            </div>
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Login: {{vm.officer.userLogin}}</span>
+                            </div>
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Número de cédula: {{vm.officer.identificationnumber}}</span>
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Email: {{vm.officer.email}}</span>
+                            </div>
+
+
+
+                        </div>
+                        <div class="hidden-xs col-md-3 col-sm-3">
+                            <h3 class="text-center"> <a ng-click="vm.openFile(vm.officer.imageContentType, vm.officer.image)"><img ng-hide="vm.officer.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.officer.imageContentType + ';base64,' + vm.officer.image}}"   ng-if="vm.officer.image" alt="your image" width="200px" height="200px" class="img-circle"/></a></h3>
+                        </div>
+                        <div class="form-actions noborder ">
+                            <h3 class="text-right ">
+                                <button type="button" ui-sref="officer()" class="btn red default">Volver</button>
+                            </h3>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
