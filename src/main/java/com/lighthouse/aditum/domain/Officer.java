@@ -52,6 +52,9 @@ public class Officer implements Serializable {
     @Column(name = "inservice", nullable = false)
     private Integer inservice;
 
+    @Column(name = "enable")
+    private Boolean enable;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -171,6 +174,19 @@ public class Officer implements Serializable {
         this.inservice = inservice;
     }
 
+    public Boolean isEnable() {
+        return enable;
+    }
+
+    public Officer enable(Boolean enable) {
+        this.enable = enable;
+        return this;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
     public User getUser() {
         return user;
     }
@@ -229,6 +245,7 @@ public class Officer implements Serializable {
             ", email='" + email + "'" +
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }

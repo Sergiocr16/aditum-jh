@@ -22,6 +22,42 @@
                     return data;
                 }
             },
+           'validate': {
+               method: 'GET',
+               url: 'api/houses/validate/:houseNumber/:extension/:companyId',
+                params:{
+                 houseNumber:'@houseNumber',
+                 extension: '@extension',
+                 companyId: '@companyId'
+               },
+               transformResponse: function (data) {
+                   if (data) {
+                       data = angular.fromJson(data);
+                       data.desocupationinitialtime = DateUtils.convertDateTimeFromServer(data.desocupationinitialtime);
+                       data.desocupationfinaltime = DateUtils.convertDateTimeFromServer(data.desocupationfinaltime);
+                   }
+                   return data;
+               }
+           },
+
+          'validateUpdate': {
+             method: 'GET',
+             url: 'api/houses/validateUpdate/:houseId/:houseNumber/:extension/:companyId',
+              params:{
+               houseNumber:'@houseNumber',
+               extension: '@extension',
+               companyId: '@companyId',
+               houseId: '@houseId'
+             },
+             transformResponse: function (data) {
+                 if (data) {
+                     data = angular.fromJson(data);
+                     data.desocupationinitialtime = DateUtils.convertDateTimeFromServer(data.desocupationinitialtime);
+                     data.desocupationfinaltime = DateUtils.convertDateTimeFromServer(data.desocupationfinaltime);
+                 }
+                 return data;
+             }
+         },
             'reportAbsence': { method:'PUT',url:'api/houses/report/absence'},
             'update': { method:'PUT' }
         });

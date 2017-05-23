@@ -6,12 +6,12 @@
         .module('aditumApp')
         .controller('AdminInfoDialogController', AdminInfoDialogController);
 
-    AdminInfoDialogController.$inject = ['Principal','$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company'];
+    AdminInfoDialogController.$inject = ['$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company','Principal'];
 
-    function AdminInfoDialogController (Principal,$rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
+    function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company, Principal) {
+
 
         var vm = this;
-        vm.adminInfo =$rootScope.companyUser;
         vm.loginStringCount = 0;
         vm.adminInfo = entity;
         vm.clear = clear;
@@ -21,42 +21,36 @@
         vm.user = entity;
         vm.required = 1;
         vm.users = User.query();
-        vm.companies = Company.query();
+        vm.company = Company.query();
+
+        vm.isAuthenticated = Principal.isAuthenticated;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-        Company.query({
-        }, onSuccess);
-
-        function onSuccess(data, headers) {
-            vm.company = data;
-            setTimeout(function() {
-                $("#admin_form").fadeIn(600);
-            }, 200)
-        }
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
 
-        vm.save = updateAccount;
         vm.isAuthenticated = Principal.isAuthenticated;
         angular.element(document).ready(function () {
             $("#myInfo").fadeIn(600);
         });
 
-          User.getUserById({id: vm.adminInfo.userId},onSuccess);
+             if (vm.adminInfo.id !== null) {
+                      User.getUserById({id: vm.adminInfo.userId},onSuccess);
+            }
 
-
-             function onSuccess(user, headers) {
-                 vm.user = user;
-                 vm.adminInfo.email  = vm.user.email;
-                 }
+         function onSuccess(user, headers) {
+             vm.user = user;
+             vm.adminInfo.email  = vm.user.email;
+             }
 
         function save () {
             vm.isSaving = true;
+console.log(vm.adminInfo)
             if (vm.adminInfo.id !== null) {
                 AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
                 updateAccount();
@@ -75,9 +69,10 @@
             vm.user.activated = true;
             vm.user.authorities = authorities;
             vm.user.login = generateLogin(0);
+
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
-                insertResident(result.id)
+                insertAdmin(result.id)
                 vm.isSaving = false;
             }
 
@@ -91,7 +86,7 @@
 
             }
         }
-        function insertResident(id){
+        function insertAdmin(id){
             vm.adminInfo.enabled = 1;
             vm.adminInfo.companyId = vm.adminInfo.companyId;
             vm.adminInfo.userId = id;

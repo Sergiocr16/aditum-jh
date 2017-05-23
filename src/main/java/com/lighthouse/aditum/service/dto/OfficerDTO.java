@@ -39,6 +39,8 @@ public class OfficerDTO implements Serializable {
     @Max(value = 1)
     private Integer inservice;
 
+    private Boolean enable;
+
     private Long userId;
 
     private String userLogin;
@@ -109,6 +111,13 @@ public class OfficerDTO implements Serializable {
     public void setInservice(Integer inservice) {
         this.inservice = inservice;
     }
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
 
     public Long getUserId() {
         return userId;
@@ -166,6 +175,7 @@ public class OfficerDTO implements Serializable {
             ", email='" + email + "'" +
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }

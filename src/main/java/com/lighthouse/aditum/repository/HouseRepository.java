@@ -14,4 +14,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface HouseRepository extends JpaRepository<House,Long> {
     Page<House> findByCompanyId(Pageable pageable, Long companyId);
+
+    House findByhousenumberAndCompanyId(String houseNumber,Long companyId);
+
+    House findByExtensionAndCompanyId(String extension,Long companyId);
+
+    House findByhousenumberAndAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);
+
+    House findByExtensionAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);
+
 }

@@ -22,6 +22,7 @@
             "email": "Email",
             "identificationnumber": "Identificationnumber",
             "inservice": "Inservice",
+            "enable": "Enable",
             "user": "User",
             "company": "Company"
         }

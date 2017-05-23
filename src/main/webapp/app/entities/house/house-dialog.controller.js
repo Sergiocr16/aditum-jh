@@ -32,15 +32,42 @@
 
         function save () {
         CommonMethods.waitingMessage();
+        if(vm.house.extension == undefined){
+            vm.extension = 'noTengoExtensionCODE';
+        }else{
+        vm.extension = vm.house.extension;
+        }
             vm.isSaving = true;
             if (vm.house.id !== null) {
-                House.update(vm.house, onSaveSuccess, onSaveError);
+            House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: $rootScope.companyId},onSuccessUp,onErrorUp)
+            function onSuccessUp(data){
+             bootbox.hideAll();
+            if(vm.house.id !== data.id){
+            toastr['error']("El número de casa o de extensión ingresado ya existe.")
+            }else{
+             House.update(vm.house, onSaveSuccess, onSaveError);
+            }
+            }
+            function onErrorUp(){
+             House.update(vm.house, onSaveSuccess, onSaveError);
+            }
             } else {
                 vm.house.companyId = $rootScope.companyId;
                 vm.house.isdesocupated = 0;
                  vm.house.desocupationinitialtime = new Date();
                  vm.house.desocupationfinaltime = new Date();
-                House.save(vm.house, onSaveSuccess, onSaveError);
+                 console.log(vm.house);
+
+                House.validate({houseNumber: vm.house.housenumber, extension: vm.extension,companyId: $rootScope.companyId},onSuccess,onError)
+                function onSuccess(data){
+                 bootbox.hideAll();
+                  toastr['error']("El número de casa o de extensión ingresado ya existe.")
+
+                }
+                function onError(){
+                 House.save(vm.house, onSaveSuccess, onSaveError);
+                }
+
             }
         }
 

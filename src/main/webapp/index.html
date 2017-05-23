@@ -43,7 +43,7 @@
 <div  ui-view="reset">
 </div>
 
-<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
+<div ui-view="navbar"  ng-show="vm.isAuthenticated() == true"  ></div>
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
@@ -346,6 +346,20 @@
 
     <script src="app/entities/company/company.controller.js"></script>
 
+    <script src="app/entities/brand/brand-dialog.controller.js"></script>
+
+    <script src="app/entities/brand/brand-detail.controller.js"></script>
+
+    <script src="app/entities/brand/brand-delete-dialog.controller.js"></script>
+
+    <script src="app/entities/brand/brand.state.js"></script>
+
+    <script src="app/entities/brand/brand.service.js"></script>
+
+    <script src="app/entities/brand/brand.controller.js"></script>
+
+    <script src="app/entities/admin-info/admins-by-company.controller.js"></script>
+
     <script src="app/entities/admin-info/admin-info-edit.controller.js"></script>
 
     <script src="app/entities/admin-info/admin-info-dialog.controller.js"></script>
@@ -359,8 +373,6 @@
     <script src="app/entities/admin-info/admin-info.service.js"></script>
 
     <script src="app/entities/admin-info/admin-info.controller.js"></script>
-
-    <script src="app/entities/admin-info/admins-by-company.controller.js"></script>
 
     <script src="app/entities/access-door/change-watches.controller.js"></script>
 
