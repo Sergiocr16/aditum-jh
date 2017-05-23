@@ -8,7 +8,7 @@
     ResidentController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','WSDeleteEntity'];
 
     function ResidentController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,WSDeleteEntity) {
-         $rootScope.active = "residents";
+        $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -153,7 +153,7 @@
                     if (residents[i].houseId == vm.houses[e].id) {
                         residents[i].house_id = vm.houses[e].housenumber;
                         residents[i].name = residents[i].name + " " + residents[i].lastname;
-                        if(residents[i].email==null || residents[i].email==""){residents[i].email = "No registrado"};
+                        if(residents[i].email==null){residents[i].email = "No registrado"};
                     }
                 }
             }
@@ -178,7 +178,7 @@
                     if (result) {
                         vm.login = resident.userLogin;
                         Resident.delete({
-                            id: id_resident
+                            id: resident.id
 
 
                         }, onSuccessDelete);
@@ -204,13 +204,6 @@
                 JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
             }
 
-        function onSuccessDelete(data, headers) {
-            toastr["success"]("Se ha eliminado el residente correctamente.");
-            loadResidents();
-
-             WSDeleteEntity.sendActivity({type:'resident',id:id_resident})
-
-        }
         }
 
         vm.disableEnabledResident = function(residentInfo) {
@@ -257,7 +250,7 @@
                 Resident.update(resident, onSuccessDisabledResident);
             } else {
                 resident.enabled = 1;
-                Resident.update(resident, onSuccess);
+                Resident.update(resident, onSuccessEnabledResident);
 
             }
         }
@@ -290,7 +283,7 @@
         }
 
 
-        function onSuccess(data, headers) {
+        function onSuccessEnabledResident(data, headers) {
              WSResident.sendActivity(data);
             if (data.isOwner == 1) {
                 User.getUserById({

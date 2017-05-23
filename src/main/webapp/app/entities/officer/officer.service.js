@@ -19,6 +19,14 @@
                     }
                     return data;
                 }
+            }, 'officersEnabled': {
+                method: 'GET',
+                url: 'api/officersEnabled',
+                isArray: true
+            },'officersDisabled': {
+                method: 'GET',
+                url: 'api/officersDisabled',
+                isArray: true
             },'findByUserId':{
                             url:'api/officers/findByUserId/:id',
                             method:'GET',

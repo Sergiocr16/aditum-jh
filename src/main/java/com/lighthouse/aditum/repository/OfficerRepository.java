@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Spring Data JPA repository for the Officer entity.
@@ -16,4 +15,5 @@ import java.util.Optional;
 public interface OfficerRepository extends JpaRepository<Officer,Long> {
     Officer findOneByUserId(Long id);
     Page<Officer> findByCompanyId(Pageable pageable, Long companyId);
+//    List<Officer> findByEnabledAndCompanyId(Integer state, Long companyId);
 }
