@@ -320,8 +320,16 @@
 //JhiTrackerService.receiveHomeService().then(null, null, receiveHomeService);
 //JhiTrackerService.receiveDeletedEntity().then(null, null, receiveDeletedEntity);
 
+
+vm.attendEmergency = function(){
+var codeEmegency = $rootScope.companyId+""+vm.emergency.houseId;
+vm.emergency.isattended = 1;
+WSEmergency.sendActivityAttended(codeEmegency,vm.emergency);
+}
+
 function receiveEmergency(emergency){
-console.log(emergency);
+vm.emergency = emergency;
+
 }
 function receiveVisitor(visitor){
 if(visitorsList!==undefined){
