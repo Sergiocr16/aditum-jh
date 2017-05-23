@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
+    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company'];
 
-    function OfficerDialogController ($state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company) {
+    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.officer = entity;
