@@ -52,6 +52,10 @@
             <column name="inservice" type="integer">
                 <constraints nullable="false" />
             </column>
+
+            <column name="enable" type="bit">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

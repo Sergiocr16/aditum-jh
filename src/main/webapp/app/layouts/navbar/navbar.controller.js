@@ -60,6 +60,7 @@
 
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
+
         ProfileService.getProfileInfo().then(function(response) {
             vm.inProduction = response.inProduction;
             vm.swaggerEnabled = response.swaggerEnabled;
@@ -71,7 +72,7 @@
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
 
-         var subLogin = $scope.$on('authenticationSuccess', getAccount);
+          var subLogin = $scope.$on('authenticationSuccess', getAccount);
 //         var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
         function getAccount(){
             $rootScope.companyUser=undefined;
