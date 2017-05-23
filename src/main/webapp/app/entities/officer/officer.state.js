@@ -51,27 +51,24 @@
                 }
             })
 
-            .state('officer-detail', {
+            .state('officer.details', {
                 parent: 'officer',
-                url: '/officer/{id}',
+                url: '/{id}/details',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/officer/officer-detail.html',
-                        controller: 'OfficerDetailController',
+                        templateUrl: 'app/entities/officer/officer-details.html',
+                        controller: 'OfficerDetailsController',
                         controllerAs: 'vm'
                     }
                 },
                 resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('officer');
-                        return $translate.refresh();
-                    }],
-                    entity: ['$stateParams', 'officer', function($stateParams, Resident) {
+                    entity: ['$stateParams', 'Officer','CommonMethods', function($stateParams, Officer, CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
                         return Officer.get({
-                            id: $stateParams.id
+                            id: id
                         }).$promise;
                     }],
                     previousState: ["$state", function($state) {
@@ -83,7 +80,9 @@
                         return currentStateData;
                     }]
                 }
+
             })
+
 
             .state('officer-detail.edit', {
                 parent: 'officer-detail',

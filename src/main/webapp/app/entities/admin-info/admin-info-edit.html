@@ -59,10 +59,7 @@
                                 <input ng-model="vm.adminInfo.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
                                 <label class="font-15">Segundo Apellido</label>
                             </div>
-                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
-                                <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
-                                <label  class="font-15">Número de cédula</label>
-                            </div>
+
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
@@ -76,7 +73,10 @@
                                 <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
                                 <label  class="font-15">Número de cédula</label>
                             </div>
-
+                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
+                                <input ng-model="vm.adminInfo.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <label  class="font-15">Número de cédula</label>
+                            </div>
                         </div>
                         <div class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>
 

@@ -15,5 +15,5 @@ import java.util.List;
 public interface OfficerRepository extends JpaRepository<Officer,Long> {
     Officer findOneByUserId(Long id);
     Page<Officer> findByCompanyId(Pageable pageable, Long companyId);
-//    List<Officer> findByEnabledAndCompanyId(Integer state, Long companyId);
+    List<Officer> findByEnableAndCompanyId(boolean state, Long companyId);
 }

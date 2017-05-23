@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a>Condominio</a>
+            <a>Administrar</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -72,7 +72,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="visitor in vm.visitants | filter:search | orderBy:'fullName'">
+                        <tr ng-repeat="visitor in vm.visitants | filter:search | orderBy:'arrivaltime'">
                             <td>{{visitor.fullName}}</td>
                             <td>{{visitor.identificationnumber}}</td>
                             <td ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>

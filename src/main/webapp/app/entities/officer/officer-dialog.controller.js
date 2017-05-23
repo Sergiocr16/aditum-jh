@@ -67,6 +67,7 @@
             vm.officer.companyId = $rootScope.companyId;
             vm.officer.userId = id;
             vm.officer.inservice = 0;
+            vm.officer.enable = true;
             Officer.save(vm.officer, onSaveSuccess, onSaveError);
             function onSaveSuccess (result) {
                 vm.isSaving = false;
@@ -82,8 +83,10 @@
                 user.firstName =  vm.officer.name;
                 user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
                 user.email = vm.officer.email;
+                console.log('laaaaaaaaaaaaaaaaa' +vm.officer.enable);
                 User.update(user,onSuccessUser);
                 function onSuccessUser(data, headers) {
+                    console.log('laaaaaaaaaaaaaaaaa' +vm.officer.enable);
                     Officer.update(vm.officer, onUpdateSuccess, onSaveError);
                 }
             }

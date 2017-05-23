@@ -14,7 +14,7 @@
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
         var securityKey, emergencyKey, housenumber;
-
+        vm.hideEmergencyForm = 1;
         vm.logout = logout;
         vm.show = 4;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -109,14 +109,11 @@
                                 $("#vehiculeAccess").fadeIn(100);
                                 vm.show = 2;
                                 vm.vehicule = item;
-                                angular.forEach(housesList, function(itemHouse, index) {
-                                    if (itemHouse.id == item.houseId) {
-                                        vm.SelectedHouse = itemHouse.housenumber;
-                                        housenumber = itemHouse.housenumber;
-                                        securityKey = itemHouse.securityKey;
-                                        emergencyKey = itemHouse.emergencyKey;
-                                    }
-                                });
+                                var house = vm.setHouse(item.houseId);
+                                vm.SelectedHouse = house.housenumber;
+                                housenumber = house.housenumber;
+                                securityKey = house.securityKey;
+                                emergencyKey = house.emergencyKey;
                                 if (item.enabled == 0) {
                                     vm.vehiculeRegisteredTitle = "Vehículo no habilitado para ingresar";
                                     vm.colorVehiculeRegistered = "red-font";
@@ -124,8 +121,90 @@
                                 }
                             }
                         });
+                        if (vm.id_vehicule >= 5) {
+                            angular.forEach(visitorsList, function(itemVisitor, index) {
+                                if (itemVisitor.licenseplate == vm.id_vehicule && itemVisitor.isinvited == 1) {
+                                    vm.invited_visitant_name = itemVisitor.name;
+                                    vm.invited_visitant_last_name = itemVisitor.lastname;
+                                    vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
+                                    if (itemVisitor.licenseplate == null ||itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+                                        vm.invited_visitant_license_plate = "Ninguna";
+
+                                    } else {
+                                        vm.invited_visitant_license_plate = itemVisitor.licenseplate;
+                                    }
+                                    vm.invited_visitant_indentification = itemVisitor.identificationnumber;
+                                    var house = vm.setHouse(itemVisitor.houseId);
+                                    vm.invited_visitant_house_number = house.housenumber;
+                                    vm.show = 10;
+                                    $("#visitantInvitedtAccess").fadeIn(100);
+                                }
+                            });
+
+                        }
+                    }
+
+        }
+        vm.getVisitor = function() {
+            if (vm.visitor_id_number == "") {
+                clearInputs();
+            } else {
+
+                angular.forEach(visitorsList, function(itemVisitor, index) {
+
+                    if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
+
+                        vm.visitor_name = itemVisitor.name;
+                        vm.visitor_last_name = itemVisitor.lastname;
+                        vm.visitor_second_last_name = itemVisitor.secondlastname;
+                        vm.visitor_license_plate = itemVisitor.licenseplate;
+                        setHouse(itemVisitor.houseId);
 
                     }
+                });
+            }
+        }
+
+        vm.getKeyInformation = function() {
+            var existe=0;
+            angular.forEach(housesList, function(item, index) {
+                if (item.securityKey == vm.security_key) {
+                    existe =1;
+                    vm.show = 9;
+                    vm.emergencySecurityKeyTitle = "Clave de seguridad";
+                    vm.emergency_security_key = item.emergencyKey;
+                    vm.key_house_number =item.housenumber;
+                    var houseId = item.id;
+                    Resident.findResidentesEnabledByHouseId({
+                        houseId: houseId
+                    }).$promise.then(onSuccessResidents, onError);
+                } else if (item.emergencyKey == vm.security_key) {
+                    existe =1;
+                    vm.show = 9;
+                    vm.emergencySecurityKeyTitle = "Clave de emergencia";
+                    vm.emergency_security_key = item.securityKey;
+                    var houseId = item.id;
+                    Resident.findResidentesEnabledByHouseId({
+                        houseId: houseId
+                    }).$promise.then(onSuccessResidents, onError);
+
+                }
+                function onSuccessResidents(data) {
+                    vm.residents = data;
+                    Vehicule.findVehiculesEnabledByHouseId({
+                        houseId: item.id
+                    }).$promise.then(onSuccessVehicules, onError);
+                }
+
+                function onSuccessVehicules(data) {
+                    vm.vehicules = data;
+                }
+
+            });
+
+            if(existe==0){
+                toastr["error"]("No existe la clave de seguridad o emergencia que ingresó");
+            }
 
         }
 
@@ -144,14 +223,11 @@
                             $("#residentAccess").fadeIn(100);
                             vm.show = 1;
                             vm.resident = item;
-                            angular.forEach(housesList, function(itemHouse, index) {
-                                if (itemHouse.id == item.houseId) {
-                                    housenumber = itemHouse.housenumber;
-                                    vm.housenumber = itemHouse.housenumber;
-                                    securityKey = itemHouse.securityKey;
-                                    emergencyKey = itemHouse.emergencyKey;
-                                }
-                            });
+                            var house =vm.setHouse(item.houseId);
+                            housenumber = house.housenumber;
+                            vm.housenumber = house.housenumber;
+                            securityKey = house.securityKey;
+                            emergencyKey = house.emergencyKey;
                             if (item.enabled == 0) {
                                 vm.residentRegisteredTitle = "Residente no habilitado para ingresar";
                                 vm.colorResidentRegistered = "red-font";
@@ -159,39 +235,69 @@
                         }
                     });
 
-//                    if ($scope.id_number.length > 6) {
-//
-//                        accessFunctions.findRegisteredVisitant($scope.id_number).success(function(data) {
-//
-//                            if (data == 0) {
-//
-//                            } else {
-//                                $("#loadingIconnn").fadeOut(0);
-//                                $("#visitantInvitedtAccess").fadeIn(0);
-//                                $scope.show = 10;
-//                                $scope.invited_visitant_name = data.name
-//                                $scope.invited_visitant_last_name = data.last_name;
-//                                $scope.invited_visitant_second_last_name = data.second_last_name;
-//                                angular.forEach(housesPrueba, function(itemHouse, index) {
-//                                        if (itemHouse.id == data.id_house) {
-//                                            $scope.invited_visitant_house_number = itemHouse.house_number;
-//                                        }
-//                                    })
-//                                    // $scope.invited_visitant_house_number = data.id_house;
-//                                $scope.invited_visitant_indentification = data.identification_number;
-//                                if (data.license_plate == null) {
-//                                    $scope.invited_visitant_license_plate = "Ninguna";
-//
-//                                } else {
-//                                    $scope.invited_visitant_license_plate = data.license_plate;
-//                                }
-//
-//
-//                            }
-//                        });
-//                    }
+                   if (vm.id_number.length >= 6) {
+                       angular.forEach(visitorsList, function(itemVisitor, index) {
+                           if (itemVisitor.identificationnumber == vm.id_number && itemVisitor.isinvited == 1) {
+                               vm.invited_visitant_name = itemVisitor.name;
+                               vm.invited_visitant_last_name = itemVisitor.lastname;
+                               vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
+                               if (itemVisitor.licenseplate == null ||itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+                                   vm.invited_visitant_license_plate = "Ninguna";
+
+                               } else {
+                                   vm.invited_visitant_license_plate = itemVisitor.licenseplate;
+                               }
+                               vm.invited_visitant_indentification = itemVisitor.identificationnumber;
+                               var house = vm.setHouse(itemVisitor.houseId);
+                               vm.invited_visitant_house_number = house.housenumber;
+                               vm.show = 10;
+                               $("#visitantInvitedtAccess").fadeIn(100);
+                           }
+                       });
+
+                   }
                 }
             };
+
+        vm.insert_visitant_invited = function() {
+            var idHouse;
+            angular.forEach(housesList, function(house, index) {
+                if (house.houseNumber == vm.invited_visitant_house_number) {
+                    idHouse = house.id;
+                }
+            })
+            var visitant = {
+                name: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_name),
+                lastname: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_last_name),
+                secondlastname: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_second_last_name),
+                identificationnumber: vm.invited_visitant_indentification,
+                licenseplate: vm.invited_visitant_license_plate.toUpperCase(),
+                companyId: $rootScope.companyId,
+                isinvited: 3,
+                arrivaltime: moment(new Date()).format(),
+                houseId: idHouse
+            }
+            Visitant.save(visitant, onSaveSuccess, onSaveError);
+
+            function onSaveSuccess (result) {
+                vm.show=4;
+                vm.isSaving = false;
+                visitorsList.push(result);
+                toastr["success"]("Se registró la entrada del visitante correctamente.");
+            }
+
+        }
+            vm.setHouse = function(id){
+                var house;
+                angular.forEach(housesList, function(itemHouse, index) {
+                    if (itemHouse.id == id) {
+                        house = itemHouse;
+                    }
+
+                });
+                return house;
+
+            }
             vm.capitalize = function(){
                 if (vm.visitor_license_plate != "") {
                         $("#license_plate").css("text-transform", "uppercase");
@@ -281,7 +387,7 @@
                     lastname: CommonMethods.capitalizeFirstLetter(vm.visitor_last_name),
                     secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitor_second_last_name),
                     identificationnumber: vm.visitor_id_number,
-                    licenseplate: vm.visitor_license_plate,
+                    licenseplate: vm.visitor_license_plate.toUpperCase(),
                     companyId: $rootScope.companyId,
                     isinvited: 3,
                     arrivaltime: moment(new Date()).format(),
@@ -294,6 +400,7 @@
              function onSaveSuccess (result) {
                 vm.show=4;
                  vm.isSaving = false;
+                 visitorsList.push(result);
                  toastr["success"]("Se registró la entrada del visitante correctamente.");
              }
 
@@ -310,6 +417,17 @@
 
             }
 
+        vm.getEmergency = function(emergency) {
+
+            var house = vm.setHouse(emergency.houseId);
+            vm.house_number_emergency = house.housenumber;
+            vm.hideRegisterForm = 1;
+            vm.hideEmergencyForm = 2;
+            vm.show = 7;
+
+
+
+        }
 
 //BEGIN WEB SOCKETS
 
@@ -329,6 +447,9 @@ WSEmergency.sendActivityAttended(codeEmegency,vm.emergency);
 
 
 function receiveEmergency(emergency){
+
+    vm.getEmergency(emergency);
+
 vm.emergency = emergency;
 
 }
