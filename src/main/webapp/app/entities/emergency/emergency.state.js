@@ -13,12 +13,12 @@
             parent: 'entity',
             url: '/emergency?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN'],
                 pageTitle: 'aditumApp.emergency.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/emergency/emergencies.html',
+                    templateUrl: 'app/entities/emergency/emergency-index.html',
                     controller: 'EmergencyController',
                     controllerAs: 'vm'
                 }

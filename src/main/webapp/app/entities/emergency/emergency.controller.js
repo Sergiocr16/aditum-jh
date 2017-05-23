@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EmergencyController', EmergencyController);
 
-    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    EmergencyController.$inject = ['Emergency', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','Principal'];
 
-    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function EmergencyController(Emergency, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,Principal) {
 
         var vm = this;
 
@@ -16,6 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.isAuthenticated = Principal.isAuthenticated;
 
         loadAll();
 
@@ -23,7 +24,8 @@
             Emergency.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
-                sort: sort()
+                sort: sort(),
+                companyId: $rootScope.companyId
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -38,6 +40,12 @@
                 vm.queryCount = vm.totalItems;
                 vm.emergencies = data;
                 vm.page = pagingParams.page;
+                 setTimeout(function() {
+                           $("#loadingIcon").fadeOut(300);
+                 }, 400)
+                  setTimeout(function() {
+                      $("#tableData").fadeIn('slow');
+                  },700 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);

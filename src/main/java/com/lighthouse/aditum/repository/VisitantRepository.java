@@ -17,6 +17,9 @@ public interface VisitantRepository extends JpaRepository<Visitant,Long> {
     Page<Visitant> findByCompanyId(Pageable pageable, Long companyId);
     Visitant findByIdentificationnumberAndHouseIdAndCompanyId(String identificationNumber, Long houseId, Long companyId );
     List<Visitant> findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(Long companyId, Long houseId,Integer isInvited,Integer isInvited2);
+
+    Integer countByCompanyIdAndIsinvited(Long companyId,Integer isInvited);
+   
     @Query("select v from Visitant v " +
         "where v.arrivaltime >= ?1 and v.house.id = ?2 and v.isinvited = ?3")
     List<Visitant> findByHouseInLastMonth(ZonedDateTime firstDayOfMonth, Long houseId, Integer isInvited);
@@ -28,6 +31,11 @@ public interface VisitantRepository extends JpaRepository<Visitant,Long> {
     @Query("select v from Visitant v " +
         "where v.arrivaltime >= ?1 and v.company.id = ?2 and v.isinvited = ?3")
     List<Visitant> findByCompanyInLastMonth(ZonedDateTime firstDayOfMonth, Long companyId, Integer isInvited);
+
+    @Query("select count(v) from Visitant v " +
+        "where v.arrivaltime >= ?1 and v.company.id = ?2 and v.isinvited = ?3")
+    Integer countByCompanyInLastMonth(ZonedDateTime firstDayOfMonth, Long companyId, Integer isInvited);
+
 
     @Query("select v from Visitant v " +
         "where v.arrivaltime >= ?1 and v.arrivaltime <= ?2 and v.company.id = ?3 and v.isinvited = ?4")

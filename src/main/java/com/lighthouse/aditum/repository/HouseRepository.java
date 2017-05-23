@@ -19,6 +19,10 @@ public interface HouseRepository extends JpaRepository<House,Long> {
 
     House findByExtensionAndCompanyId(String extension,Long companyId);
 
+    Integer countByCompanyIdAndIsdesocupated(Long companyId,Integer isDesocupated);
+
+    Integer countByCompanyId(Long companyId);
+
     House findByhousenumberAndAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);
 
     House findByExtensionAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);

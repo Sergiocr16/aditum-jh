@@ -82,6 +82,12 @@ public class OfficerService {
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         return officerDTO;
     }
+
+    @Transactional(readOnly = true)
+    public Integer countByCompanyId(Long companyId) {
+        log.debug("Request to get Officer : {}", companyId);
+        return officerRepository.countByCompanyId(companyId);
+    }
 //    @Transactional(readOnly = true)
 //    public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
 //        List<Officer> result = officerRepository.findByEnabledAndCompanyId(1,companyId);
