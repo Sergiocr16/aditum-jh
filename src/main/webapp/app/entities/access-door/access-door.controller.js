@@ -13,6 +13,9 @@
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList;
+        var notesList = [];
+        vm.notes = notesList;
+        vm.countNotes = vm.notes.length;
         var securityKey, emergencyKey, housenumber;
         vm.hideEmergencyForm = 1;
         vm.logout = logout;
@@ -442,15 +445,16 @@
 vm.attendEmergency = function(){
 var codeEmegency = $rootScope.companyId+""+vm.emergency.houseId;
 vm.emergency.isattended = 1;
+    vm.hideRegisterForm = 2;
+    vm.hideEmergencyForm = 1;
+    toastr["success"]("Se ha reportado al residente que se atenderá la emergencia");
 WSEmergency.sendActivityAttended(codeEmegency,vm.emergency);
 }
 
 
 function receiveEmergency(emergency){
-
     vm.getEmergency(emergency);
-
-vm.emergency = emergency;
+    vm.emergency = emergency;
 
 }
 
@@ -469,7 +473,15 @@ return index;
 
 function receiveVisitor(visitor){
 if(visitorsList!==undefined){
-var result = hasExistance(visitorsList,visitor.id)
+    var result = undefined;
+    angular.forEach(visitorsList,function(item,i){
+        if (item.id === visitor.id) {
+            result = i;
+        }else{
+            result = -1;
+        }
+    })
+    console.log(visitorsList);
 if(result!==-1){
 visitorsList[result] = visitor;
 }else{
@@ -477,9 +489,13 @@ visitorsList.push(visitor);
 }
 }
 }
+
 function receiveHomeService(homeService){
-console.log(homeService);
+    notesList.push(homeService);
+    vm.countNotes = vm.notes.length;
 }
+
+
 
 function receiveResident(resident){
 if(residentsList!==undefined){
@@ -518,23 +534,26 @@ function receiveDeletedEntity(entity){
     switch(entity.type){
         case 'resident':
         if(residentsList!==undefined){
-            residentsList = $filter('filter')(residentsList, function (item) {
-               return item.id !== entity.id;
-           });
+            var result = hasExistance(residentsList,entity.id)
+            if(result!==-1){
+                residentsList[result] = {};
+            }
          }
         break;
         case 'vehicle':
          if(vehiculesList!==undefined){
-        vehiculesList = $filter('filter')(vehiculesList, function (item) {
-                       return item.id !== entity.id;
-           });
+             var result = hasExistance(vehiculesList,entity.id)
+             if(result!==-1){
+                 vehiculesList[result] = {};
+             }
         }
         break;
         case 'visitor':
           if(visitorsList!==undefined){
-            visitorsList = $filter('filter')(visitorsList, function (item) {
-                 return item.id !== entity.id;
-           });
+              var result = hasExistance(visitorsList,entity.id)
+              if(result!==-1){
+                  visitorsList[result] = {};
+              }
         }
         break;
     }

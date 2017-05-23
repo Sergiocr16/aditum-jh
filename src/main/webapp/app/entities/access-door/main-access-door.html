@@ -16,20 +16,20 @@
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                         <i class="fa fa-bell-o"></i>
                         <span class="badge badge-default">
-            {{notesQuantity}} </span>
+            {{  vm.countNotes}} </span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="external">
-                            <h3><span class="bold">{{notesQuantity}}</span> Servicios a domicilio</h3>
+                            <h3><span class="bold">{{vm.countNotes}}</span> Servicios a domicilio</h3>
 
                         </li>
                         <li>
                             <ul class="dropdown-menu-list scroll" style="height: 325px;" data-handle-color="#637283">
-                                <li ng-repeat="note in notes | orderBy:'-creation_date'">
+                                <li ng-repeat="note in vm.notes | orderBy:'-creation_date'">
                                     <a href="">
                                         <span class="subject">
-                                            <span class="bold font-14 blue-font col-lg-5 col-md-5 no-padding">Casa {{note.house_id}}</span>
-                                        <span class="light-gray-font col-lg-7 col-md-7 text-right no-padding"> {{note.creation_time}}</span>
+                                            <span class="bold font-14 blue-font col-lg-5 col-md-5 no-padding">Casa {{note.houseId}}</span>
+                                        <span class="light-gray-font col-lg-7 col-md-7 text-right no-padding"> {{note.creationtime}}</span>
                                         </span>
                                         <span class="message ">{{note.description}}</span>
                                     </a>
