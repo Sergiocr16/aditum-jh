@@ -81,10 +81,10 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="visitor in vm.visitants | filter:search | orderBy:'fullName'">
+                        <tr ng-repeat="visitor in vm.visitants | filter:search | orderBy:'arrivaltime'">
                             <td>{{visitor.fullName}}</td>
                             <td>{{visitor.identificationnumber}}</td>
-                            <td ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
+                            <td ng-show="visitor.licenseplate!=null"><span style="text-transform: uppercase;">{{visitor.licenseplate}}</span></td>
                             <td ng-show="visitor.licenseplate==null">No se registró</td>
                             <td>{{visitor.arrivaltime | formatDate}}</td>
                             <td>{{visitor.houseNumber}}</td>

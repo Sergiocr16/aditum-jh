@@ -43,6 +43,7 @@ public class OfficerService {
     public OfficerDTO save(OfficerDTO officerDTO) {
         log.debug("Request to save Officer : {}", officerDTO);
         Officer officer = officerMapper.officerDTOToOfficer(officerDTO);
+        officer.setEnable(officerDTO.getEnable());
         officer = officerRepository.save(officer);
         OfficerDTO result = officerMapper.officerToOfficerDTO(officer);
         return result;
@@ -72,6 +73,7 @@ public class OfficerService {
         log.debug("Request to get Officer : {}", id);
         Officer officer = officerRepository.findOne(id);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        officerDTO.setEnable(officer.isEnable());
         return officerDTO;
     }
 
@@ -82,19 +84,19 @@ public class OfficerService {
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         return officerDTO;
     }
-//    @Transactional(readOnly = true)
-//    public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
-//        List<Officer> result = officerRepository.findByEnabledAndCompanyId(1,companyId);
-//        return new PageImpl<>(result).map(officer-> officer.image(null)).map(officer -> officerMapper.officerToOfficerDTO(officer));
-//
-//    }
-//
-//    @Transactional(readOnly = true)
-//    public Page<OfficerDTO> findDisabled(Pageable pageable,Long companyId) {
-//        List<Officer> result = officerRepository.findByEnabledAndCompanyId(0,companyId);
-//        return new PageImpl<>(result).map(officer->officerMapper.officerToOfficerDTO(officer));
-//
-//    }
+    @Transactional(readOnly = true)
+    public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
+        List<Officer> result = officerRepository.findByEnableAndCompanyId(true,companyId);
+        return new PageImpl<>(result).map(officer-> officer.image(null)).map(officer -> officerMapper.officerToOfficerDTO(officer));
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<OfficerDTO> findDisabled(Pageable pageable,Long companyId) {
+        List<Officer> result = officerRepository.findByEnableAndCompanyId(false,companyId);
+        return new PageImpl<>(result).map(officer->officerMapper.officerToOfficerDTO(officer));
+
+    }
     /**
      *  Delete the  officer by id.
      *

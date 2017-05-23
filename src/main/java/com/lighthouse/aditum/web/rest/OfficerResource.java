@@ -99,25 +99,25 @@ public class OfficerResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officers");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-//    @GetMapping("/officersEnabled")
-//    @Timed
-//    public ResponseEntity<List<OfficerDTO>> getEnabledOfficers(@ApiParam Pageable pageable,Long companyId)
-//        throws URISyntaxException {
-//        log.debug("REST request to get a page of Residents");
-//        Page<OfficerDTO> page = officerService.findEnabled(pageable,companyId);
-//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersEnabled");
-//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/officersDisabled")
-//    @Timed
-//    public ResponseEntity<List<OfficerDTO>> getDisabledOfficers(@ApiParam Pageable pageable, Long companyId)
-//        throws URISyntaxException {
-//        log.debug("REST request to get a page of Residents");
-//        Page<OfficerDTO> page = officerService.findDisabled(pageable,companyId);
-//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersDisabled");
-//        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-//    }
+    @GetMapping("/officersEnabled")
+    @Timed
+    public ResponseEntity<List<OfficerDTO>> getEnabledOfficers(@ApiParam Pageable pageable,Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<OfficerDTO> page = officerService.findEnabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersEnabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/officersDisabled")
+    @Timed
+    public ResponseEntity<List<OfficerDTO>> getDisabledOfficers(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<OfficerDTO> page = officerService.findDisabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /officers/:id : get the "id" officer.
      *

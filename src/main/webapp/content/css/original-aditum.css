@@ -343,7 +343,6 @@ height: 100%;
     margin-bottom: 10px;
 }
 .access-container{
-    padding-top:20px;
     background-color: #F5F5F5 ;
 }
 .access_officer_table{
@@ -406,7 +405,10 @@ color: #C62828;
   transition: all 3s ease !important;
 
 }
+.padding-top-20{
+    padding-top: 20px !important;
 
+}
 .result-image{
   background-repeat: no-repeat;
   background-size: cover;
@@ -493,4 +495,27 @@ margin: 0 auto;
 
 .page-header.navbar .top-menu .navbar-nav > li.dropdown-user .dropdown-toggle{
     background-color: rgba(0,0,0,0);
+}
+
+.intermitentRed {
+    -webkit-animation-name: ejemplo_rojo; /*Chrome, Safari, Opera */
+    -webkit-animation-duration: 1s; /*Chrome, Safari, Opera */
+    -webkit-animation-iteration-count: infinite;
+    animation-name: ejemplo_rojo;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+
+}
+
+/*Chrome, Safari, Opera */
+@-webkit-keyframes ejemplo_rojo {
+    0%   {background-color: #8A0808;}
+    50%   {background-color: #DF0101;}
+    100%   {background-color: #8A0808;}
+}
+/*Chrome, Safari, Opera */
+@-webkit-keyframes ejemplo_rojo {
+    0%   {background-color: #8A0808;}
+    50%   {background-color: #DF0101;}
+    100%   {background-color: #8A0808;}
 }
