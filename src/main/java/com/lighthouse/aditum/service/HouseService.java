@@ -77,6 +77,18 @@ public class HouseService {
         return houseDTO;
     }
 
+    @Transactional(readOnly = true)
+    public Integer countByCompany(Long companyid) {
+        log.debug("Request to get House : {}", companyid);
+        return houseRepository.countByCompanyId(companyid);
+    }
+
+    @Transactional(readOnly = true)
+    public Integer countByCompanyAndDesocupated(Long companyid) {
+        log.debug("Request to get House : {}", companyid);
+        return houseRepository.countByCompanyIdAndIsdesocupated(companyid,1);
+    }
+
 
     @Transactional(readOnly = true)
     public HouseDTO validateHouse(String houseNumber,String extension,Long companyId) {

@@ -60,6 +60,18 @@ public class ResidentService {
         Page<Resident> result = residentRepository.findByCompanyId(pageable,companyId);
         return result.map(resident -> residentMapper.residentToResidentDTO(resident));
     }
+
+    @Transactional(readOnly = true)
+    public Integer enableQuantityByCompany(Long companyId) {
+        log.debug("Request to get Vehicule : {}", companyId);
+        return  residentRepository.countByEnabledAndCompanyId(1,companyId);
+    }
+
+    @Transactional(readOnly = true)
+    public Integer disableQuantityByCompany(Long companyId) {
+        log.debug("Request to get Vehicule : {}", companyId);
+        return  residentRepository.countByEnabledAndCompanyId(0,companyId);
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findEnabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");

@@ -101,7 +101,25 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
+    @Transactional(readOnly = true)
+    public Integer countByCompanyInLastMonth(Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+    }
 
+    @Transactional(readOnly = true)
+    public Integer countByCompanyInLastDay(Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+    }
+
+    @Transactional(readOnly = true)
+    public Integer countByAuthorizedVisitors(Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        return visitantRepository.countByCompanyIdAndIsinvited(companyId,1);
+    }
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findInvitedVisitorsByHouse(Long companyId, Long houseId) {
         log.debug("Request to get all Visitants");

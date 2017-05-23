@@ -84,6 +84,27 @@ public class OfficerService {
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         return officerDTO;
     }
+
+
+    @Transactional(readOnly = true)
+    public Integer countByCompanyId(Long companyId) {
+        log.debug("Request to get Officer : {}", companyId);
+        return officerRepository.countByCompanyId(companyId);
+    }
+//    @Transactional(readOnly = true)
+//    public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
+//        List<Officer> result = officerRepository.findByEnabledAndCompanyId(1,companyId);
+//        return new PageImpl<>(result).map(officer-> officer.image(null)).map(officer -> officerMapper.officerToOfficerDTO(officer));
+//
+//    }
+//
+//    @Transactional(readOnly = true)
+//    public Page<OfficerDTO> findDisabled(Pageable pageable,Long companyId) {
+//        List<Officer> result = officerRepository.findByEnabledAndCompanyId(0,companyId);
+//        return new PageImpl<>(result).map(officer->officerMapper.officerToOfficerDTO(officer));
+//
+//    }
+
     @Transactional(readOnly = true)
     public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
         List<Officer> result = officerRepository.findByEnableAndCompanyId(true,companyId);
@@ -97,6 +118,7 @@ public class OfficerService {
         return new PageImpl<>(result).map(officer->officerMapper.officerToOfficerDTO(officer));
 
     }
+
     /**
      *  Delete the  officer by id.
      *

@@ -19,4 +19,5 @@ public interface ResidentRepository extends JpaRepository<Resident,Long> {
     List<Resident> findByEnabledAndCompanyId(Integer state, Long companyId);
     Page<Resident> findByCompanyId(Pageable pageable, Long companyId);
     List<Resident> findByEnabledAndHouseId(Integer state,Long houseId);
+    Integer countByEnabledAndCompanyId(Integer state,Long companyId);
 }

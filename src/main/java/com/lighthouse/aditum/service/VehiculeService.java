@@ -75,6 +75,18 @@ public class VehiculeService {
         return vehiculeDTO;
     }
 
+    @Transactional(readOnly = true)
+    public Integer enableQuantityByCompany(Long companyId) {
+        log.debug("Request to get Vehicule : {}", companyId);
+        return  vehiculeRepository.countByEnabledAndCompanyId(1,companyId);
+    }
+
+    @Transactional(readOnly = true)
+    public Integer disableQuantityByCompany(Long companyId) {
+        log.debug("Request to get Vehicule : {}", companyId);
+        return  vehiculeRepository.countByEnabledAndCompanyId(0,companyId);
+    }
+
     /**
      *  Delete the  vehicule by id.
      *

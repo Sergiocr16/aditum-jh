@@ -16,4 +16,5 @@ public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
     Page<Vehicule> findByCompanyId(Pageable pageable, Long companyId);
     List<Vehicule> findByEnabledAndCompanyId(Integer state, Long companyId);
     List<Vehicule> findByEnabledAndHouseId(Integer state,Long houseId);
+    Integer countByEnabledAndCompanyId(Integer state,Long companyId);
 }

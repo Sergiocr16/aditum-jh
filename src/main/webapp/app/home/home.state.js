@@ -26,7 +26,19 @@
                     $translatePartialLoader.addPart('home');
                     return $translate.refresh();
                 }]
-            }
+            },
+//            onEnter: ['Principal', '$state', function(Principal, $state) {
+//            if(Principal.isAuthenticated){
+//            Principal.identity().then(function(account){
+//            if(account !== null){
+//            if(account.authorities[0] === 'ROLE_USER'){
+//            console.log('hola')
+//                $state.go('residentByHouse');
+//             }
+//             }
+//            })
+//            }
+//            }]
         });
     }
 })();
