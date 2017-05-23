@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('AdminInfoDialogController', AdminInfoDialogController);
 
-    AdminInfoDialogController.$inject = ['$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company'];
+    AdminInfoDialogController.$inject = ['Principal','$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company'];
 
-    function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
+    function AdminInfoDialogController (Principal,$rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company) {
 
         var vm = this;
         vm.adminInfo =$rootScope.companyUser;

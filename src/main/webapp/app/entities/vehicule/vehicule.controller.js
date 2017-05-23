@@ -74,7 +74,7 @@
             }
               function onSuccess(data) {
                    if (option !== 1) {
-                       vm.queryCount = vm.totalItems;
+                       vm.queryCount = data.length;
                        vm.page = pagingParams.page;
                        vm.vehicules = formatVehicules(data);
                    } else {

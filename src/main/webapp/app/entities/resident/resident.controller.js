@@ -102,7 +102,6 @@
             function onSuccess(data, headers) {
                 if (option !== 1) {
                     vm.queryCount = data.length;
-
                     vm.page = pagingParams.page;
                     vm.residents = formatResidents(data);
                 } else {
