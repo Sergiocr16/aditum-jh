@@ -51,6 +51,7 @@
 			return formattedOfficers;
 		}
 		function formatWatch(watch) {
+		if(watch!=null){
 			watch.initialtime = moment(watch.initialtime).format('h:mm a');
 			if (watch.finaltime === null) {
 				watch.finaltime = 'Aún en progreso'
@@ -58,6 +59,7 @@
 				watch.finaltime = moment(watch.finaltime).format('h:mm a');
 			}
 			watch.officers = getformatResponsableOfficers(watch);
+			}
 			return watch;
 		}
 		function showData(){
