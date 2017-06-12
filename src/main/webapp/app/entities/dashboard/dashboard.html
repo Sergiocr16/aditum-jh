@@ -1,0 +1,362 @@
+<div class="display-none" id="all">
+    <div class="page-bar route-title">
+        <ul class="page-breadcrumb">
+            <li>
+                <i class="fa fa-home"></i>
+                <a href="index.html">Condominio</a>
+                <i class="fa fa-angle-right"></i>
+            </li>
+            <li>
+                <a href="#">Dashboard</a>
+                <!--<i class="fa fa-angle-right"></i>-->
+            </li>
+        </ul>
+        <div class="page-toolbar">
+            <div class="btn-group pull-right">
+
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
+        <div class="page-title">
+            <h1>Dashboard <small ng-click="vm.loadAll()"><i class="fa fa-repeat" style="color:blue"></i> Recargar</small></h1>
+        </div>
+        <div class="page-toolbar">
+            <!-- BEGIN THEME PANEL -->
+
+            <!-- END THEME PANEL -->
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat blue-madison">
+                <div class="visual">
+                    <i class="fa fa-user-circle"></i>
+                </div>
+                <div class="details">
+                    <div class="number counter">
+                        {{vm.dashboard.authorizedVisitantsQuantity}}
+                    </div>
+                    <div class="desc">
+                        Visitantes autorizados
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat green-haze">
+                <div class="visual">
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="details">
+                    <div class="number counter">
+                        {{vm.dashboard.dayVisitantsQuantity}}
+                    </div>
+                    <div class="desc">
+                        Visitantes del día
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red-intense">
+                <div class="visual">
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="details">
+                    <div class="number counter">
+                        {{vm.dashboard.monthVisitantsQuantity}}
+                    </div>
+                    <div class="desc">
+                        Visitantes del mes
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+            <div class="dashboard-stat purple-plum">
+                <div class="visual">
+                    <i class="fa fa-shield"></i>
+                </div>
+                <div class="details">
+                    <div class="number counter">
+                        {{vm.watch.officers.length}}
+                    </div>
+                    <div class="desc">
+                        Oficiales en servicio
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="portlet light col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="portlet-title">
+                    <div class="caption col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <i class="icon-cursor font-purple-intense hide"></i>
+                        <span class="caption-subject font-purple-intense bold uppercase col-lg-6 col-md-6 col-sm-6 col-xs-6">Turno actual</span>
+                        <span class="caption-helper col-lg-6 col-md-6 col-sm-6 col-xs-6">{{vm.watch.initialtime}}  -- {{vm.watch.finaltime}} </span>
+                    </div>
+
+                </div>
+                <div class="portlet-body ">
+                    <div class="col-lg-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div class="table-scrollable table-scrollable-borderless">
+                                <table class="table table-hover table-light">
+                                    <thead>
+                                    <tr class="uppercase">
+                                        <th colspan="2">
+                                            Oficial
+                                        </th>
+                                        <th>
+                                            Cédula
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="officer in vm.watch.officers">
+                                        <td colspan="2">
+                                            {{officer.name}}
+                                        </td>
+                                        <td>
+                                            {{officer.identificationnumber}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xs-12 col-md-6 col-sm-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-cursor font-purple-intense hide"></i>
+                        <span class="caption-subject font-purple-intense bold uppercase">General Stats</span>
+                    </div>
+                    <div class="actions">
+                        <a href="javascript:;" class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
+                            <i class="fa fa-repeat"></i> Reload </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <div class="number transactions" data-percent="{{vm.officerPercentage}}">
+											<span>
+											{{vm.officerPercentage}} </span>
+                                    %
+                                    <canvas height="75" width="75"></canvas></div>
+                                <a class="title" href="javascript:;">
+                                    Oficiales en servicio <i class="fa fa-car"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-10 visible-sm">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <div class="number visits" data-percent="10">
+											<span>
+											+10 </span>
+                                    %
+                                    <canvas height="75" width="75"></canvas></div>
+                                <a class="title" href="javascript:;">
+                                    Residentes deshabilitados <i class="fa fa-user"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="margin-bottom-10 visible-sm">
+                        </div>
+                        <div class="col-md-4">
+                            <div class="easy-pie-chart">
+                                <div class="number bounce" data-percent="46">
+											<span>
+											-46 </span>
+                                    %
+                                    <canvas height="75" width="75"></canvas></div>
+                                <a class="title" href="javascript:;">
+                                    Casas deshabitadas<i class="icon-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class=" col-lg-8 col-xs-12 col-md-12 col-sm-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption caption-md">
+                        <i class="icon-bar-chart theme-font hide"></i>
+                        <span class="caption-subject theme-font bold uppercase">{{vm.visitorTitle}}</span>
+                        <span class="caption-helper hide">weekly stats...</span>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-group btn-group-devided" data-toggle="buttons">
+                            <label class="btn btn-transparent grey-salsa btn-circle btn-sm" ng-click="vm.loadAll()">Semana</label>
+                            <label class="btn btn-transparent grey-salsa btn-circle btn-sm" ng-click="vm.updateMonthData()">Més</label>
+                            <label class="btn btn-transparent grey-salsa btn-circle btn-sm"  ng-click="vm.updateYearData()">
+                                Año
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <div id="site_activities_content" class="" style="display: block;">
+                                <div id="site_activities" style="width: 100%;height: 228px; padding: 0px; position: relative;">
+                                    <canvas class="flot-base"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display">
+                    <div class="number">
+                        <h3 class="font-green-sharp">{{vm.dashboard.vehicleQuantity}}</h3>
+                        <small>Total de vehículos</small>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-car"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display">
+                    <div class="number">
+                        <h3 class="font-purple-soft">{{vm.dashboard.residentQuantity}}</h3>
+                        <small>Total de residentes</small>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat2">
+                <div class="display">
+                    <div class="number">
+                        <h3 class="font-red-haze">{{vm.dashboard.houseQuantity}}</h3>
+                        <small>Total de filiales</small>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-home"></i>
+                    </div>
+                </div>
+                <div class="progress-info">
+                    <div class="progress">
+								<span style="width: {{vm.housesPercentage}}%;" class="progress-bar progress-bar-success red-haze">
+								<span class="sr-only">{{vm.housesPercentage}}% del total</span>
+								</span>
+                    </div>
+                    <div class="status">
+                        <div class="status-title">
+                            De 250 máxima capacidad
+                        </div>
+                        <div class="status-number">
+                            {{vm.housesPercentage}}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-cursor font-purple-intense hide"></i>
+                        <span class="caption-subject font-purple-intense bold uppercase">General Stats</span>
+                    </div>
+                    <div class="actions">
+                        <a href="javascript:;" class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
+                            <i class="fa fa-repeat"></i> Reload </a>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div id="resident-pie-chart" class="animated-pie-chart"></div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div id="vehicle-pie-chart" class="animated-pie-chart"></div>
+                        </div>
+                        <div class="margin-bottom-10 visible-sm">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-cloak>
+        <div class="row">
+            <!--<div class="col-md-4">-->
+            <!--<span class="hipster img-responsive img-rounded"></span>-->
+            <!--</div>-->
+            <!--<div class="col-md-8">-->
+            <!--<h1 >Bienvenido a Aditum!</h1>-->
+            <!--<p class="lead" data-translate="home.subtitle">Esta es tu página de inicio</p>-->
+
+            <!--<div ng-switch="vm.isAuthenticated()">-->
+            <!--<div class="alert alert-success" ng-switch-when="true" data-translate="home.logged.message" translate-values="{username: '{{vm.account.login}}'}">-->
+            <!--You are logged in as user "{{vm.account.login}}".-->
+            <!--</div>-->
+
+            <!--&lt;!&ndash;<div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.authenticated" translate-compile>&ndash;&gt;-->
+            <!--&lt;!&ndash;If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--<div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.register" translate-compile>-->
+            <!--You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<p data-translate="home.question">-->
+            <!--If you have any question on JHipster:-->
+            <!--</p>-->
+
+            <!--&lt;!&ndash;<ul>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="http://jhipster.github.io/" target="_blank" data-translate="home.link.homepage">JHipster homepage</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" data-translate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" data-translate="home.link.bugtracker">JHipster bug tracker</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" data-translate="home.link.chat">JHipster public chat room</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;<li><a href="https://twitter.com/java_hipster" target="_blank"  data-translate="home.link.follow">follow @java_hipster on Twitter</a></li>&ndash;&gt;-->
+            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<p>&ndash;&gt;-->
+            <!--&lt;!&ndash;<span data-translate="home.like">If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank" data-translate="home.github">Github</a>!&ndash;&gt;-->
+            <!--&lt;!&ndash;</p>&ndash;&gt;-->
+
+            <!--&lt;!&ndash;<button type="button"  ui-sref="main-access-door()"></button>&ndash;&gt;-->
+            <!--</div>-->
+        </div>
+    </div>

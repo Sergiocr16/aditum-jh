@@ -1,5 +1,5 @@
 /******************************
- 3RD PARTY PLUGIN CUSTOMIZATION 
+ 3RD PARTY PLUGIN CUSTOMIZATION
 ******************************/
 /*--------------------------------------------------
     [TRANSITION]
@@ -521,7 +521,7 @@ Bootstrap Select
 }
 
 /***
-Bootstrap Switch 
+Bootstrap Switch
 ***/
 .bootstrap-switch {
   border-color: #e5e5e5;
@@ -1020,7 +1020,7 @@ Bootbox
 ----------------------------------------------------*/
 .animated-pie-chart {
   width: 100%;
-  height: 350px;
+  height: 200px;
   font-size: 11px;
 }
 
