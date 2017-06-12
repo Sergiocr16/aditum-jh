@@ -158,9 +158,9 @@
                                 }
                             }
                         }).result.then(function() {
-                            $state.go('access-door', null, { reload: 'access-door' });
+                            $state.go('main-access-door', null, { reload: 'main-access-door' });
                         }, function() {
-                            $state.go('access-door');
+                            $state.go('main-access-door');
                         });
                     }]
                 })

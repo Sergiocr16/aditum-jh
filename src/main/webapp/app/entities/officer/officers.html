@@ -24,11 +24,11 @@
 
 <div class="row">
     <div class="col-md-12">
-        <h3 class="page-title col-md-9 col-sm-9 col-xs-12">	{{vm.buttonTitle}}</h3>
+        <h3 class="page-title col-md-9 col-sm-9 col-xs-12">	{{vm.title}}</h3>
         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
             <h1 class="text-center"><img src="../../content/images/waiting-gif2.gif" alt="" /></h1>
         </div>
-        <div class="" id="tableData">
+        <div class="display-none" id="tableData">
             <button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" ng-click="vm.switchEnabledDisabledOfficers()">{{vm.buttonTitle}}</button>
             <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
                 <div class="input-icon">
@@ -50,6 +50,7 @@
                             <th>Cédula</th>
                             <th>Email</th>
                             <th>Login</th>
+                            <th>Ver detalle</th>
                             <th>{{vm.actionButtonTitle}}</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
@@ -61,6 +62,7 @@
                             <td>{{officer.identificationnumber}}</td>
                             <td>{{officer.email}}</td>
                             <td>{{officer.userLogin}}</td>
+                            <td> <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)">Ver detalle</a></td>
                             <td> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
                             <td> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
                             <td> <a ng-click="vm.deleteOfficer(officer)">Eliminar</a></td>
