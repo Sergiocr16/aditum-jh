@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/emergency?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.emergency.home.title'
             },
             views: {

@@ -46,7 +46,6 @@
                 vm.companyConfiguration = configuration;
             });
 
-            console.log(data);
         }
 
         function onError () {

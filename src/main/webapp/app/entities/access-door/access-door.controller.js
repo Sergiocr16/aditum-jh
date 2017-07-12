@@ -228,6 +228,7 @@
                     vm.show = 4;
                 } else {
                     vm.show = 3;
+                    console.log(vm.id_number);
                     angular.forEach(residentsList, function(item, index) {
                         if (item.identificationnumber == vm.id_number) {
                             vm.residentRegisteredTitle = "Residente registrado"
@@ -277,10 +278,13 @@
         vm.insert_visitant_invited = function() {
             var idHouse;
             angular.forEach(housesList, function(house, index) {
-                if (house.houseNumber == vm.invited_visitant_house_number) {
+
+                if (house.housenumber == vm.invited_visitant_house_number) {
                     idHouse = house.id;
+
                 }
             })
+
             var visitant = {
                 name: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_name),
                 lastname: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_last_name),
@@ -518,7 +522,7 @@ function receiveHomeService(homeService){
 
     if(notesList!==undefined){
         var result = hasExistance(notesList,homeService.id)
-        console.log('asdasr'+result);
+
         if(result==undefined||result==-1){
             notesList.push(homeService);
             vm.countNotes = vm.notes.length;

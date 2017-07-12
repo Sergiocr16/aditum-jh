@@ -189,18 +189,18 @@
 
 
         };
-        function onSuccessDelete () {
+        function onSuccessDelete (result) {
             if(vm.login!==null){
                 User.delete({login: vm.login},
                     function () {
                         toastr["success"]("Se ha eliminado el residente correctamente.");
                         loadResidents();
-                        JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+                        WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
                     });
             } else {
                 toastr["success"]("Se ha eliminado el residente correctamente.");
                 loadResidents();
-                JhiTrackerService.sendDeletedEntity({type:'resident',id:resident.id})
+                WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
             }
 
         }
