@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service.dto;
 import com.lighthouse.aditum.domain.Watch;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by Sergio on 23/05/2017.
@@ -25,6 +26,8 @@ public class DashboardDTO implements Serializable {
 
     private Integer dayVisitantsQuantity;
 
+    private Integer totalHouses;
+
     private Integer authorizedVisitantsQuantity;
 
     private Integer houseQuantity;
@@ -35,6 +38,15 @@ public class DashboardDTO implements Serializable {
 
     private WatchDTO currentWatch;
 
+    private ArrayList visitorsPerMonth;
+
+    public Integer getTotalHouses() {
+        return totalHouses;
+    }
+
+    public void setTotalHouses(Integer totalHouses) {
+        this.totalHouses = totalHouses;
+    }
 
     public Integer getVehicleQuantity() {
         return vehicleQuantity;
@@ -136,5 +148,13 @@ public class DashboardDTO implements Serializable {
 
     public void setOfficerQuantity(Integer officerQuantity) {
         this.officerQuantity = officerQuantity;
+    }
+
+    public ArrayList getVisitorsPerMonth() {
+        return visitorsPerMonth;
+    }
+
+    public void setVisitorsPerMonth(ArrayList visitorsPerMonth) {
+        this.visitorsPerMonth = visitorsPerMonth;
     }
 }

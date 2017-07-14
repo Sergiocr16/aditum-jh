@@ -79,8 +79,12 @@ public class CompanyConfigurationService {
         log.debug("Request to get all Residents");
         List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
         return new PageImpl<>(result).map(configuration->companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(configuration));
-
-
+    }
+    @Transactional(readOnly = true)
+    public Integer getByTotalHousesByCompanyId(Long companyId) {
+        log.debug("Request to get all Residents");
+        List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
+        return companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(result.get(0)).getQuantityhouses();
     }
     /**
      *  Delete the  companyConfiguration by id.

@@ -5199,11 +5199,8 @@ Dashboard Stats 2
   border-radius: 4px;
   background: #fff;
   padding: 15px 15px 30px 15px;
-  margin-bottom: 20px;
 }
-.dashboard-stat2 .display {
-  margin-bottom: 20px;
-}
+
 .dashboard-stat2 .display:before, .dashboard-stat2 .display:after {
   content: " ";
   display: table;

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -44,13 +45,16 @@ public class DashboardResource {
 
     private final OfficerService officerService;
 
+    private final CompanyConfigurationService companyConfigurationService;
+
     public DashboardResource(AdminInfoService adminInfoService,
                              VehiculeService vehicleService,
                              ResidentService residentServices,
                              VisitantService visitorService,
                              WatchService watchService,
                              HouseService houseService,
-                             OfficerService officerService
+                             OfficerService officerService,
+                             CompanyConfigurationService companyConfigurationService
 
     ) {
         this.adminInfoService = adminInfoService;
@@ -60,12 +64,11 @@ public class DashboardResource {
         this.watchService = watchService;
         this.houseService = houseService;
         this.officerService = officerService;
+        this.companyConfigurationService = companyConfigurationService;
     }
-    @Timed
-    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
-    @GetMapping("/dashboard/{companyId}")
-    public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) {
-        log.debug("REST request to info of the dashboard : {}", companyId);
+
+
+    public DashboardDTO getDashboardDTO(long companyId){
         Integer enableVehicles = vehicleService.enableQuantityByCompany(companyId);
         Integer disableVehicles = vehicleService.disableQuantityByCompany(companyId);
         Integer vehicleQuantity = enableVehicles + disableVehicles;
@@ -75,26 +78,51 @@ public class DashboardResource {
         Integer visitorInLastMonth = visitorService.countByCompanyInLastMonth(companyId);
         Integer visitorInLastDay = visitorService.countByCompanyInLastDay(companyId);
         Integer visitorAuthorized = visitorService.countByAuthorizedVisitors(companyId);
+        ArrayList visitorsPerMonth = visitorService.countVisitantsPerWeek(companyId);
         WatchDTO watchDTO = watchService.findLastWatch(companyId);
         Integer houseQuantity = houseService.countByCompany(companyId);
         Integer desocupatedHousesQuantity = houseService.countByCompanyAndDesocupated(companyId);
         Integer officerQuantity = officerService.countByCompanyId(companyId);
-       DashboardDTO dashboardDTO = new DashboardDTO();
-       dashboardDTO.setEnableResidentQuantity(enableResidents);
-       dashboardDTO.setDisableResidentQuantity(disableResidents);
-       dashboardDTO.setResidentQuantity(residentQuantity);
-       dashboardDTO.setEnableVehicleuQantity(enableVehicles);
-       dashboardDTO.setDisableVehicleQuantity(disableVehicles);
-       dashboardDTO.setVehicleQuantity(vehicleQuantity);
-       dashboardDTO.setMonthVisitantsQuantity(visitorInLastMonth);
-       dashboardDTO.setDayVisitantsQuantity(visitorInLastDay);
-       dashboardDTO.setAuthorizedVisitantsQuantity(visitorAuthorized);
-       dashboardDTO.setCurrentWatch(watchDTO);
-       dashboardDTO.setHouseDesocupatedQuantity(desocupatedHousesQuantity);
-       dashboardDTO.setHouseQuantity(houseQuantity);
-       dashboardDTO.setOfficerQuantity(officerQuantity);
-
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dashboardDTO));
+        Integer totalHouses = companyConfigurationService.getByTotalHousesByCompanyId(companyId);
+        DashboardDTO dashboardDTO = new DashboardDTO();
+        dashboardDTO.setEnableResidentQuantity(enableResidents);
+        dashboardDTO.setDisableResidentQuantity(disableResidents);
+        dashboardDTO.setResidentQuantity(residentQuantity);
+        dashboardDTO.setEnableVehicleuQantity(enableVehicles);
+        dashboardDTO.setDisableVehicleQuantity(disableVehicles);
+        dashboardDTO.setVehicleQuantity(vehicleQuantity);
+        dashboardDTO.setMonthVisitantsQuantity(visitorInLastMonth);
+        dashboardDTO.setDayVisitantsQuantity(visitorInLastDay);
+        dashboardDTO.setAuthorizedVisitantsQuantity(visitorAuthorized);
+        dashboardDTO.setCurrentWatch(watchDTO);
+        dashboardDTO.setHouseDesocupatedQuantity(desocupatedHousesQuantity);
+        dashboardDTO.setHouseQuantity(houseQuantity);
+        dashboardDTO.setOfficerQuantity(officerQuantity);
+        dashboardDTO.setVisitorsPerMonth(visitorsPerMonth);
+        dashboardDTO.setTotalHouses(totalHouses);
+        return dashboardDTO;
+    }
+    @Timed
+    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/{companyId}")
+    public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(getDashboardDTO(companyId)));
     }
 
+    @Timed
+    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/updateByYear/{companyId}")
+    public ArrayList updateYear(@PathVariable Long companyId) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return visitorService.countVisitantsPerYear(companyId);
+    }
+
+    @Timed
+    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/updateByMonth/{companyId}")
+    public ArrayList updateMonth(@PathVariable Long companyId) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return visitorService.countVisitantsPerMonth(companyId);
+    }
 }
