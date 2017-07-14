@@ -22,17 +22,19 @@
 		vm.loadAll = function() {
 			Dashboard.query({companyId : $rootScope.companyId},function(result) {
 				vm.dashboard = result;
+				console.log(vm.dashboard);
 				showData();
 				vm.visitorTitle = "Visitantes de la semana";
 				vm.watch = formatWatch(vm.dashboard.currentWatch);
+				if(vm.dashboard.currentWatch!==null){
 				vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100)/vm.dashboard.officerQuantity)
-				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/250)
+				}else{
+				 vm.officerPercentage = 0;
+				}
+				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/vm.dashboard.totalHouses).toFixed(2)
 			});
 		}
-
 		vm.loadAll();
-
-
 		function formatResponsableOfficer(stringOfficer) {
 			var variables = stringOfficer.split(';')
 			var officer = {};

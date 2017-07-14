@@ -26,6 +26,8 @@ public class DashboardDTO implements Serializable {
 
     private Integer dayVisitantsQuantity;
 
+    private Integer totalHouses;
+
     private Integer authorizedVisitantsQuantity;
 
     private Integer houseQuantity;
@@ -38,6 +40,13 @@ public class DashboardDTO implements Serializable {
 
     private ArrayList visitorsPerMonth;
 
+    public Integer getTotalHouses() {
+        return totalHouses;
+    }
+
+    public void setTotalHouses(Integer totalHouses) {
+        this.totalHouses = totalHouses;
+    }
 
     public Integer getVehicleQuantity() {
         return vehicleQuantity;

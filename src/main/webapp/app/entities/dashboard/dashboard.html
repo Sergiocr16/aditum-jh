@@ -86,8 +86,11 @@
                     <i class="fa fa-shield"></i>
                 </div>
                 <div class="details">
-                    <div class="number counter">
-                        {{vm.watch.officers.length}}
+                    <div ng-show="vm.watch.officers.length>0" class="number counter">
+                       {{vm.watch.officers.length}}
+                    </div>
+                    <div ng-show="vm.watch.officers.length==undefined" class="number counter">
+                         0
                     </div>
                     <div class="desc">
                         Oficiales en servicio
@@ -141,64 +144,64 @@
             </div>
         </div>
 
-        <div class="col-lg-6 col-xs-12 col-md-6 col-sm-12">
-            <div class="portlet light ">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-cursor font-purple-intense hide"></i>
-                        <span class="caption-subject font-purple-intense bold uppercase">General Stats</span>
-                    </div>
-                    <div class="actions">
-                        <a href="javascript:;" class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
-                            <i class="fa fa-repeat"></i> Reload </a>
-                    </div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="easy-pie-chart">
-                                <div class="number transactions" data-percent="{{vm.officerPercentage}}">
-											<span>
-											{{vm.officerPercentage}} </span>
-                                    %
-                                    <canvas height="75" width="75"></canvas></div>
-                                <a class="title" href="javascript:;">
-                                    Oficiales en servicio <i class="fa fa-car"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="margin-bottom-10 visible-sm">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="easy-pie-chart">
-                                <div class="number visits" data-percent="10">
-											<span>
-											+10 </span>
-                                    %
-                                    <canvas height="75" width="75"></canvas></div>
-                                <a class="title" href="javascript:;">
-                                    Residentes deshabilitados <i class="fa fa-user"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="margin-bottom-10 visible-sm">
-                        </div>
-                        <div class="col-md-4">
-                            <div class="easy-pie-chart">
-                                <div class="number bounce" data-percent="46">
-											<span>
-											-46 </span>
-                                    %
-                                    <canvas height="75" width="75"></canvas></div>
-                                <a class="title" href="javascript:;">
-                                    Casas deshabitadas<i class="icon-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!--<div class="col-lg-6 col-xs-12 col-md-6 col-sm-12">-->
+            <!--<div class="portlet light ">-->
+                <!--<div class="portlet-title">-->
+                    <!--<div class="caption">-->
+                        <!--<i class="icon-cursor font-purple-intense hide"></i>-->
+                        <!--<span class="caption-subject font-purple-intense bold uppercase">General Stats</span>-->
+                    <!--</div>-->
+                    <!--<div class="actions">-->
+                        <!--<a href="javascript:;" class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">-->
+                            <!--<i class="fa fa-repeat"></i> Reload </a>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="portlet-body">-->
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="easy-pie-chart">-->
+                                <!--<div class="number transactions" data-percent="{{vm.officerPercentage}}">-->
+											<!--<span>-->
+											<!--{{vm.officerPercentage}} </span>-->
+                                    <!--%-->
+                                    <!--<canvas height="75" width="75"></canvas></div>-->
+                                <!--<a class="title" href="javascript:;">-->
+                                    <!--Oficiales en servicio <i class="fa fa-car"></i>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="margin-bottom-10 visible-sm">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="easy-pie-chart">-->
+                                <!--<div class="number visits" data-percent="10">-->
+											<!--<span>-->
+											<!--+10 </span>-->
+                                    <!--%-->
+                                    <!--<canvas height="75" width="75"></canvas></div>-->
+                                <!--<a class="title" href="javascript:;">-->
+                                    <!--Residentes deshabilitados <i class="fa fa-user"></i>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="margin-bottom-10 visible-sm">-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="easy-pie-chart">-->
+                                <!--<div class="number bounce" data-percent="46">-->
+											<!--<span>-->
+											<!-- -46 </span>-->
+                                    <!--%-->
+                                    <!--<canvas height="75" width="75"></canvas></div>-->
+                                <!--<a class="title" href="javascript:;">-->
+                                    <!--Casas deshabitadas<i class="icon-arrow-right"></i>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
 
 
 
@@ -280,7 +283,7 @@
                     </div>
                     <div class="status">
                         <div class="status-title">
-                            De 250 máxima capacidad
+                            De {{vm.dashboard.totalHouses}} máxima capacidad
                         </div>
                         <div class="status-number">
                             {{vm.housesPercentage}}%
@@ -294,11 +297,7 @@
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="icon-cursor font-purple-intense hide"></i>
-                        <span class="caption-subject font-purple-intense bold uppercase">General Stats</span>
-                    </div>
-                    <div class="actions">
-                        <a href="javascript:;" class="btn btn-sm btn-circle btn-default easy-pie-chart-reload">
-                            <i class="fa fa-repeat"></i> Reload </a>
+                        <span class="caption-subject font-purple-intense bold uppercase">Estadísticas generales</span>
                     </div>
                 </div>
                 <div class="portlet-body">

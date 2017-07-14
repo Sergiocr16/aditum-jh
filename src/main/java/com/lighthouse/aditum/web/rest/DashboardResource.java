@@ -45,13 +45,16 @@ public class DashboardResource {
 
     private final OfficerService officerService;
 
+    private final CompanyConfigurationService companyConfigurationService;
+
     public DashboardResource(AdminInfoService adminInfoService,
                              VehiculeService vehicleService,
                              ResidentService residentServices,
                              VisitantService visitorService,
                              WatchService watchService,
                              HouseService houseService,
-                             OfficerService officerService
+                             OfficerService officerService,
+                             CompanyConfigurationService companyConfigurationService
 
     ) {
         this.adminInfoService = adminInfoService;
@@ -61,6 +64,7 @@ public class DashboardResource {
         this.watchService = watchService;
         this.houseService = houseService;
         this.officerService = officerService;
+        this.companyConfigurationService = companyConfigurationService;
     }
 
 
@@ -79,6 +83,7 @@ public class DashboardResource {
         Integer houseQuantity = houseService.countByCompany(companyId);
         Integer desocupatedHousesQuantity = houseService.countByCompanyAndDesocupated(companyId);
         Integer officerQuantity = officerService.countByCompanyId(companyId);
+        Integer totalHouses = companyConfigurationService.getByTotalHousesByCompanyId(companyId);
         DashboardDTO dashboardDTO = new DashboardDTO();
         dashboardDTO.setEnableResidentQuantity(enableResidents);
         dashboardDTO.setDisableResidentQuantity(disableResidents);
@@ -94,6 +99,7 @@ public class DashboardResource {
         dashboardDTO.setHouseQuantity(houseQuantity);
         dashboardDTO.setOfficerQuantity(officerQuantity);
         dashboardDTO.setVisitorsPerMonth(visitorsPerMonth);
+        dashboardDTO.setTotalHouses(totalHouses);
         return dashboardDTO;
     }
     @Timed
