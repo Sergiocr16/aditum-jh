@@ -1,6 +1,6 @@
 {
   "generator-jhipster": {
-    "jhipsterVersion": "4.0.6",
+    "jhipsterVersion": "4.6.1",
     "baseName": "Aditum",
     "packageName": "com.lighthouse.aditum",
     "packageFolder": "com/lighthouse/aditum",

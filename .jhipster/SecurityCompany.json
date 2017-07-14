@@ -1,0 +1,19 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "active",
+            "fieldType": "Boolean"
+        }
+    ],
+    "changelogDate": "20170714175930",
+    "dto": "mapstruct",
+    "service": "no",
+    "entityTableName": "security_company",
+    "pagination": "pager"
+}

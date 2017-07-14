@@ -20,6 +20,7 @@
                 "visitant": "Visitant",
                 "watch": "Watch",
                 "brand": "Brand",
+                "securityCompany": "Security Company",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
