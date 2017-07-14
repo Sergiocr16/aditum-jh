@@ -33,7 +33,7 @@
             <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="search">
+                    <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
                 </div>
             </div>
             <button type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
@@ -57,7 +57,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="officer in vm.officers | filter:search | orderBy:'name'">
+                        <tr ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
                             <td>{{officer.email}}</td>

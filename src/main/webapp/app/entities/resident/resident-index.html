@@ -66,7 +66,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="resident in vm.residents | filter:vm.search | orderBy:'name'">
+                            <tr ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'">
                                 <td style="text-transform: capitalize;">{{resident.name}} </td>
                                 <td>{{resident.identificationnumber}}</td>
                                 <td>{{resident.phonenumber}}</td>

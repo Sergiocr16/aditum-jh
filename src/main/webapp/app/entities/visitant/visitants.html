@@ -52,7 +52,7 @@
                 <div class="col-md-4" ng-show="vm.isConsulting==false"></div>
                 <div class="input-icon col-md-8 col-xs-12">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar visitante en la consulta actual" ng-model="search">
+                    <input type="text" class="form-control" placeholder="Buscar visitante en la consulta actual" ng-model="vm.search">
                 </div>
             </div>
             <div class="portlet-body ">
@@ -72,7 +72,7 @@
                         </thead>
                         <tbody>
 
-                        <tr ng-repeat="visitor in vm.visitants | filter:search ">
+                        <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
                             <td>{{visitor.fullName}}</td>
                             <td>{{visitor.identificationnumber}}</td>
                             <td ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
