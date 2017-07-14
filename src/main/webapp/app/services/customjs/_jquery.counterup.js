@@ -63,9 +63,9 @@
                 if ($this.data('counterup-nums').length) {
                     setTimeout($this.data('counterup-func'), $settings.delay);
                 } else {
-                    delete $this.data('counterup-nums');
-                    $this.data('counterup-nums', null);
-                    $this.data('counterup-func', null);
+//                    delete $this.data('counterup-nums');
+//                       $this.data('counterup-nums', $this.data());
+//                       $this.data('counterup-func', $this.data());
                 }
             };
             $this.data('counterup-func', f);

@@ -13,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -113,6 +111,65 @@ public class VisitantService {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
         return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+    }
+
+    @Transactional(readOnly = true)
+    public ArrayList countVisitantsPerYear(Long companyId) {
+        log.debug("Request to get all Visitants per month");
+      ArrayList visitantesPorMes = new ArrayList();
+
+      List<String> meses = Arrays.asList("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
+       Integer currentMotnh = ZonedDateTime.now().getMonthValue();
+        for( int i = 1 ; i <= currentMotnh; i++){
+            ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+            ZonedDateTime lastDayOfMonth = ZonedDateTime.now().withMonth(i).withHour(23).withMinute(59).withSecond(59).withNano(59);
+            int lastDay = lastDayOfMonth.getMonth().length(false);
+            lastDayOfMonth = lastDayOfMonth.withDayOfMonth(lastDay);
+            int visitantesEseMes = visitantRepository.countByDatesBetweenAndCompany(firstDayOfMonth,lastDayOfMonth,companyId,3);
+            ArrayList info = new ArrayList();
+            info.add(meses.get(i-1));
+            info.add(visitantesEseMes);
+            visitantesPorMes.add(info);
+        }
+        return visitantesPorMes;
+    }
+
+    @Transactional(readOnly = true)
+    public ArrayList countVisitantsPerWeek(Long companyId) {
+        log.debug("Request to get all Visitants per month");
+        ArrayList visitantesPorSemana = new ArrayList();
+        List<String> dias = Arrays.asList("Lun","Mar","Mier","Jue","Vie","Sab","Dom");
+        Integer currentDay = ZonedDateTime.now().getDayOfWeek().getValue();
+        ZonedDateTime firstDayOfWeek = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(currentDay-1);
+        for( int i = 0 ; i < currentDay; i++){
+            ZonedDateTime initDay = firstDayOfWeek.plusDays(i);
+            ZonedDateTime finishDay = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
+            ArrayList info = new ArrayList();
+            info.add(dias.get(i));
+            info.add(visitantesEseDia);
+            visitantesPorSemana.add(info);
+        }
+        return visitantesPorSemana;
+    }
+
+    @Transactional(readOnly = true)
+    public ArrayList countVisitantsPerMonth(Long companyId) {
+        log.debug("Request to get all Visitants per month");
+        ArrayList visitantesPorSemana = new ArrayList();
+        Integer currentDay = ZonedDateTime.now().getDayOfMonth();
+        ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).withDayOfMonth(1);
+        ZonedDateTime startDay = firstDayOfMonth;
+        for( int i = 0 ; i < currentDay; i++){
+            ZonedDateTime initDay = startDay.plusDays(i);
+            ZonedDateTime finishDay = startDay.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
+            ArrayList info = new ArrayList();
+            info.add(i+1);
+            info.add(visitantesEseDia);
+            visitantesPorSemana.add(info);
+        }
+        return visitantesPorSemana;
     }
 
     @Transactional(readOnly = true)

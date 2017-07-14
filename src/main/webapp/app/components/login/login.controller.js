@@ -57,19 +57,15 @@
             }).then(function (data) {
 
                 vm.authenticationError = false;
-
                    Principal.identity().then(function(account){
                     $rootScope.showLogin = false;
                     if(account.authorities[0]=='ROLE_OFFICER'){
-
                       $state.go('main-access-door');
+                    }else if(account.authorities[0]=='ROLE_MANAGER'){
+                    $state.go('dashboard');
                     } else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                           $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                           $state.go('home');    }
-
-
-
-
                 })
 
 
