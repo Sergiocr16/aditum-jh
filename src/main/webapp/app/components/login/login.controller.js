@@ -62,7 +62,11 @@
                     if(account.authorities[0]=='ROLE_OFFICER'){
                       $state.go('main-access-door');
                     }else if(account.authorities[0]=='ROLE_MANAGER'){
-                    $state.go('dashboard');
+                      setTimeout(function(){  $state.go('dashboard');}, 300);
+
+                    } else if(account.authorities[0]=='ROLE_USER'){
+                    setTimeout(function(){   $state.go('residentByHouse');}, 300);
+
                     } else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                           $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                           $state.go('home');    }
@@ -80,7 +84,7 @@
                 }
             }).catch(function () {
                 vm.authenticationError = true;
-                toastr["error"]("Por favor verifique sus credenciales");
+                toastr["error"]("Credenciales inválidos o cuenta deshabilitada.");
             });
         }
 

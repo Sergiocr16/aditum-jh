@@ -50,10 +50,9 @@
                     <div class="portlet-title">
                         <div class="caption font-green-haze">
                             <i class="fa fa-user font-green-haze"></i>
-                            <span ng-if="companyUser.id !== vm.resident.id" class="caption-subject bold uppercase">{{vm.title}}</span>
-                            <span ng-if="companyUser.id === vm.resident.id" class="caption-subject bold uppercase">Editar mi información [{{vm.account.login}}]</span>
+                            <span ng-if="vm.resident.userLogin===null" class="caption-subject bold uppercase">{{vm.title }}</span>
+                            <span ng-if="vm.resident.userLogin!==null" class="caption-subject bold uppercase">Editar información [{{vm.resident.userLogin}}]</span>
                         </div>
-
                     </div>
                     <div class="portlet-body form">
                         <div has-any-authority="ROLE_MANAGER,ROLE_ADMIN" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
