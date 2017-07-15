@@ -53,6 +53,7 @@
          }
         function save () {
          vm.vehicule.brand = vm.vehicule.brand.brand;
+          vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
             if (vm.vehicule.id !== null) {
              if(vm.myPlate!==vm.vehicule.licenseplate){

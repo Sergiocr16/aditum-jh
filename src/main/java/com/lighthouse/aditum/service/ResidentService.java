@@ -78,6 +78,14 @@ public class ResidentService {
         List<Resident> result = residentRepository.findByEnabledAndHouseId(1,houseId);
         return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
     }
+
+    @Transactional(readOnly = true)
+    public ResidentDTO findByCompanyIdAndIdentifiactionNumber(Long companyId,String identificationNumber) {
+        log.debug("Request to get all Residents");
+        Resident resident = residentRepository.findByCompanyIdAndIdentificationnumber(companyId,identificationNumber);
+        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        return residentDTO;
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
