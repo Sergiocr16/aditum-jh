@@ -20,6 +20,20 @@
                     return data;
                 }
             },
+            'getByCompanyAndPlate': {
+                method: 'GET',
+                url: 'api/vehicules/findByCompanyAndPlate/:companyId/:licensePlate',
+                params:{
+                   companyId:'@companyId',
+                   licensePlate: '@licensePlate'
+                 },
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+             },
             'update': { method:'PUT' },
               'vehiculesEnabled': {
                     method: 'GET',
