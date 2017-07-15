@@ -161,6 +161,7 @@
         }
 
         vm.deleteResident = function(resident) {
+        vm.residentToDelete = resident;
             bootbox.confirm({
                 message: "¿Está seguro que desea eliminar al residente " + resident.name + "?",
                 buttons: {
@@ -190,17 +191,18 @@
 
         };
         function onSuccessDelete (result) {
+        console.log(result)
             if(vm.login!==null){
                 User.delete({login: vm.login},
                     function () {
                         toastr["success"]("Se ha eliminado el residente correctamente.");
                         loadResidents();
-                        WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
+                        WSDeleteEntity.sendActivity({type:'resident',id:vm.residentToDelete.id})
                     });
             } else {
                 toastr["success"]("Se ha eliminado el residente correctamente.");
                 loadResidents();
-                WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
+                WSDeleteEntity.sendActivity({type:'resident',id:vm.residentToDelete.id})
             }
 
         }

@@ -131,6 +131,10 @@
             function error() {
                 formatVisitor();
                 vm.isSaving = true;
+                console.log(vm.visitor)
+                vm.visitor.name = CommonMethods.capitalizeFirstLetter(vm.visitor.name);
+                 vm.visitor.lastname = CommonMethods.capitalizeFirstLetter(vm.visitor.lastname);
+                  vm.visitor.secondlastname = CommonMethods.capitalizeFirstLetter(vm.visitor.secondlastname);
                 Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
             }
         }

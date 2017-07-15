@@ -60,7 +60,7 @@
                    Principal.identity().then(function(account){
                     $rootScope.showLogin = false;
                     if(account.authorities[0]=='ROLE_OFFICER'){
-                      $state.go('main-access-door');
+                     setTimeout(function(){   $state.go('main-access-door');}, 300);
                     }else if(account.authorities[0]=='ROLE_MANAGER'){
                       setTimeout(function(){  $state.go('dashboard');}, 300);
 
