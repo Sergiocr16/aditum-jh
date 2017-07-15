@@ -152,6 +152,13 @@ public class ResidentResource {
         ResidentDTO residentDTO = residentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(residentDTO));
     }
+    @GetMapping("/residents/findByCompanyAndIdentification/{companyId}/{identificationNumber}")
+    @Timed
+    public ResponseEntity<ResidentDTO> getResidentByCompanyAndIdentification(@PathVariable(value = "companyId")  Long  companyId, @PathVariable(value = "identificationNumber")  String identificationNumber) {
+        log.debug("REST request to get Resident by Company and Identifiaction : {}",companyId,identificationNumber);
+        ResidentDTO residentDTO = residentService.findByCompanyIdAndIdentifiactionNumber(companyId,identificationNumber);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(residentDTO));
+    }
     @GetMapping("/residents/findByUserId/{id}")
     @Timed
     public ResponseEntity<ResidentDTO> getResidentByUserId(@PathVariable Long id) {

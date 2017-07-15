@@ -31,7 +31,7 @@
             <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar casa" ng-model="search">
+                    <input type="text" class="form-control" placeholder="Buscar casa" ng-model="vm.query.housenumber">
                 </div>
             </div>
             <button type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="house.new()">Registrar casa</button>
@@ -50,7 +50,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:search">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query | orderBy:'housenumber'">
                             <td>{{house.housenumber}}</td>
                             <td>{{house.extension}}</td>
                             <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>

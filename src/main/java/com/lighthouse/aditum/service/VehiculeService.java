@@ -76,6 +76,14 @@ public class VehiculeService {
     }
 
     @Transactional(readOnly = true)
+    public VehiculeDTO findOneByCompanyAndPlate(Long id,String licensePlate) {
+        log.debug("Request to get Vehicule : {}", id);
+        Vehicule vehicule = vehiculeRepository.findOneByCompanyIdAndLicenseplate(id,licensePlate);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        return vehiculeDTO;
+    }
+
+    @Transactional(readOnly = true)
     public Integer enableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
         return  vehiculeRepository.countByEnabledAndCompanyId(1,companyId);

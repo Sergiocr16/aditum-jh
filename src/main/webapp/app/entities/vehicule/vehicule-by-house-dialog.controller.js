@@ -14,6 +14,7 @@
         vm.vehicule = entity;
          Brand.query({}, onSuccessBrand);
         vm.save = save;
+         vm.myPlate = vm.vehicule.licenseplate;
         vm.houses = House.query();
         CommonMethods.validateSpecialCharacters();
         angular.element(document).ready(function () {
@@ -51,14 +52,34 @@
          }
         function save () {
          vm.vehicule.brand = vm.vehicule.brand.brand;
+         vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
             if (vm.vehicule.id !== null) {
-                Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
+             if(vm.myPlate!==vm.vehicule.licenseplate){
+              Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClear)
+                   function alreadyExist(data){
+                    toastr["error"]("La placa ingresada ya existe.");
+                   }
+                function allClear(data){
+                 Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
+                  }
+              }else{
+               Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
+              }
             } else {
                 vm.vehicule.enabled = 1;
                 vm.vehicule.companyId = $rootScope.companyId;
-                vm.vehicule.houseId = $rootScope.companyUser.houseId
-                Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
+                vm.vehicule.houseId = $rootScope.companyUser.houseId;
+
+                   Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClear)
+                   function alreadyExist(data){
+                    toastr["error"]("La placa ingresada ya existe en el condominio.");
+                   }
+
+                    function allClear(data){
+                      Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
+                    }
+
             }
         }
 

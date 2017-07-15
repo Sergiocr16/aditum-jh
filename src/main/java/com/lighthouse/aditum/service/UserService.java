@@ -210,6 +210,7 @@ public class UserService {
     }
 
 
+
     /**
      * Not activated users should be automatically deleted after 3 days.
      * <p>

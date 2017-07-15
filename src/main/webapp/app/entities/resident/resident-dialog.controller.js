@@ -23,7 +23,6 @@
         vm.SaveUserError = false;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
-
         if(vm.resident.id !== null){
             vm.title = "Editar residente";
             vm.button = "Editar";

@@ -151,6 +151,15 @@ public class VehiculeResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(vehiculeDTO));
     }
 
+    @GetMapping("/vehicules/findByCompanyAndPlate/{companyId}/{licensePlate}")
+    @Timed
+    public ResponseEntity<VehiculeDTO> getVehicule(@PathVariable(value = "licensePlate")  String  licensePlate,
+                                                   @PathVariable(value = "companyId")  Long companyId) {
+        log.debug("REST request to get Vehicule : {}", companyId);
+        VehiculeDTO vehiculeDTO = vehiculeService.findOneByCompanyAndPlate(companyId,licensePlate);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(vehiculeDTO));
+    }
+
     /**
      * DELETE  /vehicules/:id : delete the "id" vehicule.
      *

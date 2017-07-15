@@ -143,7 +143,7 @@ public class VisitantService {
         ZonedDateTime firstDayOfWeek = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(currentDay-1);
         for( int i = 0 ; i < currentDay; i++){
             ZonedDateTime initDay = firstDayOfWeek.plusDays(i);
-            ZonedDateTime finishDay = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
+            ZonedDateTime finishDay = firstDayOfWeek.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
             int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
             ArrayList info = new ArrayList();
             info.add(dias.get(i));
