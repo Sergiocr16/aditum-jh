@@ -13,7 +13,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
 
         vm.save = save;
-         House.get({ id: 1}).$promise.then(onSuccess);;
+         House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);;
 
           function onSuccess (house) {
              vm.house = house;

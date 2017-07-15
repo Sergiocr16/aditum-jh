@@ -20,7 +20,9 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-Principal.identity().then(function(account) {
+        CommonMethods.validateLetters();
+        CommonMethods.validateNumbers();
+        Principal.identity().then(function(account) {
             vm.account = account;
         });
         if(vm.resident.id !== null){

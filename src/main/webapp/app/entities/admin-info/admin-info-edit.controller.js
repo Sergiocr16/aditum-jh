@@ -36,7 +36,7 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:adminInfoUpdate', result);
-            $state.go('home');
+            $state.go('dashboard');
             toastr["success"]("Se ha editado tu información correctamente.");
          $rootScope.companyUser = result;
                         $rootScope.currentUserImage = result.image;

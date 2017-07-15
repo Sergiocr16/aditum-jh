@@ -5,17 +5,16 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth','$state','$scope','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','AlertService', 'Principal','$filter','companyUser','WSDeleteEntity','WSEmergency','WSHouse','WSResident','WSVehicle','WSNote','WSVisitor'];
+    AccessDoorController.$inject = ['Auth','$state','$scope','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','Note','AlertService', 'Principal','$filter','companyUser','WSDeleteEntity','WSEmergency','WSHouse','WSResident','WSVehicle','WSNote','WSVisitor'];
 
-    function AccessDoorController(Auth,$state,$scope,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,AlertService,Principal,$filter,companyUser,WSDeleteEntity,WSEmergency,WSHouse,WSResident,WSVehicle,WSNote,WSVisitor) {
+    function AccessDoorController(Auth,$state,$scope,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,Note,AlertService,Principal,$filter,companyUser,WSDeleteEntity,WSEmergency,WSHouse,WSResident,WSVehicle,WSNote,WSVisitor) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
-        var notesList = [];
-        vm.notes = notesList;
-        vm.countNotes = vm.notes.length;
+
+
         var securityKey, emergencyKey, housenumber;
         vm.hideEmergencyForm = 1;
         vm.logout = logout;
@@ -77,9 +76,23 @@
             function onSuccessInvited(visitors, headers) {
                 invitedList = visitors;
                 subscribe();
+                loadNotes();
             }
         }
+    function loadNotes() {
+            moment.locale('es');
+            Note.findAll({companyId: $rootScope.companyId},onSuccessNotes, onError);
+            function onSuccessNotes(notes, headers) {
+              angular.forEach(notes,function(key,note){
+                    key.creationdate = moment(key.creationdate).fromNow();
 
+                })
+                vm.notes = notes;
+                vm.countNotes = vm.notes.length;
+                subscribe();
+
+            }
+        }
         function subscribe(){
           if($state.current.name==="main-access-door"){
                 WSDeleteEntity.subscribe($rootScope.companyId);
@@ -103,6 +116,20 @@
             AlertService.error(error.data.message);
         }
 
+
+        vm.deleteDomicilioReports = function(note){
+                 Note.delete({
+                    id: note.id
+                }, onSuccessDelete);
+        }
+
+     function onSuccessDelete (result) {
+                toastr["success"]("Eliminado");
+                loadNotes();
+                WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
+
+
+        }
         vm.getVehicule = function(){
             vm.id_number = "";
             if (vm.id_vehicule == "") {
@@ -520,11 +547,12 @@ function receiveVisitor(visitor){
 
 function receiveHomeService(homeService){
 
-    if(notesList!==undefined){
-        var result = hasExistance(notesList,homeService.id)
+    if(vm.notes!==undefined){
+        var result = hasExistance(vm.notes,homeService.id)
 
         if(result==undefined||result==-1){
-            notesList.push(homeService);
+        homeService.creationdate = moment(homeService.creationdate).fromNow();
+            vm.notes.push(homeService);
             vm.countNotes = vm.notes.length;
         }
 

@@ -9,15 +9,18 @@
 
 	function DashboardController ($scope,$rootScope, Principal, LoginService, $state, Dashboard) {
 		var vm = this;
+		 $rootScope.active = "dashboard";
 		vm.isInLogin = $state.includes('home');
 		vm.account = null;
 		vm.login = LoginService.open;
+
 		function getAccount() {
 			Principal.identity().then(function(account) {
 				vm.account = account;
 				vm.isAuthenticated = Principal.isAuthenticated;
 			});
 		}
+
 		getAccount();
 		vm.loadAll = function() {
 			Dashboard.query({companyId : $rootScope.companyId},function(result) {
