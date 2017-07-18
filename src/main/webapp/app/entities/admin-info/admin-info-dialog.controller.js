@@ -50,10 +50,11 @@
 
         function save () {
             vm.isSaving = true;
-console.log(vm.adminInfo)
+
             if (vm.adminInfo.id !== null) {
                 AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
                 updateAccount();
+
             } else {
                 vm.adminInfo.name = CommonMethods.capitalizeFirstLetter(vm.adminInfo.name);
                 vm.adminInfo.lastname = CommonMethods.capitalizeFirstLetter(vm.adminInfo.lastname);
@@ -138,9 +139,9 @@ console.log(vm.adminInfo)
             $scope.$emit('aditumApp:adminInfoUpdate', result);
             $state.go('home');
             toastr["success"]("Se ha editado tu información correctamente.");
-         $rootScope.companyUser = result;
-                        $rootScope.currentUserImage = result.image;
-                        $rootScope.currentUserImageContentType = result.imageContentType;
+            $rootScope.companyUser = result;
+            $rootScope.currentUserImage = result.image;
+            $rootScope.currentUserImageContentType = result.imageContentType;
             vm.isSaving = false;
         }
 
@@ -154,8 +155,9 @@ console.log(vm.adminInfo)
                  vm.user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
                  vm.user.email = vm.adminInfo.email;
                  User.update(vm.user,onSuccessUser);
-                 function onSuccessUser(data, headers) {
-                    save();
+                 function onSuccessUser(result) {
+                         $uibModalInstance.close(result);
+                             toastr["success"]("Se ha editado el administrador correctamente.");
                   }
               }
 

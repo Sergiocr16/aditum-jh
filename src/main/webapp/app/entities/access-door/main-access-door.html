@@ -25,14 +25,15 @@
                         </li>
                         <li>
                             <ul class="dropdown-menu-list scroll" style="height: 325px;" data-handle-color="#637283">
-                                <li ng-repeat="note in vm.notes | orderBy:'-creation_date'">
-                                    <a href="">
-                                        <span class="subject">
-                                            <span class="bold font-14 blue-font col-lg-5 col-md-5 no-padding">Casa {{note.houseId}}</span>
-                                        <span class="light-gray-font col-lg-7 col-md-7 text-right no-padding"> {{note.creationtime}}</span>
+                                <li ng-repeat="note in vm.notes | orderBy:'-'">
+                                        <span class=" col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; border-bottom: 1px solid #F5F5F5; ">
+                                            <span class="bold font-14 blue-font col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding" >Casa {{note.houseId}}</span>
+                                            <span class="light-gray-font col-lg-7 col-md-7 col-sm-7 col-xs-7 text-right no-padding"> {{note.creationdate}}</span>
+                                              <span ng-click="vm.deleteDomicilioReports(note)" class=" col-lg-1 col-md-1 col-sm-1 col-xs-1"><i class="fa fa-times-circle red" aria-hidden="true"></i></span>
+                                                  <span class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " style="margin-top:10px; margin-bottom:10px; color:#757575;">{{note.description}}</span>
                                         </span>
-                                        <span class="message ">{{note.description}}</span>
-                                    </a>
+
+
                                 </li>
 
                             </ul>
@@ -147,7 +148,7 @@
                                 <div id="{{vm.imageVehiculeState}}" class="result-image "></div>
                             </div>
                             <div class="col-md-4 col-sm-6 col-xs-12 no-padding marging-top-20" id="car-icon-font">
-                                <h1 class="col-mg-12 text-center "><i class=" text-center fa fa-car font-80 " style="color: {{vm.vehicule.color}}; " aria-hidden="true "></i> </h1>
+                                <h1 class="col-mg-12 text-center "><i class=" text-center fa fa-car font-80 " style="color: {{vm.vehicule.color}}; text-shadow: 0px 0px 2px black;" aria-hidden="true "></i> </h1>
                             </div>
 
                             <div class="height-30-pixel  hidden-md hidden-lg col-sm-12 hidden-xs "></div>

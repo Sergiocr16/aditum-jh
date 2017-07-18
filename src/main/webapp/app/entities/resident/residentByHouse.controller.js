@@ -8,7 +8,7 @@
     ResidentByHouseController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident'];
 
     function ResidentByHouseController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident) {
-            $rootScope.active = "residentsHouses";
+        $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -18,11 +18,38 @@
             id: encryptedId
         })
         }
-
         vm.userId = $rootScope.companyUser.id;
         vm.loadPage = loadPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+        House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
+
+          function onSuccess (house) {
+              if (house.securityKey == null && house.emergencyKey == null) {
+                   bootbox.confirm({
+                       message: '<div class="gray-font font-15">Sus claves de seguridad aun no han sido definidas, recuerde que el tener establecidas las claves le provee mayor seguridad.</div>',
+                       closeButton: false,
+
+                       buttons: {
+                           confirm: {
+                               label: 'Establecer ahora',
+                               className: 'btn-success'
+                           },
+                           cancel: {
+                               label: 'Recordarmelo luego',
+                               className: 'btn-danger'
+                           }
+                       },
+                       callback: function(result) {
+                           if (result) {
+                               $state.go('keysConguration');
+                           }
+
+                       }
+                   })
+               }
+            }
+
 
         vm.changesTitles = function() {
             if (enabledOptions) {

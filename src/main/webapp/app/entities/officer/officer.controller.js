@@ -166,16 +166,10 @@
         }
 
         function onSuccessDisabledOfficer(data, headers) {
-            if (data.isOwner == 1) {
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetDisabledUser);
 
-            } else {
-                loadAll();
-                toastr["success"]("Se ha deshabilitado el oficial correctamente.");
-                bootbox.hideAll();
-            }
         }
 
         function onSuccessGetDisabledUser(data, headers) {
@@ -183,23 +177,18 @@
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {
-                toastr["success"]("Se ha deshabilitado el oficial correctamente.");
+                toastr["success"]("Se ha deshabilitado el oficial correctamentedddd.");
                 bootbox.hideAll();
                 loadAll();
             }
         }
 
         function onSuccessEnabledOfficer(data, headers) {
-            if (data.isOwner == 1) {
+
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetEnabledUser);
 
-            } else {
-                bootbox.hideAll();
-                toastr["success"]("Se ha habilitado el oficial correctamente.");
-                loadAll();
-            }
         }
 
         function onSuccessGetEnabledUser(data, headers) {

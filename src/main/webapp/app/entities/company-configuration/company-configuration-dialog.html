@@ -25,7 +25,7 @@
             </div>
         </div>
         <div class="form-group col-md-6 col-sm-6">
-            <label class="control-label" for="field_quantityadmins">Quantityadmins</label>
+            <label class="control-label" for="field_quantityadmins">Cantidad de administradores</label>
             <input type="number" class="form-control" name="quantityadmins" id="field_quantityadmins"
                     ng-model="vm.companyConfiguration.quantityadmins"
                     required/>
@@ -41,7 +41,7 @@
             </div>
         </div>
         <div class="form-group col-md-6 col-sm-6">
-            <label class="control-label"  for="field_quantityaccessdoor">Quantityaccessdoor</label>
+            <label class="control-label"  for="field_quantityaccessdoor">Cantidad puertas de acceso</label>
             <input type="number" class="form-control" name="quantityaccessdoor" id="field_quantityaccessdoor"
                     ng-model="vm.companyConfiguration.quantityaccessdoor"
                     required/>
@@ -55,13 +55,6 @@
                     This field should be a number.
                 </p>
             </div>
-        </div>
-
-        <div class="form-group col-md-6 col-sm-6">
-            <label for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.companyConfiguration.companyId" ng-options="company.id as company.id for company in vm.companies"            >
-                <option value=""></option>
-            </select>
         </div>
     </div>
     <div class="modal-footer">
