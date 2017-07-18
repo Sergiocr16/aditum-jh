@@ -113,7 +113,7 @@ public class HouseResource {
         HouseDTO result = houseService.save(houseDTO);
         String companyName =  this.companyService.findOne(houseDTO.getCompanyId()).getName();
         this.adminInfoService.findAllByCompany(null,houseDTO.getCompanyId()).forEach(adminInfoDTO -> {
-           Optional<User> user = this.userService.getUserWithAuthorities(adminInfoDTO.getUserId());
+            Optional<User> user = this.userService.getUserWithAuthorities(adminInfoDTO.getUserId());
             House house = houseMapper.houseDTOToHouse(houseDTO);
             mailService.sendAbsenceEmail(house,user.get(),companyName);
         });
@@ -175,7 +175,7 @@ public class HouseResource {
         @PathVariable(value = "companyId")  Long  companyId
     ) {
         HouseDTO houseDTO = houseService.validateUpdatedHouse(houseId,houseNumber,extension,companyId);
-String a = "a";
+        String a = "a";
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
     }
 

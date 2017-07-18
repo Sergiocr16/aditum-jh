@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('BrandController', BrandController);
 
-    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','Visitant'];
+    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule'];
 
     function BrandController(Brand,Principal,House,Resident,Vehicule,Visitant) {
 
@@ -13,8 +13,6 @@
 
         vm.brands = [];
         vm.isAuthenticated = Principal.isAuthenticated;
-
-        loadAll();
 
         vm.names = ["Marco","Sofía","Luis","Michael","Bryan","Lorena","Gabriela","Eduardo","Johnny","Violet","Sarah","Cesar","José","Yeimy","Elizabeth","María José","Laura","Ricardo","Adán","Óliver","Rául","Rebeca","Renato","Ingrid","Jesús","Zoe","Helena","Santiago","Simón","Robert"]
         vm.lastNames = ["Carranza","Aguilar","Carrillo","Acosta","Cortés","Calderón","Picado","Ulate","Echandi","Monge","Carazo","Figueres","Trejos","Montealegre","Soto","Jiménez","González","Mora","Tinoco","Durán","Rodríguez","Castro","Castillo","Suarez","Montevideo","Estrada","Salazar","Bonilla","Navarro","Valverde"]
@@ -97,7 +95,6 @@
 
                             }, ];
 
-
         vm.createHouses = function(){
         var setHouseId = 1;
         for(var i= 1;i<=88;i++){
@@ -112,8 +109,6 @@
                            vm.createResidents();
                 },10000)
         }
-
-
         vm.createResidents = function(){
         for(var i=1;i<=(88*5);i++){
         var name = vm.names[Math.floor(Math.random()*vm.names.length) + 0];
@@ -135,7 +130,6 @@
                                                       companyId:1,
                                                       houseId:(Math.floor(Math.random()*88) + 1)},function(){
           toastr['success']("Residente registrado")
-
         })
         }
        setTimeout(function(){
@@ -143,47 +137,47 @@
                   vm.createCars();
                 },30000)
         }
-
-
        vm.randomLetters = function(){
            var text = "";
            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
            for (var i = 0; i < 3; i++)
              text += possible.charAt(Math.floor(Math.random() * possible.length));
-           return text;
+           return text+(Math.floor(Math.random()*999) + 100);
        }
+
+             vm.createBrands= function(){
+             for(var i=0;i<=vm.selectedBrands.length;i++){
+                   Brand.save({brand:vm.selectedBrands[i].brand},function(){
+                   toastr['success']("MARCAS REGISTRADA")
+                   })
+
+             }
+         setTimeout(function(){
+                                 toastr['warning']("TODAS LOS MARCAS REGISTRADAS")
+                                toastr['warning']("LISTO :)");
+                               },3000)
+             };
         vm.createCars = function(){
 
         for(var i = 1;i<=(88*3);i++){
-          Vehicule.save({licenseplate:(vm.randomLetters()+""+(Math.floor(Math.random()*999) + 100)),
+          Vehicule.save({licenseplate:vm.randomLetters(),
           brand:vm.selectedBrands[(Math.floor(Math.random()*vm.selectedBrands.length) + 0)].brand,
           color:'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')',
-          enabled:1,houseId:(Math.floor(Math.random()*88) + 1),companyId:1}),{function(){
-
+          enabled:1,houseId:(Math.floor(Math.random()*88) + 1),companyId:1},function(){
            toastr['success']("Vehiculo Registrado")
-          }}
+          })
+          }
+                   setTimeout(function(){
+                                    toastr['warning']("TODAS LOS VEHICULOS REGISTRADOS")
+                                    vm.createBrands();
+                                  },30000)
         }
-         setTimeout(function(){
-                          toastr['warning']("TODAS LOS VEHICULOS REGISTRADOS")
-                          vm.createBrands();
-                        },30000)
-        }
-      vm.createBrands= function(){
-      for(var i=0;i<=vm.selectedBrands.length;i++){
-            Brand.save({brand:vm.selectedBrands[i].brand},function(){
-            toastr['success']("MARCAS REGISTRADA")
-            })
 
-      }
-  setTimeout(function(){
-                          toastr['warning']("TODAS LOS MARCAS REGISTRADAS")
-                         toastr['warning']("TODO LISTO :)")
-                        },3000)
-      };
         vm.fillInfo = function(){
         vm.createHouses();
-
         }
+        loadAll();
+
         function loadAll() {
             Brand.query(function(result) {
                 vm.brands = result;
