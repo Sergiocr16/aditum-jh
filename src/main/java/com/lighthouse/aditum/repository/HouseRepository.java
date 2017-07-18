@@ -13,7 +13,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface HouseRepository extends JpaRepository<House,Long> {
-    Page<House> findByCompanyId(Pageable pageable, Long companyId);
+    List<House> findByCompanyId(Long companyId);
 
     House findByhousenumberAndCompanyId(String houseNumber,Long companyId);
 
