@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.HouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -53,14 +54,13 @@ public class HouseService {
     /**
      *  Get all the houses.
      *
-     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<HouseDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<HouseDTO> findAll(Long companyId) {
         log.debug("Request to get all Houses");
-        Page<House> result = houseRepository.findByCompanyId(pageable,companyId);
-        return result.map(house -> houseMapper.houseToHouseDTO(house));
+        List<House> result = houseRepository.findByCompanyId(companyId);
+        return  new PageImpl<>(result).map(house -> houseMapper.houseToHouseDTO(house));
     }
 
     /**

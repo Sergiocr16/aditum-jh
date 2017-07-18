@@ -127,7 +127,6 @@ public class HouseResource {
     /**
      * GET  /houses : get all the houses.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of houses in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
@@ -136,7 +135,7 @@ public class HouseResource {
     public ResponseEntity<List<HouseDTO>> getAllHouses(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Houses");
-        Page<HouseDTO> page = houseService.findAll(pageable,companyId);
+        Page<HouseDTO> page = houseService.findAll(companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/houses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

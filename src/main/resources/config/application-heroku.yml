@@ -16,13 +16,14 @@ eureka:
         non-secure-port: 80
         prefer-ip-address: false
     client:
-        serviceUrl:
+        service-url:
             defaultZone: ${JHIPSTER_REGISTRY_URL}/eureka/
 
 spring:
     datasource:
-        type: com.zaxxer.hikari.HikariDataSource
-        maximumPoolSize: 10
+        type: com.zaxxer.hikari.HikariDataSource        
         url: ${JDBC_DATABASE_URL}
         username: ${JDBC_DATABASE_USERNAME}
         password: ${JDBC_DATABASE_PASSWORD}
+        hikari:
+            maximumPoolSize: 8

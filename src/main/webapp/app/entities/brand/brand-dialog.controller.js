@@ -5,14 +5,15 @@
         .module('aditumApp')
         .controller('BrandDialogController', BrandDialogController);
 
-    BrandDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Brand'];
+    BrandDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Brand','Principal'];
 
-    function BrandDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Brand) {
+    function BrandDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Brand,Principal) {
         var vm = this;
 
         vm.brand = entity;
         vm.clear = clear;
         vm.save = save;
+        vm.isAuthenticated = Principal.isAuthenticated;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
