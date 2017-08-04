@@ -94,7 +94,7 @@
 
             }
             function onError(){
-
+                console.log(vm.house);
                 House.save(vm.house, onSaveSuccess, onSaveError);
 
             }

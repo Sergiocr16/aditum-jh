@@ -29,6 +29,6 @@
     "languages": [
       "es"
     ],
-    "herokuAppName": "aditum-jh"
+    "herokuAppName": null
   }
 }
