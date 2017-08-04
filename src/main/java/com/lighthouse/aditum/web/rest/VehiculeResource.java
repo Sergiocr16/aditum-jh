@@ -132,7 +132,7 @@ public class VehiculeResource {
     public ResponseEntity<List<VehiculeDTO>> getAllVehicules(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Vehicules");
-        Page<VehiculeDTO> page = vehiculeService.findAll(pageable,companyId);
+        Page<VehiculeDTO> page = vehiculeService.findAll(companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehicules");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

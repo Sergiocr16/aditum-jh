@@ -92,10 +92,10 @@ public class VisitantResource {
      */
     @GetMapping("/visitants")
     @Timed
-    public ResponseEntity<List<VisitantDTO>> getAllVisitants(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<VisitantDTO>> getAllVisitants(Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Visitants");
-        Page<VisitantDTO> page = visitantService.findAll(pageable, companyId);
+        Page<VisitantDTO> page = visitantService.findAll(companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

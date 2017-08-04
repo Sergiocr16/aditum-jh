@@ -17,8 +17,11 @@
 
         var securityKey, emergencyKey, housenumber;
         vm.hideEmergencyForm = 1;
+        vm.hideLoadingForm = 2;
+        vm.hideRegisterForm = 1;
+        vm.show = 20;
         vm.logout = logout;
-        vm.show = 4;
+
         vm.isAuthenticated = Principal.isAuthenticated;
         function logout() {
             Auth.logout();
@@ -90,7 +93,9 @@
                 vm.notes = notes;
                 vm.countNotes = vm.notes.length;
                 subscribe();
-
+                vm.show = 4;
+                vm.hideRegisterForm = 2;
+                vm.hideLoadingForm = 1;
             }
         }
         function subscribe(){
@@ -127,8 +132,6 @@
                 toastr["success"]("Eliminado");
                 loadNotes();
                 WSDeleteEntity.sendDeletedEntity({type:'resident',id:result.id})
-
-
         }
         vm.getVehicule = function(){
             vm.id_number = "";
@@ -140,6 +143,7 @@
                  $("#vehicule_license_plate").css("text-transform", "uppercase");
 
                         vm.show = 3;
+
                         angular.forEach(vehiculesList, function(item, index) {
                             if (item.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase()) {
                                 vm.vehiculeRegisteredTitle = "Vehículo registrado";
@@ -188,11 +192,8 @@
             if (vm.visitor_id_number == "") {
                 clearInputs();
             } else {
-
                 angular.forEach(visitorsList, function(itemVisitor, index) {
-
                     if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
-
                         vm.visitor_name = itemVisitor.name;
                         vm.visitor_last_name = itemVisitor.lastname;
                         vm.visitor_second_last_name = itemVisitor.secondlastname;
@@ -255,9 +256,10 @@
                     vm.show = 4;
                 } else {
                     vm.show = 3;
-                    console.log(vm.id_number);
+
                     angular.forEach(residentsList, function(item, index) {
                         if (item.identificationnumber == vm.id_number) {
+
                             vm.residentRegisteredTitle = "Residente registrado"
                             vm.colorResidentRegistered = "green-font"
                             $("#residentAccess").fadeIn(100);
@@ -277,10 +279,8 @@
 
                    if (vm.id_number.length >= 6) {
                        angular.forEach(invitedList, function(itemVisitor, index) {
-
-
                            if (itemVisitor.identificationnumber == vm.id_number && itemVisitor.isinvited == 1) {
-                               console.log('el estado es'+itemVisitor.isinvited);
+
                                vm.invited_visitant_name = itemVisitor.name;
                                vm.invited_visitant_last_name = itemVisitor.lastname;
                                vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
@@ -575,7 +575,7 @@ function receiveResident(resident){
 function receiveVehicle(vehicle){
 if(vehiculesList!==undefined){
 var result =  hasExistance(vehiculesList,vehicle.id)
-console.log()
+
 if(result!==-1){
 vehiculesList[result] = vehicle;
 }else{

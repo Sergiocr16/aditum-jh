@@ -51,14 +51,13 @@ public class VisitantService {
     /**
      *  Get all the visitants.
      *
-     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<VisitantDTO> findAll(Long companyId) {
         log.debug("Request to get all Visitants");
-        Page<Visitant> result = visitantRepository.findByCompanyId(pageable,companyId);
-        return result.map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        List<Visitant> result = visitantRepository.findByCompanyId(companyId);
+        return new PageImpl<>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
 
     @Transactional(readOnly = true)

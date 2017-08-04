@@ -13,7 +13,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
-    Page<Vehicule> findByCompanyId(Pageable pageable, Long companyId);
+    List<Vehicule> findByCompanyId(Long companyId);
     Vehicule findOneByCompanyIdAndLicenseplate(Long companyId,String licensePlate);
     List<Vehicule> findByEnabledAndCompanyId(Integer state, Long companyId);
     List<Vehicule> findByEnabledAndHouseId(Integer state,Long houseId);

@@ -394,7 +394,13 @@ color: #C62828;
  border: 3px solid #ff0000;
  border-radius: 15px;
  background-color:  #ff3333;
-	min-height: 500px;
+ min-height: 500px;
+
+}
+#loadingContainer{
+
+ background-color:  white;
+ min-height: 500px;
 
 }
 .left-padding-10{
