@@ -45,7 +45,21 @@
                    method: 'GET',
                    url: 'api/residentsDisabled/byHouse',
                    isArray: true
-               }
+               },
+              'getByCompanyAndIdentification': {
+                   method: 'GET',
+                   url: 'api/residents/findByCompanyAndIdentification/:companyId/:identificationID',
+                   params:{
+                      companyId:'@companyId',
+                      licensePlate: '@identificationID'
+                    },
+                   transformResponse: function (data) {
+                       if (data) {
+                           data = angular.fromJson(data);
+                       }
+                       return data;
+                   }
+                }
         });
     }
 })();

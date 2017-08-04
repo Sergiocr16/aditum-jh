@@ -36,7 +36,21 @@
                                 }
                                 return data;
                             }
-                        },
+                    },
+            'getByCompanyAndIdentification': {
+                 method: 'GET',
+                 url: 'api/officers/findByCompanyAndIdentification/:companyId/:identificationID',
+                 params:{
+                    companyId:'@companyId',
+                    licensePlate: '@identificationID'
+                  },
+                 transformResponse: function (data) {
+                     if (data) {
+                         data = angular.fromJson(data);
+                     }
+                     return data;
+                 }
+              },
             'update': { method:'PUT' }
         });
     }

@@ -275,21 +275,7 @@
 //                 });
 //                 return condition;
 //             },
-//             waitingMessage: function(message) {
-//                 bootbox.dialog({
-//                         message: '<div class="text-center gray-font font-15"><img src="../../assets/global/img/4.gif" style="width: 20px; height: 20px;"/>  Por favor espere...</div>',
-//                         closeButton: false,
-//                     })
-//                     // var box = bootbox.dialog({
-//                     //     message: '<div class="text-center gray-font font-15"><img src="../../assets/global/img/loading-circle.gif" style="width:40%; height 40%;" /></div>'
-//                     //
-//                     // })
-//                     // box.find('.modal-content').css({
-//                     //     'background': 'rgba(0, 0, 0, 0.0)',
-//                     //     'border': '0px solid',
-//                     //     'box-shadow': '0px 0px 0px #999'
-//                     // });
-//             },
+//
 
 //             validateSpecialCharacters: function() {
 //                 jQuery('.specialCharacters').keypress(function(tecla) {

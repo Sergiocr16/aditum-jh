@@ -17,6 +17,7 @@
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
+        var indentification = vm.resident.identificationnumber;
         vm.user = entity;
         vm.success = null;
         vm.loginStringCount = 0;
@@ -54,33 +55,63 @@
             vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
             vm.isSaving = true;
             if (vm.resident.id !== null) {
-                if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
-                } else if(autorizadorStatus==1 && vm.resident.isOwner==false){
-                     updateAccount(0);
-                } else if(autorizadorStatus==0 && vm.resident.isOwner==true){
-                     if(vm.resident.userId!==null){
-                         updateAccount(1);
-                     } else{
-                         createAccount(2);
+                if(indentification!==vm.resident.identificationnumber){
+                   Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                    function alreadyExist(data){
+                     toastr["error"]("La cédula ingresada ya existe.");
+                   }
+                     function allClear(data){
+                         updateResident();
                      }
-                } else if(vm.resident.isOwner==false){
-                    changeStatusIsOwner();
-                    Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                }else{
-                    updateAccount(vm.resident.enabled);
-                }
-            } else {
-                if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
-                    toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
-                } else if(vm.resident.isOwner == 1){
-                     createAccount(1);
                 } else {
-                     insertResident(null);
+                   updateResident();
                 }
+
+
+            } else {
+                  Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                    function alreadyExist(data){
+                     toastr["error"]("La cédula ingresada ya existe.");
+                   }
+
+                 function allClear(data){
+                        if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
+                               toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
+                           } else if(vm.resident.isOwner == 1){
+                                CommonMethods.waitingMessage();
+                                createAccount(1);
+                           } else {
+                                CommonMethods.waitingMessage();
+                                insertResident(null);
+                           }
+                 }
+
+
             }
         }
-
+        function updateResident(){
+          if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
+                toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
+            } else if(autorizadorStatus==1 && vm.resident.isOwner==false){
+                 CommonMethods.waitingMessage();
+                 updateAccount(0);
+            } else if(autorizadorStatus==0 && vm.resident.isOwner==true){
+                 if(vm.resident.userId!==null){
+                     CommonMethods.waitingMessage();
+                     updateAccount(1);
+                 } else{
+                     CommonMethods.waitingMessage();
+                     createAccount(2);
+                 }
+            } else if(vm.resident.isOwner==false){
+                changeStatusIsOwner();
+                CommonMethods.waitingMessage();
+                Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+            }else{
+                CommonMethods.waitingMessage();
+                updateAccount(vm.resident.enabled);
+            }
+        }
         function changeStatusIsOwner(){
             if(vm.resident.isOwner==false){vm.resident.isOwner=0}else{vm.resident.isOwner=1}
         }
@@ -117,7 +148,6 @@
                  User.update(user,onSuccessUser);
                  function onSuccessUser(data, headers) {
                     changeStatusIsOwner();
-                    console.log('se actualizo');
                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
 
                   }
@@ -128,6 +158,7 @@
             WSResident.sendActivity(result);
                 vm.isSaving = false;
                 $state.go('resident');
+                bootbox.hideAll();
                 toastr["success"]("Se ha editado el residente correctamente.");
             }
         function insertResident(id){
@@ -144,6 +175,7 @@
              WSResident.sendActivity(result);
                   vm.isSaving = false;
                   $state.go('resident');
+                  bootbox.hideAll();
                   toastr["success"]("Se ha registrado el residente correctamente.");
               }
         }
@@ -167,7 +199,7 @@
             User.save(vm.user, onSaveUser, onSaveLoginError);
              function onSaveUser (result) {
                    $state.go('resident');
-
+                    bootbox.hideAll();
              }
         }
 

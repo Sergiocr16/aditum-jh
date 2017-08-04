@@ -15,6 +15,7 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
+        var indentification = vm.officer.identificationnumber;
         CommonMethods.validateLetters();
         vm.loginStringCount = 0;
         CommonMethods.validateNumbers();
@@ -35,12 +36,32 @@
         function save () {
             vm.isSaving = true;
             if (vm.officer.id !== null) {
-                updateAccount();
+              if(indentification!==vm.officer.identificationnumber){
+               Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
+                function alreadyExist(data){
+                 toastr["error"]("La cédula ingresada ya existe.");
+               }
+                 function allClear(data){
+                    updateAccount();
+                 }
             } else {
-                vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
-                vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
-                vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
-                createAccount();
+             updateAccount();
+            }
+
+
+
+
+            } else {
+                Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
+                    function alreadyExist(data){
+                    toastr["error"]("La cédula ingresada ya existe.");
+                }
+                 function allClear(data){
+                        vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
+                        vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
+                        vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
+                        createAccount();
+                 }
             }
         }
 

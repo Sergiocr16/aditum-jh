@@ -17,6 +17,7 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
+                var indentification = vm.resident.identificationnumber;
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
@@ -58,18 +59,44 @@
              vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
              vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
              if(vm.resident.id!==null){
-                if(vm.resident.isOwner == true){
-                    vm.resident.isOwner = 1;
+               if(indentification!==vm.resident.identificationnumber){
+                   Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                    function alreadyExist(data){
+                     toastr["error"]("La cédula ingresada ya existe.");
+                   }
+                     function allClear(data){
+                          CommonMethods.waitingMessage();
+                         if(vm.resident.isOwner == true){
+                           vm.resident.isOwner = 1;
+                       } else {
+                            vm.resident.isOwner = 0;
+                       }
+                       Resident.update(vm.resident, onSuccess, onSaveError);
+                     }
                 } else {
-                     vm.resident.isOwner = 0;
+                    if(vm.resident.isOwner == true){
+                          vm.resident.isOwner = 1;
+                      } else {
+                           vm.resident.isOwner = 0;
+                      }
+                      Resident.update(vm.resident, onSuccess, onSaveError);
                 }
-                Resident.update(vm.resident, onSuccess, onSaveError);
+
              } else{
-                vm.resident.enabled = 1;
-                 vm.resident.isOwner = 0;
-                vm.resident.companyId = $rootScope.companyId;
-                vm.resident.houseId = $rootScope.companyUser.houseId
-                Resident.save(vm.resident, onSuccess, onSaveError);
+                Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                     function alreadyExist(data){
+                      toastr["error"]("La cédula ingresada ya existe.");
+                    }
+
+                  function allClear(data){
+                      CommonMethods.waitingMessage();
+                     vm.resident.enabled = 1;
+                     vm.resident.isOwner = 0;
+                     vm.resident.companyId = $rootScope.companyId;
+                     vm.resident.houseId = $rootScope.companyUser.houseId
+                     Resident.save(vm.resident, onSuccess, onSaveError);
+                  }
+
              }
 
         }
@@ -82,6 +109,7 @@
                }
                 vm.isSaving = false;
                 $state.go('residentByHouse');
+                 bootbox.hideAll();
                   if(vm.resident.id !== null){
                     toastr["success"]("Se ha editado el residente correctamente.");
                   }else{

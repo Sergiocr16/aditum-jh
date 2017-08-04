@@ -84,7 +84,13 @@ public class OfficerService {
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         return officerDTO;
     }
-
+    @Transactional(readOnly = true)
+    public OfficerDTO findOneByCompanyAndIdentification(Long id,String identificationID) {
+        log.debug("Request to get Vehicule : {}", id);
+        Officer officer = officerRepository.findByCompanyIdAndIdentificationnumber(id,identificationID);
+        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        return officerDTO;
+    }
 
     @Transactional(readOnly = true)
     public Integer countByCompanyId(Long companyId) {

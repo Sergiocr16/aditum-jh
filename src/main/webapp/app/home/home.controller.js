@@ -19,7 +19,9 @@
 				if(account !== null){
 					if(account.authorities[0] === 'ROLE_USER'){
 						$state.go('residentByHouse');
-					}
+					}else if(account.authorities[0] === 'ROLE_MANAGER'){
+                        $state.go('dashboard');
+                    }
 				}
 			})
 		}
