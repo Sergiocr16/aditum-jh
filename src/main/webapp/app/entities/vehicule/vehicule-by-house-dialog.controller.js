@@ -51,7 +51,7 @@
            vm.vehicule.color = $('#color').css('background-color');
          }
         function save () {
-         vm.vehicule.brand = vm.vehicule.brand.brand;
+
          vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
             if (vm.vehicule.id !== null) {
@@ -61,10 +61,12 @@
                     toastr["error"]("La placa ingresada ya existe.");
                    }
                 function allClear(data){
-                 Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
+                vm.vehicule.brand = vm.vehicule.brand.brand;
+                 Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
                   }
               }else{
-               Vehicule.update(vm.vehicule, onSaveSuccess, onSaveError);
+              vm.vehicule.brand = vm.vehicule.brand.brand;
+               Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
               }
             } else {
                 vm.vehicule.enabled = 1;
@@ -77,6 +79,7 @@
                    }
 
                     function allClear(data){
+                    alert('hola')
                       Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
                     }
 
@@ -87,9 +90,15 @@
         WSVehicle.sendActivity(result);
               $state.go('vehiculeByHouse');
                   toastr["success"]("Se ha registrado el vehículo correctamente.");
-
             vm.isSaving = false;
         }
+
+            function onEditSuccess (result) {
+                WSVehicle.sendActivity(result);
+                      $state.go('vehiculeByHouse');
+                          toastr["success"]("Se ha editado el vehículo correctamente.");
+                    vm.isSaving = false;
+                }
 
         function onSaveError () {
             vm.isSaving = false;

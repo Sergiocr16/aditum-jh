@@ -51,14 +51,14 @@ public class VehiculeService {
     /**
      *  Get all the vehicules.
      *
-     *  @param pageable the pagination information
+
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<VehiculeDTO> findAll(Long companyId) {
         log.debug("Request to get all Vehicules");
-        Page<Vehicule> result = vehiculeRepository.findByCompanyId(pageable,companyId);
-        return result.map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        List<Vehicule> result = vehiculeRepository.findByCompanyId(companyId);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
     }
 
     /**

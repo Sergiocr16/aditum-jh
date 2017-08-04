@@ -47,7 +47,7 @@
 
                                 </div>
                                 <div class="form-group form-md-line-input has-info">
-                                <select id="pruebisiima" class="form-control gray-font" data-ng-model="vm.vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand" required>
+                                <select id="pruebisiima" class="form-control gray-font" data-ng-model="vm.vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand"  ng-required='vm.required==1'>
                                     <option value="">Seleccione una marca</option>
                                 </select>
                                 <label for="form_control_1" class="font-15">Marca</label>
