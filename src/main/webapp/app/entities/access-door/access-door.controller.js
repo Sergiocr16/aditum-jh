@@ -30,7 +30,8 @@
             $rootScope.showLogin = true;
             unsubscribe();
         }
-        loadResidents();
+
+        setTimeout(function(){ loadResidents();},800)
 
        function unsubscribe(){
        WSDeleteEntity.unsubscribe($rootScope.companyId);
@@ -562,6 +563,7 @@ function receiveHomeService(homeService){
 
 
 function receiveResident(resident){
+console.log(resident)
         if(residentsList!==undefined){
             var result = hasExistance(residentsList,resident.id)
             if(result!==-1){

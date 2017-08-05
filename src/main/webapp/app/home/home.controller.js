@@ -21,7 +21,9 @@
 						$state.go('residentByHouse');
 					}else if(account.authorities[0] === 'ROLE_MANAGER'){
                         $state.go('dashboard');
-                    }
+                    }else if(account.authorities[0] === 'ROLE_OFFICER'){
+                         $state.go('main-access-door');
+                     }
 				}
 			})
 		}

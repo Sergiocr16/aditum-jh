@@ -55,7 +55,7 @@
 
           vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
-            if (vm.vehicule.id !== null) {
+            if (vm.vehicule.id !== null || vm.vehicule.id !== undefined) {
              if(vm.myPlate!==vm.vehicule.licenseplate){
               Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClear)
                    function alreadyExist(data){

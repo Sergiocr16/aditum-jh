@@ -37,7 +37,9 @@
 				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/vm.dashboard.totalHouses).toFixed(2)
 			});
 		}
-		vm.loadAll();
+
+	  setTimeout(function(){ vm.loadAll();},600)
+
 		function formatResponsableOfficer(stringOfficer) {
 			var variables = stringOfficer.split(';')
 			var officer = {};

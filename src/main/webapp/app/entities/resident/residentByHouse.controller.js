@@ -66,8 +66,7 @@
                  vm.color = "green";
             }
         }
-        loadResidents();
-
+        setTimeout(function(){ loadResidents();},600)
         function loadResidents() {
 
             if (enabledOptions) {
