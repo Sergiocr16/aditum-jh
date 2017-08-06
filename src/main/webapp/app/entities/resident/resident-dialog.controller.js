@@ -5,14 +5,19 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
+    ResidentDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident','SaveImageCloudinary'];
 
-    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
+    function ResidentDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident,SaveImageCloudinary) {
         $rootScope.active = "residents";
         var vm = this;
+        var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
+        if(entity.image_url==undefined){
+        entity.image_url = null;
+        }
         vm.required = 1;
+
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -22,6 +27,7 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
+        console.log(vm.resident)
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         if(vm.resident.id !== null){
@@ -106,7 +112,21 @@
             } else if(vm.resident.isOwner==false){
                 changeStatusIsOwner();
                 CommonMethods.waitingMessage();
-                Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                   vm.imageUser = {user: vm.resident.id};
+                   if(vm.imageUser!==null){
+                  SaveImageCloudinary
+                                    .save(fileImage, vm.imageUser)
+                                    .then(onSaveImageSuccess, onSaveError, onNotify);
+                    function onNotify(info) {
+                                vm.progress = Math.round((info.loaded / info.total) * 100);
+                     }
+                    function onSaveImageSuccess(data) {
+                    vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                        Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                    }
+                }else{
+                  Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                }
             }else{
                 CommonMethods.waitingMessage();
                 updateAccount(vm.resident.enabled);
@@ -131,7 +151,21 @@
                else if(opcion==2){
                      vm.resident.userId = result.id;
                      vm.resident.isOwner = 1;
-                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                    vm.imageUser = {user: vm.resident.id};
+                     if(vm.imageUser!==null){
+                      SaveImageCloudinary
+                                        .save(fileImage, vm.imageUser)
+                                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                        function onNotify(info) {
+                                    vm.progress = Math.round((info.loaded / info.total) * 100);
+                         }
+                        function onSaveImageSuccess(data) {
+                        vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                            Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                        }
+                        }else{
+                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                        }
                }
                vm.isSaving = false;
             }
@@ -148,7 +182,21 @@
                  User.update(user,onSuccessUser);
                  function onSuccessUser(data, headers) {
                     changeStatusIsOwner();
-                    Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                  vm.imageUser = {user: vm.resident.id};
+                   if(vm.imageUser!==null){
+                           SaveImageCloudinary
+                                             .save(fileImage, vm.imageUser)
+                                             .then(onSaveImageSuccess, onSaveError, onNotify);
+                             function onNotify(info) {
+                                         vm.progress = Math.round((info.loaded / info.total) * 100);
+                              }
+                             function onSaveImageSuccess(data) {
+                             vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                 Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                             }
+                             }else{
+                              Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                             }
 
                   }
               }
@@ -170,14 +218,36 @@
             }else{
             vm.resident.isOwner = 0;
             }
-            Resident.save(vm.resident, onSaveSuccess, onSaveError);
-             function onSaveSuccess (result) {
-             WSResident.sendActivity(result);
-                  vm.isSaving = false;
-                  $state.go('resident');
-                  bootbox.hideAll();
-                  toastr["success"]("Se ha registrado el residente correctamente.");
-              }
+          vm.imageUser = {user: id};
+           if(fileImage!==null){
+                      SaveImageCloudinary
+                                        .save(fileImage, vm.imageUser)
+                                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                        function onNotify(info) {
+                                    vm.progress = Math.round((info.loaded / info.total) * 100);
+                         }
+                        function onSaveImageSuccess(data) {
+                        vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                       Resident.save(vm.resident, onSaveSuccess, onSaveError);
+                                        function onSaveSuccess (result) {
+                                        WSResident.sendActivity(result);
+                                             vm.isSaving = false;
+                                             $state.go('resident');
+                                             bootbox.hideAll();
+                                             toastr["success"]("Se ha registrado el residente correctamente.");
+                                         }
+                        }
+            }else{
+           Resident.save(vm.resident, onSaveSuccess, onSaveError);
+                function onSaveSuccess (result) {
+                WSResident.sendActivity(result);
+                     vm.isSaving = false;
+                     $state.go('resident');
+                     bootbox.hideAll();
+                     toastr["success"]("Se ha registrado el residente correctamente.");
+                 }
+            }
+
         }
 
         function generateLogin(config){
@@ -203,19 +273,20 @@
              }
         }
 
-        vm.setImage = function ($file, resident) {
-            if ($file && $file.$error === 'pattern') {
-                return;
-            }
-            if ($file) {
-                DataUtils.toBase64($file, function(base64Data) {
-                    $scope.$apply(function() {
-                        resident.image = base64Data;
-                        resident.imageContentType = $file.type;
-                    });
-                });
-            }
-        };
+              vm.setImage = function ($file) {
+                        if ($file && $file.$error === 'pattern') {
+                            return;
+                        }
+                        if ($file) {
+                            DataUtils.toBase64($file, function(base64Data) {
+                                $scope.$apply(function() {
+                                    vm.displayImage = base64Data;
+                                    vm.displayImageType = $file.type;
+                                });
+                            });
+                            fileImage = $file;
+                        }
+               };
 
     }
 })();

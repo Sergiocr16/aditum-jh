@@ -33,6 +33,8 @@ public class AdminInfoDTO implements Serializable {
     @Max(value = 1)
     private Integer enabled;
 
+    private String image_url;
+
     private Long userId;
 
     private String userLogin;
@@ -103,6 +105,13 @@ public class AdminInfoDTO implements Serializable {
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
 
     public Long getUserId() {
         return userId;
@@ -160,6 +169,7 @@ public class AdminInfoDTO implements Serializable {
             ", email='" + email + "'" +
             ", image='" + image + "'" +
             ", enabled='" + enabled + "'" +
+            ", image_url='" + image_url + "'" +
             '}';
     }
 }

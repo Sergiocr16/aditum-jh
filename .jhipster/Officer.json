@@ -71,6 +71,10 @@
         {
             "fieldName": "enable",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "image_url",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",

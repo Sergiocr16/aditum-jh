@@ -24,6 +24,7 @@
             "email": "Email",
             "isOwner": "Is Owner",
             "enabled": "Enabled",
+            "image_url": "Image Url",
             "user": "User",
             "company": "Company",
             "house": "House"

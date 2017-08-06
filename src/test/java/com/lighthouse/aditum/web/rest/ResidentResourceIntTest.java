@@ -70,6 +70,9 @@ public class ResidentResourceIntTest {
     private static final Integer DEFAULT_ENABLED = 0;
     private static final Integer UPDATED_ENABLED = 1;
 
+    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
+
     @Autowired
     private ResidentRepository residentRepository;
 
@@ -122,7 +125,8 @@ public class ResidentResourceIntTest {
                 .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
                 .email(DEFAULT_EMAIL)
                 .isOwner(DEFAULT_IS_OWNER)
-                .enabled(DEFAULT_ENABLED);
+                .enabled(DEFAULT_ENABLED)
+                .image_url(DEFAULT_IMAGE_URL);
         return resident;
     }
 
@@ -158,6 +162,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testResident.getIsOwner()).isEqualTo(DEFAULT_IS_OWNER);
         assertThat(testResident.getEnabled()).isEqualTo(DEFAULT_ENABLED);
+        assertThat(testResident.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
     }
 
     @Test
@@ -277,7 +282,8 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].isOwner").value(hasItem(DEFAULT_IS_OWNER)))
-            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)));
+            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
+            .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())));
     }
 
     @Test
@@ -300,7 +306,8 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.isOwner").value(DEFAULT_IS_OWNER))
-            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED));
+            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
+            .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()));
     }
 
     @Test
@@ -330,7 +337,8 @@ public class ResidentResourceIntTest {
                 .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
                 .email(UPDATED_EMAIL)
                 .isOwner(UPDATED_IS_OWNER)
-                .enabled(UPDATED_ENABLED);
+                .enabled(UPDATED_ENABLED)
+                .image_url(UPDATED_IMAGE_URL);
         ResidentDTO residentDTO = residentMapper.residentToResidentDTO(updatedResident);
 
         restResidentMockMvc.perform(put("/api/residents")
@@ -352,6 +360,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testResident.getIsOwner()).isEqualTo(UPDATED_IS_OWNER);
         assertThat(testResident.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testResident.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
     }
 
     @Test

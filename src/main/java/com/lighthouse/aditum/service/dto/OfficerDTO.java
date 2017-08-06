@@ -41,6 +41,8 @@ public class OfficerDTO implements Serializable {
 
     private Boolean enable;
 
+    private String image_url;
+
     private Long userId;
 
     private String userLogin;
@@ -118,6 +120,13 @@ public class OfficerDTO implements Serializable {
     public void setEnable(Boolean enable) {
         this.enable = enable;
     }
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
 
     public Long getUserId() {
         return userId;
@@ -176,6 +185,7 @@ public class OfficerDTO implements Serializable {
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +
+            ", image_url='" + image_url + "'" +
             '}';
     }
 }

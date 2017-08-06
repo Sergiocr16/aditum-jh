@@ -42,6 +42,7 @@ public class AdminInfoService {
     public AdminInfoDTO save(AdminInfoDTO adminInfoDTO) {
         log.debug("Request to save AdminInfo : {}", adminInfoDTO);
         AdminInfo adminInfo = adminInfoMapper.adminInfoDTOToAdminInfo(adminInfoDTO);
+        adminInfo.setImage_url(adminInfoDTO.getImage_url());
         adminInfo = adminInfoRepository.save(adminInfo);
         AdminInfoDTO result = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         return result;
@@ -78,6 +79,7 @@ public class AdminInfoService {
         log.debug("Request to get AdminInfo : {}", id);
         AdminInfo adminInfo = adminInfoRepository.findOne(id);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
+        adminInfoDTO.setImage_url(adminInfo.getImage_url());
         return adminInfoDTO;
     }
 
@@ -86,6 +88,7 @@ public class AdminInfoService {
         log.debug("Request to get AdminInfo : {}", id);
         AdminInfo adminInfo = adminInfoRepository.findOneByUserId(id);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
+        adminInfoDTO.setImage_url(adminInfo.getImage_url());
         return adminInfoDTO;
     }
 

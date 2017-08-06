@@ -64,6 +64,12 @@ public class OfficerResourceIntTest {
     private static final Integer DEFAULT_INSERVICE = 0;
     private static final Integer UPDATED_INSERVICE = 1;
 
+    private static final Boolean DEFAULT_ENABLE = false;
+    private static final Boolean UPDATED_ENABLE = true;
+
+    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
+
     @Autowired
     private OfficerRepository officerRepository;
 
@@ -114,7 +120,9 @@ public class OfficerResourceIntTest {
                 .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
                 .email(DEFAULT_EMAIL)
                 .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
-                .inservice(DEFAULT_INSERVICE);
+                .inservice(DEFAULT_INSERVICE)
+                .enable(DEFAULT_ENABLE)
+                .image_url(DEFAULT_IMAGE_URL);
         return officer;
     }
 
@@ -148,6 +156,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testOfficer.getIdentificationnumber()).isEqualTo(DEFAULT_IDENTIFICATIONNUMBER);
         assertThat(testOfficer.getInservice()).isEqualTo(DEFAULT_INSERVICE);
+        assertThat(testOfficer.isEnable()).isEqualTo(DEFAULT_ENABLE);
+        assertThat(testOfficer.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
     }
 
     @Test
@@ -303,7 +313,9 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].identificationnumber").value(hasItem(DEFAULT_IDENTIFICATIONNUMBER.toString())))
-            .andExpect(jsonPath("$.[*].inservice").value(hasItem(DEFAULT_INSERVICE)));
+            .andExpect(jsonPath("$.[*].inservice").value(hasItem(DEFAULT_INSERVICE)))
+            .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE.booleanValue())))
+            .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())));
     }
 
     @Test
@@ -324,7 +336,9 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.identificationnumber").value(DEFAULT_IDENTIFICATIONNUMBER.toString()))
-            .andExpect(jsonPath("$.inservice").value(DEFAULT_INSERVICE));
+            .andExpect(jsonPath("$.inservice").value(DEFAULT_INSERVICE))
+            .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE.booleanValue()))
+            .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()));
     }
 
     @Test
@@ -352,7 +366,9 @@ public class OfficerResourceIntTest {
                 .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
                 .email(UPDATED_EMAIL)
                 .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
-                .inservice(UPDATED_INSERVICE);
+                .inservice(UPDATED_INSERVICE)
+                .enable(UPDATED_ENABLE)
+                .image_url(UPDATED_IMAGE_URL);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(updatedOfficer);
 
         restOfficerMockMvc.perform(put("/api/officers")
@@ -372,6 +388,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testOfficer.getIdentificationnumber()).isEqualTo(UPDATED_IDENTIFICATIONNUMBER);
         assertThat(testOfficer.getInservice()).isEqualTo(UPDATED_INSERVICE);
+        assertThat(testOfficer.isEnable()).isEqualTo(UPDATED_ENABLE);
+        assertThat(testOfficer.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
     }
 
     @Test
