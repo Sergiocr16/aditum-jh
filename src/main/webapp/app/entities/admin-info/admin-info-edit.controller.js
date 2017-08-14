@@ -5,11 +5,16 @@
         .module('aditumApp')
         .controller('AdminInfoEditDialogController', AdminInfoEditDialogController);
 
-    AdminInfoEditDialogController.$inject = ['$rootScope','$state', '$scope', '$stateParams', 'Principal', 'DataUtils', 'AdminInfo', 'User', 'Company'];
+    AdminInfoEditDialogController.$inject = ['$rootScope','$state', '$scope', '$stateParams', 'Principal', 'DataUtils', 'AdminInfo', 'User', 'Company','SaveImageCloudinary'];
 
-    function AdminInfoEditDialogController ($rootScope,$state, $scope, $stateParams, Principal, DataUtils, AdminInfo, User, Company) {
+    function AdminInfoEditDialogController ($rootScope,$state, $scope, $stateParams, Principal, DataUtils, AdminInfo, User, Company,SaveImageCloudinary) {
         var vm = this;
+          var fileImage = null;
 
+
+        if($rootScope.companyUser.image_url==undefined){
+              $rootScope.companyUser.image_url = null;
+        }
         vm.adminInfo =$rootScope.companyUser;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -28,19 +33,52 @@
         function save () {
             vm.isSaving = true;
             if (vm.adminInfo.id !== null) {
-                AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                        vm.imageUser = {user: vm.adminInfo.id};
+                          if(fileImage!==null){
+                      SaveImageCloudinary
+                                        .save(fileImage, vm.imageUser)
+                                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                        function onNotify(info) {
+                                    vm.progress = Math.round((info.loaded / info.total) * 100);
+                         }
+                        function onSaveImageSuccess(data) {
+                        vm.adminInfo.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                              AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                        }
+                        }else{
+                     AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                        }
+
+
             } else {
-                AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+             vm.imageUser = {user: vm.adminInfo.id};
+                                      if(fileImage!==null){
+                                  SaveImageCloudinary
+                                                    .save(fileImage, vm.imageUser)
+                                                    .then(onSaveImageSuccess, onSaveError, onNotify);
+                                    function onNotify(info) {
+                                                vm.progress = Math.round((info.loaded / info.total) * 100);
+                                     }
+                                    function onSaveImageSuccess(data) {
+                                    vm.adminInfo.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                            AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+                                    }
+                                    }else{
+                                  AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+                                    }
+
             }
         }
 
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:adminInfoUpdate', result);
-            $state.go('dashboard');
+
             toastr["success"]("Se ha editado tu información correctamente.");
-         $rootScope.companyUser = result;
-                        $rootScope.currentUserImage = result.image;
-                        $rootScope.currentUserImageContentType = result.imageContentType;
+            console.log(result)
+          $rootScope.companyUser = result;
+          $rootScope.companyUser.image_url = vm.adminInfo.image_url;
+          console.log($rootScope.companyUser.image_url)
+           $state.go('dashboard',null, { reload: true });
             vm.isSaving = false;
         }
 
@@ -61,19 +99,20 @@
 
 
 
-        vm.setImage = function ($file, adminInfo) {
-            if ($file && $file.$error === 'pattern') {
-                return;
-            }
-            if ($file) {
-                DataUtils.toBase64($file, function(base64Data) {
-                    $scope.$apply(function() {
-                        adminInfo.image = base64Data;
-                        adminInfo.imageContentType = $file.type;
-                    });
-                });
-            }
-        };
+             vm.setImage = function ($file) {
+                        if ($file && $file.$error === 'pattern') {
+                            return;
+                        }
+                        if ($file) {
+                            DataUtils.toBase64($file, function(base64Data) {
+                                $scope.$apply(function() {
+                                    vm.displayImage = base64Data;
+                                    vm.displayImageType = $file.type;
+                                });
+                            });
+                            fileImage = $file;
+                        }
+               };
 
     }
 })();

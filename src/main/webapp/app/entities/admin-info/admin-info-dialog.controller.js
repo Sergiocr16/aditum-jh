@@ -16,10 +16,11 @@
         var fileImage = null;
 
         vm.loginStringCount = 0;
-        vm.adminInfo = entity;
-         if(vm.adminInfo.image_url==undefined){
-             vm.adminInfo.image_url = null;
-        }
+
+         if(entity.image_url==undefined){
+               entity.image_url = null;
+         }
+         vm.adminInfo = entity;
         vm.clear = clear;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -208,7 +209,7 @@
               }
 
 
-              vm.setImage = function ($file) {
+             vm.setImage = function ($file) {
                         if ($file && $file.$error === 'pattern') {
                             return;
                         }

@@ -128,7 +128,7 @@
                                                       userId:null,
                                                       userLogin:null,
                                                       companyId:1,
-                                                      image_url:'http://res.cloudinary.com/aditum/image/upload/v1501932783/e0vfcyurjapbc8azaskd.jpg',
+                                                      image_url:'http://res.cloudinary.com/aditum/image/upload/v1502060328/k3j9bccx7vcjjaoqw8j8.jpg',
                                                       houseId:(Math.floor(Math.random()*88) + 1)},function(){
           toastr['success']("Residente registrado")
         })
