@@ -55,6 +55,9 @@ public class Officer implements Serializable {
     @Column(name = "enable")
     private Boolean enable;
 
+    @Column(name = "image_url")
+    private String image_url;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -187,6 +190,19 @@ public class Officer implements Serializable {
         this.enable = enable;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public Officer image_url(String image_url) {
+        this.image_url = image_url;
+        return this;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
     public User getUser() {
         return user;
     }
@@ -246,6 +262,7 @@ public class Officer implements Serializable {
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +
+            ", image_url='" + image_url + "'" +
             '}';
     }
 }

@@ -57,7 +57,6 @@
                 'content@': {
                     templateUrl: 'app/entities/admin-info/admin-info-edit.html',
                     controller: 'AdminInfoEditDialogController',
-
                     controllerAs: 'vm'
                 }
             },

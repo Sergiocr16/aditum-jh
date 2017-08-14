@@ -41,7 +41,8 @@
 
                 <li class="dropdown dropdown-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + currentUserImageContentType + ';base64,' + currentUserImage}}"   ng-if="currentUserImage" id="blah"  alt="your image"  width="33" class="img-circle"/>
+                        <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>
+                        <img ng-show="currentUserImage!==undefined" src="{{currentUserImage}}" width="35" class="img-circle"/>
                         <span class="username username-hide-on-mobile ng-binding">
 					        {{' '+companyUser.name +' '+ companyUser.lastname}}</span>
                         <i class="fa fa-angle-down"></i>
@@ -178,7 +179,8 @@
                         <div class="display-none" id="residentAccess">
                             <h1 class="page-title {{vm.colorResidentRegistered}} bold text-center font-30 " id="registered_access_tittle">{{vm.residentRegisteredTitle}}</h1>
                             <div class="success-resident-image">
-                                <img src="content/images/nobody-image.jpg" ng-hide="vm.resident.image" class="success-resident-image img-circle"  alt="your image" />    <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" class="success-resident-image img-circle"  alt="your image" />
+                                    <img ng-show="vm.resident.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                    <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="160" height="160" class="img-circle"/>
                             </div>
 
                             <div class="col-md-8 gray-font">

@@ -46,6 +46,9 @@ public class AdminInfo implements Serializable {
     @Column(name = "enabled")
     private Integer enabled;
 
+    @Column(name = "image_url")
+    private String image_url;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -165,6 +168,19 @@ public class AdminInfo implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getImage_url() {
+        return image_url;
+    }
+
+    public AdminInfo image_url(String image_url) {
+        this.image_url = image_url;
+        return this;
+    }
+
+    public void setImage_url(String image_url) {
+        this.image_url = image_url;
+    }
+
     public User getUser() {
         return user;
     }
@@ -223,6 +239,7 @@ public class AdminInfo implements Serializable {
             ", image='" + image + "'" +
             ", imageContentType='" + imageContentType + "'" +
             ", enabled='" + enabled + "'" +
+            ", image_url='" + image_url + "'" +
             '}';
     }
 }

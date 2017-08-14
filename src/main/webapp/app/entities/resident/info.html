@@ -52,7 +52,10 @@
                             </div>
                         </div>
                         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                            <h3 class="text-center"><img id="blah" src="../../assets/global/img/nobody_m.original.jpg" alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                            <h3 class="text-center">
+                                <img ng-hide="vm.resident.img_url==undefined" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.img_url!==undefined" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                            </h3>
                         </div>
                         <div class="col-md-9 col-sm-9 col-xs-12">
                             <div class="height-5-percent col-md-12 col-sm-12 col-xs-12 text-center"></div>
@@ -85,7 +88,10 @@
                             </div>
                         </div>
                         <div class="hidden-xs col-md-3 col-sm-3">
-                            <h3 class="text-center"><img id="blah" src="../../assets/global/img/nobody_m.original.jpg" alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                            <h3 class="text-center">
+                                <img ng-hide="vm.resident.image_url==undefined" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url!==undefined" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                            </h3>
                         </div>
                         <div class="form-actions noborder ">
                             <h3 class="text-right ">
