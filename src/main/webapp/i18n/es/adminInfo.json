@@ -22,6 +22,7 @@
             "email": "Email",
             "image": "Image",
             "enabled": "Enabled",
+            "image_url": "Image Url",
             "user": "User",
             "company": "Company"
         }

@@ -47,9 +47,8 @@
     if(companyUser!=undefined){
      $rootScope.companyUser = companyUser;
      $rootScope.companyId = companyUser.companyId;
-     $rootScope.currentUserImage = companyUser.image;
-     $rootScope.currentUserImageContentType = companyUser.imageContentType;
-      $rootScope.companyUser = companyUser;
+     $rootScope.currentUserImage = companyUser.image_url;
+     $rootScope.companyUser = companyUser;
       getContextLiving();
      }else{
       vm.contextLiving = "Dios de Aditum"
@@ -85,13 +84,11 @@
             $rootScope.companyId = data.companyId;
             $rootScope.companyUser = $rootScope.companyUser;
             getContextLiving();
-            $rootScope.currentUserImage = data.image;
-            $rootScope.currentUserImageContentType = data.imageContentType;
+           $rootScope.currentUserImage = data.image_url;
              }else{
              vm.contextLiving = "Dios de Aditum"
              $rootScope.contextLiving = vm.contextLiving;
               $rootScope.currentUserImage = undefined;
-              $rootScope.currentUserImageContentType = undefined;
              }
 
             })

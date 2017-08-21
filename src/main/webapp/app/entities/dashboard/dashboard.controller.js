@@ -25,7 +25,6 @@
 		vm.loadAll = function() {
 			Dashboard.query({companyId : $rootScope.companyId},function(result) {
 				vm.dashboard = result;
-				console.log(vm.dashboard);
 				showData();
 				vm.visitorTitle = "Visitantes de la semana";
 				vm.watch = formatWatch(vm.dashboard.currentWatch);

@@ -83,11 +83,15 @@
             ],
             "fieldValidateRulesMin": 0,
             "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "image_url",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
-    "entityTableName": "resident",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "entityTableName": "resident",
+    "pagination": "pager"
 }

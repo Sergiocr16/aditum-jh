@@ -51,11 +51,15 @@
             ],
             "fieldValidateRulesMin": 0,
             "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "image_url",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",
-    "entityTableName": "admin_info",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "entityTableName": "admin_info",
+    "pagination": "pager"
 }

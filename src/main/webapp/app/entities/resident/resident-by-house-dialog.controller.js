@@ -5,12 +5,16 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident'];
+    ResidentByHouseDialogController.$inject = ['$state','$timeout','$scope', '$rootScope', '$stateParams', 'CommonMethods','previousState', 'DataUtils','$q', 'entity', 'Resident', 'User', 'Company', 'House','Principal','companyUser','WSResident','SaveImageCloudinary'];
 
-    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident) {
+    function ResidentByHouseDialogController($state,$timeout,$scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q,entity, Resident, User, Company, House,Principal,companyUser,WSResident,SaveImageCloudinary) {
           $rootScope.active = "residentsHouses";
         var vm = this;
+        var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
+      if(entity.image_url==undefined){
+        entity.image_url = null;
+        }
         vm.resident = entity;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
@@ -54,6 +58,7 @@
 
 
         function save () {
+          CommonMethods.waitingMessage();
             vm.isSaving = true;
              vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
              vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
@@ -65,13 +70,52 @@
                     function alreadyExist(data){
                      toastr["error"]("La cédula ingresada ya existe.");
                    }
+                     function allClear(data){
+                          CommonMethods.waitingMessage();
+                         if(vm.resident.isOwner == true){
+                           vm.resident.isOwner = 1;
+                       } else {
+                            vm.resident.isOwner = 0;
+                       }
+
+                      if(fileImage!==null){
+                       vm.imageUser = {user: vm.resident.id};
+                     SaveImageCloudinary
+                                       .save(fileImage, vm.imageUser)
+                                       .then(onSaveImageSuccess, onSaveError, onNotify);
+                       function onNotify(info) {
+                                   vm.progress = Math.round((info.loaded / info.total) * 100);
+                        }
+                       function onSaveImageSuccess(data) {
+                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                           Resident.update(vm.resident, onSuccess, onSaveError);
+                       }
+                   }else{
+                      Resident.update(vm.resident, onSuccess, onSaveError);
+                   }
+                     }
                 } else {
                     if(vm.resident.isOwner == true){
                           vm.resident.isOwner = 1;
                       } else {
                            vm.resident.isOwner = 0;
                       }
+
+                      if(fileImage!==null){
+                      vm.imageUser = {user: vm.resident.id};
+                     SaveImageCloudinary
+                                       .save(fileImage, vm.imageUser)
+                                       .then(onSaveImageSuccess, onSaveError, onNotify);
+                       function onNotify(info) {
+                                   vm.progress = Math.round((info.loaded / info.total) * 100);
+                        }
+                       function onSaveImageSuccess(data) {
+                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                           Resident.update(vm.resident, onSuccess, onSaveError);
+                       }
+                   }else{
                       Resident.update(vm.resident, onSuccess, onSaveError);
+                   }
                 }
 
              } else{
@@ -91,6 +135,7 @@
                      vm.resident.isOwner = 0;
                      vm.resident.companyId = $rootScope.companyId;
                      vm.resident.houseId = $rootScope.companyUser.houseId
+
                      Resident.save(vm.resident, onSuccess, onSaveError);
            }
           function allClearUpdate(){
@@ -105,15 +150,36 @@
                    }
                    Resident.update(vm.resident, onSuccess, onSaveError);
             }
+
+                      if(fileImage!==null){
+                      vm.imageUser = {user: vm.resident.id};
+                     SaveImageCloudinary
+                                       .save(fileImage, vm.imageUser)
+                                       .then(onSaveImageSuccess, onSaveError, onNotify);
+                       function onNotify(info) {
+                                   vm.progress = Math.round((info.loaded / info.total) * 100);
+                        }
+                       function onSaveImageSuccess(data) {
+                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                           Resident.save(vm.resident, onSuccess, onSaveError);
+                       }
+                   }else{
+                    Resident.save(vm.resident, onSuccess, onSaveError);
+                   }
+
+                  }
+
+             }
+
+        }
             function onSuccess (result) {
                WSResident.sendActivity(result);
                if($rootScope.companyUser.id === result.id){
                 $rootScope.companyUser = result;
-                $rootScope.currentUserImage = result.image;
-                $rootScope.currentUserImageContentType = result.imageContentType;
+
                }
                 vm.isSaving = false;
-                $state.go('residentByHouse');
+                $state.go('residentByHouse',null,{reload:true});
                  bootbox.hideAll();
                   if(vm.resident.id !== null){
                     toastr["success"]("Se ha editado el residente correctamente.");
@@ -128,19 +194,20 @@
         }
 
 
-        vm.setImage = function ($file, resident) {
-            if ($file && $file.$error === 'pattern') {
-                return;
-            }
-            if ($file) {
-                DataUtils.toBase64($file, function(base64Data) {
-                    $scope.$apply(function() {
-                        resident.image = base64Data;
-                        resident.imageContentType = $file.type;
-                    });
-                });
-            }
-        };
+            vm.setImage = function ($file) {
+                        if ($file && $file.$error === 'pattern') {
+                            return;
+                        }
+                        if ($file) {
+                            DataUtils.toBase64($file, function(base64Data) {
+                                $scope.$apply(function() {
+                                    vm.displayImage = base64Data;
+                                    vm.displayImageType = $file.type;
+                                });
+                            });
+                            fileImage = $file;
+                        }
+               };
 
     }
 })();

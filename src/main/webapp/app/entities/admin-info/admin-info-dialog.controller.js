@@ -6,19 +6,27 @@
         .module('aditumApp')
         .controller('AdminInfoDialogController', AdminInfoDialogController);
 
-    AdminInfoDialogController.$inject = ['$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company','Principal'];
+    AdminInfoDialogController.$inject = ['$rootScope','$state','CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company','Principal','SaveImageCloudinary'];
 
-    function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company, Principal) {
+    function AdminInfoDialogController ($rootScope,$state,CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company, Principal,SaveImageCloudinary) {
 
 
         var vm = this;
+
+        var fileImage = null;
+
         vm.loginStringCount = 0;
-        vm.adminInfo = entity;
+
+         if(entity.image_url==undefined){
+               entity.image_url = null;
+         }
+         vm.adminInfo = entity;
         vm.clear = clear;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
+
         vm.required = 1;
         vm.users = User.query();
         vm.company = Company.query();
@@ -48,13 +56,30 @@
              vm.adminInfo.email  = vm.user.email;
              }
 
+
+
+
         function save () {
             vm.isSaving = true;
 
             if (vm.adminInfo.id !== null) {
+            vm.imageUser = {user: vm.adminInfo.id};
+              if(fileImage!==null){
+          SaveImageCloudinary
+                            .save(fileImage, vm.imageUser)
+                            .then(onSaveImageSuccess, onSaveError, onNotify);
+            function onNotify(info) {
+                        vm.progress = Math.round((info.loaded / info.total) * 100);
+             }
+            function onSaveImageSuccess(data) {
+            vm.adminInfo.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
                 AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
                 updateAccount();
-
+            }
+            }else{
+             AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                            updateAccount();
+            }
             } else {
                 vm.adminInfo.name = CommonMethods.capitalizeFirstLetter(vm.adminInfo.name);
                 vm.adminInfo.lastname = CommonMethods.capitalizeFirstLetter(vm.adminInfo.lastname);
@@ -62,6 +87,9 @@
                 createAccount();
             }
         }
+
+
+
         function createAccount(){
             var authorities = ["ROLE_MANAGER"];
             vm.user.firstName =  vm.adminInfo.name;
@@ -91,6 +119,17 @@
             vm.adminInfo.enabled = 1;
             vm.adminInfo.companyId = vm.adminInfo.companyId;
             vm.adminInfo.userId = id;
+            vm.imageUser = {user: id};
+             if(fileImage!==null){
+            SaveImageCloudinary
+                            .save(fileImage, vm.imageUser)
+                            .then(onSaveImageSuccess, onSaveError, onNotify);
+            function onNotify(info) {
+                        vm.progress = Math.round((info.loaded / info.total) * 100);
+             }
+            function onSaveImageSuccess(data) {
+
+            vm.adminInfo.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
             AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
             function onSaveSuccess (result) {
                 vm.isSaving = false;
@@ -98,6 +137,19 @@
                 toastr["success"]("Se ha registrado el administrador correctamente.");
 
             }
+
+            }
+            }else{
+               AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+                        function onSaveSuccess (result) {
+                            vm.isSaving = false;
+                            $uibModalInstance.close(result);
+                            toastr["success"]("Se ha registrado el administrador correctamente.");
+
+                        }
+
+            }
+
         }
 
         function updateAccount(){
@@ -108,6 +160,7 @@
                 user.firstName =  vm.adminInfo.name;
                 user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
                 user.email = vm.adminInfo.email;
+
                 User.update(user,onSuccessUser);
                 function onSuccessUser(data, headers) {
                     AdminInfo.update(vm.adminInfo, onUpdateSuccess, onSaveError);
@@ -136,13 +189,7 @@
             return firstletterFirstName+vm.adminInfo.lastname+firstletterSecondName;
         }
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:adminInfoUpdate', result);
-            $state.go('home');
             toastr["success"]("Se ha editado tu información correctamente.");
-            $rootScope.companyUser = result;
-            $rootScope.currentUserImage = result.image;
-            $rootScope.currentUserImageContentType = result.imageContentType;
-            vm.isSaving = false;
         }
 
         function onSaveError () {
@@ -162,20 +209,19 @@
               }
 
 
-
-        vm.setImage = function ($file, adminInfo) {
-            if ($file && $file.$error === 'pattern') {
-                return;
-            }
-            if ($file) {
-                DataUtils.toBase64($file, function(base64Data) {
-                    $scope.$apply(function() {
-                        adminInfo.image = base64Data;
-                        adminInfo.imageContentType = $file.type;
-                    });
-                });
-            }
-        };
-
+             vm.setImage = function ($file) {
+                        if ($file && $file.$error === 'pattern') {
+                            return;
+                        }
+                        if ($file) {
+                            DataUtils.toBase64($file, function(base64Data) {
+                                $scope.$apply(function() {
+                                    vm.displayImage = base64Data;
+                                    vm.displayImageType = $file.type;
+                                });
+                            });
+                            fileImage = $file;
+                        }
+               };
     }
 })();

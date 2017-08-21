@@ -49,7 +49,10 @@
                             </div>
                         </div>
                         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                            <h3 class="text-center"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" id="blah"  alt="your image" width="200px" height="200px" class="img-circle"/></h3>
+                            <h3 class="text-center">
+                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                            </h3>
                         </div>
 
                         <div class="col-md-9 col-sm-9 col-xs-12">
@@ -84,7 +87,10 @@
 
                         </div>
                         <div class="hidden-xs col-md-3 col-sm-3">
-                            <h3 class="text-center"> <a ng-click="vm.openFile(vm.resident.imageContentType, vm.resident.image)"><img ng-hide="vm.resident.image" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/> <img src="content/images/nobody-image.jpg" data-ng-src="{{'data:' + vm.resident.imageContentType + ';base64,' + vm.resident.image}}"   ng-if="vm.resident.image" alt="your image" width="200px" height="200px" class="img-circle"/></a></h3>
+                            <h3 class="text-center">
+                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                            </h3>
                             </div>
                             <div class="form-actions noborder ">
                                 <h3 class="text-right ">
