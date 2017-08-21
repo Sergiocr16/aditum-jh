@@ -56,39 +56,41 @@
             vm.isSaving = true;
             if (vm.resident.id !== null) {
                 if(indentification!==vm.resident.identificationnumber){
-                   Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                   Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClearUpdate)
                     function alreadyExist(data){
                      toastr["error"]("La cédula ingresada ya existe.");
                    }
-                     function allClear(data){
-                         updateResident();
-                     }
+
                 } else {
                    updateResident();
                 }
 
 
             } else {
-                  Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClear)
+                  Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClearInsert)
                     function alreadyExist(data){
                      toastr["error"]("La cédula ingresada ya existe.");
                    }
 
-                 function allClear(data){
-                        if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
-                               toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
-                           } else if(vm.resident.isOwner == 1){
-                                CommonMethods.waitingMessage();
-                                createAccount(1);
-                           } else {
-                                CommonMethods.waitingMessage();
-                                insertResident(null);
-                           }
-                 }
 
 
             }
         }
+
+         function allClearInsert(data){
+                if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "" ) {
+                       toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
+                   } else if(vm.resident.isOwner == 1){
+                        CommonMethods.waitingMessage();
+                        createAccount(1);
+                   } else {
+                        CommonMethods.waitingMessage();
+                        insertResident(null);
+                   }
+         }
+         function allClearUpdate(data){
+             updateResident();
+         }
         function updateResident(){
           if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
                 toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");

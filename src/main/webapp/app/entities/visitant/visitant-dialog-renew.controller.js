@@ -80,6 +80,7 @@
         }
 
         function save() {
+        CommonMethods.waitingMessage();
             if (isValidDates()) {
                 formatVisitor();
                 Visitant.update(vm.visitor, onSuccess, onSaveError);
@@ -88,6 +89,7 @@
             }
             function onSuccess(result) {
                 WSVisitor.sendActivity(result);
+                    bootbox.hideAll();
                 toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                 $scope.$emit('aditumApp:visitantUpdate', result);
                 $state.reload();

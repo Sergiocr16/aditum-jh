@@ -39,11 +39,18 @@
                     <form role="form" ng-submit="vm.save()">
                         <div class="form-body">
                             <div class="col-md-6">
+                                <div class="form-group form-md-line-input has-info">
+                                    <select class="form-control gray-font" name="vehicule" ng-model="vm.vehicule.type" ng-required='vm.required==1'>
+                                        <option value="">Seleccione un tipo</option>
+                                        <option value="automovil">Automovil</option>
+                                        <option value="motocicleta">Motocicleta</option>
+                                    </select>
+                                    <label for="form_control_1" class="font-15">Tipo de vehículo</label>
+                                </div>
                                 <div class="form-group form-md-line-input">
                                     <input ng-model="vm.vehicule.licenseplate" type="text" class="form-control specialCharacters gray-font" id="form_control_1" style='text-transform:uppercase' required>
                                     <label for="form_control_1" class="font-15">Número de placa</label>
                                     <span class="help-block">Escriba el número de placa sin guiones</span>
-
 
                                 </div>
                                 <div class="form-group form-md-line-input has-info">

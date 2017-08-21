@@ -165,9 +165,10 @@
                                 }
                             }
                         });
-                        if (vm.id_vehicule >= 5) {
+                        if (vm.id_vehicule >= 5 && vm.show !==2) {
                             angular.forEach(invitedList, function(itemVisitor, index) {
                                 if (itemVisitor.licenseplate == vm.id_vehicule && itemVisitor.isinvited == 1) {
+                                    console.log('esto zqui');
                                     vm.invited_visitant_name = itemVisitor.name;
                                     vm.invited_visitant_last_name = itemVisitor.lastname;
                                     vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
