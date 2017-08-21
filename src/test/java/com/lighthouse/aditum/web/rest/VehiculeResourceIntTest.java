@@ -52,6 +52,9 @@ public class VehiculeResourceIntTest {
     private static final Integer DEFAULT_ENABLED = 0;
     private static final Integer UPDATED_ENABLED = 1;
 
+    private static final String DEFAULT_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_TYPE = "BBBBBBBBBB";
+
     @Autowired
     private VehiculeRepository vehiculeRepository;
 
@@ -98,7 +101,8 @@ public class VehiculeResourceIntTest {
                 .licenseplate(DEFAULT_LICENSEPLATE)
                 .brand(DEFAULT_BRAND)
                 .color(DEFAULT_COLOR)
-                .enabled(DEFAULT_ENABLED);
+                .enabled(DEFAULT_ENABLED)
+                .type(DEFAULT_TYPE);
         return vehicule;
     }
 
@@ -128,6 +132,7 @@ public class VehiculeResourceIntTest {
         assertThat(testVehicule.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testVehicule.getColor()).isEqualTo(DEFAULT_COLOR);
         assertThat(testVehicule.getEnabled()).isEqualTo(DEFAULT_ENABLED);
+        assertThat(testVehicule.getType()).isEqualTo(DEFAULT_TYPE);
     }
 
     @Test
@@ -222,7 +227,8 @@ public class VehiculeResourceIntTest {
             .andExpect(jsonPath("$.[*].licenseplate").value(hasItem(DEFAULT_LICENSEPLATE.toString())))
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND.toString())))
             .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR.toString())))
-            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)));
+            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test
@@ -239,7 +245,8 @@ public class VehiculeResourceIntTest {
             .andExpect(jsonPath("$.licenseplate").value(DEFAULT_LICENSEPLATE.toString()))
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND.toString()))
             .andExpect(jsonPath("$.color").value(DEFAULT_COLOR.toString()))
-            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED));
+            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
     @Test
@@ -263,7 +270,8 @@ public class VehiculeResourceIntTest {
                 .licenseplate(UPDATED_LICENSEPLATE)
                 .brand(UPDATED_BRAND)
                 .color(UPDATED_COLOR)
-                .enabled(UPDATED_ENABLED);
+                .enabled(UPDATED_ENABLED)
+                .type(UPDATED_TYPE);
         VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(updatedVehicule);
 
         restVehiculeMockMvc.perform(put("/api/vehicules")
@@ -279,6 +287,7 @@ public class VehiculeResourceIntTest {
         assertThat(testVehicule.getBrand()).isEqualTo(UPDATED_BRAND);
         assertThat(testVehicule.getColor()).isEqualTo(UPDATED_COLOR);
         assertThat(testVehicule.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testVehicule.getType()).isEqualTo(UPDATED_TYPE);
     }
 
     @Test

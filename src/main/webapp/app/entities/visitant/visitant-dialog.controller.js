@@ -84,6 +84,7 @@
         }
 
         function save() {
+               CommonMethods.waitingMessage();
             if (isValidDates()) {
                 Visitant.findInvitedByHouseAndIdentificationNumber({
                     identificationNumber: vm.visitor.identificationnumber,
@@ -114,13 +115,14 @@
                             vm.visitor.id = data.id;
                             formatVisitor();
                             Visitant.update(vm.visitor, onSuccess, onSaveError);
-
+                                bootbox.hideAll();
                         } else {
                             bootbox.hideAll();
                         }
 
                         function onSuccess(data) {
                             WSVisitor.sendActivity(data);
+                                bootbox.hideAll();
                             $state.go('visitant-invited-user')
                             toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                         }
@@ -144,6 +146,7 @@
         WSVisitor.sendActivity(result);
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.go('visitant-invited-user')
+              bootbox.hideAll();ii
             toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }

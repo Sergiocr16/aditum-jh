@@ -36,6 +36,9 @@ public class Vehicule implements Serializable {
     @Column(name = "enabled")
     private Integer enabled;
 
+    @Column(name = "type")
+    private String type;
+
     @ManyToOne
     private House house;
 
@@ -102,6 +105,19 @@ public class Vehicule implements Serializable {
         this.enabled = enabled;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public Vehicule type(String type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -156,6 +172,7 @@ public class Vehicule implements Serializable {
             ", brand='" + brand + "'" +
             ", color='" + color + "'" +
             ", enabled='" + enabled + "'" +
+            ", type='" + type + "'" +
             '}';
     }
 }

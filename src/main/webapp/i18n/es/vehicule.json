@@ -19,6 +19,7 @@
             "brand": "Brand",
             "color": "Color",
             "enabled": "Enabled",
+            "type": "Type",
             "house": "House",
             "company": "Company"
         }

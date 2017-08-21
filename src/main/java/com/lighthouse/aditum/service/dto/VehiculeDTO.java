@@ -27,6 +27,8 @@ public class VehiculeDTO implements Serializable {
     @Max(value = 1)
     private Integer enabled;
 
+    private String type;
+
     private Long houseId;
 
     private Long companyId;
@@ -65,6 +67,13 @@ public class VehiculeDTO implements Serializable {
 
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
+    }
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getHouseId() {
@@ -112,6 +121,7 @@ public class VehiculeDTO implements Serializable {
             ", brand='" + brand + "'" +
             ", color='" + color + "'" +
             ", enabled='" + enabled + "'" +
+            ", type='" + type + "'" +
             '}';
     }
 }
