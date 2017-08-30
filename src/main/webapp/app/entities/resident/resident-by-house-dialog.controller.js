@@ -129,7 +129,7 @@
              }
 
         }
-            function allClearInsert(){
+          function allClearInsert(){
                      CommonMethods.waitingMessage();
                      vm.resident.enabled = 1;
                      vm.resident.isOwner = 0;
@@ -148,30 +148,26 @@
                    } else {
                         vm.resident.isOwner = 0;
                    }
-                   Resident.update(vm.resident, onSuccess, onSaveError);
-            }
-
-                      if(fileImage!==null){
-                      vm.imageUser = {user: vm.resident.id};
-                     SaveImageCloudinary
-                                       .save(fileImage, vm.imageUser)
-                                       .then(onSaveImageSuccess, onSaveError, onNotify);
-                       function onNotify(info) {
-                                   vm.progress = Math.round((info.loaded / info.total) * 100);
-                        }
-                       function onSaveImageSuccess(data) {
-                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-                           Resident.save(vm.resident, onSuccess, onSaveError);
+              if(fileImage!==null){
+                     vm.imageUser = {user: vm.resident.id};
+                    SaveImageCloudinary
+                                      .save(fileImage, vm.imageUser)
+                                      .then(onSaveImageSuccess, onSaveError, onNotify);
+                      function onNotify(info) {
+                                  vm.progress = Math.round((info.loaded / info.total) * 100);
                        }
-                   }else{
-                    Resident.save(vm.resident, onSuccess, onSaveError);
-                   }
-
+                      function onSaveImageSuccess(data) {
+                      vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                        Resident.update(vm.resident, onSuccess, onSaveError);
+                      }
+                  }else{
+                 Resident.update(vm.resident, onSuccess, onSaveError);
                   }
 
-             }
+            }
 
-        }
+
+
             function onSuccess (result) {
                WSResident.sendActivity(result);
                if($rootScope.companyUser.id === result.id){

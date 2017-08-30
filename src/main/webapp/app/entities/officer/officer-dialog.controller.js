@@ -48,13 +48,9 @@
                  function allClear(data){
                     updateAccount();
                  }
-            } else {
-             updateAccount();
-            }
-
-
-
-
+              } else {
+                updateAccount();
+              }
             } else {
                 Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
                     function alreadyExist(data){
@@ -83,18 +79,20 @@
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
             function onSaveUser (result) {
+            console.log('1')
                 insertOfficer(result.id)
                 vm.isSaving = false;
             }
 
         }
         function insertOfficer(id){
+            console.log('2')
             vm.officer.companyId = $rootScope.companyId;
             vm.officer.userId = id;
             vm.officer.inservice = 0;
             vm.officer.enable = true;
-            vm.imageUser = {user: vm.officer.id};
-           if(vm.imageUser!==null){
+            vm.imageUser = {user: "a"};
+           if(fileImage!==null){
           SaveImageCloudinary
                             .save(fileImage, vm.imageUser)
                             .then(onSaveImageSuccess, onSaveError, onNotify);
@@ -112,6 +110,7 @@
               }
             }
         }else{
+        console.log(vm.officer);
          Officer.save(vm.officer, onSaveSuccess, onSaveError);
          function onSaveSuccess (result) {
              vm.isSaving = false;
@@ -132,21 +131,21 @@
 
                 User.update(user,onSuccessUser);
                 function onSuccessUser(data, headers) {
-           vm.imageUser = {user: vm.officer.id};
-           if(vm.imageUser!==null){
-          SaveImageCloudinary
-                            .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccess, onSaveError, onNotify);
-            function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-             }
-            function onSaveImageSuccess(data) {
-            vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-              Officer.update(vm.officer, onUpdateSuccess, onSaveError);
-            }
-        }else{
-           Officer.update(vm.officer, onUpdateSuccess, onSaveError);
-        }
+                vm.imageUser = {user: data.id};
+                    if(fileImage!==null){
+                         SaveImageCloudinary
+                        .save(fileImage, vm.imageUser)
+                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                        function onNotify(info) {
+                                    vm.progress = Math.round((info.loaded / info.total) * 100);
+                         }
+                        function onSaveImageSuccess(data) {
+                        vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                          Officer.update(vm.officer, onUpdateSuccess, onSaveError);
+                        }
+                    }else{
+                       Officer.update(vm.officer, onUpdateSuccess, onSaveError);
+                    }
 
                 }
             }
@@ -182,7 +181,7 @@
              }
         }
 
-             vm.setImage = function ($file) {
+              vm.setImage = function ($file) {
                         if ($file && $file.$error === 'pattern') {
                             return;
                         }

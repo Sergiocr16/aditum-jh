@@ -115,7 +115,7 @@
                 changeStatusIsOwner();
                 CommonMethods.waitingMessage();
                    vm.imageUser = {user: vm.resident.id};
-                   if(vm.imageUser!==null){
+                   if(fileImage!==null){
                   SaveImageCloudinary
                                     .save(fileImage, vm.imageUser)
                                     .then(onSaveImageSuccess, onSaveError, onNotify);
@@ -154,7 +154,7 @@
                      vm.resident.userId = result.id;
                      vm.resident.isOwner = 1;
                     vm.imageUser = {user: vm.resident.id};
-                     if(vm.imageUser!==null){
+                     if(fileImage!==null){
                       SaveImageCloudinary
                                         .save(fileImage, vm.imageUser)
                                         .then(onSaveImageSuccess, onSaveError, onNotify);
@@ -185,7 +185,7 @@
                  function onSuccessUser(data, headers) {
                     changeStatusIsOwner();
                   vm.imageUser = {user: vm.resident.id};
-                   if(vm.imageUser!==null){
+                   if(fileImage!==null){
                            SaveImageCloudinary
                                              .save(fileImage, vm.imageUser)
                                              .then(onSaveImageSuccess, onSaveError, onNotify);

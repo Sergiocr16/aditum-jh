@@ -13,8 +13,6 @@
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
-
-
         var securityKey, emergencyKey, housenumber;
         vm.hideEmergencyForm = 1;
         vm.hideLoadingForm = 2;
@@ -147,7 +145,12 @@
 
                         angular.forEach(vehiculesList, function(item, index) {
                             if (item.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase()) {
-                                vm.vehiculeRegisteredTitle = "Vehículo registrado";
+                            if(item.type=='Automovil'){
+                             vm.vehiculeRegisteredTitle = "Automovil registrado";
+                            }else{
+                             vm.vehiculeRegisteredTitle = "Motocicleta registrada";
+                            }
+
                                 vm.colorVehiculeRegistered = "green-font";
                                 vm.imageVehiculeState = "success-car-image";
                                 $("#vehiculeAccess").fadeIn(100);
