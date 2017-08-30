@@ -101,7 +101,7 @@
                 </a>
             </div>
         </div>
-        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <div ng-show="vm.watch!==null" class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
             <div class="portlet light col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="portlet-title">
                     <div class="caption col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -216,7 +216,7 @@
                     <div class="actions">
                         <div class="btn-group btn-group-devided" data-toggle="buttons">
                             <label class="btn btn-transparent grey-salsa btn-circle btn-sm" ng-click="vm.loadAll()">Semana</label>
-                            <label class="btn btn-transparent grey-salsa btn-circle btn-sm" ng-click="vm.updateMonthData()">Més</label>
+                            <label class="btn btn-transparent grey-salsa btn-circle btn-sm" ng-click="vm.updateMonthData()">Mes</label>
                             <label class="btn btn-transparent grey-salsa btn-circle btn-sm"  ng-click="vm.updateYearData()">
                                 Año
                             </label>

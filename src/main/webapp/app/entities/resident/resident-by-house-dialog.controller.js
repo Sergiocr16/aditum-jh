@@ -166,8 +166,6 @@
 
             }
 
-
-
             function onSuccess (result) {
                WSResident.sendActivity(result);
                if($rootScope.companyUser.id === result.id){
