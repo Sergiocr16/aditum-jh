@@ -118,7 +118,6 @@
                        },
                 callback: function(result) {
                     if (result) {
-
                         Vehicule.delete({
                             id: id_vehicule
                         }, onSuccess);

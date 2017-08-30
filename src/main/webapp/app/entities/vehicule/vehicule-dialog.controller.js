@@ -12,7 +12,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-        vm.vehicule.color = "#ffff";
+
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
@@ -51,19 +51,21 @@
            vm.vehicule.color = $('#color').css('background-color');
          }
         function save () {
+             if(vm.vehicule.color==undefined){
+              vm.vehicule.color = "#ffff";
+              }
+             vm.vehicule.brand = vm.vehicule.brand.brand;
              vm.vehicule.enabled = 1;
              vm.vehicule.companyId = $rootScope.companyId;
              vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
              vm.isSaving = true;
              if (vm.vehicule.id !== null) {
-                    console.log('estoy en el update')
                  if(vm.myPlate!==vm.vehicule.licenseplate){
                   Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
                        function alreadyExist(data){
                         toastr["error"]("La placa ingresada ya existe.");
                        }
                   }else{
-                       vm.vehicule.brand = vm.vehicule.brand.brand;
                        Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
                   }
              } else {
@@ -89,7 +91,6 @@
           }
 
         function updateVehicule(){
-            vm.vehicule.brand = vm.vehicule.brand.brand;
             Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
          }
         function onSaveSuccess (result) {
