@@ -42,7 +42,7 @@
                 <li class="dropdown dropdown-user">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                         <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>
-                        <img ng-show="currentUserImage!==undefined" src="{{currentUserImage}}" width="35" class="img-circle"/>
+                        <img ng-show="currentUserImage!==null" src="{{currentUserImage}}" width="35" class="img-circle"/>
                         <span class="username username-hide-on-mobile ng-binding">
 					        {{' '+companyUser.name +' '+ companyUser.lastname}}</span>
                         <i class="fa fa-angle-down"></i>
