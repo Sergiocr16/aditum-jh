@@ -60,6 +60,14 @@
             <column name="image_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="fechanacimiento" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="annosexperiencia" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>
@@ -69,6 +77,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="officer" columnName="fechanacimiento" columnDataType="datetime"/>
         
     </changeSet>
 </databaseChangeLog>

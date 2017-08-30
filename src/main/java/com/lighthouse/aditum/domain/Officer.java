@@ -4,6 +4,7 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -57,6 +58,12 @@ public class Officer implements Serializable {
 
     @Column(name = "image_url")
     private String image_url;
+
+    @Column(name = "fechanacimiento")
+    private ZonedDateTime fechanacimiento;
+
+    @Column(name = "annosexperiencia")
+    private Integer annosexperiencia;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -203,6 +210,32 @@ public class Officer implements Serializable {
         this.image_url = image_url;
     }
 
+    public ZonedDateTime getFechanacimiento() {
+        return fechanacimiento;
+    }
+
+    public Officer fechanacimiento(ZonedDateTime fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+        return this;
+    }
+
+    public void setFechanacimiento(ZonedDateTime fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+    }
+
+    public Integer getAnnosexperiencia() {
+        return annosexperiencia;
+    }
+
+    public Officer annosexperiencia(Integer annosexperiencia) {
+        this.annosexperiencia = annosexperiencia;
+        return this;
+    }
+
+    public void setAnnosexperiencia(Integer annosexperiencia) {
+        this.annosexperiencia = annosexperiencia;
+    }
+
     public User getUser() {
         return user;
     }
@@ -263,6 +296,8 @@ public class Officer implements Serializable {
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +
             ", image_url='" + image_url + "'" +
+            ", fechanacimiento='" + fechanacimiento + "'" +
+            ", annosexperiencia='" + annosexperiencia + "'" +
             '}';
     }
 }
