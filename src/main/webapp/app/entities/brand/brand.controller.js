@@ -17,6 +17,7 @@
         vm.names = ["Marco","Sofía","Luis","Michael","Bryan","Lorena","Gabriela","Eduardo","Johnny","Violet","Sarah","Cesar","José","Yeimy","Elizabeth","María José","Laura","Ricardo","Adán","Óliver","Rául","Rebeca","Renato","Ingrid","Jesús","Zoe","Helena","Santiago","Simón","Robert"]
         vm.lastNames = ["Carranza","Aguilar","Carrillo","Acosta","Cortés","Calderón","Picado","Ulate","Echandi","Monge","Carazo","Figueres","Trejos","Montealegre","Soto","Jiménez","González","Mora","Tinoco","Durán","Rodríguez","Castro","Castillo","Suarez","Montevideo","Estrada","Salazar","Bonilla","Navarro","Valverde"]
         vm.mails = ["gmail","hotmail","outlook"]
+        vm.vehiculeType = ["Automóvil","Motocicleta"]
         vm.selectedBrands = [{
 
                                 brand:"Audi"
@@ -164,7 +165,7 @@
           Vehicule.save({licenseplate:vm.randomLetters(),
           brand:vm.selectedBrands[(Math.floor(Math.random()*vm.selectedBrands.length) + 0)].brand,
           color:'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')',
-          enabled:1,houseId:(Math.floor(Math.random()*88) + 1),companyId:1},function(){
+          enabled:1,houseId:(Math.floor(Math.random()*88) + 1),type:vm.vehiculeType[(Math.floor(Math.random()*vm.vehiculeType.length) + 0)], companyId:1},function(){
            toastr['success']("Vehiculo Registrado")
           })
           }

@@ -168,10 +168,13 @@
                                 }
                             }
                         });
-                        if (vm.id_vehicule >= 5 && vm.show !==2) {
+                        if (vm.id_vehicule.length >= 5 && vm.show !==2) {
+
                             angular.forEach(invitedList, function(itemVisitor, index) {
-                                if (itemVisitor.licenseplate == vm.id_vehicule && itemVisitor.isinvited == 1) {
-                                    console.log('esto zqui');
+                            console.log(itemVisitor.licenseplate.toUpperCase())
+                            console.log(vm.id_vehicule.toUpperCase())
+                                if (itemVisitor.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase() && itemVisitor.isinvited == 1) {
+                                    if(vm.verifyVisitantInivitedDate(itemVisitor)){
                                     vm.invited_visitant_name = itemVisitor.name;
                                     vm.invited_visitant_last_name = itemVisitor.lastname;
                                     vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
@@ -186,6 +189,7 @@
                                     vm.invited_visitant_house_number = house.housenumber;
                                     vm.show = 10;
                                     $("#visitantInvitedtAccess").fadeIn(100);
+                                }
                                 }
                             });
 
@@ -252,7 +256,28 @@
             }
 
         }
+vm.verifyVisitantInivitedDate = function(visitant){
+  var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD")+"T"+moment(new Date()).format("HH:mm:ss")+"-06:00").getTime();
+  var  initTime = new Date(visitant.invitationstaringtime).getTime();
+  var finishTime = new Date(visitant.invitationlimittime).getTime();
 
+  console.log(initTime)
+    console.log(currentTime)
+  console.log(finishTime)
+  if(initTime<=currentTime && currentTime <= finishTime){
+        return true;
+  }else{
+     visitant.isinvited = 2;
+     Visitant.update(visitant, function(){})
+       if(visitorsList!==undefined){
+           var result = hasExistance(visitorsList,visitant.id)
+           if(result!==-1){
+               visitorsList[result] = {};
+           }
+     }
+      return false;
+  }
+}
         vm.getResident = function() {
                 vm.id_vehicule = "";
                 $("#vehicule_license_plate").css("text-transform", "none");
@@ -285,7 +310,7 @@
                    if (vm.id_number.length >= 6) {
                        angular.forEach(invitedList, function(itemVisitor, index) {
                            if (itemVisitor.identificationnumber == vm.id_number && itemVisitor.isinvited == 1) {
-
+                               if(vm.verifyVisitantInivitedDate(itemVisitor)){
                                vm.invited_visitant_name = itemVisitor.name;
                                vm.invited_visitant_last_name = itemVisitor.lastname;
                                vm.invited_visitant_second_last_name = itemVisitor.secondlastname;
@@ -300,6 +325,7 @@
                                vm.invited_visitant_house_number = house.housenumber;
                                vm.show = 10;
                                $("#visitantInvitedtAccess").fadeIn(100);
+                           }
                            }
                        });
 
