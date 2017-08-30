@@ -167,8 +167,8 @@
                     Resident.save(vm.resident, onSuccess, onSaveError);
                    }
 
-                  }
 
+}
              }
 
         }

@@ -65,8 +65,11 @@
 				watch.finaltime = moment(watch.finaltime).format('h:mm a');
 			}
 			watch.officers = getformatResponsableOfficers(watch);
-			}
 			return watch;
+			}else{
+			return null;
+			}
+
 		}
 		function showData(){
 			angular.element(document).ready(function () {

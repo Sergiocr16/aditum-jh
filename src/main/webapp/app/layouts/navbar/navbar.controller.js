@@ -53,6 +53,8 @@
      }else{
       vm.contextLiving = "Dios de Aditum"
       $rootScope.contextLiving = vm.contextLiving;
+      $rootScope.currentUserImage = null;
+
      }
         var vm = this;
         angular.element(document).ready(function () {
@@ -80,15 +82,21 @@
             $rootScope.companyUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
+
             $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
             $rootScope.companyUser = $rootScope.companyUser;
             getContextLiving();
+          if($rootScope.companyUser.image_url==undefined){
+            $rootScope.companyUser.image_url = null;
+            }else{
            $rootScope.currentUserImage = data.image_url;
+           }
              }else{
              vm.contextLiving = "Dios de Aditum"
              $rootScope.contextLiving = vm.contextLiving;
-              $rootScope.currentUserImage = undefined;
+              $rootScope.currentUserImage = null;
+               $rootScope.companyUser.image_url = null;
              }
 
             })
