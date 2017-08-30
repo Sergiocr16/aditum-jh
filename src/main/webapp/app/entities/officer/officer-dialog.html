@@ -47,7 +47,7 @@
                             <h3 class="text-center no-margin"  ng-hide="vm.displayImage || vm.officer.image_url===null" >
                                 <img width="200" height="200" class="img-circle" src="{{vm.officer.image_url}}"/>
                             </h3>
-                            <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)" ngf-pattern="'image/*'">
+                            <div class="form-group form-md-line-input col-md-12" ngf-drop ngf-change="vm.setImage($file)" ngf-pattern="'image/*'">
                                 <div ng-if="vm.displayImage" class="image-overlay-position" >
                                     <div class="image-overlay-container image-overlay-view-first">
                                         <h3 class="text-center no-margin">
@@ -73,25 +73,20 @@
                                     <input ng-model="vm.officer.lastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
                                     <label class="font-15">Primer Apellido</label>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 marging-top-20">
-
-
-                                <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.officer.email" type="email" class="form-control gray-font" placeholder="" required>
-                                    <label class="font-15">Correo electrónico</label>
+                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
+                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
+                                    <label class="font-15">Segundo Apellido</label>
                                 </div>
-
                                 <div class="form-group form-md-line-input l">
                                     <input ng-model="vm.officer.identificationnumber" type="text" class="form-control  numbers gray-font"  required>
                                     <label class="font-15">Cédula</label>
                                 </div>
-
                             </div>
-                            <div class="col-md-12 col-sm-12 marging-top-20">
-                                <div class="col-md-6 col-sm-6  form-group form-md-line-input no-padding-left no-padding-right">
-                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
-                                    <label class="font-15">Segundo Apellido</label>
+                            <div class="col-md-6 col-sm-6 marging-top-20">
+
+                                <div class="form-group form-md-line-input ">
+                                    <input ng-model="vm.officer.email" type="email" class="form-control gray-font" placeholder="" required>
+                                    <label class="font-15">Correo electrónico</label>
                                 </div>
                             </div>
                         </div>

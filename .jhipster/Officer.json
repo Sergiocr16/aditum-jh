@@ -75,6 +75,14 @@
         {
             "fieldName": "image_url",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "fechanacimiento",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "annosexperiencia",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",
