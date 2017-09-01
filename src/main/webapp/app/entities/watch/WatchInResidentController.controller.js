@@ -68,9 +68,6 @@
                     $("#data").fadeIn(300);
                 }, 200)
                 setWatch(data);
-                vm.currentTurn = true;
-                vm.showBackBtn = false;
-                vm.showCleanBtn = false;
                 vm.consulting_initial_time = "";
                 vm.consulting_final_time = "";
                 $("#loadingIcon").fadeOut(0);
@@ -80,6 +77,10 @@
             }
 
             function onErrorCurrent(error) {
+             $("#loadingIcon").fadeOut(0);
+                setTimeout(function() {
+                    $("#tableData").fadeIn(300);
+                }, 200);
                 vm.isData = false;
                 AlertService.error(error.data.message);
             }

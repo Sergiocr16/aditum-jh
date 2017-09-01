@@ -200,7 +200,7 @@
                 </ul>
             </li>
              <!--//es residente-->
-            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'reportHomeService' ||  active === 'reportAbsence' || active === 'reportEmergency'}">
+            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'house-absence' ||  active === 'reportHomeService' || active === 'reportEmergency'}">
 
                 <a href="javascript:;">
                     <i class="fa fa-flag-o" aria-hidden="true"></i>
@@ -219,7 +219,7 @@
                             <i class="fa fa-cutlery" aria-hidden="true"></i> Servicio a domicilio
                         </a>
                     </li>
-                    <li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'reportAbsence'}">
+                    <li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">
                         <a href="">
                             <i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial
                         </a>
@@ -237,7 +237,7 @@
             </li>
             <li ui-sref="watch-in-residents" has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">
                 <a href="">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
+                    <i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio
                 </a>
             </li>
         </ul>

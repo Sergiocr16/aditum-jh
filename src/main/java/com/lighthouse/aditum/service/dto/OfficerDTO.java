@@ -30,9 +30,6 @@ public class OfficerDTO implements Serializable {
     private String imageContentType;
 
     @NotNull
-    private String email;
-
-    @NotNull
     private String identificationnumber;
 
     @NotNull
@@ -47,10 +44,6 @@ public class OfficerDTO implements Serializable {
     private ZonedDateTime fechanacimiento;
 
     private Integer annosexperiencia;
-
-    private Long userId;
-
-    private String userLogin;
 
     private Long companyId;
 
@@ -97,13 +90,6 @@ public class OfficerDTO implements Serializable {
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
     }
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
     public String getIdentificationnumber() {
         return identificationnumber;
     }
@@ -147,22 +133,6 @@ public class OfficerDTO implements Serializable {
         this.annosexperiencia = annosexperiencia;
     }
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getUserLogin() {
-        return userLogin;
-    }
-
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
@@ -200,7 +170,6 @@ public class OfficerDTO implements Serializable {
             ", lastname='" + lastname + "'" +
             ", secondlastname='" + secondlastname + "'" +
             ", image='" + image + "'" +
-            ", email='" + email + "'" +
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +

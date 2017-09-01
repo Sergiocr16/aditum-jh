@@ -26,7 +26,7 @@
     <div class="col-lg-12 col-md-12 gray-font ">
 
         <div>
-            <h3 class="page-title col-md-6 col-lg-6 col-xs-12 col-sm-12">Turno actual de oficiales</h3>
+            <h3 class="page-title col-md-6 col-lg-6 col-xs-12 col-sm-12">Oficiales en servicio</h3>
 
         </div>
         <div>
@@ -41,8 +41,8 @@
             </div>
             <div class="display-none " id="tableData">
 
-                <div ng-show="vm.watch.officers.length==0">
-                    <h2 class="text-center" ng-show="vm.isData==false">No existe ningún turno registrado aún</h2>
+                <div ng-show="vm.isData==false">
+                    <h2 class="text-center" ng-show="vm.isData==false">No hay oficiales en servicio en ese momento</h2>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-12" ng-repeat="officer in vm.watch.officers  | orderBy:'name'">
                     <div class="portlet light bordered  text-center  col-sm-12 col-xs-12" id="">

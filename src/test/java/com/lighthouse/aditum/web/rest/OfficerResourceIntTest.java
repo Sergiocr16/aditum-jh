@@ -60,9 +60,6 @@ public class OfficerResourceIntTest {
     private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
-    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
-    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
-
     private static final String DEFAULT_IDENTIFICATIONNUMBER = "AAAAAAAAAA";
     private static final String UPDATED_IDENTIFICATIONNUMBER = "BBBBBBBBBB";
 
@@ -129,7 +126,6 @@ public class OfficerResourceIntTest {
                 .secondlastname(DEFAULT_SECONDLASTNAME)
                 .image(DEFAULT_IMAGE)
                 .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-                .email(DEFAULT_EMAIL)
                 .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
                 .inservice(DEFAULT_INSERVICE)
                 .enable(DEFAULT_ENABLE)
@@ -166,7 +162,6 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getSecondlastname()).isEqualTo(DEFAULT_SECONDLASTNAME);
         assertThat(testOfficer.getImage()).isEqualTo(DEFAULT_IMAGE);
         assertThat(testOfficer.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
-        assertThat(testOfficer.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testOfficer.getIdentificationnumber()).isEqualTo(DEFAULT_IDENTIFICATIONNUMBER);
         assertThat(testOfficer.getInservice()).isEqualTo(DEFAULT_INSERVICE);
         assertThat(testOfficer.isEnable()).isEqualTo(DEFAULT_ENABLE);
@@ -255,25 +250,6 @@ public class OfficerResourceIntTest {
 
     @Test
     @Transactional
-    public void checkEmailIsRequired() throws Exception {
-        int databaseSizeBeforeTest = officerRepository.findAll().size();
-        // set the field null
-        officer.setEmail(null);
-
-        // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
-
-        restOfficerMockMvc.perform(post("/api/officers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(officerDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Officer> officerList = officerRepository.findAll();
-        assertThat(officerList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkIdentificationnumberIsRequired() throws Exception {
         int databaseSizeBeforeTest = officerRepository.findAll().size();
         // set the field null
@@ -326,7 +302,6 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.[*].secondlastname").value(hasItem(DEFAULT_SECONDLASTNAME.toString())))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].identificationnumber").value(hasItem(DEFAULT_IDENTIFICATIONNUMBER.toString())))
             .andExpect(jsonPath("$.[*].inservice").value(hasItem(DEFAULT_INSERVICE)))
             .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE.booleanValue())))
@@ -351,7 +326,6 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.secondlastname").value(DEFAULT_SECONDLASTNAME.toString()))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.identificationnumber").value(DEFAULT_IDENTIFICATIONNUMBER.toString()))
             .andExpect(jsonPath("$.inservice").value(DEFAULT_INSERVICE))
             .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE.booleanValue()))
@@ -383,7 +357,6 @@ public class OfficerResourceIntTest {
                 .secondlastname(UPDATED_SECONDLASTNAME)
                 .image(UPDATED_IMAGE)
                 .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-                .email(UPDATED_EMAIL)
                 .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
                 .inservice(UPDATED_INSERVICE)
                 .enable(UPDATED_ENABLE)
@@ -406,7 +379,6 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getSecondlastname()).isEqualTo(UPDATED_SECONDLASTNAME);
         assertThat(testOfficer.getImage()).isEqualTo(UPDATED_IMAGE);
         assertThat(testOfficer.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
-        assertThat(testOfficer.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testOfficer.getIdentificationnumber()).isEqualTo(UPDATED_IDENTIFICATIONNUMBER);
         assertThat(testOfficer.getInservice()).isEqualTo(UPDATED_INSERVICE);
         assertThat(testOfficer.isEnable()).isEqualTo(UPDATED_ENABLE);

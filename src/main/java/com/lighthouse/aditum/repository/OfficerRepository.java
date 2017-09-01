@@ -13,7 +13,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface OfficerRepository extends JpaRepository<Officer,Long> {
-    Officer findOneByUserId(Long id);
+
     Page<Officer> findByCompanyId(Pageable pageable, Long companyId);
     Officer findByCompanyIdAndIdentificationnumber(Long companyId,String identificationNumber);
     Integer countByCompanyId(Long companyId);

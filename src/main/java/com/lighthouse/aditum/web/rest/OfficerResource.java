@@ -139,13 +139,7 @@ public class OfficerResource {
         OfficerDTO officerDTO = officerService.findOneByCompanyAndIdentification(companyId,identificationID);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerDTO));
     }
-    @GetMapping("/officers/findByUserId/{id}")
-    @Timed
-    public ResponseEntity<OfficerDTO> getOfficerByUserId(@PathVariable Long id) {
-        log.debug("REST request to get Officer : {}", id);
-        OfficerDTO officerDTO = officerService.findOneByUserId(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerDTO));
-    }
+
 
     /**
      * DELETE  /officers/:id : delete the "id" officer.

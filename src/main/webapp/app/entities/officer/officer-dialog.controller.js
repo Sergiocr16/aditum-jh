@@ -39,28 +39,31 @@
 
         function save () {
             vm.isSaving = true;
+             CommonMethods.waitingMessage();
             if (vm.officer.id !== null) {
               if(indentification!==vm.officer.identificationnumber){
                Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
                 function alreadyExist(data){
                  toastr["error"]("La cédula ingresada ya existe.");
+                  bootbox.hideAll();
                }
                  function allClear(data){
-                    updateAccount();
+                    updateOfficer();
                  }
               } else {
-                updateAccount();
+                updateOfficer();
               }
             } else {
                 Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
                     function alreadyExist(data){
                     toastr["error"]("La cédula ingresada ya existe.");
+                     bootbox.hideAll();
                 }
                  function allClear(data){
                         vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
                         vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
                         vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
-                        createAccount();
+                       insertOfficer();
                  }
             }
         }
@@ -69,91 +72,64 @@
             vm.isSaving = false;
         }
 
-        function createAccount(){
-            var authorities = ["ROLE_OFFICER"];
-            vm.user.firstName =  vm.officer.name;
-            vm.user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
-            vm.user.email = vm.officer.email;
-            vm.user.activated = true;
-            vm.user.authorities = authorities;
-            vm.user.login = generateLogin(0);
-            User.save(vm.user, onSaveUser, onSaveLoginError);
-            function onSaveUser (result) {
-            console.log('1')
-                insertOfficer(result.id)
-                vm.isSaving = false;
-            }
-
-        }
-        function insertOfficer(id){
-            console.log('2')
+        function insertOfficer(){
             vm.officer.companyId = $rootScope.companyId;
-            vm.officer.userId = id;
+            vm.officer.userId = 1;
             vm.officer.inservice = 0;
             vm.officer.enable = true;
             vm.imageUser = {user: "a"};
            if(fileImage!==null){
-          SaveImageCloudinary
-                            .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccess, onSaveError, onNotify);
+                SaveImageCloudinary
+                .save(fileImage, vm.imageUser)
+                .then(onSaveImageSuccess, onSaveError, onNotify);
             function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
+                   vm.progress = Math.round((info.loaded / info.total) * 100);
              }
             function onSaveImageSuccess(data) {
-            vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-              Officer.save(vm.officer, onSaveSuccess, onSaveError);
+                  vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                  Officer.save(vm.officer, onSaveSuccess, onSaveError);
               function onSaveSuccess (result) {
                   vm.isSaving = false;
                   $state.go('officer');
+                   bootbox.hideAll();
                   toastr["success"]("Se ha registrado el oficial correctamente.");
 
               }
             }
         }else{
-        console.log(vm.officer);
          Officer.save(vm.officer, onSaveSuccess, onSaveError);
          function onSaveSuccess (result) {
              vm.isSaving = false;
              $state.go('officer');
+              bootbox.hideAll();
              toastr["success"]("Se ha registrado el oficial correctamente.");
 
          }
         }
 
         }
-        function updateAccount(){
-            User.getUserById({id: vm.officer.userId},onSuccess);
-            function onSuccess(user, headers) {
-                user.id = vm.officer.userId;
-                user.firstName =  vm.officer.name;
-                user.lastName = vm.officer.lastname + ' ' + vm.officer.secondlastname;
-                user.email = vm.officer.email;
-
-                User.update(user,onSuccessUser);
-                function onSuccessUser(data, headers) {
-                vm.imageUser = {user: data.id};
-                    if(fileImage!==null){
-                         SaveImageCloudinary
-                        .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccess, onSaveError, onNotify);
-                        function onNotify(info) {
-                                    vm.progress = Math.round((info.loaded / info.total) * 100);
-                         }
-                        function onSaveImageSuccess(data) {
-                        vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-                          Officer.update(vm.officer, onUpdateSuccess, onSaveError);
-                        }
-                    }else{
-                       Officer.update(vm.officer, onUpdateSuccess, onSaveError);
-                    }
-
+        function updateOfficer(){
+            vm.imageUser = {user: vm.officer.identificationnumber};
+            if(fileImage!==null){
+                 SaveImageCloudinary
+                .save(fileImage, vm.imageUser)
+                .then(onSaveImageSuccess, onSaveError, onNotify);
+                function onNotify(info) {
+                   vm.progress = Math.round((info.loaded / info.total) * 100);
+                 }
+                function onSaveImageSuccess(data) {
+                  vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                  Officer.update(vm.officer, onUpdateSuccess, onSaveError);
                 }
+            }else{
+               Officer.update(vm.officer, onUpdateSuccess, onSaveError);
             }
 
         }
         function onUpdateSuccess (result) {
                 vm.isSaving = false;
                 $state.go('officer');
+                 bootbox.hideAll();
                 toastr["success"]("Se ha editado el oficial correctamente.");
             }
         function onSaveSuccess (result) {
@@ -161,39 +137,19 @@
             vm.isSaving = false;
         }
 
-        function generateLogin(config){
-              var firstletterFirstName = vm.officer.name.charAt(0);
-              var firstletterSecondName = vm.officer.secondlastname.charAt(0);
-              if(config==1){
-              vm.loginStringCount = vm.loginStringCount + 1;
-              return firstletterFirstName+vm.officer.lastname+firstletterSecondName+vm.loginStringCount;
-              }
-              return firstletterFirstName+vm.officer.lastname+firstletterSecondName;
-        }
-
-        function onSaveLoginError () {
-            vm.isSaving = false;
-            vm.user.login = generateLogin(1);
-            User.save(vm.user, onSaveUser, onSaveLoginError);
-             function onSaveUser (result) {
-                    $state.go('officer');
-
-             }
-        }
-
-              vm.setImage = function ($file) {
-                        if ($file && $file.$error === 'pattern') {
-                            return;
-                        }
-                        if ($file) {
-                            DataUtils.toBase64($file, function(base64Data) {
-                                $scope.$apply(function() {
-                                    vm.displayImage = base64Data;
-                                    vm.displayImageType = $file.type;
-                                });
-                            });
-                            fileImage = $file;
-                        }
-               };
+      vm.setImage = function ($file) {
+                if ($file && $file.$error === 'pattern') {
+                    return;
+                }
+                if ($file) {
+                    DataUtils.toBase64($file, function(base64Data) {
+                        $scope.$apply(function() {
+                            vm.displayImage = base64Data;
+                            vm.displayImageType = $file.type;
+                        });
+                    });
+                    fileImage = $file;
+                }
+       };
     }
 })();

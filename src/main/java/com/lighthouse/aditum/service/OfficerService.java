@@ -78,13 +78,6 @@ public class OfficerService {
     }
 
     @Transactional(readOnly = true)
-    public OfficerDTO findOneByUserId(Long id) {
-        log.debug("Request to get Officer : {}", id);
-        Officer officer = officerRepository.findOneByUserId(id);
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
-        return officerDTO;
-    }
-    @Transactional(readOnly = true)
     public OfficerDTO findOneByCompanyAndIdentification(Long id,String identificationID) {
         log.debug("Request to get Vehicule : {}", id);
         Officer officer = officerRepository.findByCompanyIdAndIdentificationnumber(id,identificationID);

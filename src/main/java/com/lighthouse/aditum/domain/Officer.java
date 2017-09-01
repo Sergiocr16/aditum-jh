@@ -40,10 +40,6 @@ public class Officer implements Serializable {
     private String imageContentType;
 
     @NotNull
-    @Column(name = "email", nullable = false)
-    private String email;
-
-    @NotNull
     @Column(name = "identificationnumber", nullable = false)
     private String identificationnumber;
 
@@ -64,11 +60,7 @@ public class Officer implements Serializable {
 
     @Column(name = "annosexperiencia")
     private Integer annosexperiencia;
-
-    @OneToOne
-    @JoinColumn(unique = true)
-    private User user;
-
+  
     @ManyToOne
     private Company company;
 
@@ -143,19 +135,6 @@ public class Officer implements Serializable {
 
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Officer email(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getIdentificationnumber() {
@@ -236,19 +215,6 @@ public class Officer implements Serializable {
         this.annosexperiencia = annosexperiencia;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public Officer user(User user) {
-        this.user = user;
-        return this;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Company getCompany() {
         return company;
     }
@@ -291,7 +257,6 @@ public class Officer implements Serializable {
             ", secondlastname='" + secondlastname + "'" +
             ", image='" + image + "'" +
             ", imageContentType='" + imageContentType + "'" +
-            ", email='" + email + "'" +
             ", identificationnumber='" + identificationnumber + "'" +
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +

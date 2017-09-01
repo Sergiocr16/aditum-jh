@@ -109,11 +109,10 @@
             });
 
             function onSuccessDelete () {
-                    User.delete({login: vm.login},
-                        function () {
-                            toastr["success"]("Se ha eliminado el oficial correctamente.");
-                            loadAll();
-                        });
+
+                    toastr["success"]("Se ha eliminado el oficial correctamente.");
+                    loadAll();
+
 
             }
 
@@ -166,41 +165,18 @@
         }
 
         function onSuccessDisabledOfficer(data, headers) {
-                User.getUserById({
-                    id: data.userId
-                }, onSuccessGetDisabledUser);
+                   toastr["success"]("Se ha deshabilitado el oficial correctamente.");
+                   bootbox.hideAll();
+                   loadAll();
 
         }
 
-        function onSuccessGetDisabledUser(data, headers) {
-            data.activated = 0;
-            User.update(data, onSuccessDisabledUser);
-
-            function onSuccessDisabledUser(data, headers) {
-                toastr["success"]("Se ha deshabilitado el oficial correctamentedddd.");
-                bootbox.hideAll();
-                loadAll();
-            }
-        }
-
-        function onSuccessEnabledOfficer(data, headers) {
-
-                User.getUserById({
-                    id: data.userId
-                }, onSuccessGetEnabledUser);
+    function onSuccessEnabledOfficer(onSuccessEnabledOfficer, headers) {
+                   toastr["success"]("Se ha habilitado el oficial correctamente.");
+                   bootbox.hideAll();
+                   loadAll();
 
         }
-
-        function onSuccessGetEnabledUser(data, headers) {
-            data.activated = 1;
-            User.update(data, onSuccessEnabledUser);
-            function onSuccessEnabledUser(data, headers) {
-                toastr["success"]("Se ha habilitado el oficial correctamente.");
-                bootbox.hideAll();
-                loadAll();
-            }
-        }
-
         function loadPage(page) {
             vm.page = page;
             vm.transition();
