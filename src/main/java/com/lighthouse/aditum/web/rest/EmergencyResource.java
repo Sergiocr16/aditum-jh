@@ -94,9 +94,9 @@ public class EmergencyResource {
     @Timed
     public ResponseEntity<List<EmergencyDTO>> getAllEmergencies(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
-        log.debug("REST request to get a page of Emergencies");
-        Page<EmergencyDTO> page = emergencyService.findAll(pageable, companyId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/emergencies");
+        log.debug("REST request to get a page of Notes");
+        Page<EmergencyDTO> page = emergencyService.findAll(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notes");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
