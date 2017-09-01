@@ -8,6 +8,7 @@
     HouseAbsenceController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'House','Principal'];
 
     function HouseAbsenceController($scope, $rootScope, $stateParams, previousState,House,Principal) {
+           $rootScope.active = "house-absence";
         moment.locale('es');
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -16,7 +17,7 @@
         vm.consulting_initial_time = new Date();
         vm.consulting_final_time = new Date();
         House.get({id: $rootScope.companyUser.houseId},onSuccess,onError);
-angular.element(document).ready(function () {
+        angular.element(document).ready(function () {
           $("#all").fadeIn("slow");
                 $('.dating').keydown(function() {
                     return false;

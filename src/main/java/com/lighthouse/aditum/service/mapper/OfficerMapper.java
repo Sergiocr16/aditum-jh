@@ -9,17 +9,14 @@ import java.util.List;
 /**
  * Mapper for the entity Officer and its DTO OfficerDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, })
+@Mapper(componentModel = "spring", uses = {})
 public interface OfficerMapper {
 
-    @Mapping(source = "user.id", target = "userId")
-    @Mapping(source = "user.login", target = "userLogin")
     @Mapping(source = "company.id", target = "companyId")
     OfficerDTO officerToOfficerDTO(Officer officer);
 
     List<OfficerDTO> officersToOfficerDTOs(List<Officer> officers);
 
-    @Mapping(source = "userId", target = "user")
     @Mapping(source = "companyId", target = "company")
     Officer officerDTOToOfficer(OfficerDTO officerDTO);
 

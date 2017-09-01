@@ -8,12 +8,6 @@
     -->
     <changeSet id="20170228214136-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="user_id"
-                                 baseTableName="officer"
-                                 constraintName="fk_officer_user_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="jhi_user"/>
-
         <addForeignKeyConstraint baseColumnNames="company_id"
                                  baseTableName="officer"
                                  constraintName="fk_officer_company_id"

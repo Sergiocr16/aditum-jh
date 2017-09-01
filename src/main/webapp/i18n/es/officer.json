@@ -19,12 +19,10 @@
             "lastname": "Lastname",
             "secondlastname": "Secondlastname",
             "image": "Image",
-            "email": "Email",
             "identificationnumber": "Identificationnumber",
             "inservice": "Inservice",
             "enable": "Enable",
             "image_url": "Image Url",
-            "user": "User",
             "company": "Company"
         }
     }

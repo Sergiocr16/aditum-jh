@@ -41,10 +41,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="email" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="identificationnumber" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -60,9 +56,7 @@
             <column name="image_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
-            <column name="user_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
