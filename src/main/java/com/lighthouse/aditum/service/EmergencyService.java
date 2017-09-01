@@ -56,7 +56,7 @@ public class EmergencyService {
     @Transactional(readOnly = true)
     public Page<EmergencyDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Emergencies");
-        Page<Emergency> result = emergencyRepository.findByCompanyId(pageable,companyId);
+        Page<Emergency> result = emergencyRepository.findByCompanyIdAndIsAttended(pageable,companyId,0);
         return result.map(emergency -> emergencyMapper.emergencyToEmergencyDTO(emergency));
     }
 

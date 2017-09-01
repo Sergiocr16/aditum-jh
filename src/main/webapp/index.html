@@ -38,11 +38,11 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp">
+<body ng-app="aditumApp" class="page-header-fixed page-sidebar-fixed page-footer-fixed">
 <div  ui-view="reset">
 </div>
 
-<div ui-view="navbar"  ng-show="vm.isAuthenticated() == true"  ></div>
+<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
@@ -222,6 +222,8 @@
 
     <script src="app/home/home.controller.js"></script>
 
+    <script src="app/entities/watch/WatchInResidentController.controller.js"></script>
+
     <script src="app/entities/watch/watch-dialog.controller.js"></script>
 
     <script src="app/entities/watch/watch-detail.controller.js"></script>
@@ -233,9 +235,6 @@
     <script src="app/entities/watch/watch.service.js"></script>
 
     <script src="app/entities/watch/watch.controller.js"></script>
-
-    <script src="app/entities/watch/WatchInResidentController.controller.js"></script>
-
 
     <script src="app/entities/visitant/ws-visitor.service.js"></script>
 

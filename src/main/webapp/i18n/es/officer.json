@@ -23,6 +23,9 @@
             "inservice": "Inservice",
             "enable": "Enable",
             "image_url": "Image Url",
+            "fechanacimiento": "Fechanacimiento",
+            "annosexperiencia": "Annosexperiencia",
+
             "company": "Company"
         }
     }
