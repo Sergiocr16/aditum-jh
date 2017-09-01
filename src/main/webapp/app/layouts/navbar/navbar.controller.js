@@ -10,7 +10,7 @@
     function NavbarController (CommonMethods,$state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
  $rootScope.isAuthenticated = Principal.isAuthenticated;
-
+     vm.annoActual = moment(new Date()).format("YYYY")
  vm.editMyInfoAsUser = function(){
     var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyUser.id)
         $state.go('residentByHouse.edit', {

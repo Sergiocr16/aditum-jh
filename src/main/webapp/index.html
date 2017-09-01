@@ -38,11 +38,11 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp">
+<body ng-app="aditumApp" class="page-header-fixed page-sidebar-fixed page-footer-fixed">
 <div  ui-view="reset">
 </div>
 
-<div ui-view="navbar"  ng-show="vm.isAuthenticated() == true"  ></div>
+<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
     <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
     </div>
 
