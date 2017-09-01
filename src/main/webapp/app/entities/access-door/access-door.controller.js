@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth','$state','$scope','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','Note','AlertService', 'Principal','$filter','companyUser','WSDeleteEntity','WSEmergency','WSHouse','WSResident','WSVehicle','WSNote','WSVisitor'];
+    AccessDoorController.$inject = ['Auth','$state','$scope','$rootScope','CommonMethods','AccessDoor', 'Resident' ,'House','Vehicule','Visitant','Note','AlertService','Emergency', 'Principal','$filter','companyUser','WSDeleteEntity','WSEmergency','WSHouse','WSResident','WSVehicle','WSNote','WSVisitor'];
 
-    function AccessDoorController(Auth,$state,$scope,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,Note,AlertService,Principal,$filter,companyUser,WSDeleteEntity,WSEmergency,WSHouse,WSResident,WSVehicle,WSNote,WSVisitor) {
+    function AccessDoorController(Auth,$state,$scope,$rootScope,CommonMethods, AccessDoor, Resident, House,Vehicule,Visitant,Note,AlertService,Emergency,Principal,$filter,companyUser,WSDeleteEntity,WSEmergency,WSHouse,WSResident,WSVehicle,WSNote,WSVisitor) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -87,16 +87,37 @@
             function onSuccessNotes(notes, headers) {
               angular.forEach(notes,function(key,note){
                     key.creationdate = moment(key.creationdate).fromNow();
-
                 })
                 vm.notes = notes;
                 vm.countNotes = vm.notes.length;
                 subscribe();
-                vm.show = 4;
-                vm.hideRegisterForm = 2;
-                vm.hideLoadingForm = 1;
+                loadEmergencies();
             }
         }
+
+         function loadEmergencies() {
+                 Emergency.findAll({companyId: $rootScope.companyId},onSuccessNotes, onError);
+                 function onSuccessNotes(emergencies, headers) {
+                 if(emergencies.length>0){
+                 vm.emergency = undefined;
+                  receiveEmergency(emergencies[0]);
+                  emergencyList = emergencies;
+                 }else{
+                   vm.show = 4;
+                   vm.hideRegisterForm = 2;
+                   vm.hideLoadingForm = 1;
+                   emergencyList = []
+                 }
+                 subscribe();
+                 }
+                 function onError(){
+                  vm.show = 4;
+                  vm.hideRegisterForm = 2;
+                  vm.hideLoadingForm = 1;
+                  emergencyList = []
+                  subscribe();
+                 }
+             }
         function subscribe(){
           if($state.current.name==="main-access-door"){
                 WSDeleteEntity.subscribe($rootScope.companyId);
@@ -495,15 +516,11 @@ vm.verifyVisitantInivitedDate = function(visitant){
             }
 
         vm.getEmergency = function(emergency) {
-
             var house = vm.setHouse(emergency.houseId);
             vm.house_number_emergency = house.housenumber;
             vm.hideRegisterForm = 1;
             vm.hideEmergencyForm = 2;
             vm.show = 7;
-
-
-
         }
 
 //BEGIN WEB SOCKETS
@@ -523,13 +540,18 @@ vm.emergency.isattended = 1;
     vm.hideEmergencyForm = 1;
     toastr["success"]("Se ha reportado al residente que se atenderá la emergencia");
 WSEmergency.sendActivityAttended(codeEmegency,vm.emergency);
+vm.emergency=undefined;
+setTimeout(function(){
+loadEmergencies();
+},500)
 }
 
 
 function receiveEmergency(emergency){
+if(vm.emergency==undefined){
     vm.getEmergency(emergency);
     vm.emergency = emergency;
-
+}
 }
 
 var hasExistance = function(array,id) {

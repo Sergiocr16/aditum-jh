@@ -11,6 +11,11 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+           'findAll': {
+               method: 'GET',
+               url: 'api/emergencies',
+               isArray: true
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
