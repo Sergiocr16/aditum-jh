@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "officerAccount" : {
+            "home": {
+                "title": "Officer Accounts",
+                "createLabel": "Crear nuevo Officer Account",
+                "createOrEditLabel": "Crear o editar Officer Account"
+            },
+            "created": "Un nuevo Officer Account ha sido creado con el identificador {{ param }}",
+            "updated": "Un Officer Account ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Officer Account ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Officer Account {{ id }}?"
+            },
+            "detail": {
+                "title": "Officer Account"
+            },
+            "name": "Name",
+            "company": "Company",
+            "user": "User"
+        }
+    }
+}

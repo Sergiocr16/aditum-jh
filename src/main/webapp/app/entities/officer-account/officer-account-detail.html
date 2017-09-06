@@ -1,0 +1,31 @@
+
+<div>
+    <h2><span data-translate="aditumApp.officerAccount.detail.title">Officer Account</span> {{vm.officerAccount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row jh-entity-details">
+        <dt><span data-translate="aditumApp.officerAccount.name">Name</span></dt>
+        <dd>
+            <span>{{vm.officerAccount.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAccount.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.officerAccount.companyId})">{{vm.officerAccount.companyName}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.officerAccount.user">User</span></dt>
+        <dd>
+            {{vm.officerAccount.userLogin}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="officer-account-detail.edit({id:vm.officerAccount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
