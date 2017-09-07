@@ -118,6 +118,11 @@ public class AdminInfoDTO implements Serializable {
     public void setAdministradaOficiales(Integer administradaOficiales) {
         this.administradaOficiales = administradaOficiales;
     }
+
+    public Integer getAdministradaOficiales() {
+       return this.administradaOficiales;
+    }
+
     public Long getUserId() {
         return userId;
     }
