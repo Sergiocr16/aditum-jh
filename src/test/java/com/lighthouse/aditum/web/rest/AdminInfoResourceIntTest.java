@@ -64,6 +64,12 @@ public class AdminInfoResourceIntTest {
     private static final Integer DEFAULT_ENABLED = 0;
     private static final Integer UPDATED_ENABLED = 1;
 
+    private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_ADMINISTRADA_OFICIALES = 1;
+    private static final Integer UPDATED_ADMINISTRADA_OFICIALES = 2;
+
     @Autowired
     private AdminInfoRepository adminInfoRepository;
 
@@ -114,7 +120,9 @@ public class AdminInfoResourceIntTest {
                 .email(DEFAULT_EMAIL)
                 .image(DEFAULT_IMAGE)
                 .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-                .enabled(DEFAULT_ENABLED);
+                .enabled(DEFAULT_ENABLED)
+                .image_url(DEFAULT_IMAGE_URL)
+                .administradaOficiales(DEFAULT_ADMINISTRADA_OFICIALES);
         return adminInfo;
     }
 
@@ -148,6 +156,8 @@ public class AdminInfoResourceIntTest {
         assertThat(testAdminInfo.getImage()).isEqualTo(DEFAULT_IMAGE);
         assertThat(testAdminInfo.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
         assertThat(testAdminInfo.getEnabled()).isEqualTo(DEFAULT_ENABLED);
+        assertThat(testAdminInfo.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
+        assertThat(testAdminInfo.getAdministradaOficiales()).isEqualTo(DEFAULT_ADMINISTRADA_OFICIALES);
     }
 
     @Test
@@ -189,7 +199,9 @@ public class AdminInfoResourceIntTest {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
             .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)));
+            .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
+            .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
+            .andExpect(jsonPath("$.[*].administradaOficiales").value(hasItem(DEFAULT_ADMINISTRADA_OFICIALES)));
     }
 
     @Test
@@ -210,7 +222,9 @@ public class AdminInfoResourceIntTest {
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
             .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
-            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED));
+            .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
+            .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
+            .andExpect(jsonPath("$.administradaOficiales").value(DEFAULT_ADMINISTRADA_OFICIALES));
     }
 
     @Test
@@ -238,7 +252,9 @@ public class AdminInfoResourceIntTest {
                 .email(UPDATED_EMAIL)
                 .image(UPDATED_IMAGE)
                 .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-                .enabled(UPDATED_ENABLED);
+                .enabled(UPDATED_ENABLED)
+                .image_url(UPDATED_IMAGE_URL)
+                .administradaOficiales(UPDATED_ADMINISTRADA_OFICIALES);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(updatedAdminInfo);
 
         restAdminInfoMockMvc.perform(put("/api/admin-infos")
@@ -258,6 +274,8 @@ public class AdminInfoResourceIntTest {
         assertThat(testAdminInfo.getImage()).isEqualTo(UPDATED_IMAGE);
         assertThat(testAdminInfo.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
         assertThat(testAdminInfo.getEnabled()).isEqualTo(UPDATED_ENABLED);
+        assertThat(testAdminInfo.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
+        assertThat(testAdminInfo.getAdministradaOficiales()).isEqualTo(UPDATED_ADMINISTRADA_OFICIALES);
     }
 
     @Test

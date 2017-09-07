@@ -55,6 +55,10 @@
         {
             "fieldName": "image_url",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "administradaOficiales",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",

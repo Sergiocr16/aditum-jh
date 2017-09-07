@@ -91,7 +91,7 @@
                     <span class="title">Dashboard</span>
                 </a>
             </li>
-            <li class="" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
+            <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
                     <span class="title">Condominio</span>
@@ -125,7 +125,7 @@
             </li>
             <!--//es admin-->
 
-            <li  class="start" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-lock" aria-hidden="true"></i>
@@ -147,23 +147,7 @@
                 </ul>
 
             </li>
-            <li  class="start" has-any-authority="ROLE_ADMIN,ROLE_MANAGER" ng-class="{ 'active' : active === 'emergencyReport' } ">
 
-                <a href="javascript:;">
-                    <i class="fa fa-ambulance" aria-hidden="true"></i>
-                    <span class="title "> Emergencias</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="emergency" ng-class="{ 'active' : active === 'emergencyReport'}">
-                        <a href="">
-                            <i class="fa fa-shield" aria-hidden="true"></i> Reporte de emergencias
-                        </a>
-                    </li>
-                </ul>
-
-            </li>
             <!--//es residente-->
 
             <li  class="start"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
