@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -39,6 +40,10 @@ public class OfficerDTO implements Serializable {
     private Boolean enable;
 
     private String image_url;
+
+    private ZonedDateTime fechanacimiento;
+
+    private Integer annosexperiencia;
 
     private Long companyId;
 
@@ -113,6 +118,20 @@ public class OfficerDTO implements Serializable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+    public ZonedDateTime getFechanacimiento() {
+        return fechanacimiento;
+    }
+
+    public void setFechanacimiento(ZonedDateTime fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+    }
+    public Integer getAnnosexperiencia() {
+        return annosexperiencia;
+    }
+
+    public void setAnnosexperiencia(Integer annosexperiencia) {
+        this.annosexperiencia = annosexperiencia;
+    }
 
     public Long getCompanyId() {
         return companyId;
@@ -155,6 +174,8 @@ public class OfficerDTO implements Serializable {
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +
             ", image_url='" + image_url + "'" +
+            ", fechanacimiento='" + fechanacimiento + "'" +
+            ", annosexperiencia='" + annosexperiencia + "'" +
             '}';
     }
 }

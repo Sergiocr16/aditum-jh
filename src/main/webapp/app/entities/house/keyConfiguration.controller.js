@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('KeyConfigurationController', KeyConfigurationController);
 
-    KeyConfigurationController.$inject = ['CommonMethods','$state','$rootScope','Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident'];
+    KeyConfigurationController.$inject = ['CommonMethods','$state','$rootScope','Principal', '$scope', '$stateParams', 'entity', 'House', 'Resident','WSHouse'];
 
-    function KeyConfigurationController (CommonMethods,$state,$rootScope, Principal,$scope, $stateParams,  entity, House, Resident) {
+    function KeyConfigurationController (CommonMethods,$state,$rootScope, Principal,$scope, $stateParams,  entity, House, Resident, WSHouse) {
         var vm = this;
         $rootScope.active = "keysConguration";
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -34,6 +34,7 @@
 
         function onSaveSuccess (result) {
             $state.go('residentByHouse');
+              WSHouse.sendActivity(result);
             bootbox.hideAll();
              toastr["success"]("Se establecieron las claves de seguridad correctamente");
 
