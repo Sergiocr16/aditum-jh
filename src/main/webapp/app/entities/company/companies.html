@@ -19,6 +19,7 @@
                         <th>Nombre</th>
                         <th>Configurar parámetros</th>
                         <th>Ver administradores</th>
+                        <th>Ver cuenta oficiales</th>
                         <th>Editar</th>
                         <th>Está activo</th>
                     </tr>
@@ -29,6 +30,7 @@
                         <td>{{company.name}}</td>
                         <td> <a class="light-gray-font" ng-click="vm.getCompanyConfiguration(company.id)">Configurar parámetros</a></td>
                         <td> <a class="light-gray-font" ui-sref="admins({companyId: company.id}) ">Ver administradores</a></td>
+                        <td> <a class="light-gray-font" ui-sref="cuentaOficiales({companyId: company.id}) ">Ver cuenta oficiales</a></td>
                         <td> <a class="light-gray-font" ui-sref="company.edit({id:company.id})">Editar</a></td>
 
                         <td><span ng-show="company.active==1" class="padding-10 label label-sm label-success col-lg-6 col-md-6 col-sm-6 col-xs-6">Si </span><span ng-show="company.active==false" class="padding-10  label label-sm label-danger col-lg-6 col-md-6 col-sm-6  col-xs-6">No</span></td>
@@ -41,51 +43,6 @@
     </div>
 
 
-
-
-
-
-    <!--<div class="table-responsive">-->
-        <!--<table class="jh-table table table-striped">-->
-            <!--<thead>-->
-                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
-                    <!--<th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="name"><span data-translate="aditumApp.company.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="active"><span data-translate="aditumApp.company.active">Active</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th></th>-->
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr ng-repeat="company in vm.companies track by company.id">-->
-                    <!--<td><a ui-sref="company-detail({id:company.id})">{{company.id}}</a></td>-->
-                    <!--<td>{{company.name}}</td>-->
-                    <!--<td>{{company.active}}</td>-->
-                    <!--<td class="text-right">-->
-                        <!--<div class="btn-group flex-btn-group-container">-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="company-detail({id:company.id})"-->
-                                    <!--class="btn btn-info btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="company.edit({id:company.id})"-->
-                                    <!--class="btn btn-primary btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="company.delete({id:company.id})"-->
-                                    <!--class="btn btn-danger btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-    <!--</div>-->
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
     </div>

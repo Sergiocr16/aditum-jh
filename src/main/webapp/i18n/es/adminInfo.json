@@ -23,6 +23,7 @@
             "image": "Image",
             "enabled": "Enabled",
             "image_url": "Image Url",
+            "administradaOficiales": "Administrada Oficiales",
             "user": "User",
             "company": "Company"
         }

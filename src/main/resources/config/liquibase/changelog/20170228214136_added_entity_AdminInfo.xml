@@ -56,6 +56,10 @@
             <column name="image_url" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+
+            <column name="administrada_oficiales" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

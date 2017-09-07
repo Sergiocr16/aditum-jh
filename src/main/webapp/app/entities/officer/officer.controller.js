@@ -18,6 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+        console.log($rootScope.companyUser)
         $rootScope.active = "officers";
         loadAll();
 
