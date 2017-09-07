@@ -19,6 +19,16 @@
                     }
                     return data;
                 }
+            }
+            ,'findByUserId':{
+                url:'api/officer-accounts/findByUserId/:id',
+                method:'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
             },
             'update': { method:'PUT' }
         });
