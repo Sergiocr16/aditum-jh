@@ -58,6 +58,7 @@
 
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
+                   console.log(account)
                     $rootScope.showLogin = false;
                     if(account.authorities[0]=='ROLE_OFFICER'){
                      setTimeout(function(){   $state.go('main-access-door');}, 300);
@@ -82,7 +83,7 @@
                     Auth.resetPreviousState();
                     $state.go(previousState.name, previousState.params);
                 }
-            }).catch(function () {
+            }).catch(function (a) {
                 vm.authenticationError = true;
                 toastr["error"]("Credenciales inválidos o cuenta deshabilitada.");
             });

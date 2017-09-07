@@ -33,13 +33,19 @@ public class OfficerAccountResource {
     private final Logger log = LoggerFactory.getLogger(OfficerAccountResource.class);
 
     private static final String ENTITY_NAME = "officerAccount";
-        
+
     private final OfficerAccountService officerAccountService;
 
     public OfficerAccountResource(OfficerAccountService officerAccountService) {
         this.officerAccountService = officerAccountService;
     }
-
+    @GetMapping("/officer-accounts/findByUserId/{id}")
+    @Timed
+    public ResponseEntity<OfficerAccountDTO> getROfficerAccountByUserId(@PathVariable Long id) {
+        log.debug("REST request to get Resident : {}", id);
+        OfficerAccountDTO officerAccountDTO = officerAccountService.findOneByUserId(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerAccountDTO));
+    }
     /**
      * POST  /officer-accounts : Create a new officerAccount.
      *

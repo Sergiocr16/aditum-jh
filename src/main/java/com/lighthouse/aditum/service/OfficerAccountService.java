@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class OfficerAccountService {
 
     private final Logger log = LoggerFactory.getLogger(OfficerAccountService.class);
-    
+
     private final OfficerAccountRepository officerAccountRepository;
 
     private final OfficerAccountMapper officerAccountMapper;
@@ -47,9 +47,16 @@ public class OfficerAccountService {
         return result;
     }
 
+    @Transactional(readOnly = true)
+    public OfficerAccountDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        OfficerAccount officer = officerAccountRepository.findOneByUserId(id);
+        OfficerAccountDTO officerAccountDTO = officerAccountMapper.officerAccountToOfficerAccountDTO(officer);
+        return officerAccountDTO;
+    }
     /**
      *  Get all the officerAccounts.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */

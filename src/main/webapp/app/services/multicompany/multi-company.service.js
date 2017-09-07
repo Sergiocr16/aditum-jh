@@ -5,9 +5,9 @@
         .module('aditumApp')
         .service('MultiCompany', MultiCompany);
 
-    MultiCompany.$inject = ['Principal','AdminInfo','Resident','Officer','$rootScope'];
+    MultiCompany.$inject = ['Principal','AdminInfo','Resident','OfficerAccount','$rootScope'];
 
-    function MultiCompany (Principal,AdminInfo,Resident,Officer,$rootScope) {
+    function MultiCompany (Principal,AdminInfo,Resident,OfficerAccount,$rootScope) {
 
         var companyId;
         var service = {
@@ -45,7 +45,7 @@
 
 
         function isOfficer(accountId){
-              return Officer.findByUserId({id: accountId}).$promise
+              return OfficerAccount.findByUserId({id: accountId}).$promise
        }
 
         function isManager(accountId){

@@ -11,5 +11,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface OfficerAccountRepository extends JpaRepository<OfficerAccount,Long> {
-
+    OfficerAccount findOneByUserId(Long id);
 }

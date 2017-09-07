@@ -1,12 +1,14 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.lighthouse.aditum.domain.Authority;
+import com.lighthouse.aditum.domain.OfficerAccount;
 import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.jwt.JWTConfigurer;
 import com.lighthouse.aditum.security.jwt.TokenProvider;
 import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
+import com.lighthouse.aditum.service.dto.OfficerAccountDTO;
 import com.lighthouse.aditum.service.dto.OfficerDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.web.rest.vm.LoginVM;
@@ -36,7 +38,7 @@ public class UserJWTController {
 
     private UserService userService;
 
-    private OfficerService officerService;
+    private OfficerAccountService officerAccountService;
 
     private AdminInfoService managerService;
 
@@ -44,11 +46,11 @@ public class UserJWTController {
 
     private ResidentService residentService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerService officerService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService) {
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.officerService = officerService;
+        this.officerAccountService = officerAccountService;
         this.companyService = companyService;
         this.managerService = managerService;
         this.residentService = residentService;
@@ -77,6 +79,12 @@ public class UserJWTController {
                     case AuthoritiesConstants.MANAGER:
                         AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
                         if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.OFFICER:
+                        OfficerAccountDTO officer = officerAccountService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(officer.getCompanyId()).getActive() == 1){
                             activeCompany = true;
                         }
                         break;
