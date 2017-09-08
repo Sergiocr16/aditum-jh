@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="aditumApp.rHAccount.home.title">RH Accounts</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="rh-account.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.rHAccount.home.createLabel">
+                        Create new RH Account
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span data-translate="aditumApp.rHAccount.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lastname"><span data-translate="aditumApp.rHAccount.lastname">Lastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="secondlastname"><span data-translate="aditumApp.rHAccount.secondlastname">Secondlastname</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="enterprisename"><span data-translate="aditumApp.rHAccount.enterprisename">Enterprisename</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="email"><span data-translate="aditumApp.rHAccount.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.rHAccount.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="rHAccount in vm.rHAccounts track by rHAccount.id">
+                    <td><a ui-sref="rh-account-detail({id:rHAccount.id})">{{rHAccount.id}}</a></td>
+                    <td>{{rHAccount.name}}</td>
+                    <td>{{rHAccount.lastname}}</td>
+                    <td>{{rHAccount.secondlastname}}</td>
+                    <td>{{rHAccount.enterprisename}}</td>
+                    <td>{{rHAccount.email}}</td>
+                    <td>
+                        {{rHAccount.userLogin}}
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="rh-account-detail({id:rHAccount.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="rh-account.edit({id:rHAccount.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="rh-account.delete({id:rHAccount.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

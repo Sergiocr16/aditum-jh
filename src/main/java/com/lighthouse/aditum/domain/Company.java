@@ -1,10 +1,15 @@
 package com.lighthouse.aditum.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.BatchSize;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Company.
@@ -44,6 +49,22 @@ public class Company implements Serializable {
     public Company name(String name) {
         this.name = name;
         return this;
+    }
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(
+        name = "rhAccounts_company",
+        joinColumns = {@JoinColumn(name = "companyId", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "company_name", referencedColumnName = "name")})
+    @BatchSize(size = 20)
+    private Set<RHAccount> rhAccounts = new HashSet<>();
+
+    public Set<RHAccount> getRHAccounts() {
+        return rhAccounts;
+    }
+
+    public void setRHAccounts(Set<RHAccount> rhAccounts) {
+        this.rhAccounts = rhAccounts;
     }
 
     public void setName(String name) {
