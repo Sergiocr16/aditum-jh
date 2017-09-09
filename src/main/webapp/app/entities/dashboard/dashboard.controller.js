@@ -9,10 +9,12 @@
 
 	function DashboardController ($scope,$rootScope, Principal, LoginService, $state, Dashboard) {
 		var vm = this;
-		 $rootScope.active = "dashboard";
+	    $rootScope.active = "dashboard";
 		vm.isInLogin = $state.includes('home');
 		vm.account = null;
 		vm.login = LoginService.open;
+        getAccount();
+        setTimeout(function(){ vm.loadAll();},600)
 
 		function getAccount() {
 			Principal.identity().then(function(account) {
@@ -21,7 +23,6 @@
 			});
 		}
 
-		getAccount();
 		vm.loadAll = function() {
 			Dashboard.query({companyId : $rootScope.companyId},function(result) {
 				vm.dashboard = result;
@@ -37,25 +38,6 @@
 			});
 		}
 
-	  setTimeout(function(){ vm.loadAll();},600)
-
-		function formatResponsableOfficer(stringOfficer) {
-			var variables = stringOfficer.split(';')
-			var officer = {};
-			officer.id = variables[0];
-			officer.identificationnumber = variables[1];
-			officer.name = variables[2];
-			return officer;
-		}
-		function getformatResponsableOfficers(watch) {
-			var formattedOfficers = [];
-			var stringOfficers = watch.responsableofficer.slice(0, -2);
-			var officers = stringOfficers.split('||');
-			angular.forEach(officers, function(officer, key) {
-				formattedOfficers.push(formatResponsableOfficer(officer))
-			})
-			return formattedOfficers;
-		}
 		function formatWatch(watch) {
 		if(watch!=null){
 			watch.initialtime = moment(watch.initialtime).format('h:mm a');
@@ -71,6 +53,26 @@
 			}
 
 		}
+
+		function formatResponsableOfficer(stringOfficer) {
+			var variables = stringOfficer.split(';')
+			var officer = {};
+			officer.id = variables[0];
+			officer.identificationnumber = variables[1];
+			officer.name = variables[2];
+			return officer;
+		}
+
+		function getformatResponsableOfficers(watch) {
+			var formattedOfficers = [];
+			var stringOfficers = watch.responsableofficer.slice(0, -2);
+			var officers = stringOfficers.split('||');
+			angular.forEach(officers, function(officer, key) {
+				formattedOfficers.push(formatResponsableOfficer(officer))
+			})
+			return formattedOfficers;
+		}
+
 		function showData(){
 			angular.element(document).ready(function () {
 				$('#all').fadeIn("300");
@@ -240,7 +242,7 @@
 		vm.updateMonthData = function(){
 			Dashboard.updateMonth({companyId : $rootScope.companyId},function(result) {
 				vm.dashboard.visitorsPerMonth = result;
-vm.visitorTitle = "Visitantes del mes";
+                vm.visitorTitle = "Visitantes del mes";
 				$('#site_activities').html('')
 				vm.showVisitorGraph();
 				initGraphs();

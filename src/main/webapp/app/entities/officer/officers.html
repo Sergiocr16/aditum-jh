@@ -30,13 +30,19 @@
         </div>
         <div class="display-none" id="tableData">
             <button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" ng-click="vm.switchEnabledDisabledOfficers()">{{vm.buttonTitle}}</button>
-            <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
+            <div  ng-show="vm.canEditOfficers==0" class="no-padding form-group col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
                     <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
                 </div>
             </div>
-            <button type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
+            <div  ng-show="vm.canEditOfficers==1"  class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
+                <div class="input-icon">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
+                </div>
+            </div>
+            <button ng-show="vm.canEditOfficers==1" type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
 
             <div class="portlet-body ">
 
@@ -48,24 +54,22 @@
                         <tr>
                             <th>Nombre completo</th>
                             <th>Cédula</th>
-                            <th>Email</th>
-                            <th>Login</th>
+
                             <th>Ver detalle</th>
-                            <th>{{vm.actionButtonTitle}}</th>
-                            <th>Editar</th>
-                            <th>Eliminar</th>
+                            <th ng-show="vm.canEditOfficers==1">{{vm.actionButtonTitle}}</th>
+                            <th ng-show="vm.canEditOfficers==1">Editar</th>
+                            <th ng-show="vm.canEditOfficers==1">Eliminar</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
-                            <td>{{officer.email}}</td>
-                            <td>{{officer.userLogin}}</td>
+
                             <td> <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)">Ver detalle</a></td>
-                            <td> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
-                            <td> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
-                            <td> <a ng-click="vm.deleteOfficer(officer)">Eliminar</a></td>
+                            <td ng-show="vm.canEditOfficers==1"> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
+                            <td ng-show="vm.canEditOfficers==1"> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
+                            <td ng-show="vm.canEditOfficers==1"> <a ng-click="vm.deleteOfficer(officer)">Eliminar</a></td>
                         </tr>
                         </tbody>
                     </table>
