@@ -21,6 +21,7 @@
                 "watch": "Watch",
                 "brand": "Brand",
                 "officerAccount": "Officer Account",
+                "rhAccount": "RH Account",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

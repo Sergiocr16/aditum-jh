@@ -19,6 +19,7 @@
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_Watch.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170519234430_added_entity_Brand.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170906222455_added_entity_OfficerAccount.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170908032321_added_entity_RHAccount.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -32,5 +33,6 @@
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Visitant.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Watch.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170906222455_added_entity_constraints_OfficerAccount.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20170908032321_added_entity_constraints_RHAccount.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
