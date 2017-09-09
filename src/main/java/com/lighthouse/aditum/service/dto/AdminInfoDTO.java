@@ -35,6 +35,8 @@ public class AdminInfoDTO implements Serializable {
 
     private String image_url;
 
+    private Integer administradaOficiales;
+
     private Long userId;
 
     private String userLogin;
@@ -113,6 +115,14 @@ public class AdminInfoDTO implements Serializable {
         this.image_url = image_url;
     }
 
+    public void setAdministradaOficiales(Integer administradaOficiales) {
+        this.administradaOficiales = administradaOficiales;
+    }
+
+    public Integer getAdministradaOficiales() {
+       return this.administradaOficiales;
+    }
+
     public Long getUserId() {
         return userId;
     }
@@ -170,6 +180,7 @@ public class AdminInfoDTO implements Serializable {
             ", image='" + image + "'" +
             ", enabled='" + enabled + "'" +
             ", image_url='" + image_url + "'" +
+            ", administradaOficiales='" + administradaOficiales + "'" +
             '}';
     }
 }
