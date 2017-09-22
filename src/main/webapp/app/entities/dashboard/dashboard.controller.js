@@ -29,6 +29,12 @@
 				showData();
 				vm.visitorTitle = "Visitantes de la semana";
 				vm.watch = formatWatch(vm.dashboard.currentWatch);
+				 setTimeout(function() {
+                                          $("#loadingIcon").fadeOut(300);
+                                }, 400)
+                                 setTimeout(function() {
+                                     $("#tableData").fadeIn('slow');
+                                 },700 )
 				if(vm.dashboard.currentWatch!==null){
 				vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100)/vm.dashboard.officerQuantity)
 				}else{

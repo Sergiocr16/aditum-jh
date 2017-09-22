@@ -58,7 +58,7 @@
 
     <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
 
-        <div ui-view="content" ng-show="vm.isAuthenticated()">
+        <div ui-view="content" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
         </div>
     </div>
     <div ui-view="footer " ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">

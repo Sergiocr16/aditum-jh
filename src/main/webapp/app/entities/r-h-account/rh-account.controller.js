@@ -5,12 +5,11 @@
         .module('aditumApp')
         .controller('RHAccountController', RHAccountController);
 
-    RHAccountController.$inject = ['RHAccount', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    RHAccountController.$inject = ['RHAccount', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function RHAccountController(RHAccount, ParseLinks, AlertService, paginationConstants, pagingParams, Principal) {
-
+    function RHAccountController(RHAccount, ParseLinks, AlertService, paginationConstants, pagingParams, Principal,$rootScope) {
+        $rootScope.active = "recursosHumanos";
         var vm = this;
-
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

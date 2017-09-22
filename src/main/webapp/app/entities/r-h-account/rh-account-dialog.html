@@ -4,17 +4,18 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myRHAccountLabel" data-translate="aditumApp.rHAccount.home.createOrEditLabel">Create or edit a RH Account</h4>
+        <h4 class="modal-title" id="myRHAccountLabel">Create or editar a RH Account</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+        <div class="col-md-6">
         <div class="form-group" ng-show="vm.rHAccount.id">
             <label for="id" data-translate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.rHAccount.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.rHAccount.name" for="field_name">Name</label>
+            <label class="control-label"  for="field_name">Nombre</label>
             <input type="text" class="form-control" name="name" id="field_name"
                     ng-model="vm.rHAccount.name"
                     required/>
@@ -26,7 +27,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.rHAccount.lastname" for="field_lastname">Lastname</label>
+            <label class="control-label" for="field_lastname">Apellido</label>
             <input type="text" class="form-control" name="lastname" id="field_lastname"
                     ng-model="vm.rHAccount.lastname"
                     required/>
@@ -38,7 +39,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.rHAccount.secondlastname" for="field_secondlastname">Secondlastname</label>
+            <label class="control-label"  for="field_secondlastname">Segundo apellido</label>
             <input type="text" class="form-control" name="secondlastname" id="field_secondlastname"
                     ng-model="vm.rHAccount.secondlastname"
                     required/>
@@ -50,7 +51,7 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.rHAccount.enterprisename" for="field_enterprisename">Enterprisename</label>
+            <label class="control-label"  for="field_enterprisename">Nombre de Empresa</label>
             <input type="text" class="form-control" name="enterprisename" id="field_enterprisename"
                     ng-model="vm.rHAccount.enterprisename"
                     required/>
@@ -61,21 +62,16 @@
                 </p>
             </div>
         </div>
+        </div>
+        <div class="col-md-6">
         <div class="form-group">
             <label class="control-label" data-translate="aditumApp.rHAccount.email" for="field_email">Email</label>
             <input type="text" class="form-control" name="email" id="field_email"
                     ng-model="vm.rHAccount.email"
                     />
         </div>
-
         <div class="form-group">
-            <label data-translate="aditumApp.rHAccount.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" ng-model="vm.rHAccount.userId" ng-options="user.id as user.login for user in vm.users"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.rHAccount.company" for="field_company">Company</label>
+            <label  for="field_company">Compañias que administrará</label>
             <select class="form-control" id="field_company" multiple name="company" ng-model="vm.rHAccount.companies" ng-options="company as company.name for company in vm.companies track by company.id" required></select>
         </div>
         <div ng-show="editForm.company.$invalid">
@@ -84,6 +80,7 @@
                 This field is required.
             </p>
         </div>
+    </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
