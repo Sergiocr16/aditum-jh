@@ -21,11 +21,17 @@
         <div class="page-title">
             <h1>Dashboard <small ng-click="vm.loadAll()"><i class="fa fa-repeat" style="color:blue"></i> Recargar</small></h1>
         </div>
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+            <h1 class="text-center">
+                <img src="../../content/images/waiting-gif2.gif" alt="" />
+            </h1>
+        </div>
         <div class="page-toolbar">
             <!-- BEGIN THEME PANEL -->
 
             <!-- END THEME PANEL -->
         </div>
+        <div  class="display-none" id="tableData">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="dashboard-stat blue-madison">
                 <div class="visual">
@@ -315,7 +321,7 @@
             </div>
         </div>
     </div>
-
+    </div>
     <div ng-cloak>
         <div class="row">
             <!--<div class="col-md-4">-->
@@ -359,3 +365,4 @@
             <!--</div>-->
         </div>
     </div>
+

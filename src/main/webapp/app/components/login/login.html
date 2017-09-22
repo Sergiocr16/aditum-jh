@@ -1,30 +1,36 @@
-<div id="login" class="col-md-12 no-margin no-padding" style="background-color:white!important;">
-    <div class="col-md-6 col-sm-12 col-lg-6 col-xs-12" style="background-color:white!important;">
-       <div class="col-lg-12" style="height:20px;">
+<div id="login" class="col-md-12 no-margin no-padding" style="height:100vh!important;color:white!important;background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
+background-size: 1000% 1000%;
+-webkit-animation: loginBackground 24s ease infinite;
+-moz-animation: loginBackground 24s ease infinite;
+-o-animation: loginBackground 24s ease infinite;
+animation: loginBackground 24s ease infinite;">
+    <div class="col-md-6 col-sm-12 col-lg-6 col-xs-12" style="height:100vh!important;
+">
+       <div class="col-lg-12" style="height:120px;">
 
         </div>
 
-        <h1 class="text-center no-margin"><img src="content/images/casco_aditum.png" alt="" width="100"></h1>
+        <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="330"></h1>
 
         <div class="col-md-12" style="padding:0">
-            <h1 class="text-center">Bienvenido a Aditum</h1>
+
             <div class="col-lg-12">
 
-                <p style="margin-top:60px;">
+                <p style="margin-top:40px;text-align:center">
                     Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.
                 </p>
                 <form class="col-md-12 no-padding" ng-submit="vm.login($event)" role="form" ng-init="loginForm = {}" name="login" ng-show='!isResetingPassword'>
                     <div class="col-md-12 no-padding">
                         <div class="col-md-6 col-sm-6" style="padding: 0 5px 0 0;">
                             <div class="form-group form-md-line-input small-margin-top ">
-                                <input ng-model="vm.username" type="text" class="form-control input-sm gray-font" id="form_control_1" placeholder="Digite su nombre de usuario" required title="Input required">
-                                <label for="form_control_1">Usuario</label>
+                                <input ng-model="vm.username" type="text" class="form-control input-sm" id="form_control_1" style="color:white" placeholder="Digite su nombre de usuario" required title="Input required">
+                                <label for="form_control_1" style="color:white">Usuario</label>
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6" style="padding: 0 0 0 0;">
                             <div class="form-group form-md-line-input small-margin-top">
-                                <input ng-model="vm.password" type="password" class="form-control input-sm gray-font" id="form_control_2" placeholder="Digite su contraseña" required title="Input required">
-                                <label for="form_control_2">Contraseña</label>
+                                <input ng-model="vm.password" type="password" class="form-control input-sm" style="color:white" id="form_control_2" placeholder="Digite su contraseña" required title="Input required">
+                                <label for="form_control_2" style="color:white">Contraseña</label>
                             </div>
                         </div>
                     </div>
@@ -66,10 +72,10 @@
 
         </div>
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding no-margin">
-        <div id="myCarousel" class="carousel slide" data-ride="carousel" hidden="true">
+    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding no-margin hidden-xs" style="height:100vh!important">
+        <div id="myCarousel" class="carousel slide" style="height:100vh!important" data-ride="carousel" hidden="true">
             <!-- Wrapper for slides -->
-            <div class="carousel-inner carrousel-height" role="listbox">
+            <div class="carousel-inner carrousel-height" style="height:100vh!important;" role="listbox">
                 <div class="item">
                     <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/pages/img/login/bg1.jpg" alt="Chania"> -->
                     <img src="https://imgar.zonapropcdn.com/avisos/1/00/40/13/39/63/1200x1200/1556277827.jpg" alt="img" height="659">
@@ -84,7 +90,28 @@
     </div>
 </div>
 
-
+<style>
+@-webkit-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@-moz-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@-o-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+</style>
 
 
 

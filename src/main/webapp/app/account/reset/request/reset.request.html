@@ -1,6 +1,17 @@
-<div>
-    <div class="row" style="background-color:white;">
-        <h2 class="text-center big-padding-top"><img src="content/images/casco_aditum.png" alt="" height="100px"/></h2>
+<div class="col-md-12">
+    <div class="row" style="color:white!important;height:100vh!important;
+         background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
+         background-size: 1000% 1000%;
+         -webkit-animation: loginBackground 24s ease infinite;
+         -moz-animation: loginBackground 24s ease infinite;
+         -o-animation: loginBackground 24s ease infinite;
+         animation: loginBackground 24s ease infinite;
+    ">
+        <div class="col-lg-12" style="height:120px;">
+
+        </div>
+
+        <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="330"></h1>
         <div class="col-md-8 col-md-offset-2">
             <h3 >Restablezca su contraseña</h3>
 
@@ -23,8 +34,8 @@
 
                 <div class="form-group">
                     <div class="form-group form-md-line-input small-margin-top">
-                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required name="email" id="email" type="email" class="form-control" placeholder="Digita el correo electrónico asociado a tu cuenta" required title="Input required" required>
-                        <label for="email">Correo electrónico</label>
+                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required name="email" id="email" type="email" class="form-control" style="color:white" placeholder="Digita el correo electrónico asociado a tu cuenta" required title="Input required" required>
+                        <label for="email" style="color:white">Correo electrónico</label>
                     </div>
 
                     <div ng-show="form.email.$dirty && form.email.$invalid">
@@ -59,10 +70,26 @@
 
         </div>
     </div>
-    <div style="background-color:white;height:230px;">
-
-    </div>
-    <div ng-show="vm.success == 'OK'" style="background-color:white;height:44px;">
-
-    </div>
 </div>
+<style>
+@-webkit-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@-moz-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@-o-keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+@keyframes loginBackground {
+    0%{background-position:0% 4%}
+    50%{background-position:100% 97%}
+    100%{background-position:0% 4%}
+}
+</style>
