@@ -14,6 +14,7 @@
         vm.loadPage = loadPage;
         var admins = [];
         vm.clear = clear;
+
         function clear () {
             $uibModalInstance.dismiss('cancel');
             $state.go('company');

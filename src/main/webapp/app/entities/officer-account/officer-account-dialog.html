@@ -4,40 +4,35 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myOfficerAccountLabel" data-translate="aditumApp.officerAccount.home.createOrEditLabel">Create or edit a Officer Account</h4>
+        <h4 class="modal-title" id="myOfficerAccountLabel" >Crear o editar cuenta de oficial</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body col-md-12">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.officerAccount.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.officerAccount.id" readonly />
+        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+            <div class="form-group form-md-line-input">
+                <input type="text" class="form-control" name="name" id="field_name"
+                       ng-model="vm.officerAccount.name"/>
+                <label class="control-label gray-font"  for="field_name">Nombre de la cuenta</label>
+            </div>
+            <div class="form-group form-md-line-input">
+                <label class="control-label gray-font"  for="field_name">Correo electrónico</label>
+                <input ng-model="vm.user.email" type="email" class="form-control gray-font" placeholder="">
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.officerAccount.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.officerAccount.name"
-                    />
-        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+            <div class="form-group form-md-line-input">
+                <input type="text" class="form-control" name="username"
+                       ng-model="vm.user.login"/>
+                <label class="control-label gray-font"  for="field_name">Nombre de usuario</label>
+            </div>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.officerAccount.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.officerAccount.companyId" ng-options="company.id as company.name for company in vm.companies"            >
-                <option value=""></option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label data-translate="aditumApp.officerAccount.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" ng-model="vm.officerAccount.userId" ng-options="user.id as user.login for user in vm.users"            >
-                <option value=""></option>
-            </select>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+        <button type="submit"  class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
     </div>

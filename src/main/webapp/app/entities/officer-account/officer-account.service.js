@@ -20,7 +20,12 @@
                     return data;
                 }
             }
-            ,'findByUserId':{
+             ,'getOfficerAccountsByCompanyId': {
+                    method: 'GET',
+                        url: 'api/getAccountsByCompanyId',
+                        isArray: true
+                  },
+            'findByUserId':{
                 url:'api/officer-accounts/findByUserId/:id',
                 method:'GET',
                 transformResponse: function (data) {

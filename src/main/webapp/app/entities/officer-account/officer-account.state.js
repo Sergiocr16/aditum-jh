@@ -108,11 +108,12 @@
                 });
             }]
         })
+
         .state('officer-account.new', {
             parent: 'officer-account',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                  authorities: ['ROLE_USER','ROLE_ADMIN'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -130,9 +131,9 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('officer-account', null, { reload: 'officer-account' });
+                    $state.go('company', null, { reload: 'company' });
                 }, function() {
-                    $state.go('officer-account');
+                    $state.go('company');
                 });
             }]
         })
