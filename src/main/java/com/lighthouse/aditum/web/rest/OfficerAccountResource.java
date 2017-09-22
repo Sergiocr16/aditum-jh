@@ -132,5 +132,13 @@ public class OfficerAccountResource {
         officerAccountService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
+    @GetMapping("/getAccountsByCompanyId")
+    @Timed
+    public ResponseEntity<List<OfficerAccountDTO>> getByCompanyId(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<OfficerAccountDTO> page = officerAccountService.findAllByCompany(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "api/getAccountsByCompanyId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 }

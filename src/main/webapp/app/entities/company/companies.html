@@ -30,7 +30,7 @@
                         <td>{{company.name}}</td>
                         <td> <a class="light-gray-font" ng-click="vm.getCompanyConfiguration(company.id)">Configurar parámetros</a></td>
                         <td> <a class="light-gray-font" ui-sref="admins({companyId: company.id}) ">Ver administradores</a></td>
-                        <td> <a class="light-gray-font" ui-sref="cuentaOficiales({companyId: company.id}) ">Ver cuenta oficiales</a></td>
+                        <td> <a class="light-gray-font" ui-sref="officerAccounts({companyId: company.id}) ">Ver cuenta oficiales</a></td>
                         <td> <a class="light-gray-font" ui-sref="company.edit({id:company.id})">Editar</a></td>
 
                         <td><span ng-show="company.active==1" class="padding-10 label label-sm label-success col-lg-6 col-md-6 col-sm-6 col-xs-6">Si </span><span ng-show="company.active==false" class="padding-10  label label-sm label-danger col-lg-6 col-md-6 col-sm-6  col-xs-6">No</span></td>

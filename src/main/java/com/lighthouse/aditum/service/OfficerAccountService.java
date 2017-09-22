@@ -46,7 +46,12 @@ public class OfficerAccountService {
         OfficerAccountDTO result = officerAccountMapper.officerAccountToOfficerAccountDTO(officerAccount);
         return result;
     }
-
+    @Transactional(readOnly = true)
+    public Page<OfficerAccountDTO> findAllByCompany(Pageable pageable,Long companyId) {
+        log.debug("Request to get all OfficerAccount");
+        Page<OfficerAccount> result = officerAccountRepository.findByCompanyId(pageable,companyId);
+        return result.map(officer -> officerAccountMapper.officerAccountToOfficerAccountDTO(officer));
+    }
     @Transactional(readOnly = true)
     public OfficerAccountDTO findOneByUserId(Long id) {
         log.debug("Request to get Resident : {}", id);
