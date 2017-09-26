@@ -94,6 +94,9 @@ public class UserJWTController {
                             activeCompany = true;
                         }
                         break;
+                    case AuthoritiesConstants.RH:
+                            activeCompany = true;
+                        break;
                 }
             }
             if(activeCompany) {
