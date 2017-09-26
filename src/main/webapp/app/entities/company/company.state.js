@@ -188,34 +188,7 @@
                     });
                 }]
             })
-           .state('company.newOfficerAccount', {
-                 parent: 'company',
-                 url: '/officer-account/new/:companyId',
-                 data: {
-                       authorities: ['ROLE_USER','ROLE_ADMIN'],
-                 },
-                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                     $uibModal.open({
-                         templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                         controller: 'OfficerAccountDialogController',
-                         controllerAs: 'vm',
-                         backdrop: 'static',
-                         size: 'lg',
-                         resolve: {
-                             entity: function () {
-                                 return {
-                                     name: null,
-                                     id: null
-                                 };
-                             }
-                         }
-                     }).result.then(function() {
-                         $state.go('company', null, { reload: 'company' });
-                     }, function() {
-                         $state.go('company');
-                     });
-                 }]
-             })
+
               .state('company.editOfficerAccount', {
                          parent: 'company',
                          url: '/officer-account/{id}/edit',
@@ -262,27 +235,7 @@
                     });
                 }]
             })
-              .state('officerAccounts', {
-                        parent: 'company',
-                        url: '/officerAccounts/:companyId',
-                        data: {
-                            authorities: ['ROLE_ADMIN']
-                        },
-                        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                            $uibModal.open({
-                                templateUrl: 'app/entities/officer-account/officer-accounts-by-company.html',
-                                controller: 'OfficerAccountsByCompanyController',
-                                controllerAs: 'vm',
-                                backdrop: 'static',
-                                size: 'lg',
 
-                            }).result.then(function() {
-
-                            }, function() {
-
-                            });
-                        }]
-                    })
         .state('company.delete', {
             parent: 'company',
             url: '/{id}/delete',

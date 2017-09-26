@@ -9,48 +9,47 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('officer-account', {
-            parent: 'entity',
-            url: '/officer-account?page&sort&search',
-            data: {
-                authorities: ['ROLE_USER','ROLE_ADMIN'],
-                pageTitle: 'aditumApp.officerAccount.home.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/officer-account/officer-accounts.html',
-                    controller: 'OfficerAccountController',
-                    controllerAs: 'vm'
-                }
-            },
-            params: {
-                page: {
-                    value: '1',
-                    squash: true
-                },
-                sort: {
-                    value: 'id,asc',
-                    squash: true
-                },
-                search: null
-            },
-            resolve: {
-                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                    return {
-                        page: PaginationUtil.parsePage($stateParams.page),
-                        sort: $stateParams.sort,
-                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                        ascending: PaginationUtil.parseAscending($stateParams.sort),
-                        search: $stateParams.search
-                    };
-                }],
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('officerAccount');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }]
-            }
-        })
+             .state('officerAccounts', {
+              parent: 'company',
+              url: '/{companyId}/officerAccounts',
+              data: {
+                  authorities: ['ROLE_ADMIN']
+              },
+              views: {
+                  'content@': {
+                         templateUrl: 'app/entities/officer-account/officer-accounts-by-company.html',
+                         controller: 'OfficerAccountsByCompanyController',
+                         controllerAs: 'vm',
+                  }
+              },
+              params: {
+                  page: {
+                      value: '1',
+                      squash: true
+                  },
+                  sort: {
+                      value: 'id,asc',
+                      squash: true
+                  },
+                  search: null
+              },
+              resolve: {
+                  pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                      return {
+                          page: PaginationUtil.parsePage($stateParams.page),
+                          sort: $stateParams.sort,
+                          predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                          ascending: PaginationUtil.parseAscending($stateParams.sort),
+                          search: $stateParams.search
+                      };
+                  }],
+                  translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                      $translatePartialLoader.addPart('company');
+                      $translatePartialLoader.addPart('global');
+                      return $translate.refresh();
+                  }]
+              }
+          })
         .state('officer-account-detail', {
             parent: 'officer-account',
             url: '/officer-account/{id}',
@@ -109,34 +108,34 @@
             }]
         })
 
-        .state('officer-account.new', {
-            parent: 'officer-account',
-            url: '/new',
-            data: {
-                  authorities: ['ROLE_USER','ROLE_ADMIN'],
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                    controller: 'OfficerAccountDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                name: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('company', null, { reload: 'company' });
-                }, function() {
-                    $state.go('company');
-                });
-            }]
-        })
+           .state('company.newOfficerAccount', {
+                 parent: 'entity',
+                 url: '/new',
+                 data: {
+                       authorities: ['ROLE_USER','ROLE_ADMIN'],
+                 },
+                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                     $uibModal.open({
+                         templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
+                         controller: 'OfficerAccountDialogController',
+                         controllerAs: 'vm',
+                         backdrop: 'static',
+                         size: 'lg',
+                         resolve: {
+                             entity: function () {
+                                 return {
+                                     name: null,
+                                     id: null
+                                 };
+                             }
+                         }
+                     }).result.then(function() {
+                         $state.go('officerAccounts', null, { reload: 'officerAccounts' });
+                     }, function() {
+                         $state.go('officerAccounts');
+                     });
+                 }]
+             })
         .state('officer-account.edit', {
             parent: 'officer-account',
             url: '/{id}/edit',

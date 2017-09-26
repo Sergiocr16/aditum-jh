@@ -5,19 +5,15 @@
         .module('aditumApp')
         .controller('OfficerAccountsByCompanyController', OfficerAccountsByCompanyController);
 
-    OfficerAccountsByCompanyController.$inject = ['$state','$uibModalInstance','$stateParams','Company','DataUtils', 'OfficerAccount', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope'];
+    OfficerAccountsByCompanyController.$inject = ['$state','$stateParams','Company','DataUtils', 'OfficerAccount', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope'];
 
-    function OfficerAccountsByCompanyController($state,$uibModalInstance,$stateParams,Company,DataUtils, OfficerAccount, ParseLinks, AlertService, paginationConstants,Principal,$rootScope) {
+    function OfficerAccountsByCompanyController($state,$stateParams,Company,DataUtils, OfficerAccount, ParseLinks, AlertService, paginationConstants,Principal,$rootScope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-        vm.clear = clear;
-        vm.companyId = $stateParams.companyId;
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-            $state.go('company');
-        }
+
+
 
         loadAll ();
         function loadAll () {
@@ -36,7 +32,6 @@
         }
 
         vm.viewDetail = function(officerAccountId){
-            $uibModalInstance.close();
             $state.go('officerAccount-info-detail', {id: officerAccountId});
 
         }
