@@ -23,8 +23,7 @@
     <div class="col-lg-12 col-md-12 gray-font ">
 
         <div>
-            <h3 class="page-title col-md-4 col-lg-6 col-xs-12 col-sm-12">{{vm.titleCondominosIndex}}</h3>
-
+            <h3 class="page-title col-md-6 col-lg-5 col-xs-12 col-sm-6">{{vm.titleCondominosIndex}}</h3>
         </div>
         <div>
             <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
@@ -33,16 +32,38 @@
                 </h1>
             </div>
             <div class="display-none " id="residents_container">
-                <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3">
-                    <button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>
+                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
+                    <!--<button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>-->
+                    <div class="form-group form-md-radios">
+                        <div class="md-radio-inline">
+
+                            <div class="md-radio" >
+                                <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">
+                                <label for="radio14" style="color:#45B6AF">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Habilitados </label>
+                            </div>
+                            <div class="md-radio has-error">
+                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">
+                                <label for="radio15">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Deshabilitados </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3 ">
                     <button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="residentByHouse.new()">Registrar residente</button>
                 </div>
-                <div ng-show="vm.residents.length==0">
-                    <h2  class="text-center gray-font ">No existen residentes registrados</h2>
+                <div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
+                    <h2  class="text-center gray-font ">No tienes residentes deshabilitados</h2>
                 </div>
-                <div class="col-md-3 col-sm-3 col-xs-12" ng-repeat="resident in vm.residents  | orderBy:'name'">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3" ng-repeat="resident in vm.residents  | orderBy:'name'">
                     <div class="portlet light bordered  text-center  col-sm-12 col-xs-12" id="">
                         <a ng-if="event.banner" ng-click="vm.openFile(event.bannerContentType, event.banner)">
                             <img data-ng-src="{{'data:' + event.bannerContentType + ';base64,' + event.banner}}" style="max-height: 30px;" alt="event image"/>
@@ -64,7 +85,7 @@
                         </div>
                     </div>
                 </div>
-
+                </div>
 
             </div>
         </div>

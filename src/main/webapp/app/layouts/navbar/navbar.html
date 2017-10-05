@@ -1,11 +1,5 @@
 <div  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER" id="rightView" >
-    <div  class="page-header-fixed page-quick-sidebar-over-content ng-scope"><div style="
-background: linear-gradient(122deg, #2b3643, #324b69, #2b3643);
-background-size: 600% 600%;
--webkit-animation: loginBackground 7s ease infinite;
--moz-animation: loginBackground 7s ease infinite;
--o-animation: loginBackground 7s ease infinite;
-animation: loginBackground 7s ease infinite;" class="page-header md-shadow-z-1-i navbar navbar-fixed-top ng-scope">
+    <div  class="page-header-fixed page-quick-sidebar-over-content ng-scope"><div class="page-header md-shadow-z-1-i navbar navbar-fixed-top ng-scope">
         <!-- BEGIN HEADER INNER -->
         <div class="page-header-inner">
             <!-- BEGIN LOGO -->
@@ -25,7 +19,7 @@ animation: loginBackground 7s ease infinite;" class="page-header md-shadow-z-1-i
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
-                    <li class="dropdown dropdown-user">
+                    <li class="dropdown dropdown-user" ng-show="contextLiving!=undefined ">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>
                             <img ng-show="currentUserImage!==null" src="{{currentUserImage}}" width="35" class="img-circle"/>
@@ -70,25 +64,25 @@ animation: loginBackground 7s ease infinite;" class="page-header md-shadow-z-1-i
     </div>
 </div>
 
-<style>
-@-webkit-keyframes loginBackground {
-    0%{background-position:0% 4%}
-    50%{background-position:100% 97%}
-    100%{background-position:0% 4%}
-}
-@-moz-keyframes loginBackground {
-    0%{background-position:0% 4%}
-    50%{background-position:100% 97%}
-    100%{background-position:0% 4%}
-}
-@-o-keyframes loginBackground {
-    0%{background-position:0% 4%}
-    50%{background-position:100% 97%}
-    100%{background-position:0% 4%}
-}
-@keyframes loginBackground {
-    0%{background-position:0% 4%}
-    50%{background-position:100% 97%}
-    100%{background-position:0% 4%}
-}
-</style>
+<!--<style>-->
+<!--@-webkit-keyframes loginBackground {-->
+    <!--0%{background-position:0% 4%}-->
+    <!--50%{background-position:100% 97%}-->
+    <!--100%{background-position:0% 4%}-->
+<!--}-->
+<!--@-moz-keyframes loginBackground {-->
+    <!--0%{background-position:0% 4%}-->
+    <!--50%{background-position:100% 97%}-->
+    <!--100%{background-position:0% 4%}-->
+<!--}-->
+<!--@-o-keyframes loginBackground {-->
+    <!--0%{background-position:0% 4%}-->
+    <!--50%{background-position:100% 97%}-->
+    <!--100%{background-position:0% 4%}-->
+<!--}-->
+<!--@keyframes loginBackground {-->
+    <!--0%{background-position:0% 4%}-->
+    <!--50%{background-position:100% 97%}-->
+    <!--100%{background-position:0% 4%}-->
+<!--}-->
+<!--</style>-->

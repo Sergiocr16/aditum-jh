@@ -30,7 +30,27 @@
             </h1>
         </div>
         <div class="display-none" id="tableData">
-            <button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>
+            <div class="form-group form-md-radios">
+                <div class="md-radio-inline">
+
+                    <div class="md-radio" >
+                        <input type="radio" ng-click="vm.switchEnabledDisabledResidents()" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">
+                        <label for="radio14" style="color:#45B6AF">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                            Habilitados </label>
+                    </div>
+                    <div class="md-radio has-error">
+                        <input type="radio" ng-click="vm.switchEnabledDisabledResidents()" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">
+                        <label for="radio15">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                            Deshabilitados </label>
+                    </div>
+                </div>
+            </div>
             <div class="form-group col-md-offset-4 col-md-3 col-sm-offset-2  col-sm-4 col-xs-7 no-padding">
                 <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por casa</label>
                 <div class="col-md-7 col-sm-7 col-xs-8 ">

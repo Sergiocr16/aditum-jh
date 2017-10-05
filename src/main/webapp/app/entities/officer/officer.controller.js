@@ -18,9 +18,12 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+
+
+        setTimeout(function(){loadAll();
         vm.canEditOfficers = $rootScope.companyUser.administradaOficiales;
         $rootScope.active = "officers";
-        loadAll();
+        },500);
 
         vm.editOfficer = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -190,5 +193,6 @@
                 search: vm.currentSearch
             });
         }
+
     }
 })();

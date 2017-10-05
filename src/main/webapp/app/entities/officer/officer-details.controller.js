@@ -14,6 +14,8 @@
         $rootScope.active = "officers";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
+        vm.edad = moment(new Date()).format('YYYY') - moment(vm.officer.fechanacimiento).format("YYYY");
+        console.log(vm.edad)
         $("#officerInformation").fadeIn(300);
         vm.title = vm.officer.name + " " + vm.officer.lastname + " " + vm.officer.secondlastname;
         var unsubscribe = $rootScope.$on('aditumApp:officerUpdate', function(event, result) {

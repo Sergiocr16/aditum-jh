@@ -36,8 +36,10 @@
                 vm.actionButtonTitle = "Habilitar";
             }
           }
+        setTimeout(function(){
+          loadHouses();
+        },500)
 
-        loadHouses();
         function loadHouses() {
             House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
             function onSuccessHouses(data, headers) {

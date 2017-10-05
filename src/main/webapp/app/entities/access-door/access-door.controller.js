@@ -86,7 +86,7 @@
             Note.findAll({companyId: $rootScope.companyId},onSuccessNotes, onError);
             function onSuccessNotes(notes, headers) {
               angular.forEach(notes,function(key,note){
-                    key.creationdate = moment(key.creationdate).fromNow();
+                    key.sinceDate = moment(key.creationdate).fromNow();
                 })
                 vm.notes = notes;
                 vm.countNotes = vm.notes.length;
@@ -604,7 +604,7 @@ function receiveHomeService(homeService){
         var result = hasExistance(vm.notes,homeService.id)
 
         if(result==undefined||result==-1){
-        homeService.creationdate = moment(homeService.creationdate).fromNow();
+        homeService.sinceDate = moment(homeService.creationdate).fromNow();
             vm.notes.push(homeService);
             vm.countNotes = vm.notes.length;
         }
@@ -612,7 +612,13 @@ function receiveHomeService(homeService){
     }
 }
 
-
+vm.updateDateNotes = function (){
+ angular.forEach(vm.notes,function(note,index){
+ console.log(note)
+ console.log(index)
+    note.sinceDate = moment(note.creationdate).fromNow();
+ })
+}
 
 function receiveResident(resident){
 console.log(resident)
@@ -651,28 +657,50 @@ housesList.push(house);
 function receiveDeletedEntity(entity){
     switch(entity.type){
         case 'resident':
-        if(residentsList!==undefined){
-            var result = hasExistance(residentsList,entity.id)
-            if(result!==-1){
-                residentsList[result] = {};
-            }
-         }
+                  Resident.query({companyId: $rootScope.companyId}, onSuccessResident, onError);
+                  function onSuccessResident(residents, headers) {
+                     residentsList = residents;
+
+                  }
+//        if(residentsList!==undefined){
+//            var result = hasExistance(residentsList,entity.id)
+//            if(result!==-1){
+//                residentsList[result] = {};
+//            }
+//         }
         break;
         case 'vehicle':
-         if(vehiculesList!==undefined){
-             var result = hasExistance(vehiculesList,entity.id)
-             if(result!==-1){
-                 vehiculesList[result] = {};
-             }
-        }
+
+           Vehicule.query({companyId: $rootScope.companyId}, onSuccessVehicule, onError);
+           function onSuccessVehicule(vehicules, headers) {
+              vehiculesList = vehicules;
+           }
+
+//         if(vehiculesList!==undefined){
+//             var result = hasExistance(vehiculesList,entity.id)
+//             if(result!==-1){
+//                 vehiculesList[result] = {};
+//             }
+//        }
         break;
         case 'visitor':
-          if(visitorsList!==undefined){
-              var result = hasExistance(visitorsList,entity.id)
-              if(result!==-1){
-                  visitorsList[result] = {};
-              }
-        }
+
+        Visitant.query({companyId: $rootScope.companyId}, onSuccessVisitor, onError);
+                   function onSuccessVisitor(visitors, headers) {
+                      visitorsList = visitors;
+                       Visitant.findAllInvited({companyId: $rootScope.companyId}, onSuccessInvited, onError);
+                       function onSuccessInvited(visitors, headers) {
+                           invitedList = visitors;
+                       }
+                   }
+
+
+//          if(visitorsList!==undefined){
+//              var result = hasExistance(visitorsList,entity.id)
+//              if(result!==-1){
+//                  visitorsList[result] = {};
+//              }
+//        }
         break;
     }
 }

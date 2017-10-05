@@ -53,9 +53,9 @@ public class Company implements Serializable {
     @JsonIgnore
     @ManyToMany
     @JoinTable(
-        name = "rhAccounts_company",
-        joinColumns = {@JoinColumn(name = "companyId", referencedColumnName = "id")},
-        inverseJoinColumns = {@JoinColumn(name = "company_name", referencedColumnName = "name")})
+        name = "rhaccount_company",
+        joinColumns = {@JoinColumn(name = "companies_id", referencedColumnName = "id")},
+        inverseJoinColumns = {@JoinColumn(name = "rhaccounts_id", referencedColumnName = "id")})
     @BatchSize(size = 20)
     private Set<RHAccount> rhAccounts = new HashSet<>();
 

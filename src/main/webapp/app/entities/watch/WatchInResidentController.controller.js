@@ -86,7 +86,7 @@
             }
         }
 
-        vm.getCurrentWatch();
+      setTimeout(function(){vm.getCurrentWatch();},500)
 
         vm.getWatch = function(watch) {
             $("#data").fadeOut(0);
