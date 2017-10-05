@@ -32,13 +32,18 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-
+        vm.filterAuthorized = 2;
+        vm.setAuthorizedView = function(val){
+                vm.filterAuthorized = val;
+        }
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
                    $state.go('resident.edit', {
                        id: encryptedId
                    })
         }
+
+
 
         vm.detailResident = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -58,7 +63,10 @@
                 vm.actionButtonTitle = "Habilitar";
             }
         }
-        loadHouses();
+        setTimeout(function(){
+         loadHouses();
+        },500)
+
 
         function loadHouses() {
             House.query({

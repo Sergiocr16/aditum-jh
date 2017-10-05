@@ -43,7 +43,7 @@
 </div>
 
 <div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
-    <div ui-view="menu" ng-show="vm.isAuthenticated() == true">
+    <div ui-view="menu" ng-show="vm.isAuthenticated() == true"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 
@@ -61,7 +61,7 @@
         <div ui-view="content" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
         </div>
     </div>
-    <div ui-view="footer " ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+    <div ui-view="footer " ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 </div>
 
@@ -304,11 +304,11 @@
 
     <script src="app/entities/r-h-account/rh-account.controller.js"></script>
 
+    <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
+
     <script src="app/entities/officer-account/officer-account-dialog.controller.js"></script>
 
     <script src="app/entities/officer-account/officer-account-detail.controller.js"></script>
-
-    <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
 
     <script src="app/entities/officer-account/officer-account-delete-dialog.controller.js"></script>
 

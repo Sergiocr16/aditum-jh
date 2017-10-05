@@ -20,6 +20,7 @@
                 id: encryptedId
             })
         }
+        setTimeout(function(){
         House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
@@ -46,6 +47,7 @@
                    })
                }
             }
+            },500)
          vm.changesTitles = function() {
             if (enabledOptions) {
                 vm.buttonDisabledEnabledVehicules = "Vehículos deshabilitados";
@@ -61,8 +63,8 @@
                            vm.color = "green";
             }
           }
+        setTimeout(function(){ loadVehicules();},500)
 
-        loadVehicules();
 
 
         function loadVehicules() {

@@ -18,10 +18,13 @@
             id: encryptedId
         })
         }
+        setTimeout(function(){
         vm.userId = $rootScope.companyUser.id;
+
         vm.loadPage = loadPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+
         House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
 
           function onSuccess (house) {
@@ -49,6 +52,8 @@
                    })
                }
             }
+        },500)
+
 
 
         vm.changesTitles = function() {

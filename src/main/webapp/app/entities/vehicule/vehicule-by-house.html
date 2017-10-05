@@ -22,9 +22,9 @@
 <div class="row ">
 
     <div class="col-md-12 gray-font">
-        <div class="col-md-6 col-sm-12 col-xs-12 ">
-            <h3 class=" page-title col-md-10 col-sm-9 ">{{vm.titleVehiculeIndex}} </h3>
 
+        <div>
+            <h3 class="page-title col-md-4 col-lg-5 col-xs-12 col-sm-4">{{vm.titleVehiculeIndex}}</h3>
         </div>
         <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
             <h1 class="text-center">
@@ -32,15 +32,37 @@
             </h1>
         </div>
         <div class=" display-none" id="vehicules_container">
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-lg-3">
-                <button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.swithEnabledDisabledVehicules()">{{vm.buttonDisabledEnabledVehicules}}</button>
+            <div class="col-md-5 col-sm-5 col-xs-12 col-lg-4">
+                <!--<button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>-->
+                <div class="form-group form-md-radios">
+                    <div class="md-radio-inline">
+
+                        <div class="md-radio" >
+                            <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <label for="radio14" style="color:#45B6AF">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Habilitados </label>
+                        </div>
+                        <div class="md-radio has-error">
+                            <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <label for="radio15">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Deshabilitados </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class=" col-lg-4  col-md-4 col-sm-6 col-xs-12 col-lg-3 ">
+            <div class="col-md-3 col-sm-3 col-xs-12 col-lg-3 ">
                 <button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="vehiculeByHouse.new()">Registrar vehículo</button>
             </div>
-            <div ng-show="vm.vehicules.length==0">
-                <h2  class="text-center gray-font ">No existen residentes registrados</h2>
+            <div ng-show="vm.vehicules.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
+                <h2  class="text-center gray-font ">No tienes vehículos deshabilitados</h2>
             </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-repeat="vehicule in vm.vehicules ">
                 <div class="portlet light bordered text-center col-sm-12 col-xs-12 ">
                     <h1 ng-show="vehicule.type=='Automóvil'" class="col-lg-6 text-center "><i class=" text-center fa fa-car font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>
@@ -62,7 +84,7 @@
 
                 </div>
             </div>
-
+            </div>
         </div>
 
     </div>

@@ -43,19 +43,20 @@
 
 
 
+   setTimeout(function(){
+      if(companyUser!=undefined){
+        $rootScope.companyUser = companyUser;
+        $rootScope.companyId = companyUser.companyId;
+        $rootScope.currentUserImage = companyUser.image_url;
+        $rootScope.companyUser = companyUser;
+         getContextLiving();
+        }else{
+         vm.contextLiving = "Dios de Aditum"
+         $rootScope.contextLiving = vm.contextLiving;
+         $rootScope.currentUserImage = null;
+        }
+   },500)
 
-    if(companyUser!=undefined){
-     $rootScope.companyUser = companyUser;
-     $rootScope.companyId = companyUser.companyId;
-     $rootScope.currentUserImage = companyUser.image_url;
-     $rootScope.companyUser = companyUser;
-      getContextLiving();
-     }else{
-      vm.contextLiving = "Dios de Aditum"
-      $rootScope.contextLiving = vm.contextLiving;
-      $rootScope.currentUserImage = null;
-
-     }
         var vm = this;
         angular.element(document).ready(function () {
                  $('body').addClass("gray");
@@ -82,7 +83,6 @@
             $rootScope.companyUser=undefined;
             MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
-
             $rootScope.companyUser = data;
             $rootScope.companyId = data.companyId;
             $rootScope.companyUser = $rootScope.companyUser;

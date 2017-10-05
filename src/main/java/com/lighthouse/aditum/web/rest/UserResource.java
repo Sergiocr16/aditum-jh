@@ -157,7 +157,6 @@ public class UserResource {
     @Timed
     @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthorities(id)
                 .map(UserDTO::new));
@@ -172,6 +171,7 @@ public class UserResource {
     @Timed
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
+        String logina = login;
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthoritiesByLogin(login)
                 .map(UserDTO::new));
