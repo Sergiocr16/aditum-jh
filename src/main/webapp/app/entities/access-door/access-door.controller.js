@@ -166,8 +166,8 @@
 
                         angular.forEach(vehiculesList, function(item, index) {
                             if (item.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase()) {
-                            if(item.type=='Automovil'){
-                             vm.vehiculeRegisteredTitle = "Automovil registrado";
+                            if(item.type=='Automóvil'){
+                             vm.vehiculeRegisteredTitle = "Automóvil registrado";
                             }else{
                              vm.vehiculeRegisteredTitle = "Motocicleta registrada";
                             }

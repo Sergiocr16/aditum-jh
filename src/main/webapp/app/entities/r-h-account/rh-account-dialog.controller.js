@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('RHAccountDialogController', RHAccountDialogController);
 
-    RHAccountDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'RHAccount', 'User', 'Company','Principal','$state'];
+    RHAccountDialogController.$inject = ['CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'RHAccount', 'User', 'Company','Principal','$state'];
 
-    function RHAccountDialogController ($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, RHAccount, User, Company, Principal,$state) {
+    function RHAccountDialogController (CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, $q, entity, RHAccount, User, Company, Principal,$state) {
         var vm = this;
 
         vm.rHAccount = entity;
@@ -107,7 +107,7 @@
             return firstletterFirstName+vm.rHAccount.lastname+firstletterSecondName;
         }
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:rHAccountUpdate', result);
+            $scope.$emit('aditumApp:officerAccountstUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

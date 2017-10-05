@@ -16,7 +16,6 @@
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
-        console.log(vm.vehicule.id)
         vm.houses = House.query();
         CommonMethods.validateSpecialCharacters();
         angular.element(document).ready(function () {

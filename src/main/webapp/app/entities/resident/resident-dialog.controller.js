@@ -138,6 +138,7 @@
             if(vm.resident.isOwner==false){vm.resident.isOwner=0}else{vm.resident.isOwner=1}
         }
         function createAccount(opcion){
+            vm.opcion = opcion;
             var authorities = ["ROLE_USER"];
             vm.user.firstName =  vm.resident.name;
             vm.user.lastName = vm.resident.lastname + ' ' + vm.resident.secondlastname;
@@ -146,33 +147,34 @@
             vm.user.authorities = authorities;
             vm.user.login = generateLogin(0);
             User.save(vm.user, onSaveUser, onSaveLoginError);
-            function onSaveUser (result) {
-               if(opcion==1){
-                   insertResident(result.id)
-               }
-               else if(opcion==2){
-                     vm.resident.userId = result.id;
-                     vm.resident.isOwner = 1;
-                    vm.imageUser = {user: vm.resident.id};
-                     if(fileImage!==null){
-                      SaveImageCloudinary
-                                        .save(fileImage, vm.imageUser)
-                                        .then(onSaveImageSuccess, onSaveError, onNotify);
-                        function onNotify(info) {
-                                    vm.progress = Math.round((info.loaded / info.total) * 100);
-                         }
-                        function onSaveImageSuccess(data) {
-                        vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-                            Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                        }
-                        }else{
-                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
-                        }
-               }
-               vm.isSaving = false;
-            }
+
 
         }
+           function onSaveUser (result) {
+                       if(vm.opcion==1){
+                           insertResident(result.id)
+                       }
+                       else if(vm.opcion==2){
+                             vm.resident.userId = result.id;
+                             vm.resident.isOwner = 1;
+                            vm.imageUser = {user: vm.resident.id};
+                             if(fileImage!==null){
+                              SaveImageCloudinary
+                                                .save(fileImage, vm.imageUser)
+                                                .then(onSaveImageSuccess, onSaveError, onNotify);
+                                function onNotify(info) {
+                                            vm.progress = Math.round((info.loaded / info.total) * 100);
+                                 }
+                                function onSaveImageSuccess(data) {
+                                vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                    Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                                }
+                                }else{
+                                 Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+                                }
+                       }
+                       vm.isSaving = false;
+                    }
          function updateAccount(status){
              User.getUserById({id: vm.resident.userId},onSuccess);
              function onSuccess(user, headers) {
@@ -253,6 +255,7 @@
         }
 
         function generateLogin(config){
+            console.log('im here madafaka')
               var firstletterFirstName = vm.resident.name.charAt(0);
               var firstletterSecondName = vm.resident.secondlastname.charAt(0);
               if(config==1){
@@ -265,14 +268,21 @@
         function onSaveError () {
             vm.isSaving = false;
         }
-        function onSaveLoginError () {
+        function onSaveLoginError (error) {
             vm.isSaving = false;
-            vm.user.login = generateLogin(1);
-            User.save(vm.user, onSaveUser, onSaveLoginError);
-             function onSaveUser (result) {
-                   $state.go('resident');
-                    bootbox.hideAll();
-             }
+             switch(error.data.login){
+                case "emailexist":
+                      toastr["error"]("El correo electrónico ingresado ya existe.");
+                          bootbox.hideAll();
+                break;
+                 case "userexist":
+                      vm.user.login = generateLogin(1);
+
+                    User.save(vm.user, onSaveUser, onSaveLoginError);
+
+                break;
+                }
+
         }
 
               vm.setImage = function ($file) {

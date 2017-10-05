@@ -5,22 +5,31 @@
         .module('aditumApp')
         .controller('OfficerAccountsByCompanyController', OfficerAccountsByCompanyController);
 
-    OfficerAccountsByCompanyController.$inject = ['$state','$uibModalInstance','$stateParams','Company','DataUtils', 'OfficerAccount', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope'];
+    OfficerAccountsByCompanyController.$inject = ['User','$state','$stateParams','Company','DataUtils', 'OfficerAccount', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope'];
 
-    function OfficerAccountsByCompanyController($state,$uibModalInstance,$stateParams,Company,DataUtils, OfficerAccount, ParseLinks, AlertService, paginationConstants,Principal,$rootScope) {
-
+    function OfficerAccountsByCompanyController(User,$state,$stateParams,Company,DataUtils, OfficerAccount, ParseLinks, AlertService, paginationConstants,Principal,$rootScope) {
+        $rootScope.active = "condons";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-        vm.clear = clear;
-        vm.companyId = $stateParams.companyId;
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-            $state.go('company');
+        getCondominio();
+        function getCondominio(){
+         Company.get({
+                    id: $stateParams.companyId
+                }, onSuccess, onError);
+                function onSuccess(data) {
+                    vm.company = data;
+
+                }
+                function onError(error) {
+                    AlertService.error(error.data.message);
+
+                }
         }
 
         loadAll ();
         function loadAll () {
+            vm.companyId  = $stateParams.companyId;
             OfficerAccount.getOfficerAccountsByCompanyId({
                 companyId: $stateParams.companyId
             }, onSuccess, onError);
@@ -35,11 +44,6 @@
 
         }
 
-        vm.viewDetail = function(officerAccountId){
-            $uibModalInstance.close();
-            $state.go('officerAccount-info-detail', {id: officerAccountId});
-
-        }
         function loadPage(page) {
             vm.page = page;
             vm.transition();
@@ -52,5 +56,40 @@
                 search: vm.currentSearch
             });
         }
+
+                  vm.deleteOfficerAccount = function(officerAcount) {
+                            bootbox.confirm({
+                                message: "¿Está seguro que desea eliminar la cuenta de oficial?",
+                                buttons: {
+                                    confirm: {
+                                        label: 'Aceptar',
+                                        className: 'btn-success'
+                                    },
+                                    cancel: {
+                                        label: 'Cancelar',
+                                        className: 'btn-danger'
+                                    }
+                                },
+                                callback: function(result) {
+                                    if (result) {
+                                        vm.login = officerAcount.userLogin;
+                                        OfficerAccount.delete({
+                                            id: officerAcount.id
+                                        }, onSuccessDelete);
+
+
+                                    }
+                                }
+                            });
+
+                            function onSuccessDelete () {
+                                    User.delete({login: vm.login},
+                                        function () {
+                                            toastr["success"]("Se ha eliminado la cuenta de oficial correctamente.");
+                                            loadAll();
+                                        });
+
+                            }
+                    }
     }
 })();
