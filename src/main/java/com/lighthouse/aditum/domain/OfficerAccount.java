@@ -21,6 +21,9 @@ public class OfficerAccount implements Serializable {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "enable")
+    private Integer enable;
+
     @ManyToOne
     private Company company;
 
@@ -47,6 +50,19 @@ public class OfficerAccount implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public OfficerAccount enable(Integer enable) {
+        this.enable = enable;
+        return this;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
     }
 
     public Company getCompany() {
@@ -100,6 +116,7 @@ public class OfficerAccount implements Serializable {
         return "OfficerAccount{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }

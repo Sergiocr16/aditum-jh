@@ -1,72 +1,55 @@
 <div>
-    <h2 data-translate="aditumApp.rHAccount.home.title">RH Accounts</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="rh-account.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.rHAccount.home.createLabel">
-                        Create new RH Account
-                    </span>
-                </button>
+    <h3 class="page-title col-md-10">Cuentas de encargados de recursos humanos  </h3>
+    <div id="tableData">
+        <div class="form-group col-md-offset-6 col-md-3 col-sm-offset-6 col-sm-3 col-xs-6">
+            <div class="input-icon">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control" placeholder="Buscar cuentas de recursos humanos" ng-model="search">
             </div>
         </div>
-    </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span data-translate="aditumApp.rHAccount.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="lastname"><span data-translate="aditumApp.rHAccount.lastname">Lastname</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="secondlastname"><span data-translate="aditumApp.rHAccount.secondlastname">Secondlastname</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="enterprisename"><span data-translate="aditumApp.rHAccount.enterprisename">Enterprisename</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="email"><span data-translate="aditumApp.rHAccount.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="userLogin"><span data-translate="aditumApp.rHAccount.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="rHAccount in vm.rHAccounts track by rHAccount.id">
-                    <td><a ui-sref="rh-account-detail({id:rHAccount.id})">{{rHAccount.id}}</a></td>
-                    <td>{{rHAccount.name}}</td>
-                    <td>{{rHAccount.lastname}}</td>
-                    <td>{{rHAccount.secondlastname}}</td>
-                    <td>{{rHAccount.enterprisename}}</td>
-                    <td>{{rHAccount.email}}</td>
-                    <td>
-                        {{rHAccount.userLogin}}
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="rh-account-detail({id:rHAccount.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="rh-account.edit({id:rHAccount.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="rh-account.delete({id:rHAccount.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <button type="submit" class="btn green col-md-3 col-sm-3 col-xs-6 small-margin-bottom" ui-sref="rh-account.new">Registrar cuenta de oficial</button>
+        <div class="portlet-body ">
+
+            <div class="table-scrollable">
+                <h2 ng-show="vm.rHAccounts.length==0" class="text-center gray-font ">No existen cuentas de encargados de recursos humanos registrados</h2>
+                <table ng-show="vm.rHAccounts.length>0" class="table table-striped table-hover font-12">
+                    <thead>
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th>Nombre</th>
+                        <th>Primer apellido</th>
+                        <th>Segundo apellido</th>
+                        <th>Empresa</th>
+                        <th>email</th>
+                        <th>Login</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="rHAccount in vm.rHAccounts track by rHAccount.id">
+                        <td>{{rHAccount.name}}</td>
+                        <td>{{rHAccount.lastname}}</td>
+                        <td>{{rHAccount.secondlastname}}</td>
+                        <td>{{rHAccount.enterprisename}}</td>
+                        <td>{{rHAccount.email}}</td>
+                        <td>
+                            {{rHAccount.userLogin}}
+                        </td>
+
+                        <td><a class="light-gray-font" ui-sref="rh-account.edit({id:rHAccount.id})">Editar</a></td>
+                        <td><a class="light-gray-font" ui-sref="rh-account.delete({id:rHAccount.id})">Eliminar</a></td>
+                        <td><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
     </div>
     <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
 </div>
+

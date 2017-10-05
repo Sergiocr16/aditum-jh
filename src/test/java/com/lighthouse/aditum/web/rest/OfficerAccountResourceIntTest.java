@@ -43,6 +43,9 @@ public class OfficerAccountResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_ENABLE = 1;
+    private static final Integer UPDATED_ENABLE = 2;
+
     @Autowired
     private OfficerAccountRepository officerAccountRepository;
 
@@ -86,7 +89,8 @@ public class OfficerAccountResourceIntTest {
      */
     public static OfficerAccount createEntity(EntityManager em) {
         OfficerAccount officerAccount = new OfficerAccount()
-                .name(DEFAULT_NAME);
+                .name(DEFAULT_NAME)
+                .enable(DEFAULT_ENABLE);
         return officerAccount;
     }
 
@@ -113,6 +117,7 @@ public class OfficerAccountResourceIntTest {
         assertThat(officerAccountList).hasSize(databaseSizeBeforeCreate + 1);
         OfficerAccount testOfficerAccount = officerAccountList.get(officerAccountList.size() - 1);
         assertThat(testOfficerAccount.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testOfficerAccount.getEnable()).isEqualTo(DEFAULT_ENABLE);
     }
 
     @Test
@@ -147,7 +152,8 @@ public class OfficerAccountResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(officerAccount.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE)));
     }
 
     @Test
@@ -161,7 +167,8 @@ public class OfficerAccountResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(officerAccount.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE));
     }
 
     @Test
@@ -182,7 +189,8 @@ public class OfficerAccountResourceIntTest {
         // Update the officerAccount
         OfficerAccount updatedOfficerAccount = officerAccountRepository.findOne(officerAccount.getId());
         updatedOfficerAccount
-                .name(UPDATED_NAME);
+                .name(UPDATED_NAME)
+                .enable(UPDATED_ENABLE);
         OfficerAccountDTO officerAccountDTO = officerAccountMapper.officerAccountToOfficerAccountDTO(updatedOfficerAccount);
 
         restOfficerAccountMockMvc.perform(put("/api/officer-accounts")
@@ -195,6 +203,7 @@ public class OfficerAccountResourceIntTest {
         assertThat(officerAccountList).hasSize(databaseSizeBeforeUpdate);
         OfficerAccount testOfficerAccount = officerAccountList.get(officerAccountList.size() - 1);
         assertThat(testOfficerAccount.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testOfficerAccount.getEnable()).isEqualTo(UPDATED_ENABLE);
     }
 
     @Test

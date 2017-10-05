@@ -20,6 +20,10 @@
         {
             "fieldName": "name",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "enable",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170906222455",

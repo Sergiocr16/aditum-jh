@@ -50,102 +50,77 @@
                   }]
               }
           })
-        .state('officer-account-detail', {
-            parent: 'officer-account',
-            url: '/officer-account/{id}',
-            data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.officerAccount.detail.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/officer-account/officer-account-detail.html',
-                    controller: 'OfficerAccountDetailController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('officerAccount');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams', 'OfficerAccount', function($stateParams, OfficerAccount) {
-                    return OfficerAccount.get({id : $stateParams.id}).$promise;
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'officer-account',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
-        .state('officer-account-detail.edit', {
-            parent: 'officer-account-detail',
-            url: '/detail/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                    controller: 'OfficerAccountDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
+       .state('officerAccounts.new', {
+          parent: 'officerAccounts',
+                    url: '/new',
+                    data: {
+                      authorities: ['ROLE_ADMIN']
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
+                            controller: 'OfficerAccountDialogController',
+                            controllerAs: 'vm'
+                        }
+                    },
                     resolve: {
-                        entity: ['OfficerAccount', function(OfficerAccount) {
-                            return OfficerAccount.get({id : $stateParams.id}).$promise;
+
+                     entity: function () {
+                           return {
+                               name: null,
+                               id: null
+                           };
+                       },
+                        previousState: ['$stateParams', '$state', function($stateParams, $state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'officerAccounts',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
                         }]
                     }
-                }).result.then(function() {
-                    $state.go('^', {}, { reload: false });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
         })
+//        .state('officerAccounts.edit', {
+//         parent: 'entity',
+//            url: '/{id}/detalle',
+//            data: {
+//             authorities: ['ROLE_ADMIN'],
+//                pageTitle: 'aditumApp.officerAccount.detail.title'
+//            },
+//            views: {
+//                'content@': {
+//                        templateUrl: 'app/entities/resident/resident-form.html',
+//                                         controller: 'ResidentDialogController',
+//                    controllerAs: 'vm'
+//                }
+//            },
+//            resolve: {
+//                 entity: ['OfficerAccount', function(OfficerAccount) {
+//                     return OfficerAccount.get({id : $stateParams.id}).$promise;
+//                 }],
+//                previousState: ["$state", function ($state) {
+//                    var currentStateData = {
+//                        name: $state.current.name || 'officerAccounts',
+//                        params: $state.params,
+//                        url: $state.href($state.current.name, $state.params)
+//                    };
+//                    return currentStateData;
+//                }]
+//            }
+//
+//  })
 
-           .state('company.newOfficerAccount', {
-                 parent: 'entity',
-                 url: '/new',
-                 data: {
-                       authorities: ['ROLE_USER','ROLE_ADMIN'],
-                 },
-                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                     $uibModal.open({
-                         templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                         controller: 'OfficerAccountDialogController',
-                         controllerAs: 'vm',
-                         backdrop: 'static',
-                         size: 'lg',
-                         resolve: {
-                             entity: function () {
-                                 return {
-                                     name: null,
-                                     id: null
-                                 };
-                             }
-                         }
-                     }).result.then(function() {
-                         $state.go('officerAccounts', null, { reload: 'officerAccounts' });
-                     }, function() {
-                         $state.go('officerAccounts');
-                     });
-                 }]
-             })
-        .state('officer-account.edit', {
-            parent: 'officer-account',
+        .state('officerAccounts.edit', {
+            parent: 'officerAccounts',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
                     templateUrl: 'app/entities/officer-account/officer-account-dialog.html',
-                    controller: 'OfficerAccountDialogController',
+                    controller: 'OfficerAccountEditController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
@@ -155,7 +130,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('officer-account', null, { reload: 'officer-account' });
+                    $state.go('officerAccounts', null, { reload: 'officerAccounts' });
                 }, function() {
                     $state.go('^');
                 });

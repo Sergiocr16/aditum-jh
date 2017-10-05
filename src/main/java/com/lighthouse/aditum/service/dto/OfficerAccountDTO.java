@@ -15,6 +15,8 @@ public class OfficerAccountDTO implements Serializable {
 
     private String name;
 
+    private Integer enable;
+
     private Long companyId;
 
     private String companyName;
@@ -36,6 +38,13 @@ public class OfficerAccountDTO implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+    public Integer getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Integer enable) {
+        this.enable = enable;
     }
 
     public Long getCompanyId() {
@@ -96,6 +105,7 @@ public class OfficerAccountDTO implements Serializable {
         return "OfficerAccountDTO{" +
             "id=" + id +
             ", name='" + name + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }
