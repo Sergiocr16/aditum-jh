@@ -29,9 +29,39 @@
             </h1>
         </div>
         <div class="display-none" id="tableData">
+            <div class="form-group form-md-radios">
+                <div class="md-radio-inline">
 
-                <button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>
-                <div class="form-group col-md-offset-4 col-md-3 col-sm-offset-2  col-sm-4 col-xs-7 no-padding">
+                    <div class="md-radio" >
+                        <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">
+                        <label for="radio14" style="color:#45B6AF">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                            Habilitados </label>
+                    </div>
+                    <div class="md-radio has-error">
+                        <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">
+                        <label for="radio15">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                            Deshabilitados </label>
+                    </div>
+                </div>
+            </div>
+                <!--<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>-->
+            <div class="form-group col-md-offset-1 col-md-3 col-sm-4 col-xs-7 no-padding">
+                <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por autorización</label>
+                <div class="col-md-7 col-sm-7 col-xs-8 ">
+                    <select class="form-control gray-font" ng-model="vm.filterAuthorized" ng-change="vm.setAuthorizedView(vm.filterAuthorized)" required>
+                        <option value="2" selected="selected">Todos</option>
+                        <option value="1">Autorizados</option>
+                        <option value="0">No autorizados</option>
+                    </select>
+                </div>
+            </div>
+                <div class="form-group col-md-3  col-sm-4 col-xs-7 no-padding">
                     <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por casa</label>
                     <div class="col-md-7 col-sm-7 col-xs-8 ">
                         <select class="form-control gray-font" ng-change="vm.findResidentsByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'id' track by house.id" required>
@@ -66,7 +96,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'">
+                            <tr ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'" ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
                                 <td style="text-transform: capitalize;">{{resident.name}} </td>
                                 <td>{{resident.identificationnumber}}</td>
                                 <td>{{resident.phonenumber}}</td>

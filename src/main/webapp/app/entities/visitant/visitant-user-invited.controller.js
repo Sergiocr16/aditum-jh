@@ -17,7 +17,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        setTimeout(function(){loadAll();},300)
+        setTimeout(function(){loadAll();},500)
 
         angular.element(document).ready(function() {
             $("#all").fadeIn("slow");

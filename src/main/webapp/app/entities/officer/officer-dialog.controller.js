@@ -19,14 +19,21 @@
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.user = entity;
+        moment.locale('es');
+
+        vm.datePickerOpenStatus = {};
+        vm.openCalendar = openCalendar;
         var indentification = vm.officer.identificationnumber;
         CommonMethods.validateLetters();
         vm.loginStringCount = 0;
         CommonMethods.validateNumbers();
+        vm.birthdate = new Date().setYear(new Date().getYear()-18);
         $rootScope.active = "officers";
         if(vm.officer.id !== null){
             vm.title = "Editar oficial";
             vm.button = "Editar";
+             vm.birthdateToShow = moment(vm.officer.fechanacimiento).format("D MMM YYYY");
+             console.log( vm.birthdate);
         } else{
             vm.title = "Registrar oficial";
             vm.button = "Registrar";
@@ -77,6 +84,8 @@
             vm.officer.userId = 1;
             vm.officer.inservice = 0;
             vm.officer.enable = true;
+            vm.officer.fechanacimiento = vm.birthdate;
+            console.log(vm.birthdate)
             vm.imageUser = {user: "a"};
            if(fileImage!==null){
                 SaveImageCloudinary
@@ -109,6 +118,7 @@
 
         }
         function updateOfficer(){
+         vm.officer.fechanacimiento = vm.birthdate;
             vm.imageUser = {user: vm.officer.identificationnumber};
             if(fileImage!==null){
                  SaveImageCloudinary
@@ -119,6 +129,7 @@
                  }
                 function onSaveImageSuccess(data) {
                   vm.officer.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+
                   Officer.update(vm.officer, onUpdateSuccess, onSaveError);
                 }
             }else{
@@ -137,6 +148,16 @@
             vm.isSaving = false;
         }
 
+            vm.picker = {
+                date: new Date().setYear(new Date().getYear()-18),
+                datepickerOptions: {
+                    maxDate: new Date().setYear(new Date().getYear()-18),
+                    date: new Date().setYear(new Date().getYear()-18),
+                    enableTime: false,
+                    showWeeks: false,
+                }
+            };
+
       vm.setImage = function ($file) {
                 if ($file && $file.$error === 'pattern') {
                     return;
@@ -151,5 +172,9 @@
                     fileImage = $file;
                 }
        };
+        vm.datePickerOpenStatus.birthdate = false;
+         function openCalendar(date) {
+            vm.datePickerOpenStatus[date] = true;
+        }
     }
 })();

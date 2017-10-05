@@ -17,7 +17,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        loadAll();
+        setTimeout(function(){loadAll();})
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)

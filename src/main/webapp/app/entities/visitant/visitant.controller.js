@@ -24,7 +24,7 @@
                     initial_time: undefined,
                     final_time: undefined
                 };
-        loadAll();
+         setTimeout(function(){loadAll();},500)
        vm.isDisableButton = function() {
            if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) return true;
            return false;
