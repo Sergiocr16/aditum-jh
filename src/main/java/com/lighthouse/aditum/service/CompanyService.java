@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final Logger log = LoggerFactory.getLogger(CompanyService.class);
-    
+
     private final CompanyRepository companyRepository;
 
     private final CompanyMapper companyMapper;
@@ -42,6 +42,10 @@ public class CompanyService {
     public CompanyDTO save(CompanyDTO companyDTO) {
         log.debug("Request to save Company : {}", companyDTO);
         Company company = companyMapper.companyDTOToCompany(companyDTO);
+        if(companyDTO.getId()!=null) {
+            Company company1 = companyRepository.findOne(companyDTO.getId());
+            company.setRHAccounts(company1.getRHAccounts());
+        }
         company = companyRepository.save(company);
         CompanyDTO result = companyMapper.companyToCompanyDTO(company);
         return result;
@@ -49,7 +53,7 @@ public class CompanyService {
 
     /**
      *  Get all the companies.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */

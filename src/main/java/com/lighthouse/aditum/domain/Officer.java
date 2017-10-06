@@ -4,7 +4,7 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -55,12 +55,12 @@ public class Officer implements Serializable {
     @Column(name = "image_url")
     private String image_url;
 
-    @Column(name = "fechanacimiento")
-    private ZonedDateTime fechanacimiento;
-
     @Column(name = "annosexperiencia")
     private Integer annosexperiencia;
-  
+
+    @Column(name = "fechanacimiento")
+    private LocalDate fechanacimiento;
+
     @ManyToOne
     private Company company;
 
@@ -189,19 +189,6 @@ public class Officer implements Serializable {
         this.image_url = image_url;
     }
 
-    public ZonedDateTime getFechanacimiento() {
-        return fechanacimiento;
-    }
-
-    public Officer fechanacimiento(ZonedDateTime fechanacimiento) {
-        this.fechanacimiento = fechanacimiento;
-        return this;
-    }
-
-    public void setFechanacimiento(ZonedDateTime fechanacimiento) {
-        this.fechanacimiento = fechanacimiento;
-    }
-
     public Integer getAnnosexperiencia() {
         return annosexperiencia;
     }
@@ -213,6 +200,19 @@ public class Officer implements Serializable {
 
     public void setAnnosexperiencia(Integer annosexperiencia) {
         this.annosexperiencia = annosexperiencia;
+    }
+
+    public LocalDate getFechanacimiento() {
+        return fechanacimiento;
+    }
+
+    public Officer fechanacimiento(LocalDate fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
+        return this;
+    }
+
+    public void setFechanacimiento(LocalDate fechanacimiento) {
+        this.fechanacimiento = fechanacimiento;
     }
 
     public Company getCompany() {
@@ -261,8 +261,8 @@ public class Officer implements Serializable {
             ", inservice='" + inservice + "'" +
             ", enable='" + enable + "'" +
             ", image_url='" + image_url + "'" +
-            ", fechanacimiento='" + fechanacimiento + "'" +
             ", annosexperiencia='" + annosexperiencia + "'" +
+            ", fechanacimiento='" + fechanacimiento + "'" +
             '}';
     }
 }

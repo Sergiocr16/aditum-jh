@@ -25,13 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -72,11 +69,11 @@ public class OfficerResourceIntTest {
     private static final String DEFAULT_IMAGE_URL = "AAAAAAAAAA";
     private static final String UPDATED_IMAGE_URL = "BBBBBBBBBB";
 
-    private static final ZonedDateTime DEFAULT_FECHANACIMIENTO = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_FECHANACIMIENTO = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
     private static final Integer DEFAULT_ANNOSEXPERIENCIA = 1;
     private static final Integer UPDATED_ANNOSEXPERIENCIA = 2;
+
+    private static final LocalDate DEFAULT_FECHANACIMIENTO = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_FECHANACIMIENTO = LocalDate.now(ZoneId.systemDefault());
 
     @Autowired
     private OfficerRepository officerRepository;
@@ -130,8 +127,8 @@ public class OfficerResourceIntTest {
                 .inservice(DEFAULT_INSERVICE)
                 .enable(DEFAULT_ENABLE)
                 .image_url(DEFAULT_IMAGE_URL)
-                .fechanacimiento(DEFAULT_FECHANACIMIENTO)
-                .annosexperiencia(DEFAULT_ANNOSEXPERIENCIA);
+                .annosexperiencia(DEFAULT_ANNOSEXPERIENCIA)
+                .fechanacimiento(DEFAULT_FECHANACIMIENTO);
         return officer;
     }
 
@@ -166,8 +163,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getInservice()).isEqualTo(DEFAULT_INSERVICE);
         assertThat(testOfficer.isEnable()).isEqualTo(DEFAULT_ENABLE);
         assertThat(testOfficer.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
-        assertThat(testOfficer.getFechanacimiento()).isEqualTo(DEFAULT_FECHANACIMIENTO);
         assertThat(testOfficer.getAnnosexperiencia()).isEqualTo(DEFAULT_ANNOSEXPERIENCIA);
+        assertThat(testOfficer.getFechanacimiento()).isEqualTo(DEFAULT_FECHANACIMIENTO);
     }
 
     @Test
@@ -306,8 +303,8 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.[*].inservice").value(hasItem(DEFAULT_INSERVICE)))
             .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE.booleanValue())))
             .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
-            .andExpect(jsonPath("$.[*].fechanacimiento").value(hasItem(sameInstant(DEFAULT_FECHANACIMIENTO))))
-            .andExpect(jsonPath("$.[*].annosexperiencia").value(hasItem(DEFAULT_ANNOSEXPERIENCIA)));
+            .andExpect(jsonPath("$.[*].annosexperiencia").value(hasItem(DEFAULT_ANNOSEXPERIENCIA)))
+            .andExpect(jsonPath("$.[*].fechanacimiento").value(hasItem(DEFAULT_FECHANACIMIENTO.toString())));
     }
 
     @Test
@@ -330,8 +327,8 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.inservice").value(DEFAULT_INSERVICE))
             .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE.booleanValue()))
             .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
-            .andExpect(jsonPath("$.fechanacimiento").value(sameInstant(DEFAULT_FECHANACIMIENTO)))
-            .andExpect(jsonPath("$.annosexperiencia").value(DEFAULT_ANNOSEXPERIENCIA));
+            .andExpect(jsonPath("$.annosexperiencia").value(DEFAULT_ANNOSEXPERIENCIA))
+            .andExpect(jsonPath("$.fechanacimiento").value(DEFAULT_FECHANACIMIENTO.toString()));
     }
 
     @Test
@@ -361,8 +358,8 @@ public class OfficerResourceIntTest {
                 .inservice(UPDATED_INSERVICE)
                 .enable(UPDATED_ENABLE)
                 .image_url(UPDATED_IMAGE_URL)
-                .fechanacimiento(UPDATED_FECHANACIMIENTO)
-                .annosexperiencia(UPDATED_ANNOSEXPERIENCIA);
+                .annosexperiencia(UPDATED_ANNOSEXPERIENCIA)
+                .fechanacimiento(UPDATED_FECHANACIMIENTO);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(updatedOfficer);
 
         restOfficerMockMvc.perform(put("/api/officers")
@@ -383,8 +380,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getInservice()).isEqualTo(UPDATED_INSERVICE);
         assertThat(testOfficer.isEnable()).isEqualTo(UPDATED_ENABLE);
         assertThat(testOfficer.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
-        assertThat(testOfficer.getFechanacimiento()).isEqualTo(UPDATED_FECHANACIMIENTO);
         assertThat(testOfficer.getAnnosexperiencia()).isEqualTo(UPDATED_ANNOSEXPERIENCIA);
+        assertThat(testOfficer.getFechanacimiento()).isEqualTo(UPDATED_FECHANACIMIENTO);
     }
 
     @Test

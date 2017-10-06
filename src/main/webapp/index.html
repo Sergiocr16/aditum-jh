@@ -56,7 +56,7 @@
     <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
-    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER">
+    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
         <div ui-view="content" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
         </div>
@@ -306,13 +306,11 @@
 
     <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
 
+    <script src="app/entities/officer-account/officer-account-edit.controller.js"></script>
+
     <script src="app/entities/officer-account/officer-account-dialog.controller.js"></script>
 
     <script src="app/entities/officer-account/officer-account-detail.controller.js"></script>
-  
-    <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
-
-    <script src="app/entities/officer-account/officer-account-edit.controller.js"></script>
 
     <script src="app/entities/officer-account/officer-account-delete-dialog.controller.js"></script>
 
@@ -401,6 +399,10 @@
     <script src="app/entities/company-configuration/company-configuration.service.js"></script>
 
     <script src="app/entities/company-configuration/company-configuration.controller.js"></script>
+
+    <script src="app/entities/company/company-rh-dialog.controller.js"></script>
+
+    <script src="app/entities/company/company-rh.controller.js"></script>
 
     <script src="app/entities/company/company-dialog.controller.js"></script>
 

@@ -51,6 +51,48 @@
                 }]
             }
         })
+        .state('company-rh', {
+            parent: 'entity',
+            url: '/company-rh?page&sort&search',
+            data: {
+                authorities: ['ROLE_RH'],
+                pageTitle: 'aditumApp.company.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/company/companies-rh.html',
+                    controller: 'CompanyRHController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('company');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
         .state('company-detail', {
             parent: 'company',
             url: '/company/{id}',
@@ -163,6 +205,32 @@
                 });
             }]
         })
+            .state('company-rh.edit', {
+                parent: 'company-rh',
+                url: '/{id}/edit',
+                data: {
+                    authorities: ['ROLE_RH']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/company/company-rh-dialog.html',
+                        controller: 'CompanyRhDialogController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['Company','CommonMethods', function(Company,CommonMethods) {
+                              var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                return Company.get({id : id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('company-rh', null, { reload: 'company-rh' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
             .state('companyConfiguration', {
                 parent: 'company',
                 url: '/configuration/{id}',
@@ -193,7 +261,7 @@
                          parent: 'company',
                          url: '/officer-account/{id}/edit',
                          data: {
-                                   authorities: ['ROLE_USER','ROLE_ADMIN'],
+                                   authorities: ['ROLE_ADMIN'],
                          },
                          onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                              $uibModal.open({

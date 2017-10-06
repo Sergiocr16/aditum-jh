@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CompanyController', CompanyController);
 
-    CompanyController.$inject = ['$rootScope','$state','CompanyConfiguration','Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal'];
+    CompanyController.$inject = ['$rootScope','$state','CompanyConfiguration','Company', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','CommonMethods'];
 
-    function CompanyController($rootScope,$state,CompanyConfiguration,Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal) {
+    function CompanyController($rootScope,$state,CompanyConfiguration,Company, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,CommonMethods) {
         $rootScope.active = "condons";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -23,6 +23,13 @@
             console.log(account)
             })
         }
+
+               vm.viewOfficerAccounts = function(id){
+                    var encryptedId = CommonMethods.encryptIdUrl(id)
+                               $state.go('officerAccounts', {
+                                   companyId: encryptedId
+                               })
+                    }
         function loadAll () {
 
             Company.query({

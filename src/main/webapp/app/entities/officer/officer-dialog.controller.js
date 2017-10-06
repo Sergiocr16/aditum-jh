@@ -32,8 +32,8 @@
         if(vm.officer.id !== null){
             vm.title = "Editar oficial";
             vm.button = "Editar";
-             vm.birthdateToShow = moment(vm.officer.fechanacimiento).format("D MMM YYYY");
-             console.log( vm.birthdate);
+            vm.birthdate = new Date(vm.officer.fechanacimiento);
+             vm.birthdateToShow = moment(vm.birthdate).format("D MMM YYYY");
         } else{
             vm.title = "Registrar oficial";
             vm.button = "Registrar";
@@ -85,6 +85,7 @@
             vm.officer.inservice = 0;
             vm.officer.enable = true;
             vm.officer.fechanacimiento = vm.birthdate;
+
             console.log(vm.birthdate)
             vm.imageUser = {user: "a"};
            if(fileImage!==null){

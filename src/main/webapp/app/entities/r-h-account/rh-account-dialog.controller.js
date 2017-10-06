@@ -80,7 +80,7 @@
             User.getUserById({id: vm.rHAccount.userId},onSuccess);
             function onSuccess(user, headers) {
                 user.id = vm.rHAccount.userId;
-                user.activated = vm.rHAccount.enabled;
+                user.activated = true;
                 user.firstName =  vm.rHAccount.name;
                 user.lastName = vm.rHAccount.lastname + ' ' + vm.rHAccount.secondlastname;
                 user.email = vm.rHAccount.email;

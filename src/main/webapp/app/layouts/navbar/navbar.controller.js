@@ -46,10 +46,23 @@
    setTimeout(function(){
       if(companyUser!=undefined){
         $rootScope.companyUser = companyUser;
+        console.log(  $rootScope.companyUser.data)
+        if(companyUser.companyId!=undefined){
         $rootScope.companyId = companyUser.companyId;
         $rootScope.currentUserImage = companyUser.image_url;
         $rootScope.companyUser = companyUser;
          getContextLiving();
+         }else{
+        MultiCompany.getCurrentUserCompany().then(function(data){
+         $rootScope.companyUser = data;
+         if(data!=null){
+          vm.contextLiving = $rootScope.companyUser.data.name + " " +$rootScope.companyUser.data.lastname+" / " + $rootScope.companyUser.data.enterprisename;
+                  $rootScope.contextLiving = vm.contextLiving;
+                  $rootScope.currentUserImage = null;
+         }
+         })
+
+         }
         }else{
          vm.contextLiving = "Dios de Aditum"
          $rootScope.contextLiving = vm.contextLiving;
@@ -95,8 +108,8 @@
              }else{
              vm.contextLiving = "Dios de Aditum"
              $rootScope.contextLiving = vm.contextLiving;
-              $rootScope.currentUserImage = null;
-               $rootScope.companyUser.image_url = null;
+             $rootScope.currentUserImage = null;
+//              $rootScope.companyUser.image_url = null;
              }
 
             })
