@@ -5,15 +5,52 @@
         .module('aditumApp')
         .controller('OfficerAccountDialogController', OfficerAccountDialogController);
 
-    OfficerAccountDialogController.$inject = ['CommonMethods','$state','$rootScope','$timeout', '$scope', '$stateParams',  '$q', 'entity', 'OfficerAccount', 'Company', 'User','Principal'];
+    OfficerAccountDialogController.$inject = ['CommonMethods','$state','$rootScope','$timeout', '$scope', '$stateParams',  '$q', 'entity', 'OfficerAccount', 'Company', 'User','Principal','MultiCompany'];
 
-    function OfficerAccountDialogController (CommonMethods,$state,$rootScope,$timeout, $scope, $stateParams,  $q, entity, OfficerAccount, Company, User,Principal) {
+    function OfficerAccountDialogController (CommonMethods,$state,$rootScope,$timeout, $scope, $stateParams,  $q, entity, OfficerAccount, Company, User,Principal,MultiCompany) {
         var vm = this;
         vm.officerAccount = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
         CommonMethods.validateSpecialCharacters();
-        vm.companyId = $stateParams.companyId;
+        vm.companyId = CommonMethods.decryptIdUrl($stateParams.companyId)
+        vm.clear = clear;
+        function clear () {
+         $state.go('officerAccounts', {
+               companyId: $stateParams.companyId
+           })
+        }
+
+
+        function loadAll () {
+           MultiCompany.getCurrentUserCompany().then(function(data){
+            if(data!=null){
+            $rootScope.companyUser = data;
+           vm.contextLiving = $rootScope.companyUser.data.name + " " +$rootScope.companyUser.data.lastname+" / " + $rootScope.companyUser.data.enterprisename;
+            vm.companies = $rootScope.companyUser.data.companies
+            }
+            })
+        }
+        setTimeout(function(){
+             var exist = 0;
+               if($rootScope.contextLiving == "Dios de Aditum"){
+                }else{
+                   angular.forEach($rootScope.companyUser.data.companies, function(value, key) {
+                      if(value.id == vm.companyId){
+                        exist++;
+                      }
+                    });
+                    if(exist == 0){
+                    if($rootScope.contextLiving == "Dios de Aditum"){
+                             $state.go('company')
+                            }else{
+                             $state.go('company-rh')
+                            }
+                 }
+                }
+
+        },500)
+
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -51,8 +88,7 @@
 
             }
         function insertOfficerAccount(id){
-                console.log($stateParams.companyId);
-                vm.officerAccount.companyId = $stateParams.companyId;
+                vm.officerAccount.companyId =  vm.companyId;
                 vm.officerAccount.userId = id;
                 vm.officerAccount.enable = 1;
                 OfficerAccount.save(vm.officerAccount, onSaveSuccess, onSaveError);

@@ -19,6 +19,12 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
+        setTimeout(function(){
+                  if($stateParams.id.slice(0,7)!="U2FsdGV"  || $stateParams.companyId.slice(0,7)!="U2FsdGV"){
+                  $uibModalInstance.dismiss('cancel');
+                   $state.go('officerAccounts')
+                  }
+        },500)
 
        getUser();
        function getUser(){

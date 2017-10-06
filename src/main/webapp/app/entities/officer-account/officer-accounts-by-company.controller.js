@@ -12,13 +12,29 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-
-        if($stateParams.companyId.length<7){
-      $state.go('company')
+        if($stateParams.companyId.slice(0,7)!="U2FsdGV"){
+        if($rootScope.contextLiving=="Dios de Aditum"){
+         $state.go('company')
+        }else{
+         $state.go('company-rh')
+        }
         }else{
          var companyId = CommonMethods.decryptIdUrl($stateParams.companyId)
           getCondominio();
         }
+       vm.editOfficerAccount = function (id){
+       var encryptedId = CommonMethods.encryptIdUrl(id)
+                          $state.go('officerAccounts.edit', {
+                              id: encryptedId
+                          })
+       }
+
+      vm.createOfficerAccount = function (id){
+      var encryptedId = CommonMethods.encryptIdUrl(id)
+                         $state.go('officerAccounts.new', {
+                             companyId: encryptedId
+                         })
+      }
 
         function getCondominio(){
          Company.get({
