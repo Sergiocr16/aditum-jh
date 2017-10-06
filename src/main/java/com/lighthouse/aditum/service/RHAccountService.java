@@ -109,4 +109,14 @@ public class RHAccountService {
         log.debug("Request to delete RHAccount : {}", id);
         rHAccountRepository.delete(id);
     }
+
+
+    @Transactional(readOnly = true)
+    public RHAccountDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        RHAccount rHAccount = rHAccountRepository.findOneByUserId(id);
+        RHAccountDTO rHAccountDTO = rHAccountMapper.rHAccountToRHAccountDTO(rHAccount);
+        rHAccount.setCompanies(null);
+        return rHAccountDTO;
+    }
 }

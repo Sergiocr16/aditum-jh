@@ -13,7 +13,7 @@
               parent: 'company',
               url: '/{companyId}/officerAccounts',
               data: {
-                  authorities: ['ROLE_ADMIN']
+                  authorities: ['ROLE_ADMIN','ROLE_RH']
               },
               views: {
                   'content@': {

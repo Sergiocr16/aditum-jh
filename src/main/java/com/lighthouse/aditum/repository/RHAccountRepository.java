@@ -18,5 +18,5 @@ public interface RHAccountRepository extends JpaRepository<RHAccount,Long> {
 
     @Query("select rHAccount from RHAccount rHAccount left join fetch rHAccount.companies where rHAccount.id =:id")
     RHAccount findOneWithEagerRelationships(@Param("id") Long id);
-
+    RHAccount findOneByUserId(Long id);
 }

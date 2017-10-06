@@ -1,7 +1,7 @@
 <!-- END CONTENT -->
 <!-- BEGIN QUICK SIDEBAR -->
 
-<div has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER" style="margin-top:46px;" ></div>
+<div has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" style="margin-top:46px;" ></div>
 
 <div ng-hideclass="page-sidebar-wrapper">
 
@@ -127,6 +127,12 @@
             </li>
             <!--//es admin-->
 
+            <li ui-sref="company-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'company-rh'}">
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+                <span class="title"> Gestión de condominios</span>
+                </a>
+            </li>
             <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
 
                 <a href="javascript:;">

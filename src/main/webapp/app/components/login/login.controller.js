@@ -68,7 +68,13 @@
                     } else if(account.authorities[0]=='ROLE_USER'){
                     setTimeout(function(){   $state.go('residentByHouse');}, 300);
 
-                    } else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
+                    }else if(account.authorities[0]=='ROLE_ADMIN'){
+                                         setTimeout(function(){   $state.go('company');}, 300);
+
+                    }else if(account.authorities[0]=='ROLE_RH'){
+                                                              setTimeout(function(){  $rootScope.active = "company-rh";  $state.go('company-rh');}, 300);
+
+                     }  else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                           $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                           $state.go('home');    }
                 })

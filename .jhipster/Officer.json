@@ -62,12 +62,12 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "fechanacimiento",
-            "fieldType": "ZonedDateTime"
-        },
-        {
             "fieldName": "annosexperiencia",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fechanacimiento",
+            "fieldType": "LocalDate"
         }
     ],
     "changelogDate": "20170228214136",

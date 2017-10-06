@@ -12,10 +12,17 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-        getCondominio();
+
+        if($stateParams.companyId.length<7){
+      $state.go('company')
+        }else{
+         var companyId = CommonMethods.decryptIdUrl($stateParams.companyId)
+          getCondominio();
+        }
+
         function getCondominio(){
          Company.get({
-                    id: $stateParams.companyId
+                    id: companyId
                 }, onSuccess, onError);
                 function onSuccess(data) {
                     vm.company = data;
@@ -29,9 +36,9 @@
 
         loadAll ();
         function loadAll () {
-            vm.companyId  = $stateParams.companyId;
+            vm.companyId  = companyId;
             OfficerAccount.getOfficerAccountsByCompanyId({
-                companyId: $stateParams.companyId
+                companyId: companyId
             }, onSuccess, onError);
             function onSuccess(data) {
                 vm.officerAccount = data;

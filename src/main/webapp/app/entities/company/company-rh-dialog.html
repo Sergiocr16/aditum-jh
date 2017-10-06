@@ -1,0 +1,26 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+    <div class="modal-body">
+        <div class="form-group col-md-6 col-sm-6">
+            <label class="control-label" for="field_name">Nombre</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                   ng-model="vm.company.name"
+                   required/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default red" data-dismiss="modal" ng-click="vm.clear()">
+           <span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn green btn-primary">
+           <span >Editar nombre</span>
+        </button>
+    </div>
+</form>
