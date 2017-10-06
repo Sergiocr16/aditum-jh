@@ -4,7 +4,7 @@
         <div class="form-group col-md-offset-6 col-md-3 col-sm-offset-6 col-sm-3 col-xs-6">
             <div class="input-icon">
                 <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar cuentas de oficiales" ng-model="search">
+                <input type="text" class="form-control" placeholder="Buscar cuentas de oficiales" ng-model="vm.query ">
             </div>
         </div>
         <button type="submit" class="btn green col-md-3 col-sm-3 col-xs-6 small-margin-bottom" ui-sref="officerAccounts.new({companyId: vm.companyId})">Registrar cuenta de oficial</button>
@@ -24,7 +24,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="officerAccount in vm.officerAccount | filter:vm.search | orderBy:'name'">
+                    <tr ng-repeat="officerAccount in vm.officerAccount | filter:vm.query | orderBy:'name'">
                         <td style="text-transform: capitalize;">{{officerAccount.name}}</td>
                         <td>
                             {{officerAccount.userLogin}}

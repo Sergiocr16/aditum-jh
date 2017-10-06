@@ -40,7 +40,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="adminInfo in vm.adminInfos | filter:vm.search | orderBy:'name'">
+                        <tr ng-repeat="adminInfo in vm.adminInfos | filter:vm.query | orderBy:'name'">
                             <td style="text-transform: capitalize;">{{adminInfo.name}}</td>
                             <td>{{adminInfo.identificationnumber}}</td>
                             <td>{{adminInfo.email}}</td>

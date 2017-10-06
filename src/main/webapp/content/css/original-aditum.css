@@ -142,12 +142,14 @@ display: none;
 .marging-top-40{
   margin-top: 40px;
 }
-
+.a558B2F{
+background-color: #2962FF;
+}
 .blue {
-    background-color: #3598dc
+    background-color: #3598dc;
 }
 .blue-font{
-	  color: #3598dc
+	  color: #3598dc;
 }
 .invert-blue {
   color:#3598dc;

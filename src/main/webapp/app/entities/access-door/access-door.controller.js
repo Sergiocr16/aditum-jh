@@ -235,7 +235,7 @@
             }
         }
 
-        vm.getKeyInformation = function() {
+    vm.getKeyInformation = function() {
             var existe=0;
             angular.forEach(housesList, function(item, index) {
                 if (item.securityKey == vm.security_key) {
@@ -277,28 +277,97 @@
             }
 
         }
-vm.verifyVisitantInivitedDate = function(visitant){
-  var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD")+"T"+moment(new Date()).format("HH:mm:ss")+"-06:00").getTime();
-  var  initTime = new Date(visitant.invitationstaringtime).getTime();
-  var finishTime = new Date(visitant.invitationlimittime).getTime();
 
-  console.log(initTime)
-    console.log(currentTime)
-  console.log(finishTime)
-  if(initTime<=currentTime && currentTime <= finishTime){
-        return true;
-  }else{
-     visitant.isinvited = 2;
-     Visitant.update(visitant, function(){})
-       if(visitorsList!==undefined){
-           var result = hasExistance(visitorsList,visitant.id)
-           if(result!==-1){
-               visitorsList[result] = {};
-           }
-     }
-      return false;
-  }
-}
+        vm.getHouseInformation = function() {
+
+          Resident.findResidentesEnabledByHouseId({
+                houseId: vm.houseForInformation.id
+            }).$promise.then(onSuccessResidents, onError);
+
+//            var existe=0;
+//            angular.forEach(housesList, function(item, index) {
+//                if (item.securityKey == vm.security_key) {
+//                    existe =1;
+//                    vm.show = 9;
+//                    vm.emergencySecurityKeyTitle = "Clave de seguridad";
+//                    vm.emergency_security_key = item.emergencyKey;
+//                    vm.key_house_number =item.housenumber;
+//                    var houseId = item.id;
+//                    Resident.findResidentesEnabledByHouseId({
+//                        houseId: houseId
+//                    }).$promise.then(onSuccessResidents, onError);
+//                } else if (item.emergencyKey == vm.security_key) {
+//                    existe =1;
+//                    vm.show = 9;
+//                    vm.emergencySecurityKeyTitle = "Clave de emergencia";
+//                    vm.emergency_security_key = item.securityKey;
+//                    var houseId = item.id;
+//                    Resident.findResidentesEnabledByHouseId({
+//                        houseId: houseId
+//                    }).$promise.then(onSuccessResidents, onError);
+//
+//                }
+                function onSuccessResidents(data) {
+                    vm.residents = data;
+                    vm.show = 12;
+
+                    Vehicule.findVehiculesEnabledByHouseId({
+                        houseId: vm.houseForInformation.id
+                    }).$promise.then(onSuccessVehicules, onError);
+                }
+
+                function onSuccessVehicules(data) {
+                    vm.vehicules = data;
+                     House.get({
+                        id: vm.houseForInformation.id
+                    }).$promise.then(onSuccessHouse, onError);
+                }
+                 function onSuccessHouse(data) {
+                     vm.houseInformationTitle = "Información de la casa" + " "+data.housenumber;
+                    vm.house = data;
+                    if(data.securitykey==null){
+                      vm.houseInfoSecurityKey = "No tiene";
+                    }else{
+                      vm.houseInfoSecurityKey = data.securitykey;
+                    }
+                    if(data.emergencykey==null){
+                      vm.houseInfoEmergencyKey = "No tiene";
+                    }else{
+                      vm.houseInfoEmergencyKey = data.emergencykey;
+                    }
+                if(data.extension==null){
+                      vm.houseInfoExtension = "No tiene";
+                    }else{
+                      vm.houseInfoExtension = data.extension;
+                    }
+
+
+                }
+
+
+        }
+        vm.verifyVisitantInivitedDate = function(visitant){
+          var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD")+"T"+moment(new Date()).format("HH:mm:ss")+"-06:00").getTime();
+          var  initTime = new Date(visitant.invitationstaringtime).getTime();
+          var finishTime = new Date(visitant.invitationlimittime).getTime();
+
+          console.log(initTime)
+            console.log(currentTime)
+          console.log(finishTime)
+          if(initTime<=currentTime && currentTime <= finishTime){
+                return true;
+          }else{
+             visitant.isinvited = 2;
+             Visitant.update(visitant, function(){})
+               if(visitorsList!==undefined){
+                   var result = hasExistance(visitorsList,visitant.id)
+                   if(result!==-1){
+                       visitorsList[result] = {};
+                   }
+             }
+              return false;
+          }
+        }
         vm.getResident = function() {
                 vm.id_vehicule = "";
                 $("#vehicule_license_plate").css("text-transform", "none");
@@ -434,7 +503,13 @@ vm.verifyVisitantInivitedDate = function(visitant){
                 vm.visitor_license_plate = "";
                 vm.house = "";
             }
-
+            vm.houseInformationInput = function(){
+                vm.show = 11;
+                $("#license_plate").css("text-transform", "none");
+                $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+                clearInputs();
+                vm.houses = housesList;
+            }
             vm.searchVisitor = function() {
                 vm.show = 5;
                 $("#license_plate").css("text-transform", "none");
