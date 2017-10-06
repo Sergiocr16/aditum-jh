@@ -43,8 +43,7 @@
                             <div class="form-actions noborder">
                                 <h3 class="text-right">
                                     <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i>Aceptar</button>
-                                    <button ng-show="vm.officerAccount.id !== null" type="button"  ng-click="vm.clear()" class="btn red default">Cancelar</button>
-                                    <button ng-show="vm.officerAccount.id == null"  type="button"  ui-sref="officerAccounts({companyId: vm.companyId}) " class="btn red default">Cancelar</button>
+                                    <button type="button" ng-click="vm.clear()" class="btn red default">Cancelar</button>
                                 </h3>
                             </div>
                         </div>

@@ -88,7 +88,7 @@ public class UserResource {
      */
     @PostMapping("/users")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
     public ResponseEntity createUser(@RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
 
@@ -124,7 +124,7 @@ public class UserResource {
      */
     @PutMapping("/users")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
 
     public ResponseEntity<UserDTO> updateUser(@RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);
@@ -163,7 +163,7 @@ public class UserResource {
     }
     @GetMapping("/users/{id}")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthorities(id)
@@ -193,7 +193,7 @@ public class UserResource {
      */
     @DeleteMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);

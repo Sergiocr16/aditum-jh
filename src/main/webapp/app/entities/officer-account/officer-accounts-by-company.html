@@ -7,7 +7,7 @@
                 <input type="text" class="form-control" placeholder="Buscar cuentas de oficiales" ng-model="vm.query ">
             </div>
         </div>
-        <button type="submit" class="btn green col-md-3 col-sm-3 col-xs-6 small-margin-bottom" ui-sref="officerAccounts.new({companyId: vm.companyId})">Registrar cuenta de oficial</button>
+        <button type="submit" class="btn green col-md-3 col-sm-3 col-xs-6 small-margin-bottom" ng-click="vm.createOfficerAccount(vm.companyId)">Registrar cuenta de oficial</button>
         <div class="portlet-body ">
 
             <div class="table-scrollable">
@@ -30,7 +30,7 @@
                             {{officerAccount.userLogin}}
                         </td>
 
-                        <td><a class="light-gray-font" ui-sref="officerAccounts.edit({id:officerAccount.id})">Editar</a></td>
+                        <td><a class="light-gray-font" ng-click="vm.editOfficerAccount(officerAccount.id)">Editar</a></td>
                         <td> <a  class="light-gray-font" ng-click="vm.disableEnabledAdmin(officerAccount)">Habilitar/Deshabilitar</a></td>
 
                         <td><a class="light-gray-font" ng-click="vm.deleteOfficerAccount(officerAccount)">Eliminar</a></td>

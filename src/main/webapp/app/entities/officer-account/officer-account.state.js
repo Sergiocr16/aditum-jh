@@ -54,7 +54,7 @@
           parent: 'officerAccounts',
                     url: '/new',
                     data: {
-                      authorities: ['ROLE_ADMIN']
+                      authorities: ['ROLE_ADMIN','ROLE_RH']
                     },
                     views: {
                         'content@': {
@@ -115,7 +115,7 @@
             parent: 'officerAccounts',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_ADMIN']
+                authorities: ['ROLE_ADMIN','ROLE_RH']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -125,8 +125,9 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['OfficerAccount', function(OfficerAccount) {
-                            return OfficerAccount.get({id : $stateParams.id}).$promise;
+                        entity: ['OfficerAccount','CommonMethods', function(OfficerAccount,CommonMethods) {
+                            var id = CommonMethods.decryptIdUrl($stateParams.id)
+                            return OfficerAccount.get({id : id}).$promise;
                         }]
                     }
                 }).result.then(function() {
@@ -140,7 +141,7 @@
             parent: 'officer-account',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_USER','ROLE_RH']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
