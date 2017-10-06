@@ -100,20 +100,27 @@
             vm.user.login = generateLogin(0);
 
             User.save(vm.user, onSaveUser, onSaveLoginError);
-            function onSaveUser (result) {
-                insertAdmin(result.id)
-                vm.isSaving = false;
-            }
+
 
         }
-        function onSaveLoginError () {
+          function onSaveUser (result) {
+                        insertAdmin(result.id)
+                        vm.isSaving = false;
+                    }
+        function onSaveLoginError (error) {
             vm.isSaving = false;
-            vm.user.login = generateLogin(1);
-            User.save(vm.user, onSaveUser, onSaveLoginError);
-            function onSaveUser (result) {
-                $state.go('admin-info');
+               switch(error.data.login){
+                case "emailexist":
+                      toastr["error"]("El correo electrónico ingresado ya existe.");
+                          bootbox.hideAll();
+                break;
+                 case "userexist":
+                      vm.user.login = generateLogin(1);
 
-            }
+                    User.save(vm.user, onSaveUser, onSaveLoginError);
+
+                break;
+                }
         }
         function insertAdmin(id){
             vm.adminInfo.enabled = 1;
@@ -195,6 +202,7 @@
 
         function onSaveError () {
             vm.isSaving = false;
+
         }
         function updateAccount(){
                  vm.user.id = vm.adminInfo.userId;
