@@ -20,5 +20,16 @@
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 
+        <addForeignKeyConstraint baseColumnNames="admin_infos_id"
+                                 baseTableName="admin_info_company"
+                                 constraintName="fk_admin_info_company_admin_infos_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="admin_info"/>
+        <addForeignKeyConstraint baseColumnNames="companies_id"
+                                 baseTableName="admin_info_company"
+                                 constraintName="fk_admin_info_company_companies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+        
     </changeSet>
 </databaseChangeLog>

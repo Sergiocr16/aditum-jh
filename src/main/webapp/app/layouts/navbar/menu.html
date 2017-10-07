@@ -156,6 +156,13 @@
 
             </li>
 
+            <li ui-sref="dashboard.selectCompany" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'selectCondominio'}">
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i>
+                    <span class="title">Seleccionar condominio</span>
+                </a>
+            </li>
+
             <!--//es residente-->
 
             <li  class="start"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">

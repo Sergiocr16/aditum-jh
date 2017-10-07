@@ -19,7 +19,6 @@
 
         function getCurrentUserCompany(){
             return Principal.identity().then(function(account){
-
             if(account!=undefined){
             if(account.authorities.length >= 2){
               return null;

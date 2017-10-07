@@ -22,14 +22,12 @@
             },'findByUserId':{
                 url:'api/r-h-accounts/findByUserId/:id',
                 method:'GET',
-                isArray: false,
-                transformResponse: function (data) {
-                     if (data) {
-                       data = angular.fromJson(data);
-                   }
-//                   console.log(data)
-                   return {data: data};
-                }
+                 transformResponse: function (data) {
+                      if (data) {
+                          data = angular.fromJson(data);
+                      }
+                      return data;
+                  }
             },
             'update': { method:'PUT' }
         });

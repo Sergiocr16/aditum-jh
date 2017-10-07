@@ -122,6 +122,7 @@ public class AdminInfoResource {
     public ResponseEntity<AdminInfoDTO> getAdminInfoByUserId(@PathVariable Long id) {
         log.debug("REST request to get AdminInfo : {}", id);
         AdminInfoDTO adminInfoDTO = adminInfoService.findOneByUserId(id);
+        String a = "";
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(adminInfoDTO));
     }
 

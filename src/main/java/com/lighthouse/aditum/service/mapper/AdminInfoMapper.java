@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Mapper for the entity AdminInfo and its DTO AdminInfoDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, })
+@Mapper(componentModel = "spring", uses = {UserMapper.class, CompanyMapper.class, })
 public interface AdminInfoMapper {
 
     @Mapping(source = "user.id", target = "userId")

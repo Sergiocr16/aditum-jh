@@ -31,7 +31,7 @@
            MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
             $rootScope.companyUser = data;
-            vm.companies = $rootScope.companyUser.data.companies
+            vm.companies = $rootScope.companyUser.companies
             }
             })
         }

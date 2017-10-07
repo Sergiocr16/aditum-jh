@@ -63,7 +63,7 @@
                     if(account.authorities[0]=='ROLE_OFFICER'){
                      setTimeout(function(){   $state.go('main-access-door');}, 300);
                     }else if(account.authorities[0]=='ROLE_MANAGER'){
-                      setTimeout(function(){  $state.go('dashboard');}, 300);
+                      setTimeout(function(){  $state.go('dashboard.selectCompany');}, 300);
 
                     } else if(account.authorities[0]=='ROLE_USER'){
                     setTimeout(function(){   $state.go('residentByHouse');}, 300);
