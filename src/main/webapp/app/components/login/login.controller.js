@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth'];
+    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House'];
 
-    function LoginController ($rootScope, $state,Principal, $timeout, Auth,rc) {
+    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
 
 
     angular.element(document).ready(function () {
@@ -22,7 +22,7 @@
 
 
         $rootScope.showLogin = true;
-
+        $rootScope.showSelectCompany = false;
         vm.isChangingPassword = $state.includes('finishReset');
         vm.isResetPassword = $state.includes('requestReset');
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -55,28 +55,51 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
-
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
                    console.log(account)
                     $rootScope.showLogin = false;
-                    if(account.authorities[0]=='ROLE_OFFICER'){
+                    $rootScope.inicieSesion = true;
+                switch (account.authorities[0]){
+                     case "ROLE_ADMIN":
+                       setTimeout(function(){   $state.go('company');}, 300);
+                      break;
+                     case "ROLE_MANAGER":
+                       MultiCompany.getCurrentUserCompany().then(function(data){
+                       $rootScope.companyUser = data;
+                      if(data.companies.length>1 && $rootScope.companyId == undefined){
+                      $rootScope.showSelectCompany = true;
+                           setTimeout(function(){$state.go('dashboard.selectCompany');},300)
+                      }else{
+                      $rootScope.showSelectCompany = false;
+                       $rootScope.companyId = data.companies[0].id;
+                       console.log(data.companies[0].id)
+                        setTimeout(function(){$state.go('dashboard');},300)
+                      }
+                     })
+                     break;
+                     case "ROLE_OFFICER":
                      setTimeout(function(){   $state.go('main-access-door');}, 300);
-                    }else if(account.authorities[0]=='ROLE_MANAGER'){
-                      setTimeout(function(){  $state.go('dashboard');}, 300);
-
-                    } else if(account.authorities[0]=='ROLE_USER'){
-                    setTimeout(function(){   $state.go('residentByHouse');}, 300);
-
-                    }else if(account.authorities[0]=='ROLE_ADMIN'){
-                                         setTimeout(function(){   $state.go('company');}, 300);
-
-                    }else if(account.authorities[0]=='ROLE_RH'){
-                                                              setTimeout(function(){  $rootScope.active = "company-rh";  $state.go('company-rh');}, 300);
-
-                     }  else  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
-                          $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
-                          $state.go('home');    }
+                     break;
+                      case "ROLE_USER":
+                        MultiCompany.getCurrentUserCompany().then(function(data){
+                         House.get({id: data.houseId},function(house){
+                        vm.contextLiving = " / Casa " + house.housenumber;
+                                                       $rootScope.contextLiving = vm.contextLiving;
+                                                       $rootScope.companyId = data.companyId;
+                                                       $rootScope.currentUserImage = data.image_url;
+                                                       $rootScope.companyUser = data;
+                         setTimeout(function(){   $state.go('residentByHouse');}, 300);
+                        })
+     })
+                     break;
+                    case "ROLE_RH":
+                     setTimeout(function(){  $rootScope.active = "company-rh";  $state.go('company-rh');}, 300);
+                    break;
+                 }
+                  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
+                      $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
+                      $state.go('home');    }
                 })
 
 

@@ -116,7 +116,11 @@ public class RHAccountService {
         log.debug("Request to get Resident : {}", id);
         RHAccount rHAccount = rHAccountRepository.findOneByUserId(id);
         RHAccountDTO rHAccountDTO = rHAccountMapper.rHAccountToRHAccountDTO(rHAccount);
-        rHAccount.setCompanies(null);
+        Set<CompanyDTO> companies = new HashSet<>();
+
+        rHAccount.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
+
+        rHAccountDTO.setCompanies(companies);
         return rHAccountDTO;
     }
 }

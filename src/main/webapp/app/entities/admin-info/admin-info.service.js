@@ -29,7 +29,13 @@
             'update': { method:'PUT' },
             'findByUserId':{
                 method:'GET',
-                url:'api/admin-infos/findByUserId/:id'
+                url:'api/admin-infos/findByUserId/:id',
+                transformResponse: function (data) {
+                                    if (data) {
+                                        data = angular.fromJson(data);
+                                    }
+                                    return data;
+                                }
             }
         });
     }

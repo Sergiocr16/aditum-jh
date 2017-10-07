@@ -31,7 +31,7 @@
                             <th>Correo</th>
 
                             <th>Login</th>
-                            <th>Condominio</th>
+                            <th>Condominios</th>
                             <th>Ver detalle</th>
                             <th>Editar</th>
                             <th>Habilitar/Deshabilitar</th>
@@ -48,7 +48,7 @@
                                 {{adminInfo.userLogin}}
                             </td>
                             <td>
-                                {{adminInfo.companyId}}
+                                <a class="light-gray-font" ng-click="vm.showCondominios(adminInfo)">Ver condominios</a>
                             </td>
                             <td><a class="light-gray-font"  ui-sref="admin-info-detail({id:adminInfo.id})">Ver detalle</a></td>
                             <td> <a class="light-gray-font"  ui-sref="admin-info.edit({id:adminInfo.id})">Editar</a></td>

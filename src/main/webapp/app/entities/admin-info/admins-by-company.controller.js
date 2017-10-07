@@ -19,7 +19,32 @@
             $uibModalInstance.dismiss('cancel');
             $state.go('company');
         }
+          vm.showCondominios = function(adminInfo) {
+               AdminInfo.get({id:adminInfo.id},function(data){
+                                   bootbox.dialog({
+                                       message: '<div class="text-center gray-font font-20"> <h4 class="font-30">Condominios que administra <span class="font-30" id="key_id_house"></span></h4></div> <div class="text-center gray-font" id="condos"></div>',
+                                       closeButton: false,
+                                       buttons: {
+                                           confirm: {
+                                               label: 'Ocultar',
+                                               className: 'btn-success'
+                                           }
+                                       },
+                                   })
+                                   var formattedCompanies = "";
+                                   console.log(adminInfo)
+                                   angular.forEach(data.companies,function(value,index){
+                                    formattedCompanies += "<h5 class='text-center font-20'>"+value.name+"<h5>"
+                                   })
+                                   console.log(formattedCompanies)
+                                   document.getElementById("key_id_house").innerHTML = "" + data.name;
+                                    document.getElementById("condos").innerHTML = formattedCompanies;
+               //                    document.getElementById("security_key").innerHTML = "" + securityKey;
+               //                    document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
 
+               })
+
+            }
         loadAll ();
         function loadAll () {
             AdminInfo.getAdminsByCompanyId({

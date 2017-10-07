@@ -43,6 +43,8 @@ public class AdminInfoDTO implements Serializable {
 
     private Long companyId;
 
+    private Set<CompanyDTO> companies = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -114,13 +116,12 @@ public class AdminInfoDTO implements Serializable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+    public Integer getAdministradaOficiales() {
+        return administradaOficiales;
+    }
 
     public void setAdministradaOficiales(Integer administradaOficiales) {
         this.administradaOficiales = administradaOficiales;
-    }
-
-    public Integer getAdministradaOficiales() {
-       return this.administradaOficiales;
     }
 
     public Long getUserId() {
@@ -145,6 +146,14 @@ public class AdminInfoDTO implements Serializable {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public Set<CompanyDTO> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<CompanyDTO> companies) {
+        this.companies = companies;
     }
 
     @Override

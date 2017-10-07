@@ -14,6 +14,14 @@
             "relationshipName": "company",
             "otherEntityName": "company",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "adminInfo"
         }
     ],
     "fields": [

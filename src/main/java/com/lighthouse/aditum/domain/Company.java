@@ -59,6 +59,22 @@ public class Company implements Serializable {
     @BatchSize(size = 20)
     private Set<RHAccount> rhAccounts = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "admin_info_company",
+        joinColumns = @JoinColumn(name="companies_id", referencedColumnName="id"),
+        inverseJoinColumns = @JoinColumn(name="admin_infos_id", referencedColumnName="id"))
+    private Set<AdminInfo> adminInfos = new HashSet<>();
+
+
+    public Set<AdminInfo> getAdminInfos() {
+        return adminInfos;
+    }
+
+    public void setAdminInfos(Set<AdminInfo> adminInfos) {
+        this.adminInfos = adminInfos;
+    }
+
+
     public Set<RHAccount> getRHAccounts() {
         return rhAccounts;
     }

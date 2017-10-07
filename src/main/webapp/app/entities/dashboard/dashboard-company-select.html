@@ -1,0 +1,27 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <h4 class="modal-title text-center" id="myWatchLabel">Seleccione el condominio que desea administrar</h4>
+    </div>
+    <div class="modal-body">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+            <h1 class="text-center">
+                <img src="../../content/images/waiting-gif2.gif" alt="" />
+            </h1>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="tableData">
+        <div  class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-click="vm.selectCompany(company.id)" ng-repeat="company in vm.companies  ">
+            <div class="portlet light bordered text-center col-sm-12 col-xs-12 ">
+                <div class="col-lg-12 no-padding ">
+                    </h1>
+                    <h3 class="no-padding "> <i class=" text-center fa fa-home " style="font-size:35px;color:#1f897f" aria-hidden="true "></i>  {{company.name}}</h3>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+
+    </div>
+</form>

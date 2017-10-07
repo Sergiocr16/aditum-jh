@@ -11,6 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.adminInfo = entity;
+
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;

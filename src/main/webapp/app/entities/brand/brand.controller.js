@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('BrandController', BrandController);
 
-    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule'];
+    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','$rootScope'];
 
-    function BrandController(Brand,Principal,House,Resident,Vehicule,Visitant) {
+    function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope) {
 
         var vm = this;
-
+        $rootScope.active = "brands";
         vm.brands = [];
         vm.isAuthenticated = Principal.isAuthenticated;
 

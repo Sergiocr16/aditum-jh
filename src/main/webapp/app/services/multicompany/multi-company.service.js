@@ -19,7 +19,6 @@
 
         function getCurrentUserCompany(){
             return Principal.identity().then(function(account){
-
             if(account!=undefined){
             if(account.authorities.length >= 2){
               return null;
@@ -52,6 +51,7 @@
        }
 
         function isManager(accountId){
+        AdminInfo.findByUserId({id: accountId}).$promise
              return AdminInfo.findByUserId({id: accountId}).$promise
          }
 

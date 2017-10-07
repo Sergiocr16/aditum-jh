@@ -4,6 +4,8 @@ package com.lighthouse.aditum.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -58,6 +60,12 @@ public class AdminInfo implements Serializable {
 
     @ManyToOne
     private Company company;
+
+    @ManyToMany
+    @JoinTable(name = "admin_info_company",
+               joinColumns = @JoinColumn(name="admin_infos_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="companies_id", referencedColumnName="id"))
+    private Set<Company> companies = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -221,6 +229,31 @@ public class AdminInfo implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public AdminInfo companies(Set<Company> companies) {
+        this.companies = companies;
+        return this;
+    }
+
+    public AdminInfo addCompany(Company company) {
+        this.companies.add(company);
+        company.getAdminInfos().add(this);
+        return this;
+    }
+
+    public AdminInfo removeCompany(Company company) {
+        this.companies.remove(company);
+        company.getAdminInfos().remove(this);
+        return this;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
     }
 
     @Override

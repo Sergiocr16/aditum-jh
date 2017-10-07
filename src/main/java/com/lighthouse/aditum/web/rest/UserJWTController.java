@@ -78,9 +78,9 @@ public class UserJWTController {
                         break;
                     case AuthoritiesConstants.MANAGER:
                         AdminInfoDTO manager = managerService.findOneByUserId(user.getId());
-                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
+//                        if(this.companyService.findOne(manager.getCompanyId()).getActive() == 1){
                             activeCompany = true;
-                        }
+//                        }
                         break;
                     case AuthoritiesConstants.OFFICER:
                         OfficerAccountDTO officer = officerAccountService.findOneByUserId(user.getId());

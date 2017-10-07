@@ -36,7 +36,7 @@
                 return false;
             });
         });
-        loadHouses();
+            setTimeout(function(){loadHouses();},500)
         function loadHouses() {
             House.query({companyId: $rootScope.companyId}, onSuccessHouses);
             function onSuccessHouses(data, headers) {

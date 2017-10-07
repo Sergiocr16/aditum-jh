@@ -75,6 +75,7 @@ public class CompanyService {
         log.debug("Request to get Company : {}", id);
         Company company = companyRepository.findOne(id);
         CompanyDTO companyDTO = companyMapper.companyToCompanyDTO(company);
+
         return companyDTO;
     }
 
