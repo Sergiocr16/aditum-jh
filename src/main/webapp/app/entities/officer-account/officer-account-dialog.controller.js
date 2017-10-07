@@ -23,19 +23,13 @@
 
 
         function loadAll () {
-           MultiCompany.getCurrentUserCompany().then(function(data){
-            if(data!=null){
-            $rootScope.companyUser = data;
-           vm.contextLiving = $rootScope.companyUser.data.name + " " +$rootScope.companyUser.data.lastname+" / " + $rootScope.companyUser.data.enterprisename;
-            vm.companies = $rootScope.companyUser.data.companies
-            }
-            })
+
         }
         setTimeout(function(){
              var exist = 0;
                if($rootScope.contextLiving == "Dios de Aditum"){
                 }else{
-                   angular.forEach($rootScope.companyUser.data.companies, function(value, key) {
+                   angular.forEach($rootScope.companyUser.companies, function(value, key) {
                       if(value.id == vm.companyId){
                         exist++;
                       }
