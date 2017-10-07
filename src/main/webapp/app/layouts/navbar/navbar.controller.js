@@ -98,7 +98,7 @@
                     MultiCompany.getCurrentUserCompany().then(function(data){
                      $rootScope.companyUser = data;
                      if(data!=null){
-                      vm.contextLiving = data.name + " " +data.lastname+" / " + data.enterprisename;
+                      vm.contextLiving = " / " + data.enterprisename;
                       $rootScope.contextLiving = vm.contextLiving;
                       $rootScope.currentUserImage = null;
                      }
