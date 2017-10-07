@@ -51,6 +51,7 @@
        }
 
         function isManager(accountId){
+        AdminInfo.findByUserId({id: accountId}).$promise
              return AdminInfo.findByUserId({id: accountId}).$promise
          }
 

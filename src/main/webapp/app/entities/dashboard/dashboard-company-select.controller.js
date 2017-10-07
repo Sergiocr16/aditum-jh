@@ -20,15 +20,33 @@
 
         vm.selectCompany = function(id){
         $rootScope.companyUser.companyId = id;
-        $rootScope.companyId = id;
-        $state.go('dashboard');
-        vm.clear();
+         $rootScope.companyId = id;
+            MultiCompany.getCurrentUserCompany().then(function(data){
+                   Company.get({id: $rootScope.companyUser.companyId},function(condo){
+                    vm.contextLiving = " / "+ condo.name;
+                    $rootScope.contextLiving = vm.contextLiving;
+                    $rootScope.currentUserImage = data.image_url;
+                    if(condo.active == 0){
+                    logout();
+                    }
+                   })
+            $state.go('dashboard');
+           vm.clear();
+         })
+
         }
         function loadAll () {
            MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
+            console.log(data)
             $rootScope.companyUser = data;
-            vm.companies = $rootScope.companyUser.companies
+            vm.companies = data.companies;
+            setTimeout(function() {
+                      $("#loadingIcon").fadeOut(300);
+            }, 400)
+             setTimeout(function() {
+                 $("#tableData").fadeIn('slow');
+             },700 )
             }
             })
         }

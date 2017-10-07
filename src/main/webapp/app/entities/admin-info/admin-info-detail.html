@@ -31,7 +31,9 @@
                                 <span class="font-15 gray-font">Número de cédula: {{vm.adminInfo.identificationnumber}}</span>
                             </div>
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Condominio: {{vm.adminInfo.companies[0].name}}</span>
+                                <span class="font-15 gray-font">Condominios:</span>
+                                <br>
+                                <span class="col-md-12 no-padding no-margin" style="margin-bottom:5px!important" ng-repeat="company in vm.adminInfo.companies">{{company.name}}</span>
                             </div>
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
                                 <span class="font-15 gray-font">Email: {{vm.adminInfo.email}}</span>

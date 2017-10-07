@@ -10,8 +10,10 @@
     function NavbarController (CommonMethods,$state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
     $rootScope.isAuthenticated = Principal.isAuthenticated;
+    if($rootScope.inicieSesion == undefined){
+    $rootScope.inicieSesion = true;
+    }
     vm.annoActual = moment(new Date()).format("YYYY");
-
        vm.editMyInfoAsManager = function(){
              $state.go('admin-info-edit')
        }
@@ -43,7 +45,7 @@
 
         vm.getAcount = function(){
                 Principal.identity().then(function(account){
-                 console.log(account)
+
                  switch (account.authorities[0]){
                      case "ROLE_ADMIN":
                      vm.contextLiving = "Dios de Aditum"
@@ -51,24 +53,40 @@
                      $rootScope.currentUserImage = null;
                       break;
                      case "ROLE_MANAGER":
-                          if($rootScope.companyId==undefined){
-                          $state.go('dashboard.selectCompany');
+                      MultiCompany.getCurrentUserCompany().then(function(data){
+                          if(data.companies.length>1){$rootScope.showSelectCompany = true;}
+                          if(data.companies.length>1 && $rootScope.companyId == undefined){
+                           $state.go('dashboard.selectCompany');
                           }else{
-                             Company.get({id: $rootScope.companyUser.companyId},function(condo){
+                           if($rootScope.companyId == undefined){
+                            $rootScope.companyUser = data;
+                            $rootScope.companyUser.companyId = data.companies[0].id;
+                            $rootScope.companyId = data.companies[0].id;
+                            }
+                             Company.get({id: $rootScope.companyId},function(condo){
                               vm.contextLiving = " / "+ condo.name;
                               $rootScope.contextLiving = vm.contextLiving;
-                               $rootScope.currentUserImage = companyUser.image_url;
+                              $rootScope.currentUserImage = data.image_url;
                               if(condo.active == 0){
                               logout();
                               }
                              })
                           }
+
+                   })
                      break;
                      case "ROLE_OFFICER":
-
+                    MultiCompany.getCurrentUserCompany().then(function(data){
+                     $rootScope.companyUser = data;
+                     if(data!=null){
+                      vm.contextLiving = $rootScope.companyUser.name;
+                      $rootScope.contextLiving = vm.contextLiving;
+                      $rootScope.currentUserImage = null;
+                     }
+                     })
                      break;
                       case "ROLE_USER":
-                       House.get({id: $rootScope.companyUser.houseId},function(house){
+                       House.get({id: companyUser.houseId},function(house){
                                vm.contextLiving = " / Casa " + house.housenumber;
                                $rootScope.contextLiving = vm.contextLiving;
                                $rootScope.companyId = companyUser.companyId;
@@ -80,7 +98,7 @@
                     MultiCompany.getCurrentUserCompany().then(function(data){
                      $rootScope.companyUser = data;
                      if(data!=null){
-                      vm.contextLiving = $rootScope.companyUser.name + " " +$rootScope.companyUser.lastname+" / " + $rootScope.companyUser.enterprisename;
+                      vm.contextLiving = data.name + " " +data.lastname+" / " + data.enterprisename;
                       $rootScope.contextLiving = vm.contextLiving;
                       $rootScope.currentUserImage = null;
                      }
@@ -90,106 +108,16 @@
                  })
         }
 
-        vm.getAcount();
+        setTimeout(function(){
+        Principal.identity().then(function(account){
+        if(account!==null){
+          $rootScope.companyUser = companyUser;
+           vm.getAcount();
+           }
+        })
+        })
         var subLogin = $scope.$on('authenticationSuccess',  vm.getAcount);
-//   function getContextLiving(){
-//       if($rootScope.companyUser!=undefined){
-//            if($rootScope.companyUser.houseId == undefined){
-//             Company.get({id: $rootScope.companyUser.companyId},function(condo){
-//             vm.contextLiving = " / "+ condo.name;
-//             $rootScope.contextLiving = vm.contextLiving;
-//             if(condo.active == 0){
-//              logout();
-//             }
-//             })
-//            }else{
-//             House.get({id: $rootScope.companyUser.houseId},function(house){
-//                     vm.contextLiving = " / Casa " + house.housenumber;
-//                     $rootScope.contextLiving = vm.contextLiving;
-//             })
-//            }
-//       }
-//   }
 
-
-
-//   setTimeout(function(){
-//
-//      if(companyUser!=undefined){
-//        $rootScope.companyUser = companyUser;
-//        if(companyUser.companyId!=undefined){
-//        $rootScope.companyId = companyUser.companyId;
-//        $rootScope.currentUserImage = companyUser.image_url;
-//        $rootScope.companyUser = companyUser;
-//         getContextLiving();
-//         }else{
-//        MultiCompany.getCurrentUserCompany().then(function(data){
-//         $rootScope.companyUser = data;
-//         if(data!=null){
-//          vm.contextLiving = $rootScope.companyUser.name + " " +$rootScope.companyUser.lastname+" / " + $rootScope.companyUser.enterprisename;
-//          $rootScope.contextLiving = vm.contextLiving;
-//          $rootScope.currentUserImage = null;
-//         }
-//         })
-//
-//         }
-//        }else{
-//         vm.contextLiving = "Dios de Aditum"
-//         $rootScope.contextLiving = vm.contextLiving;
-//         $rootScope.currentUserImage = null;
-//        }
-//   },500)
-
-
-//        var subChangeState  = $rootScope.$on('$stateChangeStart', getAccount);
-//        function getAccount(){
-//         Principal.identity().then(function(account){
-//         console.log(account)
-//         switch (account.authorities[0]){
-//             case "ROLE_ADMIN":
-//
-//                  return undefined;
-//              break;
-//             case "ROLE_MANAGER":
-//             console.log($rootScope.companyId)
-//                  if($rootScope.companyId==undefined){
-//                  $state.go('dashboard.selectCompany');
-//                  }
-//             break;
-//             case "ROLE_OFFICER":
-//                return isOfficer(account.id);
-//             break;
-//              case "ROLE_USER":
-//                return isResident(account.id);
-//             break;
-//            case "ROLE_RH":
-//               return isRH(account.id);
-//            break;
-//         }
-//
-//
-//         })
-//            $rootScope.companyUser=undefined;
-//            MultiCompany.getCurrentUserCompany().then(function(data){
-//            if(data!=null){
-//            $rootScope.companyUser = data;
-//            $rootScope.companyId = data.companyId;
-//            $rootScope.companyUser = $rootScope.companyUser;
-//            getContextLiving();
-//          if($rootScope.companyUser.image_url==undefined){
-//            $rootScope.companyUser.image_url = null;
-//            }else{
-//           $rootScope.currentUserImage = data.image_url;
-//           }
-//             }else{
-//             vm.contextLiving = "Dios de Aditum"
-//             $rootScope.contextLiving = vm.contextLiving;
-//             $rootScope.currentUserImage = null;
-////              $rootScope.companyUser.image_url = null;
-//             }
-//
-//            })
-//        }
 
         function login() {
             collapseNavbar();
@@ -203,6 +131,7 @@
             $state.go('home');
             $rootScope.companyUser = undefined;
              $rootScope.showLogin = true;
+             $rootScope.inicieSesion = false;
         }
 
         function toggleNavbar() {
@@ -214,6 +143,6 @@
         }
 
 //        $scope.$on('$destroy', subChangeState);
-        $scope.$on('$destroy', subLogin);
+         $scope.$on('$destroy', subLogin);
     }
 })();

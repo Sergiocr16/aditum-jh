@@ -11,14 +11,12 @@ import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -77,14 +75,20 @@ public class AdminInfoService {
     public Page<AdminInfoDTO> findAll(Pageable pageable) {
         log.debug("Request to get all AdminInfos");
         Page<AdminInfo> result = adminInfoRepository.findAll(pageable);
-        return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
+
+        return result.map(adminInfo -> {
+            Set<Company> companies = new HashSet<>();
+            adminInfo.setCompanies(adminInfo.getCompanies());
+            return  adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
+        });
     }
 
     @Transactional(readOnly = true)
     public Page<AdminInfoDTO> findAllByCompany(Pageable pageable,Long companyId) {
         log.debug("Request to get all AdminInfos");
-        Page<AdminInfo> result = adminInfoRepository.findByCompanyId(pageable,companyId);
-        return result.map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
+        Company company = companyRepository.findOne(companyId);
+        List<AdminInfo> targetList = new ArrayList<>(company.getAdminInfos());
+        return  new PageImpl<AdminInfo>(targetList).map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
     }
 
     /**
@@ -100,9 +104,7 @@ public class AdminInfoService {
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         adminInfoDTO.setImage_url(adminInfo.getImage_url());
         Set<CompanyDTO> companies = new HashSet<>();
-
         adminInfo.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
-
         adminInfoDTO.setCompanies(companies);
         return adminInfoDTO;
     }
