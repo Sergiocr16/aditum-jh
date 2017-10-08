@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('WatchController', WatchController);
 
-    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope'];
+    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope','CommonMethods','$stateParams','Company','$state'];
 
-    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope) {
+    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope,CommonMethods, $stateParams, Company, $state) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -20,9 +20,11 @@
         vm.showBackBtn = false;
         vm.currentTurn = true;
         moment.locale('es');
+        vm.company = {};
+        vm.company.name = "Condominio";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
-
+        var companyId = CommonMethods.decryptIdUrl($stateParams.companyId)
         $rootScope.active = "watches";
         angular.element(document).ready(function() {
             $('.dating').keydown(function() {
@@ -60,7 +62,7 @@
             Watch.findBetweenDates({
                 initial_time: moment(vm.consulting_initial_time).format(),
                 final_time: moment(vm.consulting_final_time).format(),
-                companyId: $rootScope.companyId,
+                companyId: companyId,
             }, onSuccessBetweenDates, onErrorBetweenDates)
 
             function onSuccessBetweenDates(data, headers) {
@@ -85,14 +87,42 @@
                 AlertService.error(error.data.message);
             }
         }
+        vm.loadAll = function(){
+        Principal.identity().then(function(account){
+         if(account.authorities[0]=="ROLE_RH"){
+             Company.get({id:parseInt(companyId)},function(company){
+             vm.company = company;
+             vm.getCurrentWatch();
+             },function(){
+              if(account.authorities[0]=="ROLE_RH"){
+              $state.go('company-rh')
+              }else{
+              $state.go('dashboard')
+              }
+             })
+         }else{
+            Company.get({id:parseInt(companyId)},function(company){
+            vm.company = company;
+            vm.getCurrentWatch();
+            },function(){
+             if(account.authorities[0]=="ROLE_RH"){
+             $state.go('company-rh')
+             }else{
+             $state.go('dashboard')
+             }
+            })
+         }
+        })
+        }
 
         vm.getCurrentWatch = function() {
             $("#data").fadeOut(0);
             setTimeout(function() {
                 $("#loadingData").fadeIn(300);
+                $("#backBTN").fadeIn(300);
             }, 200)
             Watch.getCurrent({
-                companyId: $rootScope.companyId
+                companyId: companyId
             }, onSuccessCurrent, onErrorCurrent);
 
             function onSuccessCurrent(data, headers) {
@@ -121,7 +151,7 @@
             }
         }
 
-        setTimeout(function(){vm.getCurrentWatch();},500)
+        setTimeout(function(){vm.loadAll();},500)
 
         vm.getWatch = function(watch) {
             $("#data").fadeOut(0);
@@ -193,7 +223,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: companyId
             }, onSuccess, onError);
 
             function sort() {

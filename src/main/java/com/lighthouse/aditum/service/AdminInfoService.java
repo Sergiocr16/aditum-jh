@@ -116,7 +116,7 @@ public class AdminInfoService {
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         adminInfoDTO.setImage_url(adminInfo.getImage_url());
         Set<CompanyDTO> companies = new HashSet<>();
-
+        List<Company> c = new ArrayList<Company>(adminInfo.getCompanies());
         adminInfo.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
 
         adminInfoDTO.setCompanies(companies);

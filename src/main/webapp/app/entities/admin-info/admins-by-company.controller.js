@@ -5,19 +5,22 @@
         .module('aditumApp')
         .controller('AdminsByCompanyController', AdminsByCompanyController);
 
-    AdminsByCompanyController.$inject = ['$state','$uibModalInstance','$stateParams','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope'];
+    AdminsByCompanyController.$inject = ['$state','$uibModalInstance','$stateParams','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants','Principal','$rootScope', 'CommonMethods'];
 
-    function AdminsByCompanyController($state,$uibModalInstance,$stateParams,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants,Principal,$rootScope) {
+    function AdminsByCompanyController($state,$uibModalInstance,$stateParams,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants,Principal,$rootScope, CommonMethods) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         var admins = [];
         vm.clear = clear;
+        var companyId = CommonMethods.decryptIdUrl($stateParams.companyId);
 
         function clear () {
             $uibModalInstance.dismiss('cancel');
-            $state.go('company');
+            Principal.identity().then(function(account){
+            if(account.authorities[0]=="ROLE_RH"){ $state.go('company-rh');}else{ $state.go('company');}
+            })
         }
           vm.showCondominios = function(adminInfo) {
                AdminInfo.get({id:adminInfo.id},function(data){
@@ -48,7 +51,7 @@
         loadAll ();
         function loadAll () {
             AdminInfo.getAdminsByCompanyId({
-                companyId: $stateParams.companyId
+                companyId:  companyId
             }, onSuccess, onError);
             function onSuccess(data) {
                 admins = data;
@@ -66,8 +69,9 @@
         }
 
         vm.viewDetail = function(adminId){
-            $uibModalInstance.close();
-            $state.go('admin-info-detail', {id: adminId});
+           var adminInfoId = CommonMethods.encryptIdUrl(adminId);
+                    $uibModalInstance.close();
+                    $state.go('admin-info-detail', {id: adminInfoId});
 
         }
         function formatAdminInfo() {

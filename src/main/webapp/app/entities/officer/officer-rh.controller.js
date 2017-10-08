@@ -3,14 +3,15 @@
 
     angular
         .module('aditumApp')
-        .controller('OfficerController', OfficerController);
+        .controller('OfficerRHController', OfficerRHController);
 
-    OfficerController.$inject = ['User','$state','CommonMethods','DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    OfficerRHController.$inject = ['User','$state','CommonMethods','DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function OfficerController(User,$state,CommonMethods,DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function OfficerRHController(User,$state,CommonMethods,DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -18,11 +19,20 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
+         $rootScope.active = "officer-rh";
+        vm.moveToCompany = function(officer){
+        Officer.update(officer, onUpdateSuccess, onSaveError);
+                function onUpdateSuccess (result) {
+                  toastr["success"]("Se ha movido a "+officer.name+" de condominio exitosamente");
 
+        }
+          function onSaveError () {
+                    vm.isSaving = false;
+                }
 
+        }
         setTimeout(function(){loadAll();
         vm.canEditOfficers = $rootScope.companyUser.administradaOficiales;
-        $rootScope.active = "officers";
         },500);
 
         vm.editOfficer = function(id){
@@ -42,13 +52,13 @@
         function loadAll () {
             if (enabledOptions) {
                 changesTitles();
-                Officer.officersEnabled({
-                    companyId: $rootScope.companyId,
+                Officer.officersEnabledByEnterprise({
+                    rhAccountId: $rootScope.companyUser.id,
                 }).$promise.then(onSuccess, onError);
             } else {
                 changesTitles();
-                Officer.officersDisabled({
-                    companyId: $rootScope.companyId,
+                Officer.officersDisabledByEnterprise({
+                     rhAccountId: $rootScope.companyUser.id,
                 }).$promise.then(onSuccess, onError);
             }
 
@@ -73,19 +83,15 @@
                 })
             }
             function changesTitles () {
-            if(vm.canEditOfficers==1){
-            if (enabledOptions) {
-                                vm.title = "Oficiales habilitados";
-                                vm.buttonTitle = "Ver oficiales deshabilitados";
-                                vm.actionButtonTitle = "Deshabilitar";
-                            } else {
-                                vm.title = "Oficiales deshabilitados";
-                                vm.buttonTitle = "Ver oficiales habilitados";
-                                vm.actionButtonTitle = "Habilitar";
-                            }
-            }else{
-            vm.title = "Oficiales asignados al condominio";
-            }
+                if (enabledOptions) {
+                    vm.title = "Oficiales habilitados";
+                    vm.buttonTitle = "Ver oficiales deshabilitados";
+                    vm.actionButtonTitle = "Deshabilitar";
+                } else {
+                    vm.title = "Oficiales deshabilitados";
+                    vm.buttonTitle = "Ver oficiales habilitados";
+                    vm.actionButtonTitle = "Habilitar";
+                }
             }
         }
 

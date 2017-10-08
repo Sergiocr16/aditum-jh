@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdminInfoController', AdminInfoController);
 
-    AdminInfoController.$inject = ['CommonMethods','User','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
+    AdminInfoController.$inject = ['$state', 'CommonMethods','User','Company','DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope'];
 
-    function AdminInfoController(CommonMethods,User,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
+    function AdminInfoController($state, CommonMethods,User,Company,DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope) {
         $rootScope.active = "admins";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -19,6 +19,13 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         var admins = [];
+
+      vm.viewDetail = function(adminId){
+           var adminInfoId = CommonMethods.encryptIdUrl(adminId);
+
+            $state.go('admin-info-detail', {id: adminInfoId});
+
+        }
         loadAll();
           vm.showCondominios = function(adminInfo) {
                AdminInfo.get({id:adminInfo.id},function(data){

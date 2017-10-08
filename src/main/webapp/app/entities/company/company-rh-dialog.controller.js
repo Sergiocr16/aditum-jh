@@ -27,9 +27,10 @@
             vm.isSaving = true;
             if (vm.company.id !== null) {
                 Company.update(vm.company, onSaveSuccess, onSaveError);
+                 toastr["success"]("Se ha editado el nombre del condominio exitosamente");
             } else {
                 Company.save(vm.company, onSaveSuccess, onSaveError);
-
+                    toastr["success"]("Se ha editado el nombre del condominio exitosamente");
             }
         }
 

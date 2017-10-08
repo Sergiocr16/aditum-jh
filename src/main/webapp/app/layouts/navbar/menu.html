@@ -139,6 +139,12 @@
                 <span class="title"> Gestión de condominios</span>
                 </a>
             </li>
+            <li ui-sref="officer-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'officer-rh'}">
+                <a href="javascript:;">
+                    <i class="fa fa-shield" aria-hidden="true"></i>
+                    <span class="title">Gestión de oficiales</span>
+                </a>
+            </li>
             <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
 
                 <a href="javascript:;">
@@ -153,7 +159,7 @@
                             <i class="fa fa-shield" aria-hidden="true"></i> Oficiales
                         </a>
                     </li>
-                    <li ui-sref="watch" ng-class="{ 'active' : active === 'watches'}">
+                    <li ng-click="vm.viewWatch()" ng-class="{ 'active' : active === 'watches'}">
                         <a href="">
                             <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
                         </a>

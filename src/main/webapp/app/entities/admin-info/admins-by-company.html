@@ -19,10 +19,10 @@
                             <th>Cédula</th>
                             <th>Correo</th>
 
-                            <th>Login</th>
-                            <th>Condominios</th>
+                            <th has-authority="ROLE_ADMIN" >Login</th>
+                            <th has-authority="ROLE_ADMIN">Condominios</th>
                             <th>Ver detalle</th>
-                            <th>Activo</th>
+                            <th has-authority="ROLE_ADMIN">Activo</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -30,16 +30,15 @@
                             <td style="text-transform: capitalize;">{{adminInfo.name}}</td>
                             <td>{{adminInfo.identificationnumber}}</td>
                             <td>{{adminInfo.email}}</td>
-
-                            <td>
+                            <td has-authority="ROLE_ADMIN">
                                 {{adminInfo.userLogin}}
                             </td>
-                            <td>
+                            <td has-authority="ROLE_ADMIN">
                                 <a class="light-gray-font" ng-click="vm.showCondominios(adminInfo)">Ver condominios</a>
 
                             </td>
                             <td><a class="light-gray-font"  ng-click="vm.viewDetail(adminInfo.id)">Ver detalle</a></td>
-                            <td><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+                            <td has-authority="ROLE_ADMIN"><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
 
                         </tr>
                         </tbody>
@@ -52,7 +51,7 @@
 
 </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        <button type="button" class="btn red" data-dismiss="modal" ng-click="vm.clear()">
+            <span>Cerrar</span>
         </button>
     </div>

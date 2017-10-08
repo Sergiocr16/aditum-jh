@@ -27,7 +27,16 @@
                 method: 'GET',
                 url: 'api/officersDisabled',
                 isArray: true
-            },'findByUserId':{
+            }, 'officersEnabledByEnterprise': {
+                 method: 'GET',
+                 url: 'api/officersEnabledEnterprise',
+                 isArray: true
+             },'officersDisabledByEnterprise': {
+                 method: 'GET',
+                 url: 'api/officersDisabledEnterprise',
+                 isArray: true
+             }
+            ,'findByUserId':{
                     url:'api/officers/findByUserId/:id',
                     method:'GET',
                     transformResponse: function (data) {

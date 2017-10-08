@@ -26,7 +26,10 @@
        angular.element(document).ready(function () {
                 $('body').addClass("gray");
       });
-
+     vm.viewWatch = function(){
+      var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyId)
+     $state.go('watch',{companyId:encryptedId})
+     }
 
        vm.isNavbarCollapsed = true;
        vm.isAuthenticated = Principal.isAuthenticated;
@@ -78,6 +81,7 @@
                      case "ROLE_OFFICER":
                     MultiCompany.getCurrentUserCompany().then(function(data){
                      $rootScope.companyUser = data;
+                     $rootScope.companyId = data.companyId;
                      if(data!=null){
                       vm.contextLiving = $rootScope.companyUser.name;
                       $rootScope.contextLiving = vm.contextLiving;
@@ -129,7 +133,7 @@
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
-            $rootScope.companyUser = undefined;
+            $rootScope.companyId = undefined;
              $rootScope.showLogin = true;
              $rootScope.inicieSesion = false;
         }

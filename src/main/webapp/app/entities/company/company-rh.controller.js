@@ -20,8 +20,16 @@
         loadAll();
 
         },500)
-
-
+        vm.viewAdmins = function(companyId){
+          var encryptedId = CommonMethods.encryptIdUrl(companyId)
+        $state.go('admins-rh', {
+                      companyId: encryptedId
+                  })
+        }
+        vm.viewWatch = function(companyId){
+         var encryptedId = CommonMethods.encryptIdUrl(companyId)
+        $state.go('watch',{companyId:encryptedId})
+        }
        function getCurrentUserCompanyId(){
             Principal.identity().then(function(account){
             console.log(account)

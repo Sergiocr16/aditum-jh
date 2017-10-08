@@ -50,12 +50,52 @@
                     }]
                 }
             })
-
+           .state('officer-rh', {
+                parent: 'entity',
+                url: '/officer-rh?page&sort&search',
+                data: {
+                    authorities: ['ROLE_RH']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/officer/officers-rh.html',
+                        controller: 'OfficerRHController',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('officer');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('officer.details', {
                 parent: 'officer',
                 url: '/{id}/details',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
                 },
                 views: {
                     'content@': {
@@ -88,7 +128,7 @@
                 parent: 'officer-detail',
                 url: '/detail/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -117,7 +157,7 @@
                 parent: 'officer',
                 url: '/new',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
                 },
                 views: {
                     'content@': {
@@ -156,7 +196,7 @@
                 parent: 'officer',
                 url: '/{id}/edit',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
                 },
                 views: {
                     'content@': {
@@ -188,7 +228,7 @@
                 parent: 'officer',
                 url: '/{id}/delete',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({

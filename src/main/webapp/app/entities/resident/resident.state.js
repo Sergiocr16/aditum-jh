@@ -71,9 +71,9 @@
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Resident','CommonMethods', function($stateParams, Resident, CommonMethods) {
-                    var id = CommonMethods.decryptIdUrl($stateParams.id)
-                    return Resident.get({id : id}).$promise;
-                }],
+                                       var id = CommonMethods.decryptIdUrl($stateParams.id)
+                                       return Resident.get({id : id}).$promise;
+                                   }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
                         name: $state.current.name || 'resident',
