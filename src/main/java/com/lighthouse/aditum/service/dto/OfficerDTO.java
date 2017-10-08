@@ -44,10 +44,19 @@ public class OfficerDTO implements Serializable {
 
     private LocalDate fechanacimiento;
 
+    private CompanyDTO company;
+
     private Long companyId;
 
     public Long getId() {
         return id;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
+    }
+    public CompanyDTO getCompany() {
+        return company;
     }
 
     public void setId(Long id) {
@@ -56,6 +65,7 @@ public class OfficerDTO implements Serializable {
     public String getName() {
         return name;
     }
+
 
     public void setName(String name) {
         this.name = name;

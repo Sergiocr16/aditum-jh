@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="index.html">Condominio</a>
+            <a href="index.html">{{vm.company.name}}</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -163,13 +163,21 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
-
+<div id="backBTN" has-authority="ROLE_RH" class="form-actions noborder col-md-12 col-lg-12 col-xs-12 col-sm-12 display-none">
+    <h3 class="text-right ">
+        <button type="button" ui-sref="company-rh" class="btn red default">Volver</button>
+    </h3>
+</div>
 
 
 

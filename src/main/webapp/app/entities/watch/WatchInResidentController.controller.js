@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('WatchInResidentController', WatchInResidentController);
 
-    WatchInResidentController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope'];
+    WatchInResidentController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope','Officer'];
 
-    function WatchInResidentController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope) {
+    function WatchInResidentController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope,Officer) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -38,6 +38,8 @@
                 watch.finaltime = moment(vm.watch.finaltime).format('h:mm a');
             }
             watch.officers = getformatResponsableOfficers(vm.watch);
+
+
             return watch;
         }
 
@@ -47,6 +49,11 @@
             vm.showTable = false;
             vm.watch = data;
             vm.watch = formatWatch(vm.watch);
+            angular.forEach(vm.watch.officers,function(value,index){
+             Officer.get({id:value.id},function(data){
+              vm.watch.officers[index]=data;
+             })
+            })
         }
 
 
@@ -118,6 +125,8 @@
             officer.id = variables[0];
             officer.identificationnumber = variables[1];
             officer.name = variables[2];
+
+
             return officer;
         }
 

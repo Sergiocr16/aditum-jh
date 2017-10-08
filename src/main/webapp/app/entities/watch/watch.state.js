@@ -11,9 +11,9 @@
         $stateProvider
         .state('watch', {
             parent: 'entity',
-            url: '/watch?page&sort&search',
+            url: '/watch/{companyId}/?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_ADMIN'],
+                authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH'],
                 pageTitle: 'aditumApp.watch.home.title'
             },
             views: {

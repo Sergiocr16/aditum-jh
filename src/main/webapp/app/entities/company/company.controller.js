@@ -16,7 +16,12 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.viewAdmins = function(companyId){
+          var encryptedId = CommonMethods.encryptIdUrl(companyId)
+        $state.go('admins', {
+                      companyId: encryptedId
+                  })
+        }
        loadAll();
        function getCurrentUserCompanyId(){
             Principal.identity().then(function(account){

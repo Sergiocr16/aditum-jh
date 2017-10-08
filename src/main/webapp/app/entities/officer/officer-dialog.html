@@ -91,7 +91,12 @@
                                     <input ng-model="vm.officer.annosexperiencia" type="number" min="0" class="form-control  letters gray-font"  required>
                                     <label class="font-15">Años de experiencia</label>
                                 </div>
-
+                            <div has-authority="ROLE_RH" class="form-group form-md-line-input has-info">
+                                <select class="form-control gray-font" id="field_house"  ng-model="vm.officer.companyId" ng-options="company.id as company.name for company in companyUser.companies"  ng-required='vm.required==1'>
+                                    <option value="">Seleccione un condominio</option>
+                                </select>
+                                <label class="font-15 ">Condominio</label >
+                            </div>
 
                             </div>
 
@@ -99,7 +104,8 @@
                         <div class="form-actions noborder">
                             <h3 class="text-right">
                                 <button type="submit" class="btn blue"><i class="fa fa-pencil"></i> {{vm.button}}</button>
-                                <button type="button" ui-sref="officer()" class="btn red default">Cancelar</button>
+                                <button has-any-authority="ROLE_ADMIN,ROLE_MANAGER" type="button" ui-sref="officer()" class="btn red default">Cancelar</button>
+                                <button has-authority="ROLE_RH" type="button" ui-sref="officer-rh" class="btn red default">Cancelar</button>
                             </h3>
                         </div>
                     </form>

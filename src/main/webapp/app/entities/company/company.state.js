@@ -286,7 +286,7 @@
                 parent: 'company',
                 url: '/admins/:companyId',
                 data: {
-                    authorities: ['ROLE_ADMIN']
+                    authorities: ['ROLE_ADMIN','ROLE_RH']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                     $uibModal.open({
@@ -296,6 +296,26 @@
                         backdrop: 'static',
                         size: 'lg',
 
+                    }).result.then(function() {
+
+                    }, function() {
+
+                    });
+                }]
+            })
+           .state('admins-rh', {
+                parent: 'company-rh',
+                url: '/admins-rh/:companyId',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_RH']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/admin-info/admins-by-company.html',
+                        controller: 'AdminsByCompanyController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
                     }).result.then(function() {
 
                     }, function() {

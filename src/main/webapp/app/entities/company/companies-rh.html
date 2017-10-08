@@ -1,7 +1,25 @@
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a >{{companyUser.enterprisename}}</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a >Condominios</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+
+        </div>
+    </div>
+</div>
+
 <div>
-    <h3 class="page-title col-md-10">Condominios </h3>
+    <h3 class="page-title col-md-9 col-sm-8 col-xs-12">Condominios </h3>
     <div id="tableData">
-        <div class="form-group col-md-offset-9 col-md-3 col-sm-offset-9 col-sm-3 col-xs-6">
+        <div class="form-group col-md-3 col-sm-4 col-xs-12">
             <div class="input-icon">
                 <i class="fa fa-search"></i>
                 <input type="text" class="form-control" placeholder="Buscar condominio" ng-model="search">
@@ -10,29 +28,43 @@
 
 
 
-        <div class="portlet-body ">
-            <div class="col-md-12">
+        <div class="portlet-body col-md-12 col-sm-12 col-xs-12 col-lg-12">
+            <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12" ng-repeat="company in vm.companies | filter:search ">
-                    <div class="portlet light bordered text-center col-sm-12 col-xs-12 ">
-                        <div class="col-lg-10 no-padding ">
-                           </h1>
-                            <h3 class="no-padding "> <i class=" text-center fa fa-home " style="font-size:35px;color:#1f897f" aria-hidden="true "></i>  {{company.name}}</h3>
+                    <div class="portlet light bordered  col-sm-12 col-xs-12 col-lg-12 col-md-12">
+                        <div class="portlet-title">
+                            <div class="caption font-green-haze">
+                                <i class="fa fa-home font-green-haze"></i>
 
+                                <span class="caption-subject bold uppercase" style="margin-right:5px">{{company.name}}
+                               </span>
+                                <span><button type="submit" ng-click="vm.editCompany(company.id)" class="green btn" style="background-color:#1f897f;padding:0px 7px;"><i class="fa fa-pencil" aria-hidden="true"></i></button></span>
+
+                            </div>
                         </div>
-                        <div class="col-md-2 no-margin ">
-                            <h5 class="no-padding "><button type="submit" ng-click="vm.editCompany(company.id)" class="col-lg-12 green btn" style="background-color:#1f897f"><i class="fa fa-pencil" aria-hidden="true"></i></button></h5>
-                        </div>
+
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-top:10px">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:5px">
+                                <button type="submit" ng-click="vm.viewOfficerAccounts(company.id)" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 red btn">Gestionar cuenta de oficiales</button>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:5px">
+                                <ul class="nav navbar-nav col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-top:5px">
+                                    <li class="dropdown col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin no-padding">
+                                        <a style="padding:7px 14px!important" class="dropdown-toggle btn blue" data-toggle="dropdown">Consultar
+                                            <span class="caret"></span></a>
+                                        <ul class="dropdown-menu col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                            <li class="text-center gray-font col-lg-12 col-md-12 col-sm-12 col-xs-12 " style="padding:5px;" ng-click="vm.viewAdmins(company.id)">Consultar administradores
+                                            </li>
+                                            <li class="text-center gray-font col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding:5px;" ng-click="vm.viewWatch(company.id)">
+                                                Consultar turnos
+                                            </li>
+                                        </ul>
+                                    </li>
 
-                            <div class="col-md-12" style="margin-bottom:8px">
-                                <button type="submit" ng-click="vm.viewOfficerAccounts(company.id)" class="col-lg-12 red btn">Gestionar cuenta de oficiales</button>
+                                </ul>
                             </div>
-                            <div class="col-md-12" style="margin-bottom:8px">
-                                <button type="submit" ng-click="vm.editVehicle(vehicule.id)" class="col-lg-12 blue btn">Visualizar administradores</button>
-                            </div>
-                            <div class="col-md-12">
-                                <button type="submit" ng-click="vm.editVehicle(vehicule.id)" class="col-lg-12 blue btn">Visualizar oficiales asignados</button>
-                            </div>
+
+
                         </div>
                     </div>
                 </div>

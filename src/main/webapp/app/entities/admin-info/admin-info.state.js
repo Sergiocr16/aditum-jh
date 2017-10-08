@@ -66,7 +66,7 @@
             parent: 'admin-info',
             url: '/admin-info/{id}',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_RH'],
                 pageTitle: 'aditumApp.adminInfo.detail.title'
             },
             views: {
@@ -81,8 +81,9 @@
                     $translatePartialLoader.addPart('adminInfo');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'AdminInfo', function($stateParams, AdminInfo) {
-                    return AdminInfo.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'AdminInfo','CommonMethods', function($stateParams, AdminInfo, CommonMethods) {
+                     var adminInfoId = CommonMethods.decryptIdUrl($stateParams.id);
+                    return AdminInfo.get({id : adminInfoId}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {

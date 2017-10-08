@@ -118,6 +118,26 @@ public class OfficerResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersDisabled");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/officersDisabledEnterprise")
+    @Timed
+    public ResponseEntity<List<OfficerDTO>> getDisabledOfficersEnterprise(@ApiParam Pageable pageable, Long rhAccountId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<OfficerDTO> page = officerService.findDisabledByEnterprise(pageable,rhAccountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/officersEnabledEnterprise")
+    @Timed
+    public ResponseEntity<List<OfficerDTO>> getEnabledfficersEnterprise(@ApiParam Pageable pageable, Long rhAccountId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<OfficerDTO> page = officerService.findEnabledByEnterprise(pageable,rhAccountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/officersDisabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /officers/:id : get the "id" officer.
      *

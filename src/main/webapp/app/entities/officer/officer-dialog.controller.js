@@ -11,6 +11,7 @@
         var vm = this;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
+         vm.required = 1;
         vm.officer = entity;
          if(vm.officer.image_url==undefined){
             vm.officer.image_url = null;
@@ -70,7 +71,13 @@
                         vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
                         vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
                         vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
-                       insertOfficer();
+                        Principal.identity().then(function(account){
+                        if(account.authorities[0]!="ROLE_RH"){
+                         vm.officer.companyId = $rootScope.companyId;
+                        }
+                        insertOfficer();
+                        })
+
                  }
             }
         }
@@ -80,13 +87,12 @@
         }
 
         function insertOfficer(){
-            vm.officer.companyId = $rootScope.companyId;
+
             vm.officer.userId = 1;
             vm.officer.inservice = 0;
             vm.officer.enable = true;
             vm.officer.fechanacimiento = vm.birthdate;
 
-            console.log(vm.birthdate)
             vm.imageUser = {user: "a"};
            if(fileImage!==null){
                 SaveImageCloudinary
@@ -100,9 +106,16 @@
                   Officer.save(vm.officer, onSaveSuccess, onSaveError);
               function onSaveSuccess (result) {
                   vm.isSaving = false;
-                  $state.go('officer');
-                   bootbox.hideAll();
-                  toastr["success"]("Se ha registrado el oficial correctamente.");
+                    Principal.identity().then(function(account){
+                        if(account.authorities[0]=="ROLE_RH"){
+                         $state.go('officer-rh');
+                        }else{
+                         $state.go('officer');
+                        }
+                            bootbox.hideAll();
+                            toastr["success"]("Se ha registrado el oficial correctamente.");
+                    })
+
 
               }
             }
@@ -110,9 +123,15 @@
          Officer.save(vm.officer, onSaveSuccess, onSaveError);
          function onSaveSuccess (result) {
              vm.isSaving = false;
-             $state.go('officer');
-              bootbox.hideAll();
-             toastr["success"]("Se ha registrado el oficial correctamente.");
+            Principal.identity().then(function(account){
+                if(account.authorities[0]=="ROLE_RH"){
+                 $state.go('officer-rh');
+                }else{
+                 $state.go('officer');
+                }
+                    bootbox.hideAll();
+                    toastr["success"]("Se ha registrado el oficial correctamente.");
+            })
 
          }
         }
@@ -120,6 +139,7 @@
         }
         function updateOfficer(){
          vm.officer.fechanacimiento = vm.birthdate;
+         console.log(vm.officer)
             vm.imageUser = {user: vm.officer.identificationnumber};
             if(fileImage!==null){
                  SaveImageCloudinary
@@ -140,12 +160,25 @@
         }
         function onUpdateSuccess (result) {
                 vm.isSaving = false;
-                $state.go('officer');
-                 bootbox.hideAll();
-                toastr["success"]("Se ha editado el oficial correctamente.");
+               Principal.identity().then(function(account){
+                   if(account.authorities[0]=="ROLE_RH"){
+                    $state.go('officer-rh');
+                   }else{
+                    $state.go('officer');
+                   }
+                       bootbox.hideAll();
+                       toastr["success"]("Se ha editado el oficial correctamente.");
+               })
             }
         function onSaveSuccess (result) {
-            $state.go('officer');
+               Principal.identity().then(function(account){
+                   if(account.authorities[0]=="ROLE_RH"){
+                    $state.go('officer-rh');
+                   }else{
+                    $state.go('officer');
+                   }
+
+               })
             vm.isSaving = false;
         }
 
