@@ -40,6 +40,12 @@
             if(data!=null){
             $rootScope.companyUser = data;
             vm.companies = $rootScope.companyUser.companies
+             setTimeout(function() {
+             $("#loadingIcon").fadeOut(300);
+                    }, 400)
+                     setTimeout(function() {
+                         $("#tableData").fadeIn('slow');
+                     },700 )
             }
             })
         }

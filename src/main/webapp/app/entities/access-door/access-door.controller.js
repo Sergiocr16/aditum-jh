@@ -192,8 +192,7 @@
                         if (vm.id_vehicule.length >= 5 && vm.show !==2) {
 
                             angular.forEach(invitedList, function(itemVisitor, index) {
-                            console.log(itemVisitor.licenseplate.toUpperCase())
-                            console.log(vm.id_vehicule.toUpperCase())
+
                                 if (itemVisitor.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase() && itemVisitor.isinvited == 1) {
                                     if(vm.verifyVisitantInivitedDate(itemVisitor)){
                                     vm.invited_visitant_name = itemVisitor.name;
@@ -323,17 +322,18 @@
                     }).$promise.then(onSuccessHouse, onError);
                 }
                  function onSuccessHouse(data) {
+
                      vm.houseInformationTitle = "Información de la casa" + " "+data.housenumber;
                     vm.house = data;
-                    if(data.securitykey==null){
+                    if(data.securityKey==undefined){
                       vm.houseInfoSecurityKey = "No tiene";
                     }else{
-                      vm.houseInfoSecurityKey = data.securitykey;
+                      vm.houseInfoSecurityKey = data.securityKey;
                     }
-                    if(data.emergencykey==null){
+                    if(data.emergencyKey==undefined){
                       vm.houseInfoEmergencyKey = "No tiene";
                     }else{
-                      vm.houseInfoEmergencyKey = data.emergencykey;
+                      vm.houseInfoEmergencyKey = data.emergencyKey;
                     }
                 if(data.extension==null){
                       vm.houseInfoExtension = "No tiene";
@@ -351,9 +351,7 @@
           var  initTime = new Date(visitant.invitationstaringtime).getTime();
           var finishTime = new Date(visitant.invitationlimittime).getTime();
 
-          console.log(initTime)
-            console.log(currentTime)
-          console.log(finishTime)
+
           if(initTime<=currentTime && currentTime <= finishTime){
                 return true;
           }else{
@@ -632,7 +630,7 @@ if(vm.emergency==undefined){
 var hasExistance = function(array,id) {
 var index = undefined;
    angular.forEach(array,function(item,i){
-           if (item.id === id) {
+           if (parseInt(item.id) === parseInt(id)) {
                index = i;
            }else{
            index = -1;
@@ -689,14 +687,13 @@ function receiveHomeService(homeService){
 
 vm.updateDateNotes = function (){
  angular.forEach(vm.notes,function(note,index){
- console.log(note)
- console.log(index)
+
     note.sinceDate = moment(note.creationdate).fromNow();
  })
 }
 
 function receiveResident(resident){
-console.log(resident)
+
         if(residentsList!==undefined){
             var result = hasExistance(residentsList,resident.id)
             if(result!==-1){
@@ -720,14 +717,11 @@ vehiculesList.push(vehicle);
 }
 
 function receiveHouse(house){
-if(housesList!==undefined){
-var result = hasExistance(housesList,house.id)
-if(result!==-1){
-housesList[result] = house;
-}else{
-housesList.push(house);
-}
-}
+ House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
+           function onSuccessHouse(houses, headers) {
+              housesList = houses;
+
+           }
 }
 function receiveDeletedEntity(entity){
     switch(entity.type){

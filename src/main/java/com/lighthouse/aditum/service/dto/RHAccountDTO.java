@@ -28,6 +28,8 @@ public class RHAccountDTO implements Serializable {
 
     private String email;
 
+    private Boolean enable;
+
     private Long userId;
 
     private String userLogin;
@@ -75,6 +77,13 @@ public class RHAccountDTO implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    public Boolean getEnable() {
+        return enable;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
     }
 
     public Long getUserId() {
@@ -131,6 +140,7 @@ public class RHAccountDTO implements Serializable {
             ", secondlastname='" + secondlastname + "'" +
             ", enterprisename='" + enterprisename + "'" +
             ", email='" + email + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }

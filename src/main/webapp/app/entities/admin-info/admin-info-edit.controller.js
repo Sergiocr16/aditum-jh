@@ -11,25 +11,30 @@
         var vm = this;
           var fileImage = null;
 
-
+        setTimeout(function(){
         if($rootScope.companyUser.image_url==undefined){
               $rootScope.companyUser.image_url = null;
         }
-        vm.adminInfo =$rootScope.companyUser;
+
+        AdminInfo.get({id:$rootScope.companyUser.id},function(result){
+        vm.adminInfo = result
+
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = updateAccount;
         vm.isAuthenticated = Principal.isAuthenticated;
         angular.element(document).ready(function () {
             $("#myInfo").fadeIn(600);
-        });
 
-          User.getUserById({id: vm.adminInfo.userId},onSuccess);
+          User.getUserById({id: $rootScope.companyUser.userId},onSuccess);
 
              function onSuccess(user, headers) {
                  vm.user = user;
                  vm.adminInfo.email  = vm.user.email;
                  }
+                        });
+                         })
+                 },500)
         function save () {
             vm.isSaving = true;
             if (vm.adminInfo.id !== null) {
@@ -77,7 +82,6 @@
             console.log(result)
           $rootScope.companyUser = result;
           $rootScope.companyUser.image_url = vm.adminInfo.image_url;
-          console.log($rootScope.companyUser.image_url)
            $state.go('dashboard',null, { reload: true });
             vm.isSaving = false;
         }

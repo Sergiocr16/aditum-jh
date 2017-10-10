@@ -40,6 +40,9 @@ public class RHAccount implements Serializable {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "enable")
+    private Boolean enable;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -124,6 +127,19 @@ public class RHAccount implements Serializable {
         this.email = email;
     }
 
+    public Boolean isEnable() {
+        return enable;
+    }
+
+    public RHAccount enable(Boolean enable) {
+        this.enable = enable;
+        return this;
+    }
+
+    public void setEnable(Boolean enable) {
+        this.enable = enable;
+    }
+
     public User getUser() {
         return user;
     }
@@ -191,6 +207,7 @@ public class RHAccount implements Serializable {
             ", secondlastname='" + secondlastname + "'" +
             ", enterprisename='" + enterprisename + "'" +
             ", email='" + email + "'" +
+            ", enable='" + enable + "'" +
             '}';
     }
 }

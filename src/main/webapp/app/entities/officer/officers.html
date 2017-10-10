@@ -85,7 +85,6 @@
                         <tr ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
-
                             <td> <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)">Ver detalle</a></td>
                             <td ng-show="vm.canEditOfficers==1"> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
                             <td ng-show="vm.canEditOfficers==1"> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>

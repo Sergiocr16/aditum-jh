@@ -75,8 +75,8 @@
                         <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
                             <td>{{visitor.fullName}}</td>
                             <td>{{visitor.identificationnumber}}</td>
-                            <td ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
-                            <td ng-show="visitor.licenseplate==null">No se registró</td>
+                            <td ng-show="visitor.licenseplate!=''">{{visitor.licenseplate}}</td>
+                            <td ng-show="visitor.licenseplate==''">No se registró</td>
                             <td>{{visitor.arrivaltime | formatDate}}</td>
                         </tr>
                         </tbody>

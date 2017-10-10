@@ -81,7 +81,7 @@
 
                         <div class="col-lg-12 col-md-12 small-margin-top">
                             <button type="submit" ng-click="vm.editResident(resident.id)"class="btn blue" title="Editar residente"><i class="fa fa-pencil " ></i></button>
-                            <button type="submit" id="disabledButton" ng-click="vm.disableEnabledResident(resident)" ng-hide="resident.id== vm.userId" class="btn {{vm.color}}" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>
+                            <button type="submit" id="disabledButton" ng-click="vm.disableEnabledResident(resident)" ng-hide="resident.id== vm.userId || resident.isOwner == 1" class="btn {{vm.color}}" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>
                         </div>
                     </div>
                 </div>

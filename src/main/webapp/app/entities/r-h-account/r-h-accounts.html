@@ -4,7 +4,7 @@
         <div class="form-group col-md-offset-6 col-md-3 col-sm-offset-6 col-sm-3 col-xs-6">
             <div class="input-icon">
                 <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar cuentas de recursos humanos" ng-model="search">
+                <input type="text" class="form-control" placeholder="Buscar cuentas de recursos humanos" ng-model="vm.query">
             </div>
         </div>
         <button type="submit" class="btn green col-md-3 col-sm-3 col-xs-6 small-margin-bottom" ui-sref="rh-account.new">Registrar cuenta de RH</button>
@@ -22,12 +22,14 @@
                         <th>email</th>
                         <th>Login</th>
                         <th>Editar</th>
+                        <th>Habilitar/Deshabilitar</th>
                         <th>Eliminar</th>
+                        <th>Activo</th>
 
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="rHAccount in vm.rHAccounts track by rHAccount.id">
+                    <tr ng-repeat="rHAccount in vm.rHAccounts | filter:vm.query | orderBy:rhAccount.companyId track by rHAccount.id  ">
                         <td>{{rHAccount.name}}</td>
                         <td>{{rHAccount.lastname}}</td>
                         <td>{{rHAccount.secondlastname}}</td>
@@ -36,10 +38,12 @@
                         <td>
                             {{rHAccount.userLogin}}
                         </td>
-
                         <td><a class="light-gray-font" ui-sref="rh-account.edit({id:rHAccount.id})">Editar</a></td>
+                        <td> <a  class="light-gray-font" ng-click="vm.disableEnabledAdmin(rHAccount)">Habilitar/Deshabilitar</a></td>
+
                         <td><a class="light-gray-font" ui-sref="rh-account.delete({id:rHAccount.id})">Eliminar</a></td>
-                        <td><span ng-show="adminInfo.enabled==1" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="adminInfo.enabled==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+                        <td><span ng-show="rHAccount.enable==true" class="label label-sm label-success col-lg-offset-1 col-lg-7 col-md-offset-1 col-md-7 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span ng-show="rHAccount.enable==false" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+
                     </tr>
                     </tbody>
                 </table>

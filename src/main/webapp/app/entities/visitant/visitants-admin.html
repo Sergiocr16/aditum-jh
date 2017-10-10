@@ -53,7 +53,7 @@
                 <div class="form-group no-padding col-md-3 col-sm-6 col-xs-12">
                     <label class="col-md-6 col-sm-6 col-xs-6 control-label  gray-font">Filtrar por casa</label>
                     <div class="col-md-6 col-sm-6 col-xs-6">
-                        <select class="form-control gray-font" ng-change="vm.findVisitorByHouse(house)" data-ng-model="house" ng-options="house.housenumber for house in vm.houses | orderBy: 'id' track by house.id" required>
+                        <select class="form-control gray-font" ng-change="vm.findVisitorByHouse(house)" data-ng-model="house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                             <option value="">Todas</option>
                         </select>
                     </div>
@@ -84,8 +84,8 @@
                         <tr ng-repeat="visitor in vm.visitants | filter:search ">
                             <td>{{visitor.fullName}}</td>
                             <td>{{visitor.identificationnumber}}</td>
-                            <td ng-show="visitor.licenseplate!=null"><span style="text-transform: uppercase;">{{visitor.licenseplate}}</span></td>
-                            <td ng-show="visitor.licenseplate==null">No se registró</td>
+                            <td ng-show="visitor.licenseplate!=''"><span style="text-transform: uppercase;">{{visitor.licenseplate}}</span></td>
+                            <td ng-show="visitor.licenseplate==''">No se registró</td>
                             <td>{{visitor.arrivaltime | formatDate}}</td>
                             <td>{{visitor.houseNumber}}</td>
                         </tr>

@@ -58,6 +58,12 @@
             }, onSuccess, onError);
             function onSuccess(data) {
                 vm.officerAccount = data;
+                    setTimeout(function() {
+                             $("#loadingIcon").fadeOut(300);
+                                    }, 400)
+                                     setTimeout(function() {
+                                         $("#tableData").fadeIn('slow');
+                                     },700 )
 
             }
             function onError(error) {

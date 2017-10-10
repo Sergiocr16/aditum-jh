@@ -102,15 +102,9 @@
         function formatAdminInfo(adminstrators) {
 
             for (var i = 0; i < adminstrators.length; i++) {
-
-                for (var e = 0; e < vm.companies.length; e++) {
-                    if (adminstrators[i].companyId == vm.companies[e].id) {
-                        adminstrators[i].companyId = vm.companies[e].name;
                         adminstrators[i].name = adminstrators[i].name + " " + adminstrators[i].lastname + " " + adminstrators[i].secondlastname ;
-                    }
-                }
-            }
 
+            }
             return adminstrators;
         }
         function loadPage(page) {

@@ -12,11 +12,11 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-
+         console.log(vm.vehicule)
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
-        vm.houses = House.query();
+        vm.required2 = 1;
         CommonMethods.validateSpecialCharacters();
         angular.element(document).ready(function () {
         ColorPicker.init();
@@ -38,20 +38,24 @@
                 vm.button = "Registrar";
             }
         }
-        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
-        function onSuccessHouses(data, headers) {
-            vm.houses = data;
-            setTimeout(function() {
-                $("#register_edit_form").fadeIn(600);
-            }, 200)
-        }
+        setTimeout(function(){
+          House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+                function onSuccessHouses(data, headers) {
+                    vm.houses = data;
+                    setTimeout(function() {
+                        $("#register_edit_form").fadeIn(600);
+                    }, 200)
+                }
+        },500)
+
 
         vm.submitColor = function() {
            vm.vehicule.color = $('#color').css('background-color');
          }
         function save () {
+
              if(vm.vehicule.color==undefined){
-              vm.vehicule.color = "#ffff";
+              vm.vehicule.color = "rgb(255, 255, 255)";
               }
              vm.vehicule.brand = vm.vehicule.brand.brand;
              vm.vehicule.enabled = 1;

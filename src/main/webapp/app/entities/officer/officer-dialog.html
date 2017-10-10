@@ -1,4 +1,4 @@
-                        <div class="page-bar route-title">
+<div has-any-authority="ROLE_ADMIN,ROLE_MANAGER" class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
@@ -7,6 +7,27 @@
         </li>
         <li>
             <a ui-sref="officer()">Oficiales</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">{{vm.title}}</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+
+        </div>
+    </div>
+</div>
+<div has-authority="ROLE_RH" class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="company-rh">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="officer-rh">Oficiales</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -85,7 +106,7 @@
                                 </div>
                                 <div class="form-group form-md-line-input">
                                     <input ng-model="vm.birthdate" ng-value="vm.birthdateToShow"  ng-click="vm.openCalendar('birthdate')" datepicker-options="vm.picker.datepickerOptions"  ng-change="vm.updatePicker()" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.birthdate"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                    <label  class="font-15">Fecha de nacimineto</label>
+                                    <label  class="font-15">Fecha de nacimiento</label>
                                 </div>
                                 <div class="form-group form-md-line-input no-padding-left no-padding-right">
                                     <input ng-model="vm.officer.annosexperiencia" type="number" min="0" class="form-control  letters gray-font"  required>
