@@ -56,6 +56,9 @@ public class RHAccountResourceIntTest {
     private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
     private static final String UPDATED_EMAIL = "BBBBBBBBBB";
 
+    private static final Boolean DEFAULT_ENABLE = false;
+    private static final Boolean UPDATED_ENABLE = true;
+
     @Autowired
     private RHAccountRepository rHAccountRepository;
 
@@ -103,7 +106,8 @@ public class RHAccountResourceIntTest {
                 .lastname(DEFAULT_LASTNAME)
                 .secondlastname(DEFAULT_SECONDLASTNAME)
                 .enterprisename(DEFAULT_ENTERPRISENAME)
-                .email(DEFAULT_EMAIL);
+                .email(DEFAULT_EMAIL)
+                .enable(DEFAULT_ENABLE);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -139,6 +143,7 @@ public class RHAccountResourceIntTest {
         assertThat(testRHAccount.getSecondlastname()).isEqualTo(DEFAULT_SECONDLASTNAME);
         assertThat(testRHAccount.getEnterprisename()).isEqualTo(DEFAULT_ENTERPRISENAME);
         assertThat(testRHAccount.getEmail()).isEqualTo(DEFAULT_EMAIL);
+        assertThat(testRHAccount.isEnable()).isEqualTo(DEFAULT_ENABLE);
     }
 
     @Test
@@ -253,7 +258,8 @@ public class RHAccountResourceIntTest {
             .andExpect(jsonPath("$.[*].lastname").value(hasItem(DEFAULT_LASTNAME.toString())))
             .andExpect(jsonPath("$.[*].secondlastname").value(hasItem(DEFAULT_SECONDLASTNAME.toString())))
             .andExpect(jsonPath("$.[*].enterprisename").value(hasItem(DEFAULT_ENTERPRISENAME.toString())))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())));
+            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
+            .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE.booleanValue())));
     }
 
     @Test
@@ -271,7 +277,8 @@ public class RHAccountResourceIntTest {
             .andExpect(jsonPath("$.lastname").value(DEFAULT_LASTNAME.toString()))
             .andExpect(jsonPath("$.secondlastname").value(DEFAULT_SECONDLASTNAME.toString()))
             .andExpect(jsonPath("$.enterprisename").value(DEFAULT_ENTERPRISENAME.toString()))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()));
+            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
+            .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE.booleanValue()));
     }
 
     @Test
@@ -296,7 +303,8 @@ public class RHAccountResourceIntTest {
                 .lastname(UPDATED_LASTNAME)
                 .secondlastname(UPDATED_SECONDLASTNAME)
                 .enterprisename(UPDATED_ENTERPRISENAME)
-                .email(UPDATED_EMAIL);
+                .email(UPDATED_EMAIL)
+                .enable(UPDATED_ENABLE);
         RHAccountDTO rHAccountDTO = rHAccountMapper.rHAccountToRHAccountDTO(updatedRHAccount);
 
         restRHAccountMockMvc.perform(put("/api/r-h-accounts")
@@ -313,6 +321,7 @@ public class RHAccountResourceIntTest {
         assertThat(testRHAccount.getSecondlastname()).isEqualTo(UPDATED_SECONDLASTNAME);
         assertThat(testRHAccount.getEnterprisename()).isEqualTo(UPDATED_ENTERPRISENAME);
         assertThat(testRHAccount.getEmail()).isEqualTo(UPDATED_EMAIL);
+        assertThat(testRHAccount.isEnable()).isEqualTo(UPDATED_ENABLE);
     }
 
     @Test

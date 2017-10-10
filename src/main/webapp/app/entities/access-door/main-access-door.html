@@ -102,7 +102,7 @@
 
                     <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs "></div>
 
-                    <button type="submit" class="btn blue font-15 col-lg-offset-2 col-lg-6 col-md-offset-2 col-md-6  col-sm-7 col-xs-7 btn-access-door" ng-click="vm.searchVisitor()" name="button">Registrar visitante</button>
+                    <button type="submit" ng-disabled="vm.show === 1 || vm.show === 2" class="btn blue font-15 col-lg-offset-2 col-lg-6 col-md-offset-2 col-md-6  col-sm-7 col-xs-7 btn-access-door" ng-click="vm.searchVisitor()" name="button">Registrar visitante</button>
 
                     <button class="btn red col-lg-1 col-md-1 col-sm-2 col-xs-2 btn-access-door" id="access_key_button" ng-click="vm.show=8" name="button" title="Consultar clave de seguridad o emergencia">
                         <span>  <i class="fa fa-key font-17" aria-hidden="true"></i></span>
@@ -283,7 +283,7 @@
                                         <div class="form-group col-md-12 no-padding">
                                             <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
                                             <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
-                                                <select class="form-control gray-font" data-ng-model="vm.houseForInformation" ng-options="house.housenumber for house in vm.houses | orderBy: 'id' track by house.id" required>
+                                                <select class="form-control gray-font" data-ng-model="vm.houseForInformation" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                                                     <option value="">Seleccione una casa</option>
                                                 </select>
                                             </div>
@@ -353,7 +353,7 @@
                                     <div class="form-group  col-md-12 no-padding">
                                         <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
                                         <div class="form-group col-md-8 col-sm-9 col-xs-7">
-                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'id' track by house.id" required>
+                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                                                 <option value="">Seleccione una casa</option>
                                             </select>
                                         </div>

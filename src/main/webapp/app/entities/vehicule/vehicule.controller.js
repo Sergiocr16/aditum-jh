@@ -17,7 +17,6 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
         vm.editVehicle = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('vehicule.edit', {

@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Mapper for the entity Officer and its DTO OfficerDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class})
 public interface OfficerMapper {
 
     @Mapping(source = "company.id", target = "companyId")

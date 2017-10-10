@@ -27,6 +27,7 @@
         }
 
         function save () {
+        vm.rHAccount.enable = true;
             vm.isSaving = true;
             if (vm.rHAccount.id !== null) {
             vm.rHAccount.name = CommonMethods.capitalizeFirstLetter(vm.rHAccount.name);

@@ -64,6 +64,12 @@
             function onSuccessCompany(data) {
                 vm.companies = data;
                 vm.adminInfos = formatAdminInfo();
+                 setTimeout(function() {
+                                             $("#loadingIcon").fadeOut(300);
+                                                    }, 400)
+                                                     setTimeout(function() {
+                                                         $("#tableData").fadeIn('slow');
+                                                     },700 )
             }
 
         }

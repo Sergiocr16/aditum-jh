@@ -46,7 +46,7 @@
 
 
                                         <tbody>
-                                        <tr ng-repeat="officer in vm.officers | filter:search | orderBy:'name' " ng-click="vm.moveToLinked(officer)">
+                                        <tr ng-show="officer.enable==1" ng-repeat="officer in vm.officers | filter:search | orderBy:'name' " ng-click="vm.moveToLinked(officer)">
                                             <td style="text-transform: capitalize;">{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                                             <td>{{officer.identificationnumber}}</td>
                                             <td><i class="fa fa-plus" aria-hidden="true" style="color:green;"></i></td>

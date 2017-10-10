@@ -53,6 +53,10 @@
         {
             "fieldName": "email",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "enable",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170908032321",

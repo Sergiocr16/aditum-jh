@@ -20,6 +20,7 @@
             "secondlastname": "Secondlastname",
             "enterprisename": "Enterprisename",
             "email": "Email",
+            "enable": "Enable",
             "user": "User",
             "company": "Company"
         }

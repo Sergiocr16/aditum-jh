@@ -12,6 +12,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+        vm.required = 1;
          Brand.query({}, onSuccessBrand);
         vm.save = save;
          vm.myPlate = vm.vehicule.licenseplate;
@@ -54,6 +55,9 @@
 
 
         function save () {
+        if(vm.vehicule.color==undefined){
+          vm.vehicule.color = "rgb(255, 255, 255)";
+          }
            vm.vehicule.enabled = 1;
            vm.vehicule.companyId = $rootScope.companyId;
             vm.vehicule.houseId = $rootScope.companyUser.houseId;

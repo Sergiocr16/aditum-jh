@@ -43,13 +43,13 @@
         }
 
 
-        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+        setTimeout(function(){House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
              setTimeout(function() {
                 $("#edit_resident_form").fadeIn(600);
              }, 200)
-        }
+        }},500)
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

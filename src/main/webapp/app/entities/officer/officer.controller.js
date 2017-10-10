@@ -21,7 +21,7 @@
 
 
         setTimeout(function(){loadAll();
-        vm.canEditOfficers = $rootScope.companyUser.administradaOficiales;
+
         $rootScope.active = "officers";
         },500);
 
@@ -40,6 +40,7 @@
             loadAll();
         }
         function loadAll () {
+         vm.canEditOfficers = $rootScope.companyUser.administradaOficiales;
             if (enabledOptions) {
                 changesTitles();
                 Officer.officersEnabled({
@@ -61,6 +62,7 @@
                     $("#tableData").fadeIn('slow');
                 },700 )
 
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -74,14 +76,17 @@
             }
             function changesTitles () {
             if(vm.canEditOfficers==1){
+
             if (enabledOptions) {
                                 vm.title = "Oficiales habilitados";
                                 vm.buttonTitle = "Ver oficiales deshabilitados";
                                 vm.actionButtonTitle = "Deshabilitar";
+
                             } else {
                                 vm.title = "Oficiales deshabilitados";
                                 vm.buttonTitle = "Ver oficiales habilitados";
                                 vm.actionButtonTitle = "Habilitar";
+
                             }
             }else{
             vm.title = "Oficiales asignados al condominio";

@@ -45,6 +45,7 @@ public class CompanyService {
         if(companyDTO.getId()!=null) {
             Company company1 = companyRepository.findOne(companyDTO.getId());
             company.setRHAccounts(company1.getRHAccounts());
+            company.setAdminInfos(company1.getAdminInfos());
         }
         company = companyRepository.save(company);
         CompanyDTO result = companyMapper.companyToCompanyDTO(company);

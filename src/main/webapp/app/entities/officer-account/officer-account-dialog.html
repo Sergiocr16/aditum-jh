@@ -1,4 +1,44 @@
+<div ng-show="vm.officerAccount.id==undefined">
+<div has-any-authority="ROLE_ADMIN,ROLE_MANAGER" class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="company">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="">Crear cuenta de oficial</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
 
+        </div>
+    </div>
+</div>
+<div has-authority="ROLE_RH" class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="company-rh">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a >Crear cuenta de oficial</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">{{vm.title}}</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+
+        </div>
+    </div>
+</div>
+</div>
 <div>
     <div class="row">
         <div class="col-md-12">

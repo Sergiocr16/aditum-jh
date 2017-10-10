@@ -126,7 +126,7 @@
                             </div>
 
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                            <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses"  ng-required='vm.required==1'>
+                            <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'"  ng-required='vm.required==1'>
                                 <option value="">Seleccione una casa</option>
                             </select>
                                 <label class="font-15 ">Número de casa</label >

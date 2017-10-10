@@ -54,7 +54,7 @@
             <div class="form-group col-md-offset-4 col-md-3 col-sm-offset-2  col-sm-4 col-xs-7 no-padding">
                 <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por casa</label>
                 <div class="col-md-7 col-sm-7 col-xs-8 ">
-                    <select class="form-control gray-font" ng-change="vm.findVehiculesByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'id' track by house.id" required>
+                    <select class="form-control gray-font" ng-change="vm.findVehiculesByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                         <option value="">Todas</option>
                     </select>
                 </div>

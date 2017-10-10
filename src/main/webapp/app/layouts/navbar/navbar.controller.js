@@ -96,6 +96,11 @@
                                $rootScope.companyId = companyUser.companyId;
                                $rootScope.currentUserImage = companyUser.image_url;
                                $rootScope.companyUser = companyUser;
+                                Company.get({id: $rootScope.companyId},function(condo){
+                                 if(condo.active == 0 || companyUser.enabled ==0){
+                                 logout();
+                                 }
+                                })
                        })
                      break;
                     case "ROLE_RH":
