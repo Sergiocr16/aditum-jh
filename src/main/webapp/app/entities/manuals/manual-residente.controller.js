@@ -13,7 +13,7 @@
          $rootScope.showLogin = false;
        });
     var vm = this;
-    vm.pdfUrl = 'content/manuals/manualusuario.pdf';
+    vm.pdfUrl = 'content/fonts/manualusuario.pdf';
     vm.loadNewFile = function(url) {
       pdfDelegate
         .$getByHandle('my-pdf-container')
