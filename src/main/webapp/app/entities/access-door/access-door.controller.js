@@ -218,7 +218,7 @@
 
         }
         vm.getVisitor = function() {
-            if (vm.visitor_id_number == "") {
+            if (vm.visitor_id_number == "" || vm.visitor_licenseplate == "") {
                 clearInputs();
             } else {
                 angular.forEach(visitorsList, function(itemVisitor, index) {
@@ -227,8 +227,8 @@
                         vm.visitor_last_name = itemVisitor.lastname;
                         vm.visitor_second_last_name = itemVisitor.secondlastname;
                         vm.visitor_license_plate = itemVisitor.licenseplate;
-                        setHouse(itemVisitor.houseId);
 
+                        setHouse(itemVisitor.houseId);
                     }
                 });
             }
@@ -463,15 +463,33 @@
                 return house;
 
             }
+            vm.getVisitorByPlate = function(){
+            if(vm.visitor_license_plate!=undefined){
+                            angular.forEach(visitorsList, function(itemVisitor, index) {
+                                if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3 ) {
+                                    vm.visitor_name = itemVisitor.name;
+                                    vm.visitor_last_name = itemVisitor.lastname;
+                                    vm.visitor_second_last_name = itemVisitor.secondlastname;
+                                    vm.visitor_license_plate = itemVisitor.licenseplate;
+                                    vm.visitor_id_number = itemVisitor.identificationnumber;
+                                    setHouse(itemVisitor.houseId);
+                                }
+                            });
+              }
+
+            }
             vm.capitalize = function(){
                 if (vm.visitor_license_plate != "") {
                         $("#license_plate").css("text-transform", "uppercase");
                     } else {
                         $("#license_plate").css("text-transform", "none");
                         $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
-
                     }
+                 vm.getVisitorByPlate();
             }
+
+
+
             vm.getKeys = function() {
                 if (securityKey == null || emergencyKey == null) {
                     toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas");
@@ -510,11 +528,16 @@
             }
             vm.searchVisitor = function() {
                 vm.show = 5;
+                if(vm.id_vehicule == undefined){
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+                }else{
+                $("#license_plate").css("text-transform", "uppercase");
+                }
                 clearInputs();
                 vm.houses = housesList;
-                if (vm.id_number == undefined || vm.id_number == "") {
+                if (vm.id_number == undefined || vm.id_number == "" ) {
+
                 } else {
                     vm.visitor_id_number = vm.id_number;
                     angular.forEach(visitorsList, function(itemVisitor, index) {
@@ -523,7 +546,9 @@
                             vm.visitor_last_name = itemVisitor.lastname;
                             vm.visitor_second_last_name = itemVisitor.secondlastname;
                             vm.visitor_license_plate = itemVisitor.licenseplate;
+                            vm.visitor_id_number = itemVisitor.identificationnumber;
                             setHouse(itemVisitor.houseId);
+
                         }
                     });
                 }
@@ -531,7 +556,7 @@
                 if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {
                     vm.visitor_license_plate = vm.id_vehicule;
                     angular.forEach(visitorsList, function(itemVisitor, index) {
-                        if (itemVisitor.licenseplate == vm.visitor_license_plate && itemVisitor.isinvited == 3) {
+                        if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3) {
                          vm.visitor_name = itemVisitor.name;
                             vm.visitor_last_name = itemVisitor.lastname;
                             vm.visitor_second_last_name = itemVisitor.secondlastname;

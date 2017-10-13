@@ -46,13 +46,7 @@
 
                     var index = vm.officers.indexOf(officer);
                     vm.officers.splice(index, 1);
-                    var item = {
-                        id: officer.id,
-                        name: CommonMethods.capitalizeFirstLetter(officer.name),
-                        lastname: CommonMethods.capitalizeFirstLetter(officer.lastname),
-                        secondlastname: CommonMethods.capitalizeFirstLetter(officer.secondlastname),
-                        identificationnumber: officer.identificationnumber
-                    }
+                    var item = officer;
                     vm.officersLinked.push(item);
              }
 

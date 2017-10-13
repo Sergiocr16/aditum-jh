@@ -75,6 +75,12 @@ public class OfficerResourceIntTest {
     private static final LocalDate DEFAULT_FECHANACIMIENTO = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHANACIMIENTO = LocalDate.now(ZoneId.systemDefault());
 
+    private static final String DEFAULT_PHONENUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_PHONENUMBER = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DIRECTION = "AAAAAAAAAA";
+    private static final String UPDATED_DIRECTION = "BBBBBBBBBB";
+
     @Autowired
     private OfficerRepository officerRepository;
 
@@ -128,7 +134,9 @@ public class OfficerResourceIntTest {
                 .enable(DEFAULT_ENABLE)
                 .image_url(DEFAULT_IMAGE_URL)
                 .annosexperiencia(DEFAULT_ANNOSEXPERIENCIA)
-                .fechanacimiento(DEFAULT_FECHANACIMIENTO);
+                .fechanacimiento(DEFAULT_FECHANACIMIENTO)
+                .phonenumber(DEFAULT_PHONENUMBER)
+                .direction(DEFAULT_DIRECTION);
         return officer;
     }
 
@@ -165,6 +173,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testOfficer.getAnnosexperiencia()).isEqualTo(DEFAULT_ANNOSEXPERIENCIA);
         assertThat(testOfficer.getFechanacimiento()).isEqualTo(DEFAULT_FECHANACIMIENTO);
+        assertThat(testOfficer.getPhonenumber()).isEqualTo(DEFAULT_PHONENUMBER);
+        assertThat(testOfficer.getDirection()).isEqualTo(DEFAULT_DIRECTION);
     }
 
     @Test
@@ -304,7 +314,9 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.[*].enable").value(hasItem(DEFAULT_ENABLE.booleanValue())))
             .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
             .andExpect(jsonPath("$.[*].annosexperiencia").value(hasItem(DEFAULT_ANNOSEXPERIENCIA)))
-            .andExpect(jsonPath("$.[*].fechanacimiento").value(hasItem(DEFAULT_FECHANACIMIENTO.toString())));
+            .andExpect(jsonPath("$.[*].fechanacimiento").value(hasItem(DEFAULT_FECHANACIMIENTO.toString())))
+            .andExpect(jsonPath("$.[*].phonenumber").value(hasItem(DEFAULT_PHONENUMBER.toString())))
+            .andExpect(jsonPath("$.[*].direction").value(hasItem(DEFAULT_DIRECTION.toString())));
     }
 
     @Test
@@ -328,7 +340,9 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.enable").value(DEFAULT_ENABLE.booleanValue()))
             .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
             .andExpect(jsonPath("$.annosexperiencia").value(DEFAULT_ANNOSEXPERIENCIA))
-            .andExpect(jsonPath("$.fechanacimiento").value(DEFAULT_FECHANACIMIENTO.toString()));
+            .andExpect(jsonPath("$.fechanacimiento").value(DEFAULT_FECHANACIMIENTO.toString()))
+            .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()))
+            .andExpect(jsonPath("$.direction").value(DEFAULT_DIRECTION.toString()));
     }
 
     @Test
@@ -359,7 +373,9 @@ public class OfficerResourceIntTest {
                 .enable(UPDATED_ENABLE)
                 .image_url(UPDATED_IMAGE_URL)
                 .annosexperiencia(UPDATED_ANNOSEXPERIENCIA)
-                .fechanacimiento(UPDATED_FECHANACIMIENTO);
+                .fechanacimiento(UPDATED_FECHANACIMIENTO)
+                .phonenumber(UPDATED_PHONENUMBER)
+                .direction(UPDATED_DIRECTION);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(updatedOfficer);
 
         restOfficerMockMvc.perform(put("/api/officers")
@@ -382,6 +398,8 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testOfficer.getAnnosexperiencia()).isEqualTo(UPDATED_ANNOSEXPERIENCIA);
         assertThat(testOfficer.getFechanacimiento()).isEqualTo(UPDATED_FECHANACIMIENTO);
+        assertThat(testOfficer.getPhonenumber()).isEqualTo(UPDATED_PHONENUMBER);
+        assertThat(testOfficer.getDirection()).isEqualTo(UPDATED_DIRECTION);
     }
 
     @Test

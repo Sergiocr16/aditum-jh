@@ -89,6 +89,8 @@ public class OfficerService {
         Officer officer = officerRepository.findOne(id);
         OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
         officerDTO.setEnable(officer.isEnable());
+        officer.setPhonenumber(officerDTO.getPhonenumber());
+        officer.setDirection(officerDTO.getDirection());
         officerDTO.setCompany(companyMapper.companyToCompanyDTO(companyRepository.findOneById(officerDTO.getCompanyId())));
         return officerDTO;
     }
@@ -154,7 +156,6 @@ public class OfficerService {
         List<Officer> allOfficers = new ArrayList<>();
         List<OfficerDTO> allOfficersDTO = new ArrayList<>();
         companies.forEach(company -> officerRepository.findByEnableAndCompanyId(true,company.getId()).forEach(officer ->   {  allOfficers.add(officer);}));
-        String a = "";
         allOfficers.forEach(officer -> {allOfficersDTO.add(officerMapper.officerToOfficerDTO(officer));});
         allOfficersDTO.forEach(officerDTO -> { officerDTO.setCompany(companyMapper.companyToCompanyDTO(companyRepository.findOneById(officerDTO.getCompanyId())));});
         return new PageImpl<>(allOfficersDTO);

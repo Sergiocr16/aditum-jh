@@ -1,26 +1,70 @@
-<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="height:100vh!important;color:white!important;background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
+<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 no-padding no-margin" style="color:white!important;background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
 background-size: 1000% 1000%;
  -webkit-animation: loginBackground 24s ease infinite;
  -moz-animation: loginBackground 24s ease infinite;
  -o-animation: loginBackground 24s ease infinite;
 animation: loginBackground 24s ease infinite;">
-    <div class="hidden-xs" style="margin-top:200px"></div>
-    <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="330"></h1>
 
-    <h3 class="text-center" style="margin-top:50px">El manual de residentes estará disponible próximamente.</h3>
-    <h4 class="text-center">Fecha disponible: Jueves 12 de Octubre del 2017</h4>
-    <!--<h1><a target="_self" href="{{vm.pdfUrl}}" download="Manual-Usuario-Residente.pdf">DESCARGAR MANUAL</a></h1>-->
-    <!--<header class="p2 bright-blue bg-blue">-->
-        <!--<input type="number" name="" ng-change="vm.goToPage()" ng-model="vm.pageNumber">-->
-    <!--</header>-->
-    <!--<h1 class="text-center">-->
-    <!--<pdf-viewer class="col-md-12 col-lg-12 col-xs-12 col-sm-12"-->
-        <!--delegate-handle="my-pdf-container"-->
-        <!--url="vm.pdfUrl"-->
-        <!--scale="1.5"-->
-        <!--show-toolbar="false"-->
-        <!--headers="{'x-you-know-whats-awesome': 'EVERYTHING'}"></pdf-viewer>-->
-    <!--</h1>-->
+    <nav class="navbar navbar-default navbar-fixed-top navbar-inverse no-padding no-margin">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                <a class="navbar-brand"><img src="content/images/logoAditum.png" alt="" height="30"></a>
+
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a >Manual de residentes</a></li>
+                    <li class="dropdown">
+                        <a  class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Contenido <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <div class="row" style="width: 400px;">
+                                    <ul class="list-unstyled col-md-4 col-xs-12">
+                                        <li><a >test1-1</a></li>
+                                        <li><a >test1-2</a></li>
+                                        <li><a >test1-3</a></li>
+                                    </ul>
+                                    <ul class="list-unstyled col-md-4 col-xs-12">
+                                        <li><a >test2-1</a></li>
+                                        <li><a >test2-2</a></li>
+                                        <li><a >test2-3</a></li>
+                                    </ul>
+                                    <ul class="list-unstyled col-md-4 col-xs-12">
+                                        <li><a >test3-1</a></li>
+                                        <li><a >test3-2</a></li>
+                                        <li><a >test3-3</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a target="_self" href="{{vm.pdfUrl}}" download="Manual-Usuario-Residente.pdf">Descargar manual</a></li>
+
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+    <h1 class="text-center" style="margin-top:30px">
+        <pdf-viewer
+            delegate-handle="my-pdf-container"
+            url="vm.pdfUrl"
+            scale="0.7"
+            show-toolbar="false"
+            headers="{'x-you-know-whats-awesome': 'EVERYTHING'}"></pdf-viewer>
+    </h1>
 </div>
 
-<!--PONER HEIGHT!!!!!!!!!!!!!!!!!!!!!!-->
+

@@ -65,6 +65,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="phonenumber" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="direction" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

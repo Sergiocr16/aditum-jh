@@ -11,7 +11,12 @@
         var vm = this;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
-         vm.required = 1;
+        Principal.identity().then(function(account){
+        if(account.authorities[0]==="ROL_RH" || account.authorities[0]==="ROL_ADMIN"){
+                vm.required = 1;
+        }
+        })
+
         vm.officer = entity;
          if(vm.officer.image_url==undefined){
             vm.officer.image_url = null;

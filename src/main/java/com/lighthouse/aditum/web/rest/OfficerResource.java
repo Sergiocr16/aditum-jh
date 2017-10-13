@@ -149,6 +149,7 @@ public class OfficerResource {
     public ResponseEntity<OfficerDTO> getOfficer(@PathVariable Long id) {
         log.debug("REST request to get Officer : {}", id);
         OfficerDTO officerDTO = officerService.findOne(id);
+        String a ="";
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(officerDTO));
     }
     @GetMapping("/officers/findByCompanyAndIdentification/{companyId}/{identificationID}")
