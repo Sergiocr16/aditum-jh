@@ -14,7 +14,6 @@
                 url: '/house?page&sort&search',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
-                    pageTitle: 'aditumApp.house.home.title'
                 },
                 views: {
                     'content@': {

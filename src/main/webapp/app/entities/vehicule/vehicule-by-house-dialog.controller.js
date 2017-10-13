@@ -63,7 +63,7 @@
             vm.vehicule.houseId = $rootScope.companyUser.houseId;
           vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
-            if (vm.vehicule.id !== null || vm.vehicule.id !== undefined) {
+            if (vm.vehicule.id !== null ) {
              if(vm.myPlate!==vm.vehicule.licenseplate){
               Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
                    function alreadyExist(data){
@@ -86,7 +86,8 @@
                  }
 
                 function insertVehicule(){
-//               Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
+                   vm.vehicule.brand = vm.vehicule.brand.brand;
+               Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
               }
             }
         }
@@ -101,10 +102,10 @@
                Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
           }
         function onSaveSuccess (result) {
-        WSVehicle.sendActivity(result);
-              $state.go('vehiculeByHouse');
-                 bootbox.hideAll();
-                  toastr["success"]("Se ha registrado el vehículo correctamente.");
+             WSVehicle.sendActivity(result);
+             $state.go('vehiculeByHouse');
+            bootbox.hideAll();
+            toastr["success"]("Se ha registrado el vehículo correctamente.");
             vm.isSaving = false;
         }
 

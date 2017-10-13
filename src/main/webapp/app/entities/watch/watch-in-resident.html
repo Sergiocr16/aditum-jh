@@ -54,12 +54,9 @@
                             <img ng-show="officer.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
                             <img ng-hide="officer.image_url==null" src="{{officer.image_url}}" width="160" height="160" class="img-circle"/>
                         </h3>
-
-
-
                         <h3 style="text-transform: capitalize;" class="no-padding text-center font-20">{{officer.name}} {{officer.lastname}}</h3>
-                        <h5 class="no-padding text-center font-17">{{officer.identificationnumber}}</h5>
-
+                        <h4 class="no-padding text-center font-17">Cédula: {{officer.identificationnumber}}</h4>
+                        <h4 class="no-padding text-center">Teléfono: {{officer.phonenumber}}</h4>
 
                     </div>
                 </div>

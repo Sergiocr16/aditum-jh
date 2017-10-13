@@ -30,12 +30,14 @@
         }
 
         setTimeout(function(){
-        if($rootScope.showLogin==false){
+
         Principal.identity().then(function(account){
+             if(account!=undefined){
         if(account.authorities[0]=="ROLE_OFFICER"){
          loadResidents();}
+          }
         })
-        }
+
         },800)
 
        function unsubscribe(){

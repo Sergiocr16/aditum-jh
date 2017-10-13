@@ -14,7 +14,7 @@
             url: '/admin-infos?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.adminInfo.home.title'
+                  pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
@@ -51,7 +51,7 @@
             url: '/admin-info',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.adminInfo.home.title'
+                 pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
@@ -67,7 +67,7 @@
             url: '/admin-info/{id}',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_RH'],
-                pageTitle: 'aditumApp.adminInfo.detail.title'
+                 pageTitle: 'Aditum'
             },
             views: {
                 'content@': {

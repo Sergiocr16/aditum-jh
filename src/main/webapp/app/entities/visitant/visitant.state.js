@@ -14,7 +14,6 @@
                 url: '/visitant?page&sort&search',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'aditumApp.visitant.home.title'
                 },
                 views: {
                     'content@': {
@@ -56,7 +55,7 @@
                 url: '/visitant/manage/?page&sort&search',
                 data: {
                     authorities: ['ROLE_MANAGER'],
-                    pageTitle: 'aditumApp.visitant.home.title'
+
                 },
                 views: {
                     'content@': {
@@ -98,7 +97,7 @@
                 url: '/visitant/invited/user/?page&sort&search',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'aditumApp.visitant.home.title'
+
                 },
                 views: {
                     'content@': {
@@ -140,7 +139,6 @@
                 url: '/visitant/{id}',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'aditumApp.visitant.detail.title'
                 },
                 views: {
                     'content@': {
@@ -206,7 +204,6 @@
                 url: 'new',
                 data: {
                     authorities: ['ROLE_USER'],
-                    pageTitle: 'aditumApp.visitant.detail.title'
                 },
                 views: {
                     'content@': {

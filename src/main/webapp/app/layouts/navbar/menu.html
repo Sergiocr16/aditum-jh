@@ -255,8 +255,8 @@
                     <i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio
                 </a>
             </li>
-            <li has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">
-                <a ui-sref="residenteManual"  target="_blank" >
+            <li has-authority="ROLE_USER">
+                <a ng-click="vm.openManual()" >
                 <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
                </a>
             </li>

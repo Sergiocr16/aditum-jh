@@ -14,7 +14,7 @@
             url: '/company?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.company.home.title'
+
             },
             views: {
                 'content@': {
@@ -56,7 +56,6 @@
             url: '/company-rh?page&sort&search',
             data: {
                 authorities: ['ROLE_RH'],
-                pageTitle: 'aditumApp.company.home.title'
             },
             views: {
                 'content@': {
@@ -98,7 +97,6 @@
             url: '/company/{id}',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.company.detail.title'
             },
             views: {
                 'content@': {

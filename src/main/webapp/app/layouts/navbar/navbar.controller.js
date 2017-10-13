@@ -13,6 +13,15 @@
     if($rootScope.inicieSesion == undefined){
     $rootScope.inicieSesion = true;
     }
+    $rootScope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams){
+       MultiCompany.getCurrentUserCompany().then(function(data){
+
+       if(data.enable == 0 || data.enabled == 0){
+                                     logout();
+       }
+       })
+    })
     vm.annoActual = moment(new Date()).format("YYYY");
        vm.editMyInfoAsManager = function(){
              $state.go('admin-info-edit')
@@ -70,7 +79,7 @@
                               vm.contextLiving = " / "+ condo.name;
                               $rootScope.contextLiving = vm.contextLiving;
                               $rootScope.currentUserImage = data.image_url;
-                              if(condo.active == 0){
+                              if(condo.active == 0 || data.enabled == 0){
                               logout();
                               }
                              })
@@ -90,6 +99,8 @@
                      })
                      break;
                       case "ROLE_USER":
+                      MultiCompany.getCurrentUserCompany().then(function(data){
+                       $rootScope.companyUser = data;
                        House.get({id: companyUser.houseId},function(house){
                                vm.contextLiving = " / Casa " + house.housenumber;
                                $rootScope.contextLiving = vm.contextLiving;
@@ -97,10 +108,11 @@
                                $rootScope.currentUserImage = companyUser.image_url;
                                $rootScope.companyUser = companyUser;
                                 Company.get({id: $rootScope.companyId},function(condo){
-                                 if(condo.active == 0 || companyUser.enabled ==0){
+                                 if(condo.active == 0 || data.enabled ==0){
                                  logout();
                                  }
                                 })
+                       })
                        })
                      break;
                     case "ROLE_RH":
@@ -111,6 +123,9 @@
                       $rootScope.contextLiving = vm.contextLiving;
                       $rootScope.currentUserImage = null;
                      }
+                     if(data.enable == 0){
+                      logout();
+                      }
                      })
                     break;
                  }
@@ -143,7 +158,9 @@
              $rootScope.showLogin = true;
              $rootScope.inicieSesion = false;
         }
-
+       vm.openManual = function(){
+       window.open('/#/manual-residente','_blank')
+       }
         function toggleNavbar() {
             vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
         }

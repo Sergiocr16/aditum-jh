@@ -14,7 +14,6 @@
             url: '/watch/{companyId}/?page&sort&search',
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH'],
-                pageTitle: 'aditumApp.watch.home.title'
             },
             views: {
                 'content@': {
@@ -55,7 +54,6 @@
                       url: '/watch-residents?page&sort&search',
                       data: {
                           authorities: ['ROLE_USER'],
-                          pageTitle: 'aditumApp.watch.home.title'
                       },
                       views: {
                           'content@': {
@@ -97,7 +95,6 @@
             url: '/watch/{id}',
             data: {
                 authorities: ['ROLE_MANAGER'],
-                pageTitle: 'aditumApp.watch.detail.title'
             },
             views: {
                 'content@': {

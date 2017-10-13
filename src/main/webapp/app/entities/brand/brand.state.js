@@ -14,7 +14,7 @@
             url: '/brand',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.brand.home.title'
+                  pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
@@ -36,7 +36,7 @@
             url: '/brand/{id}',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.brand.detail.title'
+                pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
