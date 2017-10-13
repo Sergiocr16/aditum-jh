@@ -14,7 +14,6 @@
             url: '/rh-account?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.rHAccount.home.title'
             },
             views: {
                 'content@': {
@@ -56,7 +55,6 @@
             url: '/rh-account/{id}',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'aditumApp.rHAccount.detail.title'
             },
             views: {
                 'content@': {

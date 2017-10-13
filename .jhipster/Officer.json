@@ -68,6 +68,14 @@
         {
             "fieldName": "fechanacimiento",
             "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "phonenumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "direction",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",

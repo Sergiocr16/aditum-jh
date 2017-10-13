@@ -5,9 +5,11 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House'];
+    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate'];
 
-    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
+    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate) {
+
+
 
 
     angular.element(document).ready(function () {
@@ -19,8 +21,12 @@
         });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
-
-
+    vm.pdfUrl = 'content/manuals/manualusuario.pdf';
+    vm.loadNewFile = function(url) {
+      pdfDelegate
+        .$getByHandle('my-pdf-container')
+        .load(url);
+    };
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
         vm.isChangingPassword = $state.includes('finishReset');
@@ -57,7 +63,7 @@
             }).then(function (data) {
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
-                   console.log(account)
+                    $rootScope.menu = true;
                     $rootScope.showLogin = false;
                     $rootScope.inicieSesion = true;
                 switch (account.authorities[0]){

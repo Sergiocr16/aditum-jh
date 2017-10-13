@@ -161,6 +161,7 @@
                         residents[i].house_id = vm.houses[e].housenumber;
                         residents[i].name = residents[i].name + " " + residents[i].lastname;
                         if(residents[i].email==null){residents[i].email = "No registrado"};
+                        if(residents[i].phonenumber==null){residents[i].phonenumber = "No registrado"};
                     }
                 }
             }

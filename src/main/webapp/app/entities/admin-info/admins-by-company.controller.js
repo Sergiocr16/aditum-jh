@@ -35,11 +35,11 @@
                                        },
                                    })
                                    var formattedCompanies = "";
-                                   console.log(adminInfo)
+
                                    angular.forEach(data.companies,function(value,index){
                                     formattedCompanies += "<h5 class='text-center font-20'>"+value.name+"<h5>"
                                    })
-                                   console.log(formattedCompanies)
+
                                    document.getElementById("key_id_house").innerHTML = "" + data.name;
                                     document.getElementById("condos").innerHTML = formattedCompanies;
                //                    document.getElementById("security_key").innerHTML = "" + securityKey;

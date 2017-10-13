@@ -1,17 +1,17 @@
 <!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
+<div has-authority="ROLE_RH" class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a href="index.html">{{vm.company.name}}</a>
+            <a ui-sref="company-rh">{{vm.company.name}}</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">Turnos</a>
+            <a>Turnos</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="#">Consultar</a>
+            <a>Consultar</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -20,7 +20,27 @@
         </div>
     </div>
 </div>
+<div  has-authority="ROLE_MANAGER" class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="company">{{vm.company.name}}</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Turnos</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Consultar</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
 
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-12">
 

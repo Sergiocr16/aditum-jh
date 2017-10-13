@@ -14,7 +14,6 @@
             url: '/emergency?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.emergency.home.title'
             },
             views: {
                 'content@': {
@@ -56,7 +55,6 @@
             url: '/emergency/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.emergency.detail.title'
             },
             views: {
                 'content@': {

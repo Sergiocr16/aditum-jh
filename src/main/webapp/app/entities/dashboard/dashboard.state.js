@@ -14,7 +14,6 @@
             url: '/dashboard',
             data: {
                 authorities: ['ROLE_MANAGER'],
-                pageTitle: 'aditumApp.brand.home.title'
             },
             views: {
                 'content@': {

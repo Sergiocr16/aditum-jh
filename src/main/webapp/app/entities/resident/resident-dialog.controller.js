@@ -27,7 +27,7 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-        console.log(vm.resident)
+
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         if(vm.resident.id !== null){
@@ -255,7 +255,7 @@
         }
 
         function generateLogin(config){
-            console.log('im here madafaka')
+
               var firstletterFirstName = vm.resident.name.charAt(0);
               var firstletterSecondName = vm.resident.secondlastname.charAt(0);
               if(config==1){

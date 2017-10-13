@@ -14,7 +14,8 @@
             url: '/access-door?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.accessDoor.home.title'
+                pageTitle: 'Aditum'
+
             },
             views: {
                 'content@': {
@@ -56,7 +57,7 @@
             url: '/access-door/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.accessDoor.detail.title'
+                   pageTitle: 'Aditum'
             },
             views: {
                 'content@': {

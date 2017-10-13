@@ -18,6 +18,7 @@
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar',
             'cloudinary',
+             'pdf'
         ])
         .run(run);
 
@@ -44,6 +45,8 @@
                           "hideMethod": "fadeOut"
                         }
         vm.isInLogin = $state.includes('home');
+        vm.isInManual = $state.includes('manualResidente');
        $('body').removeClass("gray");
+       vm.menu = true;
     }
 })();

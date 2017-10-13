@@ -11,19 +11,22 @@
         var vm = this;
         $rootScope.active = "keysConguration";
         vm.isAuthenticated = Principal.isAuthenticated;
-
+     CommonMethods.validateSpecialCharacters();
         vm.save = save;
-         House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);;
+        setTimeout(function(){
+                 House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
 
-          function onSuccess (house) {
-             vm.house = house;
-                setTimeout(function() {
-                          $("#loadingIcon").fadeOut(300);
-                }, 400)
-                 setTimeout(function() {
-                     $("#key_form").fadeIn('slow');
-                 },700 )
-            }
+                  function onSuccess (house) {
+                     vm.house = house;
+                        setTimeout(function() {
+                                  $("#loadingIcon").fadeOut(300);
+                        }, 400)
+                         setTimeout(function() {
+                             $("#key_form").fadeIn('slow');
+                         },700 )
+                    }
+        },600)
+
 //
         function save() {
         CommonMethods.waitingMessage();

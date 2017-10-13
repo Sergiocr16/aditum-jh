@@ -9,6 +9,7 @@
 
     function OfficerAccountDialogController (CommonMethods,$state,$rootScope,$timeout, $scope, $stateParams,  $q, entity, OfficerAccount, Company, User,Principal,MultiCompany) {
         var vm = this;
+         $rootScope.active = "condons";
         vm.officerAccount = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;

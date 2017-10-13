@@ -13,10 +13,17 @@
                        $('#page-content').hide();
                   });
         var vm = this;
-
+ $rootScope.menu = false;
         vm.signIn = function(){
-         $state.go('home');
-         $('#page-content').show();
+                     Auth.logout();
+                      $('#page-content').show();
+
+                     $rootScope.companyUser = undefined;
+                     $state.go('home');
+                    $rootScope.menu = false;
+                     $rootScope.companyId = undefined;
+                      $rootScope.showLogin = true;
+                      $rootScope.inicieSesion = false;
         }
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.keyMissing = angular.isUndefined($stateParams.key);
@@ -38,6 +45,7 @@
             } else {
                 Auth.resetPasswordFinish({key: $stateParams.key, newPassword: vm.resetAccount.password}).then(function () {
                     vm.success = 'OK';
+                      Auth.logout();
                 }).catch(function () {
                     vm.success = null;
                     vm.error = 'ERROR';

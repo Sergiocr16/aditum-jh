@@ -61,6 +61,12 @@ public class Officer implements Serializable {
     @Column(name = "fechanacimiento")
     private LocalDate fechanacimiento;
 
+    @Column(name = "phonenumber")
+    private String phonenumber;
+
+    @Column(name = "direction")
+    private String direction;
+
     @ManyToOne
     private Company company;
 
@@ -215,6 +221,32 @@ public class Officer implements Serializable {
         this.fechanacimiento = fechanacimiento;
     }
 
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public Officer phonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+        return this;
+    }
+
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+
+    public String getDirection() {
+        return direction;
+    }
+
+    public Officer direction(String direction) {
+        this.direction = direction;
+        return this;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -263,6 +295,8 @@ public class Officer implements Serializable {
             ", image_url='" + image_url + "'" +
             ", annosexperiencia='" + annosexperiencia + "'" +
             ", fechanacimiento='" + fechanacimiento + "'" +
+            ", phonenumber='" + phonenumber + "'" +
+            ", direction='" + direction + "'" +
             '}';
     }
 }

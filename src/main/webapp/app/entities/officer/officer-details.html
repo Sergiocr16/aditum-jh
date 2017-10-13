@@ -7,7 +7,7 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a href="" ui-sref="resident()">Residentes</a>
+            <a href="" ui-sref="officer">Oficiales</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -50,13 +50,22 @@
                             <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
                                 <span class="font-15 gray-font">Años de experiencia: {{vm.officer.annosexperiencia}}</span>
                             </div>
-
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
                                 <span class="font-15 gray-font">Edad: {{vm.edad}}</span>
                             </div>
-                            <div has-authority="ROLE_RH" class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                            <div  class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Dirección física:</span>
+                                <p class="col-lg-12 font-15 gray-font  no-padding no-margin">{{vm.officer.direction}}</p>
+                            </div>
+
+                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Número de telefono:  {{vm.officer.phonenumber}}</span>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 margin-bottom-30">
                                 <span class="font-15 gray-font">Condominio: <b>{{vm.officer.company.name}}</b></span>
                             </div>
+
 
 
 

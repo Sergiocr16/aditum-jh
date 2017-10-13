@@ -14,7 +14,6 @@
             url: '/resident?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.resident.home.title'
             },
             views: {
                 'content@': {
@@ -56,7 +55,6 @@
             url: '/resident/{id}',
             data: {
                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.resident.detail.title'
             },
             views: {
                 'content@': {
@@ -206,7 +204,6 @@
             url: '/{id}/edit',
             data: {
              authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.resident.detail.title'
             },
             views: {
                 'content@': {

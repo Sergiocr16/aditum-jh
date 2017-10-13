@@ -10,9 +10,30 @@
     function NavbarController (CommonMethods,$state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
     $rootScope.isAuthenticated = Principal.isAuthenticated;
+
+           function logout() {
+                collapseNavbar();
+                Auth.logout();
+                $rootScope.companyUser = undefined;
+                $state.go('home');
+               $rootScope.menu = false;
+                $rootScope.companyId = undefined;
+                 $rootScope.showLogin = true;
+                 $rootScope.inicieSesion = false;
+            }
     if($rootScope.inicieSesion == undefined){
     $rootScope.inicieSesion = true;
     }
+    $rootScope.$on('$stateChangeStart',
+    function(event, toState, toParams, fromState, fromParams){
+       MultiCompany.getCurrentUserCompany().then(function(data){
+       if(data!=undefined){
+       if(data.enable == 0 || data.enabled == 0){
+                                     logout();
+       }
+       }
+       })
+    })
     vm.annoActual = moment(new Date()).format("YYYY");
        vm.editMyInfoAsManager = function(){
              $state.go('admin-info-edit')
@@ -65,12 +86,13 @@
                             $rootScope.companyUser = data;
                             $rootScope.companyUser.companyId = data.companies[0].id;
                             $rootScope.companyId = data.companies[0].id;
+
                             }
                              Company.get({id: $rootScope.companyId},function(condo){
                               vm.contextLiving = " / "+ condo.name;
                               $rootScope.contextLiving = vm.contextLiving;
                               $rootScope.currentUserImage = data.image_url;
-                              if(condo.active == 0){
+                              if(data.enabled == 0){
                               logout();
                               }
                              })
@@ -90,6 +112,8 @@
                      })
                      break;
                       case "ROLE_USER":
+                      MultiCompany.getCurrentUserCompany().then(function(data){
+                       $rootScope.companyUser = data;
                        House.get({id: companyUser.houseId},function(house){
                                vm.contextLiving = " / Casa " + house.housenumber;
                                $rootScope.contextLiving = vm.contextLiving;
@@ -97,10 +121,11 @@
                                $rootScope.currentUserImage = companyUser.image_url;
                                $rootScope.companyUser = companyUser;
                                 Company.get({id: $rootScope.companyId},function(condo){
-                                 if(condo.active == 0 || companyUser.enabled ==0){
+                                 if(condo.active == 0 || data.enabled ==0){
                                  logout();
                                  }
                                 })
+                       })
                        })
                      break;
                     case "ROLE_RH":
@@ -111,6 +136,9 @@
                       $rootScope.contextLiving = vm.contextLiving;
                       $rootScope.currentUserImage = null;
                      }
+                     if(data.enable == 0){
+                      logout();
+                      }
                      })
                     break;
                  }
@@ -133,16 +161,10 @@
             LoginService.open();
         }
 
-        function logout() {
-            collapseNavbar();
-            Auth.logout();
-            $rootScope.companyUser = undefined;
-            $state.go('home');
-            $rootScope.companyId = undefined;
-             $rootScope.showLogin = true;
-             $rootScope.inicieSesion = false;
-        }
 
+       vm.openManual = function(){
+       window.open('/#/manual-residente','_blank')
+       }
         function toggleNavbar() {
             vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
         }

@@ -14,7 +14,6 @@
             url: '/vehicule?page&sort&search',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.vehicule.home.title'
             },
             views: {
                 'content@': {
@@ -97,7 +96,6 @@
             url: '/vehicule/{id}',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                pageTitle: 'aditumApp.vehicule.detail.title'
             },
             views: {
                 'content@': {
@@ -230,7 +228,6 @@
                     url: '/{id}/edit',
                     data: {
                      authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                      pageTitle: 'aditumApp.resident.detail.title'
                     },
                     views: {
                         'content@': {

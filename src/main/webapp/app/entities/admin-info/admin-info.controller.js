@@ -40,7 +40,7 @@
                                        },
                                    })
                                    var formattedCompanies = "";
-                                   console.log(adminInfo)
+
                                    angular.forEach(data.companies,function(value,index){
                                     formattedCompanies += "<h5 class='text-center font-20'>"+value.name+"<h5>"
                                    })

@@ -25,7 +25,8 @@
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
                    bootbox.confirm({
-                       message: '<div class="gray-font font-15">Sus claves de seguridad aun no han sido definidas, recuerde que el tener establecidas las claves le provee mayor seguridad.</div>',
+                                           message: '<div class="gray-font font-15">Sus claves de seguridad aún no han sido definidas, recuerde que el tener las claves establecidas le provee mayor seguridad.</div>',
+
                        closeButton: false,
 
                        buttons: {
@@ -34,7 +35,7 @@
                                className: 'btn-success'
                            },
                            cancel: {
-                               label: 'Recordarmelo luego',
+                               label: 'Recordármelo luego',
                                className: 'btn-danger'
                            }
                        },

@@ -44,19 +44,16 @@ public class OfficerDTO implements Serializable {
 
     private LocalDate fechanacimiento;
 
-    private CompanyDTO company;
+    private String phonenumber;
+
+    private String direction;
 
     private Long companyId;
 
+    private CompanyDTO company;
+
     public Long getId() {
         return id;
-    }
-
-    public void setCompany(CompanyDTO company) {
-        this.company = company;
-    }
-    public CompanyDTO getCompany() {
-        return company;
     }
 
     public void setId(Long id) {
@@ -65,7 +62,6 @@ public class OfficerDTO implements Serializable {
     public String getName() {
         return name;
     }
-
 
     public void setName(String name) {
         this.name = name;
@@ -141,14 +137,39 @@ public class OfficerDTO implements Serializable {
     public void setFechanacimiento(LocalDate fechanacimiento) {
         this.fechanacimiento = fechanacimiento;
     }
+    public String getPhonenumber() {
+        return phonenumber;
+    }
 
-    public Long getCompanyId() {
+    public void setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+    }
+    public String getDirection() {
+        return direction;
+    }
+
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+   public Long getCompanyId() {
         return companyId;
     }
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
+
+    public CompanyDTO getCompany() {
+        return company;
+    }
+
+    public void setCompany(CompanyDTO company) {
+        this.company = company;
+    }
+
+
+
 
     @Override
     public boolean equals(Object o) {
@@ -185,6 +206,8 @@ public class OfficerDTO implements Serializable {
             ", image_url='" + image_url + "'" +
             ", annosexperiencia='" + annosexperiencia + "'" +
             ", fechanacimiento='" + fechanacimiento + "'" +
+            ", phonenumber='" + phonenumber + "'" +
+            ", direction='" + direction + "'" +
             '}';
     }
 }

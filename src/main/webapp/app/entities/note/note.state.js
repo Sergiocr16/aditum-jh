@@ -14,7 +14,6 @@
             url: '/note?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.note.home.title'
             },
             views: {
                 'content@': {
@@ -56,7 +55,6 @@
             url: '/note/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.note.detail.title'
             },
             views: {
                 'content@': {

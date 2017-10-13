@@ -56,12 +56,12 @@
     <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
-    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
+        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
         </div>
     </div>
-    <div ui-view="footer " ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div ui-view="footer " ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 </div>
 
@@ -88,6 +88,8 @@
     <script src="bower_components/sockjs-client/dist/sockjs.js"></script>
     <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
     <script src="bower_components/cloudinary-core/cloudinary-core.js"></script>
+    <script src="bower_components/pdfjs-dist/build/pdf.js"></script>
+    <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -107,6 +109,7 @@
     <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
     <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
     <script src="bower_components/cloudinary_ng/js/angular.cloudinary.js"></script>
+    <script src="bower_components/angular-pdf-viewer/dist/angular-pdf-viewer.min.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -349,6 +352,10 @@
     <script src="app/entities/note/note.service.js"></script>
 
     <script src="app/entities/note/note.controller.js"></script>
+
+    <script src="app/entities/manuals/manuals.state.js"></script>
+
+    <script src="app/entities/manuals/manual-residente.controller.js"></script>
 
     <script src="app/entities/house/ws-house.service.js"></script>
 
