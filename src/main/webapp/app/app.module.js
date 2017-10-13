@@ -46,7 +46,6 @@
                         }
         vm.isInLogin = $state.includes('home');
         vm.isInManual = $state.includes('manualResidente');
-        console.log(vm.isInManual)
        $('body').removeClass("gray");
        vm.menu = true;
     }

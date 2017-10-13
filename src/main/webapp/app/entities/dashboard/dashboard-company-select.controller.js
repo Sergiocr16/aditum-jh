@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DashboardCompanySelectController', DashboardCompanySelectController);
 
-    DashboardCompanySelectController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance','Watch', 'AccessDoor', 'Company','MultiCompany','$rootScope','$state'];
+    DashboardCompanySelectController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance','Watch', 'AccessDoor', 'Company','MultiCompany','$rootScope','$state','Auth'];
 
-    function DashboardCompanySelectController ($timeout, $scope, $stateParams, $uibModalInstance, Watch, AccessDoor, Company,MultiCompany, $rootScope,$state) {
+    function DashboardCompanySelectController ($timeout, $scope, $stateParams, $uibModalInstance, Watch, AccessDoor, Company,MultiCompany, $rootScope,$state,Auth) {
         var vm = this;
         vm.clear = clear;
          $rootScope.active = "selectCondominio";
@@ -17,7 +17,15 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
-
+           function logout() {
+                Auth.logout();
+                $rootScope.companyUser = undefined;
+                $state.go('home');
+               $rootScope.menu = false;
+                $rootScope.companyId = undefined;
+                 $rootScope.showLogin = true;
+                 $rootScope.inicieSesion = false;
+            }
         vm.selectCompany = function(id){
         $rootScope.companyUser.companyId = id;
          $rootScope.companyId = id;
@@ -38,7 +46,6 @@
         function loadAll () {
            MultiCompany.getCurrentUserCompany().then(function(data){
             if(data!=null){
-            console.log(data)
             $rootScope.companyUser = data;
             vm.companies = data.companies;
             setTimeout(function() {

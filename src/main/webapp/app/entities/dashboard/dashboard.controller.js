@@ -14,7 +14,7 @@
 		vm.account = null;
 		vm.login = LoginService.open;
         getAccount();
-        setTimeout(function(){ vm.loadAll();},600)
+        setTimeout(function(){ vm.loadAll();},1000)
 
 		function getAccount() {
 			Principal.identity().then(function(account) {

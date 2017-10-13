@@ -10,15 +10,27 @@
     function NavbarController (CommonMethods,$state, Auth, Principal, ProfileService, LoginService,MultiCompany,$rootScope,$scope,companyUser,Company,House) {
     var vm = this;
     $rootScope.isAuthenticated = Principal.isAuthenticated;
+
+           function logout() {
+                collapseNavbar();
+                Auth.logout();
+                $rootScope.companyUser = undefined;
+                $state.go('home');
+               $rootScope.menu = false;
+                $rootScope.companyId = undefined;
+                 $rootScope.showLogin = true;
+                 $rootScope.inicieSesion = false;
+            }
     if($rootScope.inicieSesion == undefined){
     $rootScope.inicieSesion = true;
     }
     $rootScope.$on('$stateChangeStart',
     function(event, toState, toParams, fromState, fromParams){
        MultiCompany.getCurrentUserCompany().then(function(data){
-
+       if(data!=undefined){
        if(data.enable == 0 || data.enabled == 0){
                                      logout();
+       }
        }
        })
     })
@@ -74,12 +86,13 @@
                             $rootScope.companyUser = data;
                             $rootScope.companyUser.companyId = data.companies[0].id;
                             $rootScope.companyId = data.companies[0].id;
+
                             }
                              Company.get({id: $rootScope.companyId},function(condo){
                               vm.contextLiving = " / "+ condo.name;
                               $rootScope.contextLiving = vm.contextLiving;
                               $rootScope.currentUserImage = data.image_url;
-                              if(condo.active == 0 || data.enabled == 0){
+                              if(data.enabled == 0){
                               logout();
                               }
                              })
@@ -148,16 +161,7 @@
             LoginService.open();
         }
 
-        function logout() {
-            collapseNavbar();
-            Auth.logout();
-            $rootScope.companyUser = undefined;
-            $state.go('home');
-           $rootScope.menu = false;
-            $rootScope.companyId = undefined;
-             $rootScope.showLogin = true;
-             $rootScope.inicieSesion = false;
-        }
+
        vm.openManual = function(){
        window.open('/#/manual-residente','_blank')
        }
