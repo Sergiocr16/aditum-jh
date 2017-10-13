@@ -17,7 +17,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        setTimeout(function(){loadAll();},500)
+        setTimeout(function(){loadAll();},1000)
 
         angular.element(document).ready(function() {
             $("#all").fadeIn("slow");
@@ -38,12 +38,16 @@
             }
 
             function onSuccess(data) {
-            console.log(data)
+
                 angular.forEach(data, function(value, key) {
                     value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
                 })
                 vm.visitants = data;
                 vm.page = pagingParams.page;
+                 $("#loadingIcon").fadeOut(0);
+                 setTimeout(function() {
+                     $("#all").fadeIn(100);
+                 }, 500)
             }
 
             function onError(error) {

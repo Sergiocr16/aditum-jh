@@ -114,13 +114,13 @@
                       case "ROLE_USER":
                       MultiCompany.getCurrentUserCompany().then(function(data){
                        $rootScope.companyUser = data;
-                       House.get({id: companyUser.houseId},function(house){
+                       House.get({id: parseInt(data.houseId)},function(house){
                                vm.contextLiving = " / Casa " + house.housenumber;
                                $rootScope.contextLiving = vm.contextLiving;
-                               $rootScope.companyId = companyUser.companyId;
-                               $rootScope.currentUserImage = companyUser.image_url;
-                               $rootScope.companyUser = companyUser;
-                                Company.get({id: $rootScope.companyId},function(condo){
+                               $rootScope.companyId = data.companyId;
+                               $rootScope.currentUserImage = data.image_url;
+                               $rootScope.companyUser = data;
+                                Company.get({id: parseInt($rootScope.companyId)},function(condo){
                                  if(condo.active == 0 || data.enabled ==0){
                                  logout();
                                  }
