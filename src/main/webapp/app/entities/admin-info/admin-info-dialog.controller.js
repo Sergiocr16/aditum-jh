@@ -147,7 +147,7 @@
 
             }
             }else{
-            console.log(vm.adminInfo.administradaOficiales)
+
                AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
                         function onSaveSuccess (result) {
                             vm.isSaving = false;

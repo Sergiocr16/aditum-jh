@@ -138,6 +138,7 @@
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
+           $rootScope.menu = false;
             $rootScope.companyId = undefined;
              $rootScope.showLogin = true;
              $rootScope.inicieSesion = false;

@@ -63,7 +63,7 @@
             }).then(function (data) {
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
-                   console.log(account)
+                    $rootScope.menu = true;
                     $rootScope.showLogin = false;
                     $rootScope.inicieSesion = true;
                 switch (account.authorities[0]){

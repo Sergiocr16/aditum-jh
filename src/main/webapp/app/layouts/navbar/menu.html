@@ -3,7 +3,7 @@
 
 <div has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" style="margin-top:46px;" ></div>
 
-<div ng-hideclass="page-sidebar-wrapper">
+<div ng-hideclass="page-sidebar-wrapper" ng-show="menu==true">
 
     <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
     <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
@@ -254,6 +254,11 @@
                 <a href="">
                     <i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio
                 </a>
+            </li>
+            <li has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">
+                <a ui-sref="residenteManual"  target="_blank" >
+                <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
+               </a>
             </li>
         </ul>
         <!-- END SIDEBAR MENU -->

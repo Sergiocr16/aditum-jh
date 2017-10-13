@@ -23,7 +23,9 @@
         }
         function onSuccess(data) {
             vm.houseQuantity = data.length;
+            if(vm.company.id!=undefined){
             getAdmins();
+            }
         }
 
         function getAdmins(){

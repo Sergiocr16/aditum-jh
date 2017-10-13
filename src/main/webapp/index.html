@@ -56,12 +56,12 @@
     <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
-    <div class="page-content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
+        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
         </div>
     </div>
-    <div ui-view="footer " ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div ui-view="footer " ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 </div>
 
