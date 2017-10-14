@@ -198,7 +198,7 @@
                                 }
                             }
                         });
-                        if (vm.id_vehicule.length >= 5 && vm.show !==2) {
+                        if (vm.id_vehicule.length >= 2 && vm.show !==2) {
 
                             angular.forEach(invitedList, function(itemVisitor, index) {
 
