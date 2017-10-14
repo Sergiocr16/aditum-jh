@@ -12,8 +12,8 @@
 
                 <li class="dropdown dropdown-extended" id="header_notification_bar">
                     <a ng-click="vm.updateDateNotes()" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <i class="fa fa-bell-o"></i>
-                        <span class="badge badge-default">
+                        <i class="fa fa-bell-o" style="font-size:20px!important;"></i>
+                        <span class="badge badge-default" style="font-size:15px!important;">
             {{vm.countNotes}} </span>
                     </a>
                     <ul class="dropdown-menu">
@@ -71,12 +71,12 @@
                     <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs"></div>
 
 
-                    <div class="form-group no-padding col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-sm-10 col-xs-12">
+                    <div class="form-group no-padding col-lg-offset-1 col-lg-10 col-md-offset-1 col-md-10 col-sm-10 col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon ">
                                 <i class="fa fa-car"></i>
                                 </span>
-                            <input type="text" id="vehicule_license_plate" class="form-control height-12-percent font-19 input_id specialCharacters gray-font" ng-change="vm.getVehicule()" ng-model="vm.id_vehicule" placeholder="Número placa (sin guiones)">
+                            <input type="text" id="vehicule_license_plate" class="form-control height-12-percent font-27 input_id specialCharacters " ng-change="vm.getVehicule()" ng-model="vm.id_vehicule" placeholder="Número placa (sin guiones)">
                         </div>
                     </div>
                     <button class="btn left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-39-pixel no-shadow" ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
@@ -87,22 +87,22 @@
                     <div class="height-80-pixel col-md-12 col-sm-12 hidden-xs"></div>
 
 
-                    <div class="form-group no-padding col-lg-offset-2  col-lg-8 col-md-offset-2  col-md-8 col-sm-10 col-xs-12">
+                    <div class="form-group no-padding col-lg-offset-1  col-lg-10 col-md-offset-1  col-md-10 col-sm-10 col-xs-12">
                         <div class="input-group">
                             <span class="input-group-addon ">
                                   <i class="fa fa-user"></i>
                                   </span>
-                            <input type="text" class="form-control height-12-percent numbers font-20 input_id gray-font" ng-change="vm.getResident()" ng-model="vm.id_number" placeholder="Cédula">
+                            <input type="text" class="form-control height-12-percent numbers font-27 input_id " ng-change="vm.getResident()" ng-model="vm.id_number" placeholder="Cédula">
                         </div>
                     </div>
-                    <button class="btn   left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-41-pixel no-shadow" ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
+                    <button class="btn   left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-39-pixel no-shadow" ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
                         <span>  <i style="margin-top:4px;"class="fa fa-times-circle font-20 gray-font" aria-hidden="true"></i></span>
                     </button>
 
 
                     <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs "></div>
 
-                    <button type="submit" ng-disabled="vm.show === 1 || vm.show === 2" class="btn blue font-15 col-lg-offset-2 col-lg-6 col-md-offset-2 col-md-6  col-sm-7 col-xs-7 btn-access-door" ng-click="vm.searchVisitor()" name="button">Registrar visitante</button>
+                    <button type="submit" ng-disabled="vm.show === 1 || vm.show === 2" class="btn blue font-15 col-lg-offset-1 col-lg-8 col-md-offset-1 col-md-8  col-sm-7 col-xs-7 btn-access-door" ng-click="vm.searchVisitor()" name="button">Registrar visitante</button>
 
                     <button class="btn red col-lg-1 col-md-1 col-sm-2 col-xs-2 btn-access-door" id="access_key_button" ng-click="vm.show=8" name="button" title="Consultar clave de seguridad o emergencia">
                         <span>  <i class="fa fa-key font-17" aria-hidden="true"></i></span>
@@ -281,7 +281,7 @@
                                 <div class="form-body">
                                     <div class="form-group col-md-12  no-padding">
                                         <div class="form-group col-md-12 no-padding">
-                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
+                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa:</label>
                                             <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
                                                 <select class="form-control gray-font" data-ng-model="vm.houseForInformation" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                                                     <option value="">Seleccione una casa</option>
@@ -350,18 +350,40 @@
 
                                         </div>
                                     </div>
+                                    <div class="form-group form-md-radios" style="margin-bottom:10px">
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio" >
+                                                <input type="radio" id="radio14" name="radio2" ng-checked="{{vm.radiostatus}}"  class="md-radiobtn"  ng-click="vm.changeDestinoCasa()">
+                                                <label for="radio14">
+                                                    <span class="inc"></span>
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span>
+                                                    Casa </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.changeDestinoProveedor()">
+                                                <label for="radio15">
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span>
+                                                    Otro </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group  col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">{{vm.destityTitle}}</label>
                                         <div class="form-group col-md-8 col-sm-9 col-xs-7">
-                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
-                                                <option value="">Seleccione una casa</option>
+                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesToShow | orderBy: 'housenumber'" required>
+                                                <option value="">{{vm.destityPlaceHolder}}</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group  col-md-12" style="margin-bottom:0px!important;">
                                         <h3 class="text-right">
                                             <button type="submit" class="btn blue"> Registrar</button>
-                                            <button type="button" ng-click="vm.show=4" class="btn default gray-font">Cancelar</button>
+                                            <button type="button" ng-click="vm.show=4; vm.changeDestinoCasa();" class="btn default gray-font">Cancelar</button>
                                         </h3>
                                     </div>
                                 </div>

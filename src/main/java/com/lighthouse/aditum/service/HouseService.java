@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,6 +61,39 @@ public class HouseService {
     public Page<HouseDTO> findAll(Long companyId) {
         log.debug("Request to get all Houses");
         List<House> result = houseRepository.findByCompanyId(companyId);
+        List<House> onlyHouses = new ArrayList<>();
+        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
+
+        result.forEach(house->{
+            int existe = 0;
+              for (int i = 0;i<letras.length;i++){
+                 if(Character.toLowerCase(house.getHousenumber().charAt(0))==(letras[i])){
+                    existe++;
+                 }
+              }
+              if(existe==0){
+                  onlyHouses.add(house);
+              }
+        });
+
+        return  new PageImpl<>(onlyHouses).map(house -> houseMapper.houseToHouseDTO(house));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<HouseDTO> findAllWithMaintenance(Long companyId) {
+        log.debug("Request to get all Houses");
+        List<House> result = houseRepository.findByCompanyId(companyId);
+        List<House> onlyHouses = new ArrayList<>();
+        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
+
+        result.forEach(house->{
+            int existe = 0;
+            for (int i = 0;i<letras.length;i++){
+                if(Character.toLowerCase(house.getHousenumber().charAt(0))==(letras[i])){
+                    onlyHouses.add(house);
+                }
+            }
+        });
         return  new PageImpl<>(result).map(house -> houseMapper.houseToHouseDTO(house));
     }
 
