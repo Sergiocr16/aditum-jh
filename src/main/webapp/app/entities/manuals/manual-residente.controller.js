@@ -17,7 +17,7 @@
 
         var vm = this;
         vm.currentPage = 0;
-        vm.pdfUrl = 'https://github.com/Sergiocr16/aditum-jh/blob/AddingMaintenance/src/main/webapp/content/manuals/manual-residentes.pdf?raw=true';
+        vm.pdfUrl = 'https://github.com/Sergiocr16/aditum-jh/blob/AddingMaintenance/src/main/webapp/content/manuals/Manual-Residente-ADITUM-2017.pdf?raw=true';
        vm.images = [
        "http://res.cloudinary.com/aditum/image/upload/v1508010563/Manual/pagina_1.png",
        "http://res.cloudinary.com/aditum/image/upload/v1508010563/Manual/Pagina_2.png",
