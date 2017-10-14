@@ -13,6 +13,30 @@
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
+        vm.destityTitle="Número de casa:";
+         vm.destityPlaceHolder="Seleccione una casa";
+          vm.maintenance = [
+          {housenumber:"Mantenimiento de piscina",companyId: $rootScope.companyId},
+          {housenumber:"Mantenimiento de instalaciones",companyId: $rootScope.companyId},
+          {housenumber:"Areas verdes",companyId: $rootScope.companyId},
+          {housenumber:"Planta de tratamiento",companyId: $rootScope.companyId},
+          {housenumber:"Seguridad",companyId: $rootScope.companyId},
+          {housenumber:"Reciclaje",companyId: $rootScope.companyId},
+          {housenumber:"Vendedores",companyId: $rootScope.companyId},
+          {housenumber:"Autorizado por administración",companyId: $rootScope.companyId},
+          ];
+
+        vm.changeDestinoCasa= function(){
+          vm.destityTitle="Número de casa:";
+          vm.destityPlaceHolder="Seleccione una casa";
+          vm.housesToShow = vm.houses;
+        }
+
+         vm.changeDestinoProveedor = function(){
+             vm.destityTitle="Destino:";
+             vm.destityPlaceHolder="Seleccione un destino";
+             vm.housesToShow = vm.maintenance;
+        }
         var securityKey, emergencyKey, housenumber;
         vm.hideEmergencyForm = 1;
         vm.hideLoadingForm = 2;
@@ -54,7 +78,6 @@
             function onSuccessResident(residents, headers) {
                residentsList = residents;
                loadHouses();
-               loadHousesWithMaintenance();
             }
         }
 
@@ -62,18 +85,11 @@
            House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
            function onSuccessHouse(houses, headers) {
               housesList = houses;
+              vm.housesToShow = houses;
               loadVehicules()
            }
 
         }
-        function loadHousesWithMaintenance() {
-           House.queryWithMaintenance({companyId: $rootScope.companyId}, onSuccessHouse, onError);
-           function onSuccessHouse(houses, headers) {
-
-              vm.housesMaintenance = houses;
-           }
-        }
-
         function loadVehicules() {
            Vehicule.query({companyId: $rootScope.companyId}, onSuccessVehicule, onError);
            function onSuccessVehicule(vehicules, headers) {
@@ -444,7 +460,6 @@
 
                 if (house.housenumber == vm.invited_visitant_house_number) {
                     idHouse = house.id;
-
                 }
             })
 
@@ -459,6 +474,7 @@
                 arrivaltime: moment(new Date()).format(),
                 houseId: idHouse
             }
+           
             Visitant.save(visitant, onSaveSuccess, onSaveError);
 
             function onSaveSuccess (result) {
@@ -606,6 +622,10 @@
                     arrivaltime: moment(new Date()).format(),
                     houseId: vm.house.id
                 }
+                 if(vm.house.id==undefined){
+                       visitant.responsableofficer = vm.house.housenumber;
+                    }
+
                     Visitant.save(visitant, onSaveSuccess, onSaveError);
 
             }
@@ -762,8 +782,8 @@ function receiveHouse(house){
  House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
            function onSuccessHouse(houses, headers) {
               housesList = houses;
+              vm.housesToShow = houses;
            }
- loadHousesWithMaintenance();
 }
 function receiveDeletedEntity(entity){
     switch(entity.type){

@@ -16,7 +16,7 @@ public class HouseDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private String housenumber;
+    private Integer housenumber;
 
     private String extension;
 
@@ -42,12 +42,12 @@ public class HouseDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getHousenumber() {
+    public Integer getHousenumber() {
         return housenumber;
     }
 
     public void setHousenumber(String housenumber) {
-        this.housenumber = housenumber;
+        this.housenumber = Integer.parseInt(housenumber);
     }
     public String getExtension() {
         return extension;

@@ -281,7 +281,7 @@
                                 <div class="form-body">
                                     <div class="form-group col-md-12  no-padding">
                                         <div class="form-group col-md-12 no-padding">
-                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
+                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa:</label>
                                             <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
                                                 <select class="form-control gray-font" data-ng-model="vm.houseForInformation" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
                                                     <option value="">Seleccione una casa</option>
@@ -350,11 +350,33 @@
 
                                         </div>
                                     </div>
+                                    <div class="form-group form-md-radios" style="margin-bottom:10px">
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
+                                        <div class="md-radio-inline">
+                                            <div class="md-radio" >
+                                                <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.changeDestinoCasa()">
+
+                                                <label for="radio14">
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span>
+                                                    Casa </label>
+                                            </div>
+                                            <div class="md-radio">
+                                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.changeDestinoProveedor()">
+                                                <label for="radio15">
+                                                    <span class="inc"></span>
+                                                    <span class="check"></span>
+                                                    <span class="box"></span>
+                                                    Otro </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="form-group  col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Seleccione un destino:</label>
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">{{vm.destityTitle}}</label>
                                         <div class="form-group col-md-8 col-sm-9 col-xs-7">
-                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesMaintenance | orderBy: 'housenumber' track by house.id" required>
-                                                <option value="">Seleccione un destino</option>
+                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesToShow | orderBy: 'housenumber'" required>
+                                                <option value="">{{vm.destityPlaceHolder}}</option>
                                             </select>
                                         </div>
                                     </div>
