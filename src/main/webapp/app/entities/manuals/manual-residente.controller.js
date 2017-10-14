@@ -19,18 +19,18 @@
         vm.currentPage = 0;
         vm.pdfUrl = 'https://github.com/Sergiocr16/aditum-jh/blob/AddingManualPage/src/main/webapp/content/fonts/manualusuario.pdf?raw=true';
        vm.images = [
-       "http://res.cloudinary.com/aditum/image/upload/v1507930853/Manual/pagina_1.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930860/Manual/Pagina_2.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930863/Manual/Pagina_3.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930867/Manual/Pagina_4.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930870/Manual/Pagina_5.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930874/Manual/Pagina_6.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930879/Manual/Pagina_7.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930888/Manual/Pagina_8.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930891/Manual/Pagina_9.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930896/Manual/Pagina_10.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930901/Manual/Pagina_11.png",
-       "http://res.cloudinary.com/aditum/image/upload/v1507930905/Manual/Pagina_12.png"
+       "http://res.cloudinary.com/aditum/image/upload/v1508010563/Manual/pagina_1.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010563/Manual/Pagina_2.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010562/Manual/Pagina_3.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010567/Manual/Pagina_4.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010563/Manual/Pagina_5.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010573/Manual/Pagina_6.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010572/Manual/Pagina_7.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010571/Manual/Pagina_8.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010573/Manual/Pagina_9.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010575/Manual/Pagina_10.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010569/Manual/Pagina_11.png",
+       "http://res.cloudinary.com/aditum/image/upload/v1508010573/Manual/Pagina_12.png"
        ]
 
        $rootScope.menu = false;
