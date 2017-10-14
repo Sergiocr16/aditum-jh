@@ -54,6 +54,7 @@
             function onSuccessResident(residents, headers) {
                residentsList = residents;
                loadHouses();
+               loadHousesWithMaintenance();
             }
         }
 
@@ -64,6 +65,13 @@
               loadVehicules()
            }
 
+        }
+        function loadHousesWithMaintenance() {
+           House.queryWithMaintenance({companyId: $rootScope.companyId}, onSuccessHouse, onError);
+           function onSuccessHouse(houses, headers) {
+
+              vm.housesMaintenance = houses;
+           }
         }
 
         function loadVehicules() {
@@ -754,8 +762,8 @@ function receiveHouse(house){
  House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
            function onSuccessHouse(houses, headers) {
               housesList = houses;
-
            }
+ loadHousesWithMaintenance();
 }
 function receiveDeletedEntity(entity){
     switch(entity.type){

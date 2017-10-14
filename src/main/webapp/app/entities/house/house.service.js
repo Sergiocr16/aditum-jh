@@ -11,6 +11,9 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'queryWithMaintenance': { method: 'GET',
+                                      url:'api/houses-maintenance',
+                                      isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

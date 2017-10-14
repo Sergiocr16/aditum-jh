@@ -351,10 +351,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group  col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Número de casa</label>
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Seleccione un destino:</label>
                                         <div class="form-group col-md-8 col-sm-9 col-xs-7">
-                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
-                                                <option value="">Seleccione una casa</option>
+                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesMaintenance | orderBy: 'housenumber' track by house.id" required>
+                                                <option value="">Seleccione un destino</option>
                                             </select>
                                         </div>
                                     </div>
