@@ -27,9 +27,55 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
+
+
+
+                vm.validate = function(){
+                 var invalido = 0;
+                function hasWhiteSpace(s) {
+                 function tiene(s) {
+                       return /\s/g.test(s);
+                    }
+                    if(tiene(s)||s==undefined){
+                     return true
+                    }
+                   return false;
+                 }
+
+                 function hasCaracterEspecial(s){
+                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+                 var invalido = 0;
+                  angular.forEach(caracteres,function(val,index){
+//                   for(var i=0,i++;i<s.length){
+//                   if(s.charAt(i)==val){
+//                   invalido++;
+//                   }
+//                   }
+
+                  })
+                  if(invalio==0){
+                  return false;
+                  }else{
+                  return true;
+                  }
+                 }
+
+                 if(hasWhiteSpace(vm.resident.name)|| hasWhiteSpace(vm.resident.lastname)|| hasWhiteSpace(vm.resident.secondlastname)||hasWhiteSpace(vm.resident.identificationnumber)){
+                    toastr["error"]("No puede ingresar espacios en blanco.");
+                    invalido++;
+                 }else if(hasCaracterEspecial(vm.resident.name)|| hasCaracterEspecial(vm.resident.lastname)|| hasCaracterEspecial(vm.resident.secondlastname)||hasCaracterEspecial(vm.resident.identificationnumber)){
+                    invalido++;
+                      toastr["error"]("No puede ingresar ningún caracter especial.");
+                 }
+                  if(invalido==0){
+                  return true;
+                  }else{
+                  return false;
+                  }
+                }
+
         if(vm.resident.id !== null){
             vm.title = "Editar residente";
             vm.button = "Editar";
@@ -56,6 +102,7 @@
         });
 
         function save () {
+        if(vm.validate()){
             vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
             vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
             vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
@@ -299,6 +346,5 @@
                             fileImage = $file;
                         }
                };
-
-    }
+    }}
 })();
