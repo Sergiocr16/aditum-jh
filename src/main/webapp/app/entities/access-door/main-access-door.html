@@ -354,16 +354,16 @@
                                         <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
                                         <div class="md-radio-inline">
                                             <div class="md-radio" >
-                                                <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.changeDestinoCasa()">
-
+                                                <input type="radio" id="radio14" name="radio2" ng-checked="{{vm.radiostatus}}"  class="md-radiobtn"  ng-click="vm.changeDestinoCasa()">
                                                 <label for="radio14">
+                                                    <span class="inc"></span>
                                                     <span class="inc"></span>
                                                     <span class="check"></span>
                                                     <span class="box"></span>
                                                     Casa </label>
                                             </div>
                                             <div class="md-radio">
-                                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.changeDestinoProveedor()">
+                                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.changeDestinoProveedor()">
                                                 <label for="radio15">
                                                     <span class="inc"></span>
                                                     <span class="check"></span>
@@ -383,7 +383,7 @@
                                     <div class="form-group  col-md-12" style="margin-bottom:0px!important;">
                                         <h3 class="text-right">
                                             <button type="submit" class="btn blue"> Registrar</button>
-                                            <button type="button" ng-click="vm.show=4" class="btn default gray-font">Cancelar</button>
+                                            <button type="button" ng-click="vm.show=4; vm.changeDestinoCasa();" class="btn default gray-font">Cancelar</button>
                                         </h3>
                                     </div>
                                 </div>
