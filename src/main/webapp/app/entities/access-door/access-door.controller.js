@@ -632,7 +632,7 @@
                     name: CommonMethods.capitalizeFirstLetter(vm.visitor_name),
                     lastname: CommonMethods.capitalizeFirstLetter(vm.visitor_last_name),
                     secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitor_second_last_name),
-                    identificationnumber: vm.visitor_id_number,
+                    identificationnumber: vm.visitor_id_number.toUpperCase(),
                     licenseplate: vm.visitor_license_plate.toUpperCase(),
                     companyId: $rootScope.companyId,
                     isinvited: 3,
