@@ -11,11 +11,16 @@
 <div style="margin:10px 5px 5px 10px;background-color:white;padding:10px;border-radius:10px;color:#6a6c6f!important;">
     <h2>Bienvenido(a)</h2>
     <p>Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
-    <p>¡Tu cuenta en Aditum ha sido creada exitosamente! :)</p>
-    <p>Tu nombre de usuario para iniciar en nuestra página web es el siguiente:</p>
+    <p>¡Tu cuenta en Aditum ha sido creada exitosamente!</p>
+    <p>Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
     <h2 th:text="|${user.login}|" style="text-align:center">User</h2>
     <p style="text-align:center">
         <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">¡Has click aquí para activar tu cuenta!</a>
+    </p>
+
+    <p style="">
+        Puedes descargar la aplicación en Google Play Store en el siguiente link:
+        <a th:href="https://play.google.com/store/apps/details?id=com.lighthouse.aditum">ADITUM</a>
     </p>
 </div>
 <span th:text="#{email.activation.text2}">Regards, </span>

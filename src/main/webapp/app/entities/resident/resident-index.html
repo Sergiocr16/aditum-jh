@@ -99,7 +99,7 @@
                             <tbody>
                             <tr ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'" ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
                                 <td style="text-transform: capitalize;">{{resident.name}} </td>
-                                <td>{{resident.identificationnumber}}</td>
+                                <td>{{resident.identificationnumber.toUpperCase()}}</td>
                                 <td>{{resident.phonenumber}}</td>
                                 <!--<td>{{resident.email}}</td>-->
                                 <td>{{resident.house_id}}</td>

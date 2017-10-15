@@ -192,9 +192,12 @@
         }
         vm.getVehicule = function(){
             vm.id_number = "";
+                  $("#id_license_number").css("text-transform", "none");
+                             $("#id_license_number").attr("placeholder", "Cédula");
             if (vm.id_vehicule == "") {
                  $("#vehicule_license_plate").css("text-transform", "none");
                  $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
+                   $("#id_license_number").attr("placeholder", "Cédula");
                   vm.show = 4;
             } else {
                  $("#vehicule_license_plate").css("text-transform", "uppercase");
@@ -230,6 +233,7 @@
 
                             angular.forEach(invitedList, function(itemVisitor, index) {
 
+                                if(itemVisitor.licenseplate!=null || itemVisitor.licenseplate!=undefined){
                                 if (itemVisitor.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase() && itemVisitor.isinvited == 1) {
                                     if(vm.verifyVisitantInivitedDate(itemVisitor)){
                                     vm.invited_visitant_name = itemVisitor.name;
@@ -246,6 +250,7 @@
                                     vm.invited_visitant_house_number = house.housenumber;
                                     vm.show = 10;
                                     $("#visitantInvitedtAccess").fadeIn(100);
+                                }
                                 }
                                 }
                             });
@@ -407,13 +412,18 @@
                 vm.id_vehicule = "";
                 $("#vehicule_license_plate").css("text-transform", "none");
                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
+                       $("#id_license_number").attr("placeholder", "Cédula");
+
                 if (vm.id_number == "") {
+                 $("#id_license_number").css("text-transform", "none");
+                 $("#id_license_number").attr("placeholder", "Cédula");
                     vm.show = 4;
                 } else {
                     vm.show = 3;
-
+                    $("#id_license_number").css("text-transform", "uppercase");
                     angular.forEach(residentsList, function(item, index) {
-                        if (item.identificationnumber == vm.id_number) {
+
+                        if (item.identificationnumber.toUpperCase() == vm.id_number.toUpperCase()) {
 
                             vm.residentRegisteredTitle = "Residente registrado"
                             vm.colorResidentRegistered = "green-font"
@@ -434,7 +444,7 @@
 
                    if (vm.id_number.length >= 6) {
                        angular.forEach(invitedList, function(itemVisitor, index) {
-                           if (itemVisitor.identificationnumber == vm.id_number && itemVisitor.isinvited == 1) {
+                           if (itemVisitor.identificationnumber.toUpperCase() == vm.id_number.toUpperCase() && itemVisitor.isinvited == 1) {
                                if(vm.verifyVisitantInivitedDate(itemVisitor)){
                                vm.invited_visitant_name = itemVisitor.name;
                                vm.invited_visitant_last_name = itemVisitor.lastname;
@@ -471,7 +481,7 @@
                 name: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_name),
                 lastname: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_last_name),
                 secondlastname: CommonMethods.capitalizeFirstLetter(vm.invited_visitant_second_last_name),
-                identificationnumber: vm.invited_visitant_indentification,
+                identificationnumber: vm.invited_visitant_indentification.toUpperCase(),
                 licenseplate: vm.invited_visitant_license_plate.toUpperCase(),
                 companyId: $rootScope.companyId,
                 isinvited: 3,
@@ -521,6 +531,7 @@
                     } else {
                         $("#license_plate").css("text-transform", "none");
                         $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+                          $("#vm.id_number").attr("placeholder", "Cédula");
                     }
                  vm.getVisitorByPlate();
             }
@@ -560,6 +571,7 @@
                 vm.show = 11;
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+                  $("#id_license_number").attr("placeholder", "Cédula");
                 clearInputs();
                 vm.houses = housesList;
             }
@@ -568,6 +580,7 @@
                 if(vm.id_vehicule == undefined){
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
+                   $("#id_license_number").attr("placeholder", "Cédula");
                 }else{
                 $("#license_plate").css("text-transform", "uppercase");
                 }
@@ -648,6 +661,8 @@
             vm.deleteResidentVehiculeSpots = function() {
                 $("#vehicule_license_plate").css("text-transform", "none");
                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
+                   $("#id_license_number").attr("placeholder", "Cédula");
+                         $("#id_license_number").css("text-transform", "none");
                 vm.id_number = "";
                 vm.id_vehicule = "";
                 vm.show = 4;

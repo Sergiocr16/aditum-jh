@@ -59,7 +59,7 @@
                         <tbody>
                         <tr ng-repeat="visitor in vm.visitants | filter:search | orderBy:'fullName'">
                             <td style="text-transform: capitalize;">{{visitor.fullName}}</td>
-                            <td>{{visitor.identificationnumber}}</td>
+                            <td>{{visitor.identificationnumber.toUpperCase()}}</td>
                             <td ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
                             <td ng-show="visitor.licenseplate==null">No se registró</td>
                             <td>{{visitor.invitationstaringtime | formatDate}}</td>

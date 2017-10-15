@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','WSVisitor'];
+    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','WSVisitor','WSDeleteEntity'];
 
-    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,WSVisitor) {
+    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,WSVisitor,WSDeleteEntity) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         //        vm.visitant = entity;
@@ -23,6 +23,65 @@
             initial_time: new Date(),
             final_time: new Date()
         };
+
+               vm.validate = function(){
+                 var invalido = 0;
+                function hasWhiteSpace(s) {
+                 function tiene(s) {
+                       return /\s/g.test(s);
+                    }
+                    if(tiene(s)||s==undefined){
+                     return true
+                    }
+                   return false;
+                 }
+               function haswhiteCedula(s){
+                return /\s/g.test(s);
+               }
+                 function hasCaracterEspecial(s){
+                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+                 var invalido = 0;
+                  angular.forEach(caracteres,function(val,index){
+                  if (s!=undefined){
+                   for(var i=0;i<s.length;i++){
+                   if(s.charAt(i)==val){
+                   invalido++;
+                   }
+                   }
+                   }
+                  })
+                  if(invalido==0){
+                  return false;
+                  }else{
+                  return true;
+                  }
+                 }
+                 if(vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined || hasWhiteSpace(vm.visitor.identificationnumber) ||  haswhiteCedula(vm.visitor.licenseplate)){
+                    toastr["error"]("No puede ingresar espacios en blanco.");
+                    invalido++;
+                 }else if(hasCaracterEspecial(vm.visitor.name)|| hasCaracterEspecial(vm.visitor.lastname)|| hasCaracterEspecial(vm.visitor.secondlastname)||hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)){
+                    invalido++;
+                      toastr["error"]("No puede ingresar ningún caracter especial.");
+                 }
+                  if(invalido==0){
+                  return true;
+                  }else{
+                  return false;
+                  }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -81,9 +140,13 @@
             if (vm.visitor.licenseplate != undefined) {
                 vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
             }
+            if(vm.visitor.licenseplate == ""){
+            vm.visitor.licenseplate = undefined;
+            }
         }
 
         function save() {
+        if(vm.validate()){
                CommonMethods.waitingMessage();
             if (isValidDates()) {
                 Visitant.findInvitedByHouseAndIdentificationNumber({
@@ -91,11 +154,6 @@
                     houseId: $rootScope.companyUser.houseId,
                     companyId: $rootScope.companyId,
                 }, success, error)
-
-
-
-
-
             }
             function success(data) {
                 bootbox.confirm({
@@ -139,6 +197,7 @@
                   vm.visitor.secondlastname = CommonMethods.capitalizeFirstLetter(vm.visitor.secondlastname);
                 Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
             }
+            }
         }
 
 
@@ -146,7 +205,7 @@
         WSVisitor.sendActivity(result);
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.go('visitant-invited-user')
-              bootbox.hideAll();ii
+              bootbox.hideAll();
             toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }

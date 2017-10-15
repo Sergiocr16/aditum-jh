@@ -27,10 +27,6 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-        CommonMethods.validateLetters();
-        CommonMethods.validateNumbers();
-
-
 
                 vm.validate = function(){
                  var invalido = 0;
@@ -48,21 +44,22 @@
                  var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
                  var invalido = 0;
                   angular.forEach(caracteres,function(val,index){
-//                   for(var i=0,i++;i<s.length){
-//                   if(s.charAt(i)==val){
-//                   invalido++;
-//                   }
-//                   }
-
+                  if (s!=undefined){
+                   for(var i=0;i<s.length;i++){
+                   if(s.charAt(i)==val){
+                   invalido++;
+                   }
+                   }
+                   }
                   })
-                  if(invalio==0){
+                  if(invalido==0){
                   return false;
                   }else{
                   return true;
                   }
                  }
 
-                 if(hasWhiteSpace(vm.resident.name)|| hasWhiteSpace(vm.resident.lastname)|| hasWhiteSpace(vm.resident.secondlastname)||hasWhiteSpace(vm.resident.identificationnumber)){
+                 if(vm.resident.name == undefined || vm.resident.lastname == undefined || vm.resident.secondlastname == undefined || hasWhiteSpace(vm.resident.identificationnumber)){
                     toastr["error"]("No puede ingresar espacios en blanco.");
                     invalido++;
                  }else if(hasCaracterEspecial(vm.resident.name)|| hasCaracterEspecial(vm.resident.lastname)|| hasCaracterEspecial(vm.resident.secondlastname)||hasCaracterEspecial(vm.resident.identificationnumber)){
@@ -75,7 +72,8 @@
                   return false;
                   }
                 }
-
+        CommonMethods.validateLetters();
+        CommonMethods.validateNumbers();
         if(vm.resident.id !== null){
             vm.title = "Editar residente";
             vm.button = "Editar";
@@ -102,7 +100,7 @@
         });
 
         function save () {
-        if(vm.validate()){
+        if( vm.validate()){
             vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
             vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
             vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
@@ -171,9 +169,17 @@
                      }
                     function onSaveImageSuccess(data) {
                     vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                        if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                  vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                  }
+
                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                     }
                 }else{
+
+                  if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                            }
                   Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                 }
             }else{
@@ -214,9 +220,16 @@
                                  }
                                 function onSaveImageSuccess(data) {
                                 vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+
+                                    if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                              vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                              }
                                     Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                                 }
                                 }else{
+                                  if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                            }
                                  Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                                 }
                        }
@@ -243,9 +256,15 @@
                               }
                              function onSaveImageSuccess(data) {
                              vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
-                                 Resident.update(vm.resident, onUpdateSuccess, onSaveError);
+
+                                   if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                             vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                             }Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                              }
                              }else{
+                               if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                         }
                               Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                              }
 
@@ -279,6 +298,10 @@
                          }
                         function onSaveImageSuccess(data) {
                         vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                         if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                   vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                   }
+
                                        Resident.save(vm.resident, onSaveSuccess, onSaveError);
                                         function onSaveSuccess (result) {
                                         WSResident.sendActivity(result);
@@ -289,6 +312,11 @@
                                          }
                         }
             }else{
+
+            if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+            }
+
            Resident.save(vm.resident, onSaveSuccess, onSaveError);
                 function onSaveSuccess (result) {
                 WSResident.sendActivity(result);
@@ -332,6 +360,8 @@
 
         }
 
+}
+
               vm.setImage = function ($file) {
                         if ($file && $file.$error === 'pattern') {
                             return;
@@ -346,5 +376,5 @@
                             fileImage = $file;
                         }
                };
-    }}
+    }
 })();

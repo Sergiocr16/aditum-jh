@@ -15,6 +15,54 @@
       if(entity.image_url==undefined){
         entity.image_url = null;
         }
+
+                        vm.validate = function(){
+                         var invalido = 0;
+                        function hasWhiteSpace(s) {
+                         function tiene(s) {
+                               return /\s/g.test(s);
+                            }
+                            if(tiene(s)||s==undefined){
+                             return true
+                            }
+                           return false;
+                         }
+
+                         function hasCaracterEspecial(s){
+                         var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+                         var invalido = 0;
+                          angular.forEach(caracteres,function(val,index){
+                          if (s!=undefined){
+                           for(var i=0;i<s.length;i++){
+                           if(s.charAt(i)==val){
+                           invalido++;
+                           }
+                           }
+                           }
+                          })
+                          if(invalido==0){
+                          return false;
+                          }else{
+                          return true;
+                          }
+                         }
+
+                         if(vm.resident.name == undefined || vm.resident.lastname == undefined || vm.resident.secondlastname == undefined || hasWhiteSpace(vm.resident.identificationnumber)){
+                            toastr["error"]("No puede ingresar espacios en blanco.");
+                            invalido++;
+                         }else if(hasCaracterEspecial(vm.resident.name)|| hasCaracterEspecial(vm.resident.lastname)|| hasCaracterEspecial(vm.resident.secondlastname)||hasCaracterEspecial(vm.resident.identificationnumber)){
+                            invalido++;
+                              toastr["error"]("No puede ingresar ningún caracter especial.");
+                         }
+                          if(invalido==0){
+                          return true;
+                          }else{
+                          return false;
+                          }
+                        }
+
+
+
         vm.resident = entity;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
@@ -58,6 +106,7 @@
 
 
         function save () {
+        if(  vm.validate()){
           CommonMethods.waitingMessage();
             vm.isSaving = true;
              vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
@@ -68,6 +117,7 @@
                if(vm.temporalIndentification!==vm.resident.identificationnumber){
                    Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClearUpdate)
                     function alreadyExist(data){
+                    bootbox.hideAll();
                      toastr["error"]("La cédula ingresada ya existe.");
                    }
                      function allClear(data){
@@ -77,8 +127,9 @@
                        } else {
                             vm.resident.isOwner = 0;
                        }
-
+                        console.log("AQUI")
                       if(fileImage!==null){
+                      console.log("HAY IMAGEN")
                        vm.imageUser = {user: vm.resident.id};
                      SaveImageCloudinary
                                        .save(fileImage, vm.imageUser)
@@ -88,9 +139,15 @@
                         }
                        function onSaveImageSuccess(data) {
                        vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                              if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                        }
                            Resident.update(vm.resident, onSuccess, onSaveError);
                        }
                    }else{
+                          if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                    }
                       Resident.update(vm.resident, onSuccess, onSaveError);
                    }
                      }
@@ -102,6 +159,7 @@
                       }
 
                       if(fileImage!==null){
+                        console.log("HAY IMAGEN")
                       vm.imageUser = {user: vm.resident.id};
                      SaveImageCloudinary
                                        .save(fileImage, vm.imageUser)
@@ -111,9 +169,15 @@
                         }
                        function onSaveImageSuccess(data) {
                        vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                                  if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                            }
                            Resident.update(vm.resident, onSuccess, onSaveError);
                        }
                    }else{
+                            if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                      vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                      }
                       Resident.update(vm.resident, onSuccess, onSaveError);
                    }
                 }
@@ -121,6 +185,7 @@
              } else{
                 Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClearInsert)
                      function alreadyExist(data){
+                        bootbox.hideAll();
                       toastr["error"]("La cédula ingresada ya existe.");
                     }
 
@@ -135,8 +200,28 @@
                      vm.resident.isOwner = 0;
                      vm.resident.companyId = $rootScope.companyId;
                      vm.resident.houseId = $rootScope.companyUser.houseId
-
-                     Resident.save(vm.resident, onSuccess, onSaveError);
+                      if(fileImage!==null){
+                        console.log("HAY IMAGEN")
+                      vm.imageUser = {user: vm.resident.id};
+                     SaveImageCloudinary
+                                       .save(fileImage, vm.imageUser)
+                                       .then(onSaveImageSuccess, onSaveError, onNotify);
+                       function onNotify(info) {
+                                   vm.progress = Math.round((info.loaded / info.total) * 100);
+                        }
+                       function onSaveImageSuccess(data) {
+                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                               if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                         }
+                         Resident.save(vm.resident, onSuccess, onSaveError);
+                       }
+                   }else{
+                                if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                          vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                          }
+                       Resident.save(vm.resident, onSuccess, onSaveError);
+                   }
            }
           function allClearUpdate(){
                  modificar();
@@ -149,6 +234,7 @@
                         vm.resident.isOwner = 0;
                    }
               if(fileImage!==null){
+                console.log("HAY IMAGEN")
                      vm.imageUser = {user: vm.resident.id};
                     SaveImageCloudinary
                                       .save(fileImage, vm.imageUser)
@@ -158,9 +244,15 @@
                        }
                       function onSaveImageSuccess(data) {
                       vm.resident.image_url= "https://res.cloudinary.com/aditum/image/upload/v1501920877/"+data.imageUrl+".jpg";
+                              if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                        }
                         Resident.update(vm.resident, onSuccess, onSaveError);
                       }
                   }else{
+                      if(vm.resident.identificationnumber!=undefined || vm.resident.identificationnumber!= null){
+                                                vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                                                }
                  Resident.update(vm.resident, onSuccess, onSaveError);
                   }
 
@@ -186,7 +278,7 @@
         function onSaveError () {
             vm.isSaving = false;
         }
-
+}
 
             vm.setImage = function ($file) {
                         if ($file && $file.$error === 'pattern') {
@@ -202,6 +294,5 @@
                             fileImage = $file;
                         }
                };
-
     }
 })();
