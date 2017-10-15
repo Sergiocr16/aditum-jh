@@ -17,10 +17,9 @@
     <p style="text-align:center">
         <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">¡Has click aquí para activar tu cuenta!</a>
     </p>
-
     <p style="">
         Puedes descargar la aplicación en Google Play Store en el siguiente link:
-        <a th:href="https://play.google.com/store/apps/details?id=com.lighthouse.aditum">ADITUM</a>
+        <a th:href="@{https://play.google.com/store/apps/details?id=com.lighthouse.aditum}">ADITUM</a>
     </p>
 </div>
 <span th:text="#{email.activation.text2}">Regards, </span>
