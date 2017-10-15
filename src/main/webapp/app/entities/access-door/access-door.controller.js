@@ -442,7 +442,7 @@
                         }
                     });
 
-                   if (vm.id_number.length >= 6) {
+                   if (vm.id_number.length >= 5 {
                        angular.forEach(invitedList, function(itemVisitor, index) {
                            if (itemVisitor.identificationnumber.toUpperCase() == vm.id_number.toUpperCase() && itemVisitor.isinvited == 1) {
                                if(vm.verifyVisitantInivitedDate(itemVisitor)){
