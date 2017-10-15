@@ -17,10 +17,45 @@
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
-        vm.dates = {
-            initial_time: new Date(),
-            final_time: new Date()
-        };
+            vm.dates = {
+                    initial_time: new Date(),
+                    final_time: new Date()
+                };
+  angular.element(document).ready(function() {
+            $("#all").fadeIn("slow");
+             vm.formatInitPickers();
+        });
+
+        vm.formatInitPickers = function(){
+
+            var currentDate = new Date();
+//            FECHAS
+            vm.dates.initial_date = new Date();
+            vm.dates.final_date = new Date();
+            vm.minInitialDate = moment(currentDate).format("YYYY-MM-DD")
+
+//            HORAS
+            vm.dates.initial_time = new Date(1970, 0, 1,currentDate.getHours(), currentDate.getMinutes(), 0)
+            vm.dates.final_time = new Date(1970, 0, 1,currentDate.getHours(), currentDate.getMinutes()+30, 0)
+            vm.minInitialTime = moment(new Date(1970, 0, 1,currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm')
+            setTimeout(function(){
+                vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
+                vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
+            },300)
+         }
+
+                vm.updateDatePicker = function() {
+                    vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD")
+                    vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD")
+                    console.log(vm.dates.initial_date)
+                }
+
+                vm.updateTimePicker = function(){
+                 vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
+                 vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
+                 console.log(moment("Init " +vm.dates.final_time).format('HH:mm'))
+                }
+
                vm.validate = function(){
                  var invalido = 0;
                 function hasWhiteSpace(s) {
@@ -68,17 +103,7 @@
                 }
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
-        angular.element(document).ready(function() {
-            $("#all").fadeIn("slow");
-            var currentDate = new Date();
-            vm.dates.initial_time = new Date();
-            currentDate.setHours(currentDate.getHours() + 1);
-            vm.dates.final_time = currentDate;
-            vm.updatePicker();
-            $('.dating').keydown(function() {
-                return false;
-            });
-        });
+
 
        $timeout(function() {
            angular.element('#focusMe').focus();
@@ -94,32 +119,39 @@
          vm.showMessageFinal = function(){
          toastr["info"]("La fecha y hora final debe de ser en el futuro, y no puede ser menor a la fecha inicial","Toma en consideración");
          }
-        function isValidDates() {
-            function invalidDates() {
-                toastr["error"]("Tus fechas no tienen el formato adecuado, intenta nuevamente","Ups!");
-                var currentDate = new Date();
-                vm.dates.initial_time = new Date();
-                currentDate.setHours(currentDate.getHours() + 1);
-                vm.dates.final_time = currentDate;
-                return false;
-            }
-            if (vm.dates.final_time != undefined && vm.dates.initial_time != undefined) {
-                if (vm.dates.final_time.getTime() <= vm.dates.initial_time.getTime()) {
-                    return invalidDates();
-                }
-            }
-            if (vm.dates.final_time == undefined || vm.dates.initial_time == undefined) {
-                return invalidDates();
-            }
-            return true;
-        }
+         function isValidDates() {
+         console.log(vm.dates.final_date)
+             function invalidDates() {
+                 toastr["error"]("Tus fechas no tienen el formato adecuado, intenta nuevamente","Ups!");
+                  vm.formatInitPickers()
+                  bootbox.hideAll();
+                 return false;
+             }
 
+             if (vm.dates.final_time == undefined || vm.dates.initial_time == undefined || vm.dates.initial_date ==undefined || vm.dates.final_date == undefined) {
+                 return invalidDates();
+             }else{
+              if (vm.formatDate(vm.dates.initial_date,vm.dates.initial_time).getTime() >=  vm.formatDate(vm.dates.final_date,vm.dates.final_time).getTime()) {
+                      return invalidDates();
+               }
+             }
+             return true;
+         }
+
+         vm.formatDate = function(date,time){
+          return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), 0, 0);
+         }
         function formatVisitor() {
             vm.visitor.isinvited=1;
                   vm.visitor.invitationstaringtime = vm.dates.initial_time;
                          vm.visitor.invitationlimittime = vm.dates.final_time;
+               vm.visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date,vm.dates.initial_time);
+                  vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date,vm.dates.final_time);
             if (vm.visitor.licenseplate != undefined) {
                 vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
+            }
+             if (vm.visitor.identificationnumber != undefined) {
+                vm.visitor.identificationnumber = vm.visitor.identificationnumber.toUpperCase();
             }
         }
 
