@@ -117,7 +117,8 @@
                 $("#all").fadeIn();
                 toastr["success"]("Se ha eliminado el registro correctamente");
                 bootbox.hideAll();
-                WSDeleteEntity.sendDeletedEntity({type:'visitor',id:visitor.id})
+                WSDeleteEntity.sendActivity({type:'visitor',id:visitor.id})
+
             }
         }
 

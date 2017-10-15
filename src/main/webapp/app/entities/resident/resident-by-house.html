@@ -77,7 +77,7 @@
 
 
                         <h3 style="text-transform: capitalize;" class="no-padding text-center font-20">{{resident.name}} {{resident.lastname}}</h3>
-                        <h5 class="no-padding text-center font-17">{{resident.identificationnumber}}</h5>
+                        <h5 class="no-padding text-center font-17">{{resident.identificationnumber.toUpperCase()}}</h5>
 
                         <div class="col-lg-12 col-md-12 small-margin-top">
                             <button type="submit" ng-click="vm.editResident(resident.id)"class="btn blue" title="Editar residente"><i class="fa fa-pencil " ></i></button>

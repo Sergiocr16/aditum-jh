@@ -21,7 +21,51 @@
             initial_time: new Date(),
             final_time: new Date()
         };
-
+               vm.validate = function(){
+                 var invalido = 0;
+                function hasWhiteSpace(s) {
+                 function tiene(s) {
+                       return /\s/g.test(s);
+                    }
+                    if(tiene(s)||s==undefined){
+                     return true
+                    }
+                   return false;
+                 }
+               function haswhiteCedula(s){
+                return /\s/g.test(s);
+               }
+                 function hasCaracterEspecial(s){
+                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+                 var invalido = 0;
+                  angular.forEach(caracteres,function(val,index){
+                  if (s!=undefined){
+                   for(var i=0;i<s.length;i++){
+                   if(s.charAt(i)==val){
+                   invalido++;
+                   }
+                   }
+                   }
+                  })
+                  if(invalido==0){
+                  return false;
+                  }else{
+                  return true;
+                  }
+                 }
+                 if(vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined || hasWhiteSpace(vm.visitor.identificationnumber) ||  haswhiteCedula(vm.visitor.licenseplate)){
+                    toastr["error"]("No puede ingresar espacios en blanco.");
+                    invalido++;
+                 }else if(hasCaracterEspecial(vm.visitor.name)|| hasCaracterEspecial(vm.visitor.lastname)|| hasCaracterEspecial(vm.visitor.secondlastname)||hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)){
+                    invalido++;
+                      toastr["error"]("No puede ingresar ningún caracter especial.");
+                 }
+                  if(invalido==0){
+                  return true;
+                  }else{
+                  return false;
+                  }
+                }
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         angular.element(document).ready(function() {
@@ -80,6 +124,7 @@
         }
 
         function save() {
+        if(vm.validate()){
         CommonMethods.waitingMessage();
             if (isValidDates()) {
                 formatVisitor();
@@ -94,6 +139,7 @@
                 $scope.$emit('aditumApp:visitantUpdate', result);
                 $state.reload();
                 $uibModalInstance.close(result);
+            }
             }
         }
 

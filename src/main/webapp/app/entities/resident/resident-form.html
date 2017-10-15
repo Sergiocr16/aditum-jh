@@ -104,8 +104,9 @@
                                 <label class="font-15">Segundo Apellido</label>
                             </div>
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control gray-font" required style='text-transform:uppercase'>
                                 <label  class="font-15">Número de cédula</label>
+                                <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
                             </div>
                         </div>
 
@@ -114,6 +115,7 @@
                             <div class="form-group form-md-line-input">
                                 <input ng-focus="expression==1" ng-model="vm.resident.phonenumber" type="text" placeholder="" maxlength="20" class="form-control numbers gray-font">
                                 <label class="font-15">Número celular</label>
+                                <span class="help-block">Escriba el número celular sin guiones.</span>
                             </div>
                             <div class="form-group form-md-line-input ">
                                 <input ng-model="vm.resident.email" type="email" class="form-control gray-font" placeholder="">
@@ -121,8 +123,9 @@
                             </div>
 
                             <div has-authority="ROLE_USER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control numbers gray-font" required>
+                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
                                 <label  class="font-15">Número de cédula</label>
+                                <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
                             </div>
 
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">

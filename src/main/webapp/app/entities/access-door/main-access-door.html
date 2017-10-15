@@ -79,7 +79,7 @@
                             <input type="text" id="vehicule_license_plate" class="form-control height-12-percent font-27 input_id specialCharacters " ng-change="vm.getVehicule()" ng-model="vm.id_vehicule" placeholder="Número placa (sin guiones)">
                         </div>
                     </div>
-                    <button class="btn left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-39-pixel no-shadow" ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
+                    <button class="btn left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-39-pixel no-shadow"   ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
                         <span > <i style="margin-top:4px;" class="fa fa-times-circle font-20 gray-font" aria-hidden="true"></i></span>
                     </button>
 
@@ -92,7 +92,7 @@
                             <span class="input-group-addon ">
                                   <i class="fa fa-user"></i>
                                   </span>
-                            <input type="text" class="form-control height-12-percent numbers font-27 input_id " ng-change="vm.getResident()" ng-model="vm.id_number" placeholder="Cédula">
+                            <input type="text" class="form-control height-12-percent specialCharacters font-27 input_id "  ng-change="vm.getResident()" ng-model="vm.id_number" placeholder="Cédula" id="id_license_number">
                         </div>
                     </div>
                     <button class="btn   left-padding-10 col-lg-1 col-md-1 col-sm-2 hidden-xs btn-access-door height-39-pixel no-shadow" ng-click="vm.deleteResidentVehiculeSpots()" title="Borrar texto" name="button">
@@ -196,7 +196,7 @@
                             </div>
 
                             <div class="col-md-8 col-sm-8 text-center gray-font no-padding">
-                                <h5 class="font-30 bold text-center "> {{vm.resident.identificationnumber}}</h5>
+                                <h5 class="font-30 bold text-center "> {{vm.resident.identificationnumber.toUpperCase();}}</h5>
                                 <h5 class=" font-20 text-center">Cédula</h5>
                             </div>
                             <div class="height-30-pixel col-md-4 col-sm-12 hidden-xs hidden-sm text-center"></div>
@@ -226,7 +226,7 @@
                             <div class="height-41-pixel col-sm-12 hidden-xs "></div>
 
                             <div class="col-md-7 col-sm-8 text-center gray-font no-padding">
-                                <h5 class="font-30 bold text-center "> {{vm.invited_visitant_indentification}}</h5>
+                                <h5 class="font-30 bold text-center "> {{vm.invited_visitant_indentification.toUpperCase()}}</h5>
                                 <h5 class=" font-20 text-center">Cédula</h5>
                             </div>
                             <div class="col-md-5 col-sm-8 text-center gray-font no-padding">
@@ -314,7 +314,7 @@
                                             <span class="input-group-addon">
                                         <i class="fa fa-indent"></i>
                                         </span>
-                                            <input type="text" ng-change="vm.getVisitor()" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font numbers" id="identification_number" placeholder="Cédula" required>
+                                            <input type="text" ng-change="vm.getVisitor()" required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters" id="identification_number" placeholder="Cédula" required>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">

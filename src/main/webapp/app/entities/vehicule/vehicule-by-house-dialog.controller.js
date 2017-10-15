@@ -22,6 +22,55 @@
         ColorPicker.init();
          });
 
+        vm.validate = function(){
+          var invalido = 0;
+         function hasWhiteSpace(s) {
+          function tiene(s) {
+                return /\s/g.test(s);
+             }
+             if(tiene(s)||s==undefined){
+              return true
+             }
+            return false;
+          }
+
+          function hasCaracterEspecial(s){
+          var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+          var invalido = 0;
+           angular.forEach(caracteres,function(val,index){
+           if (s!=undefined){
+            for(var i=0;i<s.length;i++){
+            if(s.charAt(i)==val){
+            invalido++;
+            }
+            }
+            }
+           })
+           if(invalido==0){
+           return false;
+           }else{
+           return true;
+           }
+          }
+
+          if(vm.vehicule.licenseplate == undefined || hasWhiteSpace(vm.vehicule.licenseplate)){
+             toastr["error"]("No puede ingresar la placa con espacios en blanco.");
+             invalido++;
+          }else if(hasCaracterEspecial(vm.vehicule.licenseplate)){
+             invalido++;
+               toastr["error"]("No puede ingresar la placa con guiones o cualquier otro carácter especial");
+          }
+           if(invalido==0){
+           return true;
+           }else{
+           return false;
+           }
+         }
+
+
+
+
+
            function onSuccessBrand(brands){
            vm.brands = brands;
 
@@ -55,6 +104,7 @@
 
 
         function save () {
+        if(  vm.validate()){
         if(vm.vehicule.color==undefined){
           vm.vehicule.color = "rgb(255, 255, 255)";
           }
@@ -121,6 +171,6 @@
             vm.isSaving = false;
         }
 
-
+}
     }
 })();
