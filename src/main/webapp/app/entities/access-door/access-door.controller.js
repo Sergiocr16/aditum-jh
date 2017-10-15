@@ -722,17 +722,21 @@ return index;
 
 
 function receiveVisitor(visitor){
+            Visitant.findAllInvited({companyId: $rootScope.companyId}, onSuccessInvited, onError);
+            function onSuccessInvited(visitors, headers) {
+                if(invitedList!==undefined){
+                    var result = hasExistance(invitedList,visitor.id)
+                    if(result!==-1){
+                        invitedList[result] = visitor;
+                    }else{
+                        invitedList.push(visitor);
+                    }
+
+                }
+                invitedList = visitors;
+            }
 
 
-    if(invitedList!==undefined){
-        var result = hasExistance(invitedList,visitor.id)
-        if(result!==-1){
-            invitedList[result] = visitor;
-        }else{
-            invitedList.push(visitor);
-        }
-
-    }
 
 
 // if(invitedList!==undefined){

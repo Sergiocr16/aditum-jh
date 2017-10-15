@@ -56,18 +56,33 @@
 
                         <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
                             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendarInit('initialtime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                                           type="text" class="form-control letters gray-font text-center dating" required>
-                                    <label class="font-15">Fecha inicial:</label>
-                                    <span class="help-block">De la fecha y hora actual en adelante</span>
+                                <label  class="font-15">Fecha desde la cual puede ingresar:</label>
+
+                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                    <!--class="form-control letters gray-font text-center dating" required>-->
+                                    <input ng-change="vm.updateDatePicker()" ng-model="vm.dates.initial_date" type="date" min="{{vm.minInitialDate}}"  class="form-control gray-font text-center" required>
+
+                                </div>
+                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                    <!--class="form-control letters gray-font text-center dating" required>-->
+                                    <input id="la" type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.initial_time" min="{{vm.minInitialTime}}" max="{{vm.finalTimeMinMax}}"  class="form-control letters gray-font text-center dating" required>
                                 </div>
                             </div>
                             <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                                           class="form-control letters gray-font text-center dating" required> <label  class="font-15">Fecha final:</label>
-                                    <label class="font-15">Fecha final:</label>
+                                <label  class="font-15">Fecha hasta la cual puede ingresar:</label>
+
+                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                           <!--class="form-control letters gray-font text-center dating" required>-->
+                                    <input id="lala" ng-change="vm.updateDatePicker()" ng-model="vm.dates.final_date" type="date" min="{{vm.minInitialDate}}" class="form-control gray-font text-center" required>
+
+                                </div>
+                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                    <!--class="form-control letters gray-font text-center dating" required>-->
+                                    <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time " min="{{vm.minInitialTime}}" class="form-control gray-font text-center" required>
                                 </div>
                             </div>
                         </div>

@@ -32,6 +32,7 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/cloudinary-core/cloudinary-core.js',
             'src/main/webapp/bower_components/pdfjs-dist/build/pdf.js',
             'src/main/webapp/bower_components/pdfjs-dist/build/pdf.worker.js',
+            'src/main/webapp/bower_components/jquery-timepicker-wvega/jquery.timepicker.js',
             'src/main/webapp/bower_components/angular/angular.js',
             'src/main/webapp/bower_components/angular-aria/angular-aria.js',
             'src/main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
