@@ -11,6 +11,7 @@
         $rootScope.active = "residents";
         var enabledOptions = true;
         var vm = this;
+         vm.radiostatus=true;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -135,9 +136,16 @@
                 AlertService.error(error.data.message);
             }
         }
-        vm.switchEnabledDisabledResidents = function() {
-            enabledOptions = !enabledOptions;
+        vm.switchEnabledResidents = function() {
+            enabledOptions = true;
+             vm.radiostatus=true;
             vm.findResidentsByHouse(vm.house);
+             $("#radio18").prop("checked", "checked")
+        }
+        vm.switchDisabledResidents = function() {
+            enabledOptions = false;
+            vm.findResidentsByHouse(vm.house);
+             $("#radio19").prop("checked", "checked")
         }
         vm.findResidentsByHouse = function(house) {
              $("#tableData").fadeOut(0);
