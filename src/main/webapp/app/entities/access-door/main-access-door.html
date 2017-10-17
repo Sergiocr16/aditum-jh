@@ -25,7 +25,7 @@
                             <ul class="dropdown-menu-list scroll" style="height: 325px;" data-handle-color="#637283">
                                 <li ng-repeat="note in vm.notes | orderBy:'-'">
                                         <span class=" col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; border-bottom: 1px solid #F5F5F5; ">
-                                            <span class="bold font-14 blue-font col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding" >Casa {{note.houseId}}</span>
+                                            <span class="bold font-14 blue-font col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding" >Casa {{note.housenumber}}</span>
                                             <span class="light-gray-font col-lg-7 col-md-7 col-sm-7 col-xs-7 text-right no-padding"> {{note.sinceDate}}</span>
                                               <span ng-click="vm.deleteDomicilioReports(note)" class=" col-lg-1 col-md-1 col-sm-1 col-xs-1"><i class="fa fa-times-circle red" aria-hidden="true"></i></span>
                                                   <span class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " style="margin-top:10px; margin-bottom:10px; color:#757575;">{{note.description}}</span>
@@ -574,8 +574,11 @@
                     </div>
                 </div>
             </div>
-
     </div>
-
+        <div style="color:white;position:absolute;bottom:10px">
+            <h4>
+                Número de soporte : <b>72814565</b>
+            </h4>
+        </div>
 </div>
 </div>

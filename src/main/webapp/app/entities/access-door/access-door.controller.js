@@ -125,6 +125,14 @@
               angular.forEach(notes,function(key,note){
                     key.sinceDate = moment(key.creationdate).fromNow();
                 })
+
+           angular.forEach(notes, function(note, index) {
+            angular.forEach(housesList, function(house, index) {
+                if (house.id == note.houseId) {
+                    note.housenumber = house.housenumber;
+                }
+             })
+            })
                 vm.notes = notes;
                 vm.countNotes = vm.notes.length;
                 subscribe();

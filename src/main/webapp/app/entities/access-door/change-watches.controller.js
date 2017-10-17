@@ -51,11 +51,11 @@
              }
 
                 vm.reportTurn = function() {
-                console.log('dsaf');
                     vm.isSaving = true;
                     if (vm.officersLinked.length == 0) {
                            console.log('dsaf');
                         toastr["error"]("Debe elegir al menos un oficial para reportar el turno");
+                         vm.isSaving = false;
                     } else {
                            console.log('dsaf');
                     var watch = {

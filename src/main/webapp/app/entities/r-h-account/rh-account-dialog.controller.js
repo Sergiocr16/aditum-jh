@@ -98,14 +98,37 @@
             toastr["success"]("Se ha editado el usuario de recursos humanos correctamente.");
         }
         function generateLogin(config){
+function getCleanedString(cadena){
+   // Definimos los caracteres que queremos eliminar
+   var specialChars = "!@#$^&%*()+=-[]\/{}|:<>?,.";
 
-            var firstletterFirstName = vm.rHAccount.name.charAt(0);
-            var firstletterSecondName = vm.rHAccount.secondlastname.charAt(0);
-            if(config==1){
-                vm.loginStringCount = vm.loginStringCount + 1;
-                return firstletterFirstName+vm.rHAccount.lastname+firstletterSecondName+vm.loginStringCount;
-            }
-            return firstletterFirstName+vm.rHAccount.lastname+firstletterSecondName;
+   // Los eliminamos todos
+   for (var i = 0; i < specialChars.length; i++) {
+       cadena= cadena.replace(new RegExp("\\" + specialChars[i], 'gi'), '');
+   }
+
+   // Lo queremos devolver limpio en minusculas
+   cadena = cadena.toLowerCase();
+
+   // Quitamos espacios y los sustituimos por _ porque nos gusta mas asi
+   cadena = cadena.replace(/ /g,"_");
+
+   // Quitamos acentos y "ñ". Fijate en que va sin comillas el primer parametro
+   cadena = cadena.replace(/á/gi,"a");
+   cadena = cadena.replace(/é/gi,"e");
+   cadena = cadena.replace(/í/gi,"i");
+   cadena = cadena.replace(/ó/gi,"o");
+   cadena = cadena.replace(/ú/gi,"u");
+   cadena = cadena.replace(/ñ/gi,"n");
+   return cadena;
+}
+              var firstletterFirstName = vm.rHAccount.name.charAt(0);
+              var firstletterSecondName = vm.rHAccount.secondlastname.charAt(0);
+              if(config==1){
+              vm.loginStringCount = vm.loginStringCount + 1;
+              return getCleanedString(firstletterFirstName+vm.rHAccount.lastname+firstletterSecondName+vm.loginStringCount);
+              }
+              return getCleanedString(firstletterFirstName+vm.rHAccount.lastname+firstletterSecondName);
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:officerAccountstUpdate', result);
