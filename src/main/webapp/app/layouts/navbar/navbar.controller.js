@@ -49,7 +49,7 @@
       });
      vm.viewWatch = function(){
       var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyId)
-     $state.go('watch',{companyId:encryptedId})
+     $state.go('turno',{companyId:encryptedId})
      }
 
        vm.isNavbarCollapsed = true;

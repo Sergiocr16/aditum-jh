@@ -636,6 +636,7 @@
             }
 
             vm.insertVisitor = function() {
+            vm.isInsertingVisitor = true;
                 var visitant = {
                     name: CommonMethods.capitalizeFirstLetter(vm.visitor_name),
                     lastname: CommonMethods.capitalizeFirstLetter(vm.visitor_last_name),
@@ -658,6 +659,7 @@
              function onSaveSuccess (result) {
                 vm.show=4;
                  vm.isSaving = false;
+                 vm.isInsertingVisitor = false;
                  visitorsList.push(result);
                  toastr["success"]("Se registró la entrada del visitante correctamente.");
              }

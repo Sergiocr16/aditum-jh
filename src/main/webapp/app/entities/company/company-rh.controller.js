@@ -28,7 +28,7 @@
         }
         vm.viewWatch = function(companyId){
          var encryptedId = CommonMethods.encryptIdUrl(companyId)
-        $state.go('watch',{companyId:encryptedId})
+        $state.go('turno',{companyId:encryptedId})
         }
        function getCurrentUserCompanyId(){
             Principal.identity().then(function(account){

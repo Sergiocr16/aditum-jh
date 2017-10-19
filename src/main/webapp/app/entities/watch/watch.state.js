@@ -9,9 +9,9 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('watch', {
+        .state('turno', {
             parent: 'entity',
-            url: '/watch/{companyId}/?page&sort&search',
+            url: '/turno/{companyId}/?page&sort&search',
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH'],
             },
@@ -91,7 +91,7 @@
                       }
                   })
         .state('watch-detail', {
-            parent: 'watch',
+            parent: 'turno',
             url: '/watch/{id}',
             data: {
                 authorities: ['ROLE_MANAGER'],
@@ -113,7 +113,7 @@
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
-                        name: $state.current.name || 'watch',
+                        name: $state.current.name || 'turno',
                         params: $state.params,
                         url: $state.href($state.current.name, $state.params)
                     };
@@ -146,8 +146,8 @@
                 });
             }]
         })
-        .state('watch.new', {
-            parent: 'watch',
+        .state('turno.new', {
+            parent: 'turno',
             url: '/new',
             data: {
                 authorities: ['ROLE_MANAGER']
@@ -170,14 +170,14 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('watch', null, { reload: 'watch' });
+                    $state.go('turno', null, { reload: 'turno' });
                 }, function() {
-                    $state.go('watch');
+                    $state.go('turno');
                 });
             }]
         })
-        .state('watch.edit', {
-            parent: 'watch',
+        .state('turno.edit', {
+            parent: 'turno',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_MANAGER']
@@ -195,14 +195,14 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('watch', null, { reload: 'watch' });
+                    $state.go('turno', null, { reload: 'turno' });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('watch.delete', {
-            parent: 'watch',
+        .state('turno.delete', {
+            parent: 'turno',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_MANAGER']
@@ -219,7 +219,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('watch', null, { reload: 'watch' });
+                    $state.go('turno', null, { reload: 'turno' });
                 }, function() {
                     $state.go('^');
                 });

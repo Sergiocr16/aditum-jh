@@ -62,7 +62,7 @@
             Watch.findBetweenDates({
                 initial_time: moment(vm.consulting_initial_time).format(),
                 final_time: moment(vm.consulting_final_time).format(),
-                companyId: companyId,
+                companyId: parseInt(companyId),
             }, onSuccessBetweenDates, onErrorBetweenDates)
 
             function onSuccessBetweenDates(data, headers) {
@@ -122,7 +122,7 @@
                 $("#backBTN").fadeIn(300);
             }, 200)
             Watch.getCurrent({
-                companyId: companyId
+                companyId: parseInt(companyId)
             }, onSuccessCurrent, onErrorCurrent);
 
             function onSuccessCurrent(data, headers) {
@@ -153,13 +153,14 @@
 
         setTimeout(function(){vm.loadAll();},500)
 
-        vm.getWatch = function(watch) {
+        vm.getWatch = function(turnoId) {
             $("#data").fadeOut(0);
             setTimeout(function() {
                 $("#loadingData").fadeIn(300);
             }, 200)
+
             Watch.get({
-                id: watch.id
+                id: parseInt(turnoId)
             }, onSuccess, onError)
 
             function onSuccess(data, headers) {

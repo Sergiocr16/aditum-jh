@@ -167,12 +167,12 @@
                                         </tr>
                                         </thead>
                                         <tbody class="font-12">
-                                        <tr class="pointer" ng-click="vm.getWatch(watch)" ng-repeat="watch in vm.watches track by watch.id">
+                                        <tr class="pointer" ng-click="vm.getWatch(turno.id)" ng-repeat="turno in vm.watches track by turno.id">
                                             <td>
-                                                {{watch.initialtime | formatDate}}
+                                                {{turno.initialtime | formatDate}}
                                             </td>
                                             <td>
-                                                {{watch.finaltime | formatDate}}
+                                                {{turno.finaltime | formatDate}}
                                             </td>
                                             <td>
                                                 Ver Detalle
