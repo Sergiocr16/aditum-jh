@@ -15,9 +15,16 @@
         return service;
 
         function request (config) {
+        String.prototype.myStartsWith = function(str){
+         if(this.indexOf(str)===0){
+          return true;
+         }else{
+           return  false;
+         }
+        };
             /*jshint camelcase: false */
             config.headers = config.headers || {};
-            if (config.url.startsWith(cloudinary.config().base_url)) {
+            if (config.url.myStartsWith(cloudinary.config().base_url)) {
                 return config;
             }
             var token = $localStorage.authenticationToken || $sessionStorage.authenticationToken;
