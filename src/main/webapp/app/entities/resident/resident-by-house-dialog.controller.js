@@ -112,7 +112,6 @@
              vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
              vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
              vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
-              vm.resident.isOwner = 0;
              if(vm.resident.id!==null){
                if(vm.temporalIndentification!==vm.resident.identificationnumber){
                    Resident.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.resident.identificationnumber},alreadyExist,allClearUpdate)
@@ -122,14 +121,15 @@
                    }
                      function allClear(data){
                           CommonMethods.waitingMessage();
+                          console.log(vm.resident.isOwner)
                          if(vm.resident.isOwner == true){
                            vm.resident.isOwner = 1;
                        } else {
                             vm.resident.isOwner = 0;
                        }
-                        console.log("AQUI")
+
                       if(fileImage!==null){
-                      console.log("HAY IMAGEN")
+
                        vm.imageUser = {user: vm.resident.id};
                      SaveImageCloudinary
                                        .save(fileImage, vm.imageUser)
@@ -152,6 +152,7 @@
                    }
                      }
                 } else {
+                console.log()
                     if(vm.resident.isOwner == true){
                           vm.resident.isOwner = 1;
                       } else {
@@ -228,13 +229,14 @@
            }
             function modificar(){
                  CommonMethods.waitingMessage();
+                      alert(vm.resident.isOwner)
                      if(vm.resident.isOwner == true){
                        vm.resident.isOwner = 1;
                    } else {
                         vm.resident.isOwner = 0;
                    }
               if(fileImage!==null){
-                console.log("HAY IMAGEN")
+
                      vm.imageUser = {user: vm.resident.id};
                     SaveImageCloudinary
                                       .save(fileImage, vm.imageUser)

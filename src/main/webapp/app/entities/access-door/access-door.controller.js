@@ -772,8 +772,17 @@ function receiveHomeService(homeService){
         var result = hasExistance(vm.notes,homeService.id)
 
         if(result==undefined||result==-1){
+
         homeService.sinceDate = moment(homeService.creationdate).fromNow();
-            vm.notes.push(homeService);
+         vm.notes.push(homeService);
+                   angular.forEach(vm.notes, function(note, index) {
+                    angular.forEach(housesList, function(house, index) {
+                        if (house.id == note.houseId) {
+                            note.housenumber = house.housenumber;
+                        }
+                     })
+                    })
+
             vm.countNotes = vm.notes.length;
         }
 
