@@ -260,6 +260,11 @@
                 <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
                </a>
             </li>
+            <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
+                <a ui-sref="soporte">
+                    <i class="fa fa-life-ring" aria-hidden="true"></i> Soporte
+                </a>
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>

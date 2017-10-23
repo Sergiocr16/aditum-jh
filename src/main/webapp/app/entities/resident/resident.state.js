@@ -294,8 +294,6 @@
                  }]
               }
           })
-
-
         .state('resident.delete', {
             parent: 'resident',
             url: '/{id}/delete',
