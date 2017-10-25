@@ -120,6 +120,9 @@
                  if(house.id == value.houseId){
                     value.houseNumber = house.housenumber
                  }
+                 if(value.houseId == undefined){
+                    value.houseNumber = value.responsableofficer;
+                 }
              })
          })
         }
