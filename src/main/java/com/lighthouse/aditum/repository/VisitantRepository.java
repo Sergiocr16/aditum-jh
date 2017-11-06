@@ -15,10 +15,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface VisitantRepository extends JpaRepository<Visitant,Long> {
     List<Visitant> findByCompanyId(Long companyId);
-    List<Visitant> findByCompanyIdAndIsinvitedOrIsinvited(Long companyId,Integer isInvited,Integer isInvited2);
+    List<Visitant> findByCompanyIdAndIsinvitedOrCompanyIdAndIsinvited(Long companyId,Integer isInvited,Long companyId2, Integer isInvited2);
 
     Visitant findByIdentificationnumberAndHouseIdAndCompanyId(String identificationNumber, Long houseId, Long companyId );
-    List<Visitant> findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(Long companyId, Long houseId,Integer isInvited,Integer isInvited2);
+    List<Visitant> findByCompanyIdAndHouseIdAndIsinvitedOrCompanyIdAndHouseIdAndIsinvited(Long companyId, Long houseId,Integer isInvited, Long companyId2, Long houseId2, Integer isInvited2);
 
     Integer countByCompanyIdAndIsinvited(Long companyId,Integer isInvited);
 
