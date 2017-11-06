@@ -118,7 +118,7 @@ public class VisitantService {
       ArrayList visitantesPorMes = new ArrayList();
 
       List<String> meses = Arrays.asList("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-       Integer currentMotnh = ZonedDateTime.now().getMonthValue();
+       Integer currentMotnh = ZonedDateTime.now().minusHours(6).getMonthValue();
         for( int i = 1 ; i <= currentMotnh; i++){
             ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime lastDayOfMonth = ZonedDateTime.now().withMonth(i).withHour(23).withMinute(59).withSecond(59).withNano(59);
@@ -138,7 +138,7 @@ public class VisitantService {
         log.debug("Request to get all Visitants per month");
         ArrayList visitantesPorSemana = new ArrayList();
         List<String> dias = Arrays.asList("Lun","Mar","Mier","Jue","Vie","Sab","Dom");
-        Integer currentDay = ZonedDateTime.now().getDayOfWeek().getValue();
+        Integer currentDay = ZonedDateTime.now().minusHours(6).getDayOfWeek().getValue();
         ZonedDateTime firstDayOfWeek = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(currentDay-1);
         for( int i = 0 ; i < currentDay; i++){
             ZonedDateTime initDay = firstDayOfWeek.plusDays(i);
@@ -156,7 +156,7 @@ public class VisitantService {
     public ArrayList countVisitantsPerMonth(Long companyId) {
         log.debug("Request to get all Visitants per month");
         ArrayList visitantesPorSemana = new ArrayList();
-        Integer currentDay = ZonedDateTime.now().getDayOfMonth();
+        Integer currentDay = ZonedDateTime.now().minusHours(6).getDayOfMonth();
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).withDayOfMonth(1);
         ZonedDateTime startDay = firstDayOfMonth;
         for( int i = 0 ; i < currentDay; i++){
@@ -179,14 +179,14 @@ public class VisitantService {
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findInvitedVisitorsByHouse(Long companyId, Long houseId) {
         log.debug("Request to get all Visitants");
-        List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrIsinvited(companyId,houseId,1,2);
+        List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrCompanyIdAndHouseIdAndIsinvited(companyId,houseId,1,companyId,houseId,2);
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findAllInvited(Long companyId) {
         log.debug("Request to get all Visitants");
-        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrIsinvited(companyId,1,2);
+        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrCompanyIdAndIsinvited(companyId,1,companyId,2);
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
