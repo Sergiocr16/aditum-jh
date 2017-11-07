@@ -102,14 +102,14 @@ public class VisitantService {
     public Integer countByCompanyInLastMonth(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6),companyId,3);
     }
 
     @Transactional(readOnly = true)
     public Integer countByCompanyInLastDay(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6),companyId,3);
     }
 
     @Transactional(readOnly = true)
@@ -124,7 +124,7 @@ public class VisitantService {
             ZonedDateTime lastDayOfMonth = ZonedDateTime.now().withMonth(i).withHour(23).withMinute(59).withSecond(59).withNano(59);
             int lastDay = lastDayOfMonth.getMonth().length(false);
             lastDayOfMonth = lastDayOfMonth.withDayOfMonth(lastDay);
-            int visitantesEseMes = visitantRepository.countByDatesBetweenAndCompany(firstDayOfMonth,lastDayOfMonth,companyId,3);
+            int visitantesEseMes = visitantRepository.countByDatesBetweenAndCompany(firstDayOfMonth.plusHours(6),lastDayOfMonth.plusHours(6),companyId,3);
             ArrayList info = new ArrayList();
             info.add(meses.get(i-1));
             info.add(visitantesEseMes);
@@ -143,7 +143,7 @@ public class VisitantService {
         for( int i = 0 ; i < currentDay; i++){
             ZonedDateTime initDay = firstDayOfWeek.plusDays(i);
             ZonedDateTime finishDay = firstDayOfWeek.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
-            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay.plusHours(6),finishDay.plusHours(6),companyId,3);
             ArrayList info = new ArrayList();
             info.add(dias.get(i));
             info.add(visitantesEseDia);
@@ -162,7 +162,7 @@ public class VisitantService {
         for( int i = 0 ; i < currentDay; i++){
             ZonedDateTime initDay = startDay.plusDays(i);
             ZonedDateTime finishDay = startDay.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
-            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay.plusHours(6),finishDay.plusHours(6),companyId,3);
             ArrayList info = new ArrayList();
             info.add(i+1);
             info.add(visitantesEseDia);
