@@ -49,6 +49,14 @@
         vm.logout = logout;
 
         vm.isAuthenticated = Principal.isAuthenticated;
+
+        vm.reloadAll = function(){
+          vm.hideEmergencyForm = 1;
+          vm.hideLoadingForm = 2;
+          vm.hideRegisterForm = 1;
+          vm.show = 20;
+          loadResidents();
+        }
         function logout() {
             Auth.logout();
             $rootScope.companyUser = undefined;
@@ -500,7 +508,15 @@
             Visitant.save(visitant, onSaveSuccess, onSaveError);
 
             function onSaveSuccess (result) {
-                vm.show=4;
+
+                 vm.id_number = "";
+                 vm.id_vehicule = "";
+                  $("#id_license_number").css("text-transform", "none");
+                 $("#id_license_number").attr("placeholder", "Cédula");
+                 $("#vehicule_license_plate").css("text-transform", "none");
+                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
+
+                  vm.show = 4;
                 vm.isSaving = false;
                 visitorsList.push(result);
                 toastr["success"]("Se registró la entrada del visitante correctamente.");
@@ -519,7 +535,10 @@
 
             }
             vm.getVisitorByPlate = function(){
-            if(vm.visitor_license_plate!=undefined){
+
+            console.log("hola: "+vm.visitor_license_plate)
+            if(vm.visitor_license_plate!=undefined || vm.visitor_license_plate!=""){
+                         console.log("ENTRE")
                             angular.forEach(visitorsList, function(itemVisitor, index) {
                                 if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3 ) {
                                     vm.visitor_name = itemVisitor.name;
@@ -541,7 +560,10 @@
                         $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
                           $("#vm.id_number").attr("placeholder", "Cédula");
                     }
-                 vm.getVisitorByPlate();
+                 if(vm.visitor_license_plate != ""){
+                  vm.getVisitorByPlate();
+                 }
+
             }
 
 
@@ -658,6 +680,12 @@
 
              function onSaveSuccess (result) {
                 vm.show=4;
+                   vm.id_number = "";
+                                 vm.id_vehicule = "";
+                                  $("#id_license_number").css("text-transform", "none");
+                                 $("#id_license_number").attr("placeholder", "Cédula");
+                                 $("#vehicule_license_plate").css("text-transform", "none");
+                                 $("#vehicule_license_plate").attr("placeholder", "Número placa (sin guiones)");
                  vm.isSaving = false;
                  vm.isInsertingVisitor = false;
                  visitorsList.push(result);

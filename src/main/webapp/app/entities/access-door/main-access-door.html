@@ -111,7 +111,7 @@
                         <span>  <i class="fa fa-home font-17 white-color" aria-hidden="true"></i></span>
                     </button>
                 </div>
-                <!--<button type="submit" class="btn green font-15 col-md-12 col-sm-12 col-xs-12 btn-access-door " ui-sref="main-access-door.newWatch" name="buton">Registrar cambio de turno</button>-->
+                <button type="submit" class="btn green font-15 col-md-12 col-sm-12 col-xs-12 btn-access-door " ng-click="vm.reloadAll()" name="buton">Recargar datos del sistema</button>
                 <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs "></div>
             </div>
 
@@ -349,6 +349,7 @@
                                             <input type="text" ng-model="vm.visitor_license_plate" ng-change="vm.capitalize()" class="form-control font-15 gray-font specialCharacters" id="license_plate" placeholder="Número placa (opcional)">
 
                                         </div>
+                                        <span style="color:#26a69a" class="help-block">Dejar número de placa vacío si el visitante no ingresa en un vehículo.</span>
                                     </div>
                                     <div class="form-group form-md-radios" style="margin-bottom:10px">
                                         <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
