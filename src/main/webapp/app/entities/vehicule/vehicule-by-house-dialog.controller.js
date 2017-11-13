@@ -18,6 +18,7 @@
          vm.myPlate = vm.vehicule.licenseplate;
         vm.houses = House.query();
         CommonMethods.validateSpecialCharacters();
+         CommonMethods.validateSpecialCharactersAndVocals();
         angular.element(document).ready(function () {
         ColorPicker.init();
          });

@@ -18,6 +18,8 @@
         vm.required = 1;
         vm.required2 = 1;
         CommonMethods.validateSpecialCharacters();
+         CommonMethods.validateSpecialCharactersAndVocals();
+
         angular.element(document).ready(function () {
         ColorPicker.init();
          });

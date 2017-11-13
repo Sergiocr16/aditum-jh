@@ -282,6 +282,9 @@ height: 100%;
 .no-padding-left {
     padding-left: 0 !important;
 }
+.no-margin-left {
+    margin-left: 0 !important;
+}
 .absolute {
     position: absolute !important;
 }
