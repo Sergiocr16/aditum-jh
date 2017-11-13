@@ -305,9 +305,15 @@
                             </div>
                         </div>
                         <div class="portlet-body form">
+                            <div class="actions col-lg-12" style="margin:5px;padding:5px;" ng-show="vm.visitorsConsultedByPlate.length>0">
+                                <p style="color:#26a69a">Se ha encontrado más de un visitante con esa placa.</p>
+                                <select class="form-control gray-font" ng-change="vm.setVisitorSelected()" data-ng-model="vm.visitorSelected" ng-options="visitor.name+' '+visitor.lastname+' - '+visitor.identificationnumber for visitor in vm.visitorsConsultedByPlate | orderBy: 'name'" required>
+                                    <option value="">Puedes seleccionar entre los otros visitantes encontrados</option>
+                                </select>
+                                <hr>
+                            </div>
 
                             <form role="form" ng-submit="vm.insertVisitor()">
-
                                 <div class="form-body">
                                     <div class="form-group col-md-12">
                                         <div class="input-group">
@@ -319,6 +325,7 @@
                                     </div>
                                     <div class="form-group col-md-12">
                                         <div class="input-group">
+
                                             <span class="input-group-addon">
                     											<i class="fa fa-user"></i>
                     											</span>
