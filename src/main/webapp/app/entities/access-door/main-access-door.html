@@ -334,12 +334,15 @@
                             <button type="button" ng-click="vm.show=4;" class="btn default gray-font ">Cerrar</button>
                         </div>
 
-                        <div class=" col-md-10 portlet-title ">
+                        <div ng-show="vm.visitantByHouseList.length>0" class=" col-md-10 portlet-title ">
                             <div class="caption text-center font-20">
                                 Visitantes de la casa {{vm.visitantListHouse.housenumber}}
                             </div>
                         </div>
-                        <div style="background-color:#1c7d74; height:30px" class="col-md-12 no-padding margin-top-10">
+                        <div  ng-show="vm.visitantByHouseList.length==0" class="caption text-center font-20">
+                            No hay visitantes autorizados en esta casa
+                        </div>
+                        <div ng-show="vm.visitantByHouseList.length>0" style="background-color:#1c7d74; height:30px" class="col-md-12 no-padding margin-top-10">
                             <div class="col-md-6 col-sm-6 col-xs-6 text-center "><h5 style="color:white" class="font-15 bold">Nombre completo</h5></div>
                             <div class="col-md-3 col-sm-3 col-xs-3 text-center "><h5 style="color:white" class="font-15 bold">Cédula</h5></div>
                             <div class="col-md-3 col-sm-3 col-xs-3 text-center "><h5 style="color:white" class="font-15 bold">Placa</h5></div>

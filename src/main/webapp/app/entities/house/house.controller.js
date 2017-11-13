@@ -43,6 +43,11 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
+                  angular.forEach(data,function(value,key){
+                      if(value.housenumber==9999){
+                      value.housenumber="Oficina"
+                      }
+                  })
                 vm.houses = data;
                 vm.page = pagingParams.page;
                   setTimeout(function() {
