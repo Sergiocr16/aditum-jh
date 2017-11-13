@@ -12,6 +12,7 @@
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
+       vm.showLock=false;
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
         vm.destityTitle="Número de casa:";
          vm.destityPlaceHolder="Seleccione una casa";
@@ -34,7 +35,11 @@
           vm.housesToShow = vm.houses;
           $("#radio_14").prop("checked", "checked")
         }
-
+vm.unlocklock = function(){
+vm.iconLock = "fa fa-unlock";
+vm.textLock = "Bloquear";
+vm.showLock = false;
+}
          vm.changeDestinoProveedor = function(){
              vm.destityTitle="Destino:";
              vm.destityPlaceHolder="Seleccione un destino";
@@ -276,11 +281,14 @@
 
         }
         vm.getVisitor = function() {
+        vm.showLock=false;
             if (vm.visitor_id_number == "" || vm.visitor_licenseplate == "") {
                 clearInputs();
             } else {
                 angular.forEach(visitorsList, function(itemVisitor, index) {
                     if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
+                       vm.iconLock ="fa fa-lock"
+                        vm.showLock = true;
                         vm.visitor_name = itemVisitor.name;
                         vm.visitor_last_name = itemVisitor.lastname;
                         vm.visitor_second_last_name = itemVisitor.secondlastname;
@@ -649,17 +657,7 @@
 
                 } else {
                     vm.visitor_id_number = vm.id_number;
-                    angular.forEach(visitorsList, function(itemVisitor, index) {
-                        if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
-                            vm.visitor_name = itemVisitor.name;
-                            vm.visitor_last_name = itemVisitor.lastname;
-                            vm.visitor_second_last_name = itemVisitor.secondlastname;
-                            vm.visitor_license_plate = itemVisitor.licenseplate;
-                            vm.visitor_id_number = itemVisitor.identificationnumber;
-                            setHouse(itemVisitor.houseId);
-
-                        }
-                    });
+                 vm.getVisitor();
                 }
 
                 if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {

@@ -320,7 +320,11 @@
                                             <span class="input-group-addon">
                                         <i class="fa fa-indent"></i>
                                         </span>
-                                            <input type="text" ng-change="vm.getVisitor()" required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters" id="identification_number" placeholder="Cédula" required>
+                                            <input type="text" ng-disabled="vm.showLock"  ng-change="vm.getVisitor()" required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters" id="identification_number" placeholder="Cédula" required>
+                                            <span class="input-group-addon btn green" ng-show="vm.showLock" ng-click="vm.unlocklock()">
+                                            <i class="{{vm.iconLock}}" style="color:white;font-size:15px"></i>
+                                                Desbloquear
+                                        </span>
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
@@ -329,7 +333,7 @@
                                             <span class="input-group-addon">
                     											<i class="fa fa-user"></i>
                     											</span>
-                                            <input type="text" id="name" ng-model="vm.visitor_name" class="form-control font-15 gray-font letters" placeholder="Nombre" required style="text-transform: capitalize;">
+                                            <input type="text" id="name" ng-disabled="vm.showLock" ng-model="vm.visitor_name" class="form-control font-15 gray-font letters" placeholder="Nombre" required style="text-transform: capitalize;">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
@@ -337,7 +341,7 @@
                                             <span class="input-group-addon">
                                           <i class="fa fa-user"></i>
                                           </span>
-                                            <input type="text" ng-model="vm.visitor_last_name" class="form-control font-15 gray-font letters" id="last_name" placeholder="Primer apellido" required style="text-transform: capitalize;">
+                                            <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_last_name" class="form-control font-15 gray-font letters" id="last_name" placeholder="Primer apellido" required style="text-transform: capitalize;">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
@@ -345,7 +349,7 @@
                                             <span class="input-group-addon">
                                           <i class="fa fa-user"></i>
                                           </span>
-                                            <input type="text" ng-model="vm.visitor_second_last_name" class="form-control font-15 gray-font letters" id="second_last_name" placeholder="Segundo apellido" required style="text-transform: capitalize;">
+                                            <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_second_last_name" class="form-control font-15 gray-font letters" id="second_last_name" placeholder="Segundo apellido" required style="text-transform: capitalize;">
                                         </div>
                                     </div>
                                     <div class="form-group col-md-12">
