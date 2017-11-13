@@ -18,6 +18,8 @@
         vm.required = 1;
         vm.required2 = 1;
         CommonMethods.validateSpecialCharacters();
+         CommonMethods.validateSpecialCharactersAndVocals();
+
         angular.element(document).ready(function () {
         ColorPicker.init();
          });
@@ -41,6 +43,11 @@
         setTimeout(function(){
           House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
                 function onSuccessHouses(data, headers) {
+                   angular.forEach(data,function(value,key){
+                      if(value.housenumber==9999){
+                      value.housenumber="Oficina"
+                      }
+                  })
                     vm.houses = data;
                     setTimeout(function() {
                         $("#register_edit_form").fadeIn(600);

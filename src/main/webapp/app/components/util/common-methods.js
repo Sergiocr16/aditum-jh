@@ -20,7 +20,8 @@
                 encryptIdUrl:encryptIdUrl,
                 decryptIdUrl:decryptIdUrl,
                 validateSpecialCharacters: validateSpecialCharacters,
-                getCarBrands: getCarBrands
+                getCarBrands: getCarBrands,
+                validateSpecialCharactersAndVocals: validateSpecialCharactersAndVocals
             };
             function validateName (items, name) {
                 var condition = true;
@@ -218,7 +219,11 @@
                  if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65)) return false;
                  });
               }
-
+              function validateSpecialCharactersAndVocals() {
+                 jQuery('.specialCharactersAndVocals').keypress(function(tecla) {
+                 if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65) || tecla.charCode == 97 || tecla.charCode == 101 || tecla.charCode == 105 || tecla.charCode == 111 || tecla.charCode == 117) return false;
+                 });
+              }
              function validateRepeat(items, itemToValidate, criteria) {
                  var condition = false;
                  angular.forEach(items, function(item, index) {

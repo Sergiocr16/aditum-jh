@@ -30,6 +30,9 @@
         House.get({id:vm.resident.houseId},onSuccessHouses);
         function onSuccessHouses(house, headers) {
           vm.resident.houseId = house.housenumber;
+            if(house.housenumber==9999){
+               vm.resident.houseId="Oficina"
+            }
           $("#residentInformation").fadeIn(300);
           if (house.securityKey == null) {
               vm.securitykey = "No definida"

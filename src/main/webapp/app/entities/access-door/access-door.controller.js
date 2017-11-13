@@ -12,7 +12,11 @@
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
+
+        CommonMethods.validateSpecialCharactersAndVocals();
+
        vm.showLock=false;
+
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
         vm.destityTitle="Número de casa:";
          vm.destityPlaceHolder="Seleccione una casa";
@@ -101,6 +105,11 @@ vm.showLock = false;
         function loadHouses() {
            House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
            function onSuccessHouse(houses, headers) {
+            angular.forEach(houses,function(value,key){
+              if(value.housenumber==9999){
+              value.housenumber="Oficina"
+              }
+          })
               housesList = houses;
               vm.housesToShow = houses;
               loadVehicules()
@@ -243,6 +252,10 @@ vm.showLock = false;
                                 housenumber = house.housenumber;
                                 securityKey = house.securityKey;
                                 emergencyKey = house.emergencyKey;
+                                if(house.housenumber==9999){
+                                 vm.SelectedHouse = 'Oficina';
+                                 housenumber = 'Oficina';
+                                }
                                 if (item.enabled == 0) {
                                     vm.vehiculeRegisteredTitle = "Vehículo no habilitado para ingresar";
                                     vm.colorVehiculeRegistered = "red-font";
@@ -342,6 +355,108 @@ vm.showLock = false;
             }
 
         }
+       vm.getInvitedVisitantsByHouse = function() {
+            vm.show=13;
+            loadAll();
+            vm.loadingVisitantByHouseIndex=1
+            function loadAll() {
+                Visitant.findInvitedByHouse({
+                    companyId: $rootScope.companyId,
+                    houseId: vm.houseForVisitantsInformation.id
+                }).$promise.then(onSuccess);
+
+
+                function onSuccess(data) {
+                        $("#loandingVisitantByHouseIndex").fadeOut(0);
+                     $("#visitantByHouseIndex").fadeIn(400);
+
+                    var visitantByHouseList = [];
+                    angular.forEach(data, function(itemVisitor, key) {
+                        if(itemVisitor.isinvited == 1){
+                         var visitantInvited = {}
+                         if(vm.verifyVisitantInivitedDate(itemVisitor)){
+                               visitantInvited.name = itemVisitor.name;
+                               visitantInvited.last_name = itemVisitor.lastname;
+                               visitantInvited.second_last_name = itemVisitor.secondlastname;
+                               if (itemVisitor.licenseplate == null ||itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+                                   visitantInvited.license_plate = "Ninguna";
+
+                               } else {
+                                   visitantInvited.license_plate = itemVisitor.licenseplate;
+                               }
+                               visitantInvited.indentification = itemVisitor.identificationnumber;
+                               var house = vm.setHouse(itemVisitor.houseId);
+
+                               vm.visitantListHouse = house;
+                               if(house.housenumber==9999){
+                               vm.visitantListHouse = "Oficina";
+                               }
+                               visitantInvited.house_number = house.housenumber;
+                               visitantByHouseList.push(visitantInvited);
+
+                       }
+
+                        }
+
+                    })
+
+                    vm.visitantByHouseList = visitantByHouseList;
+
+              }
+
+                function onError(error) {
+                    AlertService.error(error.data.message);
+                }
+            }
+
+       }
+
+       vm.registerVisitantFromVisitantsList = function(visitant){
+        vm.visitantToInsert = visitant;
+                    bootbox.confirm({
+                        message: "¿Está seguro que desea registrar la visita de " + visitant.name + visitant.last_name + "?",
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                        vm.insertingVisitant=1;
+                            if (result) {
+
+                                 var visitant = {
+                                            name: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.name),
+                                            lastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.last_name),
+                                            secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.second_last_name),
+                                            identificationnumber: vm.visitantToInsert.indentification.toUpperCase(),
+                                            licenseplate: vm.visitantToInsert.license_plate.toUpperCase(),
+                                            companyId: $rootScope.companyId,
+                                            isinvited: 3,
+                                            arrivaltime: moment(new Date()).format(),
+                                            houseId: vm.visitantListHouse.id
+                                        }
+
+                                        Visitant.save(visitant, onSaveSuccess, onSaveError);
+
+                                        function onSaveSuccess (result) {
+
+                                            vm.insertingVisitant=2;
+                                            visitorsList.push(result);
+                                            toastr["success"]("Se registró la entrada del visitante correctamente.");
+                                        }
+                            }
+                        }
+                    });
+
+
+       }
+
+
 
         vm.getHouseInformation = function() {
 
@@ -349,29 +464,6 @@ vm.showLock = false;
                 houseId: vm.houseForInformation.id
             }).$promise.then(onSuccessResidents, onError);
 
-//            var existe=0;
-//            angular.forEach(housesList, function(item, index) {
-//                if (item.securityKey == vm.security_key) {
-//                    existe =1;
-//                    vm.show = 9;
-//                    vm.emergencySecurityKeyTitle = "Clave de seguridad";
-//                    vm.emergency_security_key = item.emergencyKey;
-//                    vm.key_house_number =item.housenumber;
-//                    var houseId = item.id;
-//                    Resident.findResidentesEnabledByHouseId({
-//                        houseId: houseId
-//                    }).$promise.then(onSuccessResidents, onError);
-//                } else if (item.emergencyKey == vm.security_key) {
-//                    existe =1;
-//                    vm.show = 9;
-//                    vm.emergencySecurityKeyTitle = "Clave de emergencia";
-//                    vm.emergency_security_key = item.securityKey;
-//                    var houseId = item.id;
-//                    Resident.findResidentesEnabledByHouseId({
-//                        houseId: houseId
-//                    }).$promise.then(onSuccessResidents, onError);
-//
-//                }
                 function onSuccessResidents(data) {
                     vm.residents = data;
                     vm.show = 12;
@@ -390,6 +482,9 @@ vm.showLock = false;
                  function onSuccessHouse(data) {
 
                      vm.houseInformationTitle = "Información de la casa" + " "+data.housenumber;
+                     if(data.housenumber==9999){
+                     vm.houseInformationTitle = "Información de la casa" + " oficina";
+                     }
                     vm.house = data;
                     if(data.securityKey==undefined){
                       vm.houseInfoSecurityKey = "No tiene";
@@ -459,6 +554,10 @@ vm.showLock = false;
                             vm.housenumber = house.housenumber;
                             securityKey = house.securityKey;
                             emergencyKey = house.emergencyKey;
+                              if(house.housenumber==9999){
+                             vm.housenumber = 'Oficina';
+                             housenumber = 'Oficina';
+                            }
                             if (item.enabled == 0) {
                                 vm.residentRegisteredTitle = "Residente no habilitado para ingresar";
                                 vm.colorResidentRegistered = "red-font";
@@ -870,6 +969,11 @@ vehiculesList.push(vehicle);
 function receiveHouse(house){
  House.query({companyId: $rootScope.companyId}, onSuccessHouse, onError);
            function onSuccessHouse(houses, headers) {
+           angular.forEach(houses,function(value,key){
+               if(value.housenumber==9999){
+               value.housenumber="Oficina"
+               }
+           })
               housesList = houses;
               vm.housesToShow = houses;
            }

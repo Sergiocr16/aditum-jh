@@ -75,6 +75,11 @@
             }).$promise.then(onSuccessHouses);
 
             function onSuccessHouses(data, headers) {
+              angular.forEach(data,function(value,key){
+                                  if(value.housenumber==9999){
+                                  value.housenumber="Oficina"
+                                  }
+                              })
                 vm.houses = data;
                 loadResidents();
             }
