@@ -12,6 +12,7 @@
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
+       vm.showLock=false;
         var residentsList, vehiculesList, housesList, emergencyList, visitorsList,invitedList;
         vm.destityTitle="Número de casa:";
          vm.destityPlaceHolder="Seleccione una casa";
@@ -34,7 +35,11 @@
           vm.housesToShow = vm.houses;
           $("#radio_14").prop("checked", "checked")
         }
-
+vm.unlocklock = function(){
+vm.iconLock = "fa fa-unlock";
+vm.textLock = "Bloquear";
+vm.showLock = false;
+}
          vm.changeDestinoProveedor = function(){
              vm.destityTitle="Destino:";
              vm.destityPlaceHolder="Seleccione un destino";
@@ -276,11 +281,14 @@
 
         }
         vm.getVisitor = function() {
+        vm.showLock=false;
             if (vm.visitor_id_number == "" || vm.visitor_licenseplate == "") {
                 clearInputs();
             } else {
                 angular.forEach(visitorsList, function(itemVisitor, index) {
                     if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
+                       vm.iconLock ="fa fa-lock"
+                        vm.showLock = true;
                         vm.visitor_name = itemVisitor.name;
                         vm.visitor_last_name = itemVisitor.lastname;
                         vm.visitor_second_last_name = itemVisitor.secondlastname;
@@ -532,26 +540,54 @@
 
                 });
                 return house;
-
             }
             vm.getVisitorByPlate = function(){
-
-            console.log("hola: "+vm.visitor_license_plate)
+            vm.visitorShowing = 0;
+            vm.visitorSelected = {}
+            vm.visitorsConsultedByPlate = [];
             if(vm.visitor_license_plate!=undefined || vm.visitor_license_plate!=""){
-                         console.log("ENTRE")
-                            angular.forEach(visitorsList, function(itemVisitor, index) {
-                                if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3 ) {
-                                    vm.visitor_name = itemVisitor.name;
-                                    vm.visitor_last_name = itemVisitor.lastname;
-                                    vm.visitor_second_last_name = itemVisitor.secondlastname;
-                                    vm.visitor_license_plate = itemVisitor.licenseplate;
-                                    vm.visitor_id_number = itemVisitor.identificationnumber;
-                                    setHouse(itemVisitor.houseId);
-                                }
-                            });
+                vm.visitorsConsultedByPlate = [];
+                angular.forEach(visitorsList, function(itemVisitor, index) {
+                    if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3 ) {
+                    var existe = 0;
+                    angular.forEach(vm.visitorsConsultedByPlate,function(visitor,index){
+                     if(visitor.identificationnumber==itemVisitor.identificationnumber){
+                     existe++;
+                     }
+                    })
+                    if(existe==0){
+                    vm.visitorsConsultedByPlate.push(itemVisitor)
+                    }
+                    }
+                });
+                if(vm.visitorsConsultedByPlate.length>0){
+                  vm.visitorsConsultedByPlate.reverse();
+                  vm.setVisitorConsulted(vm.visitorShowing)
+                }
               }
 
             }
+
+
+            vm.setVisitorConsulted = function(index){
+              vm.visitor_name = vm.visitorsConsultedByPlate[index].name;
+                vm.visitor_last_name = vm.visitorsConsultedByPlate[vm.visitorShowing].lastname;
+                vm.visitor_second_last_name = vm.visitorsConsultedByPlate[vm.visitorShowing].secondlastname;
+                vm.visitor_license_plate = vm.visitorsConsultedByPlate[vm.visitorShowing].licenseplate;
+                vm.visitor_id_number = vm.visitorsConsultedByPlate[vm.visitorShowing].identificationnumber;
+                setHouse(vm.visitorsConsultedByPlate[vm.visitorShowing].houseId);
+            }
+            vm.setVisitorSelected = function(){
+            if(vm.visitorSelected!=undefined){
+                vm.visitor_name = vm.visitorSelected.name;
+                vm.visitor_last_name = vm.visitorSelected.lastname;
+                vm.visitor_second_last_name = vm.visitorSelected.secondlastname;
+                vm.visitor_license_plate = vm.visitorSelected.licenseplate;
+                vm.visitor_id_number = vm.visitorSelected.identificationnumber;
+                setHouse(vm.visitorSelected.houseId);
+                }
+            }
+
             vm.capitalize = function(){
                 if (vm.visitor_license_plate != "") {
                         $("#license_plate").css("text-transform", "uppercase");
@@ -607,6 +643,7 @@
             }
             vm.searchVisitor = function() {
                 vm.show = 5;
+                vm.visitorsConsultedByPlate = [];
                 if(vm.id_vehicule == undefined){
                 $("#license_plate").css("text-transform", "none");
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
@@ -620,31 +657,12 @@
 
                 } else {
                     vm.visitor_id_number = vm.id_number;
-                    angular.forEach(visitorsList, function(itemVisitor, index) {
-                        if (itemVisitor.identificationnumber == vm.visitor_id_number && itemVisitor.isinvited == 3) {
-                            vm.visitor_name = itemVisitor.name;
-                            vm.visitor_last_name = itemVisitor.lastname;
-                            vm.visitor_second_last_name = itemVisitor.secondlastname;
-                            vm.visitor_license_plate = itemVisitor.licenseplate;
-                            vm.visitor_id_number = itemVisitor.identificationnumber;
-                            setHouse(itemVisitor.houseId);
-
-                        }
-                    });
+                 vm.getVisitor();
                 }
 
                 if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {
                     vm.visitor_license_plate = vm.id_vehicule;
-                    angular.forEach(visitorsList, function(itemVisitor, index) {
-                        if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3) {
-                         vm.visitor_name = itemVisitor.name;
-                            vm.visitor_last_name = itemVisitor.lastname;
-                            vm.visitor_second_last_name = itemVisitor.secondlastname;
-                            vm.visitor_license_plate = itemVisitor.licenseplate;
-                            vm.visitor_id_number = itemVisitor.identificationnumber;
-                             setHouse(itemVisitor.houseId);
-                        }
-                    });
+                    vm.getVisitorByPlate();
                 }
             }
 
@@ -690,6 +708,7 @@
                  vm.isInsertingVisitor = false;
                  visitorsList.push(result);
                  toastr["success"]("Se registró la entrada del visitante correctamente.");
+                 loadVisitors();
              }
 
              function onSaveError () {
