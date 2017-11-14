@@ -90,7 +90,7 @@
                   return true;
                   }
                  }
-                 if(vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined || hasWhiteSpace(vm.visitor.identificationnumber) ||  haswhiteCedula(vm.visitor.licenseplate)){
+                 if(vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined ||  haswhiteCedula(vm.visitor.licenseplate)){
                     toastr["error"]("No puede ingresar espacios en blanco.");
                     invalido++;
                  }else if(hasCaracterEspecial(vm.visitor.name)|| hasCaracterEspecial(vm.visitor.lastname)|| hasCaracterEspecial(vm.visitor.secondlastname)||hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)){

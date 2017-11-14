@@ -32,8 +32,8 @@ public class Visitant implements Serializable {
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
 
-    @NotNull
-    @Column(name = "identificationnumber", nullable = false)
+
+    @Column(name = "identificationnumber")
     private String identificationnumber;
 
     @Column(name = "arrivaltime")

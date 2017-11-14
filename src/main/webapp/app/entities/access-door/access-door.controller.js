@@ -358,6 +358,7 @@ vm.showLock = false;
        vm.getInvitedVisitantsByHouse = function() {
             vm.show=13;
             loadAll();
+            var visitantByHouseList = [];
             vm.loadingVisitantByHouseIndex=1
             function loadAll() {
                 Visitant.findInvitedByHouse({
@@ -375,16 +376,30 @@ vm.showLock = false;
                         if(itemVisitor.isinvited == 1){
                          var visitantInvited = {}
                          if(vm.verifyVisitantInivitedDate(itemVisitor)){
+                         visitantInvited.id = itemVisitor.id;
                                visitantInvited.name = itemVisitor.name;
                                visitantInvited.last_name = itemVisitor.lastname;
                                visitantInvited.second_last_name = itemVisitor.secondlastname;
+                               visitantInvited.invitation_staring_time = itemVisitor.invitationstaringtime;
+                               visitantInvited.invitation_limit_time = itemVisitor.invitationlimittime;
                                if (itemVisitor.licenseplate == null ||itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
-                                   visitantInvited.license_plate = "Ninguna";
+
+                                    visitantInvited.hasLicense = false;
 
                                } else {
                                    visitantInvited.license_plate = itemVisitor.licenseplate;
+                                   visitantInvited.hasLicense = true;
                                }
-                               visitantInvited.indentification = itemVisitor.identificationnumber;
+                                if (itemVisitor.identificationnumber == null ||itemVisitor.identificationnumber == undefined || itemVisitor.identificationnumber == "") {
+
+
+                                    visitantInvited.hasIdentification = false;
+
+                                  } else {
+                                      visitantInvited.indentification = itemVisitor.identificationnumber;
+                                      visitantInvited.hasIdentification = true;
+                                  }
+
                                var house = vm.setHouse(itemVisitor.houseId);
 
                                vm.visitantListHouse = house;
@@ -411,10 +426,30 @@ vm.showLock = false;
 
        }
 
+        vm.quitRedInput = function(visitant){
+
+           $("#" +visitant.id).css({"border-color": "#E0E0E0",
+                                     "border-weight":"1px",
+                                     "border-style":"solid"});
+
+        }
+
        vm.registerVisitantFromVisitantsList = function(visitant){
-        vm.visitantToInsert = visitant;
+
+
+
+               if(visitant.indentification=="" && visitant.hasIdentification==false || visitant.indentification==null && visitant.hasIdentification==false || visitant.indentification==undefined && visitant.hasIdentification==false){
+                  toastr["error"]("Debe ingresar el número de cédula para registrar la visita.");
+                   $("#" +visitant.id).css({"border-color": "red",
+                               "border-weight":"2px",
+                               "border-style":"solid"});
+               } else {
+
+
+
+                    vm.visitantToInsert = visitant;
                     bootbox.confirm({
-                        message: "¿Está seguro que desea registrar la visita de " + visitant.name + visitant.last_name + "?",
+                        message: "¿Está seguro que desea registrar la visita de " + visitant.name + " " + visitant.last_name + "?",
                         buttons: {
                             confirm: {
                                 label: 'Aceptar',
@@ -426,36 +461,69 @@ vm.showLock = false;
                             }
                         },
                         callback: function(result) {
-                        vm.insertingVisitant=1;
-                            if (result) {
 
-                                 var visitant = {
+                            if (result) {
+                                 vm.insertingVisitant=1;
+                                 var temporalLicense;
+                                 console.log(vm.visitantToInsert.license_plate)
+                                 if(vm.visitantToInsert.license_plate!==undefined){
+                                 temporalLicense = vm.visitantToInsert.license_plate.toUpperCase();
+                                 }
+                                 var visitante = {
                                             name: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.name),
                                             lastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.last_name),
                                             secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.second_last_name),
                                             identificationnumber: vm.visitantToInsert.indentification.toUpperCase(),
-                                            licenseplate: vm.visitantToInsert.license_plate.toUpperCase(),
+                                            licenseplate: temporalLicense,
                                             companyId: $rootScope.companyId,
                                             isinvited: 3,
                                             arrivaltime: moment(new Date()).format(),
                                             houseId: vm.visitantListHouse.id
-                                        }
+                                  }
 
-                                        Visitant.save(visitant, onSaveSuccess, onSaveError);
+                                        Visitant.save(visitante, onSaveSuccess, onSaveError);
 
                                         function onSaveSuccess (result) {
+                                          if(visitant.hasLicense==false){
+                                            temporalLicense = null;
+                                          }
+                                          if(visitant.hasLicense==false || visitant.hasLicense==true){
 
-                                            vm.insertingVisitant=2;
+                                          var visitante2 = {
+                                                id:  vm.visitantToInsert.id,
+                                                name: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.name),
+                                                lastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.last_name),
+                                                secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitantToInsert.second_last_name),
+                                                identificationnumber: vm.visitantToInsert.indentification.toUpperCase(),
+                                                licenseplate: temporalLicense,
+                                                companyId: $rootScope.companyId,
+                                                isinvited: 1,
+                                                invitationstaringtime: vm.visitantToInsert.invitation_staring_time,
+                                                invitationlimittime: vm.visitantToInsert.invitation_limit_time,
+                                                houseId: vm.visitantListHouse.id
+                                            }
                                             visitorsList.push(result);
-                                            toastr["success"]("Se registró la entrada del visitante correctamente.");
+                                            Visitant.update(visitante2, onUpdateSuccess, onUpdateError);
+                                          }
+
                                         }
+
+                                         function onUpdateSuccess (result) {
+                                         vm.insertingVisitant=2;
+                                             toastr["success"]("Se registró la entrada del visitante correctamente.");
+                                             vm.getInvitedVisitantsByHouse();
+                                         }
+
+                                            function onUpdateError(error) {
+                                                             AlertService.error(error.data.message);
+                                                         }
                             }
                         }
                     });
 
+ }
 
        }
-
 
 
         vm.getHouseInformation = function() {
@@ -742,6 +810,7 @@ vm.showLock = false;
             }
             vm.searchVisitor = function() {
                 vm.show = 5;
+                vm.showLock=false;
                 vm.visitorsConsultedByPlate = [];
                 if(vm.id_vehicule == undefined){
                 $("#license_plate").css("text-transform", "none");
