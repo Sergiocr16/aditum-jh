@@ -41,6 +41,9 @@
 
                 angular.forEach(data, function(value, key) {
                     value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
+                    if(value.identificationnumber==""){
+                    value.identificationnumber  = null;
+                    }
                 })
                 vm.visitants = data;
                 vm.page = pagingParams.page;

@@ -282,6 +282,14 @@ height: 100%;
 .no-padding-left {
     padding-left: 0 !important;
 }
+.redBorder{
+    border-color: red !important;
+    border-weight: 2px !important;
+    border-style:solid;
+}
+.padding-20 {
+    padding: 10px !important;
+}
 .no-margin-left {
     margin-left: 0 !important;
 }
