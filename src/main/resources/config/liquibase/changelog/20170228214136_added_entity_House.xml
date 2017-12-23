@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="login_code" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="code_status" type="bit">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

@@ -64,6 +64,7 @@
     </div>
     <div ui-view="footer " ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
+
 </div>
 
 
@@ -344,6 +345,10 @@
     <script src="app/entities/officer/officer.service.js"></script>
 
     <script src="app/entities/officer/officer.controller.js"></script>
+
+    <script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
+
+    <script src="app/entities/loginCode/loginCode.state.js"></script>
 
     <script src="app/entities/note/ws-note.service.js"></script>
 

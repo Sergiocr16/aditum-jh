@@ -13,11 +13,13 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
         vm.save = save;
-        getConfiguration();
+        setTimeout(getConfiguration(),600);
+        console.log($rootScope.companyId)
         function getConfiguration(){
-            CompanyConfiguration.getByCompanyId({companyId: $rootScope.companyId}).$promise.then(onSuccessCompany, onError);
+            CompanyConfiguration.getByCompanyId({companyId: 1}).$promise.then(onSuccessCompany, onError);
         }
         function onSuccessCompany (data){
+        console.log('sadfsadf'+data);
            angular.forEach(data, function(configuration, key) {
                vm.companyConfiguration = configuration;
              });
@@ -25,7 +27,22 @@
 
         }
         function onError () {
+        console.log('sadfsadf'+data);
+        }
 
+        function generateLoginCode() {
+          var text = "";
+          var letters = "";
+          var numbers = "";
+          var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+          for (var i = 0; i < 4; i++)
+            letters += possible.charAt(Math.floor(Math.random() * possible.length));
+
+          numbers = Math.floor((Math.random() * 999) + 100);
+
+          text = numbers + "" + letters  ;
+          return text.toUpperCase();
         }
 
 
@@ -61,19 +78,22 @@
             vm.isSaving = true;
             if (vm.house.id !== null) {
                   CommonMethods.waitingMessage();
-            House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: $rootScope.companyId},onSuccessUp,onErrorUp)
+                  House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: $rootScope.companyId},onSuccessUp,onErrorUp)
 
             } else {
+            console.log(vm.companyConfiguration);
                 if(vm.companyConfiguration.quantityhouses <= vm.houseQuantity ){
-                      toastr['error']("Ha excedido la cantidad de casas permitidas para registrar, contacte el encargado de soporte.")
-                       bootbox.hideAll();
+                     toastr['error']("Ha excedido la cantidad de casas permitidas para registrar, contacte el encargado de soporte.")
+                     bootbox.hideAll();
                 } else {
-                CommonMethods.waitingMessage();
-                vm.house.companyId = $rootScope.companyId;
-                vm.house.isdesocupated = 0;
-                 vm.house.desocupationinitialtime = new Date();
-                 vm.house.desocupationfinaltime = new Date();
-                 House.validate({houseNumber: vm.house.housenumber, extension: vm.extension,companyId: $rootScope.companyId},onSuccess,onError)
+                     CommonMethods.waitingMessage();
+                     vm.house.companyId = $rootScope.companyId;
+                     vm.house.isdesocupated = 0;
+                     vm.house.desocupationinitialtime = new Date();
+                     vm.house.desocupationfinaltime = new Date();
+                     vm.house.loginCode = generateLoginCode();
+                     vm.house.codeStatus = 0;
+                     House.validate({houseNumber: vm.house.housenumber, extension: vm.extension,companyId: $rootScope.companyId},onSuccess,onError)
                 }
             }
             function onSuccessUp(data){

@@ -111,6 +111,15 @@ public class HouseService {
         return houseDTO;
     }
 
+
+    @Transactional(readOnly = true)
+    public HouseDTO findByLoginCodde(String loginCode) {
+        log.debug("Request to get House : {}", loginCode);
+        House house = houseRepository.findByLoginCode(loginCode);
+        HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
+        return houseDTO;
+    }
+
     @Transactional(readOnly = true)
     public Integer countByCompany(Long companyid) {
         log.debug("Request to get House : {}", companyid);

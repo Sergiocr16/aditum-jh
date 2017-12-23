@@ -345,7 +345,7 @@ height: 100%;
 
 }
 .font-30{
-  font-size: 30px;
+  font-size: 30px !important;
 
 }
 .font-35{
@@ -357,6 +357,12 @@ height: 100%;
 }
 .font-27{
 	font-size: 27px !important;
+}
+.margin-top-20{
+    margin-top: 20px !important;
+}
+.margin-top-30{
+    margin-top: 30px !important;
 }
 .margin-right-10{
   margin-right: 10px;
@@ -403,6 +409,10 @@ height: 100%;
 
   background-color: #F5F5F5 ;
 
+}
+
+#loginCodeWelcomeText{
+font-size:70px;
 }
 
 .green{

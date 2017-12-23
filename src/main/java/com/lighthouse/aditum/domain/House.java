@@ -48,6 +48,12 @@ public class House implements Serializable {
     @Column(name = "emergency_key")
     private String emergencyKey;
 
+    @Column(name = "login_code")
+    private String loginCode;
+
+    @Column(name = "code_status")
+    private Boolean codeStatus;
+
     @OneToMany(mappedBy = "house")
     @JsonIgnore
     private Set<Vehicule> vehicules = new HashSet<>();
@@ -168,6 +174,32 @@ public class House implements Serializable {
 
     public void setEmergencyKey(String emergencyKey) {
         this.emergencyKey = emergencyKey;
+    }
+
+    public String getLoginCode() {
+        return loginCode;
+    }
+
+    public House loginCode(String loginCode) {
+        this.loginCode = loginCode;
+        return this;
+    }
+
+    public void setLoginCode(String loginCode) {
+        this.loginCode = loginCode;
+    }
+
+    public Boolean isCodeStatus() {
+        return codeStatus;
+    }
+
+    public House codeStatus(Boolean codeStatus) {
+        this.codeStatus = codeStatus;
+        return this;
+    }
+
+    public void setCodeStatus(Boolean codeStatus) {
+        this.codeStatus = codeStatus;
     }
 
     public Set<Vehicule> getVehicules() {
@@ -339,6 +371,8 @@ public class House implements Serializable {
             ", desocupationfinaltime='" + desocupationfinaltime + "'" +
             ", securityKey='" + securityKey + "'" +
             ", emergencyKey='" + emergencyKey + "'" +
+            ", loginCode='" + loginCode + "'" +
+            ", codeStatus='" + codeStatus + "'" +
             '}';
     }
 }

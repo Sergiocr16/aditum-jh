@@ -33,6 +33,10 @@ public class HouseDTO implements Serializable {
 
     private String emergencyKey;
 
+    private String loginCode;
+
+    private Boolean codeStatus;
+
     private Long companyId;
 
     public Long getId() {
@@ -91,6 +95,20 @@ public class HouseDTO implements Serializable {
     public void setEmergencyKey(String emergencyKey) {
         this.emergencyKey = emergencyKey;
     }
+    public String getLoginCode() {
+        return loginCode;
+    }
+
+    public void setLoginCode(String loginCode) {
+        this.loginCode = loginCode;
+    }
+    public Boolean getCodeStatus() {
+        return codeStatus;
+    }
+
+    public void setCodeStatus(Boolean codeStatus) {
+        this.codeStatus = codeStatus;
+    }
 
     public Long getCompanyId() {
         return companyId;
@@ -132,6 +150,8 @@ public class HouseDTO implements Serializable {
             ", desocupationfinaltime='" + desocupationfinaltime + "'" +
             ", securityKey='" + securityKey + "'" +
             ", emergencyKey='" + emergencyKey + "'" +
+            ", loginCode='" + loginCode + "'" +
+            ", codeStatus='" + codeStatus + "'" +
             '}';
     }
 }
