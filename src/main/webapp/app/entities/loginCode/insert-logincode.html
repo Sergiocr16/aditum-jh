@@ -8,15 +8,18 @@
     <div class="height-41-pixel col-sm-12 hidden-xs "></div>
     <h5 class="text-center font-20 ">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
 
-    <div class="form-group col-md-4 col-lg-4 col-md-offset-4 margin-top-30 ">
-        <div class="input-group col-md-12 ">
-            <input type="text" class="form-control height-12-percent specialCharacters font-27 input_id text-center"  ng-model="vm.loginCode" placeholder="Ingrese el código" id="id_license_number">
+
+    <div class="form-group col-md-4 col-lg-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-30 ">
+        <div class=" col-md-12 ">
+            <input type="text" class="form-control height-12-percent specialCharacters font-27 input_id text-center"  ng-change="vm.loginCodeNotFound=0" ng-model="vm.loginCode" placeholder="Ingrese el código" id="id_license_number">
         </div>
     </div>
-
+    <div class="col-md-12">
+    <h5 class="text-center font-15 bold " ng-show="vm.loginCodeNotFound==1" style="color:#ff1e1a;">El código que ingresó no es correcto.</h5>
+    </div>
     <div class="form-group col-md-12 col-lg-12 ">
 
-         <button type="button" ng-click="vm.validateLoginCode()" class="btn blue col-md-offset-4 col-md-4 col-sm-12 col-xs-12 margin-top-10" name="button">Validar código de iniciación</button>
+         <button type="button" ng-click="vm.validateLoginCode()" class="btn blue col-md-offset-4 col-md-4 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-10" name="button">Validar código de iniciación</button>
 
     </div>
 

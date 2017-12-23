@@ -17,16 +17,19 @@
 
         var vm = this;
 
+        vm.loginCodeNotFound = 0;
+
         vm.validateLoginCode = function(){
-        console.log(vm.loginCode)
             House.getByLoginCode({loginCode:vm.loginCode}).$promise.then(onSuccess, onError);
         }
          function onSuccess(data) {
             console.log(data);
 
+
         }
           function onError() {
-              console.log('no sirvio');
+            console.log('adfad')
+              vm.loginCodeNotFound = 1;
         }
 
     }
