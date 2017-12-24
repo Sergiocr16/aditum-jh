@@ -5,11 +5,46 @@
         .module('aditumApp')
         .controller('BrandController', BrandController);
 
-    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','$rootScope'];
+    BrandController.$inject = ['Brand','Principal','House','Resident','Vehicule','$rootScope','firebase'];
 
-    function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope) {
+    function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope,firebase) {
 
         var vm = this;
+
+        function newWithCallback(childRef,obj,callback){
+          var pathName = "/"+childRef+"/"+obj.identificationnumber+"/"
+          firebase.database().ref(pathName).set(obj);
+          callback(obj);
+        }
+
+       function findByIdentificationNumber(childRef,dataId,callback){
+            var pathName = "/"+childRef+"/"+dataId
+            firebase.database().ref(pathName).once('value', function(snapshot){
+                var data = snapshot.val()
+                if(data){
+                   callback(data)
+                }
+            })
+        }
+
+        vm.createInFirebase = function(){
+//        newWithCallback("",{identificationnumber:"116060486",nombre:"Sergio,Castro,Rodriguez"},function(){
+//        alert("si")
+//        })
+findByIdentificationNumber("","116060486",function(person){
+console.log(person)
+})
+        }
+
+
+
+
+
+
+
+
+
+
         $rootScope.active = "brands";
         vm.brands = [];
         vm.isAuthenticated = Principal.isAuthenticated;
