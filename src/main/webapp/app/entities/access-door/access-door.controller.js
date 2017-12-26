@@ -407,7 +407,7 @@
                                             vm.visitor_second_last_name = itemVisitor.secondlastname
                                             vm.visitor_license_plate = itemVisitor.licenseplate;
                                             setHouse(itemVisitor.identificationnumber);
-                                            vm.encontrado++;
+                                            vm.encontrado = vm.encontrado +1;
                                         }
                                     });
 
@@ -851,10 +851,10 @@
                         angular.forEach(visitorsList, function(itemVisitor, index) {
                             if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3) {
                                 var existe = 0;
-                                encontrado++;
+                                encontrado = encontrado + 1;
                                 angular.forEach(vm.visitorsConsultedByPlate, function(visitor, index) {
                                     if (visitor.identificationnumber == itemVisitor.identificationnumber) {
-                                        existe++;
+                                        existe = existe +1;
                                     }
                                 })
                                 if (existe == 0) {
@@ -903,10 +903,10 @@
                 angular.forEach(visitorsList, function(itemVisitor, index) {
                     if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3) {
                         var existe = 0;
-                        encontrado++;
+                        encontrado = encontrado +1;
                         angular.forEach(vm.visitorsConsultedByPlate, function(visitor, index) {
                             if (visitor.identificationnumber == itemVisitor.identificationnumber) {
-                                existe++;
+                                existe = existe+1;
                             }
                         })
                         if (existe == 0) {
