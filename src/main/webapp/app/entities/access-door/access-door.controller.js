@@ -355,7 +355,7 @@
         }
 
 
-        async function findHouse(id) {
+       function findHouse(id) {
             angular.forEach(visitorsList, function(itemVisitor, index) {
                 if (itemVisitor.identificationnumber == id && itemVisitor.isinvited == 3) {
                 console.log(itemVisitor.licenseplate)
