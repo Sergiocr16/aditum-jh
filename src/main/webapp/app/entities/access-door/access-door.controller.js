@@ -358,7 +358,7 @@
        function findHouse(id) {
             angular.forEach(visitorsList, function(itemVisitor, index) {
                 if (itemVisitor.identificationnumber == id && itemVisitor.isinvited == 3) {
-                console.log(itemVisitor.licenseplate)
+
                 if(itemVisitor.licenseplate!=undefined){
                     vm.visitor_license_plate = itemVisitor.licenseplate;
                     }
@@ -593,7 +593,7 @@
                         if (result) {
                             vm.insertingVisitant = 1;
                             var temporalLicense;
-                            console.log(vm.visitantToInsert.license_plate)
+
                             if (vm.visitantToInsert.license_plate !== undefined) {
                                 temporalLicense = vm.visitantToInsert.license_plate.toUpperCase();
                             }
@@ -838,15 +838,15 @@
             return house;
         }
                 vm.getVisitorByPlateNgChange = function() {
-                console.log("lala")
+
                     vm.visitorShowing = 0;
                     vm.visitorSelected = {}
                     vm.visitorsConsultedByPlate = [];
                      vm.searchTextPadron = "Consultando en visitas anteriores";
                      vm.showLock = false;
                     var encontrado = 0
-                    if (vm.visitor_license_plate != undefined || vm.visitor_license_plate != "") {
-                    setTimeout(function(){
+                    if (vm.visitor_license_plate != undefined && vm.visitor_license_plate != "") {
+
                         vm.visitorsConsultedByPlate = [];
                         angular.forEach(visitorsList, function(itemVisitor, index) {
                             if (itemVisitor.licenseplate == vm.visitor_license_plate.toUpperCase() && itemVisitor.isinvited == 3) {
@@ -863,7 +863,7 @@
                             }
                         });
 
-                        $scope.$apply(function(){
+
                         if(encontrado>0){
                           vm.consultingPadron = false;
                                             vm.founded = true;
@@ -883,8 +883,8 @@
                             vm.setVisitorConsulted(vm.visitorShowing)
 
                         }
-                        })
-                        },500)
+
+
                     }
 
                 }
@@ -970,7 +970,8 @@
                 $("#license_plate").attr("placeholder", "Número placa (sin guiones)");
                 $("#vm.id_number").attr("placeholder", "Cédula");
             }
-            if (vm.visitor_license_plate != "" && vm.founded==false) {
+            if (vm.visitor_license_plate !== " " || vm.visitor_license_plate !== undefined && vm.founded==false) {
+
                 vm.getVisitorByPlateNgChange();
             }
         }
@@ -1051,11 +1052,14 @@
         }
 
         vm.insertVisitor = function() {
+        if(vm.visitor_id_number.length < 9 ){
+        toastr["error"]("El formato de la cédula no es correcto, debe de tener al menos 9 dígitos")
+        }else{
             vm.isInsertingVisitor = true;
             var visitant = {
-                name: CommonMethods.capitalizeFirstLetter(vm.visitor_name),
-                lastname: CommonMethods.capitalizeFirstLetter(vm.visitor_last_name),
-                secondlastname: CommonMethods.capitalizeFirstLetter(vm.visitor_second_last_name),
+                name: vm.visitor_name.toUpperCase(),
+                lastname: vm.visitor_last_name.toUpperCase(),
+                secondlastname: vm.visitor_second_last_name.toUpperCase(),
                 identificationnumber: vm.visitor_id_number.toUpperCase(),
                 licenseplate: vm.visitor_license_plate.toUpperCase(),
                 companyId: $rootScope.companyId,
@@ -1068,7 +1072,7 @@
             }
 
             Visitant.save(visitant, onSaveSuccess, onSaveError);
-
+           }
         }
 
         function onSaveSuccess(result) {

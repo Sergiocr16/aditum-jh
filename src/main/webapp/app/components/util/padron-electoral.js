@@ -10,7 +10,7 @@
         find:  function(identificationNumber,callback,error) {
                var pathName = "/padron-electoral/"+identificationNumber;
                 firebase.database().ref(pathName).on('value', function(snapshot){
-                    let data = snapshot.val()
+                    var data = snapshot.val()
                     if(data){
                        callback(data)
                     }else{

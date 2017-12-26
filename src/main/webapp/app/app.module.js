@@ -19,6 +19,7 @@
             'angular-loading-bar',
             'cloudinary',
              'pdf',
+             'firebase'
         ])
         .run(run);
 
