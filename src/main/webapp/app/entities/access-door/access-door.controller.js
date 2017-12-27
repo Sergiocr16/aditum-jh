@@ -838,13 +838,13 @@
             return house;
         }
                 vm.getVisitorByPlateNgChange = function() {
-
                     vm.visitorShowing = 0;
                     vm.visitorSelected = {}
                     vm.visitorsConsultedByPlate = [];
                      vm.searchTextPadron = "Consultando en visitas anteriores";
                      vm.showLock = false;
-                    var encontrado = 0
+                    var encontrado = 0;
+                    if(vm.founded==false){
                     if (vm.visitor_license_plate != undefined && vm.visitor_license_plate != "") {
 
                         vm.visitorsConsultedByPlate = [];
@@ -884,7 +884,7 @@
 
                         }
 
-
+}
                     }
 
                 }
