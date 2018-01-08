@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral'];
+    AccessDoorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral','Destinies'];
 
-    function AccessDoorController(Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral) {
+    function AccessDoorController(Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral,Destinies) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -23,39 +23,52 @@
         vm.radiostatus = true;
         vm.consultingPadron = false;
         vm.founded=false;
-        vm.maintenance = [{
-                housenumber: "Mantenimiento de piscina",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Mantenimiento de instalaciones",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Áreas verdes",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Planta de tratamiento",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Seguridad",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Reciclaje",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Vendedores",
-                companyId: $rootScope.companyId
-            },
-            {
-                housenumber: "Autorizado por administración",
-                companyId: $rootScope.companyId
-            },
-        ];
+
+        vm.loadDestinies = function(){
+        vm.destinies = Destinies.query(function(destinies){
+          vm.formatDestinies(destinies);
+        });
+         vm.formatDestinies = function(destinies){
+        vm.maintenance = [];
+         angular.forEach(destinies,function(val,i){
+         vm.maintenance.push({housenumber:val.name,companyId:$rootScope.companyId})
+
+         })
+         }
+         }
+//         [{
+//                housenumber: "Mantenimiento de piscina",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Mantenimiento de instalaciones",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Áreas verdes",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Planta de tratamiento",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Seguridad",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Reciclaje",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Vendedores",
+//                companyId: $rootScope.companyId
+//            },
+//            {
+//                housenumber: "Autorizado por administración",
+//                companyId: $rootScope.companyId
+//            },
+//        ];
 
         vm.changeDestinoCasa = function() {
             vm.radiostatus = true;
@@ -91,6 +104,7 @@
             vm.hideRegisterForm = 1;
             vm.show = 20;
             loadResidents();
+
         }
 
         function logout() {
@@ -131,6 +145,7 @@
             function onSuccessResident(residents, headers) {
                 residentsList = residents;
                 loadHouses();
+                vm.loadDestinies();
             }
         }
 

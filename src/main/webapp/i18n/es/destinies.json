@@ -1,0 +1,21 @@
+{
+    "aditumApp": {
+        "destinies" : {
+            "home": {
+                "title": "Destinies",
+                "createLabel": "Crear nuevo Destinies",
+                "createOrEditLabel": "Crear o editar Destinies"
+            },
+            "created": "Un nuevo Destinies ha sido creado con el identificador {{ param }}",
+            "updated": "Un Destinies ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Destinies ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Destinies {{ id }}?"
+            },
+            "detail": {
+                "title": "Destinies"
+            },
+            "name": "Name"
+        }
+    }
+}
