@@ -231,6 +231,38 @@
                 }
 
             })
+            .state('visitant-invited-user.new-list', {
+                parent: 'visitant-invited-user',
+                url: 'new-party',
+                data: {
+                    authorities: ['ROLE_USER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/visitant/visitant-invite-list-dialog.html',
+                        controller: 'VisitantInviteListDialogController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('visitant');
+                        return $translate.refresh();
+                    }],
+                    //                 entity: ['$stateParams', 'Visitant', function($stateParams, Visitant) {
+                    //                     return Visitant.get({id : $stateParams.id}).$promise;
+                    //                 }],
+                    previousState: ["$state", function($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'visitant',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+
+            })
             .state('visitant.edit', {
                 parent: 'visitant',
                 url: '/{id}/edit',
