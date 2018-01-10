@@ -22,6 +22,7 @@
                 "brand": "Brand",
                 "officerAccount": "Officer Account",
                 "rhAccount": "RH Account",
+                "destinies": "Destinies",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
