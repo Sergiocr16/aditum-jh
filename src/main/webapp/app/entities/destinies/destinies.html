@@ -1,23 +1,15 @@
 <div>
-    <h2 data-translate="aditumApp.brand.home.title">Brands</h2>
+    <h2 data-translate="aditumApp.destinies.home.title">Destinies</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="brand.new" >
+                <button class="btn btn-primary" ui-sref="destinies.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.brand.home.createLabel">
-                        Create new Brand
+                    <span  data-translate="aditumApp.destinies.home.createLabel">
+                        Create new Destinies
                     </span>
                 </button>
-                <!--<button class="btn btn-primary" ng-click="vm.fillInfo()" >-->
-                    <!--<span class="glyphicon glyphicon-plus"></span>-->
-                    <!--<span >-->
-                        <!--Create info-->
-                    <!--</span>-->
-                <!--</button>-->
-
-                <button ng-click="vm.createInFirebase()">Crear</button>
             </div>
         </div>
     </div>
@@ -27,24 +19,30 @@
             <thead>
                 <tr>
                     <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="aditumApp.brand.brand">Brand</span></th>
+                    <th><span data-translate="aditumApp.destinies.name">Name</span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="brand in vm.brands track by brand.id">
-                    <td><a ui-sref="brand-detail({id:brand.id})">{{brand.id}}</a></td>
-                    <td>{{brand.brand}}</td>
+                <tr ng-repeat="destinies in vm.destinies track by destinies.id">
+                    <td><a ui-sref="destinies-detail({id:destinies.id})">{{destinies.id}}</a></td>
+                    <td>{{destinies.name}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="brand.edit({id:brand.id})"
+                                    ui-sref="destinies-detail({id:destinies.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="destinies.edit({id:destinies.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="brand.delete({id:brand.id})"
+                                    ui-sref="destinies.delete({id:destinies.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-sm-down" data-translate="entity.action.delete"></span>

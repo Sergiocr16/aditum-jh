@@ -91,6 +91,12 @@
                             <i class="fa fa-car" aria-hidden="true"></i> Marca vehículos
                         </a>
                     </li>
+
+                    <li ui-sref="destinies" ng-class="{ 'active' : active === 'destinies' }">
+                        <a ui-sref="destinies">
+                            <i class="fa fa-building" aria-hidden="true"></i> Destinos Custom
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li ui-sref="dashboard" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'dashboard'}">

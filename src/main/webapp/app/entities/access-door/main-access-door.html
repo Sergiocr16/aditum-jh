@@ -65,7 +65,7 @@
             <div ng-hide="vm.hideRegisterForm==1" class="col-lg-6 col-md-6 col-sm-6 no-padding">
                 <div class="portlet light bordered access-search-container col-lg-12 col-md-12  col-sm-12 col-xs-12 ">
 
-                    <h1 id="access_tittle" class="page-title small-margin-top text-center col-md-12"> Puerta de acceso </h1>
+                    <h1 class="page-title small-margin-top text-center col-md-12"> Puerta de acceso </h1>
 
 
                     <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs"></div>
@@ -104,7 +104,7 @@
 
                     <button type="submit" ng-disabled="vm.show === 1 || vm.show === 2" class="btn blue font-15 col-lg-offset-1 col-lg-8 col-md-offset-1 col-md-8  col-sm-7 col-xs-7 btn-access-door" ng-click="vm.searchVisitor()" name="button">Registrar visitante</button>
 
-                    <button class="btn red col-lg-1 col-md-1 col-sm-2 col-xs-2 btn-access-door" id="access_key_button" ng-click="vm.show=8" name="button" title="Consultar clave de seguridad o emergencia">
+                    <button class="btn red col-lg-1 col-md-1 col-sm-2 col-xs-2 btn-access-door"  ng-click="vm.show=8" name="button" title="Consultar clave de seguridad o emergencia">
                         <span>  <i class="fa fa-key font-17" aria-hidden="true"></i></span>
                     </button>
                     <button class="btn blue col-lg-1 col-md-1 col-sm-2 col-xs-2 btn-access-door" id="access_key_button" ng-click="vm.houseInformationInput()" name="button" title="Consultar información de una casa">
@@ -181,8 +181,8 @@
                         <div class="display-none" id="residentAccess">
                             <h1 class="page-title {{vm.colorResidentRegistered}} bold text-center font-30 " id="registered_access_tittle">{{vm.residentRegisteredTitle}}</h1>
                             <div class="success-resident-image">
-                                    <img ng-show="vm.resident.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                    <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="160" height="160" class="img-circle"/>
+                                <img ng-show="vm.resident.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="160" height="160" class="img-circle"/>
                             </div>
 
                             <div class="col-md-8 gray-font">
@@ -211,7 +211,7 @@
                             <h1 class="text-center"><img src="../../assets/global/img/2.gif" alt="" /></h1>
                         </div>
                         <div class="display-none" id="visitantInvitedtAccess">
-                            <h1 class="page-title green-font bold text-center font-30 " id="registered_access_tittle">Visitante invitado</h1>
+                            <h1 class="page-title green-font bold text-center font-30 " >Visitante invitado</h1>
 
                             <div class="col-md-8 gray-font">
                                 <div class="height-41-pixel hidden-md col-sm-12 hidden-xs "></div>
@@ -347,269 +347,279 @@
                         <div class="portlet-body ">
                             <div class="table-scrollable">
 
-                        <table ng-show="vm.visitantByHouseList.length>0" class="table table-striped table-hover font-12">
-                            <thead>
-                            <tr>
-                                <th class="text-center">Nombre</th>
-                                <th class="text-center">Cédula</th>
-                                <th class="text-center">Placa</th>
-                                <th class="text-center">Registrar visita</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="visitant in vm.visitantByHouseList | filter:search | orderBy:'name'">
+                                <table ng-show="vm.visitantByHouseList.length>0" class="table table-striped table-hover font-12">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Nombre</th>
+                                        <th class="text-center">Cédula</th>
+                                        <th class="text-center">Placa</th>
+                                        <th class="text-center">Registrar visita</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="visitant in vm.visitantByHouseList | filter:search | orderBy:'name'">
 
-                                <td class="col-md-3 md-sm-3 md-xs-3 font-15 text-center" style="text-transform: capitalize;">{{visitant.name}} {{visitant.last_name}} </td>
-                                <td class="col-md-3 md-sm-3 md-xs-3 text-center" ng-if="visitant.hasIdentification==false">
-                                    <input id="{{visitant.id}}" type="text"  ng-change="vm.quitRedInput(visitant)" required style="text-transform: uppercase;" ng-model="visitant.indentification" class="form-control gray-font specialCharacters " placeholder="Cédula" required>
-                                    <span style="color:#E53935" >Obligatorio</span>
-                                </td>
-                                <td class="col-md-2 md-sm-2 md-xs-2 font-15 text-center" ng-show="visitant.hasIdentification==true && visitant.hasIdentification!=null">{{visitant.indentification}}</td>
-                                <td class="col-md-3 md-sm-3 md-xs-3 text-center" ng-if="visitant.hasLicense==false">
-                                    <input type="text"   style="text-transform: uppercase;" ng-model="visitant.license_plate" class="form-control gray-font specialCharacters " placeholder="Placa" required>
-                                    <span style="color:#26a69a" >Opcional</span>
+                                        <td class="col-md-3 md-sm-3 md-xs-3 font-15 text-center" style="text-transform: capitalize;">{{visitant.name}} {{visitant.last_name}} </td>
+                                        <td class="col-md-3 md-sm-3 md-xs-3 text-center" ng-if="visitant.hasIdentification==false">
+                                            <input id="{{visitant.id}}" type="text"  ng-change="vm.quitRedInput(visitant)" required style="text-transform: uppercase;" ng-model="visitant.indentification" class="form-control gray-font specialCharacters " placeholder="Cédula" required>
+                                            <span style="color:#E53935" >Obligatorio</span>
+                                        </td>
+                                        <td class="col-md-2 md-sm-2 md-xs-2 font-15 text-center" ng-show="visitant.hasIdentification==true && visitant.hasIdentification!=null">{{visitant.indentification}}</td>
+                                        <td class="col-md-3 md-sm-3 md-xs-3 text-center" ng-if="visitant.hasLicense==false">
+                                            <input type="text"   style="text-transform: uppercase;" ng-model="visitant.license_plate" class="form-control gray-font specialCharacters " placeholder="Placa" required>
+                                            <span style="color:#26a69a" >Opcional</span>
 
-                                </td>
-                                <td ng-show="visitant.hasLicense==true && visitant.hasLicense!=null" class="col-md-2 text-center font-15">{{visitant.license_plate}}</td>
-                                <td class="col-md-2 md-sm-2 md-xs-2 text-center" ><button ng-click="vm.registerVisitantFromVisitantsList(visitant)"  ng-disabled="vm.insertingVisitant==1" style="margin-top:0px !important;"class="btn red font-13"  name="buton ">Registrar visita </button>
-                                </td>
+                                        </td>
+                                        <td ng-show="visitant.hasLicense==true && visitant.hasLicense!=null" class="col-md-2 text-center font-15">{{visitant.license_plate}}</td>
+                                        <td class="col-md-2 md-sm-2 md-xs-2 text-center" ><button ng-click="vm.registerVisitantFromVisitantsList(visitant)"  ng-disabled="vm.insertingVisitant==1" style="margin-top:0px !important;"class="btn red font-13"  name="buton ">Registrar visita </button>
+                                        </td>
 
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
 
 
                         <!--<div ng-show="vm.visitantByHouseList.length>0" style="background-color:#26a69a; height:30px" class="col-md-12 no-padding margin-top-10">-->
-                            <!--<div class="col-md-5 col-sm-5 col-xs-5 text-center "><h5 style="color:white" class="font-15 bold">Nombre completo</h5></div>-->
-                            <!--<div class="col-md-4 col-sm-4 col-xs-4 text-center "><h5 style="color:white" class="font-15 bold">Cédula</h5></div>-->
-                            <!--<div class="col-md-3 col-sm-3 col-xs-3 text-center "><h5 style="color:white" class="font-15 bold">Placa</h5></div>-->
+                        <!--<div class="col-md-5 col-sm-5 col-xs-5 text-center "><h5 style="color:white" class="font-15 bold">Nombre completo</h5></div>-->
+                        <!--<div class="col-md-4 col-sm-4 col-xs-4 text-center "><h5 style="color:white" class="font-15 bold">Cédula</h5></div>-->
+                        <!--<div class="col-md-3 col-sm-3 col-xs-3 text-center "><h5 style="color:white" class="font-15 bold">Placa</h5></div>-->
                         <!--</div>-->
                         <!--<form ng-submit="vm.registerVisitantFromVisitantsList(visitant)" ng-repeat="visitant in vm.visitantByHouseList | filter:search | orderBy:'name'" class="col-md-12 col-sm-12 col-xs-12 no-padding ">-->
 
-                            <!--<div style="background-color:#EEEEEE;  " class="col-md-12 col-sm-12 col-xs-12 padding-20" >-->
-                                <!--<span style="color:#E53935" >Ingresar número de cédula para registrar la llegada del visitante.</span>-->
-                                <!--<div class="col-md-5 col-sm-5 col-xs-5 text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.name}} {{visitant.last_name}} </h6></div>-->
-                                <!--<div name="nombre" ng-show="visitant.hasIdentification==true && visitant.indentification!=null" class="col-md-4 col-sm-4 col-xs-4  text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.indentification}}</h6></div>-->
-                                <!--<div  name="cedula" ng-if="visitant.hasIdentification==false" style="margin-top:3px;" class="col-md-4 col-sm-4 col-xs-4">-->
-                                    <!--<input type="text"  required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters " id="identification_number" placeholder="Cédula" required>-->
-                                <!--</div>-->
-                                <!--<div name="cedula" ng-if="visitant.hasLicense==false" style="margin-top:3px;" class="col-md-3 col-sm-3 col-xs-3">-->
-                                    <!--<input type="text"  required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters "  placeholder="Placa" required>-->
+                        <!--<div style="background-color:#EEEEEE;  " class="col-md-12 col-sm-12 col-xs-12 padding-20" >-->
+                        <!--<span style="color:#E53935" >Ingresar número de cédula para registrar la llegada del visitante.</span>-->
+                        <!--<div class="col-md-5 col-sm-5 col-xs-5 text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.name}} {{visitant.last_name}} </h6></div>-->
+                        <!--<div name="nombre" ng-show="visitant.hasIdentification==true && visitant.indentification!=null" class="col-md-4 col-sm-4 col-xs-4  text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.indentification}}</h6></div>-->
+                        <!--<div  name="cedula" ng-if="visitant.hasIdentification==false" style="margin-top:3px;" class="col-md-4 col-sm-4 col-xs-4">-->
+                        <!--<input type="text"  required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters " id="identification_number" placeholder="Cédula" required>-->
+                        <!--</div>-->
+                        <!--<div name="cedula" ng-if="visitant.hasLicense==false" style="margin-top:3px;" class="col-md-3 col-sm-3 col-xs-3">-->
+                        <!--<input type="text"  required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters "  placeholder="Placa" required>-->
 
-                                <!--</div>-->
-                                <!--<div ng-show="visitant.hasLicense==true && visitant.license_plate!=null" name="placa" class="col-md-3 col-sm-3 col-xs-3  text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.license_plate}}</h6></div>-->
+                        <!--</div>-->
+                        <!--<div ng-show="visitant.hasLicense==true && visitant.license_plate!=null" name="placa" class="col-md-3 col-sm-3 col-xs-3  text-center "><h6 style="color:white; margin-bottom:0px !important; color:black;" class="font-16">{{visitant.license_plate}}</h6></div>-->
 
-                            <!--</div>-->
-                            <!--<button type="submit" ng-disabled="vm.insertingVisitant==1" style="margin-top:0px !important; margin-bottom: 20px;"class="btn blue font-15 col-md-12 col-sm-12 col-xs-12"  name="buton ">Registrar visita </button>-->
+                        <!--</div>-->
+                        <!--<button type="submit" ng-disabled="vm.insertingVisitant==1" style="margin-top:0px !important; margin-bottom: 20px;"class="btn blue font-15 col-md-12 col-sm-12 col-xs-12"  name="buton ">Registrar visita </button>-->
 
                         <!--</form>-->
                         <!--<div class="table-scrollable" >-->
-                            <!--<table ng-show="vm.visitantByHouseList.length>0" class="table table-striped table-hover font-15">-->
-                                <!--<h5 ng-hide="vm.visitantByHouseList.length>0" class=" font-17 text-center">No hay visitantes invitados en esta casa</h5>-->
+                        <!--<table ng-show="vm.visitantByHouseList.length>0" class="table table-striped table-hover font-15">-->
+                        <!--<h5 ng-hide="vm.visitantByHouseList.length>0" class=" font-17 text-center">No hay visitantes invitados en esta casa</h5>-->
 
-                                <!--<thead>-->
-                                <!--<tr>-->
-                                    <!--<th>Nombre completo</th>-->
-                                    <!--<th>Cédula</th>-->
-                                    <!--<th>Número Placa</th>-->
-                                <!--</tr>-->
-                                <!--</thead>-->
-                                <!--<tbody>-->
-                                <!--<tr ng-repeat="visitant in vm.visitantByHouseList | filter:search | orderBy:'name'">-->
-                                    <!--<td>{{visitant.name}} {{visitant.last_name}} {{visitant.second_last_name}}</td>-->
-                                    <!--<td>{{visitant.indentification}}</td>-->
-                                    <!--<td>{{visitant.license_plate}}</td>-->
-                                <!--</tr>-->
-                                <!--</tbody>-->
-                            <!--</table>-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                        <!--<th>Nombre completo</th>-->
+                        <!--<th>Cédula</th>-->
+                        <!--<th>Número Placa</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr ng-repeat="visitant in vm.visitantByHouseList | filter:search | orderBy:'name'">-->
+                        <!--<td>{{visitant.name}} {{visitant.last_name}} {{visitant.second_last_name}}</td>-->
+                        <!--<td>{{visitant.indentification}}</td>-->
+                        <!--<td>{{visitant.license_plate}}</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                        <!--</table>-->
                         <!--</div>-->
                     </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 " ng-show="vm.show==5 ">
-                        <div class="portlet-title gray-font">
-                            <div class="caption text-center font-19">
-                                Registrar visitante
+                        <div class="col-md-12 col-sm-12 col-xs-12" ng-show="vm.consultingPadron">
+                            <h3  class="text-center huge-margin-top emergencyTitle  font-30  ">{{vm.searchTextPadron}}</h3>
+                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                                <h1 class="text-center">    <img src="../../content/images/loadingPadron.gif" alt="" />   </h1>
                             </div>
                         </div>
-                        <div class="portlet-body form">
-                            <div class="actions col-lg-12" style="padding:5px;" ng-show="vm.visitorsConsultedByPlate.length>1">
-                                <p style="color:#26a69a">Se ha encontrado más de un visitante con esa placa.</p>
-                                <select class="form-control gray-font" ng-change="vm.setVisitorSelected()" data-ng-model="vm.visitorSelected" ng-options="visitor.name+' '+visitor.lastname+' - '+visitor.identificationnumber for visitor in vm.visitorsConsultedByPlate | orderBy: 'name'" required>
-                                    <option value="">Puedes seleccionar entre los otros visitantes encontrados</option>
-                                </select>
-                                <hr style="margin:12px !important;">
+                        <div ng-show="vm.consultingPadron==false">
+                            <div class="portlet-title gray-font">
+                                <div class="caption text-center font-19">
+                                    Registrar visitante
+                                </div>
                             </div>
-
-                            <form role="form" ng-submit="vm.insertVisitor()">
-                                <div class="form-body">
-                                    <div class="form-group col-md-12">
-                                        <div class="input-group">
+                            <div class="portlet-body form">
+                                <div class="actions col-lg-12" style="padding:5px;" ng-show="vm.visitorsConsultedByPlate.length>1">
+                                    <p style="color:#26a69a">Se ha encontrado más de un visitante con esa placa.</p>
+                                    <select class="form-control gray-font" ng-change="vm.setVisitorSelected()" data-ng-model="vm.visitorSelected" ng-options="visitor.name+' '+visitor.lastname+' - '+visitor.identificationnumber for visitor in vm.visitorsConsultedByPlate | orderBy: 'name'" required>
+                                        <option value="">Puedes seleccionar entre los otros visitantes encontrados</option>
+                                    </select>
+                                    <hr style="margin:12px !important;">
+                                </div>
+                                <form role="form" ng-submit="vm.insertVisitor()">
+                                    <div class="form-body">
+                                        <div class="form-group col-md-12">
+                                            <div class="input-group">
                                             <span class="input-group-addon">
                                         <i class="fa fa-indent"></i>
                                         </span>
-                                            <input type="text" ng-disabled="vm.showLock"  ng-change="vm.getVisitor()" required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters" id="identification_number" placeholder="Cédula" required>
-                                            <span class="input-group-addon btn green" ng-show="vm.showLock" ng-click="vm.unlocklock()">
-                                            <i class="{{vm.iconLock}}" style="color:white;font-size:15px"></i>
+                                                <input type="text" ng-disabled="vm.showLockCed"  ng-change="vm.getVisitor()" required style="text-transform: uppercase;" ng-model="vm.visitor_id_number" class="form-control font-15 gray-font specialCharacters" id="" placeholder="Cédula" required>
+                                                <span class="input-group-addon btn green" ng-show="vm.founded" ng-click="vm.unlocklock()">
+                                                <i class="fa fa-lock" style="color:white;font-size:15px"></i>
                                                 Desbloquear
-                                        </span>
+                                                </span>
+                                            </div>
+                                            <span style="color:#26a69a" class="help-block">
+                                                Mínimo 9 dígitos, Ejemplo: 101110111
+                                            </span>
+
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="input-group">
+                                        <div class="form-group col-md-12">
+                                            <div class="input-group">
 
                                             <span class="input-group-addon">
                     											<i class="fa fa-user"></i>
                     											</span>
-                                            <input type="text" id="name" ng-disabled="vm.showLock" ng-model="vm.visitor_name" class="form-control font-15 gray-font letters" placeholder="Nombre" required style="text-transform: capitalize;">
+                                                <input type="text" id="name" ng-disabled="vm.showLock" ng-model="vm.visitor_name" class="form-control font-15 gray-font letters" placeholder="Nombre" required style="text-transform: uppercase;">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="input-group">
+                                        <div class="form-group col-md-12">
+                                            <div class="input-group">
                                             <span class="input-group-addon">
                                           <i class="fa fa-user"></i>
                                           </span>
-                                            <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_last_name" class="form-control font-15 gray-font letters" id="last_name" placeholder="Primer apellido" required style="text-transform: capitalize;">
+                                                <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_last_name" class="form-control font-15 gray-font letters" id="last_name" placeholder="Primer apellido" required style="text-transform: uppercase;">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="input-group">
+                                        <div class="form-group col-md-12">
+                                            <div class="input-group">
                                             <span class="input-group-addon">
                                           <i class="fa fa-user"></i>
                                           </span>
-                                            <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_second_last_name" class="form-control font-15 gray-font letters" id="second_last_name" placeholder="Segundo apellido" required style="text-transform: capitalize;">
+                                                <input type="text" ng-disabled="vm.showLock"  ng-model="vm.visitor_second_last_name" class="form-control font-15 gray-font letters" id="second_last_name" placeholder="Segundo apellido" required style="text-transform: uppercase;">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group col-md-12">
-                                        <div class="input-group">
+                                        <div class="form-group col-md-12">
+                                            <div class="input-group">
                                             <span class="input-group-addon">
                                           <i class="fa fa-car"></i>
                                           </span>
-                                            <input type="text" ng-model="vm.visitor_license_plate" ng-change="vm.capitalize()" class="form-control font-15 gray-font specialCharactersAndVocals" id="license_plate" placeholder="Número placa (opcional)">
+                                                <input type="text" ng-model="vm.visitor_license_plate" ng-change="vm.capitalize()" class="form-control font-15 gray-font specialCharactersAndVocals" id="license_plate" placeholder="Número placa (opcional)">
 
-                                        </div>
-                                        <span style="color:#26a69a" class="help-block">Dejar número de placa vacío si el visitante no ingresa en un vehículo.</span>
-                                    </div>
-                                    <div class="form-group form-md-radios" style="margin-bottom:10px">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
-                                        <div class="md-radio-inline">
-                                            <div class="md-radio" >
-                                                <input type="radio" id="radio14" name="radio2" ng-checked="{{vm.radiostatus}}"  class="md-radiobtn"  ng-click="vm.changeDestinoCasa()">
-                                                <label for="radio14">
-                                                    <span class="inc"></span>
-                                                    <span class="inc"></span>
-                                                    <span class="check"></span>
-                                                    <span class="box"></span>
-                                                    Casa </label>
                                             </div>
-                                            <div class="md-radio">
-                                                <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.changeDestinoProveedor()">
-                                                <label for="radio15">
-                                                    <span class="inc"></span>
-                                                    <span class="check"></span>
-                                                    <span class="box"></span>
-                                                    Otro </label>
+                                            <span style="color:#26a69a" class="help-block">Dejar número de placa vacío si el visitante no ingresa en un vehículo.</span>
+                                        </div>
+                                        <div class="form-group form-md-radios" style="margin-bottom:10px">
+                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font" style="font-size:15px">Destino:</label>
+                                            <div class="md-radio-inline">
+                                                <div class="md-radio" >
+                                                    <input type="radio" id="radio14" name="radio2" ng-checked="{{vm.radiostatus}}"  class="md-radiobtn"  ng-click="vm.changeDestinoCasa()">
+                                                    <label for="radio14">
+                                                        <span class="inc"></span>
+                                                        <span class="inc"></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Casa </label>
+                                                </div>
+                                                <div class="md-radio">
+                                                    <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.changeDestinoProveedor()">
+                                                    <label for="radio15">
+                                                        <span class="inc"></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Otro </label>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="form-group  col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">{{vm.destityTitle}}</label>
-                                        <div class="form-group col-md-8 col-sm-9 col-xs-7">
-                                            <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesToShow | orderBy: 'housenumber'" required>
-                                                <option value="">{{vm.destityPlaceHolder}}</option>
-                                            </select>
+                                        <div class="form-group  col-md-12 no-padding">
+                                            <label class="col-md-4 col-sm-3 col-xs-5 gray-font">{{vm.destityTitle}}</label>
+                                            <div class="form-group col-md-8 col-sm-9 col-xs-7">
+                                                <select class="form-control gray-font" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.housesToShow | orderBy: 'housenumber'" required>
+                                                    <option value="">{{vm.destityPlaceHolder}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group  col-md-12" style="margin-bottom:0px!important;">
+                                            <h3 class="text-right">
+                                                <button type="submit" ng-disabled="vm.isInsertingVisitor" class="btn blue"> Registrar  <i ng-show="vm.isInsertingVisitor" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></button>
+                                                <button type="button" ng-click="vm.show=4;vm.showLock = false;vm.showLockCed =false;vm.founded = false; vm.isInsertingVisitor=false; vm.changeDestinoCasa();" class="btn default gray-font">Cancelar</button>
+                                            </h3>
                                         </div>
                                     </div>
-                                    <div class="form-group  col-md-12" style="margin-bottom:0px!important;">
-                                        <h3 class="text-right">
-                                            <button type="submit" ng-disabled="vm.isInsertingVisitor" class="btn blue"> Registrar  <i ng-show="vm.isInsertingVisitor" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></button>
-                                            <button type="button" ng-click="vm.show=4; vm.isInsertingVisitor=false; vm.changeDestinoCasa();" class="btn default gray-font">Cancelar</button>
-                                        </h3>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-
 
 
                     <div class="col-md-12 col-sm-12 col-xs-12 " ng-show="vm.show==9 ">
 
                         <div class="margin-top-10 hidden-md">
-                        <div class="col-md-2 col-sm-12 col-xs-12 no-padding">
-                            <button type="button" ng-click="vm.show=8; vm.security_key=''" class="btn default gray-font ">Cerrar</button>
-                        </div>
-
-                        <div class=" col-md-10 portlet-title gray-font">
-                            <div class="caption text-center font-30">
-                                {{vm.emergencySecurityKeyTitle}}
+                            <div class="col-md-2 col-sm-12 col-xs-12 no-padding">
+                                <button type="button" ng-click="vm.show=8; vm.security_key=''" class="btn default gray-font ">Cerrar</button>
                             </div>
-                        </div>
-                        <div class="margin-top-10 col-md-12 hidden-sm hidden-xs "></div>
-                        <div class="portlet-body ">
-                            <div class="col-md-4 no-padding-left">
-                                <div class="access_car_information gray-font ">
-                                    <h5 class=" font-19">Casa: <span class="bold">{{vm.key_house_number}}</span> </h5>
 
+                            <div class=" col-md-10 portlet-title gray-font">
+                                <div class="caption text-center font-30">
+                                    {{vm.emergencySecurityKeyTitle}}
                                 </div>
                             </div>
-                            <div class="col-md-8 no-padding">
-                                <div class="access_car_information gray-font ">
-                                    <h5 class=" font-19">Clave emergencia: <span class="bold">{{vm.emergency_security_key}}</span> </h5>
+                            <div class="margin-top-10 col-md-12 hidden-sm hidden-xs "></div>
+                            <div class="portlet-body ">
+                                <div class="col-md-4 no-padding-left">
+                                    <div class="access_car_information gray-font ">
+                                        <h5 class=" font-19">Casa: <span class="bold">{{vm.key_house_number}}</span> </h5>
 
+                                    </div>
+                                </div>
+                                <div class="col-md-8 no-padding">
+                                    <div class="access_car_information gray-font ">
+                                        <h5 class=" font-19">Clave emergencia: <span class="bold">{{vm.emergency_security_key}}</span> </h5>
+
+                                    </div>
+                                </div>
+                                <div class="caption text-center gray-font font-19">
+                                    Residentes de la filial
+                                </div>
+                                <div class="table-scrollable" id="tableResidentsByKey">
+                                    <table ng-show="vm.residents.length>0" class="table table-striped table-hover font-12">
+                                        <h5  ng-hide="vm.residents.length>0" class=" font-17 text-center">No hay residentes en esta casa</h5>
+
+                                        <thead>
+                                        <tr>
+                                            <th>Nombre completo</th>
+                                            <th>Cédula</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="resident in vm.residents | filter:search | orderBy:'name'">
+                                            <td>{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</td>
+                                            <td>{{resident.identificationnumber}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="caption text-center gray-font font-19">
+                                    Vehículos de la filial
+                                </div>
+                                <div class="table-scrollable" id="tableVehiculesByKey">
+                                    <table ng-show="vm.vehicules.length>0" class="table table-striped table-hover font-12">
+                                        <h5 ng-hide="vm.vehicules.length>0" class=" font-17 text-center">No hay vehículos en esta casa</h5>
+                                        <thead>
+                                        <tr>
+                                            <th>Placa</th>
+                                            <th>Marca</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="vehicule in vm.vehicules |  orderBy:'name'">
+                                            <td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>
+                                            <td>{{vehicule.brand}}</td>
+
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="caption text-center gray-font font-19">
-                                Residentes de la filial
-                            </div>
-                            <div class="table-scrollable" id="tableResidentsByKey">
-                                <table ng-show="vm.residents.length>0" class="table table-striped table-hover font-12">
-                                    <h5  ng-hide="vm.residents.length>0" class=" font-17 text-center">No hay residentes en esta casa</h5>
-
-                                    <thead>
-                                    <tr>
-                                        <th>Nombre completo</th>
-                                        <th>Cédula</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="resident in vm.residents | filter:search | orderBy:'name'">
-                                        <td>{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</td>
-                                        <td>{{resident.identificationnumber}}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="caption text-center gray-font font-19">
-                                Vehículos de la filial
-                            </div>
-                            <div class="table-scrollable" id="tableVehiculesByKey">
-                                <table ng-show="vm.vehicules.length>0" class="table table-striped table-hover font-12">
-                                    <h5 ng-hide="vm.vehicules.length>0" class=" font-17 text-center">No hay vehículos en esta casa</h5>
-                                    <thead>
-                                    <tr>
-                                        <th>Placa</th>
-                                        <th>Marca</th>
-
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="vehicule in vm.vehicules |  orderBy:'name'">
-                                        <td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>
-                                        <td>{{vehicule.brand}}</td>
-
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
                         </div>
+
+
+
+
                     </div>
-
-
-
-
-                </div>
                     <div class="col-md-12 col-sm-12 col-xs-12 " ng-show="vm.show==12 ">
 
                         <div class="margin-top-10 hidden-md">
@@ -694,9 +704,9 @@
 
 
                     </div>
-            </div>
+                </div>
 
-        </div>
+            </div>
             <div class="row" ng-show="vm.show==7" ng-hide="vm.hideEmergencyForm==1">
                 <div class="col-md-12 intermitentRed" id="emergencyContainer">
                     <h1  class="text-center huge-margin-top emergencyTitle white-color font-80 bold ">Emergencia reportada en la casa número {{vm.house_number_emergency}}</h1>
@@ -715,11 +725,11 @@
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
         <div class="hidden-xs hidden-sm" style="color:white;position:absolute;bottom:10px">
             <h4>
                 Número de soporte : <b>72814565</b>
             </h4>
         </div>
-</div>
+    </div>
 </div>
