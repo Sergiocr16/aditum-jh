@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('InsertLoginCodeController', InsertLoginCodeController);
 
-    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate'];
+    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House'];
 
-    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate) {
+    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
          angular.element(document).ready(function () {
                  $('body').removeClass("gray");
                  $rootScope.showLogin = false;
@@ -23,12 +23,11 @@
             House.getByLoginCode({loginCode:vm.loginCode}).$promise.then(onSuccess, onError);
         }
          function onSuccess(data) {
-            console.log(data);
+             $state.go('insertCode.createProfile',{loginCode:vm.loginCode});
 
 
         }
           function onError() {
-            console.log('adfad')
               vm.loginCodeNotFound = 1;
         }
 

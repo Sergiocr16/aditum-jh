@@ -19,7 +19,6 @@
             CompanyConfiguration.getByCompanyId({companyId: 1}).$promise.then(onSuccessCompany, onError);
         }
         function onSuccessCompany (data){
-        console.log('sadfsadf'+data);
            angular.forEach(data, function(configuration, key) {
                vm.companyConfiguration = configuration;
              });

@@ -12,7 +12,6 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-         console.log(vm.vehicule)
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
