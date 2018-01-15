@@ -48,7 +48,7 @@
                 return /\s/g.test(s);
                }
                  function hasCaracterEspecial(s){
-                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#"]
+                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^"]
                   var invalido = 0;
                   angular.forEach(caracteres,function(val,index){
                   if (s!=undefined){
@@ -65,6 +65,24 @@
                   return true;
                   }
                  }
+            vm.hasNumbersOrSpecial = function(s){
+                  var caracteres = ["1","2","3","4","5","6","7","8","9","0",",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^"]
+                   var invalido = 0;
+                   angular.forEach(caracteres,function(val,index){
+                   if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                    if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+                    invalido++;
+                    }
+                    }
+                    }
+                   })
+                   if(invalido==0){
+                   return false;
+                   }else{
+                   return true;
+                   }
+                  }
              function hasLetter(s){
                  var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
                   var invalido = 0;
@@ -177,12 +195,12 @@
                   var invalidCedLength = false;
                  if(visitor.name == undefined || visitor.lastname == undefined || visitor.secondlastname == undefined){
                     invalido++;
-                 }else if(hasCaracterEspecial(visitor.name)|| hasCaracterEspecial(visitor.lastname)|| hasCaracterEspecial(visitor.secondlastname)){
+                 }else if(hasCaracterEspecial(visitor.name)|| hasCaracterEspecial(visitor.lastname)|| hasCaracterEspecial(visitor.secondlastname) || vm.hasNumbersOrSpecial(visitor.name) || vm.hasNumbersOrSpecial(visitor.lastname) || vm.hasNumbersOrSpecial(visitor.secondlastname)){
                     invalido++;
                  }else if(hasCaracterEspecial(visitor.licenseplate) || haswhiteCedula(visitor.licenseplate)){
                   invalidPlate = true;
                   visitor.validPlateNumber = 0;
-                 }else{   visitor.validPlateNumber = 1;}
+                 }else{ visitor.validPlateNumber = 1;}
                  if(visitor.identificationnumber != undefined){
                  if(hasCaracterEspecial(visitor.identificationnumber || haswhiteCedula(visitor.identificationnumber))){
                   visitor.validIdentification = 0;
@@ -289,7 +307,7 @@
 
         }
         if(nombreError>0){
-                              toastr["error"]("No puede ingresar ningún caracter especial en el nombre.");
+                              toastr["error"]("No puede ingresar ningún caracter especial o número en el nombre.");
 
         }
       if(errorCedLength>0){
