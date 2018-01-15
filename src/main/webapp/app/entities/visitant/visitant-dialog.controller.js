@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','WSVisitor','WSDeleteEntity'];
+    VisitantDialogController.$inject = ['$state','$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods','WSVisitor','WSDeleteEntity','PadronElectoral'];
 
-    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,WSVisitor,WSDeleteEntity) {
+    function VisitantDialogController($state,$timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods,WSVisitor,WSDeleteEntity,PadronElectoral) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-        //        vm.visitant = entity;
+        vm.visitor = {};
         vm.clear = clear;
         $rootScope.active = "reportInvitation";
         vm.datePickerOpenStatus = {};
@@ -27,7 +27,70 @@
             $("#all").fadeIn("slow");
              vm.formatInitPickers();
         });
+        vm.validPlate=function(visitor){
+            if(hasCaracterEspecial(visitor.licenseplate) || hasWhiteSpace(visitor.licenseplate)){
+            visitor.validPlateNumber = 0;
+            }else{
+             visitor.validPlateNumber = 1;
+            }
+        }
+vm.hasNumbersOrSpecial = function(s){
+                  var caracteres = ["1","2","3","4","5","6","7","8","9","0",",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
+                   var invalido = 0;
+                   angular.forEach(caracteres,function(val,index){
+                   if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                    if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+                    invalido++;
+                    }
+                    }
+                    }
+                   })
+                   if(invalido==0){
+                   return false;
+                   }else{
+                   return true;
+                   }
+                  }
 
+        vm.findInPadron = function(visitor){
+
+        if(visitor.identificationnumber!=undefined || visitor.identificationnumber != ""){
+        if(hasCaracterEspecial(visitor.identificationnumber) || haswhiteCedula(visitor.identificationnumber) || visitor.type=="9" && hasLetter(visitor.identificationnumber)){
+        visitor.validIdentification = 0;
+        }else{
+            visitor.validIdentification = 1;
+        }
+
+        if(visitor.type=="9" && visitor.identificationnumber != undefined){
+        if(visitor.identificationnumber.trim().length==9){
+          PadronElectoral.find(visitor.identificationnumber,function(person){
+         setTimeout(function(){
+          $scope.$apply(function(){
+           var nombre = person.nombre.split(",");
+           visitor.name = nombre[0];
+           visitor.lastname = nombre[1];
+           visitor.secondlastname = nombre[2];
+           visitor.found = 1;
+          })
+          },100)
+          },function(){
+
+          })
+
+
+          }else{
+          setTimeout(function(){
+              $scope.$apply(function(){
+                    visitor.found = 0;
+         })
+          },100)
+          }
+        }else{
+         visitor.found = 0;
+        }
+}
+        }
          vm.formatInitPickers = function(){
 
             var currentDate = new Date();
@@ -43,6 +106,7 @@
             setTimeout(function(){
                 vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
                 vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
+                vm.visitor = {type:"9",found:0,validIdentification:1,validPlateNumber:1};
             },300)
          }
 
@@ -57,9 +121,6 @@
          vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
          console.log(moment("Init " +vm.dates.final_time).format('HH:mm'))
         }
-
-               vm.validate = function(){
-                 var invalido = 0;
                 function hasWhiteSpace(s) {
                  function tiene(s) {
                        return /\s/g.test(s);
@@ -72,8 +133,27 @@
                function haswhiteCedula(s){
                 return /\s/g.test(s);
                }
+                            function hasLetter(s){
+                                var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
+                                 var invalido = 0;
+                                 angular.forEach(caracteres,function(val,index){
+                                 if (s!=undefined){
+                                  for(var i=0;i<s.length;i++){
+                                  if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+
+                                  invalido++;
+                                  }
+                                  }
+                                  }
+                                 })
+                                 if(invalido==0){
+                                 return false;
+                                 }else{
+                                 return true;
+                                 }
+                                }
                  function hasCaracterEspecial(s){
-                 var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿"]
+                 var caracteres = [,",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
                  var invalido = 0;
                   angular.forEach(caracteres,function(val,index){
                   if (s!=undefined){
@@ -90,32 +170,79 @@
                   return true;
                   }
                  }
-                 if(vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined ||  haswhiteCedula(vm.visitor.licenseplate)){
-                    toastr["error"]("No puede ingresar espacios en blanco.");
-                    invalido++;
-                 }else if(hasCaracterEspecial(vm.visitor.name)|| hasCaracterEspecial(vm.visitor.lastname)|| hasCaracterEspecial(vm.visitor.secondlastname)||hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)){
-                    invalido++;
-                      toastr["error"]("No puede ingresar ningún caracter especial.");
-                 }
-                  if(invalido==0){
-                  return true;
+                vm.validate = function(visitor){
+                   var invalido = 0;
+                   var invalidCed = false;
+                   var invalidPlate = false;
+                   var invalidCedLength = false;
+                  if(visitor.name == undefined || visitor.lastname == undefined || visitor.secondlastname == undefined){
+                     invalido++;
+                  }else if(hasCaracterEspecial(visitor.name)|| hasCaracterEspecial(visitor.lastname)|| hasCaracterEspecial(visitor.secondlastname) || vm.hasNumbersOrSpecial(visitor.name) || vm.hasNumbersOrSpecial(visitor.lastname) || vm.hasNumbersOrSpecial(visitor.secondlastname)){
+                     invalido++;
+                  }else if(hasCaracterEspecial(visitor.licenseplate) || haswhiteCedula(visitor.licenseplate)){
+                   invalidPlate = true;
+                   visitor.validPlateNumber = 0;
+                  }else{ visitor.validPlateNumber = 1;}
+                  if(visitor.identificationnumber != undefined){
+                  if(hasCaracterEspecial(visitor.identificationnumber || haswhiteCedula(visitor.identificationnumber))){
+                   visitor.validIdentification = 0;
+                   invalidCed = true;
                   }else{
-                  return false;
+                  if(visitor.type == "9" && visitor.identificationnumber.length < 9 || hasLetter(visitor.identificationnumber && visitor.type == "9")){
+                    visitor.validIdentification = 0;
+                    invalidCedLength = true;
+                  }else{
+                   visitor.identificationnumber = visitor.identificationnumber.replace(/\s/g,'')
+                                   visitor.validIdentification = 1;
                   }
-                }
+                  }
+                  }
+                  return {errorNombreInvalido:invalido,errorCedula:invalidCed,errorCedulaCorta:invalidCedLength,errorPlaca:invalidPlate}
+                 }
+        vm.validArray = function(visitors){
+        var nombreError = 0;
+        var errorCedula = 0;
+        var errorPlaca = 0;
+        var errorCedLength = 0;
+        angular.forEach(visitors,function(visitor,i){
+            var visitorValidation = vm.validate(visitor)
 
+            if(visitorValidation.errorCedula){
+            errorCedula++;
+            }
+            if(visitorValidation.errorNombreInvalido>0){
+            nombreError++;
+            }
+            if(visitorValidation.errorPlaca){
+            errorPlaca++;
+            }
+            if(visitorValidation.errorCedulaCorta){
+            errorCedLength++;
+            }
+        })
+        if(errorCedula>0){
+                  toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
 
+        }
+        if(errorPlaca>0){
+                          toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en el número de placa");
 
+        }
+        if(nombreError>0){
+                              toastr["error"]("No puede ingresar ningún caracter especial o número en el nombre.");
 
+        }
+      if(errorCedLength>0){
+          toastr["error"]("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
+            }
 
+       if(errorCedula==0 && errorPlaca == 0 && nombreError==0 && errorCedLength == 0){
+       return true;
+       }else{
+       return false;
+       }
 
-
-
-
-
-
-
-
+        }
 
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -158,26 +285,31 @@
          return new Date(date.getFullYear(), date.getMonth(), date.getDate(), time.getHours(), time.getMinutes(), 0, 0);
         }
 
-        function formatVisitor() {
-            vm.visitor.isinvited = 1;
-            vm.visitor.houseId = $rootScope.companyUser.houseId;
-            console.log(vm.dates.initial_date);
-            vm.visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date,vm.dates.initial_time);
-            vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date,vm.dates.final_time);
-            vm.visitor.companyId = $rootScope.companyId;
-            if (vm.visitor.licenseplate != undefined) {
-                vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
-            }
-            if (vm.visitor.identificationnumber != undefined) {
-                vm.visitor.identificationnumber = vm.visitor.identificationnumber.toUpperCase();
-            }
-            if(vm.visitor.licenseplate == ""){
-            vm.visitor.licenseplate = undefined;
-            }
-        }
+           function formatVisitor(visitor) {
+               visitor.isinvited = 1;
+               visitor.houseId = $rootScope.companyUser.houseId;
+               visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date,vm.dates.initial_time);
+               visitor.invitationlimittime = vm.formatDate(vm.dates.final_date,vm.dates.final_time);
+               visitor.companyId = $rootScope.companyId;
+               if (visitor.licenseplate != undefined) {
+                   visitor.licenseplate = visitor.licenseplate.toUpperCase();
+               }
+               if (visitor.identificationnumber != undefined) {
+                   visitor.identificationnumber = visitor.identificationnumber.toUpperCase();
+               }
+               if(visitor.licenseplate == ""){
+               visitor.licenseplate = undefined;
+               }
+               visitor.name = visitor.name.toUpperCase();
+               visitor.lastname = visitor.lastname.toUpperCase();
+               visitor.secondlastname = visitor.secondlastname.toUpperCase();
+               return visitor;
+           }
 
         function save() {
-        if(vm.validate()){
+        var arrayVisitor = []
+        arrayVisitor.push(vm.visitor)
+        if(vm.validArray(arrayVisitor)){
                CommonMethods.waitingMessage();
             if (isValidDates()) {
                 Visitant.findInvitedByHouseAndIdentificationNumber({
@@ -188,7 +320,7 @@
             }
             function success(data) {
                 bootbox.confirm({
-                    message: "Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
+                    message: "Un visitore con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
                     buttons: {
                         confirm: {
                             label: 'Aceptar',
@@ -202,7 +334,7 @@
                     callback: function(result) {
                         if (result) {
                             vm.visitor.id = data.id;
-                            formatVisitor();
+                            formatVisitor(vm.visitor);
                             Visitant.update(vm.visitor, onSuccess, onSaveError);
                                 bootbox.hideAll();
                         } else {
@@ -220,7 +352,7 @@
             }
 
             function error() {
-                formatVisitor();
+                formatVisitor(vm.visitor);
                 vm.isSaving = true;
                 console.log(vm.visitor)
                 vm.visitor.name = CommonMethods.capitalizeFirstLetter(vm.visitor.name);
@@ -235,10 +367,10 @@
 
         function onSaveSuccess(result) {
         WSVisitor.sendActivity(result);
-            $scope.$emit('aditumApp:visitantUpdate', result);
+            $scope.$emit('aditumApp:visitorUpdate', result);
             $state.go('visitant-invited-user')
               bootbox.hideAll();
-            toastr["success"]("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+            toastr["success"]("Se ha reportado como visitore invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }
 
