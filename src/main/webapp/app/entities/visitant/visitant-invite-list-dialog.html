@@ -6,7 +6,7 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a>Visitante</a>
+            <a>Reunión</a>
 
         </li>
 
@@ -21,8 +21,8 @@
             <div class="portlet light bordered">
                 <div class="portlet-title">
                     <div class="caption font-green-haze">
-                        <i class="fa fa-user font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Reportar visitantes</span>
+                        <i class="fa fa-group font-green-haze"></i>
+                        <span class="caption-subject bold uppercase">Reportar reunión</span>
                     </div>
                 </div>
                 <div class="portlet-body form">
@@ -56,54 +56,69 @@
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12 no-padding">
+                            <div class="col-md-7 col-lg-7 col-sm-8 col-xs-12 no-padding">
                                 <h3 class="head text-center hidden-sm hidden-md hidden-lg">Lista de invitados</h3>
-                                <h3 class="head text-right hidden-xs">Lista de invitados </h3>
+                                <h3 class="head text-right hidden-xs">Lista de invitados</h3>
                             </div>
-                            <div class="col-lg-offset-2 col-lg-2 col-md-offset-2 col-md-2 col-sm-offset-1 col-sm-2 col-xs-12 no-padding">
+                            <div class="col-lg-offset-3 col-lg-2 col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-2 col-xs-12 no-padding">
                                 <button type="button" ng-click="vm.addVisitor()" class="btn btn-info blue margin-top-15 col-xs-12 hidden-xs">Agregar invitado <i class="fa fa-plus "></i></button>
                             </div>
                             <button type="button" ng-click="vm.addVisitor()" class="btn btn-info blue margin-bottom-15 col-xs-12 hidden-sm hidden-md hidden-lg">Agregar invitado <i class="fa fa-plus "></i></button>
+
                         </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " style="overflow-x: visible; color:rgba(71,71,71,0.76);margin-top:10px">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow-x: visible; color:rgba(71,71,71,0.76);margin:10px 0;">
                         <div style="border: 1px solid rgba(220,217,217,0.97) " class=" hidden-xs hidden-sm row font-14 padding-5 bold text-center">
-                            <span class="col-md-3 col-sm-3">Cédula (Opcional)</span>
+                            <span class="col-md-2 col-sm-2">Nacionalidad</span>
+                            <span class="col-md-2 col-sm-2">Cédula (Opcional)</span>
                             <span class="col-md-2 col-sm-2">Nombre</span>
                             <span class="col-md-2 col-sm-2">Primer Apellido</span>
                             <span class="col-md-2 col-sm-2">Segundo Apellido</span>
                             <span class="col-md-2 col-sm-2">Número de placa (Opcional)</span>
-                            <span class="col-md-1 col-sm-1">Eliminar</span>
                         </div>
                         <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10);padding-top:15px" class="row font-15 padding-top-15">
                             <div ng-repeat="visitor in vm.visitors">
-                                <div class="form-group col-md-3 col-sm-3">
+                                <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg ">Invitado {{$index+1}}</h3>
+                                <div class="form-group has-info col-md-2 col-sm-2">
+                                    <label class="font-15 hidden-lg hidden-md">Nacionalidad</label>
+                                    <select class="form-control gray-font" name="vehicule" ng-model="visitor.type" ng-required='vm.required==1'>
+                                        <option value="9">Costarricense</option>
+                                        <option value="20">Extranjero</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-2 col-sm-2">
                                     <label class="font-15 hidden-lg hidden-md">Número de cédula (opcional)</label>
-                                    <input  ng-model="vm.visitor.identificationnumber"  type="text" class="form-control gray-font"  style='text-transform:uppercase'>
-                                    <!--<span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>-->
+                                    <input  ng-class="{redBorder: visitor.validIdentification == 0}" maxlength="{{visitor.type}}" ng-model="visitor.identificationnumber" ng-change="vm.findInPadron(visitor)" type="text" class="form-control gray-font letters"  style='text-transform:uppercase'>
+                                    <!--<span class="help-block" style="font-size:10px">Escriba el número de cédula sin guiones ni espacios.</span>-->
                                 </div>
                                 <div class="form-group has-info col-md-2 col-sm-2">
                                     <label class="font-15 hidden-lg hidden-md">Nombre</label>
 
-                                    <input ng-model="visitor.name" type="text" style="text-transform: capitalize" class="form-control letters gray-font" required>
+                                    <input ng-model="visitor.name" ng-disabled="visitor.found==1" type="text" style="text-transform: uppercase" class="form-control letters gray-font" required>
                                 </div>
                                 <div class="form-group has-info col-md-2 col-sm-2">
                                     <label class="font-15 hidden-lg hidden-md">Primer Apellido</label>
 
-                                    <input ng-model="visitor.lastname" type="text" style="text-transform: capitalize" class="form-control letters gray-font" required>
+                                    <input ng-model="visitor.lastname" ng-disabled="visitor.found==1" type="text" style="text-transform: uppercase" class="form-control letters gray-font" required>
                                 </div>
                                 <div class="form-group  has-info col-md-2 col-sm-2">
                                     <label class="font-15 hidden-lg hidden-md">Segundo Apellido</label>
 
-                                    <input ng-model="visitor.secondlastname" style="text-transform: capitalize" type="text" class="form-control letters gray-font">
+                                    <input ng-model="visitor.secondlastname"  ng-disabled="visitor.found==1" style="text-transform: uppercase" type="text" class="form-control letters gray-font">
                                 </div>
                                 <div class="form-group has-info col-md-2 col-sm-2">
                                     <label class="font-15 hidden-lg hidden-md">Número de placa (Opcional)</label>
-                                    <input ng-model="visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
+                                    <div class="col-lg-8 no-padding">
+                                        <input ng-class="{redBorder: visitor.validPlateNumber == 0}" ng-change="vm.validPlate(visitor)" ng-model="visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
+                                    </div>
+                                    <div class="col-lg-2 hidden-md hidden-lg no-padding" style="margin-top:10px">
+                                    <button type="button" ng-disabled="vm.visitors.length==1"ng-click="vm.deleteVisitor($index)" class="btn btn-info red margin-bottom-15 col-xs-12 ">Eliminar</button>
+                                    </div>
+                                  <div class="col-lg-2 hidden-xs hidden-sm">
+                                    <button  ng-disabled="vm.visitors.length==1" ng-click="vm.deleteVisitor($index)"   class="red-font" style="background-color:transparent;border:none"><i class="fa fa-minus font-20 padding-top-10"></i></button>
+                                  </div>
                                 </div>
-                                <div class="form-group text-center has-info col-md-1 col-sm-1">
-                                    <button type="button" ng-click="vm.addVisitor()" class="btn btn-info red margin-bottom-15 col-xs-12 hidden-sm hidden-md hidden-lg">Eliminar</button>
-
-                                    <button  ng-disabled="vm.visitors.length==1" ng-click="vm.deleteVisitor($index)" class="red-font"><i class="fa fa-minus font-20 padding-top-10"></i></button>
+                                <div class="col-xs-12 col-sm-12  hidden-md hidden-lg">
+                                <hr>
                                 </div>
                             </div>
                         </div>
