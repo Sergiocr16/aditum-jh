@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral','Destinies'];
+    AccessDoorController.$inject = ['Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral','Destinies','ngNotify'];
 
-    function AccessDoorController(Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral,Destinies) {
+    function AccessDoorController(Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral,Destinies,ngNotify) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -108,11 +108,16 @@
         }
 
         function logout() {
+
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');
             $rootScope.showLogin = true;
             unsubscribe();
+        console.log(ngNotify)
+                if(ngNotify!=null){
+                  ngNotify.dismiss()
+                }
         }
 
         setTimeout(function() {
@@ -243,6 +248,7 @@
                     vm.hideLoadingForm = 1;
                     emergencyList = []
                 }
+
                 subscribe();
             }
 
@@ -1175,6 +1181,16 @@
 
 
         function receiveVisitor(visitor) {
+        ngNotify.config({
+            theme: 'pure',
+            position: 'bottom',
+            duration: 3000000,
+            type: 'warn',
+            sticky: true,
+            button: true,
+            html: false
+        });
+
             Visitant.findAllInvited({
                 companyId: $rootScope.companyId
             }, onSuccessInvited, onError);
@@ -1187,7 +1203,17 @@
                     } else {
                         invitedList.push(visitor);
                     }
-
+                 if(visitor.isinvited!=2){
+                 var houseNumber = 0;
+                                     angular.forEach(visitors, function(visitor, index) {
+                                         angular.forEach(housesList, function(house, index) {
+                                             if (house.id == visitor.houseId) {
+                                                 houseNumber= house.housenumber;
+                                             }
+                                         })
+                                     })
+                 ngNotify.set('Se ha reportado uno o más invitados en la casa '+houseNumber+'.' );
+                 }
                 }
                 invitedList = visitors;
             }
@@ -1213,7 +1239,7 @@
         }
 
         function receiveHomeService(homeService) {
-
+              var houseNumber = 0;
             if (vm.notes !== undefined) {
                 var result = hasExistance(vm.notes, homeService.id)
 
@@ -1225,10 +1251,20 @@
                         angular.forEach(housesList, function(house, index) {
                             if (house.id == note.houseId) {
                                 note.housenumber = house.housenumber;
+                                houseNumber= house.housenumber;
                             }
                         })
                     })
-
+ngNotify.config({
+    theme: 'pure',
+    position: 'bottom',
+    duration: 3000000,
+    type: 'grimace',
+    sticky: true,
+    button: true,
+    html: false
+});
+ngNotify.set('Se ha recibido un nuevo servicio a domicilio en la casa '+houseNumber+'.' );
                     vm.countNotes = vm.notes.length;
                 }
 
