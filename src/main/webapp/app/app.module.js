@@ -19,7 +19,8 @@
             'angular-loading-bar',
             'cloudinary',
              'pdf',
-             'firebase'
+             'firebase',
+             'ngNotify'
         ])
         .run(run);
 
