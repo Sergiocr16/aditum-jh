@@ -5,7 +5,6 @@
         <div class="container" style="color:rgba(20,20,20,0.97)!important;">
             <div class="row">
                 <div class="board">
-                    <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
                     <div class="board-inner">
                         <ul class="nav nav-tabs" id="myTab">
                             <div class="liner"></div>
@@ -25,25 +24,29 @@
                                  </a>
                             </li>
                             <!--ng-class="{ 'disabled' : vm.piregistered === 1}"-->
-                            <li id="residentli"  >
-                                <a data-toggle="tab" title="Agregar información vehículos"  ng-click="vm.tabToShow=3; vm.changeState(3);">
+                            <li id="residentli" >
+                                <a  data-toggle="tab" title="Agregar información de residentes" ng-click="vm.tabToShow=3; vm.changeState(3);">
+                                 <span class="round-tabs four">
+                                      <i class="fa fa-users" style="font-size: 25px !important;"></i>
+                                 </span>
+                            </a>
+                            </li>
+                            <li id="carli">
+                                <a data-toggle="tab" title="Agregar información vehículos"  ng-click="vm.tabToShow=4; vm.changeState(4);">
                                      <span class="round-tabs three">
                                           <i class="fa fa-car" style="font-size: 25px !important;"></i>
                                      </span>
                                 </a>
                             </li>
 
-                            <li><a  data-toggle="tab" title="Agregar información de residentes" ng-click="vm.tabToShow=4; vm.changeState(4);">
-                                 <span class="round-tabs four">
-                                      <i class="fa fa-users" style="font-size: 25px !important;"></i>
-                                 </span>
-                                    </a>
-                            </li>
 
-                            <li><a data-toggle="tab" title="completed">
-                         <span class="round-tabs five">
-                              <i class="glyphicon glyphicon-ok" style="font-size: 25px !important;"></i>
-                         </span> </a>
+
+                            <li id="donerli">
+                                <a data-toggle="tab" title="completed" ng-click="vm.tabToShow=5; vm.changeState(5);" >
+                                     <span class="round-tabs five">
+                                          <i class="glyphicon glyphicon-ok" style="font-size: 25px !important;"></i>
+                                     </span>
+                                </a>
                             </li>
 
                         </ul></div>
@@ -99,42 +102,62 @@
                             </p>
                         </div>
                         <div class="tab-pane " id="profile">
-                            <form ng-submit="vm.createProfile()">
+                            <form ng-submit="vm.profileInfoReady()">
                             <h3 class="head text-center">Información personal</h3>
-                            <div class="col-lg-6 col-md-6  col-sm-6 marging-top-20 horizontal-padding-40">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.profileInfo.name" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                    <label  class="font-15">Nombre</label>
+                            <div class="horizontal-padding-40 col-md-12">
+                                <span>Importante: Si su nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en su cédula de identidad para obtener su información del padrón electoral de Costa Rica. Ejemplo: 10110111.</span>
+                            </div>
+                            <div class="col-lg-6 col-md-6  col-sm-6  marging-top-20 horizontal-padding-40">
+                                <div class="form-group has-info ">
+                                    <label class="font-15">Nacionalidad</label>
+                                    <select class="form-control gray-font" name="resident" ng-change="vm.unlockPersonNames(vm.profileInfo)" ng-model="vm.profileInfo.nacionality" ng-required='vm.required==1'>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="9">Costarricense</option>
+                                        <option value="15">Extranjero</option>
+                                    </select>
                                 </div>
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.profileInfo.lastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                    <label  class="font-15">Primer Apellido</label>
+                                <div  class="form-group gray-font ">
+                                    <label  class="font-15">Número de cédula</label>
+                                    <input maxlength="{{vm.profileInfo.nacionality}}" ng-class="{redBorder: vm.profileInfo.validIdentification == 0}"  ng-model="vm.profileInfo.identificationnumber" placeholder="Sin guiones ni espacios" type="text" ng-change="vm.findInPadron(vm.profileInfo)" class="form-control specialCharacters gray-font"  ng-disabled="vm.profileInfo.nacionality==NULL" required style='text-transform:uppercase'>
                                 </div>
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.profileInfo.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                    <label class="font-15">Segundo Apellido</label>
+                                <div class="form-group">
+                                    <label  class="font-15 gray-font">Nombre</label>
+                                    <input ng-model="vm.profileInfo.name" type="text" ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.profileInfo.name)}"  class="form-control letters gray-font" ng-disabled="vm.profileInfo.lockNames==true" required style="text-transform: capitalize;">
                                 </div>
+                                <div class="form-group ">
+                                    <label  class="font-15 gray-font">Primer Apellido</label>
+                                    <input ng-model="vm.profileInfo.lastname"  ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.profileInfo.lastname)}" type="text" class="form-control letters gray-font" ng-disabled="vm.profileInfo.lockNames==true" required style="text-transform: capitalize;">
+
+                                </div>
+
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20 horizontal-padding-40">
+                                <div class="form-group ">
+                                    <label class="font-15 gray-font">Segundo Apellido</label>
+                                    <input ng-model="vm.profileInfo.secondlastname" ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.profileInfo.secondlastname)}" type="text" class="form-control letters gray-font" ng-disabled="vm.profileInfo.lockNames==true" required style="text-transform: capitalize;">
 
-                                <div class="form-group form-md-line-input">
-                                    <input ng-focus="expression==1" ng-model="vm.profileInfo.phonenumber" type="text" required placeholder="" maxlength="20" class="form-control numbers gray-font">
+                                </div>
+                                <div class="form-group gray-font">
                                     <label class="font-15">Número celular</label>
-                                    <span class="help-block">Escriba el número celular sin guiones.</span>
+                                    <input ng-focus="expression==1" ng-model="vm.profileInfo.phonenumber" type="text" required placeholder="SIN GUIONES NI ESPACIOS" maxlength="20" class="form-control numbers gray-font">
+
                                 </div>
-                                <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.profileInfo.email" type="email" class="form-control gray-font" required placeholder="">
+                                <div class="form-group gray-font">
                                     <label class="font-15">Correo electrónico</label>
+                                    <input ng-model="vm.profileInfo.email" type="email" class="form-control gray-font" required placeholder="">
                                 </div>
 
-                                <div  class="form-group form-md-line-input">
-                                    <input ng-model="vm.profileInfo.identificationnumber" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
-                                    <label  class="font-15">Número de cédula</label>
-                                    <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
+                                <div class="form-group has-info gray-font">
+                                    <label class="font-15 ">Tipo de autorizado</label>
+                                    <select class="form-control gray-font" name="vehicule" ng-model="vm.profileInfo.type" ng-required='vm.required==1'>
+                                        <option value="">Seleccione una opción</option>
+                                        <option value="Propietario">Residente propietario</option>
+                                        <option value="Inquilino">Residente inquilino</option>
+                                    </select>
                                 </div>
 
                             </div>
-                                <h1 class="text-center col-xs-12 col-md-12 col-sm-12">
+                                <h1 class="text-center col-xs-12 col-md-12 col-sm-12 horizontal-padding-40">
                                 <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20  col-xs-12 col-md-offset-3 col-md-6 col-sm-12">Guardar y continuar <i class="fa fa-check "></i></button>
                                 </h1>
 
@@ -143,7 +166,7 @@
 
                         </div>
                         <div class="tab-pane horizontal-padding-20" id="addCar">
-                            <form action="">
+                            <form action="vm.vehiculesInfoReady()">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12 no-padding">
                                         <h3 class="head text-center hidden-sm hidden-md hidden-lg">Vehículos autorizados</h3>
@@ -163,12 +186,14 @@
                                             <span class="col-md-2 col-sm-2 hidden-xs">Color</span>
                                             <span class="col-md-1 col-sm-1 hidden-xs">Quitar</span>
                                         </div>
-                                        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15">
+                                        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15" id="vehiculesInCodeContainer">
 
                                                 <div ng-repeat="vehicule in vm.vehicules" >
+                                                   <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg ">Vehículo {{$index+1}}</h3>
+
                                                     <div class="form-group col-md-2 col-sm-3">
-                                                        <label class="font-15 hidden-sm hidden-md hidden-lg">Número de placa</label>
-                                                          <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                          <label class="font-15 hidden-sm hidden-md hidden-lg">Número de placa</label>
+                                                          <input ng-model="vehicule.licenseplate" type="text" class="form-control specialCharactersAndVocals gray-font" required style="text-transform: uppercase;">
 
                                                     </div>
                                                     <div class="form-group has-info col-md-3 col-sm-3">
@@ -193,15 +218,15 @@
                                                             <input ng-model="vehicule.color" ng-show="false" type="text" class="form-control gray-font"  value="#ffff" readonly required>
 
                                                             <span class="input-group-btn">
-                                                            <button ng-blur="vm.submitColor(vehicule,color+$index)" class="btn default form-control no-padding" type="button"><i id="{{color+$index}}" style="background-color: #ffff;"></i>&nbsp;</button>
+                                                            <button id="{{$index+'btn'}}" ng-blur="vm.submitColor(vehicule,color+$index)" class="btn default form-control no-padding" type="button"><i id="{{$index}}"></i>&nbsp;</button>
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group text-center has-info col-md-1 col-sm-1 col-xs-12">
-                                                        <button type="button" ng-click="vm.deleteVehiculeFromList($index)" class="btn btn-warning red col-xs-12 hidden-sm hidden-md hidden-lg">Eliminar vehículo</button>
-                                                        <span class="red-font" ng-click="vm.deleteVehiculeFromList($index)"><i class="fa fa-minus font-20 padding-top-10 hidden-xs"></i></span>
+                                                        <button type="button" ng-disabled="vm.vehicules.length==1" ng-click="vm.deleteVehiculeFromList($index)" class="btn btn-warning red col-xs-12 hidden-sm hidden-md hidden-lg">Eliminar vehículo</button>
+                                                        <span class="red-font" ng-class="{ 'disabled' : vm.vehicules.length == 1}"  ng-click="vm.deleteVehiculeFromList($index)"><i class="fa fa-minus font-20 padding-top-10 hidden-xs"></i></span>
                                                     </div>
-                                                    <hr class="col-md-12 hidden-lg hidden-md hidden-sm">
+                                                    <hr ng-show="vm.vehicules.length>1" class="col-md-12 hidden-lg hidden-md hidden-sm">
                                                 </div>
 
                                         </div>
@@ -210,114 +235,264 @@
                                         <button type="submit" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-sm-6 col-md-offset-2 col-md-6  col-lg-offset-2 col-lg-4">No tengo vehículos </i></button>
 
                                         <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-sm-6 col-md-6 col-lg-4 hidden-xs">Guardar y continuar <i class="fa fa-check "></i></button>
+                                    <div class=" margin-top-20 col-xs-12 hidden-sm hidden-md hidden-lg no-padding">
+                                        <button type="submit" class="btn btn-success green col-xs-12 horizontal-padding-40 vertical-padding-20">Guardar y continuar <i class="fa fa-check "></i></button>
 
-                                   <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>
+                                    </div>
 
                             </form>
                         </div>
                         <div class="tab-pane horizontal-padding-20" id="resident">
-                            <form action="">
+                            <form ng-submit="vm.residentsInfoReady()">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12 no-padding">
+                                        <h3 class="head text-center hidden-sm hidden-md hidden-lg">Personas autorizadas</h3>
                                         <h3 class="head text-right hidden-xs">Personas autorizadas</h3>
                                     </div>
-                                    <div class="col-lg-offset-2 col-lg-2 col-md-offset-2 col-md-2 col-sm-offset-1 col-sm-2 col-xs-12 no-padding">
-                                        <button type="button" ng-click="vm.addVehiculeToList()" class="btn btn-info blue margin-top-15 col-xs-12 hidden-xs">Agregar persona <i class="fa fa-plus "></i></button>
+                                    <div class=" col-md-12hidden-sm hidden-md hidden-lg margin-bottom-15">
+                                        <span>Importante: Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual que aparece en su cédula de identidad para obtener su información del padrón electoral de Costa Rica. Ejemplo: 10110111.</span>
                                     </div>
-                                    <button type="button" ng-click="vm.addVehiculeToList()" class="btn btn-info blue margin-bottom-15 col-xs-12 hidden-sm hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>
+                                    <div class="col-lg-offset-2 col-lg-2 col-md-offset-2 col-md-2 col-sm-offset-1 col-sm-2 col-xs-12 no-padding">
+                                        <button type="button" ng-click="vm.addResidentToList()" class="btn btn-info blue margin-top-15 col-xs-12 hidden-xs">Agregar persona <i class="fa fa-plus "></i></button>
+                                    </div>
+                                        <button type="button" ng-click="vm.addResidentToList()" class="btn btn-info blue col-xs-12 hidden-sm hidden-md hidden-lg">Agregar persona <i class="fa fa-plus "></i></button>
 
                                 </div>
-                                <div class="portlet-body col-md-12 col-xs-12 col-sm-12"  style="color:rgba(71,71,71,0.76)">
-                                    <!--<div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold text-center hidden-xs">-->
-                                        <!--<span class="col-md-1 col-sm-1 hidden-xs">Nacionalidad</span>-->
-                                        <!--<span class="col-md-2 col-sm-2 hidden-xs">Número cédula</span>-->
-                                        <!--<span class="col-md-2 col-sm-2 hidden-xs">Nombre</span>-->
-                                        <!--<span class="col-md-2 col-sm-2 hidden-xs">Primer apellido</span>-->
-                                        <!--<span class="col-md-2 col-sm-2 hidden-xs">Segundo apellido</span>-->
-                                        <!--<span class="col-md-2 col-sm-2 hidden-xs">Tipo de autorizado</span>-->
-                                        <!--<span class="col-md-1 col-sm-1 hidden-xs">Número teléfono</span>-->
-                                    <!--</div>-->
-                                    <div  ng-repeat="vehicule in vm.vehicules" style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 margin-bottom-15">
+                                <div class=" col-md-12 hidden-xs">
+                                    <span>Importante: Si la nacionalidad de la persona es costarricense, debe ingresar el número de cédula igual que aparece en su cédula de identidad para obtener su información del padrón electoral de Costa Rica. Ejemplo: 10110111.</span>
+                                </div>
+                                <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-top-20"  style="color:rgba(71,71,71,0.76)">
+                                    <div  ng-repeat="resident in vm.residents" style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 margin-bottom-15">
 
                                         <div class="col-md-12 col-sm-12 no-padding">
                                             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 "></div><h3 class="horizontal-padding-15">Persona {{$index+1}}</h3>
                                             <div class="form-group has-info col-md-3 col-sm-3">
                                                 <label class="font-15">Nacionalidad</label>
-                                                <select class="form-control gray-font" name="vehicule" ng-model="vehicule.type" ng-required='vm.required==1'>
-                                                    <option value="">Seleccione una</option>
-                                                    <option value="Automóvil">Costarricense</option>
-                                                    <option value="Motocicleta">Extranjero</option>
+                                                <select class="form-control gray-font" name="resident" ng-change="vm.unlockPersonNames(resident)" ng-model="resident.nacionality" ng-required='vm.required==1'>
+                                                    <option value="">Seleccione una opción</option>
+                                                    <option value="9">Costarricense</option>
+                                                    <option value="15">Extranjero</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
                                                 <label class="font-15 ">Número cédula</label>
-                                                <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                <input class="form-control  specialCharacters  gray-font" placeholder="SIN GUIONES NI ESPACIOS" ng-model="resident.identificationnumber" ng-disabled="resident.nacionality==NULL" ng-class="{redBorder: resident.validIdentification == 0}"  ng-change="vm.findInPadron(resident)" maxlength="{{resident.nacionality}}" type="text"  required style="text-transform: capitalize;">
 
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
                                                 <label class="font-15 ">Nombre</label>
-                                                <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                <input ng-model="resident.name" type="text" class="form-control letters gray-font" ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.name)}" ng-disabled="resident.lockNames==true" required style="text-transform: uppercase;">
 
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
                                                 <label class="font-15 ">Primer apellido</label>
-                                                <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                <input ng-model="resident.lastname" type="text" class="form-control letters gray-font"  ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.lastname)}" ng-disabled="resident.lockNames==true" required style="text-transform: uppercase;">
 
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
                                                 <label class="font-15">Segundo apellido</label>
-                                                <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                <input ng-model="resident.secondlastname" type="text" class="form-control letters gray-font" ng-class="{redBorder: vm.hasNumbersOrSpecial(resident.secondlastname)}" ng-disabled="resident.lockNames==true" required style="text-transform: uppercase;">
 
                                             </div>
                                             <div class="form-group has-info col-md-3 col-sm-3">
-                                                <label class="font-15 ">Tipo de vehículo</label>
-                                                <select class="form-control gray-font" name="vehicule" ng-model="vehicule.type" ng-required='vm.required==1'>
-                                                    <option value="">Seleccione una</option>
-                                                    <option value="Automóvil">Automóvil</option>
-                                                    <option value="Motocicleta">Motocicleta</option>
+                                                <label class="font-15 ">Tipo de autorizado</label>
+                                                <select class="form-control gray-font" name="vehicule" ng-model="resident.type" ng-required='vm.required==1'>
+                                                    <option value="">Seleccione una opción</option>
+                                                    <option value="Propietario">Residente propietario</option>
+                                                    <option value="Inquilino">Residente inquilino</option>
+                                                    <option value="Autorizado">Autorizado para ingresar</option>
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
-                                                <label class="font-15 ">Número teléfono</label>
-                                                <input ng-model="vehicule.licenseplate" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                                <label class="font-15 ">Número teléfono (opcional)</label>
+                                                <input ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-disabled="resident.type=='Autorizado'"  >
 
                                             </div>
-                                            <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12 margin-top-25">
-                                                <button type="button" ng-click="vm.deleteVehiculeFromList($index)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Eliminar vehículo</button>
+                                            <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
+                                                <button type="button"  ng-disabled="vm.residents.length==1" ng-click="vm.deleteResidentFromList($index)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Eliminar persona</button>
+                                            </div>
+                                            <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12 margin-top-25 hidden-xs">
+                                                <button type="button"  ng-disabled="vm.residents.length==1" ng-click="vm.deleteResidentFromList($index)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Eliminar persona</button>
                                             </div>
 
-                                            <!--<div class="form-group col-md-3 col-sm-3 text-center has-info">-->
-                                                <!--<button type="button" ng-click="vm.deleteVehiculeFromList($index)" class="btn btn-warning red margin-top-25 hidden-xs col-md-12">Eliminar vehículo</button>-->
-                                                <!--<button type="button" ng-click="vm.deleteVehiculeFromList($index)" class="btn btn-warning red hidden-md hidden-sm hidden-lg col-md-12 col-xs-12">Eliminar vehículo</button>-->
 
-                                            <!--</div>-->
-
-                                            <hr class="col-md-12 hidden-lg hidden-md hidden-sm">
                                         </div>
 
                                     </div>
                                 </div>
-                                <div class="text-center has-info col-xs-12 col-sm-6 col-md-offset-2 col-md-6  col-lg-offset-2 col-lg-4 no-padding">
-                                     <button type="submit" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12 ">No deseo agregar a nadie más </i></button>
+                                <div class="text-center has-info col-xs-12 col-sm-6 col-md-offset-2 col-md-6  col-lg-offset-2 col-lg-4 no-padding hidden-xs">
+                                     <button type="button" ng-click="vm.residentsInfoReady()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12 ">No deseo registrar a nadie más </i></button>
+
                                 </div>
+                                <div class="text-center has-info col-xs-12 col-sm-6 col-md-offset-2 col-md-6  col-lg-offset-2 col-lg-4 no-padding hidden-lg hidden-md hidden-sm">
+                                    <button type="submit"  ng-click="vm.residentsInfoReady()"  class="btn btn-success red horizontal-padding-40 vertical-padding-20 col-xs-12 ">No deseo registrar a nadie más </i></button>
+
+                                </div>
+
                                 <div class="text-center has-info col-xs-12 col-sm-6 col-md-6 col-lg-4">
                                    <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12  hidden-xs">Guardar y continuar <i class="fa fa-check "></i></button>
                                 </div>
                                 <div class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">
-                                    <button type="submit" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>
+                                    <button type="submit" ng-click="" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>
 
                                 </div>
 
                             </form>
                         </div>
-                        <div class="tab-pane fade" id="doner">
-                            <div class="text-center">
-                                <i class="img-intro icon-checkmark-circle"></i>
+                        <div class="tab-pane horizontal-padding-20" id="doner">
+
+                            <h3 class="head text-center">Resumen de información</h3>
+                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left">
+                                <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Información personal</h4>
                             </div>
-                            <h3 class="head text-center">thanks for staying tuned! <span style="color:#f48260;">♥</span> Bootstrap</h3>
-                            <p class="narrow text-center">
-                                Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-                            </p>
+                            <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
+                                <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
+                                    <span class="col-md-4 col-sm-3 ">Nombre completo</span>
+                                    <span class="col-md-2 col-sm-3 hidden-xs">Cédula</span>
+                                    <span class="col-md-2 col-sm-3 hidden-xs">Tipo de autorizado</span>
+                                    <span class="col-md-2 col-sm-2 hidden-xs">Correo</span>
+                                    <span class="col-md-2 col-sm-2 hidden-xs">Número de teléfono</span>
+
+                                </div>
+                                <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15" >
+
+                                        <div class="form-group col-md-4 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Nombre completo:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.name}} {{vm.profileInfo.lastname}} {{vm.profileInfo.secondlastname}}</label>
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número cédula:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.identificationnumber}}</label>
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Tipo autorizado:</label>
+                                            <label class="font-12  col-xs-7 col-md-12">{{vm.profileInfo.type}}</label>
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Correo:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.email}}</label>
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número teléfono:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{vm.profileInfo.phonenumber}}</label>
+                                        </div>
+                                        <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
+                                            <button type="button"  ng-click="vm.changeState(2)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
+                                        </div>
+                                    </div>
+
+
+                            </div>
+
+                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left">
+                                <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Personas autorizadas</h4>
+                            </div>
+
+                            <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
+                                <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
+                                    <span class="col-md-4 col-sm-3 ">Nombre completo</span>
+                                    <span class="col-md-2 col-sm-3 hidden-xs">Cédula</span>
+                                    <span class="col-md-2 col-sm-3 hidden-xs">Tipo de autorizado</span>
+                                    <span class="col-md-2 col-sm-2 hidden-xs">Número de teléfono</span>
+                                    <span class="col-md-2 col-sm-2 hidden-xs">Corrregir</span>
+
+                                </div>
+                                <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15" id="donerResidentsContainer">
+                                    <div ng-repeat="person in vm.residents">
+
+                                        <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg font-19">Persona {{$index+1}}</h3>
+
+                                        <div class="form-group col-md-4 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Nombre completo:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{person.name}} {{person.lastname}} {{person.secondlastname}}</label>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número cédula:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{person.identificationnumber}}</label>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Tipo autorizado:</label>
+                                            <label class="font-12  col-xs-7 col-md-12">{{person.type}}</label>
+                                        </div>
+                                        <div class="form-group col-md-2 col-sm-3 col-xs-12 no-padding">
+                                            <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número teléfono:</label>
+                                            <label class="font-12 col-xs-7 col-md-12">{{person.phonenumber}}</label>
+                                        </div>
+                                        <div class="form-group text-center has-info col-md-2 col-sm-12 col-xs-12 ">
+                                            <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
+                                        </div>
+                                        <hr ng-show="vm.residents.length>1" class="col-md-12 hidden-lg hidden-md hidden-sm">
+                                    </div>
+                                    <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
+                                        <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left ">
+                                <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Vehículos autorizados</h4>
+                            </div>
+                            <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
+                                <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
+                                    <span class="col-md-3 col-sm-3 hidden-xs">Número de placa</span>
+                                    <span class="col-md-3 col-sm-3 hidden-xs">Tipo de vehículo</span>
+                                    <span class="col-md-3 col-sm-3 hidden-xs">Marca</span>
+                                    <span class="col-md-3 col-sm-2 hidden-xs">Color</span>
+
+                                </div>
+                                    <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15" >
+
+                                        <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
+
+                                            <div class="col-xs-7 no-padding">
+                                                <div class="form-group col-md-12 col-sm-3 col-xs-12 no-padding">
+                                                    <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Placa:</label>
+                                                    <label class="font-12 col-xs-7 col-md-12">{{vehicule.licenseplate}}</label>
+                                                </div>
+                                                <div class="form-group col-md-12 col-sm-3 col-xs-12 no-padding">
+                                                    <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Tipo:</label>
+                                                    <label class="font-12 col-xs-7 col-md-12">{{vehicule.type}}</label>
+                                                </div>
+                                                <div class="form-group col-md-12 col-sm-3 col-xs-12 no-padding" style="padding-bottom: 0px;">
+                                                    <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Marca:</label>
+                                                    <label class="font-12  col-xs-7 col-md-12">{{vehicule.brand.brand}}</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-5 hidden-md hidden-sm hidden-lg padding-top-10">
+                                                <h1 ng-show="vehicule.type=='Automóvil'" class="col-lg-6 col-xs-12 text-center "><i class=" text-center fa fa-car font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>
+                                                <h1 ng-show="vehicule.type=='Motocicleta'" class="col-lg-6  col-xs-12  text-center "><i class=" text-center fa fa-motorcycle font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>
+                                            </div>
+
+                                            <div class="col-xs-12 hidden-lg hidden-md hidden-sm no-padding">
+                                                <hr ng-show="vm.vehicules.length>1" style="margin-top:0px !important;">
+                                            </div>
+
+
+                                         </div>
+                                        <div class="form-group  has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
+                                            <button type="button"  ng-click="vm.changeState(4)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
+                                        </div>
+
+                                        <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-xs">
+
+                                        <div class="form-group col-md-3 col-sm-3 no-padding">
+                                            <label class="font-12  col-md-12">{{vehicule.licenseplate}}</label>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3 no-padding">
+                                            <label class="font-15 col-md-12">{{vehicule.type}}</label>
+                                        </div>
+                                        <div class="form-group col-md-3 col-sm-3 no-padding">
+                                            <label class="font-15 col-md-12">{{vehicule.brand.brand}}</label>
+                                        </div>
+                                        <div class="form-group form-md-line-input has-info color-pickerr col-md-2 col-sm-2" >
+
+                                            <div style="background-color:{{vehicule.color}}; border: 1px solid #E6E6E6!important; height: 20px;" class="input-group color colorpicker-default col-lg-12"  data-color="#ffff" data-color-format="rgba">
+
+                                            </div>
+                                        </div>
+
+                                </div>
+                                    </div>
+                            </div>
                         </div>
                         <div class="clearfix"></div>
                     </div>
