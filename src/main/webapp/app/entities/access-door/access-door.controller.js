@@ -500,74 +500,74 @@
 
         }
         vm.getInvitedVisitantsByHouse = function() {
-            vm.show = 13;
-            loadAll();
-            var visitantByHouseList = [];
-            vm.loadingVisitantByHouseIndex = 1
-
-            function loadAll() {
-                Visitant.findInvitedByHouse({
-                    companyId: $rootScope.companyId,
-                    houseId: vm.houseForVisitantsInformation.id
-                }).$promise.then(onSuccess);
-
-
-                function onSuccess(data) {
-                    $("#loandingVisitantByHouseIndex").fadeOut(0);
-                    $("#visitantByHouseIndex").fadeIn(400);
-
-                    var visitantByHouseList = [];
-                    angular.forEach(data, function(itemVisitor, key) {
-                        if (itemVisitor.isinvited == 1) {
-                            var visitantInvited = {}
-                            if (vm.verifyVisitantInivitedDate(itemVisitor)) {
-                                visitantInvited.id = itemVisitor.id;
-                                visitantInvited.name = itemVisitor.name;
-                                visitantInvited.last_name = itemVisitor.lastname;
-                                visitantInvited.second_last_name = itemVisitor.secondlastname;
-                                visitantInvited.invitation_staring_time = itemVisitor.invitationstaringtime;
-                                visitantInvited.invitation_limit_time = itemVisitor.invitationlimittime;
-                                if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
-
-                                    visitantInvited.hasLicense = false;
-
-                                } else {
-                                    visitantInvited.license_plate = itemVisitor.licenseplate;
-                                    visitantInvited.hasLicense = true;
-                                }
-                                if (itemVisitor.identificationnumber == null || itemVisitor.identificationnumber == undefined || itemVisitor.identificationnumber == "") {
-
-
-                                    visitantInvited.hasIdentification = false;
-
-                                } else {
-                                    visitantInvited.indentification = itemVisitor.identificationnumber;
-                                    visitantInvited.hasIdentification = true;
-                                }
-
-                                var house = vm.setHouse(itemVisitor.houseId);
-
-                                vm.visitantListHouse = house;
-                                if (house.housenumber == 9999) {
-                                    vm.visitantListHouse = "Oficina";
-                                }
-                                visitantInvited.house_number = house.housenumber;
-                                visitantByHouseList.push(visitantInvited);
-
-                            }
-
-                        }
-
-                    })
-
-                    vm.visitantByHouseList = visitantByHouseList;
-
-                }
-
-                function onError(error) {
-                    AlertService.error(error.data.message);
-                }
-            }
+//            vm.show = 13;
+//            loadAll();
+//            var visitantByHouseList = [];
+//            vm.loadingVisitantByHouseIndex = 1
+            $state.go("access-door-invited-by-house",{id:vm.houseForVisitantsInformation.id}, { reload: false })
+//            function loadAll() {
+//                Visitant.findInvitedByHouse({
+//                    companyId: $rootScope.companyId,
+//                    houseId: vm.houseForVisitantsInformation.id
+//                }).$promise.then(onSuccess);
+//
+//
+//                function onSuccess(data) {
+//                    $("#loandingVisitantByHouseIndex").fadeOut(0);
+//                    $("#visitantByHouseIndex").fadeIn(400);
+//
+//                    var visitantByHouseList = [];
+//                    angular.forEach(data, function(itemVisitor, key) {
+//                        if (itemVisitor.isinvited == 1) {
+//                            var visitantInvited = {}
+//                            if (vm.verifyVisitantInivitedDate(itemVisitor)) {
+//                                visitantInvited.id = itemVisitor.id;
+//                                visitantInvited.name = itemVisitor.name;
+//                                visitantInvited.last_name = itemVisitor.lastname;
+//                                visitantInvited.second_last_name = itemVisitor.secondlastname;
+//                                visitantInvited.invitation_staring_time = itemVisitor.invitationstaringtime;
+//                                visitantInvited.invitation_limit_time = itemVisitor.invitationlimittime;
+//                                if (itemVisitor.licenseplate == null || itemVisitor.licenseplate == undefined || itemVisitor.licenseplate == "") {
+//
+//                                    visitantInvited.hasLicense = false;
+//
+//                                } else {
+//                                    visitantInvited.license_plate = itemVisitor.licenseplate;
+//                                    visitantInvited.hasLicense = true;
+//                                }
+//                                if (itemVisitor.identificationnumber == null || itemVisitor.identificationnumber == undefined || itemVisitor.identificationnumber == "") {
+//
+//
+//                                    visitantInvited.hasIdentification = false;
+//
+//                                } else {
+//                                    visitantInvited.indentification = itemVisitor.identificationnumber;
+//                                    visitantInvited.hasIdentification = true;
+//                                }
+//
+//                                var house = vm.setHouse(itemVisitor.houseId);
+//
+//                                vm.visitantListHouse = house;
+//                                if (house.housenumber == 9999) {
+//                                    vm.visitantListHouse = "Oficina";
+//                                }
+//                                visitantInvited.house_number = house.housenumber;
+//                                visitantByHouseList.push(visitantInvited);
+//
+//                            }
+//
+//                        }
+//
+//                    })
+//
+//                    vm.visitantByHouseList = visitantByHouseList;
+//
+//                }
+//
+//                function onError(error) {
+//                    AlertService.error(error.data.message);
+//                }
+//            }
 
         }
 
@@ -1051,12 +1051,16 @@
             }
             clearInputs();
             vm.houses = housesList;
+
             if (vm.id_number == undefined || vm.id_number == "") {
+             vm.consultingPadron = false;
             } else {
                 vm.visitor_id_number = vm.id_number;
                 vm.getVisitor();
             }
-            if (vm.id_vehicule == undefined || vm.id_vehicule == "") {} else {
+            if (vm.id_vehicule == undefined || vm.id_vehicule == "") {
+            vm.consultingPadron = false;
+            } else {
                 vm.visitor_license_plate = vm.id_vehicule;
                 vm.getVisitorByPlate();
             }

@@ -229,7 +229,7 @@
            }
             function modificar(){
                  CommonMethods.waitingMessage();
-                      alert(vm.resident.isOwner)
+
                      if(vm.resident.isOwner == true){
                        vm.resident.isOwner = 1;
                    } else {
