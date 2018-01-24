@@ -11,6 +11,7 @@
           $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
+
         vm.isAuthenticated = Principal.isAuthenticated;
       if(entity.image_url==undefined){
         entity.image_url = null;
@@ -229,7 +230,7 @@
            }
             function modificar(){
                  CommonMethods.waitingMessage();
-                      alert(vm.resident.isOwner)
+
                      if(vm.resident.isOwner == true){
                        vm.resident.isOwner = 1;
                    } else {

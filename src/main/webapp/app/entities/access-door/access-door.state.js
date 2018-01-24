@@ -165,6 +165,31 @@
                         });
                     }]
                 })
+        .state('access-door-invited-by-house', {
+            parent: 'access-door',
+            url: '/{id}/invited',
+            data: {
+                authorities: ['ROLE_OFFICER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/access-door/access-door-invited-by-house.html',
+                    controller: 'AccessDoorInvitedByHouseController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['House', function(House) {
+                            return House.get({id : $stateParams.id}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('access-door', null, { reload: false,notify: false });
+                }, function() {
+                    $state.go('^',null,{notify: false});
+                });
+            }]
+        })
         .state('access-door.edit', {
             parent: 'access-door',
             url: '/{id}/edit',
