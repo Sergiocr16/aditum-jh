@@ -184,9 +184,9 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('access-door', null, { reload: false });
+                    $state.go('access-door', null, { reload: false,notify: false });
                 }, function() {
-                    $state.go('^');
+                    $state.go('^',null,{notify: false});
                 });
             }]
         })

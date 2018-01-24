@@ -504,7 +504,7 @@
 //            loadAll();
 //            var visitantByHouseList = [];
 //            vm.loadingVisitantByHouseIndex = 1
-            $state.go("access-door-invited-by-house",{id:vm.houseForVisitantsInformation.id}, { reload: false })
+            $state.go("access-door-invited-by-house",{id:vm.houseForVisitantsInformation.id}, { reload: false, notify: false })
 //            function loadAll() {
 //                Visitant.findInvitedByHouse({
 //                    companyId: $rootScope.companyId,

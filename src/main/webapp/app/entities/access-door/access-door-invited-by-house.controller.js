@@ -12,11 +12,22 @@
 
         vm.house = entity;
         vm.clear = clear;
-
+ vm.loading = true;
         vm.visitantByHouseList = [];
         setTimeout(function(){
          loadAll();
         },500)
+                var hasExistance = function(array, id) {
+                    var index = undefined;
+                    angular.forEach(array, function(item, i) {
+                        if (parseInt(item.id) === parseInt(id)) {
+                            index = i;
+                        } else {
+                            index = -1;
+                        }
+                    })
+                    return index;
+                };
             var visitantByHouseList = [];
             vm.loadingVisitantByHouseIndex = 1
         vm.verifyVisitantInivitedDate = function(visitant) {
@@ -82,9 +93,11 @@
                         }
                     })
                     vm.visitantByHouseList = visitantByHouseList;
+                    vm.loading = false;
                 }
 
                 function onError(error) {
+                vm.loading = false;
                     AlertService.error(error.data.message);
                 }
             }
