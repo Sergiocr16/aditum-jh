@@ -53,11 +53,11 @@
             function loadAll() {
                 Visitant.findInvitedByHouse({
                     companyId: $rootScope.companyId,
-                    houseId: $stateParams.id
+                    houseId: vm.house.id
                 }).$promise.then(onSuccess);
 
                 function onSuccess(data) {
-                console.log(data)
+
                     $("#loandingVisitantByHouseIndex").fadeOut(0);
                     $("#visitantByHouseIndex").fadeIn(400);
 

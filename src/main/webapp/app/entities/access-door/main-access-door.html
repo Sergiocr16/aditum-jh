@@ -111,7 +111,15 @@
                         <span>  <i class="fa fa-home font-17 white-color" aria-hidden="true"></i></span>
                     </button>
                 </div>
-                <button type="submit" class="btn green font-15 col-md-12 col-sm-12 col-xs-12 btn-access-door " ng-click="vm.reloadAll()" name="buton">Recargar datos del sistema</button>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <button type="submit" style="margin:5px 0px" class="btn green font-15 col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-click="vm.reloadAll()" name="buton">Recargar datos del sistema</button>
+                    </div>
+                    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+                        <button type="submit" style="margin:5px 0px" class="btn default info font-15  col-sm-12 col-md-12 col-xs-12 col-lg-12" ng-click="vm.reportarTurno()" name="buton">Reportar cambio de turno</button>
+                    </div>
+                </div>
+
                 <div class="height-30-pixel col-lg-12 col-md-12 col-sm-12 hidden-xs "></div>
             </div>
 
@@ -259,8 +267,8 @@
                                             <input type="text" ng-model="vm.security_key" class="form-control gray-font height-12-percent font-19 " id="identification_number" placeholder="Clave de seguridad o emergencia">
                                         </div>
                                         <h3 class="text-right ">
-                                            <button type="submit" class="btn blue "><i class="fa fa-pencil "></i> Consultar</button>
-                                            <button  type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cancelar</button>
+                                            <button type="submit" class="btn blue "> Consultar</button>
+                                            <button  type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cerrar</button>
                                         </h3>
                                     </div>
 
@@ -291,7 +299,6 @@
                                         </div>
                                         <h3 class="text-right ">
                                             <button type="submit" class="btn blue ">Consultar información</button>
-                                            <button  type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cancelar</button>
                                         </h3>
                                     </div>
 
@@ -299,7 +306,7 @@
                             </form>
                         </div>
 
-                        <div style="height:100px;"class="col-md-12 hidden-sm hidden-xs "></div>
+                        <div style="margin-top:20px"class="col-md-12 hidden-sm hidden-xs "></div>
                         <div class="portlet-title gray-font">
                             <div class="caption text-center font-19">
                                 Consultar visitantes invitados de una casa
@@ -320,13 +327,19 @@
                                         </div>
                                         <h3 class="text-right ">
                                             <button type="submit" class="btn green ">Consultar visitantes invitados</button>
-                                            <button  type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cancelar</button>
                                         </h3>
                                     </div>
 
                                 </div>
                             </form>
                         </div>
+                        <div style="height:40px" class="col-md-12 hidden-xs">
+
+                        </div>
+                        <h1 style="text-align:right">
+                            <button type="button" ng-click="vm.show=4; vm.security_key=''"  class="btn default gray-font ">Cerrar</button>
+                        </h1>
+
                     </div>
                     <div id="loandingVisitantByHouseIndex" ng-show="vm.loadingVisitantByHouseIndex==1" class="col-md-12 text-center "><h5 class="font-15 bold gray-font">Cargando...</h5></div>
                     <div class="col-md-12 col-sm-12 col-xs-12 display-none no-padding" id="visitantByHouseIndex" ng-show="vm.show==13" >

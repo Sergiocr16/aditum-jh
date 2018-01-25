@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('WatchController', WatchController);
 
-    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope','CommonMethods','$stateParams','Company','$state'];
+    WatchController.$inject = ['Watch', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope','CommonMethods','$stateParams','Company','$state','$scope'];
 
-    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope,CommonMethods, $stateParams, Company, $state) {
+    function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope,CommonMethods, $stateParams, Company, $state, $scope) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -59,15 +59,33 @@
             setTimeout(function() {
                 $("#loadingData").fadeIn(300);
             }, 200)
+           if(vm.showFullDatePicker==true){
             Watch.findBetweenDates({
                 initial_time: moment(vm.consulting_initial_time).format(),
                 final_time: moment(vm.consulting_final_time).format(),
                 companyId: parseInt(companyId),
             }, onSuccessBetweenDates, onErrorBetweenDates)
+           }else{
 
+           if(vm.daySelectedMinimo.fechaMinima.getTime()> vm.daySelectedMaximo.fechaMaxima.getTime()){
+           toastr["error"]("La fecha máxima debe de ser mayor a la mínima")
+           vm.getCurrentWatch()
+           }else{
+           Watch.findBetweenDates({
+                initial_time: moment(vm.daySelectedMinimo.fechaMinima).format(),
+                final_time: moment(vm.daySelectedMaximo.fechaMaxima).format(),
+                companyId: parseInt(companyId),
+            }, onSuccessBetweenDates, onErrorBetweenDates)
+            }
+            }
             function onSuccessBetweenDates(data, headers) {
+           if(vm.showFullDatePicker==true){
                 vm.showConsultingInitialTime = moment(vm.consulting_initial_time).format('ll');
                 vm.showConsultingFinalTime = moment(vm.consulting_final_time).format('ll');
+                }else{
+                 vm.showConsultingInitialTime = moment(vm.daySelectedMinimo.fechaMinima).format('ll');
+                                vm.showConsultingFinalTime = moment(vm.daySelectedMaximo.fechaMaxima).format('ll');
+                }
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
@@ -87,8 +105,34 @@
                 AlertService.error(error.data.message);
             }
         }
+
+        function createFiveDaysBehind(){
+        vm.days = [];
+        for(var i = 0;i<=4;i++){
+        var diaAnterior = {}
+         var today = new Date();
+         today.setDate(today.getDate()-i);
+         today.setHours(0);
+         today.setMinutes(0);
+         today.setSeconds(0);
+         diaAnterior.fechaMinima = today;
+         today.setHours(23);
+         today.setMinutes(59);
+         today.setSeconds(59);
+         diaAnterior.fechaMaxima =  today;
+         diaAnterior.fecha = moment(today).format("ll")
+         diaAnterior.id = i;
+         vm.days.push(diaAnterior)
+        }
+        }
         vm.loadAll = function(){
         Principal.identity().then(function(account){
+        if(account.login == 'lh-admin' || account.authorities[0]!="ROLE_MANAGER"){
+        vm.showFullDatePicker = true;
+        }else{
+        vm.showFullDatePicker = false;
+        createFiveDaysBehind();
+        }
          if(account.authorities[0]=="ROLE_RH"){
              Company.get({id:parseInt(companyId)},function(company){
              vm.company = company;

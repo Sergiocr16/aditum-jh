@@ -499,12 +499,17 @@
             }
 
         }
+
+        vm.reportarTurno = function(){
+         $state.go("main-access-door.newWatch", null,{ reload: false, notify: false })
+        }
         vm.getInvitedVisitantsByHouse = function() {
 //            vm.show = 13;
 //            loadAll();
 //            var visitantByHouseList = [];
 //            vm.loadingVisitantByHouseIndex = 1
-            $state.go("access-door-invited-by-house",{id:vm.houseForVisitantsInformation.id}, { reload: false, notify: false })
+            var encryptedId = CommonMethods.encryptIdUrl(vm.houseForVisitantsInformation.id)
+            $state.go("access-door-invited-by-house",{id:encryptedId}, { reload: false, notify: false })
 //            function loadAll() {
 //                Visitant.findInvitedByHouse({
 //                    companyId: $rootScope.companyId,
