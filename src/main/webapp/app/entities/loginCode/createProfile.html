@@ -42,7 +42,7 @@
 
 
                             <li id="donerli">
-                                <a data-toggle="tab" title="completed" ng-click="vm.tabToShow=5; vm.changeState(5);" >
+                                <a data-toggle="tab" title="completed" ng-click="vm.tabToShow=5; vm.vehiculesInfoReady()" >
                                      <span class="round-tabs five">
                                           <i class="glyphicon glyphicon-ok" style="font-size: 25px !important;"></i>
                                      </span>
@@ -55,34 +55,52 @@
                         <div class="tab-pane col-md-12" id="home" >
 
                             <h3 class="head text-center">Bienvenido a ADITUM</h3>
-                            <div class="col-md-6 font-14 margin-top-10" >
-                                <p class="narrow" style="width:100%">
+                            <div class="col-md-offset-5 col-md-2 col-xs-offset-4 col-xs-5" style=" border-top: 3px solid #42A5F5"></div>
+
+
+                            <div class="col-md-12 col-xs-12 font-14 margin-top-10" >
+                                <p class="narrow text-center" style="width:100%; color:rgba(93,93,93,0.97)">
                                     Por medio de este sistema podrá administrar la información de su filial.
                                 </p>
-                                <p class="narrow " >
+
+                                <p class="narrow text-center" style="width:100%; color:rgba(93,93,93,0.97)">
                                     Aditum te permite realizar las siguientes funciones:
                                 </p>
-                                <ul>
-                                    <li>
-                                        Administrar información de residentes y autorizados de su filial.
-                                    </li>
-                                    <li>
-                                        Administrar información de los vehículos autorizados de su filial.
-                                    </li>
-                                    <li>
-                                        Ver reporte de visitantes que han ingresado a su filial.
-                                    </li>
-                                    <li>
-                                        Reportar emergencias a los oficiales de seguridad.
-                                    </li>
-                                    <li>
-                                        Reportar llegada de visitantes a su filial por rango de tiempo.
-                                    </li>
-                                    <li>
-                                        Reportar llegada de servicios a domicilio.
-                                    </li>
-                                </ul>
                             </div>
+                        
+
+                                <li id="homeli" class="active">
+                                    <a data-toggle="tab" title="Bienvenida"  ng-click="vm.tabToShow=1; vm.changeState(1);">
+                                      <span class="round-tabs one">
+                                              <i class="glyphicon glyphicon-home" style="font-size: 25px !important;"></i>
+                                      </span>
+                                    </a>
+                                </li>
+
+
+
+
+                                <!--<ul>-->
+                                    <!--<li>-->
+                                        <!--Administrar información de residentes y autorizados de su filial.-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--Administrar información de los vehículos autorizados de su filial.-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--Ver reporte de visitantes que han ingresado a su filial.-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--Reportar emergencias a los oficiales de seguridad.-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--Reportar llegada de visitantes a su filial por rango de tiempo.-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--Reportar llegada de servicios a domicilio.-->
+                                    <!--</li>-->
+                                <!--</ul>-->
+
                             <div class="col-md-6 font-14 margin-top-10" >
                                 <p class="narrow text-center" style="width:100%">
                                    Información de la filial
@@ -166,7 +184,7 @@
 
                         </div>
                         <div class="tab-pane horizontal-padding-20" id="addCar">
-                            <form action="vm.vehiculesInfoReady()">
+                            <form ng-submit="vm.vehiculesInfoReady()">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                     <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12 no-padding">
                                         <h3 class="head text-center hidden-sm hidden-md hidden-lg">Vehículos autorizados</h3>
@@ -304,8 +322,8 @@
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3 col-sm-3">
-                                                <label class="font-15 ">Número teléfono (opcional)</label>
-                                                <input ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-disabled="resident.type=='Autorizado'"  >
+                                                <label ng-hide="resident.type=='Autorizado'" class="font-15 ">Número teléfono (opcional)</label>
+                                                <input ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-hide="resident.type=='Autorizado'"  >
 
                                             </div>
                                             <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
@@ -342,8 +360,11 @@
                         <div class="tab-pane horizontal-padding-20" id="doner">
 
                             <h3 class="head text-center">Resumen de información</h3>
-                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left">
+                            <div class="col-md-10 col-xs-12 col-sm-12 no-padding text-left">
                                 <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Información personal</h4>
+                            </div>
+                            <div class="form-group text-center has-info hidden-xs col-md-2 col-sm-12 col-xs-12 no-padding-right" style="margin-bottom:0px;">
+                                <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
                             </div>
                             <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
                                 <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
@@ -384,12 +405,14 @@
 
                             </div>
 
-                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left">
+                            <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left">
                                 <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Personas autorizadas</h4>
                             </div>
-
+                            <div class="form-group text-left has-info hidden-xs col-md-2 col-sm-12 col-xs-12  no-padding-left" style="margin-bottom:0px;">
+                                <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
+                            </div>
                             <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-                                <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
+                                <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-show="vm.residents.length>0">
                                     <span class="col-md-4 col-sm-3 ">Nombre completo</span>
                                     <span class="col-md-2 col-sm-3 hidden-xs">Cédula</span>
                                     <span class="col-md-2 col-sm-3 hidden-xs">Tipo de autorizado</span>
@@ -397,8 +420,9 @@
                                     <span class="col-md-2 col-sm-2 hidden-xs">Corrregir</span>
 
                                 </div>
-                                <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15" id="donerResidentsContainer">
-                                    <div ng-repeat="person in vm.residents">
+                                <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15"  id="donerResidentsContainer" ">
+                                    <h4 class="text-center padding-bottom-15"  ng-hide="vm.residents.length>0" >No hay personas registradas</h4>
+                                    <div ng-repeat="person in vm.residents" ng-show="vm.residents.length>0">
 
                                         <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg font-19">Persona {{$index+1}}</h3>
 
@@ -418,9 +442,7 @@
                                             <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Número teléfono:</label>
                                             <label class="font-12 col-xs-7 col-md-12">{{person.phonenumber}}</label>
                                         </div>
-                                        <div class="form-group text-center has-info col-md-2 col-sm-12 col-xs-12 ">
-                                            <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
-                                        </div>
+
                                         <hr ng-show="vm.residents.length>1" class="col-md-12 hidden-lg hidden-md hidden-sm">
                                     </div>
                                     <div class="form-group text-center has-info col-md-3 col-sm-12 col-xs-12  hidden-md hidden-lg hidden-sm">
@@ -428,8 +450,11 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-12 col-xs-12 col-sm-12 no-padding text-left ">
+                            <div class="col-md-10 col-xs-12 col-sm-12 no-padding text-left ">
                                 <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Vehículos autorizados</h4>
+                            </div>
+                            <div class="form-group text-center has-info hidden-xs col-md-2 col-sm-12 col-xs-12 no-padding-right" style="margin-bottom:0px;">
+                                <button type="button"  ng-click="vm.changeState(3)" class="btn btn-warning red col-md-12 col-xs-12 col-sm-12 col-lg-12">Editar información  <i class="fa fa-pencil "></i></button>
                             </div>
                             <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
                                 <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">

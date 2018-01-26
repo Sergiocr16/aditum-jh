@@ -54,7 +54,7 @@
         function onSuccessCompany(data) {
             vm.company = data;
             Brand.query({}, onSuccessBrand);
-            vm.changeState(2);
+            vm.changeState(1);
         }
         function onSuccessBrand(brands){
             vm.brands = brands;
@@ -172,6 +172,11 @@
 
         }
         vm.vehiculesInfoReady = function () {
+            angular.forEach(vm.residents,function(val,index){
+                if (val.identificationnumber==undefined || val.identificationnumber==null || val.identificationnumber==""){
+                    vm.residents.splice(index,1)
+                }
+            })
             vm.changeState(5);
 
         }

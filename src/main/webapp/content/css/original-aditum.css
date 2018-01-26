@@ -303,10 +303,13 @@ height: 100%;
 }
 
 .no-padding {
-    padding: 0 !important;
+    padding: 0px !important;
 }
 .no-padding-left {
-    padding-left: 0 !important;
+    padding-left: 0px !important;
+}
+.noPaddingTop{
+    padding-top: 0px !important;
 }
 .redBorder{
     border-color: red !important;
@@ -826,6 +829,10 @@ li.active span.round-tabs.five{
     margin: 20px 0;
     border: 2px solid transparent;
     border-radius: 25px;
+}
+
+.ballsInCodePage{
+
 }
 
 .btn.green{
