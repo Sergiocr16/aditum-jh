@@ -98,7 +98,6 @@
                 vm.showCleanBtn = true;
                 vm.showTable = true;
                 vm.showBackBtn = false;
-
             }
 
             function onErrorBetweenDates(error) {
