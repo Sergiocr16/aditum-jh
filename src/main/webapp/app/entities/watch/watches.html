@@ -58,25 +58,67 @@
                         </div>
                     </div>
                     <div class="portlet-body form">
-                        <form role="form">
+                        <form role="form" ng-show="vm.showFullDatePicker==true">
                             <div class="form-body">
                                 <div class="date-picker input-daterange" >
-                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" ng-show="isConsulting==true">
-                                        <button type="button" class="nothing col-xs-12" ng-click="stopConsulting()" name="button"><i class="fa fa-times red-font"></i></button>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <input ng-model="vm.consulting_initial_time" max="vm.currentDate" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" datetime-picker="mediumDate"  datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                        <label  class="font-15">Desde la fecha</label>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <input ng-model="vm.consulting_final_time"  max="vm.currentDate"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" type="text" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.finaltime" datepicker-options="vm.picker2.datepickerOptions"  enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                        <label  class="font-15">Hasta la fecha</label>
-                                    </div>
+                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" ng-show="isConsulting==true">
+                                <button type="button" class="nothing col-xs-12" ng-click="stopConsulting()" name="button"><i class="fa fa-times red-font"></i></button>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                <input ng-model="vm.consulting_initial_time" max="vm.currentDate" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" datetime-picker="mediumDate"  datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>
+                                <label  class="font-15">Desde la fecha</label>
+                                </div>
+                                <div class="form-group form-md-line-input">
+                                <input ng-model="vm.consulting_final_time"  max="vm.currentDate"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" type="text" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.finaltime" datepicker-options="vm.picker2.datepickerOptions"  enable-time="false" class="form-control letters gray-font text-center dating" required>
+                                <label  class="font-15">Hasta la fecha</label>
+                                </div>
 
                                 </div>
                             </div>
                             <div class="form-actions noborder no-margin no-padding">
                                 <button ng-click="vm.filterWatches()" class="btn green col-md-6 col-sm-6 col-xs-12  small-margin-bottom" ng-disabled="vm.consulting_initial_time=='' || vm.consulting_final_time==''">Consultar</button>
+                                <button ng-click="vm.getCurrentWatch()" ng-show="vm.showCleanBtn==true" class="btn small-margin-bottom btn-danger">Limpiar</button>
+                            </div>
+                        </form>
+                        <form role="form" ng-show="vm.showFullDatePicker==false">
+                            <div class="form-body">
+                                <div class="form-group col-md-12  no-padding">
+                                    <div class="form-group col-md-12 no-padding">
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Desde:</label>
+                                        <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
+                                            <select class="form-control gray-font" data-ng-model="vm.daySelectedMinimo" ng-options="day.fecha for day in vm.days | orderBy: '-id' track by day.id" required>
+                                                <option value="">Seleccione una fecha</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12  no-padding">
+                                    <div class="form-group col-md-12 no-padding">
+                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Hasta:</label>
+                                        <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
+                                            <select class="form-control gray-font" data-ng-model="vm.daySelectedMaximo" ng-options="day.fecha for day in vm.days | orderBy: '-id' track by day.id" required>
+                                                <option value="">Seleccione una fecha</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="date-picker input-daterange" >-->
+                                    <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" ng-show="isConsulting==true">-->
+                                        <!--<button type="button" class="nothing col-xs-12" ng-click="stopConsulting()" name="button"><i class="fa fa-times red-font"></i></button>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input">-->
+                                        <!--<input ng-model="vm.consulting_initial_time" max="vm.currentDate" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" datetime-picker="mediumDate"  datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>-->
+                                        <!--<label  class="font-15">Desde la fecha</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input">-->
+                                        <!--<input ng-model="vm.consulting_final_time"  max="vm.currentDate"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" type="text" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.finaltime" datepicker-options="vm.picker2.datepickerOptions"  enable-time="false" class="form-control letters gray-font text-center dating" required>-->
+                                        <!--<label  class="font-15">Hasta la fecha</label>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                            </div>
+                            <div class="form-actions noborder no-margin no-padding">
+                                <button ng-click="vm.filterWatches(2)" class="btn green col-md-6 col-sm-6 col-xs-12  small-margin-bottom" ng-disabled="vm.daySelectedMinimo=='' || vm.daySelectedMinimo==undefined || vm.daySelectedMaximo=='' || vm.daySelectedMaximo==undefined">Consultar</button>
                                 <button ng-click="vm.getCurrentWatch()" ng-show="vm.showCleanBtn==true" class="btn small-margin-bottom btn-danger">Limpiar</button>
                             </div>
                         </form>
@@ -90,7 +132,7 @@
                 <!--</div>-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" id="data">
                     <div class="col-md-2 col-lg-2 col-sm-2 col-xs-1">
-                        <span ng-click="vm.filterWatches()" class="float-right pointer" ng-show="vm.showBackBtn==true"><i class="fa fa-arrow-circle-o-left font-green font-back" aria-hidden="true"></i></span>
+                        <span ng-click="vm.filterWatches(1)" class="float-right pointer" ng-show="vm.showBackBtn==true"><i class="fa fa-arrow-circle-o-left font-green font-back" aria-hidden="true"></i></span>
                     </div>
                     <div class="col-md-10 col-lg-10 col-sm-10 col-xs-11">
 

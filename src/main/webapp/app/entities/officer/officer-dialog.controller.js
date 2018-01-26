@@ -33,7 +33,7 @@
         CommonMethods.validateLetters();
         vm.loginStringCount = 0;
         CommonMethods.validateNumbers();
-        vm.birthdate = new Date().setYear(new Date().getYear()-18);
+        vm.birthdate = new Date().setYear(new Date().getYear()-20);
         $rootScope.active = "officers";
         if(vm.officer.id !== null){
             vm.title = "Editar oficial";

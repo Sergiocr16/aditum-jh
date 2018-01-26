@@ -159,9 +159,9 @@
                                 }
                             }
                         }).result.then(function() {
-                            $state.go('main-access-door', null, { reload: 'main-access-door' });
+                          $state.go('access-door', null, { reload: false,notify: false });
                         }, function() {
-                            $state.go('main-access-door');
+                           $state.go('^',null,{notify: false});
                         });
                     }]
                 })
@@ -179,8 +179,9 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['House', function(House) {
-                            return House.get({id : $stateParams.id}).$promise;
+                        entity: ['House','CommonMethods', function(House,CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                            return House.get({id : id}).$promise;
                         }]
                     }
                 }).result.then(function() {

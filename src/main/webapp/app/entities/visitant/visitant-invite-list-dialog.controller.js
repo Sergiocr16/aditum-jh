@@ -11,7 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.clear = clear;
-        $rootScope.active = "reportInvitation";
+        $rootScope.active = "reportInvitationList";
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
