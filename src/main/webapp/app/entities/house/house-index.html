@@ -45,6 +45,7 @@
                             <th>Número</th>
                             <th>Extensión o teléfono de casa</th>
                             <th>Ver claves de seguridad</th>
+                            <th>Ver código de iniciación</th>
                             <th>Editar</th>
                             <!-- <th>Eliminar</th> -->
                         </tr>
@@ -54,6 +55,7 @@
                             <td>{{house.housenumber}}</td>
                             <td>{{house.extension}}</td>
                             <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
+                            <td ><a class="light-gray-font" ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)">Ver código de iniciación</a></td>
                             <td> <a class="light-gray-font" ng-click="vm.editHouse(house.id)">Editar</a></td>
                         </tr>
                         </tbody>

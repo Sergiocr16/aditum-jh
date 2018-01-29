@@ -76,11 +76,19 @@
         {
             "fieldName": "emergencyKey",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "loginCode",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "codeStatus",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170228214136",
-    "entityTableName": "house",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "entityTableName": "house",
+    "pagination": "pager"
 }

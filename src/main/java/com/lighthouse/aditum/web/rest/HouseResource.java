@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.domain.AdminInfo;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.User;
+import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.service.*;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -161,6 +163,16 @@ public class HouseResource {
     public ResponseEntity<HouseDTO> getHouse(@PathVariable Long id) {
         log.debug("REST request to get House : {}", id);
         HouseDTO houseDTO = houseService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
+    }
+
+
+    @GetMapping("/houses/housesByLoginCode/{loginCode}")
+
+    @Timed
+    public ResponseEntity<HouseDTO> getHouseByLoginCode(@PathVariable String loginCode) {
+        log.debug("REST request to get House : {}", loginCode);
+        HouseDTO houseDTO = houseService.findByLoginCodde(loginCode);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
     }
 

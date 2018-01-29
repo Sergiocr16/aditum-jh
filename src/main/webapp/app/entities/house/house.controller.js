@@ -96,7 +96,29 @@
                 document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
             }
         }
+       vm.showLoginCode = function(house_number, codeStatus, loginCode) {
+             var estado = "";
+            if (loginCode == null) {
+                toastr["error"]("Esta casa aún no tiene un código de iniciación asignado.");
+            } else {
 
+                if(codeStatus==false || codeStatus ==0){estado = 'No activada'} else { estado = "Activada"};
+                bootbox.dialog({
+                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Código de iniciación: <span class="font-15 bold" id="login_code">1134314</span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Estado: <span class="font-15 bold" id="code_status">1134314</span></h1></div>',
+                    closeButton: false,
+                    buttons: {
+                        confirm: {
+                            label: 'Ocultar',
+                            className: 'btn-success'
+                        }
+                    },
+                })
+
+                document.getElementById("key_id_house").innerHTML = "" + house_number;
+                document.getElementById("login_code").innerHTML = "" + loginCode;
+                document.getElementById("code_status").innerHTML = "" + estado;
+            }
+        }
 
     }
 })();
