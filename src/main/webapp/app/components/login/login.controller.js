@@ -27,6 +27,7 @@
         .$getByHandle('my-pdf-container')
         .load(url);
     };
+        vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
         vm.isChangingPassword = $state.includes('finishReset');
