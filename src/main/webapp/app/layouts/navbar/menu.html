@@ -97,6 +97,11 @@
                             <i class="fa fa-building" aria-hidden="true"></i> Destinos Custom
                         </a>
                     </li>
+                    <li ui-sref="biostar" ng-class="{ 'active' : active === 'destinies' }">
+                        <a ui-sref="destinies">
+                            <i class="fa fa-star" aria-hidden="true"></i> Pruebas BioStar
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li ui-sref="dashboard" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'dashboard'}">
