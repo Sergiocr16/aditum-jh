@@ -18,6 +18,10 @@
                    $('.carousel').carousel({
                        intervals: 2000
                    });
+        $("#login").fadeIn(1200);
+
+
+
         });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;

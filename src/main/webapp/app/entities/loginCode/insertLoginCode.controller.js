@@ -9,10 +9,20 @@
 
     function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
          angular.element(document).ready(function () {
+             $("#insertCode").fadeIn(700);
+             setTimeout(function() {
+                 $(".aditumLogoLoginCode").fadeIn(1000);
+             },800)
+             setTimeout(function() {
+                 $("#containerLoginCode").fadeIn(1300);
+             },1700)
+
                  $('body').removeClass("gray");
                  $rootScope.showLogin = false;
                  $rootScope.menu = false;
                  $rootScope.isInManual = true;
+
+
          });
 
         var vm = this;
@@ -26,6 +36,11 @@
              $state.go('insertCode.createProfile',{loginCode:vm.loginCode});
 
 
+        }
+
+        vm.back = function(){
+
+            $state.go('home');
         }
           function onError() {
               vm.loginCodeNotFound = 1;

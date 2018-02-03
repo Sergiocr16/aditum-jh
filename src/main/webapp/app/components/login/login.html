@@ -7,9 +7,9 @@
 <!--animation: loginBackground 24s ease infinite;">-->
 
 
-<div id="login" class="col-md-12 no-margin no-padding" style="height:100vh!important;color:white!important; background: url('https://hdwallsource.com/img/2014/9/blur-wallpaper-26335-27026-hd-wallpapers.jpg') no-repeat fixed; background-size:100% 100%">
+<div id="login" class="col-md-12 no-margin no-padding display-none " style="height:100vh!important;color:white!important; background: url('https://hdwallsource.com/img/2014/9/blur-wallpaper-26335-27026-hd-wallpapers.jpg') no-repeat fixed; background-size:700% 100%">
 
-    <div class="col-md-6 col-sm-12 col-lg-6 col-xs-12" style="height:100vh!important;
+    <div class="col-md-6 col-sm-6 col-lg-6 col-xs-12" style="height:100vh!important;
 ">
        <div class="col-lg-12" style="height:60px;">
 
@@ -19,10 +19,10 @@
 
         <div class="col-md-12" style="padding:0">
 
-            <div class="col-md-offset-2 col-md-8" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
+            <div class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10  col-xs-12" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
 -moz-border-radius: 15px;
 border-radius: 15px!important;">
-                <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="190"></h1>
+                <h1  class="text-center "><img src="content/images/logoAditum.png" alt="" width="190"></h1>
                 <div class="col-md-12 margin-top-10" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
                    <div class="col-md-12 margin-bottom-10">         <h4 style="font-size:22px;">Inicia sesión con tu cuenta</h4></div>
 
@@ -32,7 +32,7 @@ border-radius: 15px!important;">
                 <form class="col-md-12 no-padding" ng-submit="vm.login($event)" role="form" ng-init="loginForm = {}" name="login" ng-show='!isResetingPassword'>
                     <div class="col-md-12">
 
-                        <div class="col-md-12 col-sm-6 margin-top-10" style="padding: 0 0 0 0;">
+                        <div class="col-md-12 col-sm-12 margin-top-10" style="padding: 0 0 0 0;">
                             <div class="form-group">
                                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                                 <label class="control-label visible-ie8 visible-ie9">Usuario</label>
@@ -41,12 +41,9 @@ border-radius: 15px!important;">
                                     <input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Usuario" name="username"/>
                                 </div>
                             </div>
-                            <!--<div class="form-group  small-margin-top ">-->
-                                <!--<input ng-model="vm.username" type="text" class="form-control input-sm text-center vertical-padding-20" id="form_control_1" style="color:white" placeholder="Digite su nombre de usuario" required title="Input required">-->
-                                <!--<label for="form_control_1" style="color:white">Usuario</label>-->
-                            <!--</div>-->
+
                         </div>
-                        <div class="col-md-12 col-sm-6 " style="padding: 0 0 0 0; margin-top:6px;">
+                        <div class="col-md-12 col-sm-12 " style="padding: 0 0 0 0; margin-top:6px;">
                             <div class="form-group">
                                 <label class="control-label visible-ie8 visible-ie9">Contraseña</label>
                                 <div class="input-icon">
@@ -55,26 +52,22 @@ border-radius: 15px!important;">
                                 </div>
                             </div>
 
-
-                            <!--<div class="form-group  small-margin-top">-->
-                                <!--<input ng-model="vm.password" type="password" class="form-control input-sm text-center" style="color:white" id="form_control_2" placeholder="Digite su contraseña" required title="Input required">-->
-                                <!--<label for="form_control_2" style="color:white">Contraseña</label>-->
-                            <!--</div>-->
                         </div>
                     </div>
 
-                    <div class="col-md-12 ">
-                        <h5 class=""><a href="#" class="col-md-8 col-sm-8 col-xs-12 small-margin-bottom" ui-sref="requestReset" style="font-size:15px; color:white;">¿Olvidaste tu contraseña?</a></h5>
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 col-xs-12">
+                        <h5 class="no-padding"><div href="#" class="col-md-8 col-sm-7 col-xs-12 small-margin-bottom">
+                            <a href=""  ui-sref="requestReset" style="font-size:15px; color:white;">¿Olvidaste tu contraseña?</a></div></h5>
 
-                        <button type="submit" class="btn blue col-md-4 col-sm-4 col-xs-12" name="button">Iniciar sesión</button>
+                        <button type="submit" class="btn blue col-md-4 col-sm-5 col-xs-12" name="button">Iniciar sesión</button>
 
                     </div>
 
-                    <div class="col-md-12 margin-top-20" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
+                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 margin-top-20" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
 
-                    <div class="col-md-12 margin-top-20">
+                    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12  margin-top-20">
 
-                        <button type="submit" class="btn green col-md-12 col-sm-12 col-xs-12" name="button">Registrarse por código de acceso</button>
+                        <button type="button" ui-sref="insertCode()" class="btn green col-md-12 col-sm-12 col-xs-12" name="button">Registrarse por código de acceso</button>
 
                     </div>
                 </form>
@@ -110,7 +103,7 @@ border-radius: 15px!important;">
 
         </div>
     </div>
-    <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding no-margin hidden-xs" style="height:100vh!important">
+    <div class="col-md-6 col-lg-6 col-sm-6 col-xs-12 no-padding no-margin hidden-xs" style="height:100vh!important">
         <div id="myCarousel" class="carousel slide" style="height:100vh!important" data-ride="carousel" hidden="true">
             <!-- Wrapper for slides -->
             <div class="carousel-inner carrousel-height" style="height:100vh!important;" role="listbox">
@@ -124,11 +117,11 @@ border-radius: 15px!important;">
                 <!--</div>-->
                 <div class="item active">
                     <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/pages/img/login/bg3.jpg" alt="Chania"> -->
-                    <img src="content/images/imagen-condominio-1.png" alt="img">
+                    <img src="content/images/imagen-condominio-1.png" alt="img" style="height:100vh!important">
                 </div>
                 <div class="item ">
                     <!-- <img src="http://keenthemes.com/preview/metronic/theme/assets/pages/img/login/bg3.jpg" alt="Chania"> -->
-                    <img src="content/images/imagen-condominio-2.png" alt="img">
+                    <img src="content/images/imagen-condominio-2.png" alt="img" style="height:100vh!important">
                 </div>
             </div>
             <!-- Left and right controls -->

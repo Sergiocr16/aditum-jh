@@ -1,35 +1,39 @@
-<div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 no-padding no-margin" style="height:100vh!important;color:white!important;background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
- background-size: 1000% 1000%; -webkit-animation: loginBackground 24s ease infinite; -moz-animation: loginBackground 24s ease infinite; -o-animation: loginBackground 24s ease infinite; animation: loginBackground 24s ease infinite;">
 
-<h1 class="text-center" id="loginCodeWelcomeText">Bienvenido a</h1>
-    <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="280"></h1>
+ <div  class="col-md-12 no-margin no-padding" style="height:100vh!important;color:white!important; background: url('https://hdwallsource.com/img/2014/9/blur-wallpaper-26335-27026-hd-wallpapers.jpg') no-repeat fixed; background-size:2000% 100%">
 
 
-    <div class="height-41-pixel col-sm-12 hidden-xs "></div>
-    <h5 class="text-center font-20 ">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
+    <div id="insertCode" class="col-lg-12 display-none">
+        <h1 class="text-center " id="loginCodeWelcomeText">Bienvenido a</h1>
+        <h1 class="text-center display-none aditumLogoLoginCode hidden-xs"><img src="content/images/logoAditum.png" alt="" width="280"></h1>
+        <h1 class="text-center display-none aditumLogoLoginCode hidden-sm hidden-lg hidden-md margin-bottom-40"><img src="content/images/logoAditum.png" alt="" width="220"></h1>
 
+        <div id="containerLoginCode" class="col-lg-12 no-padding display-none">
+            <div class="height-41-pixel col-sm-12 hidden-xs "></div>
+            <h5 class="text-center font-20 hidden-xs">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
+            <h5 class="text-center font-17 hidden-sm hidden-lg hidden-md ">Para comenzar, ingresa el código contenido en la tarjeta entregada en su filial.</h5>
 
-    <div class="form-group col-md-4 col-lg-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-30 ">
-        <div class=" col-md-12 ">
-            <input type="text" class="form-control height-12-percent specialCharacters font-27 input_id text-center"  ng-change="vm.loginCodeNotFound=0" ng-model="vm.loginCode" placeholder="Ingrese el código" id="id_license_number">
+            <div class="form-group col-md-4 col-lg-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-30 ">
+
+                <div class=" col-md-12 no-padding">
+                    <input type="text" maxlength="6"style="text-transform:uppercase" class="form-control height-12-percent specialCharacters font-27 input_id text-center"  ng-change="vm.loginCodeNotFound=0" ng-model="vm.loginCode" placeholder="Ingrese el código" id="id_license_number">
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12">
+            <h5 class="text-center font-15 bold " ng-show="vm.loginCodeNotFound==1" style="color:#ff1e1a;">El código que ingresó no es correcto.</h5>
+            </div>
+            <div class="form-group col-lg-offset-4 col-lg-1 col-md-offset-4 col-md-1 col-sm-2 col-sm-offset-3 col-xs-4 no-padding-right">
+
+                 <button type="button" ng-click="vm.back()" class="btn red col-md-12 col-sm-12 col-xs-12 margin-top-10" name="button">Atrás</button>
+            </div>
+
+            <div class="form-group col-lg-3 col-md-3 col-sm-4 col-xs-8">
+
+                <button type="button" ng-click="vm.validateLoginCode()" class="btn blue col-md-12 col-xs-12 col-sm-12 col-lg-12 margin-top-10" name="button">Validar código de iniciación</button>
+
+            </div>
+
         </div>
     </div>
-    <div class="col-md-12">
-    <h5 class="text-center font-15 bold " ng-show="vm.loginCodeNotFound==1" style="color:#ff1e1a;">El código que ingresó no es correcto.</h5>
-    </div>
-    <div class="form-group col-md-12 col-lg-12 ">
-
-         <button type="button" ng-click="vm.validateLoginCode()" class="btn blue col-md-offset-4 col-md-4 col-sm-6 col-sm-offset-3 col-xs-12 margin-top-10" name="button">Validar código de iniciación</button>
-
-    </div>
-
-
-
-
-
-
-
-
 
 
 
