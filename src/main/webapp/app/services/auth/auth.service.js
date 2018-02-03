@@ -127,7 +127,6 @@
                 });
                 return cb();
             }
-
             return deferred.promise;
         }
 

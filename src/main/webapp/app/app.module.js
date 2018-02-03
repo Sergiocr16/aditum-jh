@@ -18,9 +18,9 @@
             // jhipster-needle-angularjs-add-module JHipster will add new module here
             'angular-loading-bar',
             'cloudinary',
-            'pdf',
-            'firebase',
-            'ngNotify'
+             'pdf',
+             'firebase',
+             'ngNotify'
         ])
         .run(run);
 
