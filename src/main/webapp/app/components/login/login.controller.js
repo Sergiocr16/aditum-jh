@@ -18,10 +18,6 @@
                    $('.carousel').carousel({
                        intervals: 2000
                    });
-        $("#login").fadeIn(1200);
-
-
-
         });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -66,6 +62,7 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
+
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
                     $rootScope.menu = true;

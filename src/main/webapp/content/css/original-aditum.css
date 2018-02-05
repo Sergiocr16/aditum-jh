@@ -36,9 +36,7 @@ a {
 .carrousel-height{
 height:659px !important;
 }
-.gray {
-    background-color: #364150 !important;
-}
+
 .dark-blue-border{
 	border: solid 1px #2b3643;
 }
@@ -216,7 +214,7 @@ background-color: #2962FF;
     height: 170px;
 }
 
-.gray {
+.gray-bg {
     background-color: #364150 !important;
 }
 .height-39-pixel{

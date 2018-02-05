@@ -8,6 +8,7 @@
     <meta name="google" value="notranslate">
     <link rel="shortcut icon" href="content/images/casco_aditum.png">
     <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css content/css/vendor.css -->
     <!-- bower:css -->
@@ -40,7 +41,18 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp" class="page-header-fixed page-sidebar-fixed page-footer-fixed">
+<body ng-app="aditumApp" id="body" class="page-header-fixed page-sidebar-fixed page-footer-fixed gray-bg">
+
+<div class="se-pre-con1" id="se-pre-con1">
+    <div class="spinner">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+    </div>
+
+</div>
+<div class="se-pre-con2" id="se-pre-con2">
+</div>
+<div class="allcontent " style="margin:0!important;padding:0!important">
 <div  ui-view="reset">
 </div>
 
@@ -69,8 +81,7 @@
 </div>
 
 
-
-
+</div>
 
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
@@ -676,7 +687,17 @@
 
     <!-- endinject -->
     <!-- endbuild -->
+<script>
+    window.onload = function(e){
+    setTimeout(function(){
+     $("#se-pre-con1").fadeOut(1500);
+     setTimeout(function(){
+         $("#se-pre-con2").fadeOut(1500);
+        },500)
+        },1000)
+	};
 
+</script>
 
 </body>
 </html>
