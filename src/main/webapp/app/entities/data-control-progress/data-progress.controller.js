@@ -32,9 +32,9 @@
                      vm.loadHouses($rootScope.companyId)
                  }
                  })
-        },600)
+        },1000)
         function initGraphs() {
-            var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo, color) {
+            var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
                 var chart = AmCharts.makeChart(id, {
                     "type": "pie",
                     "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
@@ -43,7 +43,8 @@
                         "#F3565D",
                         "#4d90d6",
                         "#dfba49",
-                        "#45B6AF"
+                        "#45B6AF",
+                        "#32363d"
                     ],
                     "outlineThickness": 0,
                     "titleField": "category",
@@ -71,6 +72,10 @@
                         {
                             "category": "Listo",
                             "column-1": listo
+                        },
+                         {
+                            "category": "Deshabitada",
+                            "column-1":  deshabitada
                         }
                     ]
                 });
@@ -78,8 +83,12 @@
             var redimido = 0;
             var sinRedimir = 0;
             var enProgreso = 0;
-            var listo = 0
+            var listo = 0;
+            var deshabitada = 0;
             for (var i = 0; i < vm.houses.length; i++) {
+            if(vm.houses[i].isdesocupated==1){
+            deshabitada++;
+            }else{
                 switch (vm.houses[i].codeStatus) {
                     case 0:
                         sinRedimir++;
@@ -95,10 +104,10 @@
                         break;
                     default:
                 }
-
+}
             }
 
-            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo, '#FF8000');
+            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);
         }
         vm.loadHouses = function(companyId) {
             House.query({

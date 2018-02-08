@@ -28,15 +28,26 @@
 <div class="row display-none" id="tableData">
     <div class="col-md-12">
         <h3 class="page-title col-md-10">	Casas </h3>
-            <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
+        <div class="form-group col-lg-offset-1 col-md-offset-1 col-lg-3 col-md-3 col-sm-6 col-xs-12 no-padding" ng-show="vm.houses.length>0">
+            <label class="col-md-4 col-sm-4 col-xs-4 control-label no-padding gray-font">Consultar</label>
+            <div class="col-md-7 col-sm-7 col-xs-7 ">
+                <select class="form-control gray-font" data-ng-model="vm.estado" required>
+                    <option value="">Todas</option>
+                    <option value="0">Habitadas</option>
+                    <option value="1">Deshabitadas</option>
+                </select>
+            </div>
+        </div>
+            <div class="form-group  col-lg-3 col-md-3 col-sm-3 col-xs-6">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
                     <input type="text" class="form-control" placeholder="Buscar casa" ng-model="vm.query.housenumber">
                 </div>
             </div>
-            <button type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="house.new()">Registrar casa</button>
-            <div class="portlet-body ">
+            <button type="submit" class="btn green col-lg-2 col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="house.new()">Registrar casa</button>
+        <button type="submit" class="btn blue col-lg-2 col-md-2 col-sm-2 col-xs-12 small-margin-bottom" ui-sref="data-progress">Progreso ingreso de datos</button>
 
+        <div class="portlet-body ">
                 <div class="table-scrollable">
                     <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
                     <table ng-show="vm.houses.length>0" class="table table-striped table-hover font-12">
@@ -46,17 +57,20 @@
                             <th>Extensión o teléfono de casa</th>
                             <th>Ver claves de seguridad</th>
                             <th>Ver código de iniciación</th>
+                            <th>Habitada</th>
                             <th>Editar</th>
                             <!-- <th>Eliminar</th> -->
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:vm.query | orderBy:'housenumber'">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | orderBy:'housenumber'">
                             <td>{{house.housenumber}}</td>
                             <td ng-show="house.extension!=undefined">{{house.extension}}</td>
                             <td ng-hide="house.extension!=undefined">No definido</td>
                             <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
                             <td ><a class="light-gray-font" ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)">Ver código de iniciación</a></td>
+                            <td  ng-if="house.isdesocupated == 1"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-danger" aria-hidden="false">No</span></td>
+                            <td  ng-if="house.isdesocupated == 0"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Sí</span></td>
                             <td> <a class="light-gray-font" ng-click="vm.editHouse(house.id)">Editar</a></td>
                         </tr>
                         </tbody>

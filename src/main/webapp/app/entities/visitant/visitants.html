@@ -32,7 +32,6 @@
             <div ng-show="vm.isConsulting==true">
                 <h4>{{vm.titleConsult}}</h4>
             </div>
-
         </h3>
         <div class=" col-md-8 col-lg-8 col-sm-12 col-xs-12 no-padding">
                 <div class="col-lg-12 col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
@@ -45,7 +44,6 @@
                 </div>
                 <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn green col-md-2 col-sm-2 col-xs-12  small-margin-bottom">Consultar</button>
         </div>
-
         <div>
             <div class="form-group no-padding col-md-offset-5 col-md-7 col-sm-7 col-xs-12" id="index-search-bar">
                 <button type="button" class="btn btn-primary col-md-4 col-xs-12" ng-show="vm.isConsulting==true" ng-click="vm.stopConsulting()" name="button">Consultar visitantes del mes</button>
@@ -59,7 +57,30 @@
                 <div ng-show="vm.visitants.length == 0">
                     <h2  class="text-center gray-font ">No hay visitantes registrados</h2>
                 </div>
-                <div class="table-scrollable " ng-show="vm.visitants.length > 0">
+
+                <div ng-repeat="visitor in vm.visitants | filter:vm.search " class="col-xs-12 hidden-lg hidden-md hidden-sm" style="padding:5px">
+                    <hr class="col-xs-12 no-padding" style="background-color:#1caf9a!important;opacity:0.3!important">
+                    <div class="col-xs-12" style="margin-bottom:5px!important">
+                        <b>{{visitor.fullName}}</b>
+                    </div>
+                    <div class="col-xs-6">
+                     <div class="col-xs-12 no-padding">
+                         Cédula: {{visitor.identificationnumber}}
+                     </div>
+                     <div class="col-xs-12 no-padding">
+                         <span ng-show="visitor.licenseplate!=''">Número de placa: {{visitor.licenseplate}}</span>
+                         <span ng-show="visitor.licenseplate==''">Número de placa: No se registró</span>
+                     </div>
+                 </div>
+                    <div class="col-xs-6">
+                        <div class="col-xs-12 no-padding">
+ <span class="col-xs-12 no-padding">Fecha y hora de ingreso:</span>
+                            <span>{{visitor.arrivaltime | formatDate}}</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="table-scrollable hidden-xs" ng-show="vm.visitants.length > 0">
                     <table class="table table-striped table-hover font-12" >
                         <thead>
                         <tr>

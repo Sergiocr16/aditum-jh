@@ -12,9 +12,13 @@
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
+        if(vm.house.isdesocupated!=null){
+        vm.house.isdesocupated = vm.house.isdesocupated.toString()
+        }else{
+        vm.house.isdesocupated = "0";
+        }
         vm.save = save;
         setTimeout(getConfiguration(),600);
-        console.log($rootScope.companyId)
         function getConfiguration(){
             CompanyConfiguration.getByCompanyId({companyId: 1}).$promise.then(onSuccessCompany, onError);
         }
@@ -61,7 +65,7 @@
 
         }
         if(vm.house.id !== null){
-            vm.title = "Editar house";
+            vm.title = "Editar casa";
             vm.button = "Editar";
 
         } else{
@@ -91,7 +95,6 @@
                 } else {
                      CommonMethods.waitingMessage();
                      vm.house.companyId = $rootScope.companyId;
-                     vm.house.isdesocupated = 0;
                      vm.house.desocupationinitialtime = new Date();
                      vm.house.desocupationfinaltime = new Date();
                      vm.house.loginCode = generateLoginCode();
