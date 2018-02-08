@@ -89,7 +89,7 @@
                }, 400)
                 setTimeout(function() {
                     $("#vehicules_container").fadeIn('slow');
-                },700 )
+                },900 )
                }
             function onError(error) {
                 AlertService.error(error.data.message);

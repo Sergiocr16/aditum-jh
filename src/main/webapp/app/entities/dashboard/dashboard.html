@@ -1,4 +1,15 @@
-<div class="display-none" id="all">
+<div id="selectCompany"  style="background: #2b3643;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #2b3643, #44b6ae);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #2b3643, #44b6ae); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+position:absolute;top:0;right:0;z-index:1042;height:100%;width:100%">
+    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="loadingDash" id="se-pre-conDash">
+        <div class="spinnerLoading" style="margin-top:250px!important">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+</div>
+<div>
     <div class="page-bar route-title">
         <ul class="page-breadcrumb">
             <li>
@@ -17,21 +28,22 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
+    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+        <div class="spinnerLoading">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>
+        </div>
+    </div>
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row display-none" id="tableData">
         <div class="page-title">
             <h1 >Dashboard <small  ng-click="vm.loadAll()"><i class="fa fa-repeat" style="color:#1976D2; "></i> Recargar</small></h1>
         </div>
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-            <h1 class="text-center">
-                <img src="../../content/images/waiting-gif2.gif" alt="" />
-            </h1>
-        </div>
+
         <div class="page-toolbar">
             <!-- BEGIN THEME PANEL -->
 
             <!-- END THEME PANEL -->
         </div>
-        <div  class="display-none" id="tableData">
         <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
             <div class="dashboard-stat blue-madison">
                 <div class="visual">
@@ -321,48 +333,9 @@
             </div>
         </div>
     </div>
-    </div>
     <div ng-cloak>
         <div class="row">
-            <!--<div class="col-md-4">-->
-            <!--<span class="hipster img-responsive img-rounded"></span>-->
-            <!--</div>-->
-            <!--<div class="col-md-8">-->
-            <!--<h1 >Bienvenido a Aditum!</h1>-->
-            <!--<p class="lead" data-translate="home.subtitle">Esta es tu página de inicio</p>-->
 
-            <!--<div ng-switch="vm.isAuthenticated()">-->
-            <!--<div class="alert alert-success" ng-switch-when="true" data-translate="home.logged.message" translate-values="{username: '{{vm.account.login}}'}">-->
-            <!--You are logged in as user "{{vm.account.login}}".-->
-            <!--</div>-->
-
-            <!--&lt;!&ndash;<div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.authenticated" translate-compile>&ndash;&gt;-->
-            <!--&lt;!&ndash;If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").&ndash;&gt;-->
-            <!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-            <!--<div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.register" translate-compile>-->
-            <!--You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>-->
-            <!--</div>-->
-            <!--</div>-->
-
-            <!--<p data-translate="home.question">-->
-            <!--If you have any question on JHipster:-->
-            <!--</p>-->
-
-            <!--&lt;!&ndash;<ul>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="http://jhipster.github.io/" target="_blank" data-translate="home.link.homepage">JHipster homepage</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="http://stackoverflow.com/tags/jhipster/info" target="_blank" data-translate="home.link.stackoverflow">JHipster on Stack Overflow</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="https://github.com/jhipster/generator-jhipster/issues?state=open" target="_blank" data-translate="home.link.bugtracker">JHipster bug tracker</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="https://gitter.im/jhipster/generator-jhipster" target="_blank" data-translate="home.link.chat">JHipster public chat room</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;<li><a href="https://twitter.com/java_hipster" target="_blank"  data-translate="home.link.follow">follow @java_hipster on Twitter</a></li>&ndash;&gt;-->
-            <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-
-            <!--&lt;!&ndash;<p>&ndash;&gt;-->
-            <!--&lt;!&ndash;<span data-translate="home.like">If you like JHipster, don't forget to give us a star on </span>&nbsp;<a href="https://github.com/jhipster/generator-jhipster" target="_blank" data-translate="home.github">Github</a>!&ndash;&gt;-->
-            <!--&lt;!&ndash;</p>&ndash;&gt;-->
-
-            <!--&lt;!&ndash;<button type="button"  ui-sref="main-access-door()"></button>&ndash;&gt;-->
-            <!--</div>-->
         </div>
     </div>
-
+</div>

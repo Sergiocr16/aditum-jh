@@ -18,7 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-
+    vm.radiostatus=true;
 
         setTimeout(function(){loadAll();
 
@@ -31,14 +31,27 @@
                 id: encryptedId
           })
         }
-        vm.switchEnabledDisabledOfficers = function() {
-            enabledOptions = !enabledOptions;
-            $("#tableData").fadeOut(0);
-            setTimeout(function() {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
-            loadAll();
+        vm.switchEnabledResidents = function() {
+            enabledOptions = true;
+             vm.radiostatus=true;
+             $("#radio18").prop("checked", "checked")
+              $("#tableData").fadeOut(0);
+                         setTimeout(function() {
+                             $("#loadingIcon").fadeIn(100);
+                         }, 200)
+                         loadAll();
         }
+        vm.switchDisabledResidents = function() {
+            enabledOptions = false;
+             vm.radiostatus=false;
+             $("#radio19").prop("checked", "checked")
+              $("#tableData").fadeOut(0);
+                         setTimeout(function() {
+                             $("#loadingIcon").fadeIn(100);
+                         }, 200)
+                         loadAll();
+        }
+
         function loadAll () {
          vm.canEditOfficers = $rootScope.companyUser.administradaOficiales;
             if (enabledOptions) {
@@ -60,7 +73,7 @@
                 }, 400)
                 setTimeout(function() {
                     $("#tableData").fadeIn('slow');
-                },700 )
+                },900 )
 
 
             }

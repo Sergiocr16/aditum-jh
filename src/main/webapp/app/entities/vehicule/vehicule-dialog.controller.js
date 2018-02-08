@@ -48,9 +48,13 @@
                       }
                   })
                     vm.houses = data;
-                    setTimeout(function() {
-                        $("#register_edit_form").fadeIn(600);
-                    }, 200)
+                      setTimeout(function() {
+                                             $("#loadingIcon").fadeOut(300);
+                                   }, 400)
+                                    setTimeout(function() {
+                                        $("#register_edit_form").fadeIn('slow');
+                                    },900 )
+
                 }
         },500)
 

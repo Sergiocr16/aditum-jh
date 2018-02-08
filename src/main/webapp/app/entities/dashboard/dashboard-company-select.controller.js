@@ -14,9 +14,7 @@
         setTimeout(function(){
         loadAll();
         },500)
-        $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
-        });
+         $("#selectCompany").fadeIn();
            function logout() {
                 Auth.logout();
                 $rootScope.companyUser = undefined;
@@ -38,8 +36,10 @@
                     logout();
                     }
                    })
-            $state.go('dashboard');
+            $state.go('dashboard', null, { reload: false,notify: false });
            vm.clear();
+
+         $rootScope.loadingDash = true;
          })
 
         }
@@ -49,11 +49,11 @@
             $rootScope.companyUser = data;
             vm.companies = data.companies;
             setTimeout(function() {
-                      $("#loadingIcon").fadeOut(300);
+                 $("#loadingIcon").fadeOut(300);
             }, 400)
              setTimeout(function() {
                  $("#tableData").fadeIn('slow');
-             },700 )
+             },900 )
             }
             })
         }

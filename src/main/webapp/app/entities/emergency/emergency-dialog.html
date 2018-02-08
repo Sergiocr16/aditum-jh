@@ -15,9 +15,14 @@
         <div class="btn-group pull-right"> </div>
     </div>
 </div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
 <div class="row display-none" id="all">
    <div class="col-md-12">
-
         <form ng-submit="vm.reportEmergency()">
             <div class="portlet light bordered">
                 <div class="portlet-title">
@@ -46,86 +51,10 @@
                         <button type="submit" style="height:90px;" class="btn red default col-md-offset-4 col-md-4 font-15"><i class="fa fa-exclamation-triangle font-22"></i> Reportar emergencia</button>
                     </h3>
                     </div>
-</div>
+               </div>
                 </div>
             </div>
         </form>
     </div>
 
 </div>
-
-
-<script>
-    jQuery(document).ready(function() {
-        $("#all").fadeIn("slow");
-        $("#loadingIcon").fadeIn("slow");
-    });
-</script>
-
-<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
-
-    <!--<div class="modal-header">-->
-        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
-                <!--ng-click="vm.clear()">&times;</button>-->
-        <!--<h4 class="modal-title" id="myEmergencyLabel" data-translate="aditumApp.emergency.home.createOrEditLabel">Create or edit a Emergency</h4>-->
-    <!--</div>-->
-    <!--<div class="modal-body">-->
-        <!--<jhi-alert-error></jhi-alert-error>-->
-        <!--<div class="form-group" ng-show="vm.emergency.id">-->
-            <!--<label for="id" data-translate="global.field.id">ID</label>-->
-            <!--<input type="text" class="form-control" id="id" name="id"-->
-                    <!--ng-model="vm.emergency.id" readonly />-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label class="control-label" data-translate="aditumApp.emergency.isAttended" for="field_isAttended">Is Attended</label>-->
-            <!--<input type="number" class="form-control" name="isAttended" id="field_isAttended"-->
-                    <!--ng-model="vm.emergency.isAttended"-->
-                    <!--required min="0" max="1"/>-->
-            <!--<div ng-show="editForm.isAttended.$invalid">-->
-                <!--<p class="help-block"-->
-                    <!--ng-show="editForm.isAttended.$error.required" data-translate="entity.validation.required">-->
-                    <!--This field is required.-->
-                <!--</p>-->
-                <!--<p class="help-block"-->
-                    <!--ng-show="editForm.isAttended.$error.min" data-translate="entity.validation.min" translate-value-min="0">-->
-                    <!--This field should be at least 0.-->
-                <!--</p>-->
-                <!--<p class="help-block"-->
-                    <!--ng-show="editForm.isAttended.$error.max" data-translate="entity.validation.max" translate-value-max="1">-->
-                    <!--This field cannot be more than 1.-->
-                <!--</p>-->
-                <!--<p class="help-block"-->
-                    <!--ng-show="editForm.isAttended.$error.number" data-translate="entity.validation.number">-->
-                    <!--This field should be a number.-->
-                <!--</p>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label class="control-label" data-translate="aditumApp.emergency.observation" for="field_observation">Observation</label>-->
-            <!--<input type="text" class="form-control" name="observation" id="field_observation"-->
-                    <!--ng-model="vm.emergency.observation"-->
-                    <!--/>-->
-        <!--</div>-->
-
-        <!--<div class="form-group">-->
-            <!--<label data-translate="aditumApp.emergency.company" for="field_company">Company</label>-->
-            <!--<select class="form-control" id="field_company" name="company" ng-model="vm.emergency.companyId" ng-options="company.id as company.id for company in vm.companies"            >-->
-                <!--<option value=""></option>-->
-            <!--</select>-->
-        <!--</div>-->
-        <!--<div class="form-group">-->
-            <!--<label data-translate="aditumApp.emergency.house" for="field_house">House</label>-->
-            <!--<select class="form-control" id="field_house" name="house" ng-model="vm.emergency.houseId" ng-options="house.id as house.id for house in vm.houses"            >-->
-                <!--<option value=""></option>-->
-            <!--</select>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="modal-footer">-->
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-        <!--</button>-->
-        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
-            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
-        <!--</button>-->
-    <!--</div>-->
-<!--</form>-->

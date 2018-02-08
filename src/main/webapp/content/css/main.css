@@ -478,6 +478,8 @@ entity detail page css
         margin-left: 0;
     }
 }
+
+
 .se-pre-con1 {
  top: 50%;
   left: 50%;
@@ -487,7 +489,7 @@ background-color:white!important;
 }
 
 .se-pre-con2 {
- height:100%;
+ height:100vh;
  width:100%;
  position: absolute;
  top:0px;
@@ -531,6 +533,51 @@ background-color:#488cf9;
 
 @-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
 @keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+@-webkit-keyframes sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+.spinnerLoading {
+  width: 70px;
+  height: 70px;
+  position: relative;
+  margin: 200px auto;
+}
+
+.double-bounce1, .double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%!important;
+  background-color: #333;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+  animation: sk-bounce 2.0s infinite ease-in-out;
+}
+.double-bounce1{
+
+  background-color:#3598dc!important;
+}
+.double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+  background-color:#1caf9a!important;
+}
 
 @-webkit-keyframes sk-bounce {
   0%, 100% { -webkit-transform: scale(0.0) }

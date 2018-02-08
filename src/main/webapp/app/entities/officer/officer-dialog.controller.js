@@ -15,6 +15,12 @@
         if(account.authorities[0]==="ROL_RH" || account.authorities[0]==="ROL_ADMIN"){
                 vm.required = 1;
         }
+         setTimeout(function() {
+                            $("#loadingIcon").fadeOut(300);
+                        }, 400)
+                        setTimeout(function() {
+                            $("#edit_officer_form").fadeIn('slow');
+                        },900 )
         })
 
         vm.officer = entity;
@@ -44,10 +50,6 @@
             vm.title = "Registrar oficial";
             vm.button = "Registrar";
         }
-
-        setTimeout(function() {
-            $("#edit_officer_form").fadeIn(300);
-        }, 200)
 
 
         function save () {
@@ -190,10 +192,10 @@
             vm.picker = {
                 date: new Date().setYear(new Date().getYear()-18),
                 datepickerOptions: {
-                    maxDate: new Date().setYear(new Date().getYear()-18),
-                    date: new Date().setYear(new Date().getYear()-18),
-                    enableTime: false,
-                    showWeeks: false,
+                    maxDate: new Date().setYear(2000),
+                    date: new Date().setYear(2000),
+                                                           enableTime: false,
+                                                           showWeeks: false,
                 }
             };
 

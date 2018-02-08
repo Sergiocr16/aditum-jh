@@ -72,7 +72,7 @@
 
     <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px;">
+        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px; min-height: 100%;">
         </div>
     </div>
     <div ui-view="footer " ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
@@ -434,6 +434,12 @@
     <script src="app/entities/destinies/destinies.service.js"></script>
 
     <script src="app/entities/destinies/destinies.controller.js"></script>
+
+    <script src="app/entities/data-control-progress/data-progress.state.js"></script>
+
+    <script src="app/entities/data-control-progress/data-progress.service.js"></script>
+
+    <script src="app/entities/data-control-progress/data-progress.controller.js"></script>
 
     <script src="app/entities/dashboard/dashboard-company-select.controller.js"></script>
 

@@ -15,7 +15,6 @@
 		vm.login = LoginService.open;
         getAccount();
         setTimeout(function(){ vm.loadAll();},1000)
-
 		function getAccount() {
 			Principal.identity().then(function(account) {
 				vm.account = account;
@@ -29,18 +28,20 @@
 				showData();
 				vm.visitorTitle = "Visitantes de la semana";
 				vm.watch = formatWatch(vm.dashboard.currentWatch);
-				 setTimeout(function() {
-                                          $("#loadingIcon").fadeOut(300);
-                                }, 400)
+				  $("#loadingIcon").fadeOut(300);
                                  setTimeout(function() {
-                                     $("#tableData").fadeIn('slow');
-                                 },700 )
+                                     $("#tableData").fadeIn("slow");
+                                 }, 900)
 				if(vm.dashboard.currentWatch!==null){
 				vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100)/vm.dashboard.officerQuantity)
 				}else{
 				 vm.officerPercentage = 0;
 				}
 				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/vm.dashboard.totalHouses).toFixed(2)
+				 setTimeout(function(){
+                      $("#selectCompany").fadeOut("slow");
+                       $rootScope.loadingDash = false;
+                 },1000)
 			});
 		}
 

@@ -23,6 +23,14 @@
                vm.companyConfiguration = configuration;
              });
               loadQuantities();
+               setTimeout(function() {
+                         $("#loadingIcon").fadeOut(300);
+               }, 400)
+                setTimeout(function() {
+                    $("#edit_house_form").fadeIn('slow');
+                },900 )
+
+
 
         }
         function onError () {
@@ -61,10 +69,6 @@
           vm.button = "Registrar";
         }
 
-
-             setTimeout(function() {
-            $("#edit_house_form").fadeIn(600);
-         }, 200)
 
 
         function save () {

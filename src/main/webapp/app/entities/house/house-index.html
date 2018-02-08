@@ -19,15 +19,15 @@
         </div>
     </div>
 </div>
-
-<div class="row">
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row display-none" id="tableData">
     <div class="col-md-12">
         <h3 class="page-title col-md-10">	Casas </h3>
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="loadingIcon">
-            <h1 class="text-center">    <img src="../../content/images/waiting-gif2.gif" alt="" />   </h1>
-        </div>
-        <div class="display-none" id="tableData">
-
             <div class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
                 <div class="input-icon">
                     <i class="fa fa-search"></i>
@@ -53,7 +53,8 @@
                         <tbody>
                         <tr ng-repeat="house in vm.houses | filter:vm.query | orderBy:'housenumber'">
                             <td>{{house.housenumber}}</td>
-                            <td>{{house.extension}}</td>
+                            <td ng-show="house.extension!=undefined">{{house.extension}}</td>
+                            <td ng-hide="house.extension!=undefined">No definido</td>
                             <td ><a class="light-gray-font" ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)">Ver claves de seguridad</a></td>
                             <td ><a class="light-gray-font" ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)">Ver código de iniciación</a></td>
                             <td> <a class="light-gray-font" ng-click="vm.editHouse(house.id)">Editar</a></td>

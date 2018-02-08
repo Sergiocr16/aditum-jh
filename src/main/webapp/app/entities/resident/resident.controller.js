@@ -13,6 +13,7 @@
         var vm = this;
          vm.radiostatus=true;
         vm.isAuthenticated = Principal.isAuthenticated;
+
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
                    $state.go('resident.edit', {
@@ -81,6 +82,7 @@
                                   }
                               })
                 vm.houses = data;
+                   vm.filterAuthorized = 2;
                 loadResidents();
             }
 
@@ -134,7 +136,7 @@
                 }, 400)
                  setTimeout(function() {
                      $("#tableData").fadeIn('slow');
-                 },700 )
+                 },900 )
             }
 
             function onError(error) {

@@ -96,14 +96,14 @@
         House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
-             setTimeout(function() {
-                $("#edit_resident_form").fadeIn(600);
-             }, 200)
+                           setTimeout(function() {
+                                     $("#loadingIcon").fadeOut(300);
+                           }, 400)
+                            setTimeout(function() {
+                                $("#edit_resident_form").fadeIn('slow');
+                            },900 )
         }
 
-        $timeout(function (){
-            angular.element('.form-group:eq(1)>input').focus();
-        });
 
 
         function save () {

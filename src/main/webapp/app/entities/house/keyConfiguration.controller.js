@@ -22,8 +22,8 @@
                                   $("#loadingIcon").fadeOut(300);
                         }, 400)
                          setTimeout(function() {
-                             $("#key_form").fadeIn('slow');
-                         },700 )
+                             $("#all").fadeIn('slow');
+                         },900 )
                     }
         },600)
 

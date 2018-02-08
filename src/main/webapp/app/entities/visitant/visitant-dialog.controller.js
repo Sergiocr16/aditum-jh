@@ -24,7 +24,13 @@
             final_time: new Date()
         };
         angular.element(document).ready(function() {
-            $("#all").fadeIn("slow");
+              setTimeout(function() {
+                             $("#loadingIcon").fadeOut(300);
+                        }, 400)
+                         setTimeout(function() {
+                             $("#all").fadeIn('slow');
+                         },900 )
+
              vm.formatInitPickers();
         });
         vm.validPlate=function(visitor){

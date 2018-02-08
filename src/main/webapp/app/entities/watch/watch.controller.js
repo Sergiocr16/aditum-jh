@@ -182,10 +182,13 @@
                 vm.showCleanBtn = false;
                 vm.consulting_initial_time = "";
                 vm.consulting_final_time = "";
-                $("#loadingIcon").fadeOut(0);
-                setTimeout(function() {
-                    $("#tableData").fadeIn(300);
-                }, 200);
+                  setTimeout(function() {
+                       $("#loadingIcon").fadeOut(300);
+                                                        }, 400)
+                                                         setTimeout(function() {
+                                                             $("#tableData").fadeIn('slow');
+
+                                                         },900 )
             }
 
             function onErrorCurrent(error) {

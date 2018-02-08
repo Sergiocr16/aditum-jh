@@ -50,14 +50,13 @@
             }
         }
         function loadByHouseLastMonth (house) {
-         $("#all").fadeOut(0);
-        setTimeout(function() {
-            $("#loadingIcon").fadeIn(100);
-        }, 250)
             Visitant.findByHouseInLastMonth({
                 houseId: house.id,
             }).$promise.then(onSuccess);
-
+  $("#all").fadeOut(0);
+            setTimeout(function() {
+                $("#loadingIcon").fadeIn(100);
+            }, 200)
             function onSuccess(data) {
                 vm.visitants = data;
                 vm.queryCount = data.length;
@@ -70,7 +69,7 @@
                }, 400)
                 setTimeout(function() {
                     $("#all").fadeIn('slow');
-                },700 )
+                },900 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -96,11 +95,11 @@
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
                 setTimeout(function() {
-                          $("#loadingIcon").fadeOut(300);
-                }, 400)
-                 setTimeout(function() {
-                     $("#all").fadeIn('slow');
-                 },700 )
+                    $("#loadingIcon").fadeOut(300);
+               }, 400)
+                setTimeout(function() {
+                    $("#all").fadeIn('slow');
+                },900 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -170,20 +169,23 @@
                 vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " +moment(vm.dates.final_time).format("LL");
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
-                setTimeout(function() {
-                          $("#loadingIcon").fadeOut(300);
-                }, 400)
-                 setTimeout(function() {
-                     $("#all").fadeIn('slow');
-                 },700 )
-            }
+     setTimeout(function() {
+                                 $("#loadingIcon").fadeOut(300);
+                            }, 400)
+                             setTimeout(function() {
+                                 $("#all").fadeIn('slow');
+                             },900 )
+                         }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
 
         vm.stopConsulting = function() {
-            $("#loadingIcon").fadeIn();
+              $("#all").fadeOut(0);
+            setTimeout(function() {
+                $("#loadingIcon").fadeIn(100);
+            }, 200)
             vm.dates.initial_time = undefined;
             vm.dates.final_time = undefined;
             vm.isConsulting = false;
@@ -192,10 +194,6 @@
         }
         function loadAll () {
         $scope.house = undefined;
-         $("#all").fadeOut(0);
-        setTimeout(function() {
-            $("#loadingIcon").fadeIn(100);
-        }, 250)
             Visitant.findByCompanyInLastMonth({
                 companyId: $rootScope.companyId
             }).$promise.then(onSuccess);
@@ -212,7 +210,7 @@
                }, 400)
                 setTimeout(function() {
                     $("#all").fadeIn('slow');
-                },700 )
+                },900 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);

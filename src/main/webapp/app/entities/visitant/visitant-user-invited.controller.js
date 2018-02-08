@@ -19,10 +19,6 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         setTimeout(function(){loadAll();},1000)
 
-        angular.element(document).ready(function() {
-            $("#all").fadeIn("slow");
-        });
-
         function loadAll() {
             Visitant.findInvitedByHouse({
                 companyId: $rootScope.companyId,
@@ -47,10 +43,10 @@
                 })
                 vm.visitants = data;
                 vm.page = pagingParams.page;
-                 $("#loadingIcon").fadeOut(0);
+                 $("#loadingIcon").fadeOut(300);
                  setTimeout(function() {
-                     $("#all").fadeIn(100);
-                 }, 500)
+                     $("#all").fadeIn("slow");
+                 }, 900)
             }
 
             function onError(error) {

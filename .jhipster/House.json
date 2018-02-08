@@ -83,7 +83,7 @@
         },
         {
             "fieldName": "codeStatus",
-            "fieldType": "Boolean"
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",
