@@ -38,7 +38,9 @@
 				 vm.officerPercentage = 0;
 				}
 				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/vm.dashboard.totalHouses).toFixed(2)
+ $("#dashboard").fadeIn("slow");
 				 setTimeout(function(){
+
                       $("#selectCompany").fadeOut("slow");
                        $rootScope.loadingDash = false;
                  },1000)

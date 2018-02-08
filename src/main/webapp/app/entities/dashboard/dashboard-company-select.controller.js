@@ -15,6 +15,7 @@
         loadAll();
         },500)
          $("#selectCompany").fadeIn();
+          $("#dashboard").fadeOut();
            function logout() {
                 Auth.logout();
                 $rootScope.companyUser = undefined;
