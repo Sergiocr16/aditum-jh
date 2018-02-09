@@ -86,6 +86,7 @@
                   vm.vehicules = data;
                setTimeout(function() {
                          $("#loadingIcon").fadeOut(300);
+                         $("#loadingIcon").fadeOut(300);
                }, 400)
                 setTimeout(function() {
                     $("#vehicules_container").fadeIn('slow');

@@ -72,10 +72,10 @@
 
     <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px; min-height: 100%;">
+        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px">
         </div>
     </div>
-    <div ui-view="footer " ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div ui-view="footer" ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 </div>

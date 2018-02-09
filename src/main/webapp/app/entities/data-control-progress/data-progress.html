@@ -51,7 +51,7 @@
         <div >
             <div class="col-lg-5 col-md-5"  has-authority="ROLE_MANAGER"></div>
             <div class="col-lg-2 col-md-2"   has-authority="ROLE_ADMIN"></div>
-            <div class="form-group  col-lg-3  col-md-3 col-sm-6 col-xs-12 no-padding" ng-show="vm.houses.length>0">
+            <div class="form-group  col-lg-3  col-md-3 col-sm-6 col-xs-12 " ng-show="vm.houses.length>0">
                 <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por casa</label>
                 <div class="col-md-7 col-sm-7 col-xs-8 ">
                     <select class="form-control gray-font" ng-change="vm.findResidentsByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
@@ -59,7 +59,7 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group col-lg-4  col-md-4 col-sm-6 col-xs-12 no-padding" ng-show="vm.houses.length>0">
+            <div class="form-group col-lg-4  col-md-4 col-sm-6 col-xs-12 " ng-show="vm.houses.length>0">
             <label class="col-md-4 col-sm-4  col-xs-4 control-label no-padding gray-font">Filtrar por progreso</label>
             <div class="col-md-8 col-sm-8 col-xs-8 ">
                 <select class="form-control gray-font" data-ng-model="vm.filterState" required>
@@ -75,6 +75,7 @@
             <div class="portlet-body ">
                 <h2 ng-show="vm.houses.length==0" class="text-center gray-font ">No existen casas en este condominio</h2>
                 <div  style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12" ng-if="house.isdesocupated == 0" ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                    <hr class="col-xs-12 no-padding">
                     <div class="col-xs-12">
                         <h4>Casa: <b>{{house.housenumber}}</b></h4>
                     </div>
@@ -90,7 +91,7 @@
                         <span style="height:100%!important;" ng-show="house.codeStatus == 3" class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success" aria-hidden="false">Todo Listo </span>
 
                     </div>
-                    <hr class="col-xs-12">
+
                 </div>
                 <div class="table-scrollable">
 

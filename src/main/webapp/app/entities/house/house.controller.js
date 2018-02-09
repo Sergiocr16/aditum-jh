@@ -17,7 +17,12 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
-        setTimeout(function(){loadAll();},1500)
+        vm.ocultarACondos = false;
+        setTimeout(function(){loadAll();
+        if($rootScope.companyId>2){
+        vm.ocultarACondos = true;
+        }
+        },1500)
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
