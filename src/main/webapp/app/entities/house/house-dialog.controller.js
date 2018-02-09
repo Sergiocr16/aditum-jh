@@ -14,7 +14,6 @@
         vm.house = entity;
         vm.save = save;
         setTimeout(getConfiguration(),600);
-        console.log($rootScope.companyId)
         function getConfiguration(){
             CompanyConfiguration.getByCompanyId({companyId: 1}).$promise.then(onSuccessCompany, onError);
         }
@@ -38,8 +37,7 @@
           for (var i = 0; i < 4; i++)
             letters += possible.charAt(Math.floor(Math.random() * possible.length));
 
-          numbers = Math.floor((Math.random() * 999) + 100);
-
+          numbers = Math.floor((Math.random() * 899) + 100);
           text = numbers + "" + letters  ;
           return text.toUpperCase();
         }

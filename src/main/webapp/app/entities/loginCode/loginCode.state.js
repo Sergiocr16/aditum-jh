@@ -19,7 +19,8 @@
                     templateUrl: 'app/entities/loginCode/insert-logincode.html',
                     controller: 'InsertLoginCodeController',
                     controllerAs: 'vm'
-                }
+                },
+
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
@@ -35,8 +36,8 @@
              $rootScope.showLogin= true;
           }]
         })
-     .state('insertCode.createProfile', {
-            parent: 'insertCode',
+     .state('createProfile', {
+            parent: 'entity',
             url: '/crearPerfil/{loginCode}',
             data: {
                 authorities: []
@@ -46,7 +47,7 @@
                     templateUrl: 'app/entities/loginCode/createProfile.html',
                     controller: 'CreateProfileController',
                     controllerAs: 'vm'
-                }
+                },
             },
             resolve: {
 
@@ -80,5 +81,62 @@
                 }]
             }
         })
+
+            .state('loginCodeprofile', {
+                parent: 'createProfile',
+                url: '/perfil',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/profile.html',
+                        controller: 'LoginCodeProfileController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('loginCodeCars', {
+                parent: 'createProfile',
+                url: '/informacion-vehiculos',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/carInformation.html',
+                        controller: 'LoginCodeCarsRegisterController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('loginCodeResidents', {
+                parent: 'createProfile',
+                url: '/informacion-residentes',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/residentsInformation.html',
+                        controller: 'LoginCodeResidentsController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('loginCodeResume', {
+                parent: 'createProfile',
+                url: '/informacion-resume',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/loginCodeResume.html',
+                        controller: 'LoginCodeResumeController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('loginCodeWelcome', {
+                parent: 'createProfile',
+                url: '/bienvenida',
+                views: {
+                    'loginCodeTabs@createProfile': {
+                        templateUrl: 'app/entities/loginCode/loginCodeWelcome.html',
+                        controller: 'CreateProfileController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+
     }
 })();
