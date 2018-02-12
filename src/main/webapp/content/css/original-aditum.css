@@ -480,6 +480,9 @@ color: #009688;
 color: #C62828;
 
 }
+
+
+
 .red-font{
 	color: #C62828 !important;
 }
@@ -755,7 +758,7 @@ li.active span.round-tabs.five{
 
 
 span.round-tabs.six{
-    color: rgb(34, 194, 34);border: 1px solid rgb(34, 194, 34);
+    color: rgb(0, 0, 0);border: 1px solid rgb(164, 172, 168);
 }
 
 li.active span.round-tabs.six{
@@ -763,9 +766,8 @@ li.active span.round-tabs.six{
     border: 1px solid #ddd;
     color: rgb(34, 194, 34);
     font-size:55px;
-    width: 100px !important;
-    height: 100px !important;
-    line-height: 100px !important;
+
+    line-height: 200px !important;
     list-style-type: none;
 }
 
