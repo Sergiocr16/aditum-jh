@@ -88,10 +88,9 @@ public class UserResource {
      */
     @PostMapping("/users")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
+//    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
     public ResponseEntity createUser(@RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
         log.debug("REST request to save User : {}", managedUserVM);
-
         //Lowercase the user login before comparing with database
         if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
             User newUser =  new User();
@@ -113,7 +112,30 @@ public class UserResource {
                 .body(newUser);
         }
     }
-
+    @PostMapping("/createUserWithoutSendEmail")
+    @Timed
+    public ResponseEntity createUserWithoutSendEmail(@RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
+        log.debug("REST request to save User : {}", managedUserVM);
+        //Lowercase the user login before comparing with database
+        if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
+            User newUser =  new User();
+            newUser.setLogin("userexist");
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
+                .body(newUser);
+        } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
+            User newUser =  new User();
+            newUser.setLogin("emailexist");
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
+                .body(newUser);
+        } else {
+            User newUser = userService.createUser(managedUserVM);
+            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
+                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .body(newUser);
+        }
+    }
     /**
      * PUT  /users : Updates an existing User.
      *
@@ -124,7 +146,7 @@ public class UserResource {
      */
     @PutMapping("/users")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
+//    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
 
     public ResponseEntity<UserDTO> updateUser(@RequestBody ManagedUserVM managedUserVM) {
         log.debug("REST request to update User : {}", managedUserVM);

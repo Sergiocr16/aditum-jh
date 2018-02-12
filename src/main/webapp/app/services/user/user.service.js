@@ -26,10 +26,17 @@
                     return data;
                 }
 
+            }
+            ,
+            'createUserWithoutSendEmail': {
+                method: 'POST',
+                url: 'api/createUserWithoutSendEmail'
             },
+
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}
+
         });
 
         return service;

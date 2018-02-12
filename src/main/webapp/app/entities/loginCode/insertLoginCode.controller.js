@@ -5,10 +5,11 @@
         .module('aditumApp')
         .controller('InsertLoginCodeController', InsertLoginCodeController);
 
-    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House'];
+    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','$localStorage'];
 
-    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
+    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,$localStorage) {
          angular.element(document).ready(function () {
+
              $("#insertCode").fadeIn(700);
              setTimeout(function() {
                  $(".aditumLogoLoginCode").fadeIn(1000);
@@ -33,9 +34,7 @@
             House.getByLoginCode({loginCode:vm.loginCode}).$promise.then(onSuccess, onError);
         }
          function onSuccess(data) {
-             $state.go('insertCode.createProfile',{loginCode:vm.loginCode});
-
-
+             $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
         }
 
         vm.back = function(){

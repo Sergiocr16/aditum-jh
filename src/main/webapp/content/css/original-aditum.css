@@ -655,9 +655,9 @@ margin: 0 auto;
     background-attachment: fixed;
 
 }
-.board > div.board-inner{
-    background: #fafafa url(http://subtlepatterns.com/patterns/geometry2.png);
-    background-size: 24%;
+.board > div.board-innerz{
+    /*background: #fafafa url(http://subtlepatterns.com/patterns/geometry2.png);*/
+    /*background-size: 24%;*/
 }
 
 p.narrow{
@@ -750,6 +750,22 @@ li.active span.round-tabs.five{
     background: #fff !important;
     border: 2px solid #ddd;
     color: rgb(34, 194, 34);
+}
+
+
+span.round-tabs.six{
+    color: rgb(34, 194, 34);border: 1px solid rgb(34, 194, 34);
+}
+
+li.active span.round-tabs.six{
+    background: #fff !important;
+    border: 1px solid #ddd;
+    color: rgb(34, 194, 34);
+    font-size:55px;
+    width: 100px !important;
+    height: 100px !important;
+    line-height: 100px !important;
+    list-style-type: none;
 }
 
 .nav-tabs > li.active > a span.round-tabs{

@@ -50,8 +50,7 @@
           for (var i = 0; i < 4; i++)
             letters += possible.charAt(Math.floor(Math.random() * possible.length));
 
-          numbers = Math.floor((Math.random() * 999) + 100);
-
+          numbers = Math.floor((Math.random() * 899) + 100);
           text = numbers + "" + letters  ;
           return text.toUpperCase();
         }

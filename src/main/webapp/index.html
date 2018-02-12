@@ -66,7 +66,6 @@
     <div  ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
     </div>
 
-
     <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
@@ -383,11 +382,20 @@
 
     <script src="app/entities/loginCode/registerResidents.controller.js"></script>
 
+    <script src="app/entities/loginCode/loginCodeResume.controller.js"></script>
+
+    <script src="app/entities/loginCode/loginCodeCarsRegister.controller.js"></script>
+
+
     <script src="app/entities/loginCode/loginCode.state.js"></script>
+
+    <script src="app/entities/loginCode/profile.controller.js"></script>
 
     <script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
 
     <script src="app/entities/loginCode/createProfile.controller.js"></script>
+
+    <script src="app/entities/loginCode/profile.controller.js"></script>
 
     <script src="app/entities/house/ws-house.service.js"></script>
 
