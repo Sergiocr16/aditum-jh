@@ -12,6 +12,7 @@
         vm.clear = clear;
          $rootScope.active = "selectCondominio";
          $rootScope.backgroundSelectCompany = true;
+        $rootScope.selectedAlready = false;
         setTimeout(function(){
         loadAll();
         },500)
@@ -40,7 +41,10 @@
                    })
             $state.go('dashboard', null, { reload: false,notify: false });
            vm.clear();
-
+           setTimeout(function(){
+             $rootScope.selectedAlready = true;
+           },2000)
+       
          $rootScope.loadingDash = true;
          })
 
