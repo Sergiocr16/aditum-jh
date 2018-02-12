@@ -50,6 +50,7 @@
         vm.isInLogin = $state.includes('home');
         vm.isInManual = $state.includes('manualResidente');
         vm.loadingDash = false;
+         vm.backgroundSelectCompany = false;
         vm.$state = $state;
         vm.menu = true;
         // Initialize Firebase

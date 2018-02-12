@@ -95,11 +95,16 @@
                                 vm.buttonTitle = "Ver oficiales deshabilitados";
                                 vm.actionButtonTitle = "Deshabilitar";
 
+                 vm.iconDisabled = "fa fa-user-times";
+                 vm.color = "red-font";
+
                             } else {
                                 vm.title = "Oficiales deshabilitados";
                                 vm.buttonTitle = "Ver oficiales habilitados";
                                 vm.actionButtonTitle = "Habilitar";
-
+ vm.iconDisabled = "fa fa-undo";
+                   vm.titleDisabledButton = "Habilitar oficial";
+                  vm.color = "green";
                             }
             }else{
             vm.title = "Oficiales asignados al condominio";

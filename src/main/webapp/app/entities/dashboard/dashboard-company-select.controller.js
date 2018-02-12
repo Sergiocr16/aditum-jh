@@ -11,6 +11,7 @@
         var vm = this;
         vm.clear = clear;
          $rootScope.active = "selectCondominio";
+         $rootScope.backgroundSelectCompany = true;
         setTimeout(function(){
         loadAll();
         },500)

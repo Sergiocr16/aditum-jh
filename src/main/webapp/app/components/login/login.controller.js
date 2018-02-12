@@ -77,11 +77,13 @@
                        $rootScope.companyUser = data;
                       if(data.companies.length>1 && $rootScope.companyId == undefined){
                       $rootScope.showSelectCompany = true;
+                      vm.backgroundSelectCompany = true;
                            setTimeout(function(){$state.go('dashboard.selectCompany');},300)
                       }else{
                       $rootScope.showSelectCompany = false;
                        $rootScope.companyId = data.companies[0].id;
                        console.log(data.companies[0].id)
+                       vm.backgroundSelectCompany = true;
                         setTimeout(function(){$state.go('dashboard');},300)
                       }
                      })

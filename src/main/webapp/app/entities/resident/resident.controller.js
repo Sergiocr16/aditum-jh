@@ -59,10 +59,16 @@
                 vm.title = "Residentes habilitados";
                 vm.buttonTitle = "Ver residentes deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
+
+                 vm.iconDisabled = "fa fa-user-times";
+                 vm.color = "red-font";
             } else {
                 vm.title = "Residentes deshabilitados";
                 vm.buttonTitle = "Ver residentes habilitados";
                 vm.actionButtonTitle = "Habilitar";
+ vm.iconDisabled = "fa fa-undo";
+                   vm.titleDisabledButton = "Habilitar residente";
+                  vm.color = "green";
             }
         }
         setTimeout(function(){
@@ -236,6 +242,7 @@
             var correctMessage;
             if (enabledOptions) {
                 correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
+
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
             }
