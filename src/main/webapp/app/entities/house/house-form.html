@@ -20,9 +20,12 @@
         </div>
     </div>
 </div>
-<div class="" style="margin-top:30px">
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
 </div>
-
 <div class="display-none" id="edit_house_form">
     <div class="row">
         <div class="col-md-12">
@@ -62,7 +65,16 @@
                                     <label class="font-15">Clave de emergencia</label>
                                 </div>
                             </div>
-
+                            <div class="col-md-6">
+                                <div class="form-group form-md-line-input has-info">
+                                <select class="form-control gray-font" ng-model="vm.house.isdesocupated" required>
+                                    <option value="0">Habitada</option>
+                                    <option value="1">Deshabitada</option>
+                                </select>
+                                <label for="register_edit_form" class="font-15">Estado</label>
+                                </div>
+                            </div>
+<div class="col-lg-6 col-md-6"></div>
 
                             <div class="form-actions noborder">
                                 <h3 class="text-right">

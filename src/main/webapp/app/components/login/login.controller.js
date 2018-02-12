@@ -18,10 +18,6 @@
                    $('.carousel').carousel({
                        intervals: 2000
                    });
-        $("#login").fadeIn(1200);
-
-
-
         });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -66,6 +62,7 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
+
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
                     $rootScope.menu = true;
@@ -80,11 +77,13 @@
                        $rootScope.companyUser = data;
                       if(data.companies.length>1 && $rootScope.companyId == undefined){
                       $rootScope.showSelectCompany = true;
+                      vm.backgroundSelectCompany = true;
                            setTimeout(function(){$state.go('dashboard.selectCompany');},300)
                       }else{
                       $rootScope.showSelectCompany = false;
                        $rootScope.companyId = data.companies[0].id;
                        console.log(data.companies[0].id)
+                       vm.backgroundSelectCompany = true;
                         setTimeout(function(){$state.go('dashboard');},300)
                       }
                      })

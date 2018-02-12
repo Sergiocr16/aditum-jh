@@ -20,12 +20,14 @@
         }
 
          angular.element(document).ready(function(){
-         $("#all").fadeIn("slow");
-         })
-        $timeout(function (){
-            angular.element('#focus').focus();
-        });
+                      setTimeout(function() {
+                                $("#loadingIcon").fadeOut(300);
+                      }, 400)
+                       setTimeout(function() {
+                           $("#all").fadeIn('slow');
+                       },900 )
 
+         })
 
         function save () {
             vm.isSaving = true;

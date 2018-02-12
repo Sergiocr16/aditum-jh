@@ -9,28 +9,28 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-          .state('soporte', {
+        .state('data-progress', {
             parent: 'entity',
-            url: '/soporte',
+            url: '/data-progress',
             data: {
-                authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER','ROLE_RH'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/soporte/soporte.html',
-                    controller: 'SoporteController',
+                    templateUrl: 'app/entities/data-control-progress/data-progress.html',
+                    controller: 'DataProgressController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('resident');
+                    $translatePartialLoader.addPart('destinies');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
         })
-
     }
 
 })();

@@ -37,9 +37,9 @@
                     backdrop: 'static',
                     size: 'lg',
                 }).result.then(function() {
-                    $state.go('dashboard', {}, { reload: true });
+                    $state.go('dashboard', null, { reload: true,notify:true });
                 }, function() {
-                    $state.go('dashboard',{}, { reload: true });
+                    $state.go('dashboard',null, { reload: true,notify:true });
                 });
             }]
         })

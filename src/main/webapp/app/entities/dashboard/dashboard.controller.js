@@ -14,8 +14,16 @@
 		vm.account = null;
 		vm.login = LoginService.open;
         getAccount();
-        setTimeout(function(){ vm.loadAll();},1000)
+        setTimeout(function(){ vm.loadAll();
+               if($rootScope.backgroundSelectCompany==false){
+                         $("#dashboard").fadeIn("slow");
+        				 setTimeout(function(){
 
+                              $("#selectCompany").fadeOut("slow");
+                               $rootScope.loadingDash = false;
+                         },1)
+               }
+        },1000)
 		function getAccount() {
 			Principal.identity().then(function(account) {
 				vm.account = account;
@@ -29,18 +37,23 @@
 				showData();
 				vm.visitorTitle = "Visitantes de la semana";
 				vm.watch = formatWatch(vm.dashboard.currentWatch);
-				 setTimeout(function() {
-                                          $("#loadingIcon").fadeOut(300);
-                                }, 400)
-                                 setTimeout(function() {
-                                     $("#tableData").fadeIn('slow');
-                                 },700 )
+				  $("#loadingIcon").fadeOut(300);
+                     setTimeout(function() {
+                         $("#tableData").fadeIn("slow");
+                     }, 900)
 				if(vm.dashboard.currentWatch!==null){
 				vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100)/vm.dashboard.officerQuantity)
 				}else{
 				 vm.officerPercentage = 0;
 				}
 				vm.housesPercentage = ((vm.dashboard.houseQuantity * 100)/vm.dashboard.totalHouses).toFixed(2)
+       if($rootScope.backgroundSelectCompany==true){
+                 $("#dashboard").fadeIn("slow");
+				 setTimeout(function(){
+                      $("#selectCompany").fadeOut("slow");
+                       $rootScope.loadingDash = false;
+                 },1)
+       }
 			});
 		}
 

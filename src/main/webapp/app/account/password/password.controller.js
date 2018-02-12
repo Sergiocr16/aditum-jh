@@ -17,8 +17,16 @@
 
         Principal.identity().then(function(account) {
             vm.account = account;
-        });
 
+        });
+        angular.element(document).ready(function() {
+              setTimeout(function() {
+                             $("#loadingIcon").fadeOut(300);
+                        }, 400)
+                         setTimeout(function() {
+                             $("#all").fadeIn('slow');
+                         },900 )
+        });
         function changePassword () {
             if (vm.password !== vm.confirmPassword) {
                 vm.error = null;
