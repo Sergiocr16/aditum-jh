@@ -44,7 +44,7 @@
            setTimeout(function(){
              $rootScope.selectedAlready = true;
            },2000)
-       
+
          $rootScope.loadingDash = true;
          })
 
