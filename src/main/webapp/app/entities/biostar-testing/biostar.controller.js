@@ -7,7 +7,7 @@
 
     BioStarController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','BioStar','AuthServerProvider','$q','$sessionStorage','$localStorage','$cookieStore','$http'];
 
-    function BioStarController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, BioStar,AuthServerProvider,$q,$sessionStorage,$localStorage,$cookies,$cookieStore,$http) {
+    function BioStarController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, BioStar,AuthServerProvider,$q,$sessionStorage,$localStorage,$cookies,$http) {
 
         var vm = this;
         $rootScope.active= "soporte";
@@ -44,32 +44,29 @@ if (angular.isDefined(bearerToken)  && bearerToken.slice(0, 7) === 'Bearer ') {
        }
 
        vm.logout = function(){
-       $.ajax({
-         url: "https://api.biostar2.com/v1/logout",
-         type: "post",
-         xhrFields: {
-           withCredentials: true
-         }
-       });
-//       BioStar.logout({},function(a){
-//       console.log(a)
-//       },function(a){
-//       console.log(a)
-//       })
+//       $.ajax({
+//         url: "https://api.biostar2.com/v1/logout",
+//         type: "post",
+//       });
+       BioStar.logout({},function(a){
+       console.log(a)
+       },function(a){
+       console.log(a)
+       })
        }
 
        vm.lockDoor = function(){
-       var cookie = $cookies.get("bs-cloud-session-id"); // suppose you already set $cookies.myCookie= 'xxx';
+//       var cookie = $cookies.get("bs-cloud-session-id"); // suppose you already set $cookies.myCookie= 'xxx';
 //          $http.defaults.headers.post.Cookies = cookie;
-          console.log(document.cookie)
-//$http.post("https://api.biostar2.com/v1/doors/:door_id/lock", {door_id}, {
+//          console.log(document.cookie)
+$http.post("https://api.biostar2.com/v1/doors/:door_id/lock", {door_id:1}, {
 //  withCredentials: true
-//});
-        BioStar.lockDoor({door_id:1},function(a){
-        console.log(a)
-        },function(a){
-        console.log(a)
-        })
+});
+//        BioStar.lockDoor({door_id:1},function(a){
+//        console.log(a)
+//        },function(a){
+//        console.log(a)
+//        })
 //$.ajax({
 //         url: "https://api.biostar2.com/v1/doors/:door_id/lock",
 //         type: "post",

@@ -79,8 +79,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/content/**")
             .antMatchers("/swagger-ui/index.html")
             .antMatchers("/test/**")
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/api/**");
+            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/api/**")
+            .antMatchers(HttpMethod.POST, "/**")
+            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "https://api.biostar2.com/v1/**");
     }
 
     @Override
@@ -123,7 +124,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/**").permitAll()
             .antMatchers("/v2/api-docs/**").permitAll()
             .antMatchers("/swagger-resources/configuration/ui").permitAll()
+
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
+
             .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/api/**").permitAll()
         .and()
             .apply(securityConfigurerAdapter());

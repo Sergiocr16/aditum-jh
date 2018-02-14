@@ -38,16 +38,15 @@
                 }
             },
           'logout': { method: 'POST',url:'https://api.biostar2.com/v1/logout', params: {}, isArray: false,
-                interceptor: {
-                    response: function(response) {
-                        // expose response
-                        return response;
-                    }
-                }
+//                interceptor: {
+//                    response: function(response) {
+//                        // expose response
+//                        return response;
+//                    }
+//                }
             },
             'lockDoor': { method: 'POST',url:'https://api.biostar2.com/v1/doors/:door_id/lock',
-             params: {door_id:'@door_id',},
-             withCredentials:true,
+             params: {door_id:'@door_id'},
               isArray: false,
                     interceptor: {
                         response: function(response) {
