@@ -29,6 +29,37 @@
 
 
         });
+
+        angular.element(document).ready(function () {
+
+            $(".loginCodeWelcomeTitle").fadeIn(1000);
+            setTimeout(function() {
+                $("#loginCodeWelcomeSubTitle").fadeIn(1000);
+
+            },1000)
+        setTimeout(function() {
+            $("#loginCodeWelcomeAdministraDiv").fadeIn(1000);
+
+        },2000)
+        setTimeout(function() {
+            $("#loginCodeWelcomeReportaDiv").fadeIn(1000);
+
+        },3000)
+        setTimeout(function() {
+            $("#loginCodeWelcomeConsultaDiv").fadeIn(1000);
+
+        },4000)
+        setTimeout(function() {
+            $("#loginCodeWelcomeNotificaDiv").fadeIn(1000);
+
+        },5000)
+        setTimeout(function() {
+            $("#loginCodeWelcomeContinueButton").fadeIn(2000);
+
+        },6000)
+
+        });
+
         vm.exitToLogin = function(){
             console.log('af')
             $rootScope.showLogin = true;

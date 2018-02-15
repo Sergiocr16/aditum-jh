@@ -1,8 +1,10 @@
-<div class="tab-pane col-md-12" >
+<div class="tab-pane col-md-12 col-xs-12 col-sm-12 col-lg-12 display-none" id="loginCodeProfilePanel">
     <form ng-submit="vm.profileInfoReady()">
         <h3 class="head text-center">Información personal</h3>
         <div class="horizontal-padding-40 col-md-12">
-            <span>Importante: Si su nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en su cédula de identidad para obtener su información del padrón electoral de Costa Rica. Ejemplo: 10110111.</span>
+            <p>Por medio de este formulario, usted puede registrar su información personal, una vez ingresada, el sistema le creará una cuenta de usuario en la que podrá acceder y gestionar toda su información.</p>
+            <span><span class="bold">Importante:</span> Si su nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en su cédula de identidad para obtener su información del padrón electoral de Costa Rica. Ejemplo: 10110111.</span>
+
         </div>
         <div class="col-lg-6 col-md-6  col-sm-6  marging-top-20 horizontal-padding-40">
             <div class="form-group has-info ">
@@ -26,11 +28,6 @@
                 <input ng-model="vm.profileInfo.lastname" style="text-transform: uppercase" ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.profileInfo.lastname)}" type="text" class="form-control letters gray-font" ng-disabled="vm.profileInfo.lockNames==true || vm.registrationProfileFinished==true" required style="text-transform: capitalize;">
 
             </div>
-            <div class="form-group gray-font">
-                <label class="font-15">Número de extensión o teléfono de casa</label>
-                <input  ng-disabled="vm.registrationProfileFinished==true" ng-model="vm.house.extension" type="text" required placeholder="SIN GUIONES NI ESPACIOS" maxlength="20" class="form-control numbers gray-font">
-
-            </div>
         </div>
         <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20 horizontal-padding-40">
             <div class="form-group ">
@@ -38,9 +35,19 @@
                 <input ng-model="vm.profileInfo.secondlastname" ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.profileInfo.secondlastname)}" type="text" class="form-control letters gray-font" ng-disabled="vm.profileInfo.lockNames==true || vm.registrationProfileFinished==true" required style="text-transform: capitalize;">
 
             </div>
-            <div class="form-group gray-font">
+            <div class="form-group gray-font col-md-6 col-lg-6 col-xs-12 col-sm-12 hidden-sm hidden-lg hidden-md no-padding">
                 <label class="font-15">Número celular</label>
                 <input  ng-disabled="vm.registrationProfileFinished==true" ng-focus="expression==1" ng-model="vm.profileInfo.phonenumber" type="text" required placeholder="SIN GUIONES NI ESPACIOS" maxlength="20" class="form-control numbers gray-font">
+
+           </div>
+            <div class="form-group gray-font col-md-6 col-lg-6 col-xs-12 col-sm-12 hidden-xs no-padding-left">
+                <label class="font-15">Número celular</label>
+                <input  ng-disabled="vm.registrationProfileFinished==true" ng-focus="expression==1" ng-model="vm.profileInfo.phonenumber" type="text" required placeholder="SIN GUIONES NI ESPACIOS" maxlength="20" class="form-control numbers gray-font">
+
+            </div>
+            <div class="form-group gray-font col-md-6 col-lg-6 col-xs-12 col-sm-12 no-padding">
+                <label class="font-15">Número de teléfono de casa</label>
+                <input  ng-disabled="vm.registrationProfileFinished==true" ng-model="vm.house.extension" type="text"  placeholder="SIN GUIONES NI ESPACIOS" maxlength="20" class="form-control numbers gray-font">
 
             </div>
             <div class="form-group gray-font">

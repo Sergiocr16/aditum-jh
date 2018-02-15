@@ -9,6 +9,7 @@
 
     function LoginCodeResumeController (User,$localStorage,$rootScope,$state) {
         var vm = this;
+        $("#loginCodeVehiculesPanel").fadeIn(1000);
         $( "#donerli" ).addClass( "active" );
         $( "#residentli" ).removeClass( "active" );
         $( "#homeli" ).removeClass( "active" );
@@ -120,7 +121,7 @@
         function confirmInformationCompeleted () {
 
             bootbox.confirm({
-                message: '<div class="text-center gray-font font-15" style=" line-height:2;"> <h1 class="font-20">El registro de los datos de su filial se han completado exitosamente.</h1> <h1 class="font-17">Te hemos enviado un correo electrónico al correo <span id="profileEmail"></span> con los credenciales para iniciar sesión en tu cuenta desde nuestra aplicación.</h1></div>',
+                message: '<div class="text-center gray-font font-15" style=" line-height:2;"> <h1 class="font-20">El registro de los datos de su filial se han completado exitosamente.</h1> <h1 class="font-17">Te hemos enviado un correo electrónico a <span id="profileEmail" class="bold"></span> con las credenciales para que puedas iniciar sesión en tu cuenta desde nuestra aplicación.</h1></div>',
                 buttons: {
                     confirm: {
                         label: 'Aceptar',

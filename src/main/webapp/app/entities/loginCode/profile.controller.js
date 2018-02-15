@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('LoginCodeProfileController', LoginCodeProfileController);
 
-    LoginCodeProfileController.$inject = ['WSResident','User','entity','Resident','$localStorage','$scope','$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','Company','Brand','CommonMethods',"PadronElectoral"];
+    LoginCodeProfileController.$inject = ['WSResident','User','entity','Resident','$localStorage','$scope','$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','Company','Brand','CommonMethods','PadronElectoral'];
 
     function LoginCodeProfileController (WSResident,User,entity,Resident,$localStorage,$scope,$rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,Company,Brand,CommonMethods,PadronElectoral) {
         angular.element(document).ready(function () {
@@ -16,7 +16,9 @@
                 $rootScope.companyId = undefined;
                 $rootScope.showLogin = true;
                 $rootScope.inicieSesion = false;
+
             }
+            $("#loginCodeProfilePanel").fadeIn(2000);
         });
         var vm = this;
         vm.required = 1;

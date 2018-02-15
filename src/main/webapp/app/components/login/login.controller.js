@@ -41,6 +41,7 @@
         vm.cancel = cancel;
         vm.credentials = {};
         vm.login = login;
+        vm.showLoginHelp = showLoginHelp;
         vm.password = null;
 //        vm.register = register;
         vm.rememberMe = true;
@@ -58,7 +59,10 @@
             vm.authenticationError = false;
 //            $uibModalInstance.dismiss('cancel');
         }
+        function showLoginHelp() {
 
+            toastr["warning"]("El formato del nombre de usuario está constituido por la primer letra del nombre, el primer apellido y la primera letra del segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac.");
+        }
         function login (event) {
             event.preventDefault();
             Auth.login({

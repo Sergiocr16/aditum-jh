@@ -9,10 +9,26 @@ animation: loginBackground 150s ease infinite;">
 <!--<div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding" style="height:100vh!important;color:white!important; background: url('https://hdwallsource.com/img/2014/9/blur-wallpaper-26335-27026-hd-wallpapers.jpg') no-repeat fixed; background-size:2000% 100%">-->
 
      <form role="form" ng-submit="vm.validateLoginCode()">
-        <div id="insertCode" class="col-lg-12 display-none">
-            <h1 class="text-center " id="loginCodeWelcomeText">Bienvenido a</h1>
-            <h1 class="text-center display-none aditumLogoLoginCode hidden-xs"><img src="content/images/logoAditum.png" alt="" width="280"></h1>
-            <h1 class="text-center display-none aditumLogoLoginCode hidden-sm hidden-lg hidden-md margin-bottom-40"><img src="content/images/logoAditum.png" alt="" width="220"></h1>
+
+        <div id="insertCode" class="col-lg-12 padding-top-20">
+            <!--<div class="typewriter col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10">-->
+                <!--<h1 class="text-center" id="loginCodeWelcomeText" style="font-size: 50px;">Ágil, seguro y confiable</h1>-->
+            <!--</div>-->
+
+
+            <h1 style=" color:white;" class="text-center hidden-xs"  id="loginCodeWelcomeText">
+                <a href=""  style=" color:white;" class="typewrite" data-period="2000" data-type='[ "Hola, bienvenido a", "Ágil, seguro y confiable.", "Administra tu seguridad"]'>
+                    <span class="wrap"></span>
+                </a>
+            </h1>
+            <h1 style=" color:white;" class="text-center hidden-sm hidden-lg hidden-md"  id="loginCodeWelcomeText">
+                <a href=""  style=" color:white;" class="typewrite" data-period="2000" data-type='[ "Hola, bienvenido!", "Ágil y seguro "]'>
+                    <span class="wrap"></span>
+                </a>
+            </h1>
+            <!--<h1 class="text-center margin-bottom-40 " id="loginCodeWelcomeText"><span class="display-none" id="loginCodeWelcomeAgilText">Ágil</span><span class="display-none" id="loginCodeWelcomeSeguroText"> seguro</span><span class="display-none" id="loginCodeWelcomeConfiableText">  y confiable</span></h1>-->
+            <h1 class="text-center display-none aditumLogoLoginCode hidden-xs col-md-12 col-xs-12 col-lg-12 col-sm-12"><img src="content/images/logoAditum.png" alt="" width="280"></h1>
+            <h1 class="text-center display-none aditumLogoLoginCode  col-md-12 col-xs-12 col-lg-12 col-sm-12 hidden-sm hidden-lg hidden-md margin-bottom-40"><img src="content/images/logoAditum.png" alt="" width="220"></h1>
 
             <div id="containerLoginCode" class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10 display-none col-xs-12" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
 -moz-border-radius: 15px;

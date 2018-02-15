@@ -135,10 +135,7 @@
    }
 
 #loginCodeWelcomeText{
-    font-size: 55px;
-}
-#loginCodeWelcomeText{
-    font-size:50px;
+    font-size: 35px!important;
 }
 
   #error-image{

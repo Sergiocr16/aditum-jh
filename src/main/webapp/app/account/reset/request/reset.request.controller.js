@@ -11,6 +11,7 @@
       angular.element(document).ready(function () {
                           $('body').removeClass("gray");
          $rootScope.showLogin = false;
+          $("#resetRequestPanel").fadeIn(2000);
        });
         var vm = this;
         vm.error = null;

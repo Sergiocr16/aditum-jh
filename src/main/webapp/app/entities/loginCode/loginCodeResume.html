@@ -1,4 +1,4 @@
-<div class="tab-pane horizontal-padding-20" >
+<div class="tab-pane horizontal-padding-20 display-none" id="loginCodeVehiculesPanel">
 
     <h3 class="head text-center">Resumen de información</h3>
     <div class="col-md-2 col-xs-12 col-sm-12 no-padding text-left">
@@ -46,7 +46,7 @@
         <h4 class="col-md-12 col-sm-12 col-xs-12 no-padding">Personas autorizadas</h4>
     </div>
     <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-show="vm.residents.length>0">
+        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null">
             <span class="col-md-4 col-sm-3 ">Nombre completo</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Cédula</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Tipo de autorizado</span>
@@ -54,8 +54,8 @@
 
         </div>
         <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15"  id="donerResidentsContainer" >
-            <h4 class="text-center padding-bottom-15"  ng-hide="vm.residents.length>0" >No hay personas registradas</h4>
-            <div ng-repeat="person in vm.residents" ng-show="vm.residents.length>0">
+            <h4 class="text-center padding-bottom-15"  ng-show="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null" >No hay personas autorizadas registradas</h4>
+            <div ng-repeat="person in vm.residents" ng-hide="vm.residents.length==1 && vm.residents[0].identificationnumber == '' || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null" >
                 <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg font-19">Persona {{$index+1}}</h3>
                 <div class="form-group col-md-4 col-sm-3 col-xs-12 no-padding">
                     <label class="font-12 hidden-sm hidden-md hidden-lg col-xs-5">Nombre completo:</label>
@@ -84,7 +84,8 @@
     </div>
 
     <div class="portlet-body col-md-12 col-xs-12 col-sm-12 margin-bottom-20"  style="color:rgba(71,71,71,0.76)">
-        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs">
+        <div style="border:1px solid rgba(220,217,217,0.97); border-bottom: 0px; " class="row font-14 padding-5 bold  hidden-xs"   ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
+
             <span class="col-md-3 col-sm-3 hidden-xs">Número de placa</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Tipo de vehículo</span>
             <span class="col-md-3 col-sm-3 hidden-xs">Marca</span>
@@ -92,8 +93,8 @@
 
         </div>
         <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10)" class="row font-15 padding-top-15" >
-
-            <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
+            <h4 class="text-center padding-bottom-15"  ng-show='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null' >No hay vehículos autorizados registrados</h4>
+            <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-md hidden-lg hidden-sm"  ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
 
                 <div class="col-xs-7 no-padding">
                     <div class="form-group col-md-12 col-sm-3 col-xs-12 no-padding">
@@ -121,9 +122,10 @@
 
             </div>
 
-            <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-xs">
+            <div ng-repeat="vehicule in vm.vehicules" class="col-xs-12 no-padding hidden-xs" ng-hide='vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null'>
 
-                <div class="form-group col-md-3 col-sm-3 no-padding">
+
+            <div class="form-group col-md-3 col-sm-3 no-padding">
                     <label class="font-12  col-md-12">{{vehicule.licenseplate}}</label>
                 </div>
                 <div class="form-group col-md-3 col-sm-3 no-padding">

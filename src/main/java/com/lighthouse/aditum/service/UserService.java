@@ -110,8 +110,8 @@ public class UserService {
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
+        user.setFirstName(userDTO.getFirstName().toUpperCase());
+        user.setLastName(userDTO.getLastName().toUpperCase());
         user.setEmail(userDTO.getEmail());
         user.setImageUrl(userDTO.getImageUrl());
         if (userDTO.getLangKey() == null) {

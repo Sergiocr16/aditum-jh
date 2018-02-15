@@ -70,7 +70,7 @@
                 companyUser: ['MultiCompany',function(MultiCompany){
                     return MultiCompany.getCurrentUserCompany()
                 }],
-                previousState: ["$state", function ($state,$stateParams) {
+                previousState: ["$state", function ($state) {
                     var currentStateData = {
                         name: $state.current.name || 'insertCode',
                         params: $state.params,

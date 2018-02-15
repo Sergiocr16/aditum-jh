@@ -1,4 +1,4 @@
-<div class="tab-pane horizontal-padding-20" >
+<div class="tab-pane horizontal-padding-20 display-none" id="loginCodeVehiculesPanel">
     <form ng-submit="vm.vehiculesInfoReady()">
 
         <h3 class="head text-center">Vehículos autorizados</h3>
@@ -18,12 +18,12 @@
 
                     <div class="form-group col-md-3 col-sm-3">
                         <label class="font-15 hidden-sm hidden-md hidden-lg">Número de placa</label>
-                        <input ng-disabled="vm.vehiculesRegistrationFinished" ng-model="vehicule.licenseplate" ng-change="vm.saveInfo(vehicule)" type="text" placeholder="SIN GUIONES NI ESPACIOS" ng-class="{redBorder: vehicule.validLicense == 0}" class="form-control specialCharactersAndVocals gray-font" required style="text-transform: uppercase;">
+                        <input ng-disabled="vm.vehiculesRegistrationFinished" ng-model="vehicule.licenseplate" ng-change="vm.saveInfo(vehicule)" type="text" placeholder="SIN GUIONES NI ESPACIOS" ng-class="{redBorder: vehicule.validLicense == 0}" class="form-control specialCharactersAndVocals gray-font" ng-required='vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== "" || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== undefined || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== null' style="text-transform: uppercase;">
 
                     </div>
                     <div class="form-group has-info col-md-3 col-sm-3">
                         <label class="font-15 hidden-sm hidden-md hidden-lg">Tipo de vehículo</label>
-                        <select ng-disabled="vm.vehiculesRegistrationFinished" class="form-control gray-font" name="vehicule" ng-model="vehicule.type" ng-required='vm.required==1'>
+                        <select ng-disabled="vm.vehiculesRegistrationFinished" class="form-control gray-font" name="vehicule" ng-model="vehicule.type" ng-required='vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== "" || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== undefined || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== null || vm.vehicules.length==1 && vm.vehicules[0].licenseplate !== null'>
                             <option value="">Seleccione un tipo</option>
                             <option value="Automóvil">Automóvil</option>
                             <option value="Motocicleta">Motocicleta</option>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group  has-info col-md-3 col-sm-3">
                         <label class="font-15 hidden-sm hidden-md hidden-lg">Marca</label>
-                        <select ng-disabled="vm.vehiculesRegistrationFinished" class="form-control gray-font" data-ng-model="vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand"  ng-required='vm.required==1'>
+                        <select ng-disabled="vm.vehiculesRegistrationFinished" class="form-control gray-font" data-ng-model="vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand"  ng-required='vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== "" || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== undefined || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== null || vm.vehicules.length==1 && vm.vehicules[0].licenseplate !== null'>
                             <option value="">Seleccione una marca</option>
                         </select>
 
@@ -40,7 +40,7 @@
                         <label class="font-15 hidden-sm hidden-md hidden-lg">Color</label>
                         <div  style="background-color:{{vehicule.color}};border: 1px solid #E6E6E6!important;" class="input-group color colorpicker-default col-lg-12 col-xs-12 no-padding" data-color="#ffff" data-color-format="rgba">
 
-                            <input ng-model="vehicule.color" ng-show="false" type="text" class="form-control gray-font col-xs-12"  value="#ffff" readonly required>
+                            <input ng-model="vehicule.color" ng-show="false" type="text" class="form-control gray-font col-xs-12"  value="#ffff" readonly ng-required='vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== "" || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== undefined || vm.vehicules.length!==1 && vm.vehicules[0].licenseplate !== null'>
 
                             <span class="input-group-btn no-padding">
                                <button ng-disabled="vm.vehiculesRegistrationFinished" id="{{$index+'btn'}}" ng-blur="vm.submitColor(vehicule,color+$index)" class="btn default form-control no-padding" type="button"><i id="{{$index}}"></i>&nbsp;</button>
@@ -58,7 +58,7 @@
         </div>
         <div class=" col-md-12 col-lg-12 col-sm-12 hidden-xs no-padding margin-bottom-20">
             <div class="text-center has-info col-xs-12 col-sm-3 col-md-3 col-lg-3 hidden-xs no-padding  ">
-                <button type="button" ui-sref="loginCodeprofile()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12"><i class="fa fa-arrow-left"></i> Atrás</button>
+                <button type="button" ui-sref="loginCodeResidents()" class="btn btn-success red horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12"><i class="fa fa-arrow-left"></i> Atrás</button>
 
             </div>
             <div class="text-center has-info col-xs-12 col-sm-6 col-md-6 col-lg-6  hidden-xs" >
@@ -90,29 +90,5 @@
             </div>
         </div>
 
-
-        <!--<div class="col-md-12 col-lg-12 col-sm-12 hidden-xs no-padding margin-bottom-20">-->
-            <!--<div class="text-center has-info col-xs-12 col-sm-6  col-md-2 col-lg-2 no-padding hidden-xs">-->
-                <!--<button type="button" ng-click="vm.residentsInfoReady()" class="btn btn-success yellow horizontal-padding-40 vertical-padding-20 margin-top-20 col-md-12 col-xs-12 "><i class="fa fa-arrow-left"></i> Atrás</button>-->
-
-            <!--</div>-->
-            <!--<div class="text-center has-info col-xs-12 col-sm-6 col-md-6 col-lg-4 no-padding-left hidden-xs">-->
-                <!--<button type="button" ng-click="vm.addVehiculeToList()" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-20 col-xs-12 col-md-12 col-lg-12 hidden-xs">Agregar vehículo <i class="fa fa-plus "></i></button>-->
-            <!--</div>-->
-            <!--<div class="text-center has-info col-xs-12 col-sm-6 col-md-2 col-lg-2 no-padding">-->
-                <!--<button type="submit" class="btn btn-success green  vertical-padding-20 margin-top-20 col-md-12  hidden-xs">Guardar y continuar <i class="fa fa-check "></i></button>-->
-            <!--</div>-->
-
-            <!--<div class="text-center has-info col-xs-12 col-sm-6 col-md-12 col-lg-12 no-padding ">-->
-                <!--<button type="button"  ng-click="vm.addVehiculeToList()" class="btn btn-success blue horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 col-md-12 col-lg-12 hidden-sm hidden-md hidden-lg">Agregar vehículo <i class="fa fa-plus "></i></button>-->
-            <!--</div>-->
-            <!--<div class="text-center has-info col-xs-12 col-sm-6 col-md-offset-2 col-md-6  col-lg-offset-2 col-lg-4 no-padding hidden-lg hidden-md hidden-sm">-->
-                <!--<button type="submit"  ng-click="vm.residentsInfoReady()"  class="btn btn-success red horizontal-padding-40 margin-top-10 vertical-padding-20 col-xs-12 ">No deseo agregar vehículos <i class="fa fa-times"></i></button>-->
-
-            <!--</div>-->
-            <!--<div class="text-center has-info col-md-1 col-sm-1 col-xs-12 no-padding">-->
-                <!--<button type="submit" ng-click="" class="btn btn-success green horizontal-padding-40 vertical-padding-20 margin-top-10 col-xs-12 hidden-sm hidden-md hidden-lg">Guardar y continuar <i class="fa fa-check "></i></button>-->
-            <!--</div>-->
-        <!--</div>-->
     </form>
 </div>

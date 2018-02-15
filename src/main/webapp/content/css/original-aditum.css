@@ -442,7 +442,7 @@ height: 100%;
 .access-back{
     height: 100vh;
     width: 100%;
-    background-image: url("http://www.carvarisa.com/wp-content/uploads/via_nova_2.jpg");
+    background-image: url("../../content/images/via_nova_2.jpg");
     background-size: cover;
     background-repeat: repeat-y;
 }
@@ -634,11 +634,12 @@ margin: 0 auto;
 @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
 /* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
 .board{
-    width: 85%;
-    margin: 55px auto;
-    min-height: 540px;
+    width: 89%;
+    margin: 50px auto;
+    margin-bottom: 0px;
+    min-height: 650px;
     background: #fff;
-    /*box-shadow: 10px 10px #ccc,-10px 20px #ddd;*/
+    /*box-shadow: 13px 13px rgba(60, 60, 60, 0.59),-10px 20px rgba(221, 221, 221, 0);*/
 }
 .board .nav-tabs {
     position: relative;
@@ -650,10 +651,12 @@ margin: 0 auto;
 
 }
 .container{
-    height: 100vh;
+    /*height: 100vh;*/
     width: 100%;
-    background-image: url("http://www.carvarisa.com/wp-content/uploads/via_nova_2.jpg");
+    height: 110%;
+    background-image: url("../../content/images/via_nova_2_w.jpg");
     background-size: cover;
+
     /*background-repeat: repeat-y;*/
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -901,4 +904,28 @@ li.active span.round-tabs.six{
     .btn-outline-rounded {
         padding:12px 20px;
     }
+}
+.typewriter h1 {
+    color: #fff;
+    font-family: monospace;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .10em; /* Adjust as needed */
+    animation:
+        typing 5.5s steps(30, end),
+        blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange }
 }

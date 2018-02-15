@@ -17,6 +17,7 @@
                 $rootScope.showLogin = true;
                 $rootScope.inicieSesion = false;
             }
+            $("#loginCodeVehiculesPanel").fadeIn(1000);
         });
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -101,35 +102,92 @@
         vm.vehiculesInfoReady = function () {
             vm.countVehicules = 0;
             $localStorage.vehiculesLoginCode = vm.vehicules;
-            if(vm.validArray()==true){
 
-                angular.forEach(vm.vehicules,function(val,i){
+            if(vm.vehicules.length==1 && vm.vehicules[0].licenseplate == "" || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == undefined || vm.vehicules.length==1 && vm.vehicules[0].licenseplate == null){
+                noVehiculesConfirmation()
 
-                    Vehicule.getByCompanyAndPlate({companyId: vm.house.companyId,licensePlate:val.licenseplate},alreadyExist,insertVehiculeCount)
-                    function alreadyExist(){
-                        toastr["error"]("La placa ingresada ya existe.");
-                    }
-                    function insertVehiculeCount(){
-                        vm.countVehicules++;
-                        console.log(val.licenseplate)
-                        console.log(vm.countVehicules)
-                        if(vm.countVehicules==vm.vehicules.length){
+            }else{
 
-                            angular.forEach(vm.vehicules,function(vehicule,i){
-                                vehicule.brand = vehicule.brand.brand
-                                vehicule.enabled = 1;
-                                vm.isSaving = true;
-                                Vehicule.save(vehicule,onSaveSuccess, onSaveError);
-                            })
-                        }
-                    }
+                if(vm.validArray()==true){
+                    vehiculesConfirmation();
 
-                })
 
+                }
             }
+        }
+        function noVehiculesConfirmation() {
+            bootbox.confirm({
+                message: '<h4>¿No se registró ningun vehículo autorizado, desea continuar de igual forma?</h4>',
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+
+                    if (result) {
+                        $localStorage.vehiculesRegistrationFinished = true;
+                        $localStorage.codeStatus = 5;
+                        $state.go('loginCodeResume');
+
+                    }else{
+
+                    }
+                }
+            });
+
 
         }
 
+        function vehiculesConfirmation() {
+            bootbox.confirm({
+                message: '<h4>¿Deseas confirmar el registro de esta información?</h4>',
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+
+                    if (result) {
+                        angular.forEach(vm.vehicules,function(val,i){
+
+                            Vehicule.getByCompanyAndPlate({companyId: vm.house.companyId,licensePlate:val.licenseplate},alreadyExist,insertVehiculeCount)
+                            function alreadyExist(){
+                                toastr["error"]("La placa ingresada ya existe.");
+                            }
+                            function insertVehiculeCount(){
+                                vm.countVehicules++;
+                                if(vm.countVehicules==vm.vehicules.length){
+
+                                    angular.forEach(vm.vehicules,function(vehicule,i){
+                                        vehicule.brand = vehicule.brand.brand
+                                        vehicule.enabled = 1;
+                                        vm.isSaving = true;
+                                        Vehicule.save(vehicule,onSaveSuccess, onSaveError);
+                                    })
+                                }
+                            }
+
+                        })
+
+                    }else{
+
+                    }
+                }
+            });
+
+        }
 
         function onSaveSuccess(result) {
             WSVehicle.sendActivity(result);
@@ -166,7 +224,7 @@
             return {errorPlaca:invalidLic}
         }
         function hasCaracterEspecial(s){
-            var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#"]
+            var caracteres = [",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!"]
             var invalido = 0;
             angular.forEach(caracteres,function(val,index){
                 if (s!=undefined){

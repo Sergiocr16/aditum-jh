@@ -18,11 +18,13 @@
                 $rootScope.showLogin = true;
                 $rootScope.inicieSesion = false;
             }
+            $("#loginCodeResidentsPanel").fadeIn(1000);
         });
         vm.residents = [];
         vm.required = 1;
         vm.required2 = 1;
         vm.countSaved = 0;
+        vm.residentsEmpty = false;
         vm.codeStatus = $localStorage.codeStatus;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -55,6 +57,7 @@
             vm.residentsRegistrationFinished = true;
 
         }
+
         if($localStorage.residentsLoginCode==undefined){
             vm.addResidentToList();
         }else{
@@ -67,16 +70,74 @@
         vm.residentsInfoReady = function () {
             vm.countResidents = 0;
             $localStorage.residentsLoginCode =  vm.residents;
+            if(vm.residents.length==1 && vm.residents[0].identificationnumber == "" || vm.residents.length==1 && vm.residents[0].identificationnumber == undefined || vm.residents.length==1 && vm.residents[0].identificationnumber == null){
+                noResidentsConfirmation()
+
+            }else{
                 if(vm.validArray()==true){
-                    angular.forEach(vm.residents,function(val,i){
-                        validateIdNumber(val)
-                    })
-
-
+                    residentsConfirmation()
                 }
+
+
+            }
+
+        }
+        function noResidentsConfirmation() {
+            bootbox.confirm({
+                message: '<h4>¿No se registró ninguna persona autorizada, desea continuar de igual forma?</h4>',
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+
+                    if (result) {
+                        $localStorage.residentsRegistrationFinished = true;
+                        $localStorage.codeStatus = 4;
+                        $state.go('loginCodeCars');
+
+                    }else{
+
+                    }
+                }
+            });
+
 
         }
 
+        function residentsConfirmation() {
+            bootbox.confirm({
+                message: '<h4>¿Deseas confirmar el registro de esta información?</h4>',
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+
+                    if (result) {
+                        angular.forEach(vm.residents,function(val,i){
+                            validateIdNumber(val)
+                        })
+
+                    }else{
+
+                    }
+                }
+            });
+
+        }
         function validateIdNumber(val){
              Resident.getByCompanyAndIdentification({companyId:vm.house.companyId,identificationID:val.identificationnumber},alreadyExist,insertResident)
 
@@ -109,6 +170,7 @@
                 $localStorage.residentsRegistrationFinished = true;
                 $localStorage.codeStatus = 4;
                 vm.isSaving = false;
+
             }
         }
 
