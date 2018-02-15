@@ -12,6 +12,11 @@
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
+        if(vm.house.isdesocupated!=null){
+        vm.house.isdesocupated = vm.house.isdesocupated.toString()
+        }else{
+        vm.house.isdesocupated = "0";
+        }
         vm.save = save;
         setTimeout(getConfiguration(),600);
         function getConfiguration(){
@@ -22,6 +27,14 @@
                vm.companyConfiguration = configuration;
              });
               loadQuantities();
+               setTimeout(function() {
+                         $("#loadingIcon").fadeOut(300);
+               }, 400)
+                setTimeout(function() {
+                    $("#edit_house_form").fadeIn('slow');
+                },900 )
+
+
 
         }
         function onError () {
@@ -51,7 +64,7 @@
 
         }
         if(vm.house.id !== null){
-            vm.title = "Editar house";
+            vm.title = "Editar casa";
             vm.button = "Editar";
 
         } else{
@@ -59,10 +72,6 @@
           vm.button = "Registrar";
         }
 
-
-             setTimeout(function() {
-            $("#edit_house_form").fadeIn(600);
-         }, 200)
 
 
         function save () {
@@ -85,7 +94,6 @@
                 } else {
                      CommonMethods.waitingMessage();
                      vm.house.companyId = $rootScope.companyId;
-                     vm.house.isdesocupated = 0;
                      vm.house.desocupationinitialtime = new Date();
                      vm.house.desocupationfinaltime = new Date();
                      vm.house.loginCode = generateLoginCode();

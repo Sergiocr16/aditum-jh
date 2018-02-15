@@ -14,12 +14,25 @@
         $rootScope.active = "reportemergencyactive";
         vm.enCamino = undefined;
        angular.element(document).ready(function(){
-        $("#all").fadeIn("slow");
-        $("#normal").fadeIn("slow");
+           setTimeout(function() {
+                                        $("#loadingIcon").fadeOut(300);
+                              }, 400)
+                               setTimeout(function() {
+                                   $("#all").fadeIn('slow');
+                                   $("#normal").fadeIn('slow');
+                               },900 )
        })
-      var emergencyCode = $rootScope.companyId+""+$rootScope.companyUser.houseId;
-       WSEmergency.subscribeAttended(emergencyCode);
-       WSEmergency.receiveAttented(emergencyCode).then(null,null,emergencyAttended)
+
+       setTimeout(function(){
+         var emergencyCode = $rootScope.companyId+""+$rootScope.companyUser.houseId;
+              WSEmergency.subscribeAttended(emergencyCode);
+              WSEmergency.receiveAttented(emergencyCode).then(null,null,emergencyAttended)
+              $rootScope.$on('$stateChangeStart',
+              function(event, toState, toParams, fromState, fromParams){
+                WSEmergency.unsubscribeAttended(emergencyCode);
+              });
+       },1200)
+
        function formatValidEmergency(){
        vm.emergency = {};
        vm.emergency.companyId = $rootScope.companyId;
@@ -87,9 +100,6 @@ $('#calma').fadeIn(300)
         function onSaveError () {
             vm.isSaving = false;
         }
-$rootScope.$on('$stateChangeStart',
-function(event, toState, toParams, fromState, fromParams){
-  WSEmergency.unsubscribeAttended(emergencyCode);
-});
+
     }
 })();

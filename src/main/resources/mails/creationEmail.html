@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <title th:text="#{email.activation.title}">JHipster creation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-
-<body style="margin:0;padding:15px;background-color:rgb(43, 54, 67);font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
-<h1 style="text-align:center;">ADI<span style="color:red">TUM</span></h1>
-<div style="margin:10px 5px 5px 10px;background-color:white;padding:10px;border-radius:10px;color:#6a6c6f!important;">
-    <h2>Bienvenido(a)</h2>
-    <p>Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
-    <p>¡Tu cuenta en Aditum ha sido creada exitosamente!</p>
-    <p>Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
-    <h2 th:text="|${user.login}|" style="text-align:center">User</h2>
-    <p style="text-align:center">
-        <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">¡Has click aquí para activar tu cuenta!</a>
-    </p>
-    <p style="">
-        Puedes descargar la aplicación en Google Play Store en el siguiente link:
-        <a th:href="@{https://play.google.com/store/apps/details?id=com.lighthouse.aditum}">ADITUM</a>
-    </p>
+<body style="margin:0;padding:5px;background-size:700% 100%;font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
+<div style="background: #1488CC;  /* fallback for old browsers */
+         background: -webkit-linear-gradient(to left, #2B32B2, #1488CC);  /* Chrome 10-25, Safari 5.1-6 */
+         background: linear-gradient(to right, #2B32B2, #1488CC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+         padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
+         -moz-border-radius: 15px;
+         border-radius: 15px!important;">
+    <h1 style="text-align:center;margin-bottom:1px"><img th:src="@{|${baseUrl}/content/images/logoAditum.png|}" alt="" height="40"/></h1>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-bottom:10px"></div>
+    <div style="background-color:rgba(255,255,255,0.9);border-radius:15px;padding:15px;color:#3c3e42">
+        <h2>Bienvenido</h2>
+        <p>Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.</p>
+        <p>¡Tu cuenta en Aditum ha sido creada exitosamente!</p>
+        <p>Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
+        <h2 th:text="|${user.login}|" style="text-align:center">User</h2>
+        <p style="text-align:center">
+            <a th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">¡Has click aquí para activar tu cuenta!</a>
+        </p>
+        <p style="">
+            Puedes descargar la aplicación en tu dispositivo móvil:
+        <h2 style="text-align:center"><a style="margin:5px" href="https://itunes.apple.com/cr/app/aditum/id1341734085?mt=8"><img th:src="@{|${baseUrl}/content/images/ios-img.png|}" alt="" height="40"/></a>
+            <a style="margin:5px" href="https://play.google.com/store/apps/details?id=com.lighthouse.aditum"><img th:src="@{|${baseUrl}/content/images/android-img.png|}" alt="" height="40"/></a>
+        </h2>
+        </p>
+    </div>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>
+    <h1 style="text-align:right;"><a style="margin:5px" href="https://lhousecr.com/"><img th:src="@{|${baseUrl}/content/images/lhlogo-blanco.png|}" alt="" height="30"/></a></h1>
 </div>
-<span th:text="#{email.activation.text2}">Regards, </span>
-<br/>
-<em>Lighthouse Software</em>
-
 </body>
-
 </html>

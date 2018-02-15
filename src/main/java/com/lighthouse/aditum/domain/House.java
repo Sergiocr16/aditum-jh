@@ -52,7 +52,7 @@ public class House implements Serializable {
     private String loginCode;
 
     @Column(name = "code_status")
-    private Boolean codeStatus;
+    private Integer codeStatus;
 
     @OneToMany(mappedBy = "house")
     @JsonIgnore
@@ -189,16 +189,16 @@ public class House implements Serializable {
         this.loginCode = loginCode;
     }
 
-    public Boolean isCodeStatus() {
+    public Integer isCodeStatus() {
         return codeStatus;
     }
 
-    public House codeStatus(Boolean codeStatus) {
+    public House codeStatus(Integer codeStatus) {
         this.codeStatus = codeStatus;
         return this;
     }
 
-    public void setCodeStatus(Boolean codeStatus) {
+    public void setCodeStatus(Integer codeStatus) {
         this.codeStatus = codeStatus;
     }
 

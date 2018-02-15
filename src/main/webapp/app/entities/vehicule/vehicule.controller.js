@@ -28,11 +28,19 @@
             if (enabledOptions) {
                 vm.title = "Vehículos habilitados";
                 vm.buttonTitle = "Ver vehículos deshabilitados";
+                 vm.titleDisabledButton = "Deshabilitar vehículo";
+                       vm.titleDisabledButton = "Deshabilitar vehículo";
                 vm.actionButtonTitle = "Deshabilitar";
+                 vm.iconDisabled = "fa fa-user-times";
+                 vm.color = "red-font";
+
             } else {
                 vm.title = "Vehículos deshabilitados";
                 vm.buttonTitle = "Ver vehículos habilitados";
                 vm.actionButtonTitle = "Habilitar";
+                 vm.iconDisabled = "fa fa-undo";
+                   vm.titleDisabledButton = "Habilitar vehículo";
+                  vm.color = "green";
             }
           }
         setTimeout(function(){

@@ -16,8 +16,13 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
-        setTimeout(function(){loadAll();},500)
+        vm.estado = "";
+        vm.ocultarACondos = false;
+        setTimeout(function(){loadAll();
+        if($rootScope.companyId>2){
+        vm.ocultarACondos = true;
+        }
+        },1500)
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)

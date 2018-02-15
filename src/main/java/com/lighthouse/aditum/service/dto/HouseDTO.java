@@ -35,7 +35,7 @@ public class HouseDTO implements Serializable {
 
     private String loginCode;
 
-    private Boolean codeStatus;
+    private Integer codeStatus;
 
     private Long companyId;
 
@@ -102,11 +102,11 @@ public class HouseDTO implements Serializable {
     public void setLoginCode(String loginCode) {
         this.loginCode = loginCode;
     }
-    public Boolean getCodeStatus() {
+    public Integer getCodeStatus() {
         return codeStatus;
     }
 
-    public void setCodeStatus(Boolean codeStatus) {
+    public void setCodeStatus(Integer codeStatus) {
         this.codeStatus = codeStatus;
     }
 
