@@ -45,6 +45,8 @@ public class ResidentDTO implements Serializable {
 
     private String image_url;
 
+    private Integer type;
+
     private Long userId;
 
     private String userLogin;
@@ -138,6 +140,13 @@ public class ResidentDTO implements Serializable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
 
     public Long getUserId() {
         return userId;
@@ -206,6 +215,7 @@ public class ResidentDTO implements Serializable {
             ", isOwner='" + isOwner + "'" +
             ", enabled='" + enabled + "'" +
             ", image_url='" + image_url + "'" +
+            ", type='" + type + "'" +
             '}';
     }
 }
