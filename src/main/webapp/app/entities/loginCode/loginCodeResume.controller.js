@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginCodeResumeController', LoginCodeResumeController);
 
-    LoginCodeResumeController.$inject = ['User','$localStorage','$rootScope','$state'];
+    LoginCodeResumeController.$inject = ['Resident','House','User','$localStorage','$rootScope','$state'];
 
-    function LoginCodeResumeController (User,$localStorage,$rootScope,$state) {
+    function LoginCodeResumeController (Resident,House,User,$localStorage,$rootScope,$state) {
         var vm = this;
         $("#loginCodeVehiculesPanel").fadeIn(1000);
         $( "#donerli" ).addClass( "active" );
@@ -16,6 +16,8 @@
         $( "#carli" ).removeClass( "active" );
         $( "#donerli" ).removeClass( "active" );
         vm.user = {};
+
+        loadHouse();
         vm.loginStringCount = 0;
         if($localStorage.profileInfo==undefined && $localStorage.house.codeStatus ==false){
         } else if($localStorage.profileInfo!==undefined){
@@ -46,7 +48,19 @@
 
 
         }
+        function loadHouse(){
+            House.getByLoginCode({
+                loginCode: $state.params.loginCode
+            }).$promise.then(onSuccessHouse);
 
+        }
+        function onSuccessHouse(data) {
+            vm.house = data;
+            if(vm.house.codeStatus==4){
+                vm.house.codeStatus=5;
+                House.update(vm.house);
+            }
+        }
         function onSaveLoginError (error) {
             vm.isSaving = false;
             switch(error.data.login){
@@ -81,7 +95,9 @@
             $localStorage.residentsLoginCode = undefined;
             $localStorage.allInformationFinished = false;
         }
-        function onSaveUser () {
+        function onSaveUser (data) {
+            vm.profileInfo.userId = data.id
+            Resident.update(vm.profileInfo);
             confirmInformationCompeleted();
             $localStorage.codeStatus = 6;
         }

@@ -6,7 +6,7 @@
 <!-- -o-animation: loginBackground 24s ease infinite;-->
 <!--animation: loginBackground 24s ease infinite;">-->
 
-<div id="login" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding display-none" style="height:100vh!important;color:white!important;background: linear-gradient(142deg, #377da1, #1472ff, #0d216b,#5fbfb5, #0d3c7b, #5f9bbf);
+<div id="login" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-margin no-padding " style="height:100vh!important;color:white!important;background: linear-gradient(142deg, #377da1, #1472ff, #0d216b,#5fbfb5, #0d3c7b, #5f9bbf);
 background-size: 1000% 1000%;
  -webkit-animation: loginBackground 150s ease infinite;
  -moz-animation: loginBackground 150s ease infinite;
@@ -21,22 +21,22 @@ animation: loginBackground 150s ease infinite;">
 
 
 
-        <div class="col-md-12" style="padding:0">
+        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 " style="padding:0">
 
             <div class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10  col-xs-12" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
 -moz-border-radius: 15px;
 border-radius: 15px!important;">
                 <h1  class="text-center "><img src="content/images/logoAditum.png" alt="" width="190"></h1>
-                <div class="col-md-12 margin-top-10" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
-                   <div class="col-md-12 margin-bottom-10">         <h4 style="font-size:22px;">Inicia sesión con tu cuenta</h4></div>
+                <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 margin-top-10" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
+                   <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 margin-bottom-10">         <h4 style="font-size:22px;">Inicia sesión con tu cuenta</h4></div>
 
                 <!--<p style="margin-top:40px;text-align:center">-->
                     <!--Administra la seguridad de tu hogar y tus seres queridos de una forma ágil y sencilla. Nos preocupamos por tu seguridad.-->
                 <!--</p>-->
-                <form class="col-md-12 no-padding" ng-submit="vm.login($event)" role="form" ng-init="loginForm = {}" name="login" ng-show='!isResetingPassword'>
-                    <div class="col-md-12">
+                <form class="col-md-12 col-lg-12 col-xs-12 col-sm-12 no-padding" ng-submit="vm.login($event)" role="form" ng-init="loginForm = {}" name="login" ng-show='!isResetingPassword'>
+                    <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12">
 
-                        <div class="col-md-12 col-sm-12 margin-top-10" style="padding: 0 0 0 0;">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12 col-sm-12 margin-top-10" style="padding: 0 0 0 0;">
                             <div class="form-group">
                                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                                 <label class="control-label visible-ie8 visible-ie9">Usuario</label>
@@ -50,7 +50,7 @@ border-radius: 15px!important;">
                             </div>
 
                         </div>
-                        <div class="col-md-12 col-sm-12 " style="padding: 0 0 0 0; margin-top:6px;">
+                        <div class="col-md-12 col-lg-12 col-xs-12 col-sm-12" style="padding: 0 0 0 0; margin-top:6px;">
                             <div class="form-group">
                                 <label class="control-label visible-ie8 visible-ie9">Contraseña</label>
                                 <div class="input-icon">
@@ -66,7 +66,7 @@ border-radius: 15px!important;">
                         <h5 class="no-padding"><div href="#" class="col-md-8 col-sm-7 col-xs-12 small-margin-bottom">
                             <a href=""  ui-sref="requestReset" style="font-size:15px; color:white;">¿Olvidaste tu contraseña?</a></div></h5>
 
-                        <button type="submit" class="btn blue col-md-4 col-sm-5 col-xs-12" name="button">Iniciar sesión</button>
+                        <button type="submit" class="btn blue col-md-4 col-lg-4 col-sm-5 col-xs-12" name="button">Iniciar sesión</button>
 
                     </div>
 
@@ -74,7 +74,7 @@ border-radius: 15px!important;">
 
                     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12  margin-top-20">
 
-                        <button type="button" ui-sref="insertCode()" class="btn green col-md-12 col-sm-12 col-xs-12" name="button">Registrarse por código de acceso</button>
+                        <button type="button" ui-sref="insertCode()" class="btn green col-md-12 col-lg-12 col-xs-12 col-sm-12" name="button">Registrarse por código de acceso</button>
 
                     </div>
                 </form>
@@ -134,6 +134,9 @@ border-radius: 15px!important;">
             <!-- Left and right controls -->
         </div>
     </div>
+
+
+    <h3 class="" style="position: absolute; bottom:2px; left:10px; font-size:16px;">Tel soporte: 86245504 / 60023372</h3>
 </div>
 
 <!--<style>-->

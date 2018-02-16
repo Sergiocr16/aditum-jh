@@ -50,7 +50,10 @@
         }
         function onSuccessHouse(data) {
             vm.house = data;
-
+            if(vm.house.codeStatus==3){
+                vm.house.codeStatus=4;
+                House.update(vm.house);
+            }
         }
 
         Brand.query({}, onSuccessBrand);

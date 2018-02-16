@@ -97,7 +97,10 @@
         }
         function onSuccessHouse(data) {
             vm.house = data;
-
+            if(vm.house.codeStatus==1){
+                vm.house.codeStatus=2;
+                House.update(vm.house);
+            }
         }
         function validateIdNumber(){
             console.log('la que esta guardad '+ indentification)
@@ -193,17 +196,14 @@
         }
         function onSaveSuccessProfile (result) {
             WSResident.sendActivity(result);
-            vm.house.codeStatus = true;
             $localStorage.codeStatus = 3;
             $localStorage.registrationProfileFinished = true;
             vm.profileInfo.id = result.id;
-            House.update(vm.house,onSaveSuccessHouse,onSaveError);
-        }
-
-        function onSaveSuccessHouse () {
             vm.isSaving = false;
             $state.go('loginCodeResidents');
         }
+
+
         function onSaveError () {
             vm.isSaving = false;
         }

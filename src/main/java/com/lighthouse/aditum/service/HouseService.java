@@ -108,6 +108,8 @@ public class HouseService {
         log.debug("Request to get House : {}", id);
         House house = houseRepository.findOne(id);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
+        houseDTO.setCodeStatus(house.getCodeStatus());
+
         return houseDTO;
     }
 
@@ -117,6 +119,7 @@ public class HouseService {
         log.debug("Request to get House : {}", loginCode);
         House house = houseRepository.findByLoginCode(loginCode);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
+        houseDTO.setCodeStatus(house.getCodeStatus());
         return houseDTO;
     }
 
@@ -146,6 +149,7 @@ public class HouseService {
             rHouse= house1;
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
+        houseDTO.setCodeStatus(house.getCodeStatus());
         return houseDTO;
     }
 
@@ -162,6 +166,7 @@ public class HouseService {
             rHouse= house1;
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
+        houseDTO.setCodeStatus(house.getCodeStatus());
         return houseDTO;
     }
 

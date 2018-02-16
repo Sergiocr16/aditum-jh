@@ -61,7 +61,7 @@
         });
 
         vm.exitToLogin = function(){
-            console.log('af')
+
             $rootScope.showLogin = true;
 
         }
@@ -79,6 +79,10 @@
         }
         function onSuccessHouse(data) {
             vm.house = data;
+            if(vm.house.codeStatus==0){
+                vm.house.codeStatus=1;
+                House.update(vm.house);
+            }
             if(data.codeStatus ==false){
                 $localStorage.codeStatus = 1;
             }

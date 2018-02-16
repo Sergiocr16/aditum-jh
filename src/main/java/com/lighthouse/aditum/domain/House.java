@@ -189,7 +189,7 @@ public class House implements Serializable {
         this.loginCode = loginCode;
     }
 
-    public Integer isCodeStatus() {
+    public Integer getCodeStatus() {
         return codeStatus;
     }
 

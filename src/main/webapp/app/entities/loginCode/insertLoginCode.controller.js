@@ -112,7 +112,29 @@
             House.getByLoginCode({loginCode:vm.loginCode}).$promise.then(onSuccess, onError);
         }
          function onSuccess(data) {
-          $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
+            switch(data.codeStatus){
+                case 0:
+                    $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
+                    break;
+                case 1:
+                    $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
+                    break;
+                case 2:
+                    $state.go('loginCodeprofile',{loginCode:vm.loginCode});
+                    break;
+                case 3:
+                    $state.go('loginCodeResidents',{loginCode:vm.loginCode});
+                    break;
+                case 4:
+                    $state.go('loginCodeCars',{loginCode:vm.loginCode});
+                    break;
+                case 5:
+                    toastr["error"]("Este código ya ha sido redimido anteriormente.")
+                    break;
+
+
+            }
+
         }
 
         vm.back = function(){

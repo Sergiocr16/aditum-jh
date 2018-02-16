@@ -51,7 +51,10 @@
         }
         function onSuccessHouse(data) {
             vm.house = data;
-
+            if(vm.house.codeStatus==2){
+                vm.house.codeStatus=3;
+                House.update(vm.house);
+            }
         }
         if($localStorage.residentsRegistrationFinished){
             vm.residentsRegistrationFinished = true;

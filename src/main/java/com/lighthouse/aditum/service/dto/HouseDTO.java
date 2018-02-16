@@ -4,8 +4,6 @@ package com.lighthouse.aditum.service.dto;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -102,13 +100,7 @@ public class HouseDTO implements Serializable {
     public void setLoginCode(String loginCode) {
         this.loginCode = loginCode;
     }
-    public Integer getCodeStatus() {
-        return codeStatus;
-    }
 
-    public void setCodeStatus(Integer codeStatus) {
-        this.codeStatus = codeStatus;
-    }
 
     public Long getCompanyId() {
         return companyId;
@@ -151,7 +143,15 @@ public class HouseDTO implements Serializable {
             ", securityKey='" + securityKey + "'" +
             ", emergencyKey='" + emergencyKey + "'" +
             ", loginCode='" + loginCode + "'" +
-            ", codeStatus='" + codeStatus + "'" +
+            ", codeStatus='" + getCodeStatus() + "'" +
             '}';
+    }
+
+    public Integer getCodeStatus() {
+        return codeStatus;
+    }
+
+    public void setCodeStatus(Integer codeStatus) {
+        this.codeStatus = codeStatus;
     }
 }
