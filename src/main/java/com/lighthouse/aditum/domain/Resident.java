@@ -61,6 +61,9 @@ public class Resident implements Serializable {
     @Column(name = "image_url")
     private String image_url;
 
+    @Column(name = "type")
+    private Integer type;
+
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -222,6 +225,19 @@ public class Resident implements Serializable {
         this.image_url = image_url;
     }
 
+    public Integer getType() {
+        return type;
+    }
+
+    public Resident type(Integer type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
     public User getUser() {
         return user;
     }
@@ -296,6 +312,7 @@ public class Resident implements Serializable {
             ", isOwner='" + isOwner + "'" +
             ", enabled='" + enabled + "'" +
             ", image_url='" + image_url + "'" +
+            ", type='" + type + "'" +
             '}';
     }
 }
