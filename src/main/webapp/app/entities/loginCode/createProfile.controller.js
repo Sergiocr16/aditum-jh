@@ -17,7 +17,6 @@
             $('body').removeClass("gray");
             $rootScope.showLogin = false;
             $rootScope.menu = false;
-            $rootScope.isInManual = true;
             if($localStorage.allInformationFinished){
                 $rootScope.companyUser = undefined;
                 $state.go('home');
@@ -26,11 +25,6 @@
                 $rootScope.showLogin = true;
                 $rootScope.inicieSesion = false;
             }
-
-
-        });
-
-        angular.element(document).ready(function () {
 
             $(".loginCodeWelcomeTitle").fadeIn(1000);
             setTimeout(function() {
@@ -57,8 +51,10 @@
             $("#loginCodeWelcomeContinueButton").fadeIn(2000);
 
         },6000)
-
+         ColorPicker.init();
         });
+
+
 
         vm.exitToLogin = function(){
 
@@ -67,13 +63,12 @@
         }
         loadHouse();
 
-        angular.element(document).ready(function () {
-            ColorPicker.init();
-        });
+
 
         function loadHouse(){
+             var id = CommonMethods.decryptIdUrl($state.params.loginCode)
             House.getByLoginCode({
-                loginCode: $state.params.loginCode
+                loginCode: id
             }).$promise.then(onSuccessHouse);
 
         }

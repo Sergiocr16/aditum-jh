@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('InsertLoginCodeController', InsertLoginCodeController);
 
-    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','$localStorage'];
+    InsertLoginCodeController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','$localStorage','CommonMethods'];
 
-    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,$localStorage) {
+    function InsertLoginCodeController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,$localStorage,CommonMethods ) {
         var vm = this;
         vm.loginCodeNotFound = 0;
         $("#code_login_input").attr("placeholder", "Ingrese el código");
@@ -92,9 +92,6 @@
                  $('body').removeClass("gray");
                  $rootScope.showLogin = false;
                  $rootScope.menu = false;
-                 $rootScope.isInManual = true;
-
-
          });
 
 
@@ -112,21 +109,22 @@
             House.getByLoginCode({loginCode:vm.loginCode}).$promise.then(onSuccess, onError);
         }
          function onSuccess(data) {
+          var encryptedId = CommonMethods.encryptIdUrl(vm.loginCode)
             switch(data.codeStatus){
                 case 0:
-                    $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
+                    $state.go('loginCodeWelcome',{loginCode:encryptedId});
                     break;
                 case 1:
-                    $state.go('loginCodeWelcome',{loginCode:vm.loginCode});
+                    $state.go('loginCodeWelcome',{loginCode:encryptedId});
                     break;
                 case 2:
-                    $state.go('loginCodeprofile',{loginCode:vm.loginCode});
+                    $state.go('loginCodeprofile',{loginCode:encryptedId});
                     break;
                 case 3:
-                    $state.go('loginCodeResidents',{loginCode:vm.loginCode});
+                    $state.go('loginCodeResidents',{loginCode:encryptedId});
                     break;
                 case 4:
-                    $state.go('loginCodeCars',{loginCode:vm.loginCode});
+                    $state.go('loginCodeCars',{loginCode:encryptedId});
                     break;
                 case 5:
                     toastr["error"]("Este código ya ha sido redimido anteriormente.")
