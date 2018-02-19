@@ -97,6 +97,7 @@
         }
         function onSuccessHouse(data) {
             vm.house = data;
+            console.log(data)
             if(vm.house.codeStatus==1){
                 vm.house.codeStatus=2;
                 House.update(vm.house);

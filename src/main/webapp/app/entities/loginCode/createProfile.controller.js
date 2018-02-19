@@ -83,9 +83,7 @@
                 vm.house.codeStatus=1;
                 House.update(vm.house);
             }
-            if(data.codeStatus ==false){
-                $localStorage.codeStatus = 1;
-            }
+
             loadCompany();
 
         }

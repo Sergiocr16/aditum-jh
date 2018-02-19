@@ -22,11 +22,25 @@
         if($localStorage.profileInfo==undefined && $localStorage.house.codeStatus ==false){
         } else if($localStorage.profileInfo!==undefined){
             vm.profileInfo = $localStorage.profileInfo ;
+            if(vm.profileInfo.type==1){
+                vm.profileInfo.type = "Propietario"
+            }else{
+                vm.profileInfo.type = "Inquilino"
+            }
         }
 
         if($localStorage.residentsLoginCode.length>=1){
             vm.residents = $localStorage.residentsLoginCode;
+            angular.forEach(vm.residents,function(resident,i){
 
+                if(resident.type==1){
+                    resident.type = "Propietario"
+                }else if(resident.type==2){
+                    resident.type = "Inquilino"
+                } else if(resident.type==3){
+                    resident.type = "Autorizado para ingresar"
+                }
+            })
         }
         if($localStorage.vehiculesLoginCode.length>=1){
             vm.vehicules = $localStorage.vehiculesLoginCode;
@@ -70,7 +84,6 @@
                     break;
                 case "userexist":
                     vm.user.login = generateLogin(1);
-                    console.log(vm.user.login)
                     User.save(vm.user, onSaveUser, onSaveLoginError);
 
                     break;

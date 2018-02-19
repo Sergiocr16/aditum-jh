@@ -56,15 +56,15 @@
                         <label class="font-15 ">Tipo de autorizado</label>
                         <select ng-disabled="vm.residentsRegistrationFinished"  class="form-control gray-font" name="vehicule" ng-model="resident.type" ng-required=' vm.residents.length!==1 && vm.residents[0].identificationnumber !== "" || vm.residents.length!==1 && vm.residents[0].identificationnumber !== undefined || vm.residents.length!==1 && vm.residents[0].identificationnumber !== null || vm.residents.length==1 && vm.residents[0].identificationnumber !== null'>
                             <option value="">Seleccione una opción</option>
-                            <option value="Propietario">Residente propietario</option>
-                            <option value="Inquilino">Residente inquilino</option>
-                            <option value="Autorizado">Autorizado para ingresar</option>
+                            <option value="1">Residente propietario</option>
+                            <option value="2">Residente inquilino</option>
+                            <option value="3">Autorizado para ingresar</option>
                         </select>
                     </div>
                     <div class="form-group col-md-3 col-sm-3">
-                        <label ng-hide="resident.type=='Autorizado'" class="font-15 hidden-md hidden-lg hidden-xs">Teléfono (opcional)</label>
-                        <label ng-hide="resident.type=='Autorizado'" class="font-15 hidden-sm">Número teléfono (opcional)</label>
-                        <input ng-disabled="vm.residentsRegistrationFinished" ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-hide="resident.type=='Autorizado'"  >
+                        <label ng-hide="resident.type==3" class="font-15 hidden-md hidden-lg hidden-xs">Teléfono (opcional)</label>
+                        <label ng-hide="resident.type==3" class="font-15 hidden-sm">Número teléfono (opcional)</label>
+                        <input ng-disabled="vm.residentsRegistrationFinished" ng-model="resident.phonenumber" type="text" ng-class="{redBorder: vm.hasLettersOrSpecial(resident.phonenumber)}" class="form-control numbers gray-font" ng-hide="resident.type==3"  >
 
                     </div>
                     <div class="form-group text-center has-info col-md-3 col-sm-3 col-xs-12  hidden-md hidden-lg hidden-sm">
