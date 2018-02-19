@@ -84,7 +84,7 @@
             <div class="col-xs-12 hidden-lg hidden-md hidden-sm">
                 <div class="portlet light bordered text-center col-sm-12 col-xs-12" ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'" ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
                     <div class="col-xs-4">
-                        <h2><img ng-hide="resident.image_url" class="img-circle" src="content/images/nobody-image.jpg"   width="100"/>
+                        <h2><img ng-hide="resident.image_url" class="img-circle" src="{{content/images/nobody-image.jpg}}"   width="100"/>
                             <img ng-show="resident.image_url!==null" src="resident.image_url" width="100" class="img-circle"/></h2>
                         <h5>{{resident.name}} </h5>
 
