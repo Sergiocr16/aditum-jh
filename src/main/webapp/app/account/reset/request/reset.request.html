@@ -1,57 +1,66 @@
-<div class="col-md-12">
-    <div class="row" style="color:white!important;height:100vh!important;
-         background: linear-gradient(122deg, #01060d, #0d3c7b, #01060d, #0d3c7b, #01060d);
-         background-size: 1000% 1000%;
-         -webkit-animation: loginBackground 24s ease infinite;
-         -moz-animation: loginBackground 24s ease infinite;
-         -o-animation: loginBackground 24s ease infinite;
-         animation: loginBackground 24s ease infinite;
-    ">
-        <div class="col-lg-12" style="height:120px;">
+<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  " >
+    <div class="row " style="padding:20px; height:100vh!important;color:white!important;background: linear-gradient(142deg, #377da1, #1472ff, #0d216b,#5fbfb5, #0d3c7b, #5f9bbf);
+background-size: 1000% 1000%;
+ -webkit-animation: loginBackground 150s ease infinite;
+ -moz-animation: loginBackground 150s ease infinite;
+ -o-animation: loginBackground 150s ease infinite;
+animation: loginBackground 150s ease infinite;">
+        <div class="col-lg-12 hidden-xs" style="height:60px;">
+
+        </div>
+        <div class="col-lg-12 hidden-sm hidden-lg hidden-md" style="height:20px;">
 
         </div>
 
-        <h1 class="text-center"><img src="content/images/logoAditum.png" alt="" width="330"></h1>
-        <div class="col-md-8 col-md-offset-2">
-            <h3 >Restablezca su contraseña</h3>
+        <div class="col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8 col-sm-offset-1 col-sm-10  col-xs-12 display-none" id="resetRequestPanel" style="background-color:rgba(10,15,117,0.1); padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
+-moz-border-radius: 15px;
+border-radius: 15px!important;">
+            <h1 class="text-center hidden-lg hidden-md hidden-sm"><img src="content/images/logoAditum.png" alt="" width="250"></h1>
+            <h1 class="text-center hidden-xs"><img src="content/images/logoAditum.png" alt="" width="190"></h1>
+
+            <div class="col-md-12 margin-top-10" style="border-top:1px solid rgba(244,240,240,0.1);"></div>
+            <div class="col-md-12 margin-bottom-10">
+            <h3 class="text-center">Restablezca su contraseña</h3>
 
             <div class="alert alert-danger" data-translate="reset.request.messages.notfound" ng-show="vm.errorEmailNotExists">
-                <strong>E-Mail address isn't registered!</strong> Please check and try again.
+                <h3 class="text-center"><strong>E-Mail address isn't registered!</strong> Please check and try again.</h3>
             </div>
 
-            <div style="margin-top:50px" ng-hide="vm.success">
-                <h4 data-translate="reset.request.messages.info">Enter the e-mail address you used to register.</h4>
+            <div style="margin-top:30px" ng-hide="vm.success">
+                <h4 class="text-center" data-translate="reset.request.messages.info">Enter the e-mail address you used to register.</h4>
             </div>
 
             <div class="alert alert-success" style="height:100px" ng-show="vm.success == 'OK'">
-                <h4>¡No te preocupes!</h4>
-                <p>Se ha enviado un link para restablecer tu contraseña a tu correo electrónico</p>
+                <h3 class="text-center">¡No te preocupes!</h3>
+                <p class="text-center">Se ha enviado un link para restablecer tu contraseña a tu correo electrónico</p>
             </div>
 
             <form  name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
                 <div ng-show="!vm.success">
 
+                <div class="form-group col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 col-sm-offset-2 col-sm-8 margin-top-20 no-padding">
+                    <label class="control-label visible-ie8 visible-ie9">Usuario</label>
+                    <div class="input-icon">
+                        <i class="fa fa-user font-17 " style="padding-top: 2px;"></i>
+                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100  name="email" id="email" type="email" style="height: 40px;" class="vertical-padding-20 form-control col-lg-12 col-md-12 col-xs-12 col-sm-12 font-17 hidden-xs" style="color:gray" placeholder="Digita el correo electrónico asociado a tu cuenta" required title="Input required" required>
+                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100  name="email" id="email" type="email" style="height: 40px;" class="vertical-padding-20 form-control col-lg-12 col-md-12 col-xs-12 col-sm-12 font-17 hidden-sm hidden-lg hidden-md" style="color:gray" placeholder="Digita el correo electrónico" required title="Input required" required>
 
-                <div class="form-group">
-                    <div class="form-group form-md-line-input small-margin-top">
-                        <input ng-model="vm.resetAccount.email" ng-minlength=5 ng-maxlength=100 required name="email" id="email" type="email" class="form-control" style="color:white" placeholder="Digita el correo electrónico asociado a tu cuenta" required title="Input required" required>
-                        <label for="email" style="color:white">Correo electrónico</label>
                     </div>
 
                     <div ng-show="form.email.$dirty && form.email.$invalid">
-                        <p class="help-block"
+                        <p class="help-block" style="color:#b71625"
                            ng-show="form.email.$error.required" data-translate="global.messages.validate.email.required">
                             Your e-mail is required.
                         </p>
-                        <p class="help-block"
+                        <p class="help-block"  style="color:#b71625"
                            ng-show="form.email.$error.email" data-translate="global.messages.validate.email.invalid">
                             Your e-mail is invalid.
                         </p>
-                        <p class="help-block"
+                        <p class="help-block"  style="color:#b71625"
                            ng-show="form.email.$error.minlength" data-translate="global.messages.validate.email.minlength">
                             Your e-mail is required to be at least 5 characters.
                         </p>
-                        <p class="help-block"
+                        <p class="help-block"  style="color:#b71625"
                            ng-show="form.email.$error.maxlength" data-translate="global.messages.validate.email.maxlength">
                             Your e-mail cannot be longer than 100 characters.
                         </p>
@@ -59,15 +68,31 @@
                 </div>
 
                 </div>
-                <h1 class="col-md-12">
-                    <form action="https://aditum.herokuapp.com">
-                        <a ng-show="!vm.success" class="btn invert-blue" ng-click="vm.back()">Atrás</a>
-                        <a ng-show="vm.success" class="btn btn-primary" ng-click="vm.back()">Vuelve a nuestra página de inicio</a>
-                    </form>
-                    <button ng-show="!vm.success" type="submit" ng-disabled="form.$invalid" class="btn btn-primary" data-translate="reset.request.form.button">Reset</button>
-                </h1>
-            </form>
 
+                <h5 class="col-md-offset-3 col-lg-offset-3 col-md-6 col-lg-6 col-sm-offset-2 col-sm-8  no-padding">
+                    <div class="col-md-6 col-xs-12 col-sm-12 col-lg-6 no-padding hidden-sm hidden-md hidden-lg margin-top-10">
+
+                        <button ng-show="!vm.success" type="submit" ng-disabled="form.$invalid" class="btn btn-success col-md-12 col-xs-12 col-sm-12 col-lg-12 vertical-padding-20 " data-translate="reset.request.form.button">Reset</button>
+
+                    </div>
+                        <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 no-padding-left hidden-xs">
+                            <button ng-show="!vm.success" class="btn red col-md-12 col-xs-12 col-sm-12 col-lg-12 vertical-padding-20 " ng-click="vm.back()">Atrás</button>
+                        </div>
+                        <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 no-padding margin-top-10 hidden-sm  hidden-md  hidden-lg">
+                            <button ng-show="!vm.success" class="btn red col-md-12 col-xs-12 col-sm-12 col-lg-12 vertical-padding-20 " ng-click="vm.back()">Atrás</button>
+                        </div>
+                        <div ng-show="vm.success" class="col-md-9 col-md-offset-2 col-xs-12 col-sm-12  col-lg-offset-2 col-lg-9">
+                            <button ng-show="vm.success" class="btn btn-success  col-md-12 col-xs-12 col-sm-12 col-lg-12 vertical-padding-20 " ng-click="vm.back()">Vuelve a nuestra página de inicio</button>
+                        </div>
+
+                    <div class="col-md-6 col-xs-12 col-sm-6 col-lg-6 no-padding hidden-xs">
+
+                    <button ng-show="!vm.success" type="submit" ng-disabled="form.$invalid" class="btn btn-success col-md-12 col-xs-12 col-sm-12 col-lg-12 vertical-padding-20 " data-translate="reset.request.form.button">Reset</button>
+
+                    </div>
+                </h5>
+            </form>
+            </div>
         </div>
     </div>
 </div>

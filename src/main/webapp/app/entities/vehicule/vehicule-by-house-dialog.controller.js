@@ -92,10 +92,13 @@
         House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
+    setTimeout(function() {
+                                     $("#loadingIcon").fadeOut(300);
+                           }, 400)
+                            setTimeout(function() {
+                                $("#register_edit_form").fadeIn('slow');
+                            },900 )
 
-             setTimeout(function() {
-                $("#register_edit_form").fadeIn(600);
-             }, 200)
         }
 
         vm.submitColor = function() {

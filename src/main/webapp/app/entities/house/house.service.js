@@ -22,6 +22,18 @@
                     return data;
                 }
             },
+              'getByLoginCode': {
+                method: 'GET',
+                url: 'api/houses/housesByLoginCode/:loginCode',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.desocupationinitialtime = DateUtils.convertDateTimeFromServer(data.desocupationinitialtime);
+                        data.desocupationfinaltime = DateUtils.convertDateTimeFromServer(data.desocupationfinaltime);
+                    }
+                    return data;
+                }
+            },
            'validate': {
                method: 'GET',
                url: 'api/houses/validate/:houseNumber/:extension/:companyId',

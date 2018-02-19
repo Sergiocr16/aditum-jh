@@ -36,9 +36,7 @@ a {
 .carrousel-height{
 height:659px !important;
 }
-.gray {
-    background-color: #364150 !important;
-}
+
 .dark-blue-border{
 	border: solid 1px #2b3643;
 }
@@ -94,6 +92,8 @@ height:659px !important;
 	overflow-y: scroll;
 }
 
+
+
 .scroll{
 	overflow-y: scroll;
 }
@@ -126,6 +126,7 @@ a {
 a:hover {
     color: #337ab7;
     text-decoration: none;
+    border-color:transparent !important;
 }
 .no-shadow{
 	box-shadow: none !important;
@@ -136,6 +137,10 @@ display: none;
 .loading{
   display: none;
 }
+.marging-top-15{
+    margin-top: 15px!important;
+}
+
 .marging-top-20{
   margin-top: 20px!important;
 }
@@ -209,7 +214,7 @@ background-color: #2962FF;
     height: 170px;
 }
 
-.gray {
+.gray-bg {
     background-color: #364150 !important;
 }
 .height-39-pixel{
@@ -271,24 +276,52 @@ height: 100%;
 .text-center {
     text-align: center;
 }
+.horizontal-padding-40{
+    padding-left: 40px !important;
+    padding-right: 40px !important;
 
+}
+.horizontal-padding-20{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+
+}
+.horizontal-padding-15{
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+
+}
+.vertical-padding-20{
+    padding-top: 12px !important;
+    padding-bottom:12px !important;
+
+}
 .no-margin {
     margin: 0 !important;
 }
 
 .no-padding {
-    padding: 0 !important;
+    padding: 0px !important;
 }
 .no-padding-left {
-    padding-left: 0 !important;
+    padding-left: 0px !important;
+}
+.noPaddingTop{
+    padding-top: 0px !important;
 }
 .redBorder{
     border-color: red !important;
     border-weight: 2px !important;
     border-style:solid;
 }
+.padding-5 {
+     padding: 5px !important;
+ }
 .padding-20 {
     padding: 10px !important;
+}
+.padding-30 {
+    padding: 30px !important;
 }
 .no-margin-left {
     margin-left: 0 !important;
@@ -321,11 +354,13 @@ height: 100%;
     font-size: 13px !important;
     color: #616161 !important;
 }
-.font-19{
-    font-size: 19px !important;
-}
+
 .font-15{
   font-size: 15px !important;
+
+}
+.font-14{
+    font-size: 14px !important;
 
 }
 .font-16{
@@ -336,6 +371,9 @@ height: 100%;
   font-size: 17px !important;
 
 }
+.font-19{
+    font-size: 19px !important;
+}
 .font-20{
   font-size: 20px !important;
 
@@ -345,7 +383,7 @@ height: 100%;
 
 }
 .font-30{
-  font-size: 30px;
+  font-size: 30px !important;
 
 }
 .font-35{
@@ -357,6 +395,19 @@ height: 100%;
 }
 .font-27{
 	font-size: 27px !important;
+}
+.margin-top-15{
+    margin-top: 15px !important;
+}
+.margin-top-20{
+    margin-top: 20px !important;
+}
+.margin-top-25{
+    margin-top: 25px !important;
+}
+
+.margin-top-30{
+    margin-top: 30px !important;
 }
 .margin-right-10{
   margin-right: 10px;
@@ -389,7 +440,7 @@ height: 100%;
 .access-back{
     height: 100vh;
     width: 100%;
-    background-image: url("http://www.carvarisa.com/wp-content/uploads/via_nova_2.jpg");
+    background-image: url("../../content/images/via_nova_2.jpg");
     background-size: cover;
     background-repeat: repeat-y;
 }
@@ -403,6 +454,10 @@ height: 100%;
 
   background-color: #F5F5F5 ;
 
+}
+
+#loginCodeWelcomeText{
+font-size:70px;
 }
 
 .green{
@@ -423,6 +478,7 @@ color: #009688;
 color: #C62828;
 
 }
+
 .red-font{
 	color: #C62828 !important;
 }
@@ -433,11 +489,23 @@ color: #C62828;
  min-height: 500px;
 
 }
-#loadingContainer{
+#loadingContainer {
 
- background-color:  white;
- min-height: 500px;
+    background-color: white;
+    min-height: 500px;
 
+}
+.padding-10{
+    padding: 10px !important;
+}
+.padding-top-10{
+    padding-top: 10px !important;
+}
+.padding-top-15{
+    padding-top: 15px !important;
+}
+.padding-bottom-15{
+    padding-bottom: 15px !important;
 }
 .left-padding-10{
  padding-left: 13px !important;
@@ -502,9 +570,6 @@ margin: 0 auto;
  margin-bottom: 17px;
 }
 
-.blabla{
-  height: aut
-}
   .center{
 
     margin: 0 auto !important;
@@ -560,4 +625,303 @@ margin: 0 auto;
     0%   {background-color: #8A0808;}
     50%   {background-color: #DF0101;}
     100%   {background-color: #8A0808;}
+}
+
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
+/* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/
+.board{
+    width: 89%;
+    margin: 50px auto;
+    margin-bottom: 0px;
+    min-height: 650px;
+    background: #fff;
+    /*box-shadow: 13px 13px rgba(60, 60, 60, 0.59),-10px 20px rgba(221, 221, 221, 0);*/
+}
+.board .nav-tabs {
+    position: relative;
+    /* border-bottom: 0; */
+    /* width: 80%; */
+    margin: 40px auto;
+    margin-bottom: 0;
+    box-sizing: border-box;
+
+}
+.container{
+    /*height: 100vh;*/
+    width: 100%;
+    height: 110%;
+    background-image: url("../../content/images/via_nova_2_w.jpg");
+    background-size: cover;
+
+    /*background-repeat: repeat-y;*/
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+
+}
+.board > div.board-innerz{
+    /*background: #fafafa url(http://subtlepatterns.com/patterns/geometry2.png);*/
+    /*background-size: 24%;*/
+}
+
+p.narrow{
+    width: 60%;
+
+}
+
+.liner{
+    height: 2px;
+    background: #ddd;
+    position: absolute;
+    width: 80%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    /* background-color: #ffffff; */
+    border: 0;
+    border-bottom-color: transparent;
+    border-color: transparent!important;
+    border-radius: 200px  !important;
+}
+
+span.round-tabs{
+    height: 70px !important;
+    width: 70px !important;
+    line-height: 70px  !important;
+    display: inline-block  !important;
+    border-radius: 200px  !important;
+    background: white  !important;
+    z-index: 2  !important;
+    position: absolute  !important;
+    left: 0  !important;
+    text-align: center  !important;
+    font-size: 25px  !important;
+
+}
+
+span.round-tabs.one{
+    color: #7E57C2;border: 2px solid #7E57C2;
+}
+
+li.active span.round-tabs.one{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #7E57C2;
+}
+
+span.round-tabs.two{
+    color: #febe29;border: 2px solid #febe29;
+}
+
+li.active span.round-tabs.two{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #febe29;
+}
+
+span.round-tabs.three{
+    color: #42A5F5;border: 2px solid #42A5F5;
+}
+
+li.active span.round-tabs.three{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #42A5F5;
+}
+
+span.round-tabs.four{
+    color: #f1685e;border: 2px solid #f1685e;
+}
+
+li.active span.round-tabs.four{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: #f1685e;
+}
+
+span.round-tabs.five{
+    color: rgb(34, 194, 34);border: 2px solid rgb(34, 194, 34);
+}
+
+li.active span.round-tabs.five{
+    background: #fff !important;
+    border: 2px solid #ddd;
+    color: rgb(34, 194, 34);
+}
+
+
+span.round-tabs.six{
+    color: rgb(0, 0, 0);border: 1px solid rgb(164, 172, 168);
+}
+
+li.active span.round-tabs.six{
+    background: #fff !important;
+    border: 1px solid #ddd;
+    color: rgb(34, 194, 34);
+    font-size:55px;
+
+    line-height: 200px !important;
+    list-style-type: none;
+}
+
+.nav-tabs > li.active > a span.round-tabs{
+    background: #fafafa;
+}
+.nav-tabs > li {
+    width: 20%;
+}
+/*li.active:before {
+    content: " ";
+    position: absolute;
+    left: 45%;
+    opacity:0;
+    margin: 0 auto;
+    bottom: -2px;
+    border: 10px solid transparent;
+    border-bottom-color: #fff;
+    z-index: 1;
+    transition:0.2s ease-in-out;
+}*/
+.nav-tabs > li:after {
+    content: " ";
+    position: absolute;
+    left: 45%;
+    opacity:0;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 5px solid transparent;
+    border-bottom-color: #ddd;
+    transition:0.1s ease-in-out;
+
+}
+.nav-tabs > li.active:after {
+    content: " ";
+    position: absolute;
+    left: 45%;
+    opacity:1;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #ddd;
+
+}
+.nav-tabs > li a{
+    width: 70px;
+    height: 70px;
+    margin: 20px auto;
+    border-radius: 100%;
+    padding: 0;
+}
+
+.nav-tabs > li a:hover{
+    background: transparent;
+}
+.disabled{
+
+  pointer-events:none;
+  opacity:0.6;
+}
+
+.tab-content{
+    padding-bottom: 20px;
+}
+.tab-pane{
+    position: relative;
+    padding-top: 10px;
+}
+.tab-content .head{
+    font-family: 'Roboto Condensed', sans-serif;
+    font-size: 25px;
+    text-transform: uppercase;
+    padding-bottom: 10px;
+}
+.btn-outline-rounded{
+    padding: 10px 40px;
+    margin: 20px 0;
+    border: 2px solid transparent;
+    border-radius: 25px;
+}
+
+.ballsInCodePage{
+
+}
+
+.btn.green{
+    background-color:#5cb85c;
+    /*border: 2px solid #5cb85c;*/
+    color: #ffffff;
+}
+#vehiculesInCodeContainer{
+    padding-top:15px;
+}
+#donerResidentsContainer{
+    padding-top: 15px!important;
+}
+
+@media( max-width : 585px ){
+
+    .board {
+        width: 90% !important;
+        height:auto !important;
+    }
+    #donerResidentsContainer{
+        padding-top: 0px!important;
+    }
+    span.round-tabs {
+        font-size:16px;
+        width: 50px !important;
+        height: 50px !important;
+        line-height: 50px !important;
+    }
+    .tab-content .head{
+        font-size:20px;
+    }
+    #vehiculesInCodeContainer{
+        padding-top:0px;
+    }
+    .nav-tabs > li a {
+        width: 50px !important;;
+        height: 50px !important;;
+        line-height:50px !important;;
+    }
+
+    .nav-tabs > li.active:after {
+        content: " ";
+        position: absolute;
+        left: 35%;
+    }
+
+    .btn-outline-rounded {
+        padding:12px 20px;
+    }
+}
+.typewriter h1 {
+    color: #fff;
+    font-family: monospace;
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid orange; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .10em; /* Adjust as needed */
+    animation:
+        typing 5.5s steps(30, end),
+        blink-caret .5s step-end infinite;
+}
+
+/* The typing effect */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+}
+
+/* The typewriter cursor effect */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: orange }
 }

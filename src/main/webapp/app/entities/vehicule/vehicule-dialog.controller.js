@@ -12,7 +12,6 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-         console.log(vm.vehicule)
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
@@ -49,9 +48,13 @@
                       }
                   })
                     vm.houses = data;
-                    setTimeout(function() {
-                        $("#register_edit_form").fadeIn(600);
-                    }, 200)
+                      setTimeout(function() {
+                                             $("#loadingIcon").fadeOut(300);
+                                   }, 400)
+                                    setTimeout(function() {
+                                        $("#register_edit_form").fadeIn('slow');
+                                    },900 )
+
                 }
         },500)
 

@@ -25,6 +25,7 @@
             "isOwner": "Is Owner",
             "enabled": "Enabled",
             "image_url": "Image Url",
+            "type": "Type",
             "user": "User",
             "company": "Company",
             "house": "House"

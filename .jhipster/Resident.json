@@ -87,6 +87,10 @@
         {
             "fieldName": "image_url",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",

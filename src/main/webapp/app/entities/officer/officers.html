@@ -21,28 +21,29 @@
         </div>
     </div>
 </div>
-
-<div class="row">
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row display-none" id="tableData">
     <div class="col-md-12">
         <h3 class="page-title col-md-9 col-sm-9 col-xs-12">	{{vm.title}}</h3>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-            <h1 class="text-center"><img src="../../content/images/waiting-gif2.gif" alt="" /></h1>
-        </div>
-        <div class="display-none" id="tableData">
             <div class="form-group form-md-radios"  ng-show="vm.canEditOfficers==1" >
                 <div class="md-radio-inline">
 
                     <div class="md-radio" >
-                        <input type="radio" id="radio14" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledOfficers()">
-                        <label for="radio14" style="color:#45B6AF">
+                        <input type="radio" id="radio18" name="radio2" class="md-radiobtn" ng-checked="{{vm.radiostatus}}"  ng-click="vm.switchEnabledResidents()">
+                        <label for="radio18" style="color:#45B6AF">
                             <span class="inc"></span>
                             <span class="check"></span>
                             <span class="box"></span>
                             Habilitados </label>
                     </div>
                     <div class="md-radio has-error">
-                        <input type="radio" id="radio15" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledOfficers()">
-                        <label for="radio15">
+                        <input type="radio" id="radio19" name="radio2" class="md-radiobtn"  ng-click="vm.switchDisabledResidents()">
+                        <label for="radio19">
                             <span class="inc"></span>
                             <span class="check"></span>
                             <span class="box"></span>
@@ -65,11 +66,32 @@
             <button ng-show="vm.canEditOfficers==1" type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
 
             <div class="portlet-body ">
-
-                <div class="table-scrollable">
-                    <h2 ng-show="vm.officers.length==0" class="text-center gray-font">No existen oficiales
-                        registrados</h2>
-                    <table ng-show="vm.officers.length>0" class="table table-striped table-hover font-12">
+                <div ng-show="vm.officers.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
+                    <h2  class="text-center gray-font ">No hay oficiales registrados</h2>
+                </div>
+                <div class="col-xs-12 hidden-lg hidden-md hidden-sm">
+                    <div class="portlet light bordered text-center col-sm-12 col-xs-12" ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
+                        <div class="col-xs-4">
+                            <h2><img ng-hide="officer.image_url" class="img-circle" src="content/images/nobody-image.jpg"   width="100"/>
+                                <img ng-show="officer.image_url!==null" src="officer.image_url" width="100" class="img-circle"/></h2>
+                            <h5>{{officer.name}} </h5>
+                        </div>
+                        <div class="col-xs-8 no-padding">
+                            <div class="col-xs-12" style="margin-top:20px">
+                                <h5><b>Cédula: </b>  {{officer.identificationnumber.toUpperCase()}}</h5>
+                                <h5 class="no-padding"><b>Teléfono:</b> {{officer.phonenumber}}</h5>
+                                <div class="col-xs-12 no-padding">
+                                    <button type="submit" ng-click="vm.detailOfficer(officer.id)" class="btn purple col-xs-3 no-margin"><i class="fa fa-eye "></i></button>
+                                    <button type="submit" ng-click="vm.editOfficer(officer.id)" class="btn blue col-xs-3 no-margin"><i class="fa fa-pencil"></i></button>
+                                    <button type="submit"  class="btn {{vm.color}} col-xs-3 no-margin"  ng-click="vm.disableEnabledOfficer(officer)" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>
+                                    <button type="submit" ng-click="vm.deleteOfficer(officer)" class="btn red col-xs-3 no-margin"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-scrollable hidden-xs" ng-show="vm.officers.length>0" >
+                    <table class="table table-striped table-hover font-12">
                         <thead>
                         <tr>
                             <th>Nombre completo</th>
@@ -94,7 +116,6 @@
                     </table>
                 </div>
             </div>
-        </div>
     </div>
 </div>
 

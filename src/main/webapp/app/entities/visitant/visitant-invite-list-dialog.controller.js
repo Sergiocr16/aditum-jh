@@ -26,9 +26,15 @@
             final_time: new Date()
         };
         angular.element(document).ready(function() {
-            $("#all").fadeIn("slow");
+             setTimeout(function() {
+                                         $("#loadingIcon").fadeOut(300);
+                                    }, 400)
+                                     setTimeout(function() {
+                                         $("#all").fadeIn('slow');
+                                     },900 )
              vm.formatInitPickers();
              setTimeout(function(){ $scope.$apply(function(){
+
              vm.addVisitor();
              })},600)
         CommonMethods.validateLetters();

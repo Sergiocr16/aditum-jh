@@ -13,6 +13,7 @@
         var vm = this;
          vm.radiostatus=true;
         vm.isAuthenticated = Principal.isAuthenticated;
+
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
                    $state.go('resident.edit', {
@@ -58,10 +59,16 @@
                 vm.title = "Residentes habilitados";
                 vm.buttonTitle = "Ver residentes deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
+
+                 vm.iconDisabled = "fa fa-user-times";
+                 vm.color = "red-font";
             } else {
                 vm.title = "Residentes deshabilitados";
                 vm.buttonTitle = "Ver residentes habilitados";
                 vm.actionButtonTitle = "Habilitar";
+ vm.iconDisabled = "fa fa-undo";
+                   vm.titleDisabledButton = "Habilitar residente";
+                  vm.color = "green";
             }
         }
         setTimeout(function(){
@@ -81,6 +88,7 @@
                                   }
                               })
                 vm.houses = data;
+                   vm.filterAuthorized = 2;
                 loadResidents();
             }
 
@@ -134,7 +142,7 @@
                 }, 400)
                  setTimeout(function() {
                      $("#tableData").fadeIn('slow');
-                 },700 )
+                 },900 )
             }
 
             function onError(error) {
@@ -234,6 +242,7 @@
             var correctMessage;
             if (enabledOptions) {
                 correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
+
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
             }

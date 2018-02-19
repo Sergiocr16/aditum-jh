@@ -23,6 +23,8 @@ public interface HouseRepository extends JpaRepository<House,Long> {
 
     Integer countByCompanyId(Long companyId);
 
+    House findByLoginCode(String loginCode);
+
     House findByhousenumberAndAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);
 
     House findByExtensionAndCompanyIdAndIdNot(String extension,Long companyId,Long houseId);

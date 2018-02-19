@@ -27,6 +27,7 @@
         .$getByHandle('my-pdf-container')
         .load(url);
     };
+        vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
         vm.isChangingPassword = $state.includes('finishReset');
@@ -36,6 +37,7 @@
         vm.cancel = cancel;
         vm.credentials = {};
         vm.login = login;
+        vm.showLoginHelp = showLoginHelp;
         vm.password = null;
 //        vm.register = register;
         vm.rememberMe = true;
@@ -53,7 +55,10 @@
             vm.authenticationError = false;
 //            $uibModalInstance.dismiss('cancel');
         }
+        function showLoginHelp() {
 
+            toastr["warning"]("El formato del nombre de usuario está constituido por la primer letra del nombre, el primer apellido y la primera letra del segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac.");
+        }
         function login (event) {
             event.preventDefault();
             Auth.login({
@@ -61,6 +66,7 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
+
                 vm.authenticationError = false;
                    Principal.identity().then(function(account){
                     $rootScope.menu = true;
@@ -75,11 +81,13 @@
                        $rootScope.companyUser = data;
                       if(data.companies.length>1 && $rootScope.companyId == undefined){
                       $rootScope.showSelectCompany = true;
+                      vm.backgroundSelectCompany = true;
                            setTimeout(function(){$state.go('dashboard.selectCompany');},300)
                       }else{
                       $rootScope.showSelectCompany = false;
                        $rootScope.companyId = data.companies[0].id;
                        console.log(data.companies[0].id)
+                       vm.backgroundSelectCompany = true;
                         setTimeout(function(){$state.go('dashboard');},300)
                       }
                      })
