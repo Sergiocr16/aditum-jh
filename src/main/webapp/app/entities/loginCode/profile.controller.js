@@ -43,14 +43,10 @@
         }
 
         if($localStorage.profileInfo==undefined && $localStorage.codeStatus ==2){
-            console.log('estoy en el if 1')
             vm.profileInfo = {name:null,lastname:null,secondlastname:null,phonenumber:null,identificationnumber:null,email:null,isOwner:1,enabled:1,companyId:$localStorage.companyId,houseId:$localStorage.house.id,nacionality:"9",found:0,validIdentification:1,validPlateNumber:1,lockNames:true,}
         }else if($localStorage.profileInfo==undefined && $localStorage.codeStatus ==undefined){
-            console.log('estoy en el if 2')
         } else if($localStorage.profileInfo!==undefined){
-            console.log('estoy en el if 3')
             vm.profileInfo = $localStorage.profileInfo ;
-            console.log(vm.profileInfo.phonenumber)
             indentification = vm.profileInfo.identificationnumber;
 
         }
@@ -90,22 +86,20 @@
         }
 
         function loadHouse(){
+    var id = CommonMethods.decryptIdUrl($state.params.loginCode)
             House.getByLoginCode({
-                loginCode: $state.params.loginCode
+                loginCode: id
             }).$promise.then(onSuccessHouse);
 
         }
         function onSuccessHouse(data) {
             vm.house = data;
-            console.log(data)
             if(vm.house.codeStatus==1){
                 vm.house.codeStatus=2;
                 House.update(vm.house);
             }
         }
         function validateIdNumber(){
-            console.log('la que esta guardad '+ indentification)
-            console.log('la que escribi '+ vm.profileInfo.identificationnumber)
             if (vm.house.codeStatus==false) {
                     Resident.getByCompanyAndIdentification({companyId:vm.house.companyId,identificationID:vm.profileInfo.identificationnumber},alreadyExist,insertResident)
 

@@ -57,7 +57,7 @@
         }
         function showLoginHelp() {
 
-            toastr["warning"]("El formato del nombre de usuario está constituido por la primer letra del nombre, el primer apellido y la primera letra del segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac.");
+            toastr["info"]("Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac");
         }
         function login (event) {
             event.preventDefault();

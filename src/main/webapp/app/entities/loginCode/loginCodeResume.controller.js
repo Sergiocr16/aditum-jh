@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginCodeResumeController', LoginCodeResumeController);
 
-    LoginCodeResumeController.$inject = ['Resident','House','User','$localStorage','$rootScope','$state'];
+    LoginCodeResumeController.$inject = ['Resident','House','User','$localStorage','$rootScope','$state','CommonMethods'];
 
-    function LoginCodeResumeController (Resident,House,User,$localStorage,$rootScope,$state) {
+    function LoginCodeResumeController (Resident,House,User,$localStorage,$rootScope,$state,CommonMethods) {
         var vm = this;
         $("#loginCodeVehiculesPanel").fadeIn(1000);
         $( "#donerli" ).addClass( "active" );
@@ -63,8 +63,10 @@
 
         }
         function loadHouse(){
+           var id = CommonMethods.decryptIdUrl($state.params.loginCode)
+
             House.getByLoginCode({
-                loginCode: $state.params.loginCode
+                loginCode: id
             }).$promise.then(onSuccessHouse);
 
         }

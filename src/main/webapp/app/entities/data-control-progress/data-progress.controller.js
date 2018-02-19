@@ -99,12 +99,11 @@
                     case 2:
                         enProgreso++;
                         break;
-                    case 3:
+                    case 5:
                         listo++;
                         break;
-                    default:
                 }
-}
+              }
             }
 
             handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);

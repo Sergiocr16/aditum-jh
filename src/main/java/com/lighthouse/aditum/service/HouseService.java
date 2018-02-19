@@ -46,6 +46,8 @@ public class HouseService {
     public HouseDTO save(HouseDTO houseDTO) {
         log.debug("Request to save House : {}", houseDTO);
         House house = houseMapper.houseDTOToHouse(houseDTO);
+        house.setCodeStatus(houseDTO.getCodeStatus());
+        house.loginCode(houseDTO.getLoginCode());
         house = houseRepository.save(house);
         HouseDTO result = houseMapper.houseToHouseDTO(house);
         return result;
@@ -76,7 +78,12 @@ public class HouseService {
               }
         });
 
-        return  new PageImpl<>(onlyHouses).map(house -> houseMapper.houseToHouseDTO(house));
+        return  new PageImpl<>(onlyHouses).map(house ->{
+            HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
+            house1.setCodeStatus(house.getCodeStatus());
+            house1.setLoginCode(house.getLoginCode());
+            return house1;
+        });
     }
 
     @Transactional(readOnly = true)
@@ -94,7 +101,12 @@ public class HouseService {
                 }
             }
         });
-        return  new PageImpl<>(result).map(house -> houseMapper.houseToHouseDTO(house));
+        return  new PageImpl<>(onlyHouses).map(house ->{
+            HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
+            house1.setCodeStatus(house.getCodeStatus());
+            house1.setLoginCode(house.getLoginCode());
+            return house1;
+        });
     }
 
     /**
@@ -109,7 +121,7 @@ public class HouseService {
         House house = houseRepository.findOne(id);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
         houseDTO.setCodeStatus(house.getCodeStatus());
-
+        houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
     }
 
@@ -119,6 +131,7 @@ public class HouseService {
         log.debug("Request to get House : {}", loginCode);
         House house = houseRepository.findByLoginCode(loginCode);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
+        houseDTO.setLoginCode(house.getLoginCode());
         houseDTO.setCodeStatus(house.getCodeStatus());
         return houseDTO;
     }
@@ -150,6 +163,7 @@ public class HouseService {
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
         houseDTO.setCodeStatus(house.getCodeStatus());
+        houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
     }
 
@@ -167,6 +181,7 @@ public class HouseService {
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
         houseDTO.setCodeStatus(house.getCodeStatus());
+        houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
     }
 

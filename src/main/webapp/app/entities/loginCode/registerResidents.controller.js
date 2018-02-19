@@ -44,8 +44,10 @@
 
         }
         function loadHouse(){
+                             var id = CommonMethods.decryptIdUrl($state.params.loginCode)
+
             House.getByLoginCode({
-                loginCode: $state.params.loginCode
+                loginCode: id
             }).$promise.then(onSuccessHouse);
 
         }

@@ -40,7 +40,7 @@ border-radius: 15px!important;">
                             <div class="form-group">
                                 <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                                 <label class="control-label visible-ie8 visible-ie9">Usuario</label>
-                                <i style="position: absolute;right: 6px; top:10px; font-size: 30px; color:#5cb85c; z-index: 2" class="fa fa-info-circle " title="Ayuda para saber el nombre de usuario" ng-click="vm.showLoginHelp()"></i>
+                                <i style="position: absolute;right: 6px; top:10px; font-size: 25px; color:#5cb85c; z-index: 2" class="fa fa-info-circle " title="Ayuda para saber el nombre de usuario" ng-click="vm.showLoginHelp()"></i>
                                 <div class="input-icon">
                                     <i class="fa fa-user"></i>
 
@@ -80,11 +80,20 @@ border-radius: 15px!important;">
                 </form>
 
             </div>
+
+            <div class="login-hide-2 col-md-12 col-sm-12 hidden-sm hidden-xs">
+
+            </div>
+            <div class="col-md-12 col-sm-12 col-xs-12 no-padding">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+                <h5 class="text-left">Soporte: (+506)     86245504</h5>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+                <h5 class="text-right"> {{vm.anno}} &copy; Lighthouse</h5>
+            </div>
+            </div>
         </div>
 
-        <div class="login-hide-2 col-md-12 col-sm-12 hidden-sm hidden-xs">
-
-        </div>
         <div class="col-md-12">
             <div class="login-options col-md-5 col-sm-4 col-xs-6">
                 <ul class="social-icons">
@@ -102,10 +111,6 @@ border-radius: 15px!important;">
                         </a>
                     </li>
                 </ul>
-
-            </div>
-            <div class="col-md-7 col-sm-7 col-xs-6 ">
-                <h5 class="text-right"> {{vm.anno}} &copy; Lighthouse</h5>
             </div>
 
         </div>
@@ -136,7 +141,6 @@ border-radius: 15px!important;">
     </div>
 
 
-    <h3 class="" style="position: absolute; bottom:2px; left:10px; font-size:16px;">Tel soporte: 86245504 / 60023372</h3>
 </div>
 
 <!--<style>-->
