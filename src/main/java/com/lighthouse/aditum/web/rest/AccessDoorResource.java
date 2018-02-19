@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -60,7 +61,16 @@ public class AccessDoorResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
+    @PostMapping("/lockDoor")
+    @Timed
+    public void lookDoor() throws URISyntaxException {
+        final String uri = "https://api.biostar2.com/v1/doors/1/lock";
 
+       RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(uri, String.class);
+
+        System.out.println(result);
+    }
     /**
      * PUT  /access-doors : Updates an existing accessDoor.
      *

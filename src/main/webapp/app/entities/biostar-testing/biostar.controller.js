@@ -99,14 +99,18 @@ function readCookie(name) {
 //        },function(a){
 //        console.log(a)
 //        })
+
+
 $.ajax({
          url: "https://api.biostar2.com/v1/doors/:door_id/lock",
          type: "post",
          data:{door_id:1},
-xhrFields: {
-                           withCredentials: true
-                         },
+//         contentType:"json",
+//xhrFields: {
+//                           withCredentials: true
+//                         },
 crossDomain: true,
+crossOrigin:true,
 //beforeSend:setHeader
        });
 
