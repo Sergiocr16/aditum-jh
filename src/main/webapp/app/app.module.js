@@ -20,7 +20,7 @@
             'cloudinary',
              'pdf',
              'firebase',
-             'ngNotify'
+             'ngNotify',
         ])
         .run(run);
 

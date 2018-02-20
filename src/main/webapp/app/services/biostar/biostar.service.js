@@ -38,6 +38,7 @@
                 }
             },
           'logout': { method: 'POST',url:'https://api.biostar2.com/v1/logout', params: {}, isArray: false,
+
 //                interceptor: {
 //                    response: function(response) {
 //                        // expose response
@@ -46,7 +47,8 @@
 //                }
             },
             'lockDoor': { method: 'POST',url:'https://api.biostar2.com/v1/doors/:door_id/lock',
-             params: {door_id:'@door_id'},
+             params: {door_id:'@door_id',},
+             withCredentials:true,
               isArray: false,
                     interceptor: {
                         response: function(response) {
