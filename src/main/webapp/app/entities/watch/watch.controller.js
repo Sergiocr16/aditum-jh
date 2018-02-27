@@ -172,10 +172,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.isData = true;
-                $("#loadingData").fadeOut(0);
-                setTimeout(function() {
-                    $("#data").fadeIn(300);
-                }, 200)
+
                 setWatch(data);
                 vm.currentTurn = true;
                 vm.showBackBtn = false;
@@ -183,15 +180,22 @@
                 vm.consulting_initial_time = "";
                 vm.consulting_final_time = "";
                   setTimeout(function() {
-                       $("#loadingIcon").fadeOut(300);
+                       $("#loadingData").fadeOut(300);
                                                         }, 400)
                                                          setTimeout(function() {
-                                                             $("#tableData").fadeIn('slow');
+                                                             $("#data").fadeIn('slow');
 
                                                          },900 )
             }
 
             function onErrorCurrent(error) {
+              setTimeout(function() {
+                                  $("#loadingData").fadeOut(300);
+                                                                   }, 400)
+                                                                    setTimeout(function() {
+                                                                        $("#data").fadeIn('slow');
+
+                                                                    },900 )
                 vm.isData = false;
                 AlertService.error(error.data.message);
             }
@@ -292,6 +296,7 @@
 
             function onError(error) {
                 AlertService.error(error.data.message);
+
             }
         }
 
