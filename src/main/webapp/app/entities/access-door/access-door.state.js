@@ -137,34 +137,7 @@
                 });
             }]
         })
-                .state('main-access-door.newWatch', {
-                    parent: 'main-access-door',
-                    url: '/change-watch',
-                    data: {
-                        authorities: ['ROLE_OFFICER']
-                    },
-                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                        $uibModal.open({
-                            templateUrl: 'app/entities/access-door/change-watches.html',
-                            controller: 'ChangeWatchesController',
-                            controllerAs: 'vm',
-                            backdrop: 'static',
-                            size: 'lg',
-                            resolve: {
-                                entity: function () {
-                                    return {
-                                        name: null,
-                                        id: null
-                                    };
-                                }
-                            }
-                        }).result.then(function() {
-                          $state.go('access-door', null, { reload: false,notify: false });
-                        }, function() {
-                           $state.go('^',null,{notify: false});
-                        });
-                    }]
-                })
+
         .state('access-door-invited-by-house', {
             parent: 'access-door',
             url: '/{id}/invited',

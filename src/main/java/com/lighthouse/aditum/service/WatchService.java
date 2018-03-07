@@ -80,13 +80,13 @@ public class WatchService {
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
         List<Watch> result = watchRepository.findByDatesBetween(zd_initialTime,zd_finalTime,companyId);
-        Watch lastWatch = null;
-        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
-            lastWatch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
-            if(lastWatch.getInitialtime().isAfter(zd_initialTime) && zd_finalTime.isAfter(ZonedDateTime.now())){
-                result.add(lastWatch);
-            }
-        }
+//        Watch lastWatch = null;
+//        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
+//            lastWatch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
+//            if(lastWatch.getInitialtime().isAfter(zd_initialTime) && zd_finalTime.isAfter(ZonedDateTime.now())){
+//                result.add(lastWatch);
+//            }
+//        }
         Collections.reverse(result);
         return new PageImpl<Watch>(result).map(watch -> watchMapper.watchToWatchDTO(watch));
     }

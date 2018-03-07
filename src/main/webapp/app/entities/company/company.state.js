@@ -51,6 +51,9 @@
                 }]
             }
         })
+
+
+
         .state('company-rh', {
             parent: 'entity',
             url: '/company-rh?page&sort&search',
@@ -301,6 +304,28 @@
                     });
                 }]
             })
+
+             .state('company-rh.newWatch', {
+                            parent: 'company-rh',
+                            url: '/change-watch/:companyId',
+                            data: {
+                                authorities: ['ROLE_OFFICER','ROLE_RH']
+                            },
+                            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                                $uibModal.open({
+                                    templateUrl: 'app/entities/access-door/change-watches.html',
+                                    controller: 'ChangeWatchesController',
+                                    controllerAs: 'vm',
+                                    backdrop: 'static',
+                                    size: 'lg',
+
+                                }).result.then(function() {
+                                  $state.go('company-rh', null, { reload: false,notify: false });
+                                }, function() {
+                                   $state.go('^',null,{notify: false});
+                                });
+                            }]
+                        })
            .state('admins-rh', {
                 parent: 'company-rh',
                 url: '/admins-rh/:companyId',
@@ -340,7 +365,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('company', null, { reload: 'company' });
+                    $state.go('^', null, { reload: '^' });
                 }, function() {
                     $state.go('^');
                 });
