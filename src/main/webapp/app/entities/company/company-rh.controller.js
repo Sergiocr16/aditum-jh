@@ -12,6 +12,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
+
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
@@ -20,8 +21,10 @@
         loadAll();
 
         },500)
+
         vm.viewAdmins = function(companyId){
           var encryptedId = CommonMethods.encryptIdUrl(companyId)
+
         $state.go('admins-rh', {
                       companyId: encryptedId
                   })
@@ -30,6 +33,13 @@
          var encryptedId = CommonMethods.encryptIdUrl(companyId)
         $state.go('turno',{companyId:encryptedId})
         }
+
+          vm.reportarTurno = function(companyId){
+          console.log(companyId)
+            var encryptedId = CommonMethods.encryptIdUrl(companyId)
+                 $state.go("company-rh.newWatch", {companyId: encryptedId})
+          }
+
        function getCurrentUserCompanyId(){
             Principal.identity().then(function(account){
             console.log(account)

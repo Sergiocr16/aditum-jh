@@ -54,14 +54,15 @@ public class WatchResource {
         if (watchDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new watch cannot already have an ID")).body(null);
         }
-        WatchDTO previousWatch = watchService.findLastWatch(watchDTO.getCompanyId());
-        ZonedDateTime currentTime = ZonedDateTime.now();
-        watchDTO.setInitialtime(currentTime);
-        watchDTO.setFinaltime(null);
-        if(previousWatch!=null) {
-            previousWatch.setFinaltime(currentTime);
-            watchService.save(previousWatch);
-        }
+//        WatchDTO previousWatch = watchService.findLastWatch(watchDTO.getCompanyId());
+//        ZonedDateTime currentTime = ZonedDateTime.now();
+//        watchDTO.setInitialtime(currentTime);
+//        watchDTO.setFinaltime(null);
+//        if(previousWatch!=null) {
+//            previousWatch.setFinaltime(currentTime);
+//            watchService.save(previousWatch);
+//        }
+
         WatchDTO result = watchService.save(watchDTO);
         return ResponseEntity.created(new URI("/api/watches/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
