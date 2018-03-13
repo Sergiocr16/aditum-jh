@@ -211,7 +211,7 @@
                                         </tr>
                                         </thead>
                                         <tbody class="font-12">
-                                        <tr class="pointer" ng-click="vm.getWatch(turno.id)" ng-repeat="turno in vm.watches track by $index">
+                                        <tr class="pointer" ng-click="vm.getWatch(turno.id)" ng-repeat="turno in vm.watches | orderBy:'-initialtime' track by $index ">
                                             <td>
                                                 {{turno.initialtime | formatDate}}
                                             </td>

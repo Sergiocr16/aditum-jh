@@ -15,7 +15,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface WatchRepository extends JpaRepository<Watch,Long> {
     Page<Watch> findByCompanyId(Pageable pageable, Long companyId);
-    List<Watch> findTop1ByCompanyIdOrderByIdDesc(Long companyId);
+    List<Watch> findTop1ByCompanyIdOrderByInitialtimeDesc(Long companyId);
 
     @Query("select w from Watch w " +
         "where w.initialtime >= ?1 and w.finaltime <= ?2 and w.company.id = ?3")
