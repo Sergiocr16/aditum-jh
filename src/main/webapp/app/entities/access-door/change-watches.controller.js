@@ -60,9 +60,8 @@
             vm.minInitialDate = moment(currentDate).format("YYYY-MM-DD")
 
 //            HORAS
-            vm.dates.initial_time = new Date(1970, 0, 1,6, currentDate.getMinutes(), 0)
-            vm.dates.final_time = new Date(1970, 0, 1,18,currentDate.getMinutes(), 0)
-            vm.minInitialTime = moment(new Date(1970, 0, 1,currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm')
+            vm.dates.initial_time = new Date(1970, 0, 1,6, 0, 0)
+            vm.dates.final_time = new Date(1970, 0, 1,18,0, 0)
             setTimeout(function(){
                 vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
                 vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')

@@ -55,8 +55,8 @@ public class WatchService {
     public WatchDTO findLastWatch(Long companyId) {
         log.debug("Request to get Watch : {}");
         Watch watch = null;
-        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
-             watch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
+        if(!watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).isEmpty()) {
+             watch = watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).get(0);
         }
         WatchDTO watchDTO = watchMapper.watchToWatchDTO(watch);
         return watchDTO;
