@@ -1,0 +1,72 @@
+<div>
+    <h2 data-translate="aditumApp.proveedor.home.title">Proveedors</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="proveedor.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.proveedor.home.createLabel">
+                        Create new Proveedor
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="empresa"><span data-translate="aditumApp.proveedor.empresa">Empresa</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="responsable"><span data-translate="aditumApp.proveedor.responsable">Responsable</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="telefono"><span data-translate="aditumApp.proveedor.telefono">Telefono</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="email"><span data-translate="aditumApp.proveedor.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="comentarios"><span data-translate="aditumApp.proveedor.comentarios">Comentarios</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.proveedor.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="proveedor in vm.proveedors track by proveedor.id">
+                    <td><a ui-sref="proveedor-detail({id:proveedor.id})">{{proveedor.id}}</a></td>
+                    <td>{{proveedor.empresa}}</td>
+                    <td>{{proveedor.responsable}}</td>
+                    <td>{{proveedor.telefono}}</td>
+                    <td>{{proveedor.email}}</td>
+                    <td>{{proveedor.comentarios}}</td>
+                    <td>
+                        <a ui-sref="company-detail({id:proveedor.companyId})">{{proveedor.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="proveedor-detail({id:proveedor.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="proveedor.edit({id:proveedor.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="proveedor.delete({id:proveedor.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>
