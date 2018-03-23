@@ -24,6 +24,7 @@
                 "rhAccount": "RH Account",
                 "destinies": "Destinies",
                 "proveedor": "Proveedor",
+                "banco": "Banco",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
