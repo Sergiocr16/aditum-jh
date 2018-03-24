@@ -21,7 +21,8 @@
             "ammount": "Ammount",
             "state": "State",
             "deleted": "Deleted",
-            "house": "House"
+            "house": "House",
+            "payment": "Payment"
         }
     }
 }

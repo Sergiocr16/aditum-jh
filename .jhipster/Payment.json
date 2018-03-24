@@ -9,22 +9,9 @@
                 "required"
             ],
             "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "payment",
-            "otherEntityName": "payment",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
     "fields": [
-        {
-            "fieldName": "type",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
         {
             "fieldName": "date",
             "fieldType": "ZonedDateTime",
@@ -33,37 +20,41 @@
             ]
         },
         {
-            "fieldName": "concept",
+            "fieldName": "receiptNumber",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "ammount",
+            "fieldName": "transaction",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "state",
-            "fieldType": "Integer",
+            "fieldName": "account",
+            "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "deleted",
-            "fieldType": "Integer",
+            "fieldName": "paymentMethod",
+            "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "comments",
+            "fieldType": "String"
         }
     ],
-    "changelogDate": "20180324000506",
+    "changelogDate": "20180324014703",
     "dto": "mapstruct",
     "service": "serviceClass",
-    "entityTableName": "charge",
+    "entityTableName": "payment",
     "pagination": "pager"
 }

@@ -26,6 +26,7 @@
                     <th jh-sort-by="state"><span data-translate="aditumApp.charge.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="deleted"><span data-translate="aditumApp.charge.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="houseId"><span data-translate="aditumApp.charge.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="paymentId"><span data-translate="aditumApp.charge.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -40,6 +41,9 @@
                     <td>{{charge.deleted}}</td>
                     <td>
                         <a ui-sref="house-detail({id:charge.houseId})">{{charge.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="payment-detail({id:charge.paymentId})">{{charge.paymentId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

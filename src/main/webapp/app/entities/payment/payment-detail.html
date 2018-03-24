@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.payment.detail.title">Payment</span> {{vm.payment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.payment.date">Date</span></dt>
+        <dd>
+            <span>{{vm.payment.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.receiptNumber">Receipt Number</span></dt>
+        <dd>
+            <span>{{vm.payment.receiptNumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.transaction">Transaction</span></dt>
+        <dd>
+            <span>{{vm.payment.transaction}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.account">Account</span></dt>
+        <dd>
+            <span>{{vm.payment.account}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.paymentMethod">Payment Method</span></dt>
+        <dd>
+            <span>{{vm.payment.paymentMethod}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.payment.comments}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.payment.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.payment.houseId})">{{vm.payment.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="payment-detail.edit({id:vm.payment.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

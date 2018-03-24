@@ -3,20 +3,19 @@
 
     angular
         .module('aditumApp')
-        .controller('ChargeDialogController', ChargeDialogController);
+        .controller('PaymentDialogController', PaymentDialogController);
 
-    ChargeDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Charge', 'House', 'Payment'];
+    PaymentDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Payment', 'House'];
 
-    function ChargeDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Charge, House, Payment) {
+    function PaymentDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Payment, House) {
         var vm = this;
 
-        vm.charge = entity;
+        vm.payment = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.houses = House.query();
-        vm.payments = Payment.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -28,15 +27,15 @@
 
         function save () {
             vm.isSaving = true;
-            if (vm.charge.id !== null) {
-                Charge.update(vm.charge, onSaveSuccess, onSaveError);
+            if (vm.payment.id !== null) {
+                Payment.update(vm.payment, onSaveSuccess, onSaveError);
             } else {
-                Charge.save(vm.charge, onSaveSuccess, onSaveError);
+                Payment.save(vm.payment, onSaveSuccess, onSaveError);
             }
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:chargeUpdate', result);
+            $scope.$emit('aditumApp:paymentUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }

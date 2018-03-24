@@ -2,9 +2,9 @@
 
 describe('Controller Tests', function() {
 
-    describe('Charge Management Detail Controller', function() {
+    describe('Payment Management Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockPreviousState, MockCharge, MockHouse, MockPayment;
+        var MockEntity, MockPreviousState, MockPayment, MockHouse;
         var createController;
 
         beforeEach(inject(function($injector) {
@@ -12,9 +12,8 @@ describe('Controller Tests', function() {
             $scope = $rootScope.$new();
             MockEntity = jasmine.createSpy('MockEntity');
             MockPreviousState = jasmine.createSpy('MockPreviousState');
-            MockCharge = jasmine.createSpy('MockCharge');
-            MockHouse = jasmine.createSpy('MockHouse');
             MockPayment = jasmine.createSpy('MockPayment');
+            MockHouse = jasmine.createSpy('MockHouse');
             
 
             var locals = {
@@ -22,19 +21,18 @@ describe('Controller Tests', function() {
                 '$rootScope': $rootScope,
                 'entity': MockEntity,
                 'previousState': MockPreviousState,
-                'Charge': MockCharge,
-                'House': MockHouse,
-                'Payment': MockPayment
+                'Payment': MockPayment,
+                'House': MockHouse
             };
             createController = function() {
-                $injector.get('$controller')("ChargeDetailController", locals);
+                $injector.get('$controller')("PaymentDetailController", locals);
             };
         }));
 
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'aditumApp:chargeUpdate';
+                var eventType = 'aditumApp:paymentUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

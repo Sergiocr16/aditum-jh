@@ -15,48 +15,44 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity Charge.
+        Added the entity Payment.
     -->
-    <changeSet id="20180324000506-1" author="jhipster">
-        <createTable tableName="charge">
+    <changeSet id="20180324014703-1" author="jhipster">
+        <createTable tableName="payment">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jhi_type" type="integer">
-                <constraints nullable="false" />
-            </column>
-
             <column name="jhi_date" type="timestamp">
                 <constraints nullable="false" />
             </column>
 
-            <column name="concept" type="varchar(255)">
+            <column name="receipt_number" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="ammount" type="varchar(255)">
+            <column name="jhi_transaction" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="state" type="integer">
+            <column name="jhi_account" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 
-            <column name="deleted" type="integer">
+            <column name="payment_method" type="varchar(255)">
                 <constraints nullable="false" />
+            </column>
+
+            <column name="comments" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>
 
-            <column name="payment_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="charge" columnName="jhi_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="payment" columnName="jhi_date" columnDataType="datetime"/>
         
     </changeSet>
 </databaseChangeLog>

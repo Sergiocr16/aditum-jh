@@ -35,6 +35,8 @@ public class ChargeDTO implements Serializable {
 
     private Long houseId;
 
+    private Long paymentId;
+
     public Long getId() {
         return id;
     }
@@ -97,6 +99,14 @@ public class ChargeDTO implements Serializable {
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
     }
 
     @Override

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargeDetailController', ChargeDetailController);
 
-    ChargeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Charge', 'House'];
+    ChargeDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Charge', 'House', 'Payment'];
 
-    function ChargeDetailController($scope, $rootScope, $stateParams, previousState, entity, Charge, House) {
+    function ChargeDetailController($scope, $rootScope, $stateParams, previousState, entity, Charge, House, Payment) {
         var vm = this;
 
         vm.charge = entity;

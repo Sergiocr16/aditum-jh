@@ -48,6 +48,9 @@ public class Charge implements Serializable {
     @NotNull
     private House house;
 
+    @ManyToOne
+    private Payment payment;
+
     public Long getId() {
         return id;
     }
@@ -145,6 +148,19 @@ public class Charge implements Serializable {
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public Charge payment(Payment payment) {
+        this.payment = payment;
+        return this;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override
