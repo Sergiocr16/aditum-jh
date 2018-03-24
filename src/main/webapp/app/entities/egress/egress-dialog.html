@@ -1,0 +1,135 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myEgressLabel" data-translate="aditumApp.egress.home.createOrEditLabel">Create or edit a Egress</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.egress.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.egress.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.date" for="field_date">Date</label>
+                <div class="input-group">
+                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.egress.date" is-open="vm.datePickerOpenStatus.date"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.date.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.date.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.folio" for="field_folio">Folio</label>
+            <input type="text" class="form-control" name="folio" id="field_folio"
+                    ng-model="vm.egress.folio"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.account" for="field_account">Account</label>
+            <input type="text" class="form-control" name="account" id="field_account"
+                    ng-model="vm.egress.account"
+                    required/>
+            <div ng-show="editForm.account.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.account.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.category" for="field_category">Category</label>
+            <input type="text" class="form-control" name="category" id="field_category"
+                    ng-model="vm.egress.category"
+                    required/>
+            <div ng-show="editForm.category.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.category.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.paymentMethod" for="field_paymentMethod">Payment Method</label>
+            <input type="text" class="form-control" name="paymentMethod" id="field_paymentMethod"
+                    ng-model="vm.egress.paymentMethod"
+                    required/>
+            <div ng-show="editForm.paymentMethod.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.paymentMethod.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.concept" for="field_concept">Concept</label>
+            <input type="text" class="form-control" name="concept" id="field_concept"
+                    ng-model="vm.egress.concept"
+                    required/>
+            <div ng-show="editForm.concept.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.concept.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.total" for="field_total">Total</label>
+            <input type="text" class="form-control" name="total" id="field_total"
+                    ng-model="vm.egress.total"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.reference" for="field_reference">Reference</label>
+            <input type="text" class="form-control" name="reference" id="field_reference"
+                    ng-model="vm.egress.reference"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.comments" for="field_comments">Comments</label>
+            <input type="text" class="form-control" name="comments" id="field_comments"
+                    ng-model="vm.egress.comments"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.egress.proveedor" for="field_proveedor">Proveedor</label>
+            <input type="text" class="form-control" name="proveedor" id="field_proveedor"
+                    ng-model="vm.egress.proveedor"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.egress.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.egress.companyId" ng-options="company.id as company.id for company in vm.companies"             required>
+            </select>
+        </div>
+        <div ng-show="editForm.company.$invalid">
+            <p class="help-block"
+                ng-show="editForm.company.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

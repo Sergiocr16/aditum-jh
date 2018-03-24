@@ -1,0 +1,63 @@
+
+<div>
+    <h2><span data-translate="aditumApp.egress.detail.title">Egress</span> {{vm.egress.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.egress.date">Date</span></dt>
+        <dd>
+            <span>{{vm.egress.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.folio">Folio</span></dt>
+        <dd>
+            <span>{{vm.egress.folio}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.account">Account</span></dt>
+        <dd>
+            <span>{{vm.egress.account}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.category">Category</span></dt>
+        <dd>
+            <span>{{vm.egress.category}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.paymentMethod">Payment Method</span></dt>
+        <dd>
+            <span>{{vm.egress.paymentMethod}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.concept">Concept</span></dt>
+        <dd>
+            <span>{{vm.egress.concept}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.total">Total</span></dt>
+        <dd>
+            <span>{{vm.egress.total}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.reference">Reference</span></dt>
+        <dd>
+            <span>{{vm.egress.reference}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.egress.comments}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.proveedor">Proveedor</span></dt>
+        <dd>
+            <span>{{vm.egress.proveedor}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.egress.companyId})">{{vm.egress.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="egress-detail.edit({id:vm.egress.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
