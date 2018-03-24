@@ -25,6 +25,7 @@
                 "destinies": "Destinies",
                 "proveedor": "Proveedor",
                 "banco": "Banco",
+                "charge": "Charge",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

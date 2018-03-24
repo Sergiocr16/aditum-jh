@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.charge.detail.title">Charge</span> {{vm.charge.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.charge.type">Type</span></dt>
+        <dd>
+            <span>{{vm.charge.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.date">Date</span></dt>
+        <dd>
+            <span>{{vm.charge.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.concept">Concept</span></dt>
+        <dd>
+            <span>{{vm.charge.concept}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.ammount">Ammount</span></dt>
+        <dd>
+            <span>{{vm.charge.ammount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.state">State</span></dt>
+        <dd>
+            <span>{{vm.charge.state}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.charge.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.charge.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.charge.houseId})">{{vm.charge.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="charge-detail.edit({id:vm.charge.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

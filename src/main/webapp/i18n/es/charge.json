@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "charge" : {
+            "home": {
+                "title": "Charges",
+                "createLabel": "Crear nuevo Charge",
+                "createOrEditLabel": "Crear o editar Charge"
+            },
+            "created": "Un nuevo Charge ha sido creado con el identificador {{ param }}",
+            "updated": "Un Charge ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Charge ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Charge {{ id }}?"
+            },
+            "detail": {
+                "title": "Charge"
+            },
+            "type": "Type",
+            "date": "Date",
+            "concept": "Concept",
+            "ammount": "Ammount",
+            "state": "State",
+            "deleted": "Deleted",
+            "house": "House"
+        }
+    }
+}
