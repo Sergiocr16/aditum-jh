@@ -9,17 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('proveedor', {
+        .state('historical-charge', {
             parent: 'entity',
-            url: '/proveedor?page&sort&search',
+            url: '/historical-charge?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.proveedor.home.title'
+                pageTitle: 'aditumApp.historicalCharge.home.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/proveedor/proveedors.html',
-                    controller: 'ProveedorController',
+                    templateUrl: 'app/entities/historical-charge/historical-charges.html',
+                    controller: 'HistoricalChargeController',
                     controllerAs: 'vm'
                 }
             },
@@ -45,37 +45,37 @@
                     };
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('proveedor');
+                    $translatePartialLoader.addPart('historicalCharge');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
         })
-        .state('proveedor-detail', {
-            parent: 'proveedor',
-            url: '/proveedor/{id}',
+        .state('historical-charge-detail', {
+            parent: 'historical-charge',
+            url: '/historical-charge/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.proveedor.detail.title'
+                pageTitle: 'aditumApp.historicalCharge.detail.title'
             },
             views: {
                 'content@': {
-                    templateUrl: 'app/entities/proveedor/proveedor-detail.html',
-                    controller: 'ProveedorDetailController',
+                    templateUrl: 'app/entities/historical-charge/historical-charge-detail.html',
+                    controller: 'HistoricalChargeDetailController',
                     controllerAs: 'vm'
                 }
             },
             resolve: {
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('proveedor');
+                    $translatePartialLoader.addPart('historicalCharge');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Proveedor', function($stateParams, Proveedor) {
-                    return Proveedor.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'HistoricalCharge', function($stateParams, HistoricalCharge) {
+                    return HistoricalCharge.get({id : $stateParams.id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
-                        name: $state.current.name || 'proveedor',
+                        name: $state.current.name || 'historical-charge',
                         params: $state.params,
                         url: $state.href($state.current.name, $state.params)
                     };
@@ -83,22 +83,22 @@
                 }]
             }
         })
-        .state('proveedor-detail.edit', {
-            parent: 'proveedor-detail',
+        .state('historical-charge-detail.edit', {
+            parent: 'historical-charge-detail',
             url: '/detail/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
-                    controller: 'ProveedorDialogController',
+                    templateUrl: 'app/entities/historical-charge/historical-charge-dialog.html',
+                    controller: 'HistoricalChargeDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Proveedor', function(Proveedor) {
-                            return Proveedor.get({id : $stateParams.id}).$promise;
+                        entity: ['HistoricalCharge', function(HistoricalCharge) {
+                            return HistoricalCharge.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
@@ -108,83 +108,85 @@
                 });
             }]
         })
-        .state('proveedor.new', {
-            parent: 'proveedor',
+        .state('historical-charge.new', {
+            parent: 'historical-charge',
             url: '/new',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
-                    controller: 'ProveedorDialogController',
+                    templateUrl: 'app/entities/historical-charge/historical-charge-dialog.html',
+                    controller: 'HistoricalChargeDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
                         entity: function () {
                             return {
-                                empresa: null,
-                                responsable: null,
-                                telefono: null,
-                                email: null,
-                                comentarios: null,
+                                date: null,
+                                concept: null,
+                                ammount: null,
+                                abono: null,
+                                type: null,
+                                state: null,
                                 deleted: null,
+                                total: null,
                                 id: null
                             };
                         }
                     }
                 }).result.then(function() {
-                    $state.go('proveedor', null, { reload: 'proveedor' });
+                    $state.go('historical-charge', null, { reload: 'historical-charge' });
                 }, function() {
-                    $state.go('proveedor');
+                    $state.go('historical-charge');
                 });
             }]
         })
-        .state('proveedor.edit', {
-            parent: 'proveedor',
+        .state('historical-charge.edit', {
+            parent: 'historical-charge',
             url: '/{id}/edit',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/proveedor/proveedor-dialog.html',
-                    controller: 'ProveedorDialogController',
+                    templateUrl: 'app/entities/historical-charge/historical-charge-dialog.html',
+                    controller: 'HistoricalChargeDialogController',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['Proveedor', function(Proveedor) {
-                            return Proveedor.get({id : $stateParams.id}).$promise;
+                        entity: ['HistoricalCharge', function(HistoricalCharge) {
+                            return HistoricalCharge.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('proveedor', null, { reload: 'proveedor' });
+                    $state.go('historical-charge', null, { reload: 'historical-charge' });
                 }, function() {
                     $state.go('^');
                 });
             }]
         })
-        .state('proveedor.delete', {
-            parent: 'proveedor',
+        .state('historical-charge.delete', {
+            parent: 'historical-charge',
             url: '/{id}/delete',
             data: {
                 authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
-                    templateUrl: 'app/entities/proveedor/proveedor-delete-dialog.html',
-                    controller: 'ProveedorDeleteController',
+                    templateUrl: 'app/entities/historical-charge/historical-charge-delete-dialog.html',
+                    controller: 'HistoricalChargeDeleteController',
                     controllerAs: 'vm',
                     size: 'md',
                     resolve: {
-                        entity: ['Proveedor', function(Proveedor) {
-                            return Proveedor.get({id : $stateParams.id}).$promise;
+                        entity: ['HistoricalCharge', function(HistoricalCharge) {
+                            return HistoricalCharge.get({id : $stateParams.id}).$promise;
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('proveedor', null, { reload: 'proveedor' });
+                    $state.go('historical-charge', null, { reload: 'historical-charge' });
                 }, function() {
                     $state.go('^');
                 });

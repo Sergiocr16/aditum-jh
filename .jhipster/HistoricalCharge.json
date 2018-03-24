@@ -2,8 +2,8 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "company",
-            "otherEntityName": "company",
+            "relationshipName": "house",
+            "otherEntityName": "house",
             "relationshipType": "many-to-one",
             "relationshipValidateRules": [
                 "required"
@@ -13,33 +13,44 @@
     ],
     "fields": [
         {
-            "fieldName": "empresa",
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "concept",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "responsable",
+            "fieldName": "ammount",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "telefono",
+            "fieldName": "abono",
             "fieldType": "String",
+            "fieldValidateRules": []
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "email",
-            "fieldType": "String"
-        },
-        {
-            "fieldName": "comentarios",
-            "fieldType": "String"
+            "fieldName": "state",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "deleted",
@@ -47,11 +58,15 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "total",
+            "fieldType": "String"
         }
     ],
-    "changelogDate": "20180323223934",
+    "changelogDate": "20180324004144",
     "dto": "mapstruct",
     "service": "serviceClass",
-    "entityTableName": "proveedor",
+    "entityTableName": "historical_charge",
     "pagination": "pager"
 }

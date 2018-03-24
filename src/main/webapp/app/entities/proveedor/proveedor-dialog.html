@@ -61,6 +61,22 @@
                     ng-model="vm.proveedor.comentarios"
                     />
         </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.deleted" for="field_deleted">Deleted</label>
+            <input type="number" class="form-control" name="deleted" id="field_deleted"
+                    ng-model="vm.proveedor.deleted"
+                    required/>
+            <div ng-show="editForm.deleted.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.deleted.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.deleted.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
 
         <div class="form-group">
             <label data-translate="aditumApp.proveedor.company" for="field_company">Company</label>

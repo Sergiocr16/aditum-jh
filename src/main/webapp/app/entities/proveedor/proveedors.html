@@ -24,6 +24,7 @@
                     <th jh-sort-by="telefono"><span data-translate="aditumApp.proveedor.telefono">Telefono</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="email"><span data-translate="aditumApp.proveedor.email">Email</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="comentarios"><span data-translate="aditumApp.proveedor.comentarios">Comentarios</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.proveedor.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyId"><span data-translate="aditumApp.proveedor.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -36,6 +37,7 @@
                     <td>{{proveedor.telefono}}</td>
                     <td>{{proveedor.email}}</td>
                     <td>{{proveedor.comentarios}}</td>
+                    <td>{{proveedor.deleted}}</td>
                     <td>
                         <a ui-sref="company-detail({id:proveedor.companyId})">{{proveedor.companyId}}</a>
                     </td>

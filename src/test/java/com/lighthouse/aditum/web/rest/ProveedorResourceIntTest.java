@@ -56,6 +56,9 @@ public class ProveedorResourceIntTest {
     private static final String DEFAULT_COMENTARIOS = "AAAAAAAAAA";
     private static final String UPDATED_COMENTARIOS = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private ProveedorRepository proveedorRepository;
 
@@ -103,7 +106,8 @@ public class ProveedorResourceIntTest {
             .responsable(DEFAULT_RESPONSABLE)
             .telefono(DEFAULT_TELEFONO)
             .email(DEFAULT_EMAIL)
-            .comentarios(DEFAULT_COMENTARIOS);
+            .comentarios(DEFAULT_COMENTARIOS)
+            .deleted(DEFAULT_DELETED);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -138,6 +142,7 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getTelefono()).isEqualTo(DEFAULT_TELEFONO);
         assertThat(testProveedor.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testProveedor.getComentarios()).isEqualTo(DEFAULT_COMENTARIOS);
+        assertThat(testProveedor.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -219,6 +224,25 @@ public class ProveedorResourceIntTest {
 
     @Test
     @Transactional
+    public void checkDeletedIsRequired() throws Exception {
+        int databaseSizeBeforeTest = proveedorRepository.findAll().size();
+        // set the field null
+        proveedor.setDeleted(null);
+
+        // Create the Proveedor, which fails.
+        ProveedorDTO proveedorDTO = proveedorMapper.toDto(proveedor);
+
+        restProveedorMockMvc.perform(post("/api/proveedors")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(proveedorDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<Proveedor> proveedorList = proveedorRepository.findAll();
+        assertThat(proveedorList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllProveedors() throws Exception {
         // Initialize the database
         proveedorRepository.saveAndFlush(proveedor);
@@ -232,7 +256,8 @@ public class ProveedorResourceIntTest {
             .andExpect(jsonPath("$.[*].responsable").value(hasItem(DEFAULT_RESPONSABLE.toString())))
             .andExpect(jsonPath("$.[*].telefono").value(hasItem(DEFAULT_TELEFONO.toString())))
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].comentarios").value(hasItem(DEFAULT_COMENTARIOS.toString())));
+            .andExpect(jsonPath("$.[*].comentarios").value(hasItem(DEFAULT_COMENTARIOS.toString())))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -250,7 +275,8 @@ public class ProveedorResourceIntTest {
             .andExpect(jsonPath("$.responsable").value(DEFAULT_RESPONSABLE.toString()))
             .andExpect(jsonPath("$.telefono").value(DEFAULT_TELEFONO.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
-            .andExpect(jsonPath("$.comentarios").value(DEFAULT_COMENTARIOS.toString()));
+            .andExpect(jsonPath("$.comentarios").value(DEFAULT_COMENTARIOS.toString()))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -275,7 +301,8 @@ public class ProveedorResourceIntTest {
             .responsable(UPDATED_RESPONSABLE)
             .telefono(UPDATED_TELEFONO)
             .email(UPDATED_EMAIL)
-            .comentarios(UPDATED_COMENTARIOS);
+            .comentarios(UPDATED_COMENTARIOS)
+            .deleted(UPDATED_DELETED);
         ProveedorDTO proveedorDTO = proveedorMapper.toDto(updatedProveedor);
 
         restProveedorMockMvc.perform(put("/api/proveedors")
@@ -292,6 +319,7 @@ public class ProveedorResourceIntTest {
         assertThat(testProveedor.getTelefono()).isEqualTo(UPDATED_TELEFONO);
         assertThat(testProveedor.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testProveedor.getComentarios()).isEqualTo(UPDATED_COMENTARIOS);
+        assertThat(testProveedor.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test

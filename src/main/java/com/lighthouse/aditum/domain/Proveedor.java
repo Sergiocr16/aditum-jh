@@ -37,6 +37,10 @@ public class Proveedor implements Serializable {
     @Column(name = "comentarios")
     private String comentarios;
 
+    @NotNull
+    @Column(name = "deleted", nullable = false)
+    private Integer deleted;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -114,6 +118,19 @@ public class Proveedor implements Serializable {
         this.comentarios = comentarios;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Proveedor deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -156,6 +173,7 @@ public class Proveedor implements Serializable {
             ", telefono='" + getTelefono() + "'" +
             ", email='" + getEmail() + "'" +
             ", comentarios='" + getComentarios() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

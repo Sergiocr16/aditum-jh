@@ -27,6 +27,9 @@ public class ProveedorDTO implements Serializable {
 
     private String comentarios;
 
+    @NotNull
+    private Integer deleted;
+
     private Long companyId;
 
     public Long getId() {
@@ -77,6 +80,14 @@ public class ProveedorDTO implements Serializable {
         this.comentarios = comentarios;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -115,6 +126,7 @@ public class ProveedorDTO implements Serializable {
             ", telefono='" + getTelefono() + "'" +
             ", email='" + getEmail() + "'" +
             ", comentarios='" + getComentarios() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

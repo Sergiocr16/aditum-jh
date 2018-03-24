@@ -27,6 +27,7 @@
                 "banco": "Banco",
                 "charge": "Charge",
                 "balance": "Balance",
+                "historicalCharge": "Historical Charge",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
