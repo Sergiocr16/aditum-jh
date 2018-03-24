@@ -28,6 +28,7 @@
                 "charge": "Charge",
                 "balance": "Balance",
                 "historicalCharge": "Historical Charge",
+                "collection": "Collection",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

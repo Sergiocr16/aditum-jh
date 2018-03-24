@@ -26,6 +26,7 @@
     <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_HistoricalCharge.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_Collection.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -45,5 +46,6 @@
     <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_constraints_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_constraints_HistoricalCharge.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
