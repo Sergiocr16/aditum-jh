@@ -26,6 +26,7 @@
                 "proveedor": "Proveedor",
                 "banco": "Banco",
                 "charge": "Charge",
+                "balance": "Balance",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.balance.detail.title">Balance</span> {{vm.balance.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.balance.extraordinary">Extraordinary</span></dt>
+        <dd>
+            <span>{{vm.balance.extraordinary}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.balance.commonAreas">Common Areas</span></dt>
+        <dd>
+            <span>{{vm.balance.commonAreas}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.balance.maintenance">Maintenance</span></dt>
+        <dd>
+            <span>{{vm.balance.maintenance}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.balance.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.balance.houseId})">{{vm.balance.houseHousenumber}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="balance-detail.edit({id:vm.balance.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
