@@ -23,6 +23,14 @@
                 "officerAccount": "Officer Account",
                 "rhAccount": "RH Account",
                 "destinies": "Destinies",
+                "proveedor": "Proveedor",
+                "banco": "Banco",
+                "charge": "Charge",
+                "balance": "Balance",
+                "historicalCharge": "Historical Charge",
+                "collection": "Collection",
+                "payment": "Payment",
+                "egress": "Egress",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

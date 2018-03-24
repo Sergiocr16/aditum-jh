@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="now()" dbms="mysql"/>
+    <property name="autoIncrement" value="true"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added the entity Banco.
+    -->
+    <changeSet id="20180323230211-1" author="jhipster">
+        <createTable tableName="banco">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="beneficiario" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cedula" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cuenta_corriente" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="cuenta_cliente" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="moneda" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="cuenta_contable" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="capital_inicial" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="mostrar_factura" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="fecha_capital_inicial" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+
+            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
+        </createTable>
+        <dropDefaultValue tableName="banco" columnName="fecha_capital_inicial" columnDataType="datetime"/>
+        
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "mensualBalance",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180324010031",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "collection",
+    "pagination": "pager"
+}

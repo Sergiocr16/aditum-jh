@@ -1,0 +1,101 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myProveedorLabel" data-translate="aditumApp.proveedor.home.createOrEditLabel">Create or edit a Proveedor</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.proveedor.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.proveedor.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.empresa" for="field_empresa">Empresa</label>
+            <input type="text" class="form-control" name="empresa" id="field_empresa"
+                    ng-model="vm.proveedor.empresa"
+                    required/>
+            <div ng-show="editForm.empresa.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.empresa.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.responsable" for="field_responsable">Responsable</label>
+            <input type="text" class="form-control" name="responsable" id="field_responsable"
+                    ng-model="vm.proveedor.responsable"
+                    required/>
+            <div ng-show="editForm.responsable.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.responsable.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.telefono" for="field_telefono">Telefono</label>
+            <input type="text" class="form-control" name="telefono" id="field_telefono"
+                    ng-model="vm.proveedor.telefono"
+                    required/>
+            <div ng-show="editForm.telefono.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.telefono.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.email" for="field_email">Email</label>
+            <input type="text" class="form-control" name="email" id="field_email"
+                    ng-model="vm.proveedor.email"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.comentarios" for="field_comentarios">Comentarios</label>
+            <input type="text" class="form-control" name="comentarios" id="field_comentarios"
+                    ng-model="vm.proveedor.comentarios"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.proveedor.deleted" for="field_deleted">Deleted</label>
+            <input type="number" class="form-control" name="deleted" id="field_deleted"
+                    ng-model="vm.proveedor.deleted"
+                    required/>
+            <div ng-show="editForm.deleted.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.deleted.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.deleted.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.proveedor.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.proveedor.companyId" ng-options="company.id as company.id for company in vm.companies"             required>
+            </select>
+        </div>
+        <div ng-show="editForm.company.$invalid">
+            <p class="help-block"
+                ng-show="editForm.company.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

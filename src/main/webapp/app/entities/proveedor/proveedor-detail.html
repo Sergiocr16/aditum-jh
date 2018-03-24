@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.proveedor.detail.title">Proveedor</span> {{vm.proveedor.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.proveedor.empresa">Empresa</span></dt>
+        <dd>
+            <span>{{vm.proveedor.empresa}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.responsable">Responsable</span></dt>
+        <dd>
+            <span>{{vm.proveedor.responsable}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.telefono">Telefono</span></dt>
+        <dd>
+            <span>{{vm.proveedor.telefono}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.email">Email</span></dt>
+        <dd>
+            <span>{{vm.proveedor.email}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.comentarios">Comentarios</span></dt>
+        <dd>
+            <span>{{vm.proveedor.comentarios}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.proveedor.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.proveedor.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.proveedor.companyId})">{{vm.proveedor.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="proveedor-detail.edit({id:vm.proveedor.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

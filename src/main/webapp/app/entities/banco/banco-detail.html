@@ -1,0 +1,59 @@
+
+<div>
+    <h2><span data-translate="aditumApp.banco.detail.title">Banco</span> {{vm.banco.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.banco.beneficiario">Beneficiario</span></dt>
+        <dd>
+            <span>{{vm.banco.beneficiario}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.cedula">Cedula</span></dt>
+        <dd>
+            <span>{{vm.banco.cedula}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.cuentaCorriente">Cuenta Corriente</span></dt>
+        <dd>
+            <span>{{vm.banco.cuentaCorriente}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.cuentaCliente">Cuenta Cliente</span></dt>
+        <dd>
+            <span>{{vm.banco.cuentaCliente}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.moneda">Moneda</span></dt>
+        <dd>
+            <span>{{vm.banco.moneda}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.cuentaContable">Cuenta Contable</span></dt>
+        <dd>
+            <span>{{vm.banco.cuentaContable}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.capitalInicial">Capital Inicial</span></dt>
+        <dd>
+            <span>{{vm.banco.capitalInicial}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.mostrarFactura">Mostrar Factura</span></dt>
+        <dd>
+            <span>{{vm.banco.mostrarFactura}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.fechaCapitalInicial">Fecha Capital Inicial</span></dt>
+        <dd>
+            <span>{{vm.banco.fechaCapitalInicial | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.banco.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.banco.companyId})">{{vm.banco.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="banco-detail.edit({id:vm.banco.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
