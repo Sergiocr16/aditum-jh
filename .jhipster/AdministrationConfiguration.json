@@ -1,0 +1,22 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "squareMetersPrice",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180328213553",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "administration_configuration",
+    "pagination": "pager"
+}

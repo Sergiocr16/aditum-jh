@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <!--
-        Added the constraints for entity House.
+        Added the constraints for entity AdministrationConfiguration.
     -->
-    <changeSet id="20170228214136-2" author="jhipster">
+    <changeSet id="20180328213553-2" author="jhipster">
         
         <addForeignKeyConstraint baseColumnNames="company_id"
-                                 baseTableName="house"
-                                 constraintName="fk_house_company_id"
+                                 baseTableName="administration_configuration"
+                                 constraintName="fk_administration_configuration_company_id"
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 
