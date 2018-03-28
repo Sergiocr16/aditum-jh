@@ -40,6 +40,10 @@ public class EgressDTO implements Serializable {
 
     private String proveedor;
 
+    private ZonedDateTime paymentDate;
+
+    private ZonedDateTime expirationDate;
+
     private Long companyId;
 
     public Long getId() {
@@ -130,6 +134,22 @@ public class EgressDTO implements Serializable {
         this.proveedor = proveedor;
     }
 
+    public ZonedDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public ZonedDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(ZonedDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -173,6 +193,8 @@ public class EgressDTO implements Serializable {
             ", reference='" + getReference() + "'" +
             ", comments='" + getComments() + "'" +
             ", proveedor='" + getProveedor() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
+            ", expirationDate='" + getExpirationDate() + "'" +
             "}";
     }
 }

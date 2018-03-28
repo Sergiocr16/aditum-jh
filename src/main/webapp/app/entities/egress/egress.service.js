@@ -17,6 +17,8 @@
                     if (data) {
                         data = angular.fromJson(data);
                         data.date = DateUtils.convertDateTimeFromServer(data.date);
+                        data.paymentDate = DateUtils.convertDateTimeFromServer(data.paymentDate);
+                        data.expirationDate = DateUtils.convertDateTimeFromServer(data.expirationDate);
                     }
                     return data;
                 }

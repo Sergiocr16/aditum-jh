@@ -292,6 +292,38 @@
                     <i class="fa fa-life-ring" aria-hidden="true"></i> Soporte
                 </a>
             </li>
+            <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
+                    <span class="title">Contabilidad</span>
+                    <span class="arrow "></span>
+                    <span class="selected "></span>
+                </a>
+
+
+                <ul class="sub-menu">
+                    <li ui-sref="egress" ng-class="{ 'active' : active === 'residents' }">
+                        <a href="">
+                            <i class="fa fa-users" aria-hidden="true"></i> Ingresos
+                        </a>
+                    </li>
+                    <li ui-sref="egress" ng-class="{ 'active' : active === 'houses' }">
+                        <a href="">
+                            <i class="fa fa-home fa-lg" aria-hidden="true"></i> Egresos
+                        </a>
+                    </li>
+                    <li ui-sref="vehicule" ng-class="{ 'active' : active === 'vehicules'}">
+                        <a href="">
+                            <i class="fa fa-car " aria-hidden="true"></i> Vehículos
+                        </a>
+                    </li>
+                    <li ui-sref="visitant-admin" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="fa fa-user" aria-hidden="true"></i> Visitantes
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
     </div>

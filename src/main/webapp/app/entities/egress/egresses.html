@@ -29,6 +29,8 @@
                     <th jh-sort-by="reference"><span data-translate="aditumApp.egress.reference">Reference</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="comments"><span data-translate="aditumApp.egress.comments">Comments</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="proveedor"><span data-translate="aditumApp.egress.proveedor">Proveedor</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="paymentDate"><span data-translate="aditumApp.egress.paymentDate">Payment Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="expirationDate"><span data-translate="aditumApp.egress.expirationDate">Expiration Date</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyId"><span data-translate="aditumApp.egress.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -46,6 +48,8 @@
                     <td>{{egress.reference}}</td>
                     <td>{{egress.comments}}</td>
                     <td>{{egress.proveedor}}</td>
+                    <td>{{egress.paymentDate | date:'medium'}}</td>
+                    <td>{{egress.expirationDate | date:'medium'}}</td>
                     <td>
                         <a ui-sref="company-detail({id:egress.companyId})">{{egress.companyId}}</a>
                     </td>

@@ -25,6 +25,8 @@
             "reference": "Reference",
             "comments": "Comments",
             "proveedor": "Proveedor",
+            "paymentDate": "Payment Date",
+            "expirationDate": "Expiration Date",
             "company": "Company"
         }
     }

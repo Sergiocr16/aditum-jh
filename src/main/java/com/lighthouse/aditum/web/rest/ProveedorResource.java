@@ -90,10 +90,10 @@ public class ProveedorResource {
      */
     @GetMapping("/proveedors")
     @Timed
-    public ResponseEntity<List<ProveedorDTO>> getAllProveedors(@ApiParam Pageable pageable)
+    public ResponseEntity<List<ProveedorDTO>> getAllProveedors(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Proveedors");
-        Page<ProveedorDTO> page = proveedorService.findAll(pageable);
+        Page<ProveedorDTO> page = proveedorService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/proveedors");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

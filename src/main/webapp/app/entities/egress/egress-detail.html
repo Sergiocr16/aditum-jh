@@ -44,6 +44,14 @@
         <dd>
             <span>{{vm.egress.proveedor}}</span>
         </dd>
+        <dt><span data-translate="aditumApp.egress.paymentDate">Payment Date</span></dt>
+        <dd>
+            <span>{{vm.egress.paymentDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.egress.expirationDate">Expiration Date</span></dt>
+        <dd>
+            <span>{{vm.egress.expirationDate | date:'medium'}}</span>
+        </dd>
         <dt><span data-translate="aditumApp.egress.company">Company</span></dt>
         <dd>
             <a ui-sref="company-detail({id:vm.egress.companyId})">{{vm.egress.companyId}}</a>

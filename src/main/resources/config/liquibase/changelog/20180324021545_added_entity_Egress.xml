@@ -62,6 +62,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="payment_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="expiration_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -69,6 +77,8 @@
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="egress" columnName="jhi_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="egress" columnName="payment_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="egress" columnName="expiration_date" columnDataType="datetime"/>
         
     </changeSet>
 </databaseChangeLog>
