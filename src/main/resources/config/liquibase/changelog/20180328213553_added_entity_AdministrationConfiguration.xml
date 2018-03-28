@@ -15,27 +15,15 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity CompanyConfiguration.
+        Added the entity AdministrationConfiguration.
     -->
-    <changeSet id="20170228214136-1" author="jhipster">
-        <createTable tableName="company_configuration">
+    <changeSet id="20180328213553-1" author="jhipster">
+        <createTable tableName="administration_configuration">
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="quantityhouses" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="quantityadmins" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="quantityaccessdoor" type="integer">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="has_contability" type="integer">
-                <constraints nullable="false" />
+            <column name="square_meters_price" type="varchar(255)">
+                <constraints nullable="true" />
             </column>
 
             <column name="company_id" type="bigint">

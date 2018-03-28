@@ -1,0 +1,22 @@
+{
+    "aditumApp": {
+        "administrationConfiguration" : {
+            "home": {
+                "title": "Administration Configurations",
+                "createLabel": "Crear nuevo Administration Configuration",
+                "createOrEditLabel": "Crear o editar Administration Configuration"
+            },
+            "created": "Un nuevo Administration Configuration ha sido creado con el identificador {{ param }}",
+            "updated": "Un Administration Configuration ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Administration Configuration ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Administration Configuration {{ id }}?"
+            },
+            "detail": {
+                "title": "Administration Configuration"
+            },
+            "squareMetersPrice": "Square Meters Price",
+            "company": "Company"
+        }
+    }
+}

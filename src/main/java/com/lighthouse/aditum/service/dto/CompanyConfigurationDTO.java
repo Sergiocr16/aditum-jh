@@ -23,6 +23,9 @@ public class CompanyConfigurationDTO implements Serializable {
     @NotNull
     private Integer quantityaccessdoor;
 
+    @NotNull
+    private Integer hasContability;
+
     private Long companyId;
 
     public Long getId() {
@@ -32,6 +35,7 @@ public class CompanyConfigurationDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Integer getQuantityhouses() {
         return quantityhouses;
     }
@@ -39,6 +43,7 @@ public class CompanyConfigurationDTO implements Serializable {
     public void setQuantityhouses(Integer quantityhouses) {
         this.quantityhouses = quantityhouses;
     }
+
     public Integer getQuantityadmins() {
         return quantityadmins;
     }
@@ -46,12 +51,21 @@ public class CompanyConfigurationDTO implements Serializable {
     public void setQuantityadmins(Integer quantityadmins) {
         this.quantityadmins = quantityadmins;
     }
+
     public Integer getQuantityaccessdoor() {
         return quantityaccessdoor;
     }
 
     public void setQuantityaccessdoor(Integer quantityaccessdoor) {
         this.quantityaccessdoor = quantityaccessdoor;
+    }
+
+    public Integer getHasContability() {
+        return hasContability;
+    }
+
+    public void setHasContability(Integer hasContability) {
+        this.hasContability = hasContability;
     }
 
     public Long getCompanyId() {
@@ -72,24 +86,25 @@ public class CompanyConfigurationDTO implements Serializable {
         }
 
         CompanyConfigurationDTO companyConfigurationDTO = (CompanyConfigurationDTO) o;
-
-        if ( ! Objects.equals(id, companyConfigurationDTO.id)) { return false; }
-
-        return true;
+        if(companyConfigurationDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), companyConfigurationDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CompanyConfigurationDTO{" +
-            "id=" + id +
-            ", quantityhouses='" + quantityhouses + "'" +
-            ", quantityadmins='" + quantityadmins + "'" +
-            ", quantityaccessdoor='" + quantityaccessdoor + "'" +
-            '}';
+            "id=" + getId() +
+            ", quantityhouses='" + getQuantityhouses() + "'" +
+            ", quantityadmins='" + getQuantityadmins() + "'" +
+            ", quantityaccessdoor='" + getQuantityaccessdoor() + "'" +
+            ", hasContability='" + getHasContability() + "'" +
+            "}";
     }
 }
