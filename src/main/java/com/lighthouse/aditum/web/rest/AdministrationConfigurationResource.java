@@ -104,11 +104,11 @@ public class AdministrationConfigurationResource {
      * @param id the id of the administrationConfigurationDTO to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the administrationConfigurationDTO, or with status 404 (Not Found)
      */
-    @GetMapping("/administration-configurations/{id}")
+    @GetMapping("/administration-configurationsByCompanyId/{companyId}")
     @Timed
-    public ResponseEntity<AdministrationConfigurationDTO> getAdministrationConfiguration(@PathVariable Long id) {
-        log.debug("REST request to get AdministrationConfiguration : {}", id);
-        AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationService.findOne(id);
+    public ResponseEntity<AdministrationConfigurationDTO> getAdministrationConfiguration(@PathVariable Long companyId) {
+        log.debug("REST request to get AdministrationConfiguration : {}", companyId);
+        AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationService.findOneByCompanyId(companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(administrationConfigurationDTO));
     }
 

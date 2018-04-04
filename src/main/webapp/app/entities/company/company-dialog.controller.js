@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CompanyDialogController', CompanyDialogController);
 
-    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
+    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company','AdministrationConfiguration'];
 
-    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
+    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration) {
         var vm = this;
 
         vm.company = entity;
@@ -68,6 +68,7 @@
         function onSaveCompanySuccess (result) {
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
+            AdministrationConfiguration.save({squareMetersPrice:0, companyId:result.id});
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:companyUpdate', result);

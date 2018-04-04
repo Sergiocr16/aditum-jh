@@ -51,6 +51,90 @@
                 }]
             }
         })
+        .state('chargeMenu', {
+            parent: 'entity',
+            url: '/generar-cuotas',
+            data: {
+                authorities: ['ROLE_MANAGER'],
+                pageTitle: 'aditumApp.charge.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/charge/charge-menu.html',
+                    controller: 'ChargeMenuController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('charge');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+        .state('mensualCharge', {
+            parent: 'entity',
+            url: '/generar-cuota-mensual',
+            data: {
+                authorities: ['ROLE_MANAGER'],
+                pageTitle: 'aditumApp.charge.home.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/charge/mensual-charge.html',
+                    controller: 'MensualChargeController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('charge');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
         .state('charge-detail', {
             parent: 'charge',
             url: '/charge/{id}',

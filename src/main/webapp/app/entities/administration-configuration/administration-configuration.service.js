@@ -11,14 +11,14 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
-            'get': {
-                method: 'GET',
-                transformResponse: function (data) {
-                    if (data) {
-                        data = angular.fromJson(data);
-                    }
-                    return data;
-                }
+            'get': { method: 'GET',
+            url:'api/administration-configurationsByCompanyId/:companyId',
+            transformResponse: function (data) {
+            if (data) {
+            data = angular.fromJson(data);
+            }
+            return data;
+            }
             },
             'update': { method:'PUT' }
         });

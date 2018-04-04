@@ -103,6 +103,7 @@ public class BalanceDTO implements Serializable {
             ", extraordinary='" + getExtraordinary() + "'" +
             ", commonAreas='" + getCommonAreas() + "'" +
             ", maintenance='" + getMaintenance() + "'" +
+            ", houseId='" + getHouseId() + "'" +
             "}";
     }
 }
