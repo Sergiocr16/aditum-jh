@@ -23,7 +23,17 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'findBetweenDatesByCompany':{
+                 method: 'GET',
+                 url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId',
+                 isArray: true,
+                 params:{
+                      initial_time:'@initial_time',
+                      final_time: '@final_time',
+                      companyId: '@companyId',
+            }
+            }
         });
     }
 })();

@@ -61,30 +61,31 @@
                                         <option value="">Seleccione una Categoría</option>
                                         <optgroup label="GASTOS FIJOS">
 
-                                            <option value="2">Administración</option>
-                                            <option value="3">Agua potable</option>
-                                            <option value="4">Energía eléctrica</option>
-                                            <option value="4">Jardinería</option>
-                                            <option value="4">Sueldos y salarios</option>
-                                            <option value="4">Seguridad</option>
+                                            <option value="Administración">Administración</option>
+                                            <option value="Agua potable">Agua potable</option>
+                                            <option value="Energía eléctrica">Energía eléctrica</option>
+                                            <option value="Jardinería">Jardinería</option>
+                                            <option value="Sueldos y salarios">Sueldos y salarios</option>
+                                            <option value="Seguridad">Seguridad</option>
                                         </optgroup>
                                         <optgroup label="GASTOS VARIABLES">
-                                            <option value="5">Eventos</option>
-                                            <option value="6">Gastos legales</option>
-                                            <option value="7">Impuestos y comisiones</option>
-                                            <option value="7">Mantenimiento áreas comunes</option>
-                                            <option value="7">Papelería y copias</option>
+                                            <option value="Eventos">Eventos</option>
+                                            <option value="Gastos legales">Gastos legales</option>
+                                            <option value="Impuestos y comisiones">Impuestos y comisiones</option>
+                                            <option value="Mantenimiento áreas comunes">Mantenimiento áreas comunes</option>
+                                            <option value="Papelería y copias">Papelería y copias</option>
                                         </optgroup>
                                     </select>
                                 </div>
                             </div>
+
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
                                 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
                                     <span class="font-13 bold control-label" >Fecha contable *</span>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input ng-model="vm.egress.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.date"
-                                           type="text" class="form-control letters gray-font  dating"  required>
+                                    <input ng-model="vm.egress.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.date"
+                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
 
                                 </div>
                             </div>
@@ -93,8 +94,8 @@
                                     <span class="font-13 bold control-label">Fecha vencimiento * </span>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                    <input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"
-                                           type="text" class="form-control letters gray-font  dating"  required>
+                                    <input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"
+                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
 
                                 </div>
                             </div>
@@ -108,16 +109,6 @@
                                            required/>
                                 </div>
                             </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group hidden-xs">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label" >Comentarios</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                         <textarea rows="3" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_comments">
-                                         </textarea>
-
-                                </div>
-                            </div>
 
                         </div>
 
@@ -126,33 +117,6 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-xs">
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                    <span class="font-13 bold control-label" >Método de pago *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <select type="text" class="form-control" id="field_paymentMethod" name="paymentMethod" ng-model="vm.egress.paymentMethod" required>
-                                        <option value="">Seleccione un método</option>
-                                        <option value="Efectivo">Efectivo</option>
-                                        <option value="Cheque">Cheque</option>
-                                        <option value="Transferencia">Transferencia</option>
-                                        <option value="Tarjeta">Tarjeta</option>
-                                        <option value="Deposito en banco">Deposito en banco</option>
-                                    </select>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                    <span class="font-13 bold" >Cuenta *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-
-                                    <select class="form-control" id="field_account" name="company" ng-model="vm.egress.account" ng-options="banco.id as banco.beneficiario for banco in vm.bancos"             required>
-                                        <option value="">Seleccione una cuenta</option>
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
                                 <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
                                     <span class="font-13 bold" ># Factura</span>
@@ -181,50 +145,34 @@
                                     <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
                                         <span class="font-13 bold control-label " >Total * </span>
                                     </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group" >
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
                                             <input type="text" class="form-control numbers" name="total" id="field_total"
-                                                   ng-model="vm.egress.total" required
+                                                   ng-model="vm.egress.total" format="currency" required
                                             />
                                         </div>
 
                                     </div>
 
                             </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                    <span class="font-13 bold control-label" >Comentarios</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                         <textarea rows="4" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_comments">
+                                         </textarea>
+
+                                </div>
+                            </div>
+
                         </div>
 
 
                         <!--ESTOS CAMPOS SE MUESTRAN SOLO EN XS-->
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
 
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                            <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                <span class="font-13 bold control-label" >Método de pago *</span>
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                <select type="text" class="form-control" id="field_paymentMethodxs" name="paymentMethod" ng-model="vm.egress.paymentMethod" required>
-                                    <option value="">Seleccione un método</option>
-                                    <option value="Efectivo">Efectivo</option>
-                                    <option value="Cheque">Cheque</option>
-                                    <option value="Transferencia">Transferencia</option>
-                                    <option value="Tarjeta">Tarjeta</option>
-                                    <option value="Deposito en banco">Deposito en banco</option>
-                                </select>
-
-                            </div>
-                        </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                <span class="font-13 bold" >Cuenta *</span>
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-
-                                <select class="form-control" id="field_accountxs" name="company" ng-model="vm.egress.account" ng-options="banco.id as banco.beneficiario for banco in vm.bancos"             required>
-                                    <option value="">Seleccione una cuenta</option>
-                                </select>
-                            </div>
-                        </div>
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
                                 <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
                                 <span class="font-13 bold" ># Factura</span>
@@ -253,7 +201,7 @@
                                 <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
                                     <span class="font-13 bold control-label " >Total * </span>
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group" >
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
                                     <div class="input-group form-group">
                                         <span class="input-group-addon">₡</span>
                                         <input type="text" class="form-control numbers" name="total" id="field_totalxs"
@@ -276,19 +224,6 @@
                             </div>
                     </div>
 
-                        <!--<div class="form-group">-->
-                            <!--<label class="control-label" data-translate="aditumApp.egress.date" for="field_date">Date</label>-->
-                            <!--<div class="input-group">-->
-                                <!--<input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.egress.date" is-open="vm.datePickerOpenStatus.date"-->
-                                       <!--required/>-->
-                                <!--<span class="input-group-btn">-->
-                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>-->
-                    <!--</span>-->
-                            <!--</div>-->
-
-                        <!--</div>-->
-
-
 
 
 
@@ -300,7 +235,7 @@
                             <h3 class="text-right">
 
                                     <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button type="button"  ui-sref="house()" class="btn red default">Cancelar</button>
+                                    <button type="button"  ui-sref="egress()" class="btn red default">Cancelar</button>
 
 
                                     <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->

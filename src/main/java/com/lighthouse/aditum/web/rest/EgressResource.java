@@ -111,7 +111,18 @@ public class EgressResource {
         EgressDTO egressDTO = egressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressDTO));
     }
-
+    @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompany(initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * DELETE  /egresses/:id : delete the "id" egress.
      *
