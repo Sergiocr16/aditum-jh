@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge'];
+    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge','CommonMethods'];
 
-    function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge) {
+    function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
         var vm = this;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -19,12 +19,45 @@
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
-        moment.locale("es")
+        moment.locale("es");
+         vm.validate = function(cuota){
+         var s = cuota.ammount;
+             var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","?","/","-","+","@","#","$","%","^","&","*","(",")","-","_","=","|"]
+
+              var invalido = 0;
+              angular.forEach(caracteres,function(val,index){
+              if (s!=undefined){
+               for(var i=0;i<s.length;i++){
+               if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+
+               invalido++;
+               }
+               }
+               }
+              })
+              if(invalido==0){
+              cuota.valida = true;
+              }else{
+               cuota.valida = false
+              }
+             }
         setTimeout(function() {
             loadAll();
         }, 1500)
         vm.verificarCargos = function() {
-            vm.verificando = true;
+        var invalid = 0;
+        angular.forEach(vm.houses, function(house, key) {
+            angular.forEach(house.cuotas, function(cuota, key) {
+                if (cuota.valida == false) {
+                invalid++;
+                }
+            })
+        })
+        if(invalid==0){
+         vm.verificando = true;
+        }else{
+           toastr["error"]("Porfavor verifica las cuotas ingresadas")
+        }
         }
         vm.cancelar = function() {
             vm.verificando = false;
@@ -48,7 +81,8 @@
                     if (value.due == undefined && vm.cuotaFija == true) {
                         value.cuotas.push({
                             ammount: 0,
-                            globalConcept: vm.globalConceptNumber
+                            globalConcept: vm.globalConceptNumber,
+                            valida: true
                         })
 
                     } else {
@@ -109,6 +143,7 @@
           cuota.deleted = 0;
           return cuota;
         }
+
         vm.createDues = function() {
             var houseNumber = 0;
 
@@ -117,7 +152,7 @@
                 if (cuota.ammount != 0) {
                 console.log(buildCharge(cuota,vm.houses[houseNumber]))
                        Charge.save(buildCharge(cuota,vm.houses[houseNumber]),function(result){
-                           console.log("GUARDADO")
+
                        })
                 }
                 if (vm.houses[houseNumber].cuotas.length - 1 > cuotaNumber) {

@@ -26,9 +26,10 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="tableData">
-    <div class="portlet light bordered col-md-12 col-lg-12">
-
+<div class="display-none" id="tableData">
+    <div class="row">
+        <div class="col-md-12">
+    <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
                     <div class="portlet-title">
                         <div class="caption font-green-haze">
                             <i class="fa fa-money font-green-haze"></i>
@@ -39,7 +40,7 @@
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
                             <form ng-submit="vm.verificarCargos()">
                             <h4><b>1. Seleccione si su cuota es fija o por Metro cuadrado.</b></h4>
-                        <p>Si usted aún no configura sus cuotas haga <a href="">click aquí</a>. Si usted necesita configurar la cuota por metro cuadrado haga <a href="">click aquí.</a></p>
+                        <p>Si usted aún no configura sus cuotas haga <a ui-sref="configureCharges">click aquí</a>. Si usted necesita configurar la cuota por metro cuadrado haga <a href="">click aquí.</a></p>
                         <label class="col-md-2 control-label"><b>Tipo de cuota:</b></label>
                         <div class="col-md-7 form-group form-md-radios">
                             <div class="md-radio-inline">
@@ -65,9 +66,13 @@
                         <h4 class="col-md-3" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>₡{{vm.adminConfig.squareMetersPrice | currency : "" : 0}}</b></h4>
 
                     <div class="col-md-12">
-                        <h4><b>2. Ingrese el concepto y el mes que va a cobrar.</b></h4>
-                        <p>En este proceso puede modificar lo que se le va a cobrar a cada condómino.</p>
+                        <div class="col-md-10 col-lg-10 no-padding">
+                        <h4><b>2. Ingrese el concepto y la fecha de los cuotas que va a cobrar.</b></h4>
+                        <p>En este proceso puede modificar lo que se le va a cobrar a cada condómino. Así mismo puede agregar más conceptos para cobrar</p>
+                        </div>
+                        <div class="col-md-2 col-lg-2">
                     <button ng-click="vm.addNewDue()" class="btn btn-primary">Agregar columna</button>
+                        </div>
                     </div>
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -101,17 +106,16 @@
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency : "" : 0}}</td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}</td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-repeat="cuota in house.cuotas" class="text-center">
-                                        <input style="width:150px" ng-disabled="house.isdesocupated == 1" class="form-control letters gray-font text-center dating"type="text" fcsa-number  ng-model="cuota.ammount">
+                                        <input style="width:150px" ng-disabled="house.isdesocupated == 1" ng-class="{redBorder: cuota.valida==false}" ng-change="vm.validate(cuota)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="cuota.ammount" required>
                                     </td>
                                     <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-danger" aria-hidden="false">No</span></td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Sí</span></td>
-
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                            <button class="btn btn-primary col-md-12" type="submit">Verificar cargos</button>
+                            <button class="btn btn-primary col-md-12 col-xs-12 col-sm-12 col-lg-12" type="submit">Verificar cargos</button>
                             </form>
                         </div>
 
@@ -141,9 +145,13 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="house in vm.houses | orderBy:'housenumber'" >
-                                            <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}" ><span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span> <span  ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span></td>
-                                            <td ng-class="{noCharge:cuota.ammount == 0}" ng-repeat="cuota in house.cuotas" class="text-center" style="width:150px" popover="{{ (cuota.ammount == 0) ? 'Esta cuota no será generada' : '' }}">
-                                                ₡{{cuota.ammount | currency : "" : 0}}
+                                            <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}" >
+                                                <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
+                                                <span  ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span>
+                                            </td>
+                                            <td ng-class="{noCharge:cuota.ammount == 0}" ng-repeat="cuota in house.cuotas" class="text-center" style="width:150px" >
+                                                <span ng-show="cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover direction="left" template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>" mode="mouseover">    ₡{{cuota.ammount | currency : "" : 0}}</span>
+                                                <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >    ₡{{cuota.ammount | currency : "" : 0}}</span>
                                             </td>
                                         </tr>
                                         </tbody>
@@ -158,12 +166,8 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
-
-
+    </div></div>
     </div>
 </div>
-

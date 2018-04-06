@@ -95,10 +95,10 @@
         })
         .state('mensualCharge', {
             parent: 'entity',
-            url: '/generar-cuota-mensual',
+            url: '/generate/charges/maintenance',
             data: {
                 authorities: ['ROLE_MANAGER'],
-                pageTitle: 'aditumApp.charge.home.title'
+                pageTitle: 'Aditum'
             },
             views: {
                 'content@': {
@@ -134,6 +134,68 @@
                     return $translate.refresh();
                 }]
             }
+        })
+        .state('configureCharges', {
+            parent: 'entity',
+            url: '/configure/charges',
+            data: {
+                authorities: ['ROLE_MANAGER'],
+                pageTitle: 'Aditum'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/charge/configure-charges.html',
+                    controller: 'ConfigureChargesController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('charge');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+        .state('configureCharges.global', {
+            parent: 'configureCharges',
+            url: '/global',
+            data: {
+                authorities: ['ROLE_MANAGER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/charge/configure-charge-global.html',
+                    controller: 'ConfigureChargeGlobalController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'md',
+                }).result.then(function() {
+                    $state.go('^', {}, { reload: true });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
         })
         .state('charge-detail', {
             parent: 'charge',
