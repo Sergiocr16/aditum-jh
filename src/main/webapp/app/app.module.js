@@ -20,7 +20,9 @@
             'cloudinary',
             'pdf',
             'firebase',
-            'ngNotify'
+            'ngNotify',
+            'angular-popover',
+            'ngPopover'
         ])
         .run(run);
 

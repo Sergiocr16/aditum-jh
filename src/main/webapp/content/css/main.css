@@ -29,6 +29,14 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+
+.tdDisabled{
+background:#d6d6d6;
+}
+.noCharge{
+background:#fcff70;
+}
+
 #chartdiv {
 	width		: 100%;
 	height		: 500px;
@@ -613,3 +621,303 @@ ui bootstrap tweaks
 
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+.angular-popover-container {
+	position: absolute;
+	width: 0;
+	height: 0;
+	left: 0
+}
+
+.angular-popover {
+	position: absolute;
+	box-shadow: 0 0 7px 1px rgba(0, 0, 0, .2);
+	background-color: #fff
+}
+
+.popover-floating-animation-top {
+	animation: floatingtop 3s .5s infinite;
+	-webkit-animation: floatingtop 3s .5s infinite
+}
+
+.popover-floating-animation-bottom {
+	animation: floatingbottom 3s .5s infinite;
+	-webkit-animation: floatingbottom 3s .5s infinite
+}
+
+.popover-floating-animation-left {
+	animation: floatingleft 3s .5s infinite;
+	-webkit-animation: floatingleft 3s .5s infinite
+}
+
+.popover-floating-animation-right {
+	animation: floatingright 3s .5s infinite;
+	-webkit-animation: floatingright 3s .5s infinite
+}
+
+@-webkit-keyframes floatingtop {
+	from,
+	to {
+		transform: translate(0, 0);
+		-webkit-transform: translate(0, 0)
+	}
+	60% {
+		transform: translate(0, -8px);
+		-webkit-transform: translate(0, -8px)
+	}
+}
+
+@-webkit-keyframes floatingbottom {
+	from,
+	to {
+		transform: translate(0, 0);
+		-webkit-transform: translate(0, 0)
+	}
+	60% {
+		transform: translate(0, 8px);
+		-webkit-transform: translate(0, 8px)
+	}
+}
+
+@-webkit-keyframes floatingright {
+	from,
+	to {
+		transform: translate(0, 0);
+		-webkit-transform: translate(0, 0)
+	}
+	60% {
+		transform: translate(8px, 0);
+		-webkit-transform: translate(8px, 0)
+	}
+}
+
+@-webkit-keyframes floatingleft {
+	from,
+	to {
+		transform: translate(0, 0);
+		-webkit-transform: translate(0, 0)
+	}
+	60% {
+		transform: translate(-8px, 0);
+		-webkit-transform: translate(-8px, 0)
+	}
+}
+
+.hide-popover-element {
+	display: none
+}
+
+.angular-popover-triangle {
+	width: 30px;
+	height: 30px;
+	position: relative;
+	overflow: hidden;
+	box-shadow: 0 6px 10px -17px rgba(0, 0, 0, .2)
+}
+
+.angular-popover-triangle:after {
+	content: "";
+	position: absolute;
+	width: 15px;
+	height: 15px;
+	background: #fff;
+	transform: rotate(45deg);
+	box-shadow: 0 0 7px 1px rgba(0, 0, 0, .2)
+}
+
+.angular-popover-triangle-top:after {
+	top: -8.5px;
+	left: 7px
+}
+
+.angular-popover-triangle-bottom:after {
+	top: 23.5px;
+	left: 7px
+}
+
+.angular-popover-triangle-right::after {
+	top: 7.5px;
+	left: 23.5px
+}
+
+.angular-popover-triangle-left::after {
+	top: 7.5px;
+	left: -8.5px
+}
+
+.popover-aside {
+	position: relative;
+}
+
+.ng-popover {
+  border: 1px solid #eaeaea;
+  position: relative;
+  border-radius: 4px;
+  min-width: 50px;
+  min-height: 20px;
+  background: #fff;
+  z-index: 10;
+}
+.ng-popover .ng-popover-wrapper {
+  position: relative;
+}
+.ng-popover .ng-popover-wrapper.bottom::before {
+  content: ' ';
+  position: absolute;
+  top: -9px;
+  left: 9px;
+  border-bottom: 9px solid #fff;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  z-index: 2;
+}
+.ng-popover .ng-popover-wrapper.bottom::after {
+  content: ' ';
+  position: absolute;
+  top: -10px;
+  left: 9px;
+  border-bottom: 9px solid #eaeaea;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  z-index: 1;
+}
+.ng-popover .ng-popover-wrapper.top::before {
+  content: ' ';
+  position: absolute;
+  bottom: -7px;
+  left: 12px;
+  border-top: 7px solid #fff;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  z-index: 2;
+}
+.ng-popover .ng-popover-wrapper.top::after {
+  content: ' ';
+  position: absolute;
+  bottom: -9px;
+  left: 10px;
+  border-top: 9px solid #eaeaea;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  z-index: 1;
+}
+.ng-popover .ng-popover-wrapper.left::before {
+  content: ' ';
+  position: absolute;
+  right: -8px;
+  top: 5px;
+  border-left: 8px solid #fff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  z-index: 2;
+}
+.ng-popover .ng-popover-wrapper.left::after {
+  content: ' ';
+  position: absolute;
+  right: -9px;
+  top: 4px;
+  border-left: 9px solid #eaeaea;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  z-index: 1;
+}
+.ng-popover .ng-popover-wrapper.right::before {
+  content: ' ';
+  position: absolute;
+  top: 5px;
+  left: -8px;
+  border-right: 8px solid #fff;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  z-index: 2;
+}
+.ng-popover .ng-popover-wrapper.right::after {
+  content: ' ';
+  position: absolute;
+  top: 4px;
+  left: -9px;
+  border-right: 9px solid #eaeaea;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  z-index: 1;
+}
+.ng-popover .ng-popover-content {
+  overflow: auto;
+}
+.ng-popover.hide {
+  display: none;
+}
+.custom-popover {
+  max-width: 400px;
+}
+.custom-popover .popover-header {
+  background: #fafafa;
+  border-bottom: 1px solid #eaeaea;
+}
+.custom-popover .popover-header .popover-header-content {
+  max-width: 75rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.custom-popover .popover-header .title {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 20px;
+  font-size: 17px;
+  font-weight: 600;
+  width: 18%;
+  float: left;
+}
+.custom-popover .popover-header .options {
+  border-left: 1px solid #eaeaea;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  float: right;
+  width: 65%;
+  text-align: left;
+  padding-left: 30px;
+}
+.custom-popover .popover-header .option {
+  display: inline-block;
+  margin: 0 5px;
+}
+.custom-popover .popover-header .option input {
+  margin-bottom: 0;
+}
+.custom-popover .popover-header .option label {
+  vertical-align: 1px;
+}
+.custom-popover .popover-body {
+  min-height: 100px;
+  padding: 40px 20px;
+  text-align: center;
+  font-weight: 300;
+  line-height: 34px;
+  font-size: 24px;
+}
+.custom-popover .popover-body span {
+  font-weight: 400;
+}
+.custom-popover .popover-footer {
+  text-align: right;
+  padding: 40px 30px;
+}
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+.clearfix::before, .clearfix::after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */
+}
+.clearfix::after {
+  clear: both;
+}
+.heading-popover, .normal-text-popover {
+  color: #999;
+  padding: 20px;
+  min-width: 200px;
+  max-width: 300px;
+}
+

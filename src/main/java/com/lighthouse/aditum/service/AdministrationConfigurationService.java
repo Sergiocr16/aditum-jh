@@ -63,9 +63,9 @@ public class AdministrationConfigurationService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public AdministrationConfigurationDTO findOne(Long id) {
+    public AdministrationConfigurationDTO findOneByCompanyId(Long id) {
         log.debug("Request to get AdministrationConfiguration : {}", id);
-        AdministrationConfiguration administrationConfiguration = administrationConfigurationRepository.findOne(id);
+        AdministrationConfiguration administrationConfiguration = administrationConfigurationRepository.findByCompanyId(id).get(0);
         return administrationConfigurationMapper.toDto(administrationConfiguration);
     }
 

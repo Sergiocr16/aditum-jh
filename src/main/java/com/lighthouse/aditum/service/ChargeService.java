@@ -1,7 +1,10 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Balance;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.repository.ChargeRepository;
+import com.lighthouse.aditum.repository.HouseRepository;
+import com.lighthouse.aditum.service.dto.BalanceDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import org.slf4j.Logger;
@@ -22,12 +25,13 @@ public class ChargeService {
     private final Logger log = LoggerFactory.getLogger(ChargeService.class);
 
     private final ChargeRepository chargeRepository;
-
+    private final BalanceService balanceService;
     private final ChargeMapper chargeMapper;
 
-    public ChargeService(ChargeRepository chargeRepository, ChargeMapper chargeMapper) {
+    public ChargeService(ChargeRepository chargeRepository, ChargeMapper chargeMapper,BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
+        this.balanceService = balanceService;
     }
 
     /**
@@ -39,7 +43,12 @@ public class ChargeService {
     public ChargeDTO save(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = chargeMapper.toEntity(chargeDTO);
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge = chargeRepository.save(charge);
+        BalanceDTO balanceDTO= balanceService.findOneByHouse(chargeDTO.getHouseId());
+        int newBalance = Integer.parseInt(balanceDTO.getMaintenance())-Integer.parseInt(chargeDTO.getAmmount());
+        balanceDTO.setMaintenance(newBalance+"");
+        balanceService.save(balanceDTO);
         return chargeMapper.toDto(charge);
     }
 

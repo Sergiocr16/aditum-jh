@@ -1,9 +1,12 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.AdministrationConfiguration;
+import com.lighthouse.aditum.domain.Company;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -12,5 +15,5 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface AdministrationConfigurationRepository extends JpaRepository<AdministrationConfiguration,Long> {
-    
+    List<AdministrationConfiguration> findByCompanyId(Long companyId);
 }

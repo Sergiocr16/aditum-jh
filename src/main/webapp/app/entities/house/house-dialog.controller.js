@@ -5,26 +5,35 @@
         .module('aditumApp')
         .controller('HouseDialogController', HouseDialogController);
 
-    HouseDialogController.$inject = ['CompanyConfiguration','CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House','WSHouse'];
+    HouseDialogController.$inject = ['CompanyConfiguration','CommonMethods','$state','$rootScope','Principal','$timeout', '$scope', '$stateParams', 'entity', 'House','WSHouse','Balance','AdministrationConfiguration'];
 
-    function HouseDialogController (CompanyConfiguration,CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House,WSHouse) {
+    function HouseDialogController (CompanyConfiguration,CommonMethods,$state,$rootScope, Principal,$timeout, $scope, $stateParams,  entity, House,WSHouse, Balance,AdministrationConfiguration) {
         var vm = this;
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
-        if(vm.house.isdesocupated!=null){
+        console.log(vm.house)
+        if(vm.house.due==null || vm.house.due==undefined){
+        vm.house.due=0;
+        }
+        if(vm.house.squareMeters==null || vm.house.squareMeters==undefined){
+        vm.house.squareMeters=0;
+        }
+        if(vm.house.isdesocupated!=null ){
         vm.house.isdesocupated = vm.house.isdesocupated.toString()
         }else{
         vm.house.isdesocupated = "0";
         }
         vm.save = save;
-        setTimeout(getConfiguration(),600);
+        setTimeout(getConfiguration(),800);
         function getConfiguration(){
-            CompanyConfiguration.getByCompanyId({companyId: 1}).$promise.then(onSuccessCompany, onError);
+        console.log($rootScope.companyId)
+            CompanyConfiguration.getByCompanyId({companyId: $rootScope.companyId}).$promise.then(onSuccessCompany, onError);
         }
         function onSuccessCompany (data){
            angular.forEach(data, function(configuration, key) {
                vm.companyConfiguration = configuration;
+               console.log(vm.companyConfiguration)
              });
               loadQuantities();
                setTimeout(function() {
@@ -33,9 +42,6 @@
                 setTimeout(function() {
                     $("#edit_house_form").fadeIn('slow');
                 },900 )
-
-
-
         }
         function onError () {
         console.log('sadfsadf'+data);
@@ -81,6 +87,12 @@
         }else{
         vm.extension = vm.house.extension;
         }
+             if(vm.house.due==null || vm.house.due==undefined){
+                vm.house.due=0;
+                }
+                if(vm.house.squareMeters==null || vm.house.squareMeters==undefined){
+                vm.house.squareMeters=0;
+                }
             vm.isSaving = true;
             if (vm.house.id !== null) {
                   CommonMethods.waitingMessage();
@@ -126,6 +138,9 @@
         }
 
         function onSaveSuccess (result) {
+var balance = {houseId:parseInt(result.id),extraordinary:0,commonAreas:0,maintenance:0};
+
+ Balance.save(balance)
 
             WSHouse.sendActivity(result);
             $state.go('house');

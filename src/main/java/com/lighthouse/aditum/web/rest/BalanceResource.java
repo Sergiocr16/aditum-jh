@@ -51,6 +51,7 @@ public class BalanceResource {
     @Timed
     public ResponseEntity<BalanceDTO> createBalance(@Valid @RequestBody BalanceDTO balanceDTO) throws URISyntaxException {
         log.debug("REST request to save Balance : {}", balanceDTO);
+        BalanceDTO balanceDTO1 = balanceDTO;
         if (balanceDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new balance cannot already have an ID")).body(null);
         }
