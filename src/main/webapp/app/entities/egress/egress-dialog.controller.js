@@ -40,12 +40,25 @@
                        $("#new_egress_form").fadeIn('slow');
                 },900 )
 
-        }},600)
+        }},700)
+
+         vm.formatearNumero =function(nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+             vm.egress.total = x1 + x2;
+         }
 
 
-
-
-          if(vm.egress.id !== null){
+          if(vm.egress.id != null){
+          vm.egress.account = null;
+          vm.egress.paymentMethod = null;
+          vm.egress.paymentDate = null;
             vm.title = 'Reportar pago';
             vm.button = "Reportar";
             vm.picker3 = {
@@ -60,7 +73,12 @@
              vm.egress.empresa = proovedor.empresa;
 
             }
-
+                 if(vm.egress.folio == null || vm.egress.folio == 'undefined' ){
+                   vm.egress.folio = 'Sin Registrar'
+                  }
+                  if(vm.egress.billNumber == null || vm.egress.billNumber == 'undefined' || vm.egress.billNumber == '' ){
+                    vm.egress.billNumber = 'Sin Registrar'
+                   }
         } else{
           vm.title = "Registrar gasto";
           vm.button = "Registrar";
@@ -72,16 +90,86 @@
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
+         vm.confirmMessage =function(){
+            if (vm.egress.id != null) {
+               confirmReportPayment();
 
+             } else {
+              confirmCreateEgress();
+             }
+         }
+
+
+            function confirmCreateEgress(){
+                   bootbox.confirm({
+                         message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                            buttons: {
+                                confirm: {
+                                    label: 'Aceptar',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Cancelar',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function(result) {
+
+                                if (result) {
+                                        save()
+
+                                }else{
+                                    vm.isSaving = false;
+
+                                }
+                            }
+                        });
+                }
+
+                   function confirmReportPayment(){
+                       bootbox.confirm({
+                             message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                                buttons: {
+                                    confirm: {
+                                        label: 'Aceptar',
+                                        className: 'btn-success'
+                                    },
+                                    cancel: {
+                                        label: 'Cancelar',
+                                        className: 'btn-danger'
+                                    }
+                                },
+                                callback: function(result) {
+
+                                    if (result) {
+                                            save()
+
+                                    }else{
+                                        vm.isSaving = false;
+
+                                    }
+                                }
+                            });
+                    }
         function save () {
+            var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
+            var expirationTime = new Date(vm.egress.expirationDate).getTime();
+            if (currentTime <= expirationTime) {
+                vm.egress.state = 1;
+             } else {
+               vm.egress.state = 3;
+             }
+             if(vm.egress.paymentDate != null || vm.egress.paymentDate == 'undefined' ){
+                  vm.egress.state = 2;
+              }
             vm.isSaving = true;
-            if (vm.egress.id !== null) {
+            if (vm.egress.id != null) {
+                 Egress.update(vm.egress, onSaveReport, onSaveError);
 
-                Egress.update(vm.egress, onSaveReport, onSaveError);
             } else {
-            console.log(Egress)
                 vm.egress.companyId = $rootScope.companyId;
                 vm.egress.paymentMethod = 0;
+                vm.egress.account = 0;
                 vm.egress.account = 0;
                 Egress.save(vm.egress, onSaveSuccess, onSaveError);
             }

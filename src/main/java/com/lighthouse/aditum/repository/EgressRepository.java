@@ -18,4 +18,5 @@ public interface EgressRepository extends JpaRepository<Egress,Long> {
     @Query("select e from Egress e " +
     "where e.expirationDate >= ?1 and e.expirationDate <= ?2 and e.company.id = ?3")
     List<Egress> findByDatesBetweenAndCompany(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
+    List<Egress> findByCompanyId(Long companyId);
 }

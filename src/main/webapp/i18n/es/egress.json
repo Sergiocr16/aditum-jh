@@ -27,6 +27,8 @@
             "proveedor": "Proveedor",
             "paymentDate": "Payment Date",
             "expirationDate": "Expiration Date",
+            "state": "State",
+            "billNumber": "Bill Number",
             "company": "Company"
         }
     }

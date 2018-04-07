@@ -41,6 +41,7 @@
         function loadAll () {
             vm.title = 'Egresos';
             Egress.query({
+               companyId: $rootScope.companyId,
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
             }, onSuccess, onError);
@@ -63,27 +64,15 @@
           };
 
         function formatEgresos(egresses){
-         var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
          angular.forEach(egresses,function(value,key){
 
-             var expirationTime = new Date(value.expirationDate).getTime();
              if(value.paymentDate == null || value.paymentDate == 'undefined' ){
                  value.paymentDate = "No pagado";
-                 if (currentTime <= expirationTime) {
-
-                    value.state = 1;
-                 } else {
-                   value.state = 3;
-                 }
-
-
-             } else{
-                  value.state = 2;
              }
-             if(value.folio == null || value.paymentDate == 'undefined' ){
+             if(value.folio == null || value.folio == 'undefined' ){
               value.folio = 'Sin Registrar'
              }
-             if(value.reference == null || value.paymentDate == 'undefined' ){
+             if(value.reference == null || value.reference == 'undefined' ){
                value.reference = 'Sin Registrar'
               }
              angular.forEach(vm.proveedores,function(proveedor,key){
@@ -129,17 +118,12 @@
             })
         }
 
-//        function formatearNumero(nStr) {
-//
-//           var x = nStr.split('.');
-//           var x1 = x[0];
-//           var x2 = x.length > 1 ? ',' + x[1] : '';
-//            var rgx = /(\d+)(\d{3})/;
-//            while (rgx.test(x1)) {
-//                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
-//            }
-//            return x1 + x2;
-//        }
+   vm.editEgress = function(id){
+         var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('egress.edit', {
+                id: encryptedId
+            })
+        }
 
        vm.updatePicker = function() {
             vm.picker1 = {
@@ -170,6 +154,7 @@
                 }).$promise.then(onSuccess);
 
                 function onSuccess(data) {
+                    moment.locale('es');
                     vm.egresses = data;
                     vm.page = pagingParams.page;
                     vm.queryCount = data.length;

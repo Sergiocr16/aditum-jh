@@ -21,7 +21,7 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row  display-none" id="tableData">
+<div class="row display-none" id="tableData">
     <div class="col-md-12">
         <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12 no-list" ng-hide="vm.isConsulting==true">{{vm.title}}
         </h3>
@@ -109,15 +109,13 @@
                         <td>{{egress.concept}}</td>
                         <td>{{egress.folio}}</td>
                         <td>{{egress.category}}</td>
-
                         <td>{{egress.proveedor}}</td>
-
                         <td>{{egress.expirationDate | date:'mediumDate'}}</td>
                         <td>{{egress.paymentDate | date:'mediumDate'}}</td>
                         <td>{{egress.reference}}</td>
                         <td>₡{{egress.total | currency : "" : 0}}</td>
                         <td><a class="light-gray-font"  ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
-                        <td> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger bold"  style="font-size:13px; padding:7px;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success bold" style="font-size:13px; padding:7px;" ng-show="egress.state==2" aria-hidden="false">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label label-sm label-warning bold" style="font-size:13px; padding:7px;" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
+                        <td> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger bold"  style="font-size:13px; padding:7px;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success bold" style="font-size:13px; padding:7px;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label label-sm label-warning bold" style="font-size:13px; padding:7px;" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
 
 
 

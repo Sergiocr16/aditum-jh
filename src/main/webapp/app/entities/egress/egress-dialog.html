@@ -36,9 +36,10 @@
                         <span class="caption-subject bold uppercase">{{vm.title}}</span>
                     </div>
 
+
                 </div>
                 <div class="portlet-body form display-none" id="register_edit_form">
-                    <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+                    <form name="editForm" role="form" novalidate ng-submit=" vm.confirmMessage()" show-validation>
 
                     <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
@@ -122,8 +123,8 @@
                                     <span class="font-13 bold" ># Factura</span>
                                 </div>
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input type="text" class="form-control" name="reference" id="field_reference"
-                                           ng-model="vm.egress.reference"
+                                    <input type="text" class="form-control" name="billNumber" id="field_billNumber"
+                                           ng-model="vm.egress.billNumber"
                                     />
                                 </div>
                             </div>
@@ -149,7 +150,7 @@
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
                                             <input type="text" class="form-control numbers" name="total" id="field_total"
-                                                   ng-model="vm.egress.total" format="currency" required
+                                                   ng-model="vm.egress.total"  ng-change="formatearNumero(vm.egress.total)" required
                                             />
                                         </div>
 
@@ -178,8 +179,8 @@
                                 <span class="font-13 bold" ># Factura</span>
                             </div>
                             <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                <input type="text" class="form-control" name="reference" id="field_referencexs"
-                                       ng-model="vm.egress.reference"
+                                <input type="text" class="form-control" name="billNumber2" id="field_billNumber2"
+                                       ng-model="vm.egress.billNumber"
                                 />
                             </div>
                         </div>

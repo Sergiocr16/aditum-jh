@@ -61,6 +61,12 @@ public class Egress implements Serializable {
     @Column(name = "expiration_date")
     private ZonedDateTime expirationDate;
 
+    @Column(name = "state")
+    private Integer state;
+
+    @Column(name = "bill_number")
+    private String billNumber;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -229,6 +235,32 @@ public class Egress implements Serializable {
         this.expirationDate = expirationDate;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public Egress state(Integer state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public Egress billNumber(String billNumber) {
+        this.billNumber = billNumber;
+        return this;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -278,6 +310,8 @@ public class Egress implements Serializable {
             ", proveedor='" + getProveedor() + "'" +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", expirationDate='" + getExpirationDate() + "'" +
+            ", state='" + getState() + "'" +
+            ", billNumber='" + getBillNumber() + "'" +
             "}";
     }
 }

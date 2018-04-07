@@ -82,6 +82,12 @@ public class EgressResourceIntTest {
     private static final ZonedDateTime DEFAULT_EXPIRATION_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_EXPIRATION_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final Integer DEFAULT_STATE = 1;
+    private static final Integer UPDATED_STATE = 2;
+
+    private static final String DEFAULT_BILL_NUMBER = "AAAAAAAAAA";
+    private static final String UPDATED_BILL_NUMBER = "BBBBBBBBBB";
+
     @Autowired
     private EgressRepository egressRepository;
 
@@ -136,7 +142,9 @@ public class EgressResourceIntTest {
             .comments(DEFAULT_COMMENTS)
             .proveedor(DEFAULT_PROVEEDOR)
             .paymentDate(DEFAULT_PAYMENT_DATE)
-            .expirationDate(DEFAULT_EXPIRATION_DATE);
+            .expirationDate(DEFAULT_EXPIRATION_DATE)
+            .state(DEFAULT_STATE)
+            .billNumber(DEFAULT_BILL_NUMBER);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -178,6 +186,8 @@ public class EgressResourceIntTest {
         assertThat(testEgress.getProveedor()).isEqualTo(DEFAULT_PROVEEDOR);
         assertThat(testEgress.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
         assertThat(testEgress.getExpirationDate()).isEqualTo(DEFAULT_EXPIRATION_DATE);
+        assertThat(testEgress.getState()).isEqualTo(DEFAULT_STATE);
+        assertThat(testEgress.getBillNumber()).isEqualTo(DEFAULT_BILL_NUMBER);
     }
 
     @Test
@@ -317,7 +327,9 @@ public class EgressResourceIntTest {
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].proveedor").value(hasItem(DEFAULT_PROVEEDOR.toString())))
             .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(sameInstant(DEFAULT_PAYMENT_DATE))))
-            .andExpect(jsonPath("$.[*].expirationDate").value(hasItem(sameInstant(DEFAULT_EXPIRATION_DATE))));
+            .andExpect(jsonPath("$.[*].expirationDate").value(hasItem(sameInstant(DEFAULT_EXPIRATION_DATE))))
+            .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)))
+            .andExpect(jsonPath("$.[*].billNumber").value(hasItem(DEFAULT_BILL_NUMBER.toString())));
     }
 
     @Test
@@ -342,7 +354,9 @@ public class EgressResourceIntTest {
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
             .andExpect(jsonPath("$.proveedor").value(DEFAULT_PROVEEDOR.toString()))
             .andExpect(jsonPath("$.paymentDate").value(sameInstant(DEFAULT_PAYMENT_DATE)))
-            .andExpect(jsonPath("$.expirationDate").value(sameInstant(DEFAULT_EXPIRATION_DATE)));
+            .andExpect(jsonPath("$.expirationDate").value(sameInstant(DEFAULT_EXPIRATION_DATE)))
+            .andExpect(jsonPath("$.state").value(DEFAULT_STATE))
+            .andExpect(jsonPath("$.billNumber").value(DEFAULT_BILL_NUMBER.toString()));
     }
 
     @Test
@@ -374,7 +388,9 @@ public class EgressResourceIntTest {
             .comments(UPDATED_COMMENTS)
             .proveedor(UPDATED_PROVEEDOR)
             .paymentDate(UPDATED_PAYMENT_DATE)
-            .expirationDate(UPDATED_EXPIRATION_DATE);
+            .expirationDate(UPDATED_EXPIRATION_DATE)
+            .state(UPDATED_STATE)
+            .billNumber(UPDATED_BILL_NUMBER);
         EgressDTO egressDTO = egressMapper.toDto(updatedEgress);
 
         restEgressMockMvc.perform(put("/api/egresses")
@@ -398,6 +414,8 @@ public class EgressResourceIntTest {
         assertThat(testEgress.getProveedor()).isEqualTo(UPDATED_PROVEEDOR);
         assertThat(testEgress.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
         assertThat(testEgress.getExpirationDate()).isEqualTo(UPDATED_EXPIRATION_DATE);
+        assertThat(testEgress.getState()).isEqualTo(UPDATED_STATE);
+        assertThat(testEgress.getBillNumber()).isEqualTo(UPDATED_BILL_NUMBER);
     }
 
     @Test

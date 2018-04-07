@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company','Proveedor','Banco','Principal'];
+    EgressDetailController.$inject = ['$scope', '$state','$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company','Proveedor','Banco','Principal'];
 
-    function EgressDetailController($scope, $rootScope, $stateParams, previousState, entity, Egress, Company,Proveedor,Banco,Principal) {
+    function EgressDetailController($scope,$state, $rootScope, $stateParams, previousState, entity, Egress, Company,Proveedor,Banco,Principal) {
         var vm = this;
         vm.save = save;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -21,36 +21,73 @@
         });
 
         $scope.$on('$destroy', unsubscribe);
-         var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
-         var expirationTime = new Date(vm.egress.expirationDate).getTime();
+      vm.egress.account = null;
+      vm.egress.paymentMethod = null;
+      vm.egress.paymentDate = null;
+           if(vm.egress.folio == null || vm.egress.folio == 'undefined' ){
+              vm.egress.folio = 'Sin Registrar'
+             }
+             if(vm.egress.billNumber == null || vm.egress.billNumber == 'undefined' || vm.egress.billNumber == '' ){
+               vm.egress.billNumber = 'Sin Registrar'
+              }
          if(vm.egress.paymentDate == null || vm.egress.paymentDate == 'undefined' ){
              vm.egress.paymentDate = "No pagado";
-             if (currentTime <= expirationTime) {
-
-                vm.egress.state = 1;
-             } else {
-               vm.egress.state = 3;
-             }
-
 
          } else{
               Banco.get({id: vm.egress.account},onSuccessAccount)
-              vm.egress.state = 2;
          }
           function save () {
-            vm.isSaving = true;
-
+           var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
+          var expirationTime = new Date(vm.egress.expirationDate).getTime();
+          if (currentTime <= expirationTime) {
+              vm.egress.state = 1;
+           } else {
+             vm.egress.state = 3;
+           }
+           if(vm.egress.paymentDate !== null || vm.egress.paymentDate == 'undefined' ){
+                vm.egress.state = 2;
+                console.log(vm.egress)
+            }
                 Egress.update(vm.egress, onSaveSuccess, onSaveError);
 
+
         }
+        function onSaveError () {
+                    vm.isSaving = false;
+                }
+        vm.confirmReportPayment = function(){
+                   bootbox.confirm({
+                         message: '<div class="text-center gray-font font-15"><h4 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h4><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                            buttons: {
+                                confirm: {
+                                    label: 'Aceptar',
+                                    className: 'btn-success'
+                                },
+                                cancel: {
+                                    label: 'Cancelar',
+                                    className: 'btn-danger'
+                                }
+                            },
+                            callback: function(result) {
+
+                                if (result) {
+                                       save()
+
+                                }else{
+                                    vm.isSaving = false;
+
+                                }
+                            }
+                        });
+                }
          function onSaveSuccess (result) {
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
             toastr["success"]("Se reportó el pago correctamente");
             vm.isSaving = false;
         }
+        setTimeout(function(){Proveedor.get({id: vm.egress.proveedor},onSuccessProovedor)},700)
 
-        Proveedor.get({id: vm.egress.proveedor},onSuccessProovedor)
         function onSuccessProovedor(proovedor, headers) {
              vm.egress.empresa = proovedor.empresa;
             Banco.query({companyId: $rootScope.companyId}).$promise.then(onSuccessBancos);

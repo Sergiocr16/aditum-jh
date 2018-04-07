@@ -20,7 +20,8 @@
             'cloudinary',
             'pdf',
             'firebase',
-            'ngNotify'
+            'ngNotify',
+            'angularjs-dropdown-multiselect'
         ])
         .run(run);
 

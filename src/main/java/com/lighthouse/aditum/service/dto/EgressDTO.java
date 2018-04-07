@@ -44,6 +44,10 @@ public class EgressDTO implements Serializable {
 
     private ZonedDateTime expirationDate;
 
+    private Integer state;
+
+    private String billNumber;
+
     private Long companyId;
 
     public Long getId() {
@@ -150,6 +154,22 @@ public class EgressDTO implements Serializable {
         this.expirationDate = expirationDate;
     }
 
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -195,6 +215,8 @@ public class EgressDTO implements Serializable {
             ", proveedor='" + getProveedor() + "'" +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", expirationDate='" + getExpirationDate() + "'" +
+            ", state='" + getState() + "'" +
+            ", billNumber='" + getBillNumber() + "'" +
             "}";
     }
 }

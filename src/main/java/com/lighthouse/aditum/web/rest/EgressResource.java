@@ -90,10 +90,10 @@ public class EgressResource {
      */
     @GetMapping("/egresses")
     @Timed
-    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable)
+    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Egresses");
-        Page<EgressDTO> page = egressService.findAll(pageable);
+        Page<EgressDTO> page = egressService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

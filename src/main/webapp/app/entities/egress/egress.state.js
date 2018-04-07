@@ -74,7 +74,7 @@
           })
         .state('egress-detail', {
             parent: 'egress',
-            url: '/egress/{id}',
+            url: '/{id}',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.egress.detail.title'

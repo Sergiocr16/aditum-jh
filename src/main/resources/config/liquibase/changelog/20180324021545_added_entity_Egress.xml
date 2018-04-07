@@ -70,6 +70,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="state" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="bill_number" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="false" />
             </column>

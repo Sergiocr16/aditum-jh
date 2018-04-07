@@ -66,10 +66,10 @@ public class EgressService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<EgressDTO> findAll(Pageable pageable) {
+    public Page<EgressDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Egresses");
-        return egressRepository.findAll(pageable)
-            .map(egressMapper::toDto);
+        List<Egress> result = egressRepository.findByCompanyId(companyId);
+        return new PageImpl<Egress>(result).map(egress -> egressMapper.toDto(egress));
     }
 
     /**
