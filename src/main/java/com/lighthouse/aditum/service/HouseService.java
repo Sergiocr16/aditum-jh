@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.House;
+import com.lighthouse.aditum.repository.BalanceRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
@@ -30,11 +31,14 @@ public class HouseService {
 
     private final HouseMapper houseMapper;
 
+    private final BalanceService balanceService;
 
 
-    public HouseService(HouseRepository houseRepository, HouseMapper houseMapper) {
+
+    public HouseService(HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
+        this.balanceService = balanceService;
     }
 
     /**
@@ -85,7 +89,39 @@ public class HouseService {
             return house1;
         });
     }
+    @Transactional(readOnly = true)
+    public Page<HouseDTO> findWithBalance(Long companyId) {
+        log.debug("Request to get all Houses");
+        List<House> result = houseRepository.findByCompanyId(companyId);
+        List<House> onlyHouses = new ArrayList<>();
+        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
 
+        result.forEach(house->{
+            int existe = 0;
+            for (int i = 0;i<letras.length;i++){
+                if(Character.toLowerCase(house.getHousenumber().charAt(0))==(letras[i])){
+                    existe++;
+                }
+            }
+            if(existe==0){
+                onlyHouses.add(house);
+            }
+        });
+
+        return  new PageImpl<>(onlyHouses).map(house ->{
+            HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
+            house1.setBalance(balanceService.findOneByHouse(house1.getId()));
+            house1.setCodeStatus(house.getCodeStatus());
+            house1.setLoginCode(house.getLoginCode());
+            if(house1.getBalance().getTotal()>=0){
+                house1.getBalance().setDebit(0);
+            }else{
+                house1.getBalance().setDebit(1);
+            }
+            house1.getBalance().setTotal(house1.getBalance().getTotal()+"");
+            return house1;
+        });
+    }
     @Transactional(readOnly = true)
     public Page<HouseDTO> findAllWithMaintenance(Long companyId) {
         log.debug("Request to get all Houses");

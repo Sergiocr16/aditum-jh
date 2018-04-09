@@ -27,6 +27,10 @@ public class BalanceDTO implements Serializable {
 
     private String houseHousenumber;
 
+    private int debit;
+
+    private String total;
+
     public Long getId() {
         return id;
     }
@@ -105,5 +109,21 @@ public class BalanceDTO implements Serializable {
             ", maintenance='" + getMaintenance() + "'" +
             ", houseId='" + getHouseId() + "'" +
             "}";
+    }
+
+    public Integer getTotal() {
+        return  Integer.parseInt(this.getMaintenance())+Integer.parseInt(this.getCommonAreas())+Integer.parseInt(this.getExtraordinary());
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public int getDebit() {
+        return debit;
+    }
+
+    public void setDebit(int debit) {
+        this.debit = debit;
     }
 }

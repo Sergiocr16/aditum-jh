@@ -43,6 +43,8 @@ public class HouseDTO implements Serializable {
 
     private Long companyId;
 
+    private BalanceDTO balance;
+
     public Long getId() {
         return id;
     }
@@ -184,5 +186,13 @@ public class HouseDTO implements Serializable {
             ", due='" + getDue() + "'" +
             ", squareMeters='" + getSquareMeters() + "'" +
             "}";
+    }
+
+    public BalanceDTO getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BalanceDTO balance) {
+        this.balance = balance;
     }
 }
