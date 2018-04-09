@@ -920,4 +920,10 @@ ui bootstrap tweaks
   min-width: 200px;
   max-width: 300px;
 }
-
+.greenBalance{
+color:green!important;
+}
+.redBalance{
+color:#F00!important;
+font-weight:bold;
+}

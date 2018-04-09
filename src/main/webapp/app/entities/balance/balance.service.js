@@ -20,6 +20,11 @@
                     return data;
                 }
             },
+            'queryBalances': {
+                method: 'GET',
+                url: 'api/houses-balance',
+                isArray: true
+             },
             'update': { method:'PUT' }
         });
     }
