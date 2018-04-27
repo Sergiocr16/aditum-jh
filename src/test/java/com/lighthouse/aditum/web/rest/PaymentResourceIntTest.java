@@ -64,6 +64,9 @@ public class PaymentResourceIntTest {
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
 
+    private static final String DEFAULT_AMMOUNT = "AAAAAAAAAA";
+    private static final String UPDATED_AMMOUNT = "BBBBBBBBBB";
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -112,7 +115,8 @@ public class PaymentResourceIntTest {
             .transaction(DEFAULT_TRANSACTION)
             .account(DEFAULT_ACCOUNT)
             .paymentMethod(DEFAULT_PAYMENT_METHOD)
-            .comments(DEFAULT_COMMENTS);
+            .comments(DEFAULT_COMMENTS)
+            .ammount(DEFAULT_AMMOUNT);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -148,6 +152,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAccount()).isEqualTo(DEFAULT_ACCOUNT);
         assertThat(testPayment.getPaymentMethod()).isEqualTo(DEFAULT_PAYMENT_METHOD);
         assertThat(testPayment.getComments()).isEqualTo(DEFAULT_COMMENTS);
+        assertThat(testPayment.getAmmount()).isEqualTo(DEFAULT_AMMOUNT);
     }
 
     @Test
@@ -281,7 +286,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.[*].transaction").value(hasItem(DEFAULT_TRANSACTION.toString())))
             .andExpect(jsonPath("$.[*].account").value(hasItem(DEFAULT_ACCOUNT.toString())))
             .andExpect(jsonPath("$.[*].paymentMethod").value(hasItem(DEFAULT_PAYMENT_METHOD.toString())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
+            .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())));
     }
 
     @Test
@@ -300,7 +306,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.transaction").value(DEFAULT_TRANSACTION.toString()))
             .andExpect(jsonPath("$.account").value(DEFAULT_ACCOUNT.toString()))
             .andExpect(jsonPath("$.paymentMethod").value(DEFAULT_PAYMENT_METHOD.toString()))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
+            .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()));
     }
 
     @Test
@@ -326,7 +333,8 @@ public class PaymentResourceIntTest {
             .transaction(UPDATED_TRANSACTION)
             .account(UPDATED_ACCOUNT)
             .paymentMethod(UPDATED_PAYMENT_METHOD)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .ammount(UPDATED_AMMOUNT);
         PaymentDTO paymentDTO = paymentMapper.toDto(updatedPayment);
 
         restPaymentMockMvc.perform(put("/api/payments")
@@ -344,6 +352,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAccount()).isEqualTo(UPDATED_ACCOUNT);
         assertThat(testPayment.getPaymentMethod()).isEqualTo(UPDATED_PAYMENT_METHOD);
         assertThat(testPayment.getComments()).isEqualTo(UPDATED_COMMENTS);
+        assertThat(testPayment.getAmmount()).isEqualTo(UPDATED_AMMOUNT);
     }
 
     @Test

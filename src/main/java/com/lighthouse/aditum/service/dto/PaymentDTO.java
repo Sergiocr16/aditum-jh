@@ -32,6 +32,8 @@ public class PaymentDTO implements Serializable {
 
     private String comments;
 
+    private String ammount;
+
     private Long houseId;
 
     public Long getId() {
@@ -90,6 +92,14 @@ public class PaymentDTO implements Serializable {
         this.comments = comments;
     }
 
+    public String getAmmount() {
+        return ammount;
+    }
+
+    public void setAmmount(String ammount) {
+        this.ammount = ammount;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -129,6 +139,7 @@ public class PaymentDTO implements Serializable {
             ", account='" + getAccount() + "'" +
             ", paymentMethod='" + getPaymentMethod() + "'" +
             ", comments='" + getComments() + "'" +
+            ", ammount='" + getAmmount() + "'" +
             "}";
     }
 }

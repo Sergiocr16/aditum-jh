@@ -53,6 +53,10 @@
         {
             "fieldName": "fechaCapitalInicial",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "saldo",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180323230211",

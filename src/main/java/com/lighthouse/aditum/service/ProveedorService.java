@@ -53,8 +53,8 @@ public class ProveedorService {
     @Transactional(readOnly = true)
     public Page<ProveedorDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all provedoors");
-        List<Proveedor> result = proveedorRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(proveedor -> proveedorMapper.toDto(proveedor));
+        Page<Proveedor> result = proveedorRepository.findByDeletedAndCompanyId(pageable,0,companyId);
+        return result.map(proveedor -> proveedorMapper.toDto(proveedor));
 
     }
 

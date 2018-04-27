@@ -35,6 +35,8 @@ public class BancoDTO implements Serializable {
 
     private ZonedDateTime fechaCapitalInicial;
 
+    private String saldo;
+
     private Long companyId;
 
     public Long getId() {
@@ -117,6 +119,14 @@ public class BancoDTO implements Serializable {
         this.fechaCapitalInicial = fechaCapitalInicial;
     }
 
+    public String getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(String saldo) {
+        this.saldo = saldo;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -159,6 +169,7 @@ public class BancoDTO implements Serializable {
             ", capitalInicial='" + getCapitalInicial() + "'" +
             ", mostrarFactura='" + getMostrarFactura() + "'" +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
+            ", saldo='" + getSaldo() + "'" +
             "}";
     }
 }

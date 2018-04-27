@@ -49,6 +49,9 @@ public class Banco implements Serializable {
     @Column(name = "fecha_capital_inicial")
     private ZonedDateTime fechaCapitalInicial;
 
+    @Column(name = "saldo")
+    private String saldo;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -178,6 +181,19 @@ public class Banco implements Serializable {
         this.fechaCapitalInicial = fechaCapitalInicial;
     }
 
+    public String getSaldo() {
+        return saldo;
+    }
+
+    public Banco saldo(String saldo) {
+        this.saldo = saldo;
+        return this;
+    }
+
+    public void setSaldo(String saldo) {
+        this.saldo = saldo;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -224,6 +240,7 @@ public class Banco implements Serializable {
             ", capitalInicial='" + getCapitalInicial() + "'" +
             ", mostrarFactura='" + getMostrarFactura() + "'" +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
+            ", saldo='" + getSaldo() + "'" +
             "}";
     }
 }

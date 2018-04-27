@@ -43,6 +43,9 @@ public class Payment implements Serializable {
     @Column(name = "comments")
     private String comments;
 
+    @Column(name = "ammount")
+    private String ammount;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -133,6 +136,19 @@ public class Payment implements Serializable {
         this.comments = comments;
     }
 
+    public String getAmmount() {
+        return ammount;
+    }
+
+    public Payment ammount(String ammount) {
+        this.ammount = ammount;
+        return this;
+    }
+
+    public void setAmmount(String ammount) {
+        this.ammount = ammount;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -176,6 +192,7 @@ public class Payment implements Serializable {
             ", account='" + getAccount() + "'" +
             ", paymentMethod='" + getPaymentMethod() + "'" +
             ", comments='" + getComments() + "'" +
+            ", ammount='" + getAmmount() + "'" +
             "}";
     }
 }

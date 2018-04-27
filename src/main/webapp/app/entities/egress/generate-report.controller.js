@@ -15,6 +15,7 @@
         vm.propertyName = 'id';
         vm.reverse = true;
         vm.gastosQuantity = 0;
+        vm.showNoResults=false;
         vm.hideReportForm = false;
         vm.selectedProveedores = [];
         vm.selectedCampos = [];
@@ -129,6 +130,7 @@
          }
 
          vm.generateReport = function(){
+               vm.gastosQuantity = 0;
             $("#reportResults").fadeOut(0);
             setTimeout(function() {
                 $("#loadingIcon2").fadeIn(100);
@@ -187,11 +189,14 @@
                            $("#loadingIcon2").fadeOut(300);
                }, 400)
                   setTimeout(function() {
+                  console.log(vm.gastosQuantity)
                       $("#reportResults").fadeIn('slow');
                },900 )
                if(vm.gastosQuantity>0){
+                    vm.showNoResults = false
                     vm.hideReportForm = true;
-               }
+               }else{
+               vm.showNoResults = true}
         }
 
 

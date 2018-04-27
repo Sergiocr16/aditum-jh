@@ -49,13 +49,13 @@ public class EgressService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EgressDTO> findByDatesBetweenAndCompany(String initialTime,String finalTime,Long companyId) {
+    public Page<EgressDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        List<Egress> result = egressRepository.findByDatesBetweenAndCompany(zd_initialTime,zd_finalTime,companyId);
-        Collections.reverse(result);
-        return new PageImpl<Egress>(result).map(egress -> egressMapper.toDto(egress));
+        Page<Egress> result = egressRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+//        Collections.reverse(result);
+        return result.map(egress -> egressMapper.toDto(egress));
     }
 
 
@@ -68,8 +68,8 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Egresses");
-        List<Egress> result = egressRepository.findByCompanyId(companyId);
-        return new PageImpl<Egress>(result).map(egress -> egressMapper.toDto(egress));
+        Page<Egress> result = egressRepository.findByCompanyId(pageable,companyId);
+        return result.map(egress -> egressMapper.toDto(egress));
     }
 
     /**

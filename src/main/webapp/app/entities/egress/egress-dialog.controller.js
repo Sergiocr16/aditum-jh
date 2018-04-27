@@ -15,11 +15,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.companies = Company.query();
         CommonMethods.validateNumbers();
-
-
-
 
 
         setTimeout(function(){
@@ -56,9 +52,9 @@
 
 
           if(vm.egress.id != null){
-          vm.egress.account = null;
-          vm.egress.paymentMethod = null;
-          vm.egress.paymentDate = null;
+//          vm.egress.account = null;
+//          vm.egress.paymentMethod = null;
+//          vm.egress.paymentDate = null;
             vm.title = 'Reportar pago';
             vm.button = "Reportar";
             vm.picker3 = {
@@ -100,57 +96,57 @@
          }
 
 
-            function confirmCreateEgress(){
-                   bootbox.confirm({
-                         message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                            buttons: {
-                                confirm: {
-                                    label: 'Aceptar',
-                                    className: 'btn-success'
-                                },
-                                cancel: {
-                                    label: 'Cancelar',
-                                    className: 'btn-danger'
-                                }
+        function confirmCreateEgress(){
+               bootbox.confirm({
+                     message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
                             },
-                            callback: function(result) {
-
-                                if (result) {
-                                        save()
-
-                                }else{
-                                    vm.isSaving = false;
-
-                                }
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
                             }
-                        });
-                }
+                        },
+                        callback: function(result) {
 
-                   function confirmReportPayment(){
-                       bootbox.confirm({
-                             message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                                buttons: {
-                                    confirm: {
-                                        label: 'Aceptar',
-                                        className: 'btn-success'
-                                    },
-                                    cancel: {
-                                        label: 'Cancelar',
-                                        className: 'btn-danger'
-                                    }
-                                },
-                                callback: function(result) {
+                            if (result) {
+                                    save()
 
-                                    if (result) {
-                                            save()
+                            }else{
+                                vm.isSaving = false;
 
-                                    }else{
-                                        vm.isSaving = false;
+                            }
+                        }
+                    });
+            }
 
-                                    }
-                                }
-                            });
+       function confirmReportPayment(){
+           bootbox.confirm({
+                 message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+
+                        if (result) {
+                                save()
+
+                        }else{
+                            vm.isSaving = false;
+
+                        }
                     }
+                });
+        }
         function save () {
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();

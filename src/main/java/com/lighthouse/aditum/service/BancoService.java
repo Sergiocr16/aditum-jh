@@ -7,12 +7,9 @@ import com.lighthouse.aditum.service.mapper.BancoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 
 /**
@@ -53,10 +50,10 @@ public class BancoService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<BancoDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<BancoDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Bancos");
-        List<Banco> result = bancoRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(proveedor -> bancoMapper.toDto(proveedor));
+        return bancoRepository.findAll(pageable)
+            .map(bancoMapper::toDto);
     }
 
     /**

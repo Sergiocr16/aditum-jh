@@ -13,6 +13,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
         vm.egress = entity;
+        console.log(vm.egress)
         vm.previousState = previousState.name;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -21,19 +22,20 @@
         });
 
         $scope.$on('$destroy', unsubscribe);
-      vm.egress.account = null;
-      vm.egress.paymentMethod = null;
-      vm.egress.paymentDate = null;
+//      vm.egress.account = null;
+//      vm.egress.paymentMethod = null;
+//      vm.egress.paymentDate = null;
            if(vm.egress.folio == null || vm.egress.folio == 'undefined' ){
               vm.egress.folio = 'Sin Registrar'
              }
              if(vm.egress.billNumber == null || vm.egress.billNumber == 'undefined' || vm.egress.billNumber == '' ){
                vm.egress.billNumber = 'Sin Registrar'
               }
-         if(vm.egress.paymentDate == null || vm.egress.paymentDate == 'undefined' ){
+              console.log(vm.egress)
+              console.log(vm.egress.paymentDate)
+         if(vm.egress.paymentDate == null || vm.egress.paymentDate == undefined || vm.egress.paymentDate == 'No pagado' ){
              vm.egress.paymentDate = "No pagado";
-
-         } else{
+         } else{console.log('adf')
               Banco.get({id: vm.egress.account},onSuccessAccount)
          }
           function save () {
@@ -105,7 +107,7 @@
          }
          function onSuccessAccount(account, headers) {
           vm.egress.banco = account.beneficiario;
-
+console.log( vm.egress.banco)
           }
 
           vm.datePickerOpenStatus.paymentDate = false;

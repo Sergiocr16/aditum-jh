@@ -131,45 +131,45 @@
             }]
         })
           .state('egress.new', {
-                  parent: 'egress',
-                                url: '/new',
-                                data: {
-                                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
-                                },
-                                views: {
-                                    'content@': {
-                                        templateUrl: 'app/entities/egress/egress-dialog.html',
-                                        controller: 'EgressDialogController',
-                                        controllerAs: 'vm',
-                                    }
-                                },
-                                resolve: {
-                                    entity: function() {
-                                        return {
-                                             date: null,
-                                               folio: null,
-                                               account: null,
-                                               category: null,
-                                               paymentMethod: null,
-                                               concept: null,
-                                               total: null,
-                                               reference: null,
-                                               comments: null,
-                                               proveedor: null,
-                                               paymentDate: null,
-                                               expirationDate: null,
-                                               id: null
-                                        };
-                                    },
-                                    previousState: ["$state", function($state) {
-                                        var currentStateData = {
-                                            name: $state.current.name || 'egress',
-                                            params: $state.params,
-                                            url: $state.href($state.current.name, $state.params)
-                                        };
-                                        return currentStateData;
-                                    }]
-                                }
+                  parent: 'entity',
+                    url: '/egresses/new',
+                    data: {
+                        authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    },
+                    views: {
+                        'content@': {
+                            templateUrl: 'app/entities/egress/egress-dialog.html',
+                            controller: 'EgressDialogController',
+                            controllerAs: 'vm',
+                        }
+                    },
+                    resolve: {
+                        entity: function() {
+                            return {
+                                 date: null,
+                                   folio: null,
+                                   account: null,
+                                   category: null,
+                                   paymentMethod: null,
+                                   concept: null,
+                                   total: null,
+                                   reference: null,
+                                   comments: null,
+                                   proveedor: null,
+                                   paymentDate: null,
+                                   expirationDate: null,
+                                   id: null
+                            };
+                        },
+                        previousState: ["$state", function($state) {
+                            var currentStateData = {
+                                name: $state.current.name || 'egress',
+                                params: $state.params,
+                                url: $state.href($state.current.name, $state.params)
+                            };
+                            return currentStateData;
+                        }]
+                    }
                 })
         .state('egress.edit', {
             parent: 'egress',
