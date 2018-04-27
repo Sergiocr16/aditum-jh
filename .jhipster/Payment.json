@@ -50,6 +50,10 @@
         {
             "fieldName": "comments",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "ammount",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324014703",

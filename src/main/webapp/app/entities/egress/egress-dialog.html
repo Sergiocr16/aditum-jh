@@ -1,135 +1,410 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Contabilidad</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="egress()">Egresos</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">{{vm.title}}</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myEgressLabel" data-translate="aditumApp.egress.home.createOrEditLabel">Create or edit a Egress</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.egress.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.egress.id" readonly />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.date" for="field_date">Date</label>
-                <div class="input-group">
-                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.egress.date" is-open="vm.datePickerOpenStatus.date"
-                    required/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+    </div>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="display-none" id="new_egress_form">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+
+                        <span class="caption-subject bold uppercase">{{vm.title}}</span>
+                    </div>
+
+
                 </div>
-            <div ng-show="editForm.date.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.date.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.folio" for="field_folio">Folio</label>
-            <input type="text" class="form-control" name="folio" id="field_folio"
-                    ng-model="vm.egress.folio"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.account" for="field_account">Account</label>
-            <input type="text" class="form-control" name="account" id="field_account"
-                    ng-model="vm.egress.account"
-                    required/>
-            <div ng-show="editForm.account.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.account.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.category" for="field_category">Category</label>
-            <input type="text" class="form-control" name="category" id="field_category"
-                    ng-model="vm.egress.category"
-                    required/>
-            <div ng-show="editForm.category.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.category.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.paymentMethod" for="field_paymentMethod">Payment Method</label>
-            <input type="text" class="form-control" name="paymentMethod" id="field_paymentMethod"
-                    ng-model="vm.egress.paymentMethod"
-                    required/>
-            <div ng-show="editForm.paymentMethod.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.paymentMethod.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.concept" for="field_concept">Concept</label>
-            <input type="text" class="form-control" name="concept" id="field_concept"
-                    ng-model="vm.egress.concept"
-                    required/>
-            <div ng-show="editForm.concept.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.concept.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.total" for="field_total">Total</label>
-            <input type="text" class="form-control" name="total" id="field_total"
-                    ng-model="vm.egress.total"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.reference" for="field_reference">Reference</label>
-            <input type="text" class="form-control" name="reference" id="field_reference"
-                    ng-model="vm.egress.reference"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.comments" for="field_comments">Comments</label>
-            <input type="text" class="form-control" name="comments" id="field_comments"
-                    ng-model="vm.egress.comments"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.egress.proveedor" for="field_proveedor">Proveedor</label>
-            <input type="text" class="form-control" name="proveedor" id="field_proveedor"
-                    ng-model="vm.egress.proveedor"
-                    />
-        </div>
+                <div class="portlet-body form display-none" id="register_edit_form">
+                    <form name="editForm" role="form" novalidate ng-submit=" vm.confirmMessage()" show-validation>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.egress.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.egress.companyId" ng-options="company.id as company.id for company in vm.companies"             required>
-            </select>
-        </div>
-        <div ng-show="editForm.company.$invalid">
-            <p class="help-block"
-                ng-show="editForm.company.$error.required" data-translate="entity.validation.required">
-                This field is required.
-            </p>
+                    <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold  control-label">Folio</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <input type="text" class="form-control gray" name="folio" id="field_folio"
+                                           ng-model="vm.egress.folio"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label" >Categoría *</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <select class="form-control" id="field_category" name="category" ng-model="vm.egress.category" required>
+                                        <option value="">Seleccione una Categoría</option>
+                                        <optgroup label="GASTOS FIJOS">
+
+                                            <option value="Administración">Administración</option>
+                                            <option value="Agua potable">Agua potable</option>
+                                            <option value="Energía eléctrica">Energía eléctrica</option>
+                                            <option value="Jardinería">Jardinería</option>
+                                            <option value="Sueldos y salarios">Sueldos y salarios</option>
+                                            <option value="Seguridad">Seguridad</option>
+                                        </optgroup>
+                                        <optgroup label="GASTOS VARIABLES">
+                                            <option value="Eventos">Eventos</option>
+                                            <option value="Gastos legales">Gastos legales</option>
+                                            <option value="Impuestos y comisiones">Impuestos y comisiones</option>
+                                            <option value="Mantenimiento áreas comunes">Mantenimiento áreas comunes</option>
+                                            <option value="Papelería y copias">Papelería y copias</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label" >Fecha contable *</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <input ng-model="vm.egress.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.date"
+                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label">Fecha vencimiento * </span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                    <input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"
+                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
+
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label" >Concepto *</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <input type="text" class="form-control" name="concept" id="field_concept"
+                                           ng-model="vm.egress.concept"
+                                           required/>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!--ESTOS CAMPOS NO SE MUESTRAN EN XS-->
+
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-xs">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                    <span class="font-13 bold" ># Factura</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <input type="text" class="form-control" name="billNumber" id="field_billNumber"
+                                           ng-model="vm.egress.billNumber"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-right form-group">
+                                <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                    <span class="font-13 bold">Proovedor </span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                    <select type="text" class="form-control" id="field_proveedor" name="proveedor" ng-model="vm.egress.proveedor"  ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores"  >
+                                        <option value="">Seleccione un proveedor</option>
+                                    </select>
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
+                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                        <span class="font-13 bold control-label " >Total * </span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+                                        <div class="input-group form-group">
+                                            <span class="input-group-addon">₡</span>
+                                            <input type="text" class="form-control numbers" name="total" id="field_total"
+                                                   ng-model="vm.egress.total"  ng-change="formatearNumero(vm.egress.total)" required
+                                            />
+                                        </div>
+
+                                    </div>
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                    <span class="font-13 bold control-label" >Comentarios</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                         <textarea rows="4" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_comments">
+                                         </textarea>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <!--ESTOS CAMPOS SE MUESTRAN SOLO EN XS-->
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                <span class="font-13 bold" ># Factura</span>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                <input type="text" class="form-control" name="billNumber2" id="field_billNumber2"
+                                       ng-model="vm.egress.billNumber"
+                                />
+                            </div>
+                        </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                <span class="font-13 bold">Proovedor </span>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                <select type="text" class="form-control" id="field_proveedorxs" name="proveedor" ng-model="vm.egress.proveedor"  ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores"  >
+                                    <option value="">Seleccione un proveedor</option>
+                                </select>
+
+
+                            </div>
+                        </div>
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label " >Total * </span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                    <div class="input-group form-group">
+                                        <span class="input-group-addon">₡</span>
+                                        <input type="text" class="form-control numbers" name="total" id="field_totalxs"
+                                               ng-model="vm.egress.total" required
+                                        />
+                                    </div>
+
+                                 </div>
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding hidden-md hidden-lg hidden-sm form-group">
+                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                    <span class="font-13 bold control-label" >Comentarios</span>
+                                </div>
+                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                         <textarea rows="3" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_commentsxs">
+                                         </textarea>
+
+                                </div>
+                            </div>
+                    </div>
+
+
+
+
+
+
+                        </div>
+
+                        <div class="form-actions noborder" style="padding-bottom:0px;">
+                            <h3 class="text-right">
+
+                                    <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
+                                    <button type="button"  ui-sref="egress()" class="btn red default">Cancelar</button>
+
+
+                                    <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+                                        <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+                                    <!--</button>-->
+                                    <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+                                        <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+                                    <!--</button>-->
+
+                            </h3>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+<script>
+    jQuery(document).ready(function() {
+        $("#loadingIcon").fadeIn("slow");
+    });
+</script>
+<script>
+    jQuery(document).ready(function() {
+        $("#register_edit_form").fadeIn("slow");
+    });
+</script>
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myEgressLabel" data-translate="aditumApp.egress.home.createOrEditLabel">Create or edit a Egress</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<jhi-alert-error></jhi-alert-error>-->
+        <!--<div class="form-group" ng-show="vm.egress.id">-->
+            <!--<label for="id" data-translate="global.field.id">ID</label>-->
+            <!--<input type="text" class="form-control" id="id" name="id"-->
+                    <!--ng-model="vm.egress.id" readonly />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.date" for="field_date">Date</label>-->
+                <!--<div class="input-group">-->
+                    <!--<input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.egress.date" is-open="vm.datePickerOpenStatus.date"-->
+                    <!--required/>-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--<div ng-show="editForm.date.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.date.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">-->
+                    <!--This field should be a date and time.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label class="control-label" data-translate="aditumApp.egress.folio" for="field_folio">Folio</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="text" class="form-control" name="folio" id="field_folio"&ndash;&gt;-->
+                    <!--&lt;!&ndash;ng-model="vm.egress.folio"&ndash;&gt;-->
+                    <!--&lt;!&ndash;/>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.category" for="field_category">Category</label>-->
+            <!--<input type="text" class="form-control" name="category" id="field_category"-->
+                    <!--ng-model="vm.egress.category"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.category.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.category.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+            <!--&lt;!&ndash;<label class="control-label" data-translate="aditumApp.egress.paymentMethod" for="field_paymentMethod">Payment Method</label>&ndash;&gt;-->
+            <!--&lt;!&ndash;<input type="text" class="form-control" name="paymentMethod" id="field_paymentMethod"&ndash;&gt;-->
+                    <!--&lt;!&ndash;ng-model="vm.egress.paymentMethod"&ndash;&gt;-->
+                    <!--&lt;!&ndash;required/>&ndash;&gt;-->
+            <!--&lt;!&ndash;<div ng-show="editForm.paymentMethod.$invalid">&ndash;&gt;-->
+                <!--&lt;!&ndash;<p class="help-block"&ndash;&gt;-->
+                    <!--&lt;!&ndash;ng-show="editForm.paymentMethod.$error.required" data-translate="entity.validation.required">&ndash;&gt;-->
+                    <!--&lt;!&ndash;This field is required.&ndash;&gt;-->
+                <!--&lt;!&ndash;</p>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.concept" for="field_concept">Concept</label>-->
+            <!--<input type="text" class="form-control" name="concept" id="field_concept"-->
+                    <!--ng-model="vm.egress.concept"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.concept.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.concept.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.total" for="field_total">Total</label>-->
+            <!--<input type="text" class="form-control" name="total" id="field_total"-->
+                    <!--ng-model="vm.egress.total"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.reference" for="field_reference">Reference</label>-->
+            <!--<input type="text" class="form-control" name="reference" id="field_reference"-->
+                    <!--ng-model="vm.egress.reference"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.comments" for="field_comments">Comments</label>-->
+            <!--<input type="text" class="form-control" name="comments" id="field_comments"-->
+                    <!--ng-model="vm.egress.comments"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.proveedor" for="field_proveedor">Proveedor</label>-->
+            <!--<input type="text" class="form-control" name="proveedor" id="field_proveedor"-->
+                    <!--ng-model="vm.egress.proveedor"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.paymentDate" for="field_paymentDate">Payment Date</label>-->
+                <!--<div class="input-group">-->
+                    <!--<input id="field_paymentDate" type="text" class="form-control" name="paymentDate" datetime-picker="{{dateformat}}" ng-model="vm.egress.paymentDate" is-open="vm.datePickerOpenStatus.paymentDate"-->
+                    <!--/>-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('paymentDate')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                    <!--</span>-->
+                <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.egress.expirationDate" for="field_expirationDate">Expiration Date</label>-->
+                <!--<div class="input-group">-->
+                    <!--<input id="field_expirationDate" type="text" class="form-control" name="expirationDate" datetime-picker="{{dateformat}}" ng-model="vm.egress.expirationDate" is-open="vm.datePickerOpenStatus.expirationDate"-->
+                    <!--/>-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('expirationDate')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                    <!--</span>-->
+                <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.egress.company" for="field_company">Company</label>-->
+            <!--<select class="form-control" id="field_company" name="company" ng-model="vm.egress.companyId" ng-options="company.id as company.id for company in vm.companies"             required>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div ng-show="editForm.company.$invalid">-->
+            <!--<p class="help-block"-->
+                <!--ng-show="editForm.company.$error.required" data-translate="entity.validation.required">-->
+                <!--This field is required.-->
+            <!--</p>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->

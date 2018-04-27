@@ -55,6 +55,18 @@ public class Egress implements Serializable {
     @Column(name = "proveedor")
     private String proveedor;
 
+    @Column(name = "payment_date")
+    private ZonedDateTime paymentDate;
+
+    @Column(name = "expiration_date")
+    private ZonedDateTime expirationDate;
+
+    @Column(name = "state")
+    private Integer state;
+
+    @Column(name = "bill_number")
+    private String billNumber;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -197,6 +209,58 @@ public class Egress implements Serializable {
         this.proveedor = proveedor;
     }
 
+    public ZonedDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public Egress paymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+        return this;
+    }
+
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public ZonedDateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public Egress expirationDate(ZonedDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+        return this;
+    }
+
+    public void setExpirationDate(ZonedDateTime expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public Egress state(Integer state) {
+        this.state = state;
+        return this;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public String getBillNumber() {
+        return billNumber;
+    }
+
+    public Egress billNumber(String billNumber) {
+        this.billNumber = billNumber;
+        return this;
+    }
+
+    public void setBillNumber(String billNumber) {
+        this.billNumber = billNumber;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -244,6 +308,10 @@ public class Egress implements Serializable {
             ", reference='" + getReference() + "'" +
             ", comments='" + getComments() + "'" +
             ", proveedor='" + getProveedor() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
+            ", expirationDate='" + getExpirationDate() + "'" +
+            ", state='" + getState() + "'" +
+            ", billNumber='" + getBillNumber() + "'" +
             "}";
     }
 }

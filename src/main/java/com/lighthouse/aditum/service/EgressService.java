@@ -7,9 +7,14 @@ import com.lighthouse.aditum.service.mapper.EgressMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -43,6 +48,17 @@ public class EgressService {
         return egressMapper.toDto(egress);
     }
 
+    @Transactional(readOnly = true)
+    public Page<EgressDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<Egress> result = egressRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+//        Collections.reverse(result);
+        return result.map(egress -> egressMapper.toDto(egress));
+    }
+
+
     /**
      *  Get all the egresses.
      *
@@ -50,10 +66,10 @@ public class EgressService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<EgressDTO> findAll(Pageable pageable) {
+    public Page<EgressDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Egresses");
-        return egressRepository.findAll(pageable)
-            .map(egressMapper::toDto);
+        Page<Egress> result = egressRepository.findByCompanyId(pageable,companyId);
+        return result.map(egress -> egressMapper.toDto(egress));
     }
 
     /**

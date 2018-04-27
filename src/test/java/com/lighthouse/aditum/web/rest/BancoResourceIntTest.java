@@ -73,6 +73,9 @@ public class BancoResourceIntTest {
     private static final ZonedDateTime DEFAULT_FECHA_CAPITAL_INICIAL = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_FECHA_CAPITAL_INICIAL = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_SALDO = "AAAAAAAAAA";
+    private static final String UPDATED_SALDO = "BBBBBBBBBB";
+
     @Autowired
     private BancoRepository bancoRepository;
 
@@ -124,7 +127,8 @@ public class BancoResourceIntTest {
             .cuentaContable(DEFAULT_CUENTA_CONTABLE)
             .capitalInicial(DEFAULT_CAPITAL_INICIAL)
             .mostrarFactura(DEFAULT_MOSTRAR_FACTURA)
-            .fechaCapitalInicial(DEFAULT_FECHA_CAPITAL_INICIAL);
+            .fechaCapitalInicial(DEFAULT_FECHA_CAPITAL_INICIAL)
+            .saldo(DEFAULT_SALDO);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -163,6 +167,7 @@ public class BancoResourceIntTest {
         assertThat(testBanco.getCapitalInicial()).isEqualTo(DEFAULT_CAPITAL_INICIAL);
         assertThat(testBanco.getMostrarFactura()).isEqualTo(DEFAULT_MOSTRAR_FACTURA);
         assertThat(testBanco.getFechaCapitalInicial()).isEqualTo(DEFAULT_FECHA_CAPITAL_INICIAL);
+        assertThat(testBanco.getSaldo()).isEqualTo(DEFAULT_SALDO);
     }
 
     @Test
@@ -242,7 +247,8 @@ public class BancoResourceIntTest {
             .andExpect(jsonPath("$.[*].cuentaContable").value(hasItem(DEFAULT_CUENTA_CONTABLE.toString())))
             .andExpect(jsonPath("$.[*].capitalInicial").value(hasItem(DEFAULT_CAPITAL_INICIAL.toString())))
             .andExpect(jsonPath("$.[*].mostrarFactura").value(hasItem(DEFAULT_MOSTRAR_FACTURA)))
-            .andExpect(jsonPath("$.[*].fechaCapitalInicial").value(hasItem(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL))));
+            .andExpect(jsonPath("$.[*].fechaCapitalInicial").value(hasItem(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL))))
+            .andExpect(jsonPath("$.[*].saldo").value(hasItem(DEFAULT_SALDO.toString())));
     }
 
     @Test
@@ -264,7 +270,8 @@ public class BancoResourceIntTest {
             .andExpect(jsonPath("$.cuentaContable").value(DEFAULT_CUENTA_CONTABLE.toString()))
             .andExpect(jsonPath("$.capitalInicial").value(DEFAULT_CAPITAL_INICIAL.toString()))
             .andExpect(jsonPath("$.mostrarFactura").value(DEFAULT_MOSTRAR_FACTURA))
-            .andExpect(jsonPath("$.fechaCapitalInicial").value(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL)));
+            .andExpect(jsonPath("$.fechaCapitalInicial").value(sameInstant(DEFAULT_FECHA_CAPITAL_INICIAL)))
+            .andExpect(jsonPath("$.saldo").value(DEFAULT_SALDO.toString()));
     }
 
     @Test
@@ -293,7 +300,8 @@ public class BancoResourceIntTest {
             .cuentaContable(UPDATED_CUENTA_CONTABLE)
             .capitalInicial(UPDATED_CAPITAL_INICIAL)
             .mostrarFactura(UPDATED_MOSTRAR_FACTURA)
-            .fechaCapitalInicial(UPDATED_FECHA_CAPITAL_INICIAL);
+            .fechaCapitalInicial(UPDATED_FECHA_CAPITAL_INICIAL)
+            .saldo(UPDATED_SALDO);
         BancoDTO bancoDTO = bancoMapper.toDto(updatedBanco);
 
         restBancoMockMvc.perform(put("/api/bancos")
@@ -314,6 +322,7 @@ public class BancoResourceIntTest {
         assertThat(testBanco.getCapitalInicial()).isEqualTo(UPDATED_CAPITAL_INICIAL);
         assertThat(testBanco.getMostrarFactura()).isEqualTo(UPDATED_MOSTRAR_FACTURA);
         assertThat(testBanco.getFechaCapitalInicial()).isEqualTo(UPDATED_FECHA_CAPITAL_INICIAL);
+        assertThat(testBanco.getSaldo()).isEqualTo(UPDATED_SALDO);
     }
 
     @Test

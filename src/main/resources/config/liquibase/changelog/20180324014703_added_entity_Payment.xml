@@ -46,6 +46,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="ammount" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

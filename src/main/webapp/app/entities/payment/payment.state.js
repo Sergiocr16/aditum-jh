@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/payment?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                  authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 pageTitle: 'aditumApp.payment.home.title'
             },
             views: {
@@ -112,7 +112,7 @@
             parent: 'payment',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+               authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -130,6 +130,7 @@
                                 account: null,
                                 paymentMethod: null,
                                 comments: null,
+                                ammount: null,
                                 id: null
                             };
                         }

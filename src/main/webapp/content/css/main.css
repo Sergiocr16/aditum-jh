@@ -30,6 +30,7 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     display: none !important;
 }
 
+
 .tdDisabled{
 background:#d6d6d6;
 }

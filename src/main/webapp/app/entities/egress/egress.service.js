@@ -13,15 +13,28 @@
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
+                 isArray: false,
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
                         data.date = DateUtils.convertDateTimeFromServer(data.date);
+                        data.paymentDate = DateUtils.convertDateTimeFromServer(data.paymentDate);
+                        data.expirationDate = DateUtils.convertDateTimeFromServer(data.expirationDate);
                     }
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'findBetweenDatesByCompany':{
+                 method: 'GET',
+                 url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId',
+                 isArray: true,
+                 params:{
+                      initial_time:'@initial_time',
+                      final_time: '@final_time',
+                      companyId: '@companyId',
+            }
+            }
         });
     }
 })();

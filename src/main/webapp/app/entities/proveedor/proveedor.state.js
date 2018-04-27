@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/proveedor?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.proveedor.home.title'
             },
             views: {
@@ -112,7 +112,7 @@
             parent: 'proveedor',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+               authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -145,7 +145,7 @@
             parent: 'proveedor',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                 authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

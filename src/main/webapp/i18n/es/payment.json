@@ -21,6 +21,7 @@
             "account": "Account",
             "paymentMethod": "Payment Method",
             "comments": "Comments",
+            "ammount": "Ammount",
             "house": "House"
         }
     }

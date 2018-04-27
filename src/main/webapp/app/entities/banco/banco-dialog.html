@@ -7,48 +7,47 @@
         <h4 class="modal-title" id="myBancoLabel" data-translate="aditumApp.banco.home.createOrEditLabel">Create or edit a Banco</h4>
     </div>
     <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.banco.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.banco.id" readonly />
+
+        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+
+            <div class="form-group">
+                <label  class="control-label bold font-13" style="font-size:13px;"  data-translate="aditumApp.banco.beneficiario" for="field_beneficiario">Beneficiario</label>
+                <input type="text" class="form-control" name="beneficiario" id="field_beneficiario"
+                       ng-model="vm.banco.beneficiario"
+                />
+            </div>            <div class="form-group">
+                <label class="control-label bold font-13" style="font-size:13px;"  for="field_responsable">Responsable*</label>
+                <input type="text" class="form-control" name="responsable" id="field_responsable"
+                       ng-model="vm.proveedor.responsable"
+                       required/>
+
+            </div>
+
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.beneficiario" for="field_beneficiario">Beneficiario</label>
-            <input type="text" class="form-control" name="beneficiario" id="field_beneficiario"
-                    ng-model="vm.banco.beneficiario"
-                    />
+        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+            <div class="form-group">
+                <label class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCorriente" for="field_cuentaCorriente">Cuenta Corriente</label>
+                <input type="text" class="form-control" name="cuentaCorriente" id="field_cuentaCorriente"
+                       ng-model="vm.banco.cuentaCorriente"
+                       required/>
+
+            </div>
+            <div class="form-group">
+                <label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
+                <input type="text" class="form-control" name="cuentaCliente" id="field_cuentaCliente"
+                       ng-model="vm.banco.cuentaCliente"
+                       required/>
+
+            </div>
         </div>
+
         <div class="form-group">
             <label class="control-label" data-translate="aditumApp.banco.cedula" for="field_cedula">Cedula</label>
             <input type="text" class="form-control" name="cedula" id="field_cedula"
                     ng-model="vm.banco.cedula"
                     />
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.cuentaCorriente" for="field_cuentaCorriente">Cuenta Corriente</label>
-            <input type="text" class="form-control" name="cuentaCorriente" id="field_cuentaCorriente"
-                    ng-model="vm.banco.cuentaCorriente"
-                    required/>
-            <div ng-show="editForm.cuentaCorriente.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.cuentaCorriente.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
-            <input type="text" class="form-control" name="cuentaCliente" id="field_cuentaCliente"
-                    ng-model="vm.banco.cuentaCliente"
-                    required/>
-            <div ng-show="editForm.cuentaCliente.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.cuentaCliente.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
+
         <div class="form-group">
             <label class="control-label" data-translate="aditumApp.banco.moneda" for="field_moneda">Moneda</label>
             <input type="text" class="form-control" name="moneda" id="field_moneda"
@@ -82,6 +81,12 @@
                         <button type="button" class="btn btn-default" ng-click="vm.openCalendar('fechaCapitalInicial')"><i class="glyphicon glyphicon-calendar"></i></button>
                     </span>
                 </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.banco.saldo" for="field_saldo">Saldo</label>
+            <input type="text" class="form-control" name="saldo" id="field_saldo"
+                    ng-model="vm.banco.saldo"
+                    />
         </div>
 
         <div class="form-group">

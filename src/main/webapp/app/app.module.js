@@ -21,8 +21,10 @@
             'pdf',
             'firebase',
             'ngNotify',
+            'angularjs-dropdown-multiselect',
             'angular-popover',
             'ngPopover'
+
         ])
         .run(run);
 

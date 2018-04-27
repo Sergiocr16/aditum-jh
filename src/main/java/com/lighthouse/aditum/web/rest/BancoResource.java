@@ -91,11 +91,12 @@ public class BancoResource {
     @GetMapping("/bancos")
     @Timed
     public ResponseEntity<List<BancoDTO>> getAllBancos(@ApiParam Pageable pageable)
-        throws URISyntaxException {
-        log.debug("REST request to get a page of Bancos");
-        Page<BancoDTO> page = bancoService.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bancos");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+         throws URISyntaxException {
+            log.debug("REST request to get a page of Bancos");
+            Page<BancoDTO> page = bancoService.findAll(pageable);
+            HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/bancos");
+            return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+
     }
 
     /**

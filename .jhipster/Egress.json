@@ -67,6 +67,22 @@
         {
             "fieldName": "proveedor",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "paymentDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "expirationDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "state",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "billNumber",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324021545",

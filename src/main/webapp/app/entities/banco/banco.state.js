@@ -13,8 +13,7 @@
             parent: 'entity',
             url: '/banco?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.banco.home.title'
+         authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             views: {
                 'content@': {
@@ -55,8 +54,7 @@
             parent: 'banco',
             url: '/banco/{id}',
             data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.banco.detail.title'
+               authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             views: {
                 'content@': {
@@ -87,7 +85,7 @@
             parent: 'banco-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                  authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -112,7 +110,7 @@
             parent: 'banco',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+             authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -133,6 +131,7 @@
                                 capitalInicial: null,
                                 mostrarFactura: null,
                                 fechaCapitalInicial: null,
+                                saldo: null,
                                 id: null
                             };
                         }

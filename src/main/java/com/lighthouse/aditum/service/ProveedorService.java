@@ -7,11 +7,12 @@ import com.lighthouse.aditum.service.mapper.ProveedorMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import java.util.List;
 /**
  * Service Implementation for managing Proveedor.
  */
@@ -50,10 +51,11 @@ public class ProveedorService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ProveedorDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Proveedors");
-        return proveedorRepository.findAll(pageable)
-            .map(proveedorMapper::toDto);
+    public Page<ProveedorDTO> findAll(Pageable pageable,Long companyId) {
+        log.debug("Request to get all provedoors");
+        Page<Proveedor> result = proveedorRepository.findByDeletedAndCompanyId(pageable,0,companyId);
+        return result.map(proveedor -> proveedorMapper.toDto(proveedor));
+
     }
 
     /**

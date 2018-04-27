@@ -90,6 +90,7 @@
                             }
                              Company.get({id: $rootScope.companyId},function(condo){
                               vm.contextLiving = " / "+ condo.name;
+                              $rootScope.companyName = condo.name;
                               $rootScope.contextLiving = vm.contextLiving;
                               $rootScope.currentUserImage = data.image_url;
                               if(data.enabled == 0){

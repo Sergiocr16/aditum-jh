@@ -90,10 +90,10 @@ public class EgressResource {
      */
     @GetMapping("/egresses")
     @Timed
-    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable)
+    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Egresses");
-        Page<EgressDTO> page = egressService.findAll(pageable);
+        Page<EgressDTO> page = egressService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -111,7 +111,19 @@ public class EgressResource {
         EgressDTO egressDTO = egressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressDTO));
     }
-
+    @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * DELETE  /egresses/:id : delete the "id" egress.
      *
