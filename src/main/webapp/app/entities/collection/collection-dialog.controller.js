@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CollectionDialogController', CollectionDialogController);
 
-    CollectionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Collection', 'House'];
+    CollectionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Collection', 'House','$rootScope'];
 
-    function CollectionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Collection, House) {
+    function CollectionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Collection, House, $rootScope) {
         var vm = this;
 
         vm.collection = entity;
@@ -15,11 +15,13 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-        vm.houses = House.query();
+
+
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
-        });
+            vm.houses = House.query({companyId:$rootScope.companyId});
+        },600);
 
         function clear () {
             $uibModalInstance.dismiss('cancel');

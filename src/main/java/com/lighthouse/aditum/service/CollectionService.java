@@ -39,6 +39,7 @@ public class CollectionService {
     public CollectionDTO save(CollectionDTO collectionDTO) {
         log.debug("Request to save Collection : {}", collectionDTO);
         Collection collection = collectionMapper.toEntity(collectionDTO);
+        collection.setHouse(collectionMapper.houseFromId(collectionDTO.getHouseId()));
         collection = collectionRepository.save(collection);
         return collectionMapper.toDto(collection);
     }
