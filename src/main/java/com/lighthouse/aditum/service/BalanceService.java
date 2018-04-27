@@ -39,6 +39,7 @@ public class BalanceService {
     public BalanceDTO save(BalanceDTO balanceDTO) {
         log.debug("Request to save Balance : {}", balanceDTO);
         Balance balance = balanceMapper.toEntity(balanceDTO);
+        balance.setHouse(balanceMapper.houseFromId(balanceDTO.getHouseId()));
         balance = balanceRepository.save(balance);
         return balanceMapper.toDto(balance);
     }
@@ -66,6 +67,13 @@ public class BalanceService {
     public BalanceDTO findOne(Long id) {
         log.debug("Request to get Balance : {}", id);
         Balance balance = balanceRepository.findOne(id);
+        return balanceMapper.toDto(balance);
+    }
+
+    @Transactional(readOnly = true)
+    public BalanceDTO findOneByHouse(Long id) {
+        log.debug("Request to get Balance : {}", id);
+        Balance balance = balanceRepository.findOneByHouseId(id);
         return balanceMapper.toDto(balance);
     }
 

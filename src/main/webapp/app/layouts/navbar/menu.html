@@ -64,14 +64,14 @@
                     </li>
                 </ul>
             </li>
-                    <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'user-managment' ||  active === 'tracker' || active === 'metrics' }">
-                        <a href="javascript:;">
-                            <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
-                            <span class="title">Aditum Jhipster</span>
-                            <span class="arrow "></span>
-                            <span class="selected "></span>
-                        </a>
-                        <ul class="sub-menu">
+            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'user-managment' ||  active === 'tracker' || active === 'metrics' }">
+                <a href="javascript:;">
+                    <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
+                    <span class="title">Aditum Jhipster</span>
+                    <span class="arrow "></span>
+                    <span class="selected "></span>
+                </a>
+                <ul class="sub-menu">
                     <li ui-sref="user-management" ng-class="{ 'active' : active === 'user-managment' }">
                         <a ui-sref="user-management">
                             <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Gestión de usuarios
@@ -158,7 +158,7 @@
             <li ui-sref="company-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'company-rh' || active === 'watches' || active === 'condons'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                <span class="title"> Gestión de condominios</span>
+                    <span class="title"> Gestión de condominios</span>
                 </a>
             </li>
             <li ui-sref="officer-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'officer-rh' || active === 'officers'}">
@@ -183,9 +183,9 @@
                         </a>
                     </li>
                     <li ng-click="vm.viewWatch()" ng-class="{ 'active' : active === 'watches'}">
-                    <a href="">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
-                    </a>
+                        <a href="">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
+                        </a>
                     </li>
                 </ul>
 
@@ -236,7 +236,7 @@
                     </li>
                 </ul>
             </li>
-             <!--//es residente-->
+            <!--//es residente-->
             <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'house-absence' ||  active === 'reportHomeService' || active === 'reportEmergency' || active === 'reportInvitationList'}">
 
                 <a href="javascript:;">
@@ -262,9 +262,9 @@
                         </a>
                     </li>
                     <!--<li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">-->
-                        <!--<a href="">-->
-                            <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
-                        <!--</a>-->
+                    <!--<a href="">-->
+                    <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
+                    <!--</a>-->
                     <!--</li>-->
                 </ul>
             </li>
@@ -278,14 +278,14 @@
                 </a>
             </li>
             <!--<li ui-sref="watch-in-residents" has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">-->
-                <!--<a href="">-->
-                    <!--<i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio-->
-                <!--</a>-->
+            <!--<a href="">-->
+            <!--<i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio-->
+            <!--</a>-->
             <!--</li>-->
             <li has-authority="ROLE_USER">
                 <a ng-click="vm.openManual()" >
-                <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
-               </a>
+                    <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
+                </a>
             </li>
             <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
                 <a ui-sref="soporte">
@@ -302,7 +302,9 @@
 
 
                 <ul class="sub-menu">
+
                     <li ui-sref="payment" ng-class="{ 'active' : active === 'residents' }">
+
                         <a href="">
                             <i class="fa fa-users" aria-hidden="true"></i> Ingresos
                         </a>
@@ -312,6 +314,7 @@
                             <i class="fa fa-home fa-lg" aria-hidden="true"></i> Egresos
                         </a>
                     </li>
+
                     <li ui-sref="proveedor" ng-class="{ 'active' : active === 'vehicules'}">
                         <a href="">
                             <i class="fa fa-car " aria-hidden="true"></i> Proveedores
@@ -320,6 +323,26 @@
                     <li ui-sref="banco" ng-class="{ 'active' : active === 'adminVisitors'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Bancos
+
+                    <li ui-sref="vehicule" ng-class="{ 'active' : active === 'vehicules'}">
+                        <a href="">
+                            <i class="fa fa-car " aria-hidden="true"></i> Vehículos
+                        </a>
+                    </li>
+                    <li ui-sref="chargeMenu" ng-class="{ 'active' : active === 'adminVisitors'}">
+                        <a href="">
+                            <i class="fa fa-user" aria-hidden="true"></i> Generar cuotas
+                        </a>
+                    </li>
+                    <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
+                        <a href="">
+                            <i class="fa fa-user" aria-hidden="true"></i> Saldos
+                        </a>
+                    </li>
+                    <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'balance'}">
+                        <a href="">
+                            <i class="fa fa-user" aria-hidden="true"></i> Configurar cuotas
+
                         </a>
                     </li>
                 </ul>

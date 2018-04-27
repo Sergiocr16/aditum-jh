@@ -29,12 +29,19 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "hasContability",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20170228214136",
-    "javadoc": "not an ignored comment",
-    "entityTableName": "company_configuration",
     "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "company_configuration",
     "pagination": "pager",
-    "service": "serviceClass"
+    "javadoc": "not an ignored comment"
 }
