@@ -56,6 +56,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;

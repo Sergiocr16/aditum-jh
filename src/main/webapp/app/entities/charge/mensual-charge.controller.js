@@ -22,7 +22,7 @@
         moment.locale("es");
          vm.validate = function(cuota){
          var s = cuota.ammount;
-             var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","?","/","-","+","@","#","$","%","^","&","*","(",")","-","_","=","|"]
+             var caracteres = ['"',"¡","!","¿","<",">","a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","?","/","-","+","@","#","$","%","^","&","*","(",")","-","_","=","|"]
 
               var invalido = 0;
               angular.forEach(caracteres,function(val,index){
@@ -61,7 +61,6 @@
         }
         vm.cancelar = function() {
             vm.verificando = false;
-            console.log(vm.verificando)
         }
         vm.addNewDue = function() {
             vm.globalConceptNumber++;
@@ -150,7 +149,6 @@
             function createCharge(houseNumber, cuotaNumber) {
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 if (cuota.ammount != 0) {
-                console.log(buildCharge(cuota,vm.houses[houseNumber]))
                        Charge.save(buildCharge(cuota,vm.houses[houseNumber]),function(result){
 
                        })
@@ -168,7 +166,6 @@
             function chargesPerHouse(houseNumber) {
                 var cuotaNumber = 0;
                 var house = vm.houses[houseNumber]
-                console.log(house.housenumber)
                 createCharge(houseNumber, cuotaNumber)
             }
             chargesPerHouse(houseNumber)

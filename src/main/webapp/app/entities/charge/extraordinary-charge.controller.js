@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge','CommonMethods'];
+    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods'];
 
     function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
         var vm = this;
@@ -13,49 +13,100 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
-        vm.datePickerOpenStatus = {};
+        vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
+        vm.selectedAll = false;
+        vm.globalConcept={date:"",text:undefined,type:2};
         moment.locale("es");
-         vm.validate = function(cuota){
-         var s = cuota.ammount;
-             var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","?","/","-","+","@","#","$","%","^","&","*","(",")","-","_","=","|"]
 
-              var invalido = 0;
-              angular.forEach(caracteres,function(val,index){
-              if (s!=undefined){
-               for(var i=0;i<s.length;i++){
-               if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+        vm.selectAll = function(){
+        angular.forEach(vm.houses,function(house,i){
+         if(vm.selectedAll==true && house.isdesocupated==0){
+        house.isIncluded = true;
+        }else{
+         house.isIncluded = false;
+        }
+        })
+        }
 
-               invalido++;
-               }
-               }
-               }
-              })
-              if(invalido==0){
-              cuota.valida = true;
-              }else{
-               cuota.valida = false
-              }
-             }
+        vm.globalConceptSelected = function(){
+        if(vm.globalConcept.text!=undefined){
+                    bootbox.confirm({
+                        message: "¿Está seguro que desea modificar el concepto de todas las cuotas?",
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                        console.log(vm.globalConcept.text)
+                            if (result) {
+                            $scope.$apply(function(){
+                                            angular.forEach(vm.houses,function(house,i){
+
+                                            house.cuota.concept=vm.globalConcept.text;
+
+                                            })
+                            })
+
+                            }
+                        }
+                    });
+}
+        }
+        vm.validate = function(cuota) {
+            var s = cuota.ammount;
+            var caracteres = ['"',"¡","!","¿","<",">","a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var invalido = 0;
+            angular.forEach(caracteres, function(val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
+
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                cuota.valida = true;
+            } else {
+                cuota.valida = false
+            }
+        }
         setTimeout(function() {
             loadAll();
         }, 1500)
         vm.verificarCargos = function() {
-        var invalid = 0;
-        angular.forEach(vm.houses, function(house, key) {
-            angular.forEach(house.cuotas, function(cuota, key) {
-                if (cuota.valida == false) {
-                invalid++;
-                }
+            var invalid = 0;
+            vm.selectedHouses = [];
+            angular.forEach(vm.houses, function(house, key) {
+                    if (house.isIncluded == true) {
+                        vm.selectedHouses.push(house)
+                    }
             })
-        })
-        if(invalid==0){
-         vm.verificando = true;
-        }else{
-           toastr["error"]("Porfavor verifica las cuotas ingresadas")
-        }
+            angular.forEach(vm.selectedHouses, function(house, key) {
+                    if (house.cuota.valida == false) {
+                        invalid++;
+                    }
+            })
+
+            if(vm.selectedHouses.length==0){
+              toastr["error"]("Debe de seleccionar almenos una casa para realizar una cuota.")
+            }else{
+            if (invalid == 0) {
+                vm.verificando = true;
+            } else {
+                toastr["error"]("Porfavor verifica las cuotas ingresadas")
+            }
+            }
         }
         vm.cancelar = function() {
             vm.verificando = false;
@@ -79,45 +130,23 @@
             })
         }
 
-        function buildCharge(cuota,house){
-          cuota.houseId =parseInt(house.id);
-          cuota.type = 1;
-          cuota.date = vm.globalConcept[cuota.globalConcept].date;
-          cuota.state = 1;
-          cuota.deleted = 0;
-          return cuota;
+        function buildCharge(house) {
+            house.cuota.houseId = parseInt(house.id);
+            house.cuota.type = vm.globalConcept.type;
+            house.cuota.date = vm.globalConcept.date;
+            house.cuota.state = 1;
+            house.cuota.deleted = 0;
+            return house.cuota;
         }
 
         vm.createDues = function() {
-            var houseNumber = 0;
-
-            function createCharge(houseNumber, cuotaNumber) {
-                var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
-                if (cuota.ammount != 0) {
-                console.log(buildCharge(cuota,vm.houses[houseNumber]))
-                       Charge.save(buildCharge(cuota,vm.houses[houseNumber]),function(result){
-
-                       })
+            angular.forEach(vm.selectedHouses,function(house,i){
+            if (house.cuota.ammount != 0) {
+                Charge.save(buildCharge(house), function(result) {
+                })
                 }
-                if (vm.houses[houseNumber].cuotas.length - 1 > cuotaNumber) {
-                    createCharge(houseNumber, cuotaNumber + 1)
-                } else {
-                    if (vm.houses.length - 1 > houseNumber) {
-                        var cuotaNumber = 0;
-                        chargesPerHouse(houseNumber + 1)
-                    }
-                }
+            })
             }
-
-            function chargesPerHouse(houseNumber) {
-                var cuotaNumber = 0;
-                var house = vm.houses[houseNumber]
-                console.log(house.housenumber)
-                createCharge(houseNumber, cuotaNumber)
-            }
-            chargesPerHouse(houseNumber)
-
-        }
 
         vm.autoConcept = function(globalConcept) {
             String.prototype.capitalize = function() {
@@ -189,13 +218,8 @@
                     vm.adminConfig = result;
 
                 })
-                vm.globalConceptNumber = 0;
-                vm.globalConcept = [{
-                    date: "",
-                    concept: "",
-                    id: vm.globalConceptNumber,
-                    datePickerOpenStatus: false
-                }];
+
+                   vm.globalConcept={date:"",text:undefined,type:"2"};
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
@@ -204,26 +228,26 @@
                         value.housenumber = "Oficina"
                     }
                     if (value.isdesocupated == 1) {
-                        value.cuota =({
+                        value.cuota = ({
                             ammount: 0,
-                            globalConcept: ""
+                            concept: ""
                         })
                     } else {
                         if (value.due == undefined) {
-                           value.cuota =({
+                            value.cuota = ({
                                 ammount: 0,
-                                globalConcept: ""
+                                concept: ""
                             })
 
                         } else {
-                            value.cuota =({
+                            value.cuota = ({
                                 ammount: 0,
-                                globalConcept: ""
+                                concept: ""
                             })
 
                         }
                     }
-
+                  value.isIncluded = false;
                 })
                 vm.houses = data;
 
@@ -257,5 +281,6 @@
         function openCalendar(index) {
             vm.datePickerOpenStatus = true;
         }
+
     }
 })();

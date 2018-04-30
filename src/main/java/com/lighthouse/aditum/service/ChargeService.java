@@ -46,8 +46,20 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge = chargeRepository.save(charge);
         BalanceDTO balanceDTO= balanceService.findOneByHouse(chargeDTO.getHouseId());
-        int newBalance = Integer.parseInt(balanceDTO.getMaintenance())-Integer.parseInt(chargeDTO.getAmmount());
-        balanceDTO.setMaintenance(newBalance+"");
+        switch (chargeDTO.getType()){
+            case 1:
+                int newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance())-Integer.parseInt(chargeDTO.getAmmount());
+                balanceDTO.setMaintenance(newMaintBalance+"");
+                break;
+            case 2:
+                int newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary())-Integer.parseInt(chargeDTO.getAmmount());
+                balanceDTO.setExtraordinary(newExtraBalance+"");
+                break;
+            case 3:
+                int newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas())-Integer.parseInt(chargeDTO.getAmmount());
+                balanceDTO.setCommonAreas(newCommonBalance+"");
+             break;
+        }
         balanceService.save(balanceDTO);
         return chargeMapper.toDto(charge);
     }
