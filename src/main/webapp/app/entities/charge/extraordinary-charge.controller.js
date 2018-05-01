@@ -18,52 +18,56 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
         vm.selectedAll = false;
-        vm.globalConcept={date:"",text:undefined,type:2};
+        vm.globalConcept = {
+            date: "",
+            text: undefined,
+            type: 2
+        };
         moment.locale("es");
 
-        vm.selectAll = function(){
-        angular.forEach(vm.houses,function(house,i){
-         if(vm.selectedAll==true && house.isdesocupated==0){
-        house.isIncluded = true;
-        }else{
-         house.isIncluded = false;
-        }
-        })
+        vm.selectAll = function() {
+            angular.forEach(vm.houses, function(house, i) {
+                if (vm.selectedAll == true && house.isdesocupated == 0) {
+                    house.isIncluded = true;
+                } else {
+                    house.isIncluded = false;
+                }
+            })
         }
 
-        vm.globalConceptSelected = function(){
-        if(vm.globalConcept.text!=undefined){
-                    bootbox.confirm({
-                        message: "¿Está seguro que desea modificar el concepto de todas las cuotas?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
+        vm.globalConceptSelected = function() {
+            if (vm.globalConcept.text != undefined) {
+                bootbox.confirm({
+                    message: "¿Está seguro que desea modificar el concepto de todas las cuotas?",
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
                         },
-                        callback: function(result) {
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
                         console.log(vm.globalConcept.text)
-                            if (result) {
-                            $scope.$apply(function(){
-                                            angular.forEach(vm.houses,function(house,i){
+                        if (result) {
+                            $scope.$apply(function() {
+                                angular.forEach(vm.houses, function(house, i) {
 
-                                            house.cuota.concept=vm.globalConcept.text;
+                                    house.cuota.concept = vm.globalConcept.text;
 
-                                            })
+                                })
                             })
 
-                            }
                         }
-                    });
-}
+                    }
+                });
+            }
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-            var caracteres = ['"',"¡","!","¿","<",">","a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -88,46 +92,29 @@
             var invalid = 0;
             vm.selectedHouses = [];
             angular.forEach(vm.houses, function(house, key) {
-                    if (house.isIncluded == true) {
-                        vm.selectedHouses.push(house)
-                    }
+                if (house.isIncluded == true) {
+                    vm.selectedHouses.push(house)
+                }
             })
             angular.forEach(vm.selectedHouses, function(house, key) {
-                    if (house.cuota.valida == false) {
-                        invalid++;
-                    }
+                if (house.cuota.valida == false) {
+                    invalid++;
+                }
             })
 
-            if(vm.selectedHouses.length==0){
-              toastr["error"]("Debe de seleccionar almenos una casa para realizar una cuota.")
-            }else{
-            if (invalid == 0) {
-                vm.verificando = true;
+            if (vm.selectedHouses.length == 0) {
+                toastr["error"]("Debe de seleccionar almenos una casa para realizar una cuota.")
             } else {
-                toastr["error"]("Porfavor verifica las cuotas ingresadas")
-            }
+                if (invalid == 0) {
+                    vm.verificando = true;
+                } else {
+                    toastr["error"]("Porfavor verifica las cuotas ingresadas")
+                }
             }
         }
         vm.cancelar = function() {
             vm.verificando = false;
             console.log(vm.verificando)
-        }
-
-
-        vm.definirCuotaMetroCuadrado = function() {
-            vm.cuotaFija = false;
-            angular.forEach(vm.houses, function(house, key) {
-                angular.forEach(house.cuotas, function(cuota, key) {
-                    if (house.isdesocupated == 1) {
-                        cuota.ammount = 0;
-
-                    } else {
-                        cuota.ammount = house.squareMeters * vm.adminConfig.squareMetersPrice;
-
-
-                    }
-                })
-            })
         }
 
         function buildCharge(house) {
@@ -140,59 +127,11 @@
         }
 
         vm.createDues = function() {
-            angular.forEach(vm.selectedHouses,function(house,i){
-            if (house.cuota.ammount != 0) {
-                Charge.save(buildCharge(house), function(result) {
-                })
+            angular.forEach(vm.selectedHouses, function(house, i) {
+                if (house.cuota.ammount != 0) {
+                    Charge.save(buildCharge(house), function(result) {})
                 }
             })
-            }
-
-        vm.autoConcept = function(globalConcept) {
-            String.prototype.capitalize = function() {
-                return this.replace(/(?:^|\s)\S/g, function(a) {
-                    return a.toUpperCase();
-                });
-            };
-
-            globalConcept.concept = "Mantenimiento " + moment(globalConcept.date).format("MMMM").capitalize() + " " + moment(globalConcept.date).format("YYYY");
-
-        }
-        vm.deleteDue = function(id) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar esta columna?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        $scope.$apply(function() {
-                            angular.forEach(vm.globalConcept, function(value, key) {
-                                if (value.id == id) {
-                                    vm.globalConcept.splice(key, 1);
-                                }
-                            })
-
-                            angular.forEach(vm.houses, function(value, key) {
-                                angular.forEach(value.cuotas, function(cuota, key) {
-                                    if (cuota.globalConcept == id) {
-                                        value.cuotas.splice(key, 1);
-                                    }
-                                })
-                            })
-                        }, 10)
-
-                    }
-                }
-            });
-
         }
 
         function loadAll() {
@@ -219,7 +158,11 @@
 
                 })
 
-                   vm.globalConcept={date:"",text:undefined,type:"2"};
+                vm.globalConcept = {
+                    date: "",
+                    text: undefined,
+                    type: "2"
+                };
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
@@ -247,7 +190,7 @@
 
                         }
                     }
-                  value.isIncluded = false;
+                    value.isIncluded = false;
                 })
                 vm.houses = data;
 
