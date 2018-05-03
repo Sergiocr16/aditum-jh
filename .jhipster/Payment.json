@@ -54,6 +54,14 @@
         {
             "fieldName": "ammount",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "concept",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "companyId",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324014703",

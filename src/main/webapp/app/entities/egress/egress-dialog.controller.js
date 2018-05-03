@@ -16,6 +16,12 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         CommonMethods.validateNumbers();
+        CommonMethods.formatCurrencyInputs();
+          $(function() {
+
+            });
+
+
 
 
         setTimeout(function(){

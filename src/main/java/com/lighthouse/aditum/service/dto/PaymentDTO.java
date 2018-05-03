@@ -34,6 +34,10 @@ public class PaymentDTO implements Serializable {
 
     private String ammount;
 
+    private String concept;
+
+    private Integer companyId;
+
     private Long houseId;
 
     public Long getId() {
@@ -100,6 +104,22 @@ public class PaymentDTO implements Serializable {
         this.ammount = ammount;
     }
 
+    public String getConcept() {
+        return concept;
+    }
+
+    public void setConcept(String concept) {
+        this.concept = concept;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -140,6 +160,8 @@ public class PaymentDTO implements Serializable {
             ", paymentMethod='" + getPaymentMethod() + "'" +
             ", comments='" + getComments() + "'" +
             ", ammount='" + getAmmount() + "'" +
+            ", concept='" + getConcept() + "'" +
+            ", companyId='" + getCompanyId() + "'" +
             "}";
     }
 }

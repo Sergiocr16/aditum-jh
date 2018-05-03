@@ -81,7 +81,33 @@ public class PaymentResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentDTO.getId().toString()))
             .body(result);
     }
-
+    @GetMapping("/payments/between/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<PaymentDTO>> getBetweenDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  int companyId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<PaymentDTO> page = paymentService.findByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/payments/between/{initial_time}/{final_time}/byCompany/{companyId}/andAccount/{accountId}")
+    @Timed
+    public ResponseEntity<List<PaymentDTO>> getBetweenDatesAndCompanyAndAccount(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  int companyId,
+        @PathVariable(value = "accountId")  String accountId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<PaymentDTO> page = paymentService.findByDatesBetweenAndCompanyAndAccount(pageable,initial_time,final_time,companyId,accountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /payments : get all the payments.
      *
@@ -90,8 +116,7 @@ public class PaymentResource {
      */
     @GetMapping("/payments")
     @Timed
-    public ResponseEntity<List<PaymentDTO>> getAllPayments(@ApiParam Pageable pageable)
-        throws URISyntaxException {
+    public ResponseEntity<List<PaymentDTO>> getAllPayments(@ApiParam Pageable pageable) throws URISyntaxException {
         log.debug("REST request to get a page of Payments");
         Page<PaymentDTO> page = paymentService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments");

@@ -58,7 +58,15 @@ public class EgressService {
         return result.map(egress -> egressMapper.toDto(egress));
     }
 
-
+    @Transactional(readOnly = true)
+    public Page<EgressDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable,String initialTime,String finalTime,Long companyId,String accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<Egress> result = egressRepository.findByDatesBetweenAndCompanyAndAccount(pageable,zd_initialTime,zd_finalTime,companyId,accountId);
+//        Collections.reverse(result);
+        return result.map(egress -> egressMapper.toDto(egress));
+    }
     /**
      *  Get all the egresses.
      *

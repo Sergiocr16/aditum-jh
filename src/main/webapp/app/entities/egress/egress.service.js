@@ -34,6 +34,17 @@
                       final_time: '@final_time',
                       companyId: '@companyId',
             }
+            },
+            'findBetweenDatesByCompanyAndAccount':{
+                 method: 'GET',
+                 url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId/andAccount/:accountId',
+                 isArray: true,
+                 params:{
+                      initial_time:'@initial_time',
+                      final_time: '@final_time',
+                      companyId: '@companyId',
+                      accountId: '@accountId'
+            }
             }
         });
     }
