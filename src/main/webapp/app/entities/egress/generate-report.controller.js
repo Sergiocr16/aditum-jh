@@ -135,7 +135,7 @@
             setTimeout(function() {
                 $("#loadingIcon2").fadeIn(100);
             }, 200)
-            Egress.findBetweenDatesByCompany({
+            Egress.findBetweenCobroDatesByCompany({
                  initial_time: moment(vm.dates.initial_time).format(),
                  final_time: moment(vm.dates.final_time).format(),
                  companyId: $rootScope.companyId,

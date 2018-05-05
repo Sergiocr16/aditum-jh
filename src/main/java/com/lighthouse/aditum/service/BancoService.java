@@ -36,13 +36,14 @@ public class BancoService {
      * @param bancoDTO the entity to save
      * @return the persisted entity
      */
+
     public BancoDTO save(BancoDTO bancoDTO) {
         log.debug("Request to save Banco : {}", bancoDTO);
         Banco banco = bancoMapper.toEntity(bancoDTO);
+        banco.setCompany(bancoMapper.companyFromId(bancoDTO.getCompanyId()));
         banco = bancoRepository.save(banco);
         return bancoMapper.toDto(banco);
     }
-
     /**
      *  Get all the bancos.
      *

@@ -45,7 +45,17 @@
                       companyId: '@companyId',
                       accountId: '@accountId'
             }
-            }
+            },
+           'findBetweenCobroDatesByCompany':{
+                         method: 'GET',
+                         url: 'api/egresses/betweenCobro/:initial_time/:final_time/byCompany/:companyId',
+                         isArray: true,
+                         params:{
+                              initial_time:'@initial_time',
+                              final_time: '@final_time',
+                              companyId: '@companyId',
+                    }
+                    },
         });
     }
 })();

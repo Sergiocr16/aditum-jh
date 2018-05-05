@@ -16,7 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.accountsQuantity = 0;
         loadAll();
 
         function loadAll () {
@@ -38,12 +38,35 @@
                 vm.queryCount = vm.totalItems;
                 vm.bancos = data;
                 vm.page = pagingParams.page;
+                 setTimeout(function() {
+                     $("#loadingIcon").fadeOut(300);
+                 }, 400)
+                 setTimeout(function() {
+                     $("#tableData").fadeIn('slow');
+                 },900 )
+                angular.forEach(data,function(value,key){
+
+//                   if(value.deleted==0){
+                     vm.accountsQuantity = vm.accountsQuantity+1;
+//                   }
+                })
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+  vm.formatearNumero = function(nStr) {
 
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+             return x1 + x2;
+         }
         function loadPage(page) {
             vm.page = page;
             vm.transition();

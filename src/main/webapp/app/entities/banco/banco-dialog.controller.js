@@ -28,6 +28,7 @@
         function save () {
             vm.isSaving = true;
             if (vm.banco.id !== null) {
+            console.log(vm.banco)
                 Banco.update(vm.banco, onSaveSuccess, onSaveError);
             } else {
                 Banco.save(vm.banco, onSaveSuccess, onSaveError);

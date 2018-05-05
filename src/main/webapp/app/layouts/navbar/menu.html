@@ -287,11 +287,7 @@
                     <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
                 </a>
             </li>
-            <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
-                <a ui-sref="soporte">
-                    <i class="fa fa-life-ring" aria-hidden="true"></i> Soporte
-                </a>
-            </li>
+
             <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
@@ -302,7 +298,35 @@
 
 
                 <ul class="sub-menu">
-
+                    <li>
+                        <a href="javascript:;">
+                            <i class="fa fa-cogs"></i>
+                            <span class="title">
+					Ajax Submenu 1 </span>
+                            <span class="selected">
+					</span>
+                            <span class="arrow open">
+					</span>
+                        </a>
+                        <ul class="sub-menu">
+                            <li>
+                                <a class="ajaxify" href="layout_ajax_content_2.html">
+                                    Ajax Link Sample 1 </a>
+                            </li>
+                            <li>
+                                <a class="ajaxify" href="layout_ajax_content_3.html">
+                                    Ajax Link Sample 2 </a>
+                            </li>
+                            <li>
+                                <a class="ajaxify" href="layout_ajax_content_2.html">
+                                    Ajax Link Sample 3 </a>
+                            </li>
+                            <li>
+                                <a class="ajaxify" href="layout_ajax_content_3.html">
+                                    Ajax Link Sample 4 </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li ui-sref="payment" ng-class="{ 'active' : active === 'residents' }">
 
                         <a href="">
@@ -346,6 +370,11 @@
                         </a>
                     </li>
                 </ul>
+            </li>
+            <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
+                <a ui-sref="soporte">
+                    <i class="fa fa-life-ring" aria-hidden="true"></i> Soporte
+                </a>
             </li>
         </ul>
         <!-- END SIDEBAR MENU -->

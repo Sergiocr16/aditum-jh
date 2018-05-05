@@ -13,7 +13,6 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
         vm.egress = entity;
-        console.log(vm.egress)
         vm.previousState = previousState.name;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -31,11 +30,10 @@
              if(vm.egress.billNumber == null || vm.egress.billNumber == 'undefined' || vm.egress.billNumber == '' ){
                vm.egress.billNumber = 'Sin Registrar'
               }
-              console.log(vm.egress)
-              console.log(vm.egress.paymentDate)
+
          if(vm.egress.paymentDate == null || vm.egress.paymentDate == undefined || vm.egress.paymentDate == 'No pagado' ){
              vm.egress.paymentDate = "No pagado";
-         } else{console.log('adf')
+         } else{
               Banco.get({id: vm.egress.account},onSuccessAccount)
          }
           function save () {
@@ -48,9 +46,8 @@
            }
            if(vm.egress.paymentDate !== null || vm.egress.paymentDate == 'undefined' ){
                 vm.egress.state = 2;
-                console.log(vm.egress)
             }
-                Egress.update(vm.egress, onSaveSuccess, onSaveError);
+            Egress.update(vm.egress, onSaveSuccess, onSaveError);
 
 
         }
@@ -83,11 +80,26 @@
                         });
                 }
          function onSaveSuccess (result) {
+             angular.forEach(vm.bancos,function(banco,key){
+                 if(banco.id == vm.egress.account){
+                   banco.saldo = banco.saldo - vm.egress.total;
+                   console.log(banco)
+                   Banco.update(banco, onAccountBalanceSuccess, onSaveError);
+
+                 }
+
+             })
+
+
+        }
+        function  onAccountBalanceSuccess (result) {
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
             toastr["success"]("Se reportó el pago correctamente");
             vm.isSaving = false;
         }
+
+
         setTimeout(function(){Proveedor.get({id: vm.egress.proveedor},onSuccessProovedor)},700)
 
         function onSuccessProovedor(proovedor, headers) {
@@ -107,7 +119,7 @@
          }
          function onSuccessAccount(account, headers) {
           vm.egress.banco = account.beneficiario;
-console.log( vm.egress.banco)
+
           }
 
           vm.datePickerOpenStatus.paymentDate = false;
