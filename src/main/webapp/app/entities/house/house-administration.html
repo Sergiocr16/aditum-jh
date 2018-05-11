@@ -33,7 +33,9 @@
     </div>
 </div>
 <div class="row display-none" id="tableData">
-    <div class="col-md-12 no-padding">
+    <h2 class="text-center" ng-hide="vm.houses.length!=0" style="margin-top:60px">No hay filiales registradas.</h2>
+    <h4 class="text-center gray-font" ng-hide="vm.houses.length!=0">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
+    <div class="col-md-12 no-padding" ng-show="vm.houses.length!=0">
         <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
 
             <!--<div class="col-md-12" style="padding:5px 5px">-->

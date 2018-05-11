@@ -8,7 +8,7 @@
     HouseAdministrationController.$inject = ['$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House'];
 
     function HouseAdministrationController($localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House) {
-        $rootScope.active = "houses";
+
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -16,7 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+$rootScope.active = "houseAdministration";
 
         setTimeout(function() {
             loadAll();
@@ -62,6 +62,7 @@
                 } else {
                     if (vm.houses.length > 0) {
                         $rootScope.houseSelected = vm.houses[0]
+                        $localStorage.houseSelected = vm.houses[0]
                         vm.house = $rootScope.houseSelected;
                     }
                 }
