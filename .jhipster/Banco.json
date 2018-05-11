@@ -57,6 +57,10 @@
         {
             "fieldName": "saldo",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180323230211",

@@ -8,7 +8,7 @@
     EgressController.$inject = ['$scope','$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonMethods','Proveedor','$rootScope'];
 
     function EgressController($scope,$state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams,CommonMethods,Proveedor,$rootScope) {
-
+        $rootScope.active = "egress";
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -30,7 +30,7 @@
            return false;
        }
 
-        setTimeout(function(){loadProveedors();},500)
+        setTimeout(function(){loadProveedors();},700)
         function loadProveedors() {
             Proveedor.query({companyId: $rootScope.companyId}).$promise.then(onSuccessProveedores);
             function onSuccessProveedores(data, headers) {

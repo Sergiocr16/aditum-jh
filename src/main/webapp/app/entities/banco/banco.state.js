@@ -49,7 +49,47 @@
                     return $translate.refresh();
                 }]
             }
-        })
+        })    .state('banco-configuration', {
+                      parent: 'entity',
+                      url: '/banco-configuration?page&sort&search',
+                      data: {
+                   authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                      },
+                      views: {
+                          'content@': {
+                              templateUrl: 'app/entities/banco/bancos-configuration.html',
+                              controller: 'BancoController',
+                              controllerAs: 'vm'
+                          }
+                      },
+                      params: {
+                          page: {
+                              value: '1',
+                              squash: true
+                          },
+                          sort: {
+                              value: 'id,asc',
+                              squash: true
+                          },
+                          search: null
+                      },
+                      resolve: {
+                          pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                              return {
+                                  page: PaginationUtil.parsePage($stateParams.page),
+                                  sort: $stateParams.sort,
+                                  predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                                  ascending: PaginationUtil.parseAscending($stateParams.sort),
+                                  search: $stateParams.search
+                              };
+                          }],
+                          translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                              $translatePartialLoader.addPart('banco');
+                              $translatePartialLoader.addPart('global');
+                              return $translate.refresh();
+                          }]
+                      }
+                  })
         .state('banco-detail', {
             parent: 'banco',
             url: '/banco/{id}',
@@ -106,8 +146,8 @@
                 });
             }]
         })
-        .state('banco.new', {
-            parent: 'banco',
+        .state('banco-configuration.new', {
+            parent: 'banco-configuration',
             url: '/new',
             data: {
              authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
@@ -137,14 +177,49 @@
                         }
                     }
                 }).result.then(function() {
-                    $state.go('banco', null, { reload: 'banco' });
+                    $state.go('banco-configuration', null, { reload: 'banco-configuration' });
                 }, function() {
-                    $state.go('banco');
+                    $state.go('banco-configuration');
                 });
             }]
         })
-        .state('banco.edit', {
+        .state('banco.transferencia', {
             parent: 'banco',
+            url: '/new',
+            data: {
+                      authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/transferencia/transferencia-dialog.html',
+                    controller: 'TransferenciaDialogController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: function () {
+                            return {
+                                concepto: null,
+                                cuentaOrigen: null,
+                                cuentaDestino: null,
+                                monto: null,
+                                idCompany: null,
+                                fecha: null,
+                                idBancoDestino: null,
+                                idBancoOrigen: null,
+                                id: null
+                            };
+                        }
+                    }
+                }).result.then(function() {
+                   $state.go('banco', null, { reload: 'banco' });
+                }, function() {
+                 $state.go('banco');
+                });
+            }]
+        })
+        .state('banco-configuration.edit', {
+            parent: 'banco-configuration',
             url: '/{id}/edit',
             data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
@@ -162,7 +237,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go('banco', null, { reload: 'banco' });
+                    $state.go('banco-configuration', null, { reload: 'banco-configuration' });
                 }, function() {
                     $state.go('^');
                 });

@@ -121,10 +121,11 @@
                     <span class="title">Dashboard</span>
                 </a>
             </li>
+
             <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
                 <a href="javascript:;">
                     <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                    <span class="title">Condominio</span>
+                    <span class="title">Administración</span>
                     <span class="arrow "></span>
                     <span class="selected "></span>
                 </a>
@@ -288,88 +289,146 @@
                 </a>
             </li>
 
-            <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
+
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
+
                 <a href="javascript:;">
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                    <span class="title">Contabilidad</span>
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span class="title "> Finanzas</span>
                     <span class="arrow "></span>
                     <span class="selected "></span>
                 </a>
 
-
                 <ul class="sub-menu">
-                    <li>
+
+                    <li ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
                         <a href="javascript:;">
-                            <i class="fa fa-cogs"></i>
-                            <span class="title">
-					Ajax Submenu 1 </span>
+                            <i class="fa fa-arrow-left"></i>
+                            <span class="title">Egresos</span>
+                            <span class="selected">
+                            </span>
+                                    <span class="arrow open">
+                            </span>
+                        </a>
+                        <ul class="sub-menu" >
+                            <li ui-sref="egress.new" ng-class="{ 'active' : active === 'newEgress' }"  style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>Capturar gasto</span>
+                                </a>
+                            </li>
+                            <li ui-sref="egress" ng-class="{ 'active' : active === 'egress' }"  style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Gastos</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </li>
+                    <li ng-class="{ 'active' : active === 'a' ||  active === 'a'} " >
+                        <a href="javascript:;">
+                            <i class="fa fa-arrow-right"></i>
+                            <span class="title">Ingresos</span>
                             <span class="selected">
 					</span>
                             <span class="arrow open">
 					</span>
                         </a>
-                        <ul class="sub-menu">
-                            <li>
-                                <a class="ajaxify" href="layout_ajax_content_2.html">
-                                    Ajax Link Sample 1 </a>
+                        <ul class="sub-menu" >
+                            <li ui-sref="egress.new" ng-class="{ 'active' : active === 'a' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span  >Capturar ingreso</span>
+                                </a>
                             </li>
-                            <li>
-                                <a class="ajaxify" href="layout_ajax_content_3.html">
-                                    Ajax Link Sample 2 </a>
+                            <li ui-sref="egress" ng-class="{ 'active' : active === 'a' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Ingresos</span>
+                                </a>
                             </li>
-                            <li>
-                                <a class="ajaxify" href="layout_ajax_content_2.html">
-                                    Ajax Link Sample 3 </a>
-                            </li>
-                            <li>
-                                <a class="ajaxify" href="layout_ajax_content_3.html">
-                                    Ajax Link Sample 4 </a>
-                            </li>
+
                         </ul>
                     </li>
-                    <li ui-sref="payment" ng-class="{ 'active' : active === 'residents' }">
 
-                        <a href="">
-                            <i class="fa fa-users" aria-hidden="true"></i> Ingresos
+                    <li ng-class="{ 'active' : active === '' ||  active === ''} ">
+                        <a href="javascript:;">
+                            <i class="fa fa-arrow-left"></i>
+                            <span class="title">Cuotas</span>
+                            <span class="selected">
+                            </span>
+                            <span class="arrow open">
+                            </span>
                         </a>
-                    </li>
-                    <li ui-sref="egress" ng-class="{ 'active' : active === 'houses' }">
-                        <a href="">
-                            <i class="fa fa-home fa-lg" aria-hidden="true"></i> Egresos
-                        </a>
+                        <ul class="sub-menu" >
+                            <li ui-sref="chargeMenu" ng-class="{ 'active' : active === '' }"style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>Generar cuota ordinaria</span>
+                                </a>
+                            </li>
+                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === '' }"style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Cuotas</span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
 
-                    <li ui-sref="proveedor" ng-class="{ 'active' : active === 'vehicules'}">
-                        <a href="">
-                            <i class="fa fa-car " aria-hidden="true"></i> Proveedores
-                        </a>
-                    </li>
-                    <li ui-sref="banco" ng-class="{ 'active' : active === 'adminVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Bancos
+                    <li ng-class="{ 'active' : active === '' ||  active === ''} "  ui-sref="banco">
+                        <a href="javascript:;" >
+                            <i class="fa fa-credit-card"></i>
+                            <span class="title">Cuentas</span>
+                            <span class="selected">
+                            </span>
 
-                    <li ui-sref="balance-by-account" ng-class="{ 'active' : active === 'vehicules'}">
-                        <a href="">
-                            <i class="fa fa-car " aria-hidden="true"></i> Vehículos
                         </a>
+
                     </li>
-                    <li ui-sref="chargeMenu" ng-class="{ 'active' : active === 'adminVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Generar cuotas
+                    <li ng-class="{ 'active' : active === '' ||  active === ''} ">
+
+                        <a href="javascript:;">
+                            <i class="fa fa-cogs"></i>
+                            <span class="title">Configuracion</span>
+                            <span class="selected">
+                            </span>
+                            <span class="arrow open">
+                            </span>
                         </a>
+                        <ul class="sub-menu" >
+                            <li ui-sref="proveedor" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span>Proovedores</span>
+                                </a>
+                            </li>
+                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Cuotas</span>
+                                </a>
+                            </li>
+                            <li ui-sref="banco-configuration" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Cuentas</span>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
-                    <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
+
+                    <li ui-sref="houses-balance" ng-class="{ 'active' : active === ''}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Saldos
                         </a>
                     </li>
-                    <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'balance'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Configurar cuotas
 
-                        </a>
-                    </li>
                 </ul>
+
             </li>
             <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
                 <a ui-sref="soporte">

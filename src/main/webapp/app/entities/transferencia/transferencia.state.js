@@ -108,41 +108,6 @@
                 });
             }]
         })
-        .state('banco-detail.new', {
-            parent: 'banco-detail',
-            url: '/new',
-            data: {
-                      authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/transferencia/transferencia-dialog.html',
-                    controller: 'TransferenciaDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                concepto: null,
-                                cuentaOrigen: null,
-                                cuentaDestino: null,
-                                monto: null,
-                                idCompany: null,
-                                fecha: null,
-                                idBancoDestino: null,
-                                idBancoOrigen: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                     window.history.back();
-                }, function() {
-                   window.history.back();
-                });
-            }]
-        })
         .state('transferencia.edit', {
             parent: 'transferencia',
             url: '/{id}/edit',

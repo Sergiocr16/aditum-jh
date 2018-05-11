@@ -59,7 +59,32 @@ public class TransferenciaResource {
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
+    @GetMapping("/transferencias/between/{initial_time}/{final_time}/incomingTransfer/{accountId}")
+    @Timed
+    public ResponseEntity<List<Transferencia>> getBetweenDatesByInComingTransfer(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "accountId")  int accountId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<Transferencia> page = transferenciaService.getBetweenDatesByInComingTransfer(pageable,initial_time,final_time,accountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transferencia");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/transferencias/between/{initial_time}/{final_time}/outgoingTransfer/{accountId}")
+    @Timed
+    public ResponseEntity<List<Transferencia>> getBetweenDatesByOutgoingTransfer(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "accountId")  int accountId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<Transferencia> page = transferenciaService.getBetweenDatesByOutgoingTransfer(pageable,initial_time,final_time,accountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/transferencia");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * PUT  /transferencias : Updates an existing transferencia.
      *

@@ -37,6 +37,8 @@ public class BancoDTO implements Serializable {
 
     private String saldo;
 
+    private Integer deleted;
+
     private Long companyId;
 
     public Long getId() {
@@ -127,6 +129,14 @@ public class BancoDTO implements Serializable {
         this.saldo = saldo;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -170,6 +180,7 @@ public class BancoDTO implements Serializable {
             ", mostrarFactura='" + getMostrarFactura() + "'" +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
             ", saldo='" + getSaldo() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

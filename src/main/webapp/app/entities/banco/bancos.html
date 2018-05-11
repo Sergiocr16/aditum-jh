@@ -117,37 +117,38 @@
 </div>
 <div  class="row display-none" id="tableData">
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list">Bancos
+        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list">Cuentas
 
         </h3>
+
         <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
-            <div class="input-icon col-md-7   col-lg-7  col-md-7 col-xs-12">
+            <button type="button" class="btn default col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="banco.transferencia" name="button"><i class="fa fa-exchange" ></i> Transferir fondos</button>
+            <div class="input-icon col-md-7 no-padding-right  col-lg-7  col-md-5 col-xs-12">
                 <i class="fa fa-search"></i>
                 <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
             </div>
-            <button type="button" class="btn btn-success green col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="banco.new" name="button">Registrar banco</button>
 
         </div>
 
         <br/>
         <div class="portlet-body ">
             <div ng-show="vm.accountsQuantity == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2 class="text-center gray-font">No hay proveedores registrados</h2>
+                <h2 class="text-center gray-font">No hay cuentas registradas</h2>
             </div>
             <div class="table-scrollable" ng-show="vm.accountsQuantity>0">
                 <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:12px;">
                     <thead  class="flip-content">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                        <th jh-sort-by="beneficiario"><span>Nombre</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
-                        <th jh-sort-by="cuentaCorriente"><span >Cuenta corriente</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
-                        <th jh-sort-by="cuentaCliente"><span >Cuenta cliente</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
-                        <th jh-sort-by="saldo"><span>Saldo actual</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
+                        <th ><span>Nombre</span> </th>
+                        <th><span >Cuenta corriente</span> </th>
+                        <th><span >Cuenta cliente</span></th>
+                        <th><span>Saldo actual</span> </span></th>
                         <th>Consultar movimientos</th>
-                        <th>Editar</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="banco in vm.bancos  | filter:search  | orderBy:'id'">
+                    <tr ng-repeat="banco in vm.bancos  | filter:search  | orderBy:'id'" >
+
                         <td>{{banco.beneficiario}}</td>
                         <td>{{banco.cuentaCorriente}}</td>
                         <td>{{banco.cuentaCliente}}</td>
@@ -156,16 +157,15 @@
 
                         <td> <a class="light-gray-font"  ui-sref="banco-detail({id:banco.id})">Consultar movimientos</a></td>
 
-                        <td> <a class="light-gray-font" ui-sref="banco.edit({id:banco.id})">Editar</a></td>
-
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+        <div class="text-center" >
+            <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        </div>
+        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
     </div>
-    <div class="text-center" ng-show="vm.proveedorsQuantity>0">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-show="vm.proveedorsQuantity>0"></uib-pager>
+
 </div>

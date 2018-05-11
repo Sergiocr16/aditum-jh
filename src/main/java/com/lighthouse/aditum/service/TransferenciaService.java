@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
+
 
 /**
  * Service Implementation for managing Transferencia.
@@ -35,7 +37,20 @@ public class TransferenciaService {
         log.debug("Request to save Transferencia : {}", transferencia);
         return transferenciaRepository.save(transferencia);
     }
-
+    @Transactional(readOnly = true)
+    public Page<Transferencia> getBetweenDatesByInComingTransfer(Pageable pageable,String initialTime,String finalTime,int accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return transferenciaRepository.findBetweenDatesByInComingTransfer(pageable,zd_initialTime,zd_finalTime,accountId);
+    }
+    @Transactional(readOnly = true)
+    public Page<Transferencia> getBetweenDatesByOutgoingTransfer(Pageable pageable,String initialTime,String finalTime,int accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return transferenciaRepository.findBetweenDatesByOutgoingTransfer(pageable,zd_initialTime,zd_finalTime,accountId);
+    }
     /**
      *  Get all the transferencias.
      *

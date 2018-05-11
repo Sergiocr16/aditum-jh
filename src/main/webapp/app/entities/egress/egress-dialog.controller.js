@@ -9,6 +9,10 @@
 
     function EgressDialogController (CommonMethods,$timeout, $state, $scope, $stateParams, previousState,  entity, Egress, Company,Principal,Proveedor,$rootScope,Banco) {
         var vm = this;
+             $rootScope.active = "newEgress";
+
+
+
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.egress = entity;
         vm.clear = clear;
@@ -154,6 +158,7 @@
                 });
         }
         function save () {
+            CommonMethods.waitingMessage();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
             if (currentTime <= expirationTime) {
@@ -177,6 +182,7 @@
             }
         }
         function onSaveReport (result) {
+            bootbox.hideAll();
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
             toastr["success"]("Se reportó el pago correctamente");
@@ -184,6 +190,7 @@
         }
 
         function onSaveSuccess (result) {
+            bootbox.hideAll();
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
             toastr["success"]("Se registró el gasto correctamente");
@@ -191,6 +198,8 @@
         }
 
         function onSaveError () {
+             bootbox.hideAll()
+         toastr["error"]("Un error inesperado ocurrió");
             vm.isSaving = false;
         }
          vm.updatePicker = function() {

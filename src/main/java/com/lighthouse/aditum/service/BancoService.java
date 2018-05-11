@@ -51,10 +51,10 @@ public class BancoService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<BancoDTO> findAll(Pageable pageable) {
+    public Page<BancoDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Bancos");
-        return bancoRepository.findAll(pageable)
-            .map(bancoMapper::toDto);
+        Page<Banco> result = bancoRepository.findByCompanyIdAndDeleted(pageable,companyId,1);
+        return result.map(banco -> bancoMapper.toDto(banco));
     }
 
     /**

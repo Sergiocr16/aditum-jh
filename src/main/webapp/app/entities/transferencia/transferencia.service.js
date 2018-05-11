@@ -21,7 +21,29 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+               'findBetweenDatesByIncomingTransfer':{
+                     method: 'GET',
+                     url: 'api/transferencias/between/:initial_time/:final_time/incomingTransfer/:accountId',
+                     isArray: true,
+                     params:{
+                          initial_time:'@initial_time',
+                          final_time: '@final_time',
+                          accountId: '@accountId'
+                }
+                },
+
+
+            'findBetweenDatesByOutgoingTransfer':{
+                 method: 'GET',
+                 url: 'api/transferencias/between/:initial_time/:final_time/outgoingTransfer/:accountId',
+                 isArray: true,
+                 params:{
+                      initial_time:'@initial_time',
+                      final_time: '@final_time',
+                      accountId: '@accountId'
+            }
+            },
         });
     }
 })();

@@ -15,11 +15,12 @@
         vm.egress = entity;
         vm.previousState = previousState.name;
         vm.datePickerOpenStatus = {};
+
         vm.openCalendar = openCalendar;
         var unsubscribe = $rootScope.$on('aditumApp:egressUpdate', function(event, result) {
             vm.egress = result;
         });
-
+        console.log( vm.egress)
         $scope.$on('$destroy', unsubscribe);
 //      vm.egress.account = null;
 //      vm.egress.paymentMethod = null;
