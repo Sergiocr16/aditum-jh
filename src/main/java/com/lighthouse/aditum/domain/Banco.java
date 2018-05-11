@@ -52,6 +52,9 @@ public class Banco implements Serializable {
     @Column(name = "saldo")
     private String saldo;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -194,6 +197,19 @@ public class Banco implements Serializable {
         this.saldo = saldo;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Banco deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -241,6 +257,7 @@ public class Banco implements Serializable {
             ", mostrarFactura='" + getMostrarFactura() + "'" +
             ", fechaCapitalInicial='" + getFechaCapitalInicial() + "'" +
             ", saldo='" + getSaldo() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

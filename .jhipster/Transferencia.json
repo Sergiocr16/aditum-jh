@@ -1,0 +1,55 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "concepto",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cuentaOrigen",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "cuentaDestino",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "monto",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "idCompany",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "fecha",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "idBancoOrigen",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "idBancoDestino",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180430173313",
+    "dto": "no",
+    "service": "serviceClass",
+    "entityTableName": "transferencia",
+    "pagination": "pagination"
+}

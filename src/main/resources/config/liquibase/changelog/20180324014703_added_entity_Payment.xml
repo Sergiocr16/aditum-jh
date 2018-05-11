@@ -50,6 +50,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="concept" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_id" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

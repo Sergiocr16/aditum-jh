@@ -1,0 +1,23 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "date",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "accountId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "balance",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180501230031",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "balance_by_account",
+    "pagination": "no"
+}

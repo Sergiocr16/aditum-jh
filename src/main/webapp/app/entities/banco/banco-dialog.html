@@ -1,27 +1,105 @@
 
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myBancoLabel" data-translate="aditumApp.banco.home.createOrEditLabel">Create or edit a Banco</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+
+        <!--<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">-->
+
+            <!--<div class="form-group">-->
+                <!--<label  class="control-label bold font-13" style="font-size:13px;"  data-translate="aditumApp.banco.beneficiario" for="field_beneficiario">Nombre</label>-->
+                <!--<input type="text" class="form-control" name="beneficiario" id="field_beneficiario"-->
+                       <!--ng-model="vm.banco.beneficiario"-->
+                <!--/>-->
+            <!--</div>-->
+
+            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">-->
+                <!--<label class="control-label bold font-13" style="font-size:13px;"  data-translate="aditumApp.banco.fechaCapitalInicial" >Fecha Capital Inicial</label>-->
+
+                <!--<div class="form-group">-->
+
+                    <!--<input ng-model="vm.banco.fechaCapitalInicial" id="field_fechaCapitalInicia" name="fechaCapitalInicial" ng-click="vm.openCalendar('fechaCapitalInicial')" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker.datepickerOptions" is-open="vm.datePickerOpenStatus.fechaCapitalInicial"-->
+                           <!--type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>-->
+
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCorriente" for="field_cuentaCorriente">Cuenta Corriente</label>-->
+                <!--<input type="text" class="form-control" name="cuentaCorriente" id="field_cuentaCorriente"-->
+                       <!--ng-model="vm.banco.cuentaCorriente"-->
+                       <!--required/>-->
+
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>-->
+                <!--<input type="text" class="form-control" name="cuentaCliente" id="field_cuentaCliente"-->
+                       <!--ng-model="vm.banco.cuentaCliente"-->
+                       <!--required/>-->
+
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  no-padding">-->
+            <!--<div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">-->
+                <!--<div class=" form-group">-->
+                    <!--<label class="control-label bold"  style="font-size:13px;" data-translate="aditumApp.banco.capitalInicial" for="field_capitalInicial">Capital Inicial</label>-->
+                    <!--<div class="input-group form-group">-->
+                        <!--<span class="input-group-addon">₡</span>-->
+                        <!--<input type="text" class="form-control" name="capitalInicial" id="field_capitalInicial"-->
+                               <!--ng-model="vm.banco.capitalInicial"-->
+                        <!--/>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+        <!--</div>-->
+
+
+        <!--<div class="form-actions noborder" style="padding-bottom:0px;">-->
+            <!--<h3 class="text-right">-->
+
+                <!--<button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i>Aceptar</button>-->
+                <!--<button type="button" class="btn red btn-default" data-dismiss="modal" ng-click="vm.clear()">Cancelar</button>-->
+
+            <!--</h3>-->
+        <!--</div>-->
+
+    <!--</div>-->
+<!--</form>-->
+
 <form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myBancoLabel" data-translate="aditumApp.banco.home.createOrEditLabel">Create or edit a Banco</h4>
+        <h4 class="caption-subject bold uppercase font-green-haze" id="myProveedorLabel">Registrar cuenta</h4>
     </div>
     <div class="modal-body">
 
         <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-
             <div class="form-group">
-                <label  class="control-label bold font-13" style="font-size:13px;"  data-translate="aditumApp.banco.beneficiario" for="field_beneficiario">Beneficiario</label>
+                <label  class="control-label bold font-13" style="font-size:13px;"  for="field_beneficiario">Nombre *</label>
                 <input type="text" class="form-control" name="beneficiario" id="field_beneficiario"
-                       ng-model="vm.banco.beneficiario"
-                />
-            </div>            <div class="form-group">
-                <label class="control-label bold font-13" style="font-size:13px;"  for="field_responsable">Responsable*</label>
-                <input type="text" class="form-control" name="responsable" id="field_responsable"
-                       ng-model="vm.proveedor.responsable"
-                       required/>
+                ng-model="vm.banco.beneficiario"
+                required />
+            </div>
+            <div class="form-group" ng-show="vm.banco.id == null">
+                <label class="control-label bold font-13" style="font-size:13px;"  for="field_fechaCapitalInicia">Fecha capital inicial*</label>
+
+                <input ng-model="vm.banco.fechaCapitalInicial" id="field_fechaCapitalInicia" name="fechaCapitalInicial" ng-click="vm.openCalendar('fechaCapitalInicial')" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker.datepickerOptions" is-open="vm.datePickerOpenStatus.fechaCapitalInicial"
+                       type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
+
+
 
             </div>
+
 
         </div>
         <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
@@ -29,84 +107,62 @@
                 <label class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCorriente" for="field_cuentaCorriente">Cuenta Corriente</label>
                 <input type="text" class="form-control" name="cuentaCorriente" id="field_cuentaCorriente"
                        ng-model="vm.banco.cuentaCorriente"
-                       required/>
+                       />
 
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-show="vm.banco.id == null">
                 <label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
                 <input type="text" class="form-control" name="cuentaCliente" id="field_cuentaCliente"
                        ng-model="vm.banco.cuentaCliente"
-                       required/>
+                       />
 
             </div>
-        </div>
 
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.cedula" for="field_cedula">Cedula</label>
-            <input type="text" class="form-control" name="cedula" id="field_cedula"
-                    ng-model="vm.banco.cedula"
-                    />
         </div>
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  no-padding" ng-show="vm.banco.id !== null">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class="form-group" >
+                    <label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
+                    <input type="text" class="form-control" name="cuentaCliente"
+                           ng-model="vm.banco.cuentaCliente"
+                    />
 
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.moneda" for="field_moneda">Moneda</label>
-            <input type="text" class="form-control" name="moneda" id="field_moneda"
-                    ng-model="vm.banco.moneda"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.cuentaContable" for="field_cuentaContable">Cuenta Contable</label>
-            <input type="text" class="form-control" name="cuentaContable" id="field_cuentaContable"
-                    ng-model="vm.banco.cuentaContable"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.capitalInicial" for="field_capitalInicial">Capital Inicial</label>
-            <input type="text" class="form-control" name="capitalInicial" id="field_capitalInicial"
-                    ng-model="vm.banco.capitalInicial"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.mostrarFactura" for="field_mostrarFactura">Mostrar Factura</label>
-            <input type="number" class="form-control" name="mostrarFactura" id="field_mostrarFactura"
-                    ng-model="vm.banco.mostrarFactura"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.fechaCapitalInicial" for="field_fechaCapitalInicial">Fecha Capital Inicial</label>
-                <div class="input-group">
-                    <input id="field_fechaCapitalInicial" type="text" class="form-control" name="fechaCapitalInicial" datetime-picker="{{dateformat}}" ng-model="vm.banco.fechaCapitalInicial" is-open="vm.datePickerOpenStatus.fechaCapitalInicial"
-                    />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('fechaCapitalInicial')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
                 </div>
+            </div>
+
         </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.banco.saldo" for="field_saldo">Saldo</label>
-            <input type="text" class="form-control" name="saldo" id="field_saldo"
-                    ng-model="vm.banco.saldo"
-                    />
+        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  no-padding" ng-show="vm.banco.id == null">
+            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
+                <div class=" form-group">
+                    <label class="control-label bold"  style="font-size:13px;"  for="field_capitalInicial">Saldo Inicial *</label>
+                    <div class="input-group form-group">
+                        <span class="input-group-addon">₡</span>
+                        <input type="number" class="form-control numbers" name="capitalInicial" id="field_capitalInicial"
+                               ng-model="vm.banco.capitalInicial"
+                               required />
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.banco.company" for="field_company">Company</label>
-            <select class="form-control" id="field_company" name="company" ng-model="vm.banco.companyId" ng-options="company.id as company.id for company in vm.companies"             required>
-            </select>
+
+
+        <div class="form-actions noborder" style="padding-bottom:0px;">
+            <h3 class="text-right">
+
+                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i>Aceptar</button>
+                <button type="button" class="btn red btn-default" data-dismiss="modal" ng-click="vm.clear()">Cancelar</button>
+
+            </h3>
         </div>
-        <div ng-show="editForm.company.$invalid">
-            <p class="help-block"
-                ng-show="editForm.company.$error.required" data-translate="entity.validation.required">
-                This field is required.
-            </p>
-        </div>
+
+        <!--<div ng-show="editForm.company.$invalid">-->
+        <!--<p class="help-block"-->
+        <!--ng-show="editForm.company.$error.required" data-translate="entity.validation.required">-->
+        <!--This field is required.-->
+        <!--</p>-->
+        <!--</div>-->
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
+
 </form>

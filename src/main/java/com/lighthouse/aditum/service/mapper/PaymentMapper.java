@@ -15,16 +15,6 @@ public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
     PaymentDTO toDto(Payment payment);
 
     @Mapping(source = "houseId", target = "house")
-
-    default House houseFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        House house = new House();
-        house.setId(id);
-        return house;
-    }
-
     Payment toEntity(PaymentDTO paymentDTO);
     default Payment fromId(Long id) {
         if (id == null) {
@@ -33,5 +23,14 @@ public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
         Payment payment = new Payment();
         payment.setId(id);
         return payment;
+    }
+
+    default House houseFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        House house = new House();
+        house.setId(id);
+        return house;
     }
 }

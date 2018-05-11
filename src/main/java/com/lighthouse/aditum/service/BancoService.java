@@ -36,13 +36,14 @@ public class BancoService {
      * @param bancoDTO the entity to save
      * @return the persisted entity
      */
+
     public BancoDTO save(BancoDTO bancoDTO) {
         log.debug("Request to save Banco : {}", bancoDTO);
         Banco banco = bancoMapper.toEntity(bancoDTO);
+        banco.setCompany(bancoMapper.companyFromId(bancoDTO.getCompanyId()));
         banco = bancoRepository.save(banco);
         return bancoMapper.toDto(banco);
     }
-
     /**
      *  Get all the bancos.
      *
@@ -50,10 +51,10 @@ public class BancoService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<BancoDTO> findAll(Pageable pageable) {
+    public Page<BancoDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Bancos");
-        return bancoRepository.findAll(pageable)
-            .map(bancoMapper::toDto);
+        Page<Banco> result = bancoRepository.findByCompanyIdAndDeleted(pageable,companyId,1);
+        return result.map(banco -> bancoMapper.toDto(banco));
     }
 
     /**

@@ -15,7 +15,7 @@ public interface BancoMapper extends EntityMapper <BancoDTO, Banco> {
     BancoDTO toDto(Banco banco);
 
     @Mapping(source = "companyId", target = "company")
-
+    Banco toEntity(BancoDTO bancoDTO);
     default Company companyFromId(Long id) {
         if (id == null) {
             return null;
@@ -24,8 +24,6 @@ public interface BancoMapper extends EntityMapper <BancoDTO, Banco> {
         company.setId(id);
         return company;
     }
-
-    Banco toEntity(BancoDTO bancoDTO);
     default Banco fromId(Long id) {
         if (id == null) {
             return null;

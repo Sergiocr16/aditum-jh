@@ -22,6 +22,8 @@
             "paymentMethod": "Payment Method",
             "comments": "Comments",
             "ammount": "Ammount",
+            "concept": "Concept",
+            "companyId": "Company Id",
             "house": "House"
         }
     }
