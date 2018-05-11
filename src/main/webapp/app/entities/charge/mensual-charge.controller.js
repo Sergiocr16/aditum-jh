@@ -159,6 +159,9 @@
                     if (vm.houses.length - 1 > houseNumber) {
                         var cuotaNumber = 0;
                         chargesPerHouse(houseNumber + 1)
+                    }else{
+                    $state.go('mensualCharge',null,{reload:true})
+                     toastr["success"]("Se generaron las cuotas correctamente.")
                     }
                 }
             }

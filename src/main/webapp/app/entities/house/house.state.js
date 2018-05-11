@@ -9,6 +9,111 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+        .state('houseAdministration', {
+            parent: 'entity',
+            url: '/contabilidad-filiales',
+            data: {
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/house/house-administration.html',
+                    controller: 'HouseAdministrationController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('house');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+        .state('houseAdministration.chargePerHouse', {
+            url: '/cuotas',
+            data: {
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+            },
+            templateUrl:'app/entities/charge/charge-per-house.html',
+             controller: 'ChargePerHouseController',
+             controllerAs: 'vm',
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('house');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
+        })
+                .state('houseAdministration.chargePerHouse.new', {
+                    parent: 'houseAdministration.chargePerHouse',
+                    url: '/crear',
+                    data: {
+                        authorities: ['ROLE_MANAGER','ROLE_ADMIN']
+                    },
+                    resolve:{
+
+                    },
+                    onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                        $uibModal.open({
+                            templateUrl: 'app/entities/charge/charge-house.html',
+                            controller: 'HouseChargeController',
+                            controllerAs: 'vm',
+                            backdrop: 'static',
+                            size: 'lg',
+                            resolve: {
+                            entity: ['$localStorage', 'House','CommonMethods', function($localStorage, House, CommonMethods) {
+                                        return House.get({id : $localStorage.houseSelected.id}).$promise;
+                                    }],
+                            }
+                        }).result.then(function() {
+                            $state.go('houseAdministration.chargePerHouse', null, { reload: true });
+                        }, function() {
+                            $state.go('houseAdministration.chargePerHouse');
+                        });
+                    }]
+                })
             .state('house', {
                 parent: 'entity',
                 url: '/house?page&sort&search',

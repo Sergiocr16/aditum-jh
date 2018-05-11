@@ -156,6 +156,7 @@ public class HouseService {
         log.debug("Request to get House : {}", id);
         House house = houseRepository.findOne(id);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
+        houseDTO.setBalance(balanceService.findOneByHouse(house.getId()));
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
