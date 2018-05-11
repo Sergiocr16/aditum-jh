@@ -1,11 +1,17 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Charge;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+
 import java.util.List;
+
+import java.time.ZonedDateTime;
+
 
 
 /**
@@ -14,5 +20,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface ChargeRepository extends JpaRepository<Charge,Long> {
+
     List<Charge> findByHouseIdAndDeleted(Long id,Integer deleted);
 }

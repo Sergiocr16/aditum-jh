@@ -1,8 +1,9 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Banco;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -14,5 +15,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface BancoRepository extends JpaRepository<Banco,Long> {
-    List<Banco> findByCompanyId(Long companyId);
+    Page<Banco> findByCompanyIdAndDeleted(Pageable pageable, Long companyId,int deleted);
+
 }

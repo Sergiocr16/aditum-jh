@@ -8,7 +8,7 @@
     EgressController.$inject = ['$scope','$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonMethods','Proveedor','$rootScope'];
 
     function EgressController($scope,$state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams,CommonMethods,Proveedor,$rootScope) {
-
+        $rootScope.active = "egress";
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -30,7 +30,7 @@
            return false;
        }
 
-        setTimeout(function(){loadProveedors();},500)
+        setTimeout(function(){loadProveedors();},700)
         function loadProveedors() {
             Proveedor.query({companyId: $rootScope.companyId}).$promise.then(onSuccessProveedores);
             function onSuccessProveedores(data, headers) {
@@ -203,7 +203,17 @@
             vm.page = page;
             vm.transition();
         }
+      vm.formatearNumero = function(nStr) {
 
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+             return x1 + x2;
+         }
         function transition() {
             $state.transitionTo($state.$current, {
                 page: vm.page,

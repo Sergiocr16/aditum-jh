@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
+
 
 /**
  * Service Implementation for managing Payment.
@@ -42,7 +44,24 @@ public class PaymentService {
         payment = paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
     }
-
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<Payment> result = paymentRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+//        Collections.reverse(result);
+        return result.map(payment -> paymentMapper.toDto(payment));
+    }
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable,String initialTime,String finalTime,int companyId,String accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<Payment> result = paymentRepository.findByDatesBetweenAndCompanyAndAccount(pageable,zd_initialTime,zd_finalTime,companyId,accountId);
+//        Collections.reverse(result);
+        return result.map(payment -> paymentMapper.toDto(payment));
+    }
     /**
      *  Get all the payments.
      *

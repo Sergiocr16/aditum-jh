@@ -5,16 +5,15 @@
         .module('aditumApp')
         .controller('ProveedorDialogController', ProveedorDialogController);
 
-    ProveedorDialogController.$inject = ['CommonMethods','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company','$rootScope'];
+    ProveedorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company','$rootScope','CommonMethods'];
 
-    function ProveedorDialogController (CommonMethods,$timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company,$rootScope) {
+    function ProveedorDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company,$rootScope,CommonMethods) {
         var vm = this;
 
         vm.proveedor = entity;
         vm.clear = clear;
         vm.save = save;
         vm.companies = Company.query();
-        CommonMethods.validateNumbers();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -23,7 +22,8 @@
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
-
+        CommonMethods.validateLetters();
+        CommonMethods.validateNumbers();
         function save () {
             vm.isSaving = true;
             if (vm.proveedor.id !== null) {

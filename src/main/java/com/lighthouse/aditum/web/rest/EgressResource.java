@@ -124,6 +124,33 @@ public class EgressResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/egresses/betweenCobro/{initial_time}/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<EgressDTO>> getBetweenCobroDatesAndCompany(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<EgressDTO> page = egressService.findByCobroDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}/andAccount/{accountId}")
+    @Timed
+    public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompanyAndAccount(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "accountId")  String accountId,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompanyAndAccount(pageable,initial_time,final_time,companyId,accountId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * DELETE  /egresses/:id : delete the "id" egress.
      *

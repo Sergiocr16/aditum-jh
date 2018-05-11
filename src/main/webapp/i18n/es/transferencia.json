@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "transferencia" : {
+            "home": {
+                "title": "Transferencias",
+                "createLabel": "Crear nuevo Transferencia",
+                "createOrEditLabel": "Crear o editar Transferencia"
+            },
+            "created": "Un nuevo Transferencia ha sido creado con el identificador {{ param }}",
+            "updated": "Un Transferencia ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Transferencia ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Transferencia {{ id }}?"
+            },
+            "detail": {
+                "title": "Transferencia"
+            },
+            "concepto": "Concepto",
+            "cuentaOrigen": "Cuenta Origen",
+            "cuentaDestino": "Cuenta Destino",
+            "monto": "Monto",
+            "idCompany": "Id Company",
+            "fecha": "Fecha",
+            "idBancoOrigen": "Id Banco Origen",
+            "idBancoDestino": "Id Banco Destino"
+        }
+    }
+}

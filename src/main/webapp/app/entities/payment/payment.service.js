@@ -21,7 +21,29 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'findBetweenDatesByCompany':{
+                     method: 'GET',
+                     url: 'api/payments/between/:initial_time/:final_time/byCompany/:companyId',
+                     isArray: true,
+                     params:{
+                          initial_time:'@initial_time',
+                          final_time: '@final_time',
+                          companyId: '@companyId',
+                }
+            },
+          'findBetweenDatesByCompanyAndAccount':{
+                 method: 'GET',
+                 url: 'api/payments/between/:initial_time/:final_time/byCompany/:companyId/andAccount/:accountId',
+                 isArray: true,
+                 params:{
+                      initial_time:'@initial_time',
+                      final_time: '@final_time',
+                      companyId: '@companyId',
+                      accountId: '@accountId'
+            }
+            }
+
         });
     }
 })();

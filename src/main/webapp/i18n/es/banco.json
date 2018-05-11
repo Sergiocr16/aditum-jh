@@ -25,6 +25,7 @@
             "mostrarFactura": "Mostrar Factura",
             "fechaCapitalInicial": "Fecha Capital Inicial",
             "saldo": "Saldo",
+            "deleted": "Deleted",
             "company": "Company"
         }
     }
