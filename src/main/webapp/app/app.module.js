@@ -23,8 +23,7 @@
             'ngNotify',
             'angularjs-dropdown-multiselect',
             'angular-popover',
-            'ngPopover'
-
+            'ngPopover',
         ])
         .run(run);
 

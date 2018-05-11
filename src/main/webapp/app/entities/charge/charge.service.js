@@ -21,6 +21,12 @@
                     return data;
                 }
             },
+            'queryByHouse': {
+                method: 'GET',
+                url: 'api/chargesPerHouse/:houseId',
+                params: {houseId:'@houseId'},
+                isArray: true
+            },
             'update': { method:'PUT' }
         });
     }

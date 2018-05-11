@@ -76,7 +76,7 @@ public class ChargeResource {
         if (chargeDTO.getId() == null) {
             return createCharge(chargeDTO);
         }
-        ChargeDTO result = chargeService.save(chargeDTO);
+        ChargeDTO result = chargeService.update(chargeDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, chargeDTO.getId().toString()))
             .body(result);
@@ -97,7 +97,15 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    @GetMapping("/chargesPerHouse/{houseId}")
+    @Timed
+    public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        Page<ChargeDTO> page = chargeService.findAllByHouse(houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /charges/:id : get the "id" charge.
      *

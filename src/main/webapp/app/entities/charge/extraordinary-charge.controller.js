@@ -127,9 +127,15 @@
         }
 
         vm.createDues = function() {
+        var allReady = 0;
             angular.forEach(vm.selectedHouses, function(house, i) {
                 if (house.cuota.ammount != 0) {
-                    Charge.save(buildCharge(house), function(result) {})
+                    Charge.save(buildCharge(house), function(result) {
+                    allReady++;
+                    if(allReady==vm.selectedHouses.length)
+                      $state.go('extraordinaryCharge',null,{reload:true})
+                       toastr["success"]("Se generaron las cuotas extraordinarias correctamente.")
+                    })
                 }
             })
         }

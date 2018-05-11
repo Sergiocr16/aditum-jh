@@ -7,7 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+
+import java.util.List;
+
 import java.time.ZonedDateTime;
+
 
 
 /**
@@ -17,4 +21,5 @@ import java.time.ZonedDateTime;
 @Repository
 public interface ChargeRepository extends JpaRepository<Charge,Long> {
 
+    List<Charge> findByHouseIdAndDeleted(Long id,Integer deleted);
 }
