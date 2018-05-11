@@ -290,7 +290,7 @@
             </li>
 
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-money" aria-hidden="true"></i>
@@ -300,7 +300,11 @@
                 </a>
 
                 <ul class="sub-menu">
-
+                    <li ui-sref="houseAdministration" ng-class="{ 'active' : active === 'houseAdministration'}">
+                        <a href="">
+                            <i class="fa fa-money" aria-hidden="true"></i> Contabilidad filiales
+                        </a>
+                    </li>
                     <li ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
                         <a href="javascript:;">
                             <i class="fa fa-arrow-left"></i>
@@ -352,7 +356,7 @@
                         </ul>
                     </li>
 
-                    <li ng-class="{ 'active' : active === '' ||  active === ''} ">
+                    <li ng-class="{ 'active' : active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual'} ">
                         <a href="javascript:;">
                             <i class="fa fa-arrow-left"></i>
                             <span class="title">Cuotas</span>
@@ -362,16 +366,22 @@
                             </span>
                         </a>
                         <ul class="sub-menu" >
-                            <li ui-sref="chargeMenu" ng-class="{ 'active' : active === '' }"style="border-bottom:1px solid #444c56">
+                            <li ui-sref="mensualCharge" ng-class="{ 'active' : active === 'mensual' }"style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
-                                    <span>Generar cuota ordinaria</span>
+                                    <span>Generar cuotas mensuales</span>
                                 </a>
                             </li>
-                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === '' }"style="border-bottom:1px solid #444c56">
+                            <li ui-sref="extraordinaryCharge" ng-class="{ 'active' : active === 'extraordinary' }"style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
-                                    <span >Cuotas</span>
+                                    <span >Generar cuotas extraordinarias</span>
+                                </a>
+                            </li>
+                            <li ui-sref="individualCharge" ng-class="{ 'active' : active === 'individual' }"style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span >Generar cuota individual</span>
                                 </a>
                             </li>
 
@@ -405,7 +415,7 @@
                                     <span>Proovedores</span>
                                 </a>
                             </li>
-                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'configureCharges' }"  style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span >Cuotas</span>
@@ -420,11 +430,7 @@
 
                         </ul>
                     </li>
-                    <li ui-sref="houseAdministration" ng-class="{ 'active' : active === 'adminVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Contabilidad casas
-                        </a>
-                    </li>
+
                     <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
                         <a href="">
                             <i class="fa fa-user" aria-hidden="true"></i> Saldos
