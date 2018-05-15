@@ -86,7 +86,7 @@
                     vm.egress.billNumber = 'Sin Registrar'
                    }
         } else{
-          vm.title = "Registrar gasto";
+          vm.title = "Capturar gasto";
           vm.button = "Registrar";
         }
         $timeout(function (){

@@ -34,6 +34,7 @@
                 "administrationConfiguration": "Administration Configuration",
                 "transferencia": "Transferencia",
                 "balanceByAccount": "Balance By Account",
+                "egressCategory": "Egress Category",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
