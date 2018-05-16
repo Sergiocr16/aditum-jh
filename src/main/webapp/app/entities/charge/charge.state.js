@@ -53,7 +53,7 @@
         })
         .state('chargeMenu', {
             parent: 'entity',
-            url: '/generar-cuotas',
+            url: '/crear-cuotas',
             data: {
                 authorities: ['ROLE_MANAGER'],
                 pageTitle: 'Aditum'
@@ -95,7 +95,7 @@
         })
         .state('mensualCharge', {
             parent: 'entity',
-            url: '/generate/charges/maintenance',
+            url: '/crear/cuota/mantenimiento',
             data: {
                 authorities: ['ROLE_MANAGER'],
                 pageTitle: 'Aditum'
@@ -137,7 +137,7 @@
         })
         .state('individualCharge', {
             parent: 'entity',
-            url: '/generate/charges/individual',
+            url: '/crear/cuota/individual',
             data: {
                 authorities: ['ROLE_MANAGER'],
                 pageTitle: 'Aditum'
@@ -179,7 +179,7 @@
         })
         .state('extraordinaryCharge', {
             parent: 'entity',
-            url: '/generate/charges/extraordinary',
+            url: '/crear/cuota/extraordinaria',
             data: {
                 authorities: ['ROLE_MANAGER'],
                 pageTitle: 'Aditum'
@@ -221,7 +221,7 @@
         })
         .state('configureCharges', {
             parent: 'entity',
-            url: '/configure/charges',
+            url: '/configurar/cuotas',
             data: {
                 authorities: ['ROLE_MANAGER'],
                 pageTitle: 'Aditum'

@@ -9,6 +9,7 @@
 
     function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
         var vm = this;
+        $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -127,9 +128,15 @@
         }
 
         vm.createDues = function() {
+        var allReady = 0;
             angular.forEach(vm.selectedHouses, function(house, i) {
                 if (house.cuota.ammount != 0) {
-                    Charge.save(buildCharge(house), function(result) {})
+                    Charge.save(buildCharge(house), function(result) {
+                    allReady++;
+                    if(allReady==vm.selectedHouses.length)
+                      $state.go('extraordinaryCharge',null,{reload:true})
+                       toastr["success"]("Se generaron las cuotas extraordinarias correctamente.")
+                    })
                 }
             })
         }
