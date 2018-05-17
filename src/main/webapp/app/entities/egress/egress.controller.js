@@ -183,6 +183,11 @@
                     id: encryptedId
                 })
         }
+
+        vm.gola = function(){
+        alert('ad')
+        }
+
         vm.stopConsulting = function() {
               $("#tableData").fadeOut(0);
             setTimeout(function() {

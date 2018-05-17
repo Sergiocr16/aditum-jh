@@ -162,10 +162,10 @@
                 </table>
             </div>
         </div>
-        <div class="text-center" >
+        <div class="text-center" ng-show="vm.accountsQuantity>0" >
             <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
         </div>
-        <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+        <uib-pager ng-show="vm.accountsQuantity>0"  total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
     </div>
 
 </div>

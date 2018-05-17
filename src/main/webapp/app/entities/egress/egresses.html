@@ -98,6 +98,7 @@
                         <th ng-click="vm.sortBy('reference')">Referencia <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>
 
                         <th  ng-click="vm.sortBy('total')" ><span data-translate="aditumApp.egress.total">Total </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        <th><span>Registrar pago </span> </th>
                         <th><span>Detalle </span> </th>
 
                         <th  ng-click="vm.sortBy('state')"><span>Estado </span><span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
@@ -108,8 +109,8 @@
                     <tbody>
 
 
-                    <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"  data-toggle="{{egress.id}}" ng-click="vm.clickPopover(egress.id)" >
-                        <td>{{egress.concept}}</td>
+                    <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"  >
+                        <td angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'; background-color:'white';><h5 class='bold'>Transferencia saliente<h5><button type='button' class='btn btn-primary' ng-click='vm.gola()' name='button' >Generar reporte</button></div>" mode="mouseover" > {{egress.concept}}</td>
                         <td>{{egress.folio}}</td>
                         <td>{{egress.category}}</td>
                         <td>{{egress.proveedor}}</td>
@@ -117,8 +118,9 @@
                         <td>{{egress.paymentDate | date:'mediumDate'}}</td>
                         <td>{{egress.reference}}</td>
                         <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
-                        <td><a class="light-gray-font"  ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
-                        <td> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; padding:10px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px; padding:10px; color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; padding:10px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
+                        <td  class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2" ng-click="vm.detailEgress(egress.id)" class="padding-10 label label-success " style=""  aria-hidden="false">Registrar pago</span></td>
+                        <td><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
+                        <td> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; padding:10px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; padding:10px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
 
 
 
