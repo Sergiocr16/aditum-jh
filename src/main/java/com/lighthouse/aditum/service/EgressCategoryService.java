@@ -41,9 +41,9 @@ public class EgressCategoryService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<EgressCategory> findAll() {
+    public List<EgressCategory> findAll(Long companyId) {
         log.debug("Request to get all EgressCategories");
-        return egressCategoryRepository.findAll();
+        return egressCategoryRepository.findByCompanyId(companyId);
     }
 
     /**

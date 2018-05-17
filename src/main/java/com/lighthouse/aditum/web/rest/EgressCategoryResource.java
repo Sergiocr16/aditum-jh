@@ -83,9 +83,9 @@ public class EgressCategoryResource {
      */
     @GetMapping("/egress-categories")
     @Timed
-    public List<EgressCategory> getAllEgressCategories() {
+    public List<EgressCategory> getAllEgressCategories(Long companyId) {
         log.debug("REST request to get all EgressCategories");
-        return egressCategoryService.findAll();
+        return egressCategoryService.findAll(companyId);
     }
 
     /**
