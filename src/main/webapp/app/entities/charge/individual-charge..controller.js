@@ -32,7 +32,7 @@
 
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-            var caracteres = ['"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -105,11 +105,24 @@
                     },
                     callback: function(result) {
                         if (result) {
+                         CommonMethods.waitingMessage();
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             Charge.save(vm.charge, function(result) {
                                 vm.isSaving == false;
-                                toastr["success"]("Se ha generado la cuota correctamente.")
+                                House.get({
+                                        id: result.houseId
+                                    }, onSuccess)
+                                    function onSuccess(house) {
+                                    bootbox.hideAll();
+                                       bootbox.hideAll();
+                                                                       toastr["success"]("Se ha generado la cuota correctamente.")
+                                                                       $state.go('houseAdministration.chargePerHouse')
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseSelected = house;
+
+                                    }
+
                             })
 
 

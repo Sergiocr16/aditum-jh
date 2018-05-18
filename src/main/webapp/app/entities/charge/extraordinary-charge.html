@@ -55,8 +55,11 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-lg-offset-4 col-lg-4 col-sm-4 col-xs-6 col-md-4">
+                                    <div class="col-lg-offset-2 col-lg-4 col-sm-4 col-xs-6 col-md-4">
                                         <input ng-model="vm.globalConcept.text" ng-blur="vm.globalConceptSelected()" class="form-control letters gray-font text-center" type="text" placeholder="Concepto Global">
+                                    </div>
+                                    <div class="col-lg-4 col-sm-4 col-xs-6 col-md-4">
+                                        <input ng-model="vm.globalConcept.cuota.ammount" ng-class="{redBorder: vm.globalConcept.cuota.valida==false}" ng-blur="vm.globalCuotaSelected()" ng-change="vm.validate(vm.globalConcept.cuota)" class="form-control letters gray-font text-center" type="text" placeholder="Cuota Global">
                                     </div>
                                 </div>
                                 <div ng-show="vm.globalConcept.length>1" style="width:150px">
