@@ -105,11 +105,24 @@
                     },
                     callback: function(result) {
                         if (result) {
+                         CommonMethods.waitingMessage();
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             Charge.save(vm.charge, function(result) {
                                 vm.isSaving == false;
-                                toastr["success"]("Se ha generado la cuota correctamente.")
+                                House.get({
+                                        id: result.houseId
+                                    }, onSuccess)
+                                    function onSuccess(house) {
+                                    bootbox.hideAll();
+                                       bootbox.hideAll();
+                                                                       toastr["success"]("Se ha generado la cuota correctamente.")
+                                                                       $state.go('houseAdministration.chargePerHouse')
+                                        $rootScope.houseSelected = house;
+                                        $localStorage.houseSelected = house;
+
+                                    }
+
                             })
 
 

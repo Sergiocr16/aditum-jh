@@ -22,6 +22,10 @@
         vm.globalConcept = {
             date: "",
             text: undefined,
+            cuota: {
+                ammount: undefined,
+                valid: true
+            },
             type: 2
         };
         moment.locale("es");
@@ -35,7 +39,35 @@
                 }
             })
         }
+        vm.globalCuotaSelected = function() {
+            if (vm.globalConcept.cuota.ammount != undefined && vm.globalConcept.cuota.valida == true) {
+                bootbox.confirm({
+                    message: "¿Está seguro que desea modificar la cuota de todas las cuotas?",
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            $scope.$apply(function() {
+                                angular.forEach(vm.houses, function(house, i) {
 
+                                    house.cuota.ammount = vm.globalConcept.cuota.ammount;
+
+                                })
+                            })
+
+                        }
+                    }
+                });
+            }
+        }
         vm.globalConceptSelected = function() {
             if (vm.globalConcept.text != undefined) {
                 bootbox.confirm({
@@ -51,7 +83,6 @@
                         }
                     },
                     callback: function(result) {
-                        console.log(vm.globalConcept.text)
                         if (result) {
                             $scope.$apply(function() {
                                 angular.forEach(vm.houses, function(house, i) {
@@ -68,7 +99,7 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-                                 var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
@@ -116,7 +147,6 @@
         }
         vm.cancelar = function() {
             vm.verificando = false;
-            console.log(vm.verificando)
         }
 
         function buildCharge(house) {
@@ -129,14 +159,21 @@
         }
 
         vm.createDues = function() {
-        var allReady = 0;
+            var allReady = 0;
+            CommonMethods.waitingMessage();
             angular.forEach(vm.selectedHouses, function(house, i) {
                 if (house.cuota.ammount != 0) {
                     Charge.save(buildCharge(house), function(result) {
-                    allReady++;
-                    if(allReady==vm.selectedHouses.length)
-                      $state.go('extraordinaryCharge',null,{reload:true})
-                       toastr["success"]("Se generaron las cuotas extraordinarias correctamente.")
+                        allReady++;
+                        if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
+                            bootbox.hideAll();
+
+                            toastr["success"]("Se generaron las cuotas extraordinarias correctamente.")
+                            $state.go('extraordinaryCharge', null, {
+                                reload: true
+                            })
+                        }
+
                     })
                 }
             })
@@ -145,7 +182,6 @@
         function loadAll() {
             House.query({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
                 sort: sort(),
                 companyId: $rootScope.companyId
             }, onSuccess, onError);
