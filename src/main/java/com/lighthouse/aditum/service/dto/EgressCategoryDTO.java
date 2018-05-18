@@ -1,34 +1,26 @@
-package com.lighthouse.aditum.domain;
+package com.lighthouse.aditum.service.dto;
 
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
- * A EgressCategory.
+ * A DTO for the EgressCategory entity.
  */
-@Entity
-@Table(name = "egress_category")
-public class EgressCategory implements Serializable {
+public class EgressCategoryDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
-    @Column(name = "jhi_group", nullable = false)
     private String group;
 
     @NotNull
-    @Column(name = "category", nullable = false)
     private String category;
 
-    @ManyToOne
-    private Company company;
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -42,11 +34,6 @@ public class EgressCategory implements Serializable {
         return group;
     }
 
-    public EgressCategory group(String group) {
-        this.group = group;
-        return this;
-    }
-
     public void setGroup(String group) {
         this.group = group;
     }
@@ -55,26 +42,16 @@ public class EgressCategory implements Serializable {
         return category;
     }
 
-    public EgressCategory category(String category) {
-        this.category = category;
-        return this;
-    }
-
     public void setCategory(String category) {
         this.category = category;
     }
 
-    public Company getCompany() {
-        return company;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public EgressCategory company(Company company) {
-        this.company = company;
-        return this;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override
@@ -85,11 +62,12 @@ public class EgressCategory implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        EgressCategory egressCategory = (EgressCategory) o;
-        if (egressCategory.getId() == null || getId() == null) {
+
+        EgressCategoryDTO egressCategoryDTO = (EgressCategoryDTO) o;
+        if(egressCategoryDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), egressCategory.getId());
+        return Objects.equals(getId(), egressCategoryDTO.getId());
     }
 
     @Override
@@ -99,7 +77,7 @@ public class EgressCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "EgressCategory{" +
+        return "EgressCategoryDTO{" +
             "id=" + getId() +
             ", group='" + getGroup() + "'" +
             ", category='" + getCategory() + "'" +

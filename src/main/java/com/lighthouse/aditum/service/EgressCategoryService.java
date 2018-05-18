@@ -2,12 +2,18 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.EgressCategory;
 import com.lighthouse.aditum.repository.EgressCategoryRepository;
+import com.lighthouse.aditum.service.dto.EgressCategoryDTO;
+import com.lighthouse.aditum.service.mapper.EgressCategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing EgressCategory.
@@ -20,19 +26,24 @@ public class EgressCategoryService {
 
     private final EgressCategoryRepository egressCategoryRepository;
 
-    public EgressCategoryService(EgressCategoryRepository egressCategoryRepository) {
+    private final EgressCategoryMapper egressCategoryMapper;
+
+    public EgressCategoryService(EgressCategoryRepository egressCategoryRepository, EgressCategoryMapper egressCategoryMapper) {
         this.egressCategoryRepository = egressCategoryRepository;
+        this.egressCategoryMapper = egressCategoryMapper;
     }
 
     /**
      * Save a egressCategory.
      *
-     * @param egressCategory the entity to save
+     * @param egressCategoryDTO the entity to save
      * @return the persisted entity
      */
-    public EgressCategory save(EgressCategory egressCategory) {
-        log.debug("Request to save EgressCategory : {}", egressCategory);
-        return egressCategoryRepository.save(egressCategory);
+    public EgressCategoryDTO save(EgressCategoryDTO egressCategoryDTO) {
+        log.debug("Request to save EgressCategory : {}", egressCategoryDTO);
+        EgressCategory egressCategory = egressCategoryMapper.toEntity(egressCategoryDTO);
+        egressCategory = egressCategoryRepository.save(egressCategory);
+        return egressCategoryMapper.toDto(egressCategory);
     }
 
     /**
@@ -41,9 +52,10 @@ public class EgressCategoryService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<EgressCategory> findAll(Long companyId) {
-        log.debug("Request to get all EgressCategories");
-        return egressCategoryRepository.findByCompanyId(companyId);
+    public Page<EgressCategoryDTO> findAll(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Egresses");
+        Page<EgressCategory> result = egressCategoryRepository.findByCompanyId(pageable,companyId);
+        return result.map(egressCategory -> egressCategoryMapper.toDto(egressCategory));
     }
 
     /**
@@ -53,9 +65,10 @@ public class EgressCategoryService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public EgressCategory findOne(Long id) {
+    public EgressCategoryDTO findOne(Long id) {
         log.debug("Request to get EgressCategory : {}", id);
-        return egressCategoryRepository.findOne(id);
+        EgressCategory egressCategory = egressCategoryRepository.findOne(id);
+        return egressCategoryMapper.toDto(egressCategory);
     }
 
     /**

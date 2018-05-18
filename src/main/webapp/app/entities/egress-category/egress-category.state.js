@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/egress-category',
             data: {
-              authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 pageTitle: 'aditumApp.egressCategory.home.title'
             },
             views: {
@@ -92,7 +92,7 @@
             parent: 'egress-category',
             url: '/new',
             data: {
-                      authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                authorities: ['ROLE_USER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

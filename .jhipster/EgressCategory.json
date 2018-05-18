@@ -2,7 +2,7 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "companyId",
+            "relationshipName": "company",
             "otherEntityName": "company",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
@@ -24,8 +24,8 @@
             ]
         }
     ],
-    "changelogDate": "20180511210219",
-    "dto": "no",
+    "changelogDate": "20180518003909",
+    "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "egress_category",
     "pagination": "no"

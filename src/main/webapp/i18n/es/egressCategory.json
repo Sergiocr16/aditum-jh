@@ -17,7 +17,7 @@
             },
             "group": "Group",
             "category": "Category",
-            "companyId": "Company Id"
+            "company": "Company"
         }
     }
 }

@@ -39,8 +39,8 @@
         </div>
 
         <div class="form-group">
-            <label data-translate="aditumApp.egressCategory.companyId" for="field_companyId">Company Id</label>
-            <select class="form-control" id="field_companyId" name="companyId" ng-model="vm.egressCategory.companyId" ng-options="company as company.id for company in vm.companies track by company.id">
+            <label data-translate="aditumApp.egressCategory.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.egressCategory.companyId" ng-options="company.id as company.id for company in vm.companies"            >
                 <option value=""></option>
             </select>
         </div>

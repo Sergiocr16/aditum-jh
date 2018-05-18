@@ -6,11 +6,11 @@
     <!--
         Added the constraints for entity EgressCategory.
     -->
-    <changeSet id="20180511210219-2" author="jhipster">
+    <changeSet id="20180518003909-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="company_id_id"
+        <addForeignKeyConstraint baseColumnNames="company_id"
                                  baseTableName="egress_category"
-                                 constraintName="fk_egress_category_company_id_id"
+                                 constraintName="fk_egress_category_company_id"
                                  referencedColumnNames="id"
                                  referencedTableName="company"/>
 

@@ -5,6 +5,8 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.EgressCategory;
 import com.lighthouse.aditum.repository.EgressCategoryRepository;
 import com.lighthouse.aditum.service.EgressCategoryService;
+import com.lighthouse.aditum.service.dto.EgressCategoryDTO;
+import com.lighthouse.aditum.service.mapper.EgressCategoryMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -46,6 +48,9 @@ public class EgressCategoryResourceIntTest {
 
     @Autowired
     private EgressCategoryRepository egressCategoryRepository;
+
+    @Autowired
+    private EgressCategoryMapper egressCategoryMapper;
 
     @Autowired
     private EgressCategoryService egressCategoryService;
@@ -100,9 +105,10 @@ public class EgressCategoryResourceIntTest {
         int databaseSizeBeforeCreate = egressCategoryRepository.findAll().size();
 
         // Create the EgressCategory
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(egressCategory);
         restEgressCategoryMockMvc.perform(post("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(egressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isCreated());
 
         // Validate the EgressCategory in the database
@@ -120,11 +126,12 @@ public class EgressCategoryResourceIntTest {
 
         // Create the EgressCategory with an existing ID
         egressCategory.setId(1L);
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(egressCategory);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restEgressCategoryMockMvc.perform(post("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(egressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -140,10 +147,11 @@ public class EgressCategoryResourceIntTest {
         egressCategory.setGroup(null);
 
         // Create the EgressCategory, which fails.
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(egressCategory);
 
         restEgressCategoryMockMvc.perform(post("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(egressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isBadRequest());
 
         List<EgressCategory> egressCategoryList = egressCategoryRepository.findAll();
@@ -158,10 +166,11 @@ public class EgressCategoryResourceIntTest {
         egressCategory.setCategory(null);
 
         // Create the EgressCategory, which fails.
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(egressCategory);
 
         restEgressCategoryMockMvc.perform(post("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(egressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isBadRequest());
 
         List<EgressCategory> egressCategoryList = egressCategoryRepository.findAll();
@@ -210,8 +219,7 @@ public class EgressCategoryResourceIntTest {
     @Transactional
     public void updateEgressCategory() throws Exception {
         // Initialize the database
-        egressCategoryService.save(egressCategory);
-
+        egressCategoryRepository.saveAndFlush(egressCategory);
         int databaseSizeBeforeUpdate = egressCategoryRepository.findAll().size();
 
         // Update the egressCategory
@@ -219,10 +227,11 @@ public class EgressCategoryResourceIntTest {
         updatedEgressCategory
             .group(UPDATED_GROUP)
             .category(UPDATED_CATEGORY);
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(updatedEgressCategory);
 
         restEgressCategoryMockMvc.perform(put("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedEgressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isOk());
 
         // Validate the EgressCategory in the database
@@ -239,11 +248,12 @@ public class EgressCategoryResourceIntTest {
         int databaseSizeBeforeUpdate = egressCategoryRepository.findAll().size();
 
         // Create the EgressCategory
+        EgressCategoryDTO egressCategoryDTO = egressCategoryMapper.toDto(egressCategory);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restEgressCategoryMockMvc.perform(put("/api/egress-categories")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(egressCategory)))
+            .content(TestUtil.convertObjectToJsonBytes(egressCategoryDTO)))
             .andExpect(status().isCreated());
 
         // Validate the EgressCategory in the database
@@ -255,8 +265,7 @@ public class EgressCategoryResourceIntTest {
     @Transactional
     public void deleteEgressCategory() throws Exception {
         // Initialize the database
-        egressCategoryService.save(egressCategory);
-
+        egressCategoryRepository.saveAndFlush(egressCategory);
         int databaseSizeBeforeDelete = egressCategoryRepository.findAll().size();
 
         // Get the egressCategory
@@ -282,5 +291,28 @@ public class EgressCategoryResourceIntTest {
         assertThat(egressCategory1).isNotEqualTo(egressCategory2);
         egressCategory1.setId(null);
         assertThat(egressCategory1).isNotEqualTo(egressCategory2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(EgressCategoryDTO.class);
+        EgressCategoryDTO egressCategoryDTO1 = new EgressCategoryDTO();
+        egressCategoryDTO1.setId(1L);
+        EgressCategoryDTO egressCategoryDTO2 = new EgressCategoryDTO();
+        assertThat(egressCategoryDTO1).isNotEqualTo(egressCategoryDTO2);
+        egressCategoryDTO2.setId(egressCategoryDTO1.getId());
+        assertThat(egressCategoryDTO1).isEqualTo(egressCategoryDTO2);
+        egressCategoryDTO2.setId(2L);
+        assertThat(egressCategoryDTO1).isNotEqualTo(egressCategoryDTO2);
+        egressCategoryDTO1.setId(null);
+        assertThat(egressCategoryDTO1).isNotEqualTo(egressCategoryDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(egressCategoryMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(egressCategoryMapper.fromId(null)).isNull();
     }
 }

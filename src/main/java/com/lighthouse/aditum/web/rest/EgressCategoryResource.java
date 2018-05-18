@@ -1,12 +1,19 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.lighthouse.aditum.domain.EgressCategory;
 import com.lighthouse.aditum.service.EgressCategoryService;
+import com.lighthouse.aditum.service.dto.EgressDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
+import com.lighthouse.aditum.service.dto.EgressCategoryDTO;
+import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,18 +44,18 @@ public class EgressCategoryResource {
     /**
      * POST  /egress-categories : Create a new egressCategory.
      *
-     * @param egressCategory the egressCategory to create
-     * @return the ResponseEntity with status 201 (Created) and with body the new egressCategory, or with status 400 (Bad Request) if the egressCategory has already an ID
+     * @param egressCategoryDTO the egressCategoryDTO to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new egressCategoryDTO, or with status 400 (Bad Request) if the egressCategory has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PostMapping("/egress-categories")
     @Timed
-    public ResponseEntity<EgressCategory> createEgressCategory(@Valid @RequestBody EgressCategory egressCategory) throws URISyntaxException {
-        log.debug("REST request to save EgressCategory : {}", egressCategory);
-        if (egressCategory.getId() != null) {
+    public ResponseEntity<EgressCategoryDTO> createEgressCategory(@Valid @RequestBody EgressCategoryDTO egressCategoryDTO) throws URISyntaxException {
+        log.debug("REST request to save EgressCategory : {}", egressCategoryDTO);
+        if (egressCategoryDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new egressCategory cannot already have an ID")).body(null);
         }
-        EgressCategory result = egressCategoryService.save(egressCategory);
+        EgressCategoryDTO result = egressCategoryService.save(egressCategoryDTO);
         return ResponseEntity.created(new URI("/api/egress-categories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -57,22 +64,22 @@ public class EgressCategoryResource {
     /**
      * PUT  /egress-categories : Updates an existing egressCategory.
      *
-     * @param egressCategory the egressCategory to update
-     * @return the ResponseEntity with status 200 (OK) and with body the updated egressCategory,
-     * or with status 400 (Bad Request) if the egressCategory is not valid,
-     * or with status 500 (Internal Server Error) if the egressCategory couldn't be updated
+     * @param egressCategoryDTO the egressCategoryDTO to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated egressCategoryDTO,
+     * or with status 400 (Bad Request) if the egressCategoryDTO is not valid,
+     * or with status 500 (Internal Server Error) if the egressCategoryDTO couldn't be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @PutMapping("/egress-categories")
     @Timed
-    public ResponseEntity<EgressCategory> updateEgressCategory(@Valid @RequestBody EgressCategory egressCategory) throws URISyntaxException {
-        log.debug("REST request to update EgressCategory : {}", egressCategory);
-        if (egressCategory.getId() == null) {
-            return createEgressCategory(egressCategory);
+    public ResponseEntity<EgressCategoryDTO> updateEgressCategory(@Valid @RequestBody EgressCategoryDTO egressCategoryDTO) throws URISyntaxException {
+        log.debug("REST request to update EgressCategory : {}", egressCategoryDTO);
+        if (egressCategoryDTO.getId() == null) {
+            return createEgressCategory(egressCategoryDTO);
         }
-        EgressCategory result = egressCategoryService.save(egressCategory);
+        EgressCategoryDTO result = egressCategoryService.save(egressCategoryDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, egressCategory.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, egressCategoryDTO.getId().toString()))
             .body(result);
     }
 
@@ -83,29 +90,32 @@ public class EgressCategoryResource {
      */
     @GetMapping("/egress-categories")
     @Timed
-    public List<EgressCategory> getAllEgressCategories(Long companyId) {
-        log.debug("REST request to get all EgressCategories");
-        return egressCategoryService.findAll(companyId);
+    public ResponseEntity<List<EgressCategoryDTO>> getAllEgresses(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Egresses");
+        Page<EgressCategoryDTO> page = egressCategoryService.findAll(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
      * GET  /egress-categories/:id : get the "id" egressCategory.
      *
-     * @param id the id of the egressCategory to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the egressCategory, or with status 404 (Not Found)
+     * @param id the id of the egressCategoryDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the egressCategoryDTO, or with status 404 (Not Found)
      */
     @GetMapping("/egress-categories/{id}")
     @Timed
-    public ResponseEntity<EgressCategory> getEgressCategory(@PathVariable Long id) {
+    public ResponseEntity<EgressCategoryDTO> getEgressCategory(@PathVariable Long id) {
         log.debug("REST request to get EgressCategory : {}", id);
-        EgressCategory egressCategory = egressCategoryService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressCategory));
+        EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressCategoryDTO));
     }
 
     /**
      * DELETE  /egress-categories/:id : delete the "id" egressCategory.
      *
-     * @param id the id of the egressCategory to delete
+     * @param id the id of the egressCategoryDTO to delete
      * @return the ResponseEntity with status 200 (OK)
      */
     @DeleteMapping("/egress-categories/{id}")
