@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge','CommonMethods'];
+    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods'];
 
     function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
         var vm = this;
-         $rootScope.active = 'mensual';
+        $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -20,45 +20,49 @@
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
+         angular.element(document).ready(function() {
+
+
+                });
+
         moment.locale("es");
-         vm.validate = function(cuota){
-         var s = cuota.ammount;
-             var caracteres = ['"',"¡","!","¿","<",">","a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","?","/","-","+","@","#","$","%","^","&","*","(",")","-","_","=","|"]
+        vm.validate = function(cuota) {
+            var s = cuota.ammount;
+                                             var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
-              var invalido = 0;
-              angular.forEach(caracteres,function(val,index){
-              if (s!=undefined){
-               for(var i=0;i<s.length;i++){
-               if(s.charAt(i).toUpperCase()==val.toUpperCase()){
-
-               invalido++;
-               }
-               }
-               }
-              })
-              if(invalido==0){
-              cuota.valida = true;
-              }else{
-               cuota.valida = false
-              }
-             }
+            var invalido = 0;
+            angular.forEach(caracteres, function(val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                cuota.valida = true;
+            } else {
+                cuota.valida = false
+            }
+        }
         setTimeout(function() {
             loadAll();
         }, 1500)
         vm.verificarCargos = function() {
-        var invalid = 0;
-        angular.forEach(vm.houses, function(house, key) {
-            angular.forEach(house.cuotas, function(cuota, key) {
-                if (cuota.valida == false) {
-                invalid++;
-                }
+            var invalid = 0;
+            angular.forEach(vm.houses, function(house, key) {
+                angular.forEach(house.cuotas, function(cuota, key) {
+                    if (cuota.valida == false) {
+                        invalid++;
+                    }
+                })
             })
-        })
-        if(invalid==0){
-         vm.verificando = true;
-        }else{
-           toastr["error"]("Porfavor verifica las cuotas ingresadas")
-        }
+            if (invalid == 0) {
+                vm.verificando = true;
+            } else {
+                toastr["error"]("Porfavor verifica las cuotas ingresadas")
+            }
         }
         vm.cancelar = function() {
             vm.verificando = false;
@@ -134,46 +138,72 @@
             })
         }
 
-        function buildCharge(cuota,house){
-          cuota.houseId =parseInt(house.id);
-          cuota.type = 1;
-          cuota.date = vm.globalConcept[cuota.globalConcept].date;
-          cuota.concept = vm.globalConcept[cuota.globalConcept].concept;
-          cuota.state = 1;
-          cuota.deleted = 0;
-          return cuota;
+        function getGlobalConcept(gc) {
+            var globalFounded = {};
+            angular.forEach(vm.globalConcept, function(globalConcept, i) {
+                if (gc == globalConcept.id) {
+                    globalFounded = globalConcept;
+                }
+            })
+            return globalFounded;
+        }
+
+        function buildCharge(cuota, house) {
+
+            cuota.houseId = parseInt(house.id);
+            cuota.type = 1;
+            cuota.date = getGlobalConcept(cuota.globalConcept).date;
+            cuota.concept = getGlobalConcept(cuota.globalConcept).concept;
+            cuota.state = 1;
+            cuota.deleted = 0;
+            return cuota;
         }
 
         vm.createDues = function() {
-            var houseNumber = 0;
-
+        CommonMethods.waitingMessage();
             function createCharge(houseNumber, cuotaNumber) {
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
+                var cuotaNumber = cuotaNumber;
+                var house = vm.houses[houseNumber]
                 if (cuota.ammount != 0) {
-                       Charge.save(buildCharge(cuota,vm.houses[houseNumber]),function(result){
+                    Charge.save(buildCharge(cuota, house), function(result) {
+                        if (house.cuotas.length - 1 >  cuotaNumber) {
+                            createCharge(houseNumber,  cuotaNumber + 1)
+                        } else {
+                            if (vm.houses.length - 1 > houseNumber) {
+                                chargesPerHouse(houseNumber + 1)
+                            } else {
+                                $state.go('mensualCharge', null, {
+                                    reload: true
+                                })
+                                bootbox.hideAll();
+                                toastr["success"]("Se generaron las cuotas correctamente.")
+                            }
+                        }
+                    })
+                }else{
+                   if (house.cuotas.length - 1 >  cuotaNumber) {
+                            createCharge(houseNumber,  cuotaNumber + 1)
+                        } else {
+                            if (vm.houses.length - 1 > houseNumber) {
+                                chargesPerHouse(houseNumber + 1)
+                            } else {
+                                $state.go('mensualCharge', null, {
+                                    reload: true
+                                })
+                                bootbox.hideAll();
+                                toastr["success"]("Se generaron las cuotas correctamente.")
+                            }
+                        }
 
-                       })
                 }
-                if (vm.houses[houseNumber].cuotas.length - 1 > cuotaNumber) {
-                    createCharge(houseNumber, cuotaNumber + 1)
-                } else {
-                    if (vm.houses.length - 1 > houseNumber) {
-                        var cuotaNumber = 0;
-                        chargesPerHouse(houseNumber + 1)
-                    }else{
-                    $state.go('mensualCharge',null,{reload:true})
-                     toastr["success"]("Se generaron las cuotas correctamente.")
-                    }
-                }
+
             }
-
             function chargesPerHouse(houseNumber) {
                 var cuotaNumber = 0;
-                var house = vm.houses[houseNumber]
                 createCharge(houseNumber, cuotaNumber)
             }
-            chargesPerHouse(houseNumber)
-
+            chargesPerHouse(0)
         }
 
         vm.autoConcept = function(globalConcept) {
@@ -240,6 +270,12 @@
             }
 
             function onSuccess(data, headers) {
+             $('.dating').keydown(function() {
+                                    return false;
+                                });
+                                $('.numbers').keypress(function(tecla) {
+                                                           if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+                                                       });
                 AdministrationConfiguration.get({
                     companyId: $rootScope.companyId
                 }).$promise.then(function(result) {

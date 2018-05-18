@@ -44,6 +44,7 @@
                                                                     $rootScope.houseSelected = house;
                                                 $localStorage.houseSelected = house;
                                                 loadAll();
+                                                bootbox.hideAll();
                                                 vm.isEditing = true;
                                             }
 
@@ -70,7 +71,7 @@
                     },
                     callback: function(result) {
                         if (result) {
-
+                             CommonMethods.waitingMessage();
                             updateCharge(0)
 
                         }
@@ -96,6 +97,7 @@
                 },
                 callback: function(result) {
                     if (result) {
+                    CommonMethods.waitingMessage();
                         charge.deleted = 1;
                         Charge.update(charge, onSaveSuccess, onSaveError);
 
@@ -104,6 +106,7 @@
                                 id: result.houseId
                             }, onSuccess)
                             function onSuccess(house) {
+                            bootbox.hideAll();
                                 toastr["success"]("La cuota se ha eliminado correctamente.")
                                 $rootScope.houseSelected = house;
                                 $localStorage.houseSelected = house;
@@ -123,7 +126,8 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-            var caracteres = ['"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+             var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -150,7 +154,6 @@
                                     return false;
                                 });
 angular.forEach(vm.charges,function(charge,i){
-console.log(vm.charges[i].date)
          charge.date = new Date(vm.charges[i].date)
          })
                 })
@@ -161,7 +164,7 @@ console.log(vm.charges[i].date)
             $state.go('houseAdministration.chargePerHouse.new')
         }
         vm.cancel = function() {
-            $("#data").fadeOut();
+            $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
             loadAll();
             vm.isEditing = false;
@@ -169,7 +172,7 @@ console.log(vm.charges[i].date)
         $scope.$watch(function() {
             return $rootScope.houseSelected;
         }, function() {
-            $("#data").fadeOut();
+            $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
             loadAll();
             vm.isEditing = false;
@@ -219,7 +222,6 @@ console.log(vm.charges[i].date)
                     charge.type = charge.type+""
                 })
                 vm.charges = data;
-                console.log(vm.charges)
                 vm.page = pagingParams.page;
                 $("#loading").fadeOut(300);
                 setTimeout(function() {

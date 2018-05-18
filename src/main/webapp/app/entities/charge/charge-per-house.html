@@ -5,11 +5,11 @@
     </div>
 </div>
 <div class="col-md-12 display-none" id="data">
-    <div class="col-md-12">
+    <div class="col-md-12 no-padding">
         <div class="pull-left">
            <h2 class="bold uppercase" style="font-size:15px">Deudas vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
         </div>
-            <div ng-show="vm.isEditing == false" class="btn-group pull-right" style="padding:5px">
+            <div ng-show="vm.isEditing == false" class="btn-group pull-right">
                 <button class="btn btn-success" style="margin:5px" ng-click="vm.createCharge()"><i class="fa fa-plus"></i> Agregar cuotas</button>
                 <button class="btn btn-primary" ng-show="vm.charges.length!=0" style="margin:5px" ng-click="vm.editing()"><i class="fa fa-pencil"></i> Editar cuotas</button>
             </div>

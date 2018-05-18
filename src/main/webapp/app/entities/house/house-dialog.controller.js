@@ -12,7 +12,6 @@
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
-        console.log(vm.house)
         if(vm.house.due==null || vm.house.due==undefined){
         vm.house.due=0;
         }
@@ -27,13 +26,11 @@
         vm.save = save;
         setTimeout(getConfiguration(),800);
         function getConfiguration(){
-        console.log($rootScope.companyId)
             CompanyConfiguration.getByCompanyId({companyId: $rootScope.companyId}).$promise.then(onSuccessCompany, onError);
         }
         function onSuccessCompany (data){
            angular.forEach(data, function(configuration, key) {
                vm.companyConfiguration = configuration;
-               console.log(vm.companyConfiguration)
              });
               loadQuantities();
                setTimeout(function() {
@@ -44,7 +41,6 @@
                 },900 )
         }
         function onError () {
-        console.log('sadfsadf'+data);
         }
 
         function generateLoginCode() {
@@ -99,7 +95,6 @@
                   House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: $rootScope.companyId},onSuccessUp,onErrorUp)
 
             } else {
-            console.log(vm.companyConfiguration);
                 if(vm.companyConfiguration.quantityhouses <= vm.houseQuantity ){
                      toastr['error']("Ha excedido la cantidad de casas permitidas para registrar, contacte el encargado de soporte.")
                      bootbox.hideAll();
@@ -131,7 +126,6 @@
 
             }
             function onError(){
-                console.log(vm.house);
                 House.save(vm.house, onSaveSuccess, onSaveError);
 
             }
