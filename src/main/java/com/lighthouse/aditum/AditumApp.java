@@ -80,5 +80,7 @@ public class AditumApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getActiveProfiles());
+
+
     }
 }

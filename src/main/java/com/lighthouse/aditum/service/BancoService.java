@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 
 /**
  * Service Implementation for managing Banco.
@@ -55,6 +57,13 @@ public class BancoService {
         log.debug("Request to get all Bancos");
         Page<Banco> result = bancoRepository.findByCompanyIdAndDeleted(pageable,companyId,1);
         return result.map(banco -> bancoMapper.toDto(banco));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Banco> findAllCompanies(Pageable pageable) {
+        log.debug("Request to get all Bancos");
+        return bancoRepository.findAll(pageable).getContent();
+
     }
 
     /**
