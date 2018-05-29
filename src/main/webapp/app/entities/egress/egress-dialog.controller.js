@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDialogController', EgressDialogController);
 
-    EgressDialogController.$inject = ['CommonMethods','$timeout','$state', '$scope', '$stateParams','previousState', 'entity', 'Egress', 'Company','Principal','Proveedor','$rootScope','Banco'];
+    EgressDialogController.$inject = ['CommonMethods','$timeout','$state', '$scope', '$stateParams','previousState', 'entity', 'Egress', 'Company','Principal','Proveedor','$rootScope','Banco','EgressCategory'];
 
-    function EgressDialogController (CommonMethods,$timeout, $state, $scope, $stateParams, previousState,  entity, Egress, Company,Principal,Proveedor,$rootScope,Banco) {
+    function EgressDialogController (CommonMethods,$timeout, $state, $scope, $stateParams, previousState,  entity, Egress, Company,Principal,Proveedor,$rootScope,Banco,EgressCategory) {
         var vm = this;
              $rootScope.active = "newEgress";
 
@@ -19,6 +19,9 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        vm.gastosVariables = [];
+        vm.gastosFijos = [];
+        vm.gastosOtros = [];
         CommonMethods.validateNumbers();
         CommonMethods.formatCurrencyInputs();
           $(function() {
@@ -37,16 +40,36 @@
                   function onSuccessBancos(data, headers) {
                         vm.bancos = data;
 
+                       EgressCategory.query({companyId: $rootScope.companyId}).$promise.then(onSuccessEgressCategories);
                   }
 
-               setTimeout(function() {
-                            $("#loadingIcon").fadeOut(300);
-                }, 400)
-                   setTimeout(function() {
-                       $("#new_egress_form").fadeIn('slow');
-                },900 )
 
         }},700)
+
+
+            function onSuccessEgressCategories(data, headers) {
+                 angular.forEach(data, function(value, key) {
+                       if(value.group=='Gastos fijos'){
+                        vm.gastosFijos.push(value.category)
+                       }
+                       if(value.group=='Gastos variables'){
+                        vm.gastosVariables.push(value.category)
+                       }
+
+                      if(value.group=='Otros'){
+                       vm.gastosOtros.push(value.category)
+                      }
+
+                 })
+                 vm.egressCategories = data;
+                 setTimeout(function() {
+                              $("#loadingIcon").fadeOut(300);
+                  }, 400)
+                     setTimeout(function() {
+                         $("#new_egress_form").fadeIn('slow');
+                  },900 )
+            }
+
 
          vm.formatearNumero =function(nStr) {
 

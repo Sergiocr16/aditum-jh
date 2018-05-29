@@ -60,22 +60,16 @@
                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
                                     <select class="form-control" id="field_category" name="category" ng-model="vm.egress.category" required>
                                         <option value="">Seleccione una Categoría</option>
-                                        <optgroup label="GASTOS FIJOS">
+                                        <optgroup  ng-show="vm.gastosFijos.length>0"  label="GASTOS FIJOS">
+                                            <option ng-repeat="category in vm.gastosFijos" value="category">{{category}}</option>
+                                        </optgroup>
+                                        <optgroup ng-show="vm.gastosVariables.length>0" label="GASTOS VARIABLES">
+                                            <option ng-repeat="category in vm.gastosVariables" value="category">{{category}}</option>
+                                        </optgroup>
+                                        <optgroup ng-show="vm.gastosOtros.length>0"  label="OTROS">
+                                            <option ng-repeat="category in vm.gastosOtros" value="category">{{category}}</option>
+                                        </optgroup>
 
-                                            <option value="Administración">Administración</option>
-                                            <option value="Agua potable">Agua potable</option>
-                                            <option value="Energía eléctrica">Energía eléctrica</option>
-                                            <option value="Jardinería">Jardinería</option>
-                                            <option value="Sueldos y salarios">Sueldos y salarios</option>
-                                            <option value="Seguridad">Seguridad</option>
-                                        </optgroup>
-                                        <optgroup label="GASTOS VARIABLES">
-                                            <option value="Eventos">Eventos</option>
-                                            <option value="Gastos legales">Gastos legales</option>
-                                            <option value="Impuestos y comisiones">Impuestos y comisiones</option>
-                                            <option value="Mantenimiento áreas comunes">Mantenimiento áreas comunes</option>
-                                            <option value="Papelería y copias">Papelería y copias</option>
-                                        </optgroup>
                                     </select>
                                 </div>
                             </div>

@@ -39,7 +39,7 @@
 
             Company.query({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 20,
                 sort: sort()
             }, onSuccess, onError);
             function sort() {
