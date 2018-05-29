@@ -47,6 +47,7 @@
 
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:bancoUpdate', result);
+                toastr["success"]("Se ha registrado la cuenta de banco correctamente");
             $state.go('banco-configuration');
             $uibModalInstance.close(result);
             vm.isSaving = false;

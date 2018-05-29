@@ -5,15 +5,16 @@
         .module('aditumApp')
         .controller('CompanyDialogController', CompanyDialogController);
 
-    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company','AdministrationConfiguration'];
+    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company','AdministrationConfiguration','EgressCategory','Banco'];
 
-    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration) {
+    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration,EgressCategory,Banco) {
         var vm = this;
 
         vm.company = entity;
         vm.clear = clear;
         vm.save = save;
-
+        var egressCategories = [{id:null,group:'Gastos fijos',category:'Administración',companyId:null},{id:null,group:'Gastos fijos',category:'Agua potable',companyId:null},{id:null,group:'Gastos fijos',category:'Energía eléctrica',companyId:null},{id:null,group:'Gastos fijos',category:'Seguridad',companyId:null},{id:null,group:'Gastos fijos',category:'Jardinería',companyId:null},{id:null,group:'Gastos fijos',category:'Sueldos y salarios',companyId:null},{id:null,group:'Gastos fijos',category:'Mantenimiento áreas comunes',companyId:null}
+        ,{id:null,group:'Gastos variables',category:'Eventos',companyId:null},{id:null,group:'Gastos variables',category:'Gastos legales',companyId:null},{id:null,group:'Gastos variables',category:'Impuestos y comisiones',companyId:null},{id:null,group:'Gastos variables',category:'Papelería y copias',companyId:null}]
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -66,6 +67,16 @@
             CompanyConfiguration.update(vm.companyConfiguration, onSaveSuccess, onSaveError);
         }
         function onSaveCompanySuccess (result) {
+            if(vm.companyConfiguration.hasContability==1){
+                   angular.forEach(egressCategories, function(value, key) {
+                     value.companyId = result.id;
+                     EgressCategory.save(value);
+                   });
+                   var date = moment(new Date(), 'DD/MM/YYYY').toDate()
+                   var banco = {id:null,beneficiario:'Caja chica',cedula:null,cuentaCorriente:0,cuentaCliente:0,moneda:null,cuentaContable:null,capitalInicial:0,mostrarFactura:null,fechaCapitalInicial:date,saldo:0,deleted:1,companyId:result.id}
+
+                   Banco.save(banco);
+            }
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
             AdministrationConfiguration.save({squareMetersPrice:0, companyId:result.id});
