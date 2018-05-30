@@ -49,6 +49,10 @@
         {
             "fieldName": "type",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",

@@ -29,6 +29,8 @@ public class VehiculeDTO implements Serializable {
 
     private String type;
 
+    private Integer deleted;
+
     private Long houseId;
 
     private Long companyId;
@@ -40,6 +42,7 @@ public class VehiculeDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getLicenseplate() {
         return licenseplate;
     }
@@ -47,6 +50,7 @@ public class VehiculeDTO implements Serializable {
     public void setLicenseplate(String licenseplate) {
         this.licenseplate = licenseplate;
     }
+
     public String getBrand() {
         return brand;
     }
@@ -54,6 +58,7 @@ public class VehiculeDTO implements Serializable {
     public void setBrand(String brand) {
         this.brand = brand;
     }
+
     public String getColor() {
         return color;
     }
@@ -61,6 +66,7 @@ public class VehiculeDTO implements Serializable {
     public void setColor(String color) {
         this.color = color;
     }
+
     public Integer getEnabled() {
         return enabled;
     }
@@ -68,12 +74,21 @@ public class VehiculeDTO implements Serializable {
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
+
     public String getType() {
         return type;
     }
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Long getHouseId() {
@@ -102,26 +117,27 @@ public class VehiculeDTO implements Serializable {
         }
 
         VehiculeDTO vehiculeDTO = (VehiculeDTO) o;
-
-        if ( ! Objects.equals(id, vehiculeDTO.id)) { return false; }
-
-        return true;
+        if(vehiculeDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), vehiculeDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "VehiculeDTO{" +
-            "id=" + id +
-            ", licenseplate='" + licenseplate + "'" +
-            ", brand='" + brand + "'" +
-            ", color='" + color + "'" +
-            ", enabled='" + enabled + "'" +
-            ", type='" + type + "'" +
-            '}';
+            "id=" + getId() +
+            ", licenseplate='" + getLicenseplate() + "'" +
+            ", brand='" + getBrand() + "'" +
+            ", color='" + getColor() + "'" +
+            ", enabled='" + getEnabled() + "'" +
+            ", type='" + getType() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }
