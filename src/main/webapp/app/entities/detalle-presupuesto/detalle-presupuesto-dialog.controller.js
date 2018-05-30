@@ -5,17 +5,18 @@
         .module('aditumApp')
         .controller('DetallePresupuestoDialogController', DetallePresupuestoDialogController);
 
-    DetallePresupuestoDialogController.$inject = ['CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory'];
+    DetallePresupuestoDialogController.$inject = ['Presupuesto','CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory'];
 
-    function DetallePresupuestoDialogController (CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
+    function DetallePresupuestoDialogController (Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
         var vm = this;
-
+        vm.presupuesto = {};
         vm.detallePresupuesto = entity;
         vm.save = save;
         vm.mantenimientoValues = [];
         vm.extraordinariaValues = [];
         vm.areasComunesValues = [];
         vm.otrosIngresosValues = [];
+        vm.budgetYearsToSelect = [];
 
         for(var i=1;i<=12;i++){
             var mantenimientoValue = {month:i,valuePerMonth:""}
@@ -34,10 +35,13 @@
            angular.element('.form-group:eq(1)>input').focus();
          });
          setTimeout(function(){
+            createBudgetYears();
             EgressCategory.query({companyId: $rootScope.companyId}).$promise.then(onSuccessEgressCategories);
 
          },900)
+
         function onSuccessEgressCategories(data, headers) {
+
             angular.forEach(data,function(egressCategory,key){
                 egressCategory.valuesPerMonth = []
                 for(var i=1;i<=12;i++){
@@ -53,13 +57,21 @@
                 $("#budgetContainer").fadeIn('slow');
             }, 700)
         }
-
-        CommonMethods.validateNumbers();
-        function save (){
-            getValuesPerMonth();
-            vm.presupuesto
-            Presupuesto.save(vm.presupuesto, onSaveSuccess, onSaveError);
-
+        function createBudgetYears(){
+            vm.budgetYearsToSelect = []
+            var actualYear = parseInt(moment(new Date()).format('YYYY'))
+            for(var i=0;i<4;i++){
+                vm.budgetYearsToSelect.push({year:actualYear+i});
+            }
+               Presupuesto.query({companyId:$rootScope.companyId},function(result) {
+                     angular.forEach(result,function(item,key){
+                         angular.forEach(vm.budgetYearsToSelect,function(yearItem,key){
+                             if(item.anno == yearItem.year){
+                                 vm.budgetYearsToSelect.splice(key, 1);
+                             }
+                          })
+                      })
+                });
         }
         function getValuesPerMonth () {
             vm.mantenimientoStringValuesPerMonth = ""
@@ -68,16 +80,24 @@
             vm.otrosIngresosStringValuesPerMonth = ""
 
             angular.forEach(vm.mantenimientoValues,function(item,key){
-                 mantenimientoStringValuesPerMonth = mantenimientoStringValuesPerMonth + sortMonthValues(item)
+                 vm.mantenimientoStringValuesPerMonth = vm.mantenimientoStringValuesPerMonth + sortMonthValues(item)
             })
             angular.forEach(vm.extraordinariaValues,function(item,key){
-                 extraordinariaStringValuesPerMonth = extraordinariaStringValuesPerMonth + sortMonthValues(item)
+                 vm.extraordinariaStringValuesPerMonth = vm.extraordinariaStringValuesPerMonth + sortMonthValues(item)
             })
             angular.forEach(vm.areasComunesValues,function(item,key){
-                 areasComunesStringValuesPerMonth = areasComunesStringValuesPerMonth + sortMonthValues(item)
+                 vm.areasComunesStringValuesPerMonth = vm.areasComunesStringValuesPerMonth + sortMonthValues(item)
             })
             angular.forEach(vm.otrosIngresosValues,function(item,key){
-                 otrosIngresosStringValuesPerMonth = otrosIngresosStringValuesPerMonth + sortMonthValues(item)
+                 vm.otrosIngresosStringValuesPerMonth = vm.otrosIngresosStringValuesPerMonth + sortMonthValues(item)
+            })
+             angular.forEach(vm.egressCategories,function(item,key){
+                 var valuesPerMonth = ""
+                 item.valuePerMonth = "";
+                 angular.forEach(item.valuesPerMonth,function(item2,key){
+                  item.valuePerMonth = item.valuePerMonth + sortMonthValues(item2)
+                 })
+
             })
         }
          function sortMonthValues(item) {
@@ -89,13 +109,72 @@
                }
                return valuePerMonth;
          }
-        function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:detallePresupuestoUpdate', result);
-            vm.isSaving = false;
-        }
+
 
         function onSaveError () {
             vm.isSaving = false;
+        }
+         function save (){
+           if(vm.presupuesto.anno==undefined){
+                toastr["error"]("Debe seleccionar el año a presupuestar");
+           }else{
+                getValuesPerMonth();
+                vm.presupuesto.anno = vm.presupuesto.anno.year;
+                vm.presupuesto.date = moment(new Date(), 'DD/MM/YYYY').toDate();
+                vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
+                vm.presupuesto.companyId = $rootScope.companyId;
+                Presupuesto.save(vm.presupuesto, saveIngresosValues, onSaveError);
+            }
+
+        }
+        function saveIngresosValues (result) {
+            for(var i=0;i<=3;i++){
+            var detallePresupuesto = {};
+            switch(i){
+                case 0:
+                    detallePresupuesto.category = 'mantenimiento';
+                    detallePresupuesto.valuePerMonth = vm.mantenimientoStringValuesPerMonth;
+
+                    break;
+                case 1:
+                    detallePresupuesto.category = 'extraordinaria';
+                    detallePresupuesto.valuePerMonth = vm.extraordinariaStringValuesPerMonth;
+
+                    break;
+                case 2:
+                    detallePresupuesto.category = 'areascomunes';
+                    detallePresupuesto.valuePerMonth = vm.areasComunesStringValuesPerMonth;
+
+                    break;
+               case 3:
+                    detallePresupuesto.category = 'otrosingresos';
+                    detallePresupuesto.valuePerMonth = vm.otrosIngresosStringValuesPerMonth;
+
+
+                    break;
+                }
+
+               detallePresupuesto.type = 1;
+               detallePresupuesto.presupuestoId = result.id;
+               console.log(vm.detallePresupuesto)
+               DetallePresupuesto.save(detallePresupuesto);
+            }
+           saveEgressValues(result);
+
+         }
+        function saveEgressValues (result) {
+          angular.forEach(vm.egressCategories,function(item,key){
+               var detallePresupuesto = {};
+                detallePresupuesto.category = item.category;
+                detallePresupuesto.valuePerMonth = item.valuePerMonth;
+                detallePresupuesto.type = 1;
+                detallePresupuesto.presupuestoId = result.id;
+                DetallePresupuesto.save(detallePresupuesto);
+
+          })
+
+
+
         }
 
 

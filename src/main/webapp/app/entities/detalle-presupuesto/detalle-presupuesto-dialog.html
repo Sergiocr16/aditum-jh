@@ -33,13 +33,14 @@
         </div>
         <div class="col-md-12 no-padding" style="margin-bottom:15px;">
             <div class="col-md-6 col-sm-6 col-xs-6 no-padding">
-                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Seleccione el año que desea presupuestar</span>
-                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. (SÓLO NÚMEROS Ej. 15,000)</span>
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Seleccione el año que desea presupuestar.</span>
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Únicamente podrá seleccionar los años en los que no haya un presupuesto creado.</span>
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. <span class="bold">(SÓLO NÚMEROS Ej. 15000)</span> </span>
             </div>
 
             <div class="col-md-2 col-sm-2 col-xs-2 ">
-                <select class="form-control gray-font" ng-change="vm.findResidentsByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
-                    <option value="">2018</option>
+                <select class="form-control gray-font" data-ng-model="vm.presupuesto.anno" ng-options="item.year for item in vm.budgetYearsToSelect | orderBy: 'year' track by item.year" required>
+                    <option value="">Seleccione un año</option>
                 </select>
             </div>
             <div class="no-padding-right col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-2 col-sm-2 col-xs-2 ">
