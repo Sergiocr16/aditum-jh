@@ -4,23 +4,18 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.OfficerDTO;
 
 import org.mapstruct.*;
-import java.util.List;
 
 /**
  * Mapper for the entity Officer and its DTO OfficerDTO.
  */
-@Mapper(componentModel = "spring", uses = {CompanyMapper.class})
-public interface OfficerMapper {
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class, })
+public interface OfficerMapper extends EntityMapper <OfficerDTO, Officer> {
 
     @Mapping(source = "company.id", target = "companyId")
-    OfficerDTO officerToOfficerDTO(Officer officer);
-
-    List<OfficerDTO> officersToOfficerDTOs(List<Officer> officers);
+    OfficerDTO toDto(Officer officer);
 
     @Mapping(source = "companyId", target = "company")
-    Officer officerDTOToOfficer(OfficerDTO officerDTO);
-
-    List<Officer> officerDTOsToOfficers(List<OfficerDTO> officerDTOs);
+    Officer toEntity(OfficerDTO officerDTO);
 
     default Company companyFromId(Long id) {
         if (id == null) {
@@ -29,5 +24,13 @@ public interface OfficerMapper {
         Company company = new Company();
         company.setId(id);
         return company;
+    }
+    default Officer fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Officer officer = new Officer();
+        officer.setId(id);
+        return officer;
     }
 }

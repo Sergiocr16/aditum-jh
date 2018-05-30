@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.Officer;
+import com.lighthouse.aditum.domain.OfficerAccount;
 import com.lighthouse.aditum.domain.RHAccount;
 import com.lighthouse.aditum.repository.CompanyRepository;
 import com.lighthouse.aditum.repository.OfficerRepository;
@@ -57,10 +58,11 @@ public class OfficerService {
      */
     public OfficerDTO save(OfficerDTO officerDTO) {
         log.debug("Request to save Officer : {}", officerDTO);
-        Officer officer = officerMapper.officerDTOToOfficer(officerDTO);
-        officer.setEnable(officerDTO.getEnable());
+        Officer officer = officerMapper.toEntity(officerDTO);
+        officer.setEnable(officerDTO.isEnable());
+        officer.setDeleted(0);
         officer = officerRepository.save(officer);
-        OfficerDTO result = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO result = officerMapper.toDto(officer);
         return result;
     }
 
@@ -73,8 +75,8 @@ public class OfficerService {
     @Transactional(readOnly = true)
     public Page<OfficerDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Officers");
-        Page<Officer> result = officerRepository.findByCompanyId(pageable,companyId);
-        return result.map(officer -> officerMapper.officerToOfficerDTO(officer));
+        Page<Officer> result = officerRepository.findByCompanyIdAndDeleted(pageable,companyId,0);
+        return result.map(officer -> officerMapper.toDto(officer));
     }
 
     /**
@@ -87,7 +89,7 @@ public class OfficerService {
     public OfficerDTO findOne(Long id) {
         log.debug("Request to get Officer : {}", id);
         Officer officer = officerRepository.findOne(id);
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
         officerDTO.setEnable(officer.isEnable());
         officer.setPhonenumber(officerDTO.getPhonenumber());
         officer.setDirection(officerDTO.getDirection());
@@ -98,15 +100,15 @@ public class OfficerService {
     @Transactional(readOnly = true)
     public OfficerDTO findOneByCompanyAndIdentification(Long id,String identificationID) {
         log.debug("Request to get Vehicule : {}", id);
-        Officer officer = officerRepository.findByCompanyIdAndIdentificationnumber(id,identificationID);
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        Officer officer = officerRepository.findByCompanyIdAndIdentificationnumberAndDeleted(id,identificationID,0);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
         return officerDTO;
     }
 
     @Transactional(readOnly = true)
     public Integer countByCompanyId(Long companyId) {
         log.debug("Request to get Officer : {}", companyId);
-        return officerRepository.countByCompanyId(companyId);
+        return officerRepository.countByCompanyIdAndDeleted(companyId,0);
     }
 //    @Transactional(readOnly = true)
 //    public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
@@ -124,15 +126,15 @@ public class OfficerService {
 
     @Transactional(readOnly = true)
     public Page<OfficerDTO> findEnabled(Pageable pageable,Long companyId) {
-        List<Officer> result = officerRepository.findByEnableAndCompanyId(true,companyId);
-        return new PageImpl<>(result).map(officer-> officer.image(null)).map(officer -> officerMapper.officerToOfficerDTO(officer));
+        List<Officer> result = officerRepository.findByEnableAndCompanyIdAndDeleted(true,companyId,0);
+        return new PageImpl<>(result).map(officer-> officer.image(null)).map(officer -> officerMapper.toDto(officer));
 
     }
 
     @Transactional(readOnly = true)
     public Page<OfficerDTO> findDisabled(Pageable pageable,Long companyId) {
-        List<Officer> result = officerRepository.findByEnableAndCompanyId(false,companyId);
-        return new PageImpl<>(result).map(officer->officerMapper.officerToOfficerDTO(officer));
+        List<Officer> result = officerRepository.findByEnableAndCompanyIdAndDeleted(false,companyId,0);
+        return new PageImpl<>(result).map(officer->officerMapper.toDto(officer));
 
     }
 
@@ -142,9 +144,9 @@ public class OfficerService {
         List<Company> companies = new ArrayList<>(rhAccount.getCompanies());
         List<Officer> allOfficers = new ArrayList<>();
         List<OfficerDTO> allOfficersDTO = new ArrayList<>();
-        companies.forEach(company -> officerRepository.findByEnableAndCompanyId(false,company.getId()).forEach(officer ->   {  allOfficers.add(officer);}));
+        companies.forEach(company -> officerRepository.findByEnableAndCompanyIdAndDeleted(false,company.getId(),0).forEach(officer ->   {  allOfficers.add(officer);}));
         String a = "";
-        allOfficers.forEach(officer -> {allOfficersDTO.add(officerMapper.officerToOfficerDTO(officer));});
+        allOfficers.forEach(officer -> {allOfficersDTO.add(officerMapper.toDto(officer));});
         allOfficersDTO.forEach(officerDTO -> { officerDTO.setCompany(companyMapper.companyToCompanyDTO(companyRepository.findOneById(officerDTO.getCompanyId())));});
         return new PageImpl<>(allOfficersDTO);
     }
@@ -155,8 +157,8 @@ public class OfficerService {
         List<Company> companies = new ArrayList<>(rhAccount.getCompanies());
         List<Officer> allOfficers = new ArrayList<>();
         List<OfficerDTO> allOfficersDTO = new ArrayList<>();
-        companies.forEach(company -> officerRepository.findByEnableAndCompanyId(true,company.getId()).forEach(officer ->   {  allOfficers.add(officer);}));
-        allOfficers.forEach(officer -> {allOfficersDTO.add(officerMapper.officerToOfficerDTO(officer));});
+        companies.forEach(company -> officerRepository.findByEnableAndCompanyIdAndDeleted(true,company.getId(),0).forEach(officer ->   {  allOfficers.add(officer);}));
+        allOfficers.forEach(officer -> {allOfficersDTO.add(officerMapper.toDto(officer));});
         allOfficersDTO.forEach(officerDTO -> { officerDTO.setCompany(companyMapper.companyToCompanyDTO(companyRepository.findOneById(officerDTO.getCompanyId())));});
         return new PageImpl<>(allOfficersDTO);
 
@@ -170,6 +172,8 @@ public class OfficerService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Officer : {}", id);
-        officerRepository.delete(id);
+        Officer officer = officerMapper.toEntity(this.findOne(id));
+        officer.setDeleted(1);
+        officerRepository.save(officer);
     }
 }
