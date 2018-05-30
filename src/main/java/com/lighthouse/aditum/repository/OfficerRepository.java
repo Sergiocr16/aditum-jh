@@ -14,11 +14,11 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface OfficerRepository extends JpaRepository<Officer,Long> {
 
-    Page<Officer> findByCompanyId(Pageable pageable, Long companyId);
-    Officer findByCompanyIdAndIdentificationnumber(Long companyId,String identificationNumber);
-    Integer countByCompanyId(Long companyId);
+    Page<Officer> findByCompanyIdAndDeleted(Pageable pageable, Long companyId,Integer deleted);
+    Officer findByCompanyIdAndIdentificationnumberAndDeleted(Long companyId,String identificationNumber, Integer deleted);
+    Integer countByCompanyIdAndDeleted(Long companyId, Integer deleted);
 //    List<Officer> findByEnabledAndCompanyId(Integer state, Long companyId);
 
-    List<Officer> findByEnableAndCompanyId(boolean state, Long companyId);
+    List<Officer> findByEnableAndCompanyIdAndDeleted(boolean state, Long companyId, Integer deleted);
 
 }

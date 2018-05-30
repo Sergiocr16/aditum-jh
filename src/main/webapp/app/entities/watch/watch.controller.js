@@ -194,6 +194,10 @@
             function onErrorCurrent(error) {
                 vm.isData = false;
                 AlertService.error(error.data.message);
+                 $("#loadingData").fadeOut(0);
+                                 setTimeout(function() {
+                                     $("#data").fadeIn(300);
+                                 }, 200)
             }
         }
 

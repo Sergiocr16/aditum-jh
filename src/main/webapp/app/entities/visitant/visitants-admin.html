@@ -67,8 +67,11 @@
                 </div>
                 <div ng-repeat="visitor in vm.visitants | filter:vm.search " class="col-xs-12 hidden-lg hidden-md hidden-sm" style="padding:5px">
                     <hr class="col-xs-12 no-padding" style="background-color:#1caf9a!important;opacity:0.3!important">
-                    <div class="col-xs-12" style="margin-bottom:5px!important">
+                    <div class="col-xs-6" style="margin-bottom:5px!important">
                         <b>{{visitor.fullName}}</b>
+                    </div>
+                    <div class="col-xs-6" style="margin-bottom:5px!important">
+                        <b>Número de casa: {{visitor.houseNumber}}</b>
                     </div>
                     <div class="col-xs-6">
                         <div class="col-xs-12 no-padding">

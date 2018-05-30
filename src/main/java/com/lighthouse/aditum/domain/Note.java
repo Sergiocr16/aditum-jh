@@ -32,6 +32,9 @@ public class Note implements Serializable {
     @Column(name = "creationdate", nullable = false)
     private ZonedDateTime creationdate;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne
     private House house;
 
@@ -85,6 +88,19 @@ public class Note implements Serializable {
         this.creationdate = creationdate;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Note deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -120,24 +136,25 @@ public class Note implements Serializable {
             return false;
         }
         Note note = (Note) o;
-        if (note.id == null || id == null) {
+        if (note.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, note.id);
+        return Objects.equals(getId(), note.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Note{" +
-            "id=" + id +
-            ", description='" + description + "'" +
-            ", notetype='" + notetype + "'" +
-            ", creationdate='" + creationdate + "'" +
-            '}';
+            "id=" + getId() +
+            ", description='" + getDescription() + "'" +
+            ", notetype='" + getNotetype() + "'" +
+            ", creationdate='" + getCreationdate() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }

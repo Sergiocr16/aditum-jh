@@ -4,27 +4,24 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.VehiculeDTO;
 
 import org.mapstruct.*;
-import java.util.List;
 
 /**
  * Mapper for the entity Vehicule and its DTO VehiculeDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
-public interface VehiculeMapper {
+@Mapper(componentModel = "spring", uses = {HouseMapper.class, CompanyMapper.class, })
+public interface VehiculeMapper extends EntityMapper <VehiculeDTO, Vehicule> {
 
     @Mapping(source = "house.id", target = "houseId")
-    @Mapping(source = "company.id", target = "companyId")
-    VehiculeDTO vehiculeToVehiculeDTO(Vehicule vehicule);
 
-    List<VehiculeDTO> vehiculesToVehiculeDTOs(List<Vehicule> vehicules);
+    @Mapping(source = "company.id", target = "companyId")
+    VehiculeDTO toDto(Vehicule vehicule);
 
     @Mapping(source = "houseId", target = "house")
+
     @Mapping(source = "companyId", target = "company")
-    Vehicule vehiculeDTOToVehicule(VehiculeDTO vehiculeDTO);
+    Vehicule toEntity(VehiculeDTO vehiculeDTO);
 
-    List<Vehicule> vehiculeDTOsToVehicules(List<VehiculeDTO> vehiculeDTOs);
-
-    default House houseFromId(Long id) {
+    default House fromHouseId(Long id) {
         if (id == null) {
             return null;
         }
@@ -32,13 +29,12 @@ public interface VehiculeMapper {
         house.setId(id);
         return house;
     }
-
-    default Company companyFromId(Long id) {
+    default Vehicule fromId(Long id) {
         if (id == null) {
             return null;
         }
-        Company company = new Company();
-        company.setId(id);
-        return company;
+        Vehicule vehicule = new Vehicule();
+        vehicule.setId(id);
+        return vehicule;
     }
 }

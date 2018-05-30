@@ -35,11 +35,15 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",
-    "entityTableName": "note",
     "dto": "mapstruct",
-    "pagination": "pager",
-    "service": "serviceClass"
+    "service": "serviceClass",
+    "entityTableName": "note",
+    "pagination": "pager"
 }
