@@ -124,6 +124,6 @@
             }
         });
 
-        detectswipe('body', swiping);
+//        detectswipe('body', swiping);
     }
 })();
