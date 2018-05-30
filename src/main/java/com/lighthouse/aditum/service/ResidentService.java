@@ -42,9 +42,10 @@ public class ResidentService {
      */
     public ResidentDTO save(ResidentDTO residentDTO) {
         log.debug("Request to save Resident : {}", residentDTO);
-        Resident resident = residentMapper.residentDTOToResident(residentDTO);
+        Resident resident = residentMapper.toEntity(residentDTO);
+        resident.setDeleted(0);
         resident = residentRepository.save(resident);
-        ResidentDTO result = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO result = residentMapper.toDto(resident);
         return result;
     }
 
@@ -56,40 +57,40 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findAll(Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId,0);
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
     public Integer enableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  residentRepository.countByEnabledAndCompanyId(1,companyId);
+        return  residentRepository.countByEnabledAndCompanyIdAndDeleted(1,companyId,0);
     }
 
     @Transactional(readOnly = true)
     public Integer disableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  residentRepository.countByEnabledAndCompanyId(0,companyId);
+        return  residentRepository.countByEnabledAndCompanyIdAndDeleted(0,companyId,0);
     }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findEnabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndHouseId(1,houseId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        List<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(1,houseId,0);
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
     public ResidentDTO findByCompanyIdAndIdentifiactionNumber(Long companyId,String identificationNumber) {
         log.debug("Request to get all Residents");
-        Resident resident = residentRepository.findByCompanyIdAndIdentificationnumber(companyId,identificationNumber);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        Resident resident = residentRepository.findByCompanyIdAndIdentificationnumberAndDeleted(companyId,identificationNumber,0);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndHouseId(0,houseId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        List<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(0,houseId,0);
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
     /**
      *  Get one resident by id.
@@ -101,7 +102,7 @@ public class ResidentService {
     public ResidentDTO findOne(Long id) {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
 
@@ -109,7 +110,7 @@ public class ResidentService {
     public ResidentDTO findOneByUserId(Long id) {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
 
@@ -120,21 +121,23 @@ public class ResidentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Resident : {}", id);
-        residentRepository.delete(id);
+        Resident resident = residentMapper.toEntity(this.findOne(id));
+        resident.setDeleted(1);
+        residentRepository.save(resident);
     }
 
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findEnabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
-        return new PageImpl<> (result).map(resident -> resident.image(null)).map(resident -> residentMapper.residentToResidentDTO(resident));
+        List<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(1,companyId,0);
+        return new PageImpl<> (result).map(resident -> resident.image(null)).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        List<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(0,companyId,0);
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
 
     }
 }

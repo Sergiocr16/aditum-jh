@@ -47,6 +47,8 @@ public class ResidentDTO implements Serializable {
 
     private Integer type;
 
+    private Integer deleted;
+
     private Long userId;
 
     private String userLogin;
@@ -62,6 +64,7 @@ public class ResidentDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -69,6 +72,7 @@ public class ResidentDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getLastname() {
         return lastname;
     }
@@ -76,6 +80,7 @@ public class ResidentDTO implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public String getSecondlastname() {
         return secondlastname;
     }
@@ -83,6 +88,7 @@ public class ResidentDTO implements Serializable {
     public void setSecondlastname(String secondlastname) {
         this.secondlastname = secondlastname;
     }
+
     public String getIdentificationnumber() {
         return identificationnumber;
     }
@@ -90,6 +96,7 @@ public class ResidentDTO implements Serializable {
     public void setIdentificationnumber(String identificationnumber) {
         this.identificationnumber = identificationnumber;
     }
+
     public String getPhonenumber() {
         return phonenumber;
     }
@@ -97,6 +104,7 @@ public class ResidentDTO implements Serializable {
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
+
     public byte[] getImage() {
         return image;
     }
@@ -112,6 +120,7 @@ public class ResidentDTO implements Serializable {
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
     }
+
     public String getEmail() {
         return email;
     }
@@ -119,6 +128,7 @@ public class ResidentDTO implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Integer getIsOwner() {
         return isOwner;
     }
@@ -126,6 +136,7 @@ public class ResidentDTO implements Serializable {
     public void setIsOwner(Integer isOwner) {
         this.isOwner = isOwner;
     }
+
     public Integer getEnabled() {
         return enabled;
     }
@@ -133,6 +144,7 @@ public class ResidentDTO implements Serializable {
     public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
+
     public String getImage_url() {
         return image_url;
     }
@@ -140,12 +152,21 @@ public class ResidentDTO implements Serializable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+
     public Integer getType() {
         return type;
     }
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Long getUserId() {
@@ -190,32 +211,33 @@ public class ResidentDTO implements Serializable {
         }
 
         ResidentDTO residentDTO = (ResidentDTO) o;
-
-        if ( ! Objects.equals(id, residentDTO.id)) { return false; }
-
-        return true;
+        if(residentDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), residentDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "ResidentDTO{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", lastname='" + lastname + "'" +
-            ", secondlastname='" + secondlastname + "'" +
-            ", identificationnumber='" + identificationnumber + "'" +
-            ", phonenumber='" + phonenumber + "'" +
-            ", image='" + image + "'" +
-            ", email='" + email + "'" +
-            ", isOwner='" + isOwner + "'" +
-            ", enabled='" + enabled + "'" +
-            ", image_url='" + image_url + "'" +
-            ", type='" + type + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", phonenumber='" + getPhonenumber() + "'" +
+            ", image='" + getImage() + "'" +
+            ", email='" + getEmail() + "'" +
+            ", isOwner='" + getIsOwner() + "'" +
+            ", enabled='" + getEnabled() + "'" +
+            ", image_url='" + getImage_url() + "'" +
+            ", type='" + getType() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }
