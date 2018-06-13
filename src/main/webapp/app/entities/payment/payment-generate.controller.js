@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge'];
+    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge) {
+    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -17,19 +17,16 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "capturarIngresos";
-        vm.payment = {};
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         angular.element(document).ready(function() {
-
-
             $('.infoCharge').popover('show')
         });
 
         vm.defineContent = function(charge) {
             var content = "";
-            switch (charge.state) {
+            switch (charge.estado) {
                 case 3:
                     content = "La deuda se liquidará por completo.";
                     break;
@@ -58,7 +55,15 @@
 
         setTimeout(function() {
             loadAll();
-        }, 1500)
+            vm.payment = {
+                paymentMethod: "DEPOSITO BANCO",
+                transaction: "Abonar a cuotas",
+                companyId: $rootScope.companyId
+            };
+$('.dating').keypress(function(e) {
+    return false
+});
+        }, 2000)
 
         vm.selectAll = function() {
             angular.forEach(vm.charges, function(change, i) {
@@ -103,7 +108,7 @@
             if (popover.tip().is(':visible') == false) {
                 $('.toPay').popover('show')
             }
-                $('#popPay').html(textContent);
+            $('#popPay').html(textContent);
         }
 
         function defineIfShowPopOverPayment() {
@@ -129,11 +134,11 @@
                 angular.forEach(vm.charges, function(chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
                         chargeIn.left = chargeIn.ammount - vm.ammount;
-                        chargeIn.payment = chargeIn.ammount - chargeIn.left;
-                        if (chargeIn.payment >= chargeIn.ammount) {
-                            chargeIn.payment = chargeIn.ammount;
+                        chargeIn.paymentAmmount = chargeIn.ammount - chargeIn.left;
+                        if (chargeIn.paymentAmmount >= chargeIn.ammount) {
+                            chargeIn.paymentAmmount = chargeIn.ammount;
                         }
-                      defineNewStateCharge(chargeIn)
+                        defineNewStateCharge(chargeIn)
                         vm.ammount = parseInt(vm.ammount - chargeIn.ammount)
                         if (vm.ammount <= 0) {
                             vm.ammount = 0;
@@ -141,31 +146,29 @@
                     }
                     if (vm.ammount == undefined) {
                         chargeIn.left = charge.ammount;
-                        chargeIn.payment = 0;
-                        chargeIn.state = 1;
+                        chargeIn.paymentAmmount = 0;
+                        chargeIn.estado = 1;
                     }
                 })
             }
 
         }
 
-function defineNewStateCharge(chargeIn){
-console.log(vm.payment.ammount)
-if(vm.payment.ammount==undefined){
-console.log('a')
-chargeIn.left = chargeIn.ammount;
-chargeIn.payment = 0;
- chargeIn.state = 1;
-}
-    if (chargeIn.left <= 0) {
-        chargeIn.left = 0;
-        chargeIn.state = 3;
-    } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.ammount) {
-        chargeIn.state = 2;
-    } else if (chargeIn.left >= 0) {
-        chargeIn.state = 1;
-    }
-}
+        function defineNewStateCharge(chargeIn) {
+            if (vm.payment.ammount == undefined) {
+                chargeIn.left = chargeIn.ammount;
+                chargeIn.paymentAmmount = 0;
+                chargeIn.estado = 1;
+            }
+            if (chargeIn.left <= 0) {
+                chargeIn.left = 0;
+                chargeIn.estado = 3;
+            } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.ammount) {
+                chargeIn.estado = 2;
+            } else if (chargeIn.left >= 0) {
+                chargeIn.estado = 1;
+            }
+        }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
             var caracteres = [':', '`', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -219,7 +222,7 @@ chargeIn.payment = 0;
                 }
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
-
+                loadBancos()
             }
 
             function onError(error) {
@@ -230,12 +233,12 @@ chargeIn.payment = 0;
 
         function loadCharges(houseId) {
 
+                                            $("#loadingTable").fadeIn(10);
+                                            $("#tableContent").fadeOut(10);
+
             Charge.queryByHouse({
                 houseId: houseId,
-
             }, onSuccess, onError);
-
-
 
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
@@ -246,8 +249,8 @@ chargeIn.payment = 0;
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
                     charge.left = charge.ammount;
-                    charge.payment = 0;
-                    charge.state = 1;
+                    charge.paymentAmmount = 0;
+                    charge.estado = 1;
                     vm.toPay = vm.toPay - parseInt(charge.ammount);
                 })
                 vm.charges = data.sort(function(a, b) {
@@ -259,16 +262,25 @@ chargeIn.payment = 0;
                 vm.savedCharges = vm.charges;
                 vm.page = pagingParams.page;
                 setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
+                                                    $("#loadingTable").fadeOut(300);
+                                                }, 400)
+                                                setTimeout(function() {
+                                                    $("#tableContent").fadeIn('slow');
+                                                }, 700)
+
+
                 setTimeout(function() {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                                    $("#loadingIcon").fadeOut(300);
+                                }, 400)
+                                setTimeout(function() {
+                                    $("#tableData").fadeIn('slow');
+                                }, 700)
             }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+
         }
         vm.defineBalanceClass = function(balance) {
             var b = parseInt(balance);
@@ -320,6 +332,7 @@ chargeIn.payment = 0;
             House.get({
                 id: house.id
             }, function(result) {
+                clear();
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
@@ -344,5 +357,103 @@ chargeIn.payment = 0;
         function openCalendar(index) {
             vm.datePickerOpenStatus = true;
         }
+
+        function loadBancos() {
+            Banco.query({
+                companyId: $rootScope.companyId
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                vm.bancos = data;
+                vm.page = pagingParams.page;
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+
+
+        vm.createPayment = function() {
+      if(vm.charges.length==0){
+      increaseMaintBalance();
+      }else{
+      paymentTransaction();
+      }
+
+        }
+        function paymentTransaction(){
+                    bootbox.confirm({
+                        message: "¿Está seguro que desea capturar este ingreso?",
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+                                CommonMethods.waitingMessage();
+                                vm.payment.charges = vm.charges;
+                                vm.payment.account = vm.payment.account.beneficiario;
+                                vm.payment.houseId = $rootScope.houseSelected.id;
+                                Payment.save(vm.payment, onSuccess, onError)
+
+                                function onSuccess(result) {
+                                    bootbox.hideAll();
+                                    clear()
+                                    toastr["success"]("Se ha capturado el ingreso correctamente.")
+                                    loadAll();
+                                }
+                                function onError() {
+                                    bootbox.hideAll();
+                                    clear()
+                                    toastr["error"]("Ups. No fue posible capturar el ingreso.")
+
+                                }
+                            }
+                        }
+                    });
+        }
+        function increaseMaintBalance(){
+                    bootbox.confirm({
+                                              message: "NO EXISTEN DEUDAS VIGENTES, ¿Está seguro que desea generar un salvo a favor de mantenimiento?",
+
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+                                     $rootScope.houseSelected.balance.maintenance = $rootScope.houseSelected.balance.maintenance + vm.toPay;
+                                     Balance.update($rootScope.houseSelected.balance,function(){
+                                     bootbox.hideAll();
+                                     loadAll();
+                                     clear()
+                                     toastr["success"]("Se ha abonado al fondo de mantenimiento de la vivienda correctamente.")
+                                     })
+                            }
+                        }
+                    });
+        }
+
+        function clear(){
+        vm.payment = {
+                        paymentMethod: "DEPOSITO BANCO",
+                        transaction: "Abonar a cuotas",
+                        companyId: $rootScope.companyId
+                    };
+        }
     }
 })();
+

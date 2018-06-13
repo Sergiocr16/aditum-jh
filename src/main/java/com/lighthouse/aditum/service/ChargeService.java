@@ -2,10 +2,12 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Balance;
 import com.lighthouse.aditum.domain.Charge;
+import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
 import com.lighthouse.aditum.service.dto.BalanceDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
+import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,44 @@ public class ChargeService {
      * @param chargeDTO the entity to save
      * @return the persisted entity
      */
+    public ChargeDTO create(ChargeDTO chargeDTO) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = chargeMapper.toEntity(chargeDTO);
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setId(null);
+        charge.setState(1);
+        charge = chargeRepository.save(charge);
+        return chargeMapper.toDto(charge);
+    }
+    public ChargeDTO pay(ChargeDTO chargeDTO, Payment payment) {
+        log.debug("Request to save Charge : {}", chargeDTO);
+        Charge charge = chargeMapper.toEntity(chargeDTO);
+        charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        charge.setPayment(chargeMapper.paymentFromId(payment.getId()));
+        charge.setAmmount(chargeDTO.getPaymentAmmount());
+        charge.setState(2);
+        charge = chargeRepository.save(charge);
+        BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
+        switch (chargeDTO.getType()) {
+            case 1:
+                int newMaintBalance = 0;
+                newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(chargeDTO.getPaymentAmmount());
+                balanceDTO.setMaintenance(newMaintBalance + "");
+                break;
+            case 2:
+                int newExtraBalance = 0;
+                newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) + Integer.parseInt(chargeDTO.getPaymentAmmount());
+                balanceDTO.setExtraordinary(newExtraBalance + "");
+                break;
+            case 3:
+                int newCommonBalance = 0;
+                newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) + Integer.parseInt(chargeDTO.getPaymentAmmount());
+                balanceDTO.setCommonAreas(newCommonBalance + "");
+                break;
+        }
+        balanceService.save(balanceDTO);
+        return chargeMapper.toDto(charge);
+    }
     public ChargeDTO save(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = chargeMapper.toEntity(chargeDTO);
@@ -221,7 +261,7 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
-        return new PageImpl < > (chargeRepository.findByHouseIdAndDeleted(houseId, 0))
+        return new PageImpl < > (chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0,1))
             .map(chargeMapper::toDto);
     }
 

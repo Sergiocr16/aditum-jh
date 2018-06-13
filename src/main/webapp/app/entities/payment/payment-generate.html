@@ -108,14 +108,14 @@
                             </div>
                             <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                    <form ng-submit="vm.crearCuota()">
+                                    <form ng-submit="vm.createPayment()">
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
                                                 <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
                                                     <span class="font-13 bold">Número de recibo *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font dating" placeholder="Número de recibo" required>
+                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" ng-required="vm.charges.length>0">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -123,10 +123,8 @@
                                                     <span class="font-13 bold">Cuenta *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <select class="form-control gray-font" ng-model="vm.payment.paymentMethod" required>
-                                                        <option value="1">Mantenimiento</option>
-                                                        <option value="2">Extraordinaria</option>
-                                                        <option value="3">Áreas comunes</option>
+                                                    <select class="form-control gray-font"  data-ng-model="vm.payment.account" ng-options="banco.beneficiario for banco in vm.bancos | orderBy: 'beneficiario' track by banco.id" ng-required="vm.charges.length>0">
+                                                        <option value="">Selecciona una cuenta</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -135,10 +133,14 @@
                                                     <span class="font-13 bold">Forma de pago *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                                    <select class="form-control gray-font" ng-model="vm.payment.paymentMethod" required>
-                                                        <option value="1">Mantenimiento</option>
-                                                        <option value="2">Extraordinaria</option>
-                                                        <option value="3">Áreas comunes</option>
+                                                    <select class="form-control gray-font" ng-model="vm.payment.paymentMethod" ng-required="vm.charges.length>0">
+                                                        <option value="DEPOSITO BANCO">DEPOSITO BANCO</option>
+                                                        <option value="EFECTIVO">EFECTIVO</option>
+                                                        <option value="TARJETA DEBITO">TARJETA DEBITO</option>
+                                                        <option value="TARJETA DEBITO">TARJETA DEBITO</option>
+                                                        <option value="TARJETA CREDIT">TARJETA CREDITO</option>
+                                                        <option value="TRANSFERENCIA">TRANSFERENCIA</option>
+                                                        <option value="CHEQUE">CHEQUE</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -151,7 +153,7 @@
                                                     <span class="font-13 bold">Fecha de pago *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')"  enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
+                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')"  enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" ng-required="vm.charges.length>0">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -159,7 +161,7 @@
                                                     <span class="font-13 bold control-label">Comentarios</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                                    <textarea required rows="1" ng-model="vm.charge.concept" cols="50" type="text" class="form-control" name="comments" id="field_comments">
+                                                    <textarea rows="1" ng-model="vm.charge.concept" cols="50" type="text" class="form-control" name="comments" id="field_comments">
                                          </textarea>
 
                                                 </div>
@@ -179,8 +181,13 @@
                                             </div>
                                         </div>
                                             <hr class="col-md-12">
-
-                                        <table class="table table-bordered">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingTable">
+                                            <div class="spinnerLoading" style="margin:50px auto!important;">
+                                                <div class="double-bounce1"></div>
+                                                <div class="double-bounce2"></div>
+                                            </div>
+                                        </div>
+                                        <table class="table table-bordered" id="tableContent">
                                             <thead>
                                             <tr>
                                                 <th style="border-top:white 1px solid;border-left:white 1px solid;">
@@ -218,7 +225,7 @@
                                             </thead>
                                             <tbody>
 
-                                            <tr style="height:35px"ng-repeat="charge in vm.charges | orderBy: 'date'"ng-class="{'no-liquid': charge.state==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.state==2,'liquid':charge.state==3}">
+                                            <tr  style="height:35px" ng-hide="vm.charges.length==0" ng-repeat="charge in vm.charges | orderBy: 'date'"ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
                                                 <td>
                                                 <h5 class="text-center no-margin">
                                                     <input type="checkbox" ng-model="charge.isIncluded" ng-change="vm.calculatePayments(vm.payment)">
@@ -229,14 +236,18 @@
                                                 <td>₡ {{charge.ammount | currency : "" : 0}}</td>
                                                 <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
                                                 <td ng-show="charge.isIncluded ==false">₡ -</td>
-                                                <td  ng-show="charge.payment!=0" style="min-width: 90px;">₡ {{charge.payment | currency : "" : 0}}</td>
-                                                <td  ng-show="charge.payment==0" style="min-width: 90px;">-</td>
+                                                <td  ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
+                                                <td  ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
 
                                                 <td id="{{charge.id}}" class="infoCharge" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
-                                                    <div ng-class="{'no-bg-color':charge.isIncluded==false}"style="background-color:#6ACA3B;height:{{(charge.payment/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                    <div ng-class="{'no-bg-color':charge.isIncluded==false}"style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
                                                     <div ng-class="{'no-bg-color':charge.isIncluded==false}"style="background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
                                                 </td>
                                             </tr>
+                                            <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">
+                                                <td colspan="7"><h5 class="text-center" style="font-weight:bold;color:green">NO EXISTEN DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE MANTENIMIENTO</h5></td>
+                                            </tr>
+
                                             <tr>
 
                                                 <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;" colspan="5"><b ng-show="vm.toPay>0">SALDO A FAVOR DE MANTENIMIENTO</b><b id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
@@ -253,7 +264,7 @@
 
                                             <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
                                                 <h3 class="text-right">
-                                                    <button type="submit" ng-disabled="vm.isSaving" class="btn blue">Realizar Pago</button>
+                                                    <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined" class="btn blue">Realizar Pago</button>
                                                     <button type="button" ui-sref="chargeMenu" class="btn red default">Cancelar</button>
                                                 </h3>
                                             </div>
