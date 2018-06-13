@@ -349,7 +349,12 @@ height: 100%;
     text-align: right;
 }
 
-
+.font-10 {
+    font-size: 10px !important;
+}
+.font-size-11 {
+    font-size: 11px !important;
+}
 .font-11 {
     font-size: 12px !important;
 }

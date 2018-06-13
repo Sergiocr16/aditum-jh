@@ -76,18 +76,13 @@ public class PresupuestoResource {
             .body(result);
     }
 
-    /**
-     * GET  /presupuestos : get all the presupuestos.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of presupuestos in body
-     */
+
     @GetMapping("/presupuestos")
     @Timed
     public List<PresupuestoDTO> getAllPresupuestos(Long companyId) {
         log.debug("REST request to get all Presupuestos");
         return presupuestoService.findAll(companyId);
     }
-
     /**
      * GET  /presupuestos/:id : get the "id" presupuesto.
      *

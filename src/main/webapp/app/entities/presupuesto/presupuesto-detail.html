@@ -1,27 +1,149 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <a>Finanzas</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="presupuesto()">Presupuestos</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ng-show="vm.budgetAction==2" href="">PRESUPUESTO {{vm.presupuesto.anno}}</a>
+            <a ng-show="vm.budgetAction==1" href="">PRESUPUESTO {{vm.presupuesto.anno}}</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
 
-<div>
-    <h2><span data-translate="aditumApp.presupuesto.detail.title">Presupuesto</span> {{vm.presupuesto.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.presupuesto.date">Date</span></dt>
-        <dd>
-            <span>{{vm.presupuesto.date | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.presupuesto.modificationDate">Modification Date</span></dt>
-        <dd>
-            <span>{{vm.presupuesto.modificationDate | date:'medium'}}</span>
-        </dd>
-    </dl>
+        </div>
+    </div>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row display-none" id="budgetContainer">
+    <div class="col-md-12">
+        <div style="margin-bottom:15px;" class="caption font-green-haze">
+            <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==2">Editar PRESUPUESTO {{vm.presupuesto.anno}}</span>
+            <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==1">PRESUPUESTO {{vm.presupuesto.anno}}</span>
+        </div>
+        <div class="col-md-12 no-padding" style="margin-bottom:15px;">
+            <div class="col-md-6 col-sm-6 col-xs-6 no-padding"  ng-show="vm.budgetAction==2">
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Seleccione el año que desea presupuestar.</span>
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Únicamente podrá seleccionar los años en los que no haya un presupuesto creado.</span>
+                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. <span class="bold">(SÓLO NÚMEROS Ej. 15000)</span> </span>
+            </div>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
 
-    <button type="button" ui-sref="presupuesto-detail.edit({id:vm.presupuesto.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+            <div class="no-padding-right col-md-offset-4 col-sm-offset-4 col-xs-offset-4 col-md-2 col-sm-2 col-xs-2 "  ng-show="vm.budgetAction==2">
+                <button class="btn btn-primary col-md-12" ng-click="vm.save()">Guardar presupuesto</button>
+            </div>
+            <div class="no-padding-right col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2 col-xs-12 "  ng-show="vm.budgetAction==1">
+                <button class="btn btn-primary col-md-12" ng-click="vm.showEditOptions()">Editar presupuesto</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="table-responsive">
+            <table class="jh-table table table-bordered ">
+                <tbody>
+                <tr>
+                    <th class="budgetTableHeader">CONCEPTO</th>
+                    <th ng-show="vm.budgetAction==1" class="budgetTableHeader">TOTAL</th>
+                    <th class="budgetTableHeader">ENERO</th>
+                    <th class="budgetTableHeader">FEBRERO</th>
+                    <th class="budgetTableHeader">MARZO</th>
+                    <th class="budgetTableHeader">ABRIL</th>
+                    <th class="budgetTableHeader">MAYO</th>
+                    <th class="budgetTableHeader">JUNIO</th>
+                    <th class="budgetTableHeader">JULIO</th>
+                    <th class="budgetTableHeader">AGOSTO</th>
+                    <th class="budgetTableHeader">SETIEMBRE</th>
+                    <th class="budgetTableHeader">OCTUBRE</th>
+                    <th class="budgetTableHeader">NOVIEMBRE</th>
+                    <th class="budgetTableHeader">DICIEMBRE</th>
+                </tr>
+                <tr style="height:20px;">
+                </tr>
+                <tr>
+                    <td colspan='100%' class="text-left font-14 bold" style="padding:4px !important;">  INGRESOS POR CUOTAS</td>
+
+                </tr>
+                <tr ng-repeat="ingressCategory in vm.ingressCategories">
+                    <td style="font-size:11px; text-transform:uppercase">
+                        {{ingressCategory.category}}
+                    </td>
+                    <td ng-show="vm.budgetAction==1" class="font-size-11 bold text-center" >
+                        ₡{{vm.formatearNumero(ingressCategory.total+"")}}
+                    </td>
+                    <td ng-repeat="month in ingressCategory.valuesPerMonth" class="text-center" style="padding-top:9px !Important;">
+                        <span ng-show="vm.budgetAction==1" class="text-center font-size-11 gray-font">₡{{vm.formatearNumero(month.valuePerMonth+"")}}</span>
+                        <input ng-show="vm.budgetAction==2" ng-model="month.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    </td>
+
+                </tr>
+                <tr ng-show="vm.budgetAction==1">
+                    <td class="text-right bold  font-size-11">TOTAL</td>
+                    <td class=" font-size-11 bold text-center">₡{{vm.formatearNumero(vm.totalIngressValue+"")}} </td>
+                    <td ng-repeat="month in vm.totalIngressByMonth" class="text-center" style="padding-top:9px !Important;">
+                        <span class="text-center font-size-11  bold">₡{{vm.formatearNumero(month.valuePerMonth+"")}}</span>
+                    </td>
+                </tr>
+                <tr style="height:20px;">
+                </tr>
+                <tr>
+                    <td colspan='100%' class="text-left font-14 bold" style="padding:4px !important;"> EGRESOS</td>
+
+                </tr>
+                <tr>
+                    <th class="budgetTableHeader">CONCEPTO</th>
+                    <th ng-show="vm.budgetAction==1" class="budgetTableHeader">TOTAL</th>
+                    <th class="budgetTableHeader">ENERO</th>
+                    <th class="budgetTableHeader">FEBRERO</th>
+                    <th class="budgetTableHeader">MARZO</th>
+                    <th class="budgetTableHeader">ABRIL</th>
+                    <th class="budgetTableHeader">MAYO</th>
+                    <th class="budgetTableHeader">JUNIO</th>
+                    <th class="budgetTableHeader">JULIO</th>
+                    <th class="budgetTableHeader">AGOSTO</th>
+                    <th class="budgetTableHeader">SETIEMBRE</th>
+                    <th class="budgetTableHeader">OCTUBRE</th>
+                    <th class="budgetTableHeader">NOVIEMBRE</th>
+                    <th class="budgetTableHeader">DICIEMBRE</th>
+                </tr>
+                <tr  ng-repeat="egressCategory in vm.egressCategories track by egressCategory.id"   >
+                    <td style=" text-transform:uppercase;" class=" text-left">
+                        <span  style="font-size:11px;" >{{egressCategory.category}}</span>
+                    </td>
+
+                    <td ng-show="vm.budgetAction==1" class="font-size-11 bold text-center">
+                        ₡{{vm.formatearNumero(egressCategory.total+"")}}
+                    </td>
+                    <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding:9px !Important;">
+                        <span class="text-center font-size-11 "  ng-show="vm.budgetAction==1">₡{{vm.formatearNumero(item.valuePerMonth+"")}}</span>
+                        <input ng-model="item.valuePerMonth"  ng-show="vm.budgetAction==2" type="text" class="form-control " style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    </td>
+
+                </tr>
+                <tr ng-show="vm.budgetAction==1">
+                    <td class="text-right bold  font-size-11">TOTAL</td>
+                    <td class=" font-size-11 bold text-center">₡{{vm.formatearNumero(vm.totalEgressValue+"")}} </td>
+                    <td ng-repeat="month in vm.totalEgressByMonth" class="text-center" style="padding-top:9px !Important;">
+                        <span class="text-center font-size-11  bold">₡{{vm.formatearNumero(month.valuePerMonth+"")}}</span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="col-md-12 text-center">
+                <h5 class=" text-center">
+                    <button class="btn btn-primary" style="text-align:center;width:300px" ng-show="vm.budgetAction==2" ng-click="vm.save()">Guardar presupuesto</button>
+                </h5>
+            </div>
+        </div>
+    </div>
 </div>

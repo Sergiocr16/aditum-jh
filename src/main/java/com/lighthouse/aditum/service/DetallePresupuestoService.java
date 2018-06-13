@@ -6,6 +6,8 @@ import com.lighthouse.aditum.service.dto.DetallePresupuestoDTO;
 import com.lighthouse.aditum.service.mapper.DetallePresupuestoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,19 @@ public class DetallePresupuestoService {
         detallePresupuesto = detallePresupuestoRepository.save(detallePresupuesto);
         return detallePresupuestoMapper.toDto(detallePresupuesto);
     }
+//    @Transactional(readOnly = true)
+//    public List<DetallePresupuestoDTO> getCategoriesByBudget(Long budgetId) {
+//        log.debug("Request to get budget details");
+//        return detallePresupuestoRepository.findByPresupuestoId(budgetId).stream()
+//            .map(detallePresupuestoMapper::toDto)
+//            .collect(Collectors.toCollection(LinkedList::new));
+//    }
 
+    public Page<DetallePresupuestoDTO> getCategoriesByBudget(Pageable pageable, String budgetId) {
+        log.debug("Request to get all Visitants in last month by house");
+        Page<DetallePresupuesto> result = detallePresupuestoRepository.findByPresupuestoId(pageable,budgetId);
+        return result.map(detallePresupuesto -> detallePresupuestoMapper.toDto(detallePresupuesto));
+    }
     /**
      *  Get all the detallePresupuestos.
      *

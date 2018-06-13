@@ -77,9 +77,9 @@
                 <td style="font-size:11px;">
                    MANTENIMIENTO
                 </td>
-                <td ng-repeat="mantenimientoValue in vm.mantenimientoValues" class="text-center" style="padding-top:3px !Important;">
-                    <span class="font-11">{{mantenimientoValue.month}}</span>
-                    <input ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;" required>
+                <td ng-repeat="mantenimientoValue in vm.mantenimientoValues" class="text-center" style="padding-top:9px !Important;">
+                    <!--<span class="font-11">{{mantenimientoValue.month}}</span>-->
+                    <input ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -88,9 +88,9 @@
                 <td style="font-size:11px;">
                     EXTRAORDINARIAS
                 </td>
-                <td ng-repeat="extraordinariaValue in vm.extraordinariaValues"  class="text-center" style="padding-top:3px !Important;">
-                    <span class="font-11">{{extraordinariaValue.month}}</span>
-                    <input ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;" required>
+                <td ng-repeat="extraordinariaValue in vm.extraordinariaValues"  class="text-center" style="padding-top:9px !Important;">
+                    <!--<span class="font-11">{{extraordinariaValue.month}}</span>-->
+                    <input ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -99,9 +99,9 @@
                 <td style="font-size:11px;">
                     ÁREAS COMUNES
                 </td>
-                <td ng-repeat="areasComunesValue in vm.areasComunesValues"  class="text-center" style="padding-top:3px !Important;">
-                    <span class="font-11">{{areasComunesValue.month}}</span>
-                    <input ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;" required>
+                <td ng-repeat="areasComunesValue in vm.areasComunesValues"  class="text-center" style="padding-top:9px !Important;">
+                    <!--<span class="font-11">{{areasComunesValue.month}}</span>-->
+                    <input ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -116,9 +116,9 @@
                 <td style="font-size:11px;">
                     OTROS INGRESOS
                 </td>
-                <td ng-repeat="otrosIngresosValue in vm.otrosIngresosValues"  class="text-center" style="padding-top:3px !Important;">
-                    <span class="font-11">{{otrosIngresosValue.month}}</span>
-                    <input ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;" required>
+                <td ng-repeat="otrosIngresosValue in vm.otrosIngresosValues"  class="text-center" style="padding-top:9px !Important;">
+                    <!--<span class="font-11">{{otrosIngresosValue.month}}</span>-->
+                    <input ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
@@ -128,15 +128,29 @@
                 <td colspan='100%' class="text-left font-14 bold" style="padding:4px !important;"> EGRESOS</td>
 
             </tr>
-
+            <tr>
+                <th class="budgetTableHeader">CONCEPTO</th>
+                <th class="budgetTableHeader">ENERO</th>
+                <th class="budgetTableHeader">FEBRERO</th>
+                <th class="budgetTableHeader">MARZO</th>
+                <th class="budgetTableHeader">ABRIL</th>
+                <th class="budgetTableHeader">MAYO</th>
+                <th class="budgetTableHeader">JUNIO</th>
+                <th class="budgetTableHeader">JULIO</th>
+                <th class="budgetTableHeader">AGOSTO</th>
+                <th class="budgetTableHeader">SETIEMBRE</th>
+                <th class="budgetTableHeader">OCTUBRE</th>
+                <th class="budgetTableHeader">NOVIEMBRE</th>
+                <th class="budgetTableHeader">DICIEMBRE</th>
+            </tr>
             <tr  ng-repeat="egressCategory in vm.egressCategories track by egressCategory.id"   >
                 <td style=" text-transform:uppercase;" class=" text-left">
                     <span style="font-size:8px;" class="col-md-12 no-padding">{{egressCategory.group}}</span>
                     <span  style="font-size:11px;" >{{egressCategory.category}}</span>
                 </td>
-                <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding-top:3px !Important;">
-                    <span class="font-11">{{item.month}}</span>
-                    <input ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px;" required>
+                <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding-top:9px !Important;">
+                    <!--<span style="font-size:10px">{{item.month}}</span>-->
+                    <input ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
