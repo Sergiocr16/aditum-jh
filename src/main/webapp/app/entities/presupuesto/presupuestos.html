@@ -52,8 +52,8 @@
 
                         <td>PRESUPUESTO {{presupuesto.anno}}</td>
                         <td>{{presupuesto.modificationDate | date:'longDate'}}</td>
-                        <td> <a class="light-gray-font"   ng-click="vm.showBudgetDetail(presupuesto)" >Ver detalle</a></td>
-                        <td> <a class="light-gray-font"  ui-sref="presupuesto-detail({id:presupuesto.id})">Editar</a></td>
+                        <td> <a class="light-gray-font"  ng-click="vm.showBudgetDetail(presupuesto)" >Ver detalle</a></td>
+                        <td> <a class="light-gray-font"  ng-click="vm.showBudgetEdit(presupuesto)">Editar</a></td>
                         <td> <a class="light-gray-font"  ng-click="vm.deleteBudget(presupuesto)">Eliminar</a></td>
                     </tr>
                     </tbody>

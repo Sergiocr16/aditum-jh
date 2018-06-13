@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DetallePresupuestoDialogController', DetallePresupuestoDialogController);
 
-    DetallePresupuestoDialogController.$inject = ['$state','Presupuesto','CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory'];
+    DetallePresupuestoDialogController.$inject = ['$localStorage','$state','Presupuesto','CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory'];
 
-    function DetallePresupuestoDialogController ($state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
+    function DetallePresupuestoDialogController ($localStorage,$state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
         var vm = this;
         vm.presupuesto = {};
         vm.detallePresupuesto = entity;
@@ -17,17 +17,23 @@
         vm.areasComunesValues = [];
         vm.otrosIngresosValues = [];
         vm.budgetYearsToSelect = [];
+        vm.totalIngressByMonth = [];
+        vm.totalEgressByMonth = [];
         var invalidInputs = 0;
         var inputsFullQuantity = 0;
         for(var i=1;i<=12;i++){
-            var mantenimientoValue = {month:i,valuePerMonth:""}
-            var extraordinariaValue = {month:i,valuePerMonth:""}
-            var areasComunesValue = {month:i,valuePerMonth:""}
-            var otrosIngresosValue = {month:i,valuePerMonth:""}
+            var mantenimientoValue = {month:i,valuePerMonth:"0"}
+            var extraordinariaValue = {month:i,valuePerMonth:"0"}
+            var areasComunesValue = {month:i,valuePerMonth:"0"}
+            var otrosIngresosValue = {month:i,valuePerMonth:"0"}
             vm.mantenimientoValues.push(mantenimientoValue);
             vm.extraordinariaValues.push(extraordinariaValue);
             vm.areasComunesValues.push(areasComunesValue);
             vm.otrosIngresosValues.push(otrosIngresosValue);
+            var month1 = {month:i,valuePerMonth:0}
+            var month2 = {month:i,valuePerMonth:0}
+            vm.totalEgressByMonth.push(month1)
+            vm.totalIngressByMonth.push(month2)
 
         }
 
@@ -39,13 +45,12 @@
             EgressCategory.query({companyId: $rootScope.companyId}).$promise.then(onSuccessEgressCategories);
 
          },900)
-
         function onSuccessEgressCategories(data, headers) {
 
             angular.forEach(data,function(egressCategory,key){
                 egressCategory.valuesPerMonth = []
                 for(var i=1;i<=12;i++){
-                   var item = {month:i,valuePerMonth:""}
+                   var item = {month:i,valuePerMonth:"0"}
                    egressCategory.valuesPerMonth.push(item);
                  }
             })
@@ -81,7 +86,7 @@
             vm.areasComunesStringValuesPerMonth = "";
             vm.otrosIngresosStringValuesPerMonth = "";
                 angular.forEach(vm.mantenimientoValues,function(item,key){
-                     if(vm.hasLettersOrSpecial(item)){
+                     if(vm.hasLettersOrSpecial(item.valuePerMonth)){
                         invalidInputs++;
                      }
                      vm.mantenimientoStringValuesPerMonth = vm.mantenimientoStringValuesPerMonth + sortMonthValues(item)
@@ -118,9 +123,20 @@
                 })
 
         }
+         vm.formatearNumero = function(nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+             return x1 + x2;
+         }
          function sortMonthValues(item) {
                var valuePerMonth = "";
-               if(item.valuePerMonth=="" || item.valuePerMonth==undefined){
+               if(item.valuePerMonth=="" || item.valuePerMonth==undefined || item.valuePerMonth=="0"){
                   valuePerMonth = "0" + ","
                }else{
                   inputsFullQuantity++;
@@ -129,7 +145,62 @@
                return valuePerMonth;
          }
 
+       vm.setTotalIngressByMonth = function(index){
+           vm.totalIngressByMonth[index].valuePerMonth = 0;
+           angular.forEach(vm.mantenimientoValues,function(item,key){
+                 if(index==key){
+                    var value = item.valuePerMonth;
+                      if(value=="" || value==undefined){
+                          value = "0";
+                      }
+                     vm.totalIngressByMonth[key].valuePerMonth = vm.totalIngressByMonth[key].valuePerMonth + parseInt(value);
+                  }
+           })
+           angular.forEach(vm.extraordinariaValues,function(item,key){
+                if(index==key){
+                   var value = item.valuePerMonth;
+                     if(value=="" || value==undefined){
+                         value = "0";
+                     }
+                    vm.totalIngressByMonth[key].valuePerMonth = vm.totalIngressByMonth[key].valuePerMonth + parseInt(value);
+                 }
+           })
+           angular.forEach(vm.areasComunesValues,function(item,key){
+                if(index==key){
+                   var value = item.valuePerMonth;
+                     if(value=="" || value==undefined){
+                         value = "0";
+                     }
+                    vm.totalIngressByMonth[key].valuePerMonth = vm.totalIngressByMonth[key].valuePerMonth + parseInt(value);
+                 }
+           })
+          angular.forEach(vm.otrosIngresosValues,function(item,key){
+               if(index==key){
+                  var value = item.valuePerMonth;
+                    if(value=="" || value==undefined){
+                        value = "0";
+                    }
+                   vm.totalIngressByMonth[key].valuePerMonth = vm.totalIngressByMonth[key].valuePerMonth + parseInt(value);
+                }
+          })
+        }
+       vm.setTotalEgressByMonth = function(index){
+           vm.totalEgressByMonth[index].valuePerMonth = 0;
+           angular.forEach(vm.egressCategories,function(item,key){
+              angular.forEach(item.valuesPerMonth,function(item2,key){
+                  if(index==key){
+                     var value = item2.valuePerMonth;
+                       if(value=="" || value==undefined){
+                           value = "0";
+                       }
+                      vm.totalEgressByMonth[key].valuePerMonth = vm.totalEgressByMonth[key].valuePerMonth + parseInt(value);
+                   }
+              })
 
+
+           })
+
+        }
         function onSaveError () {
             vm.isSaving = false;
         }
@@ -154,7 +225,6 @@
         }
 
        vm.hasLettersOrSpecial = function(s){
-       console.log(s);
             var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","´ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^"]
             var invalido = 0;
             angular.forEach(caracteres,function(val,index){
@@ -162,6 +232,7 @@
                     for(var i=0;i<s.length;i++){
                         if(s.charAt(i).toUpperCase()==val.toUpperCase()){
                             invalido++;
+
                         }
                     }
                 }
@@ -212,14 +283,14 @@
                var detallePresupuesto = {};
                 detallePresupuesto.category = item.category;
                 detallePresupuesto.valuePerMonth = item.valuePerMonth;
-                detallePresupuesto.type = 1;
+                detallePresupuesto.type = 2;
                 detallePresupuesto.presupuestoId = result.id;
                 DetallePresupuesto.save(detallePresupuesto);
 
           })
            toastr["success"]("Se ha creado el presupuesto correctamente");
-           $state.go('presupuesto')
-
+           $localStorage.budgetAction = 1;
+           $state.go('presupuesto-detail', {id:result.id});
 
         }
 

@@ -67,6 +67,10 @@
           $localStorage.budgetAction = 1;
           $state.go('presupuesto-detail', {id: budget.id});
       }
+        vm.showBudgetEdit = function(budget){
+            $localStorage.budgetAction = 2;
+            $state.go('presupuesto-detail', {id: budget.id});
+        }
        function onDeleteSuccess (result) {
             bootbox.hideAll()
             loadAll();
