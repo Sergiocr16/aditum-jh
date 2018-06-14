@@ -30,23 +30,25 @@
                 if (chargeNumber < vm.charges.length) {
                     var cuota = vm.charges[chargeNumber];
                     if (cuota.ammount != 0) {
-                    cuota.type = parseInt(cuota.type)
+                        cuota.type = parseInt(cuota.type)
                         Charge.update(cuota, function(charge) {
                             result = charge;
                             updateCharge(chargeNumber + 1)
                         })
                     }
                 } else {
-                       House.get({id: $localStorage.houseSelected.id
-                                            }, onSuccess)
-                                            function onSuccess(house) {
-                                             toastr["success"]("Se han actualizado las cuotas correctamente.")
-                                                                    $rootScope.houseSelected = house;
-                                                $localStorage.houseSelected = house;
-                                                loadAll();
-                                                bootbox.hideAll();
-                                                vm.isEditing = true;
-                                            }
+                    House.get({
+                        id: $localStorage.houseSelected.id
+                    }, onSuccess)
+
+                    function onSuccess(house) {
+                        toastr["success"]("Se han actualizado las cuotas correctamente.")
+                        $rootScope.houseSelected = house;
+                        $localStorage.houseSelected = house;
+                        loadAll();
+                        bootbox.hideAll();
+                        vm.isEditing = true;
+                    }
 
                 }
             }
@@ -71,7 +73,7 @@
                     },
                     callback: function(result) {
                         if (result) {
-                             CommonMethods.waitingMessage();
+                            CommonMethods.waitingMessage();
                             updateCharge(0)
 
                         }
@@ -97,7 +99,7 @@
                 },
                 callback: function(result) {
                     if (result) {
-                    CommonMethods.waitingMessage();
+                        CommonMethods.waitingMessage();
                         charge.deleted = 1;
                         Charge.update(charge, onSaveSuccess, onSaveError);
 
@@ -105,8 +107,9 @@
                             House.get({
                                 id: result.houseId
                             }, onSuccess)
+
                             function onSuccess(house) {
-                            bootbox.hideAll();
+                                bootbox.hideAll();
                                 toastr["success"]("La cuota se ha eliminado correctamente.")
                                 $rootScope.houseSelected = house;
                                 $localStorage.houseSelected = house;
@@ -126,7 +129,7 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-             var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
@@ -151,11 +154,11 @@
                 $scope.$apply(function() {
                     vm.isEditing = true;
                     $('.dating').keydown(function() {
-                                    return false;
-                                });
-angular.forEach(vm.charges,function(charge,i){
-         charge.date = new Date(vm.charges[i].date)
-         })
+                        return false;
+                    });
+                    angular.forEach(vm.charges, function(charge, i) {
+                        charge.date = new Date(vm.charges[i].date)
+                    })
                 })
             }, 100)
 
@@ -219,7 +222,7 @@ angular.forEach(vm.charges,function(charge,i){
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function(charge, i) {
                     charge.openDate = false;
-                    charge.type = charge.type+""
+                    charge.type = charge.type + ""
                 })
                 vm.charges = data;
                 vm.page = pagingParams.page;

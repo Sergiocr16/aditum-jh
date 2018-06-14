@@ -331,26 +331,21 @@
 
                         </ul>
                     </li>
-                    <li ng-class="{ 'active' : active === 'a' ||  active === 'a'} " >
-                        <a href="javascript:;" style=" color:white;">
-                            <i class="fa fa-arrow-right" style="font-weight:500; color:white;"></i>
-                            <span class="title">Ingresos</span>
+
+                    <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
+                        <a href="javascript:;">
+                            <i class="fa fa-arrow-right" style=" color:white;"></i>
+                            <span class="title" style=" color:white;">Ingresos</span>
                             <span class="selected">
 					</span>
                             <span class="arrow open">
 					</span>
                         </a>
                         <ul class="sub-menu" >
-                            <li ui-sref="egress.new" ng-class="{ 'active' : active === 'a' }" style="border-bottom:1px solid #444c56">
+                            <li ui-sref="generatePayment" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Capturar ingreso</span>
-                                </a>
-                            </li>
-                            <li ui-sref="egress" ng-class="{ 'active' : active === 'a' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style="color:white;">Ingresos</span>
                                 </a>
                             </li>
 

@@ -122,5 +122,6 @@
                 search: vm.currentSearch
             });
         }
+
     }
 })();
