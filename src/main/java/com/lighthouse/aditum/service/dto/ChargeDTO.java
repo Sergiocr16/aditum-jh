@@ -33,6 +33,10 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
+    private String left;
+
+    private String paymentAmmount;
+
     private Long houseId;
 
     private Long paymentId;
@@ -141,5 +145,21 @@ public class ChargeDTO implements Serializable {
             ", state='" + getState() + "'" +
             ", deleted='" + getDeleted() + "'" +
             "}";
+    }
+
+    public String getLeft() {
+        return left;
+    }
+
+    public void setLeft(String left) {
+        this.left = left;
+    }
+
+    public String getPaymentAmmount() {
+        return paymentAmmount;
+    }
+
+    public void setPaymentAmmount(String paymentAmmount) {
+        this.paymentAmmount = paymentAmmount;
     }
 }
