@@ -54,6 +54,9 @@ public class PresupuestoResourceIntTest {
     private static final Integer DEFAULT_ANNO = 1;
     private static final Integer UPDATED_ANNO = 2;
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private PresupuestoRepository presupuestoRepository;
 
@@ -99,7 +102,8 @@ public class PresupuestoResourceIntTest {
         Presupuesto presupuesto = new Presupuesto()
             .date(DEFAULT_DATE)
             .modificationDate(DEFAULT_MODIFICATION_DATE)
-            .anno(DEFAULT_ANNO);
+            .anno(DEFAULT_ANNO)
+            .deleted(DEFAULT_DELETED);
         return presupuesto;
     }
 
@@ -127,6 +131,7 @@ public class PresupuestoResourceIntTest {
         assertThat(testPresupuesto.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testPresupuesto.getModificationDate()).isEqualTo(DEFAULT_MODIFICATION_DATE);
         assertThat(testPresupuesto.getAnno()).isEqualTo(DEFAULT_ANNO);
+        assertThat(testPresupuesto.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -200,7 +205,8 @@ public class PresupuestoResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(presupuesto.getId().intValue())))
             .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
             .andExpect(jsonPath("$.[*].modificationDate").value(hasItem(sameInstant(DEFAULT_MODIFICATION_DATE))))
-            .andExpect(jsonPath("$.[*].anno").value(hasItem(DEFAULT_ANNO)));
+            .andExpect(jsonPath("$.[*].anno").value(hasItem(DEFAULT_ANNO)))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -216,7 +222,8 @@ public class PresupuestoResourceIntTest {
             .andExpect(jsonPath("$.id").value(presupuesto.getId().intValue()))
             .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
             .andExpect(jsonPath("$.modificationDate").value(sameInstant(DEFAULT_MODIFICATION_DATE)))
-            .andExpect(jsonPath("$.anno").value(DEFAULT_ANNO));
+            .andExpect(jsonPath("$.anno").value(DEFAULT_ANNO))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -239,7 +246,8 @@ public class PresupuestoResourceIntTest {
         updatedPresupuesto
             .date(UPDATED_DATE)
             .modificationDate(UPDATED_MODIFICATION_DATE)
-            .anno(UPDATED_ANNO);
+            .anno(UPDATED_ANNO)
+            .deleted(UPDATED_DELETED);
         PresupuestoDTO presupuestoDTO = presupuestoMapper.toDto(updatedPresupuesto);
 
         restPresupuestoMockMvc.perform(put("/api/presupuestos")
@@ -254,6 +262,7 @@ public class PresupuestoResourceIntTest {
         assertThat(testPresupuesto.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testPresupuesto.getModificationDate()).isEqualTo(UPDATED_MODIFICATION_DATE);
         assertThat(testPresupuesto.getAnno()).isEqualTo(UPDATED_ANNO);
+        assertThat(testPresupuesto.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test

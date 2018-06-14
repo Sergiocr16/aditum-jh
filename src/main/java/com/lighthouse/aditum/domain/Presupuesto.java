@@ -31,6 +31,9 @@ public class Presupuesto implements Serializable {
     @Column(name = "anno", nullable = false)
     private Integer anno;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne
     private Company company;
 
@@ -81,6 +84,19 @@ public class Presupuesto implements Serializable {
         this.anno = anno;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Presupuesto deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -121,6 +137,7 @@ public class Presupuesto implements Serializable {
             ", date='" + getDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", anno='" + getAnno() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }
