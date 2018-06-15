@@ -115,7 +115,7 @@
                                                     <span class="font-13 bold">Número de recibo *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" ng-required="vm.charges.length>0">
+                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -123,7 +123,7 @@
                                                     <span class="font-13 bold">Cuenta *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <select class="form-control gray-font"  data-ng-model="vm.payment.account" ng-options="banco.beneficiario for banco in vm.bancos | orderBy: 'beneficiario' track by banco.id" ng-required="vm.charges.length>0">
+                                                    <select class="form-control gray-font"  data-ng-model="vm.account" ng-options="banco.beneficiario for banco in vm.bancos | orderBy: 'beneficiario' track by banco.id" required>
                                                         <option value="">Selecciona una cuenta</option>
                                                     </select>
                                                 </div>
@@ -153,7 +153,7 @@
                                                     <span class="font-13 bold">Fecha de pago *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')"  enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" ng-required="vm.charges.length>0">
+                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')"  enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -161,7 +161,7 @@
                                                     <span class="font-13 bold control-label">Comentarios</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                                    <textarea rows="1" ng-model="vm.charge.concept" cols="50" type="text" class="form-control" name="comments" id="field_comments">
+                                                    <textarea rows="1" ng-model="vm.payment.comments" cols="50" type="text" class="form-control" name="comments" id="field_comments">
                                          </textarea>
 
                                                 </div>
@@ -175,7 +175,6 @@
                                                         <span class="input-group-addon">₡</span>
                                                         <input ng-class="{redBorder: vm.payment.valida==false}" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.payment.ammount" ng-change="vm.calculatePayments(vm.payment)" required />
                                                     </div>
-
                                                 </div>
 
                                             </div>
@@ -264,7 +263,7 @@
 
                                             <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
                                                 <h3 class="text-right">
-                                                    <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined" class="btn blue">Realizar Pago</button>
+                                                    <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined || vm.payment.ammount != 0 && vm.isAnyChargeSelected()==false && vm.charges.length!=0" class="btn blue">Realizar Pago</button>
                                                     <button type="button" ui-sref="chargeMenu" class="btn red default">Cancelar</button>
                                                 </h3>
                                             </div>

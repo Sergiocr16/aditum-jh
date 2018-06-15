@@ -125,6 +125,8 @@
                         entity: function () {
                             return {
                                 squareMetersPrice: null,
+                                folioSerie: null,
+                                folioNumber: null,
                                 id: null
                             };
                         }

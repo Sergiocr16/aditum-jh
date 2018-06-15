@@ -68,7 +68,8 @@
         function onSaveCompanySuccess (result) {
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
-            AdministrationConfiguration.save({squareMetersPrice:0, companyId:result.id});
+            var adminConfig = {squareMetersPrice:0, companyId:result.id,folioSerie:"A",folioNumber:1};
+            AdministrationConfiguration.save(adminConfig);
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:companyUpdate', result);

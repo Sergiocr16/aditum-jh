@@ -53,6 +53,7 @@ public class AdministrationConfigurationResource {
         if (administrationConfigurationDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new administrationConfiguration cannot already have an ID")).body(null);
         }
+
         AdministrationConfigurationDTO result = administrationConfigurationService.save(administrationConfigurationDTO);
         return ResponseEntity.created(new URI("/api/administration-configurations/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

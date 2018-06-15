@@ -1,7 +1,9 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
+import com.lighthouse.aditum.service.dto.BancoDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
@@ -31,10 +33,13 @@ public class PaymentService {
 
     private final ChargeService chargeService;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService) {
+    private final BancoService bancoService;
+
+    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService,BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
+        this.bancoService = bancoService;
     }
 
     /**
@@ -47,7 +52,9 @@ public class PaymentService {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(createPaymentDTOtoPaymentDTO(paymentDTO));
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
+        payment.setAccount(paymentDTO.getAccount().split(";")[0]);
         payment = paymentRepository.save(payment);
+        bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
         for (int i = 0; i < paymentDTO.getCharges().size(); i++) {
             this.payCharge(paymentDTO.getCharges().get(i),payment);
         }

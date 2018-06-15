@@ -88,4 +88,11 @@ public class BancoService {
         log.debug("Request to delete Banco : {}", id);
         bancoRepository.delete(id);
     }
+
+    public void increaseSaldo(Long id,String saldoToIncrease){
+        BancoDTO banco = this.findOne(id);
+        int newSaldo = Integer.parseInt(banco.getSaldo()) + Integer.parseInt(saldoToIncrease);
+        banco.setSaldo(newSaldo+"");
+        this.save(banco);
+    }
 }

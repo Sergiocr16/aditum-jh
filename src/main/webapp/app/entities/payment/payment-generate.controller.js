@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment'];
+    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment) {
+    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -55,14 +55,9 @@
 
         setTimeout(function() {
             loadAll();
-            vm.payment = {
-                paymentMethod: "DEPOSITO BANCO",
-                transaction: "Abonar a cuotas",
-                companyId: $rootScope.companyId
-            };
-$('.dating').keypress(function(e) {
-    return false
-});
+            $('.dating').keypress(function(e) {
+                return false
+            });
         }, 2000)
 
         vm.selectAll = function() {
@@ -117,7 +112,7 @@ $('.dating').keypress(function(e) {
                 vm.toPay = 0;
                 vm.showPopOverNoPaymentsSelected()
             } else {
-                $('.toPay').popover('hide')
+                $('.toPay').popover('destroy')
             }
         }
         vm.calculatePayments = function(charge) {
@@ -194,6 +189,7 @@ $('.dating').keypress(function(e) {
                 companyId: $rootScope.companyId
             }, onSuccess, onError);
 
+
             function onSuccess(data, headers) {
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -223,6 +219,13 @@ $('.dating').keypress(function(e) {
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
                 loadBancos()
+                vm.payment = {
+                    paymentMethod: "DEPOSITO BANCO",
+                    transaction: "1",
+                    companyId: $rootScope.companyId,
+                    concept: 1
+                };
+                loadAdminConfig()
             }
 
             function onError(error) {
@@ -230,11 +233,21 @@ $('.dating').keypress(function(e) {
             }
         }
 
+        function loadAdminConfig() {
+            AdministrationConfiguration.get({
+                companyId: $rootScope.companyId
+            }).$promise.then(function(result) {
+                if (result.folioSerie != null) {
+                    vm.admingConfig = result;
+                    vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
+                }
+            })
+        }
 
         function loadCharges(houseId) {
 
-                                            $("#loadingTable").fadeIn(10);
-                                            $("#tableContent").fadeOut(10);
+            $("#loadingTable").fadeIn(10);
+            $("#tableContent").fadeOut(10);
 
             Charge.queryByHouse({
                 houseId: houseId,
@@ -262,19 +275,19 @@ $('.dating').keypress(function(e) {
                 vm.savedCharges = vm.charges;
                 vm.page = pagingParams.page;
                 setTimeout(function() {
-                                                    $("#loadingTable").fadeOut(300);
-                                                }, 400)
-                                                setTimeout(function() {
-                                                    $("#tableContent").fadeIn('slow');
-                                                }, 700)
+                    $("#loadingTable").fadeOut(300);
+                }, 400)
+                setTimeout(function() {
+                    $("#tableContent").fadeIn('slow');
+                }, 700)
 
 
                 setTimeout(function() {
-                                    $("#loadingIcon").fadeOut(300);
-                                }, 400)
-                                setTimeout(function() {
-                                    $("#tableData").fadeIn('slow');
-                                }, 700)
+                    $("#loadingIcon").fadeOut(300);
+                }, 400)
+                setTimeout(function() {
+                    $("#tableData").fadeIn('slow');
+                }, 700)
             }
 
             function onError(error) {
@@ -337,6 +350,7 @@ $('.dating').keypress(function(e) {
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 loadCharges($localStorage.houseSelected.id)
+                loadAdminConfig();
             })
 
         }
@@ -375,85 +389,162 @@ $('.dating').keypress(function(e) {
 
 
         vm.createPayment = function() {
-      if(vm.charges.length==0){
-      increaseMaintBalance();
-      }else{
-      paymentTransaction();
-      }
+            if (vm.charges.length == 0) {
+                adelantoCondomino();
+            } else {
+                paymentTransaction();
+            }
 
         }
-        function paymentTransaction(){
-                    bootbox.confirm({
-                        message: "¿Está seguro que desea capturar este ingreso?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-                                CommonMethods.waitingMessage();
-                                vm.payment.charges = vm.charges;
-                                vm.payment.account = vm.payment.account.beneficiario;
-                                vm.payment.houseId = $rootScope.houseSelected.id;
-                                Payment.save(vm.payment, onSuccess, onError)
 
-                                function onSuccess(result) {
-                                    bootbox.hideAll();
-                                    clear()
-                                    toastr["success"]("Se ha capturado el ingreso correctamente.")
+        function paymentTransaction() {
+            var messageS = "¿Está seguro que desea capturar este ingreso?";
+            if (vm.toPay > 0) {
+                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condomino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
+            }
+            bootbox.confirm({
+                message: messageS,
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        CommonMethods.waitingMessage();
+                        vm.payment.charges = vm.charges;
+                        vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                        vm.payment.houseId = $rootScope.houseSelected.id;
+                        if (vm.toPay > 0) {
+                            vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
+                        }
+                        Payment.save(vm.payment, onSuccess, onError)
+
+                        function onSuccess(result) {
+                            bootbox.hideAll();
+                            toastr["success"]("Se ha capturado el ingreso correctamente.")
+                            increaseFolioNumber(function(result){
+                                if (vm.toPay > 0) {
+                                 vm.admingConfig = result;
+                                 console.log(vm.admingConfig)
+                                 registrarAdelantoCondomino();
+                                } else {
+                                    alert("A")
+                                    clear();
                                     loadAll();
+                                    loadAdminConfig();
                                 }
-                                function onError() {
-                                    bootbox.hideAll();
-                                    clear()
-                                    toastr["error"]("Ups. No fue posible capturar el ingreso.")
+                            })
 
-                                }
-                            }
                         }
-                    });
-        }
-        function increaseMaintBalance(){
-                    bootbox.confirm({
-                                              message: "NO EXISTEN DEUDAS VIGENTES, ¿Está seguro que desea generar un salvo a favor de mantenimiento?",
 
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-                                     $rootScope.houseSelected.balance.maintenance = $rootScope.houseSelected.balance.maintenance + vm.toPay;
-                                     Balance.update($rootScope.houseSelected.balance,function(){
-                                     bootbox.hideAll();
-                                     loadAll();
-                                     clear()
-                                     toastr["success"]("Se ha abonado al fondo de mantenimiento de la vivienda correctamente.")
-                                     })
-                            }
+                        function onError() {
+                            bootbox.hideAll();
+                            clear()
+                            toastr["error"]("Ups. No fue posible capturar el ingreso.")
+
                         }
-                    });
+                    }
+                }
+            });
         }
 
-        function clear(){
-        vm.payment = {
-                        paymentMethod: "DEPOSITO BANCO",
-                        transaction: "Abonar a cuotas",
-                        companyId: $rootScope.companyId
-                    };
+
+        function increaseFolioNumber(success) {
+            vm.admingConfig.folioNumber = vm.admingConfig.folioNumber + 1;
+            AdministrationConfiguration.update(vm.admingConfig,success);
+        }
+
+        function adelantoCondomino() {
+            bootbox.confirm({
+                message: "NO EXISTEN DEUDAS VIGENTES. La transacción será registrada como un adelanto del condomino. ¿Está seguro que desea continuar?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        registrarAdelantoCondomino()
+                    }
+                }
+            });
+        }
+
+        function clear() {
+            vm.payment = {
+                paymentMethod: "DEPOSITO BANCO",
+                transaction: "1",
+                companyId: $rootScope.companyId,
+                concept:undefined
+            };
+        }
+
+        function registrarAdelantoCondomino() {
+            vm.payment.transaction = "2",
+            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+            vm.payment.houseId = $rootScope.houseSelected.id;
+            vm.payment.charges = [];
+            vm.increasedAmmount = vm.payment.ammount;
+            vm.payment.ammount = vm.toPay;
+            vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
+          console.log(vm.payment)
+            Payment.save(vm.payment, onSuccess, onError)
+
+            function onSuccess(result) {
+                bootbox.hideAll();
+                clear();
+                toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                increaseFolioNumber(function(){});
+                increaseMaintBalance();
+                loadAll();
+                loadAdminConfig();
+            }
+
+            function onError() {
+                bootbox.hideAll();
+                clear()
+                toastr["error"]("Ups. No fue posible capturar el adelanto del condómino.")
+
+            }
+        }
+
+        function increaseMaintBalance() {
+            House.get({
+                id: $localStorage.houseSelected.id
+            }, function(result) {
+                $localStorage.houseSelected = result
+                $rootScope.houseSelected = result;
+                vm.house = result;
+                $rootScope.houseSelected.balance.maintenance = parseInt($rootScope.houseSelected.balance.maintenance) + parseInt(vm.toPay);
+                console.log($rootScope.houseSelected.balance.maintenance)
+                Balance.update($rootScope.houseSelected.balance, function() {
+                    bootbox.hideAll();
+                    loadAll();
+                })
+
+
+            })
+        }
+
+        vm.isAnyChargeSelected = function() {
+            var count = 0;
+            angular.forEach(vm.charges, function(charge, i) {
+                if (charge.isIncluded == true) {
+                    count++
+                }
+            })
+            return (count > 0)
         }
     }
 })();
-
