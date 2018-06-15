@@ -33,13 +33,17 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
-    private String left;
-
-    private String paymentAmmount;
+    private ZonedDateTime paymentDate;
 
     private Long houseId;
 
     private Long paymentId;
+
+    private Long companyId;
+
+    private String left;
+
+    private String paymentAmmount;
 
     public Long getId() {
         return id;
@@ -97,6 +101,14 @@ public class ChargeDTO implements Serializable {
         this.deleted = deleted;
     }
 
+    public ZonedDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -111,6 +123,14 @@ public class ChargeDTO implements Serializable {
 
     public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override
@@ -144,6 +164,7 @@ public class ChargeDTO implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", state='" + getState() + "'" +
             ", deleted='" + getDeleted() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
             "}";
     }
 

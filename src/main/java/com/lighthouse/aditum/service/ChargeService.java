@@ -59,6 +59,8 @@ public class ChargeService {
         Charge charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setPayment(chargeMapper.paymentFromId(payment.getId()));
+        charge.setCompany(chargeMapper.companyFromId(payment.getCompanyId().longValue()));
+        charge.setPaymentDate(payment.getDate());
         charge.setAmmount(chargeDTO.getPaymentAmmount());
         charge.setState(2);
         charge = chargeRepository.save(charge);
