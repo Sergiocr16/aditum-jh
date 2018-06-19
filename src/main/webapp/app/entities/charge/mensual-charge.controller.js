@@ -155,6 +155,7 @@
             cuota.concept = getGlobalConcept(cuota.globalConcept).concept;
             cuota.state = 1;
             cuota.deleted = 0;
+            cuota.companyId = $rootScope.companyId;
             return cuota;
         }
 

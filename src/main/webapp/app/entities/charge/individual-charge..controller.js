@@ -108,6 +108,7 @@
                          CommonMethods.waitingMessage();
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
+                            vm.charge.companyId = $rootScope.companyId;
                             Charge.save(vm.charge, function(result) {
                                 vm.isSaving == false;
                                 House.get({

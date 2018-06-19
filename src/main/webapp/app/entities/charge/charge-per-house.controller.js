@@ -20,8 +20,14 @@
         vm.isEditing = false;
         setTimeout(function() {
             loadAll();
-        }, 3000)
+        }, 4000)
 
+
+        vm.datePassed = function(cuota){
+        var rightNow = new Date();
+        var chargeDate = new Date(moment(cuota.date))
+        return ((chargeDate.getTime()>rightNow.getTime()))
+        }
 
         vm.edit = function() {
             var result = {};
@@ -220,11 +226,27 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(charge, i) {
-                    charge.openDate = false;
-                    charge.type = charge.type + ""
+                var countPassedDate = 0;
+                data.sort(function(a,b){
+                  // Turn your strings into dates, and then subtract them
+                  // to get a value that is either negative, positive, or zero.
+                  return new Date(a.date) - new Date(b.date);
+                });
+                angular.forEach(data, function(cuota, i) {
+                    cuota.openDate = false;
+                    cuota.type = cuota.type + ""
+                     var rightNow = new Date();
+                     var chargeDate = new Date(moment(cuota.date))
+                     if(chargeDate.getTime()>rightNow.getTime()){
+                     cuota.datePassed = true;
+                    if(countPassedDate==0){
+                     cuota.definedFirstDatePassed=true;
+                     countPassedDate++;
+                     }
+                     }
                 })
                 vm.charges = data;
+
                 vm.page = pagingParams.page;
                 $("#loading").fadeOut(300);
                 setTimeout(function() {
