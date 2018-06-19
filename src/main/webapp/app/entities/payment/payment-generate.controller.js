@@ -223,7 +223,7 @@
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
                     companyId: $rootScope.companyId,
-                    concept: 1
+                    concept: 'Abono a cuotas'
                 };
                 loadAdminConfig()
             }
@@ -431,10 +431,8 @@
                             increaseFolioNumber(function(result){
                                 if (vm.toPay > 0) {
                                  vm.admingConfig = result;
-                                 console.log(vm.admingConfig)
                                  registrarAdelantoCondomino();
                                 } else {
-                                    alert("A")
                                     clear();
                                     loadAll();
                                     loadAdminConfig();
@@ -486,7 +484,7 @@
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "1",
                 companyId: $rootScope.companyId,
-                concept:undefined
+                concept:'Abono a cuotas'
             };
         }
 
@@ -497,8 +495,8 @@
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.ammount = vm.toPay;
+            vm.payment.concept = "Adelanto de condómino"
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
-          console.log(vm.payment)
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
@@ -527,7 +525,6 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 $rootScope.houseSelected.balance.maintenance = parseInt($rootScope.houseSelected.balance.maintenance) + parseInt(vm.toPay);
-                console.log($rootScope.houseSelected.balance.maintenance)
                 Balance.update($rootScope.houseSelected.balance, function() {
                     bootbox.hideAll();
                     loadAll();

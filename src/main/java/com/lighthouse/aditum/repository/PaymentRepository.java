@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 
 /**
@@ -23,4 +24,7 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
         "where e.date >= ?1 and e.date <= ?2 and e.companyId = ?3 and e.account = ?4")
     Page<Payment> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, int companyId,String accountId);
 
+    @Query("select e from Payment e " +
+        "where e.transaction = ?1 and e.ammountLeft > ?2 and e.house.id = ?3")
+    Page<Payment> findPaymentsInAdvance(Pageable pageable,String transaction, String ammountLeft, Long houseId);
 }

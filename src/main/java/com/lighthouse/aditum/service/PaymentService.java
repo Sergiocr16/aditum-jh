@@ -1,9 +1,7 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
-import com.lighthouse.aditum.service.dto.BancoDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 
 /**
@@ -48,9 +47,22 @@ public class PaymentService {
      * @param paymentDTO the entity to save
      * @return the persisted entity
      */
+
+    public PaymentDTO update(PaymentDTO paymentDTO) {
+        log.debug("Request to save Payment : {}", paymentDTO);
+        Payment payment = paymentMapper.toEntity(paymentDTO);
+        payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
+        payment.setAccount(paymentDTO.getAccount().split(";")[0]);
+        payment.setAmmountLeft(paymentDTO.getAmmountLeft());
+        payment = paymentRepository.save(payment);
+        return paymentMapper.toDto(payment);
+    }
     public PaymentDTO save(CreatePaymentDTO paymentDTO) {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(createPaymentDTOtoPaymentDTO(paymentDTO));
+        if(payment.getTransaction().equals("2")){
+            payment.setAmmountLeft(paymentDTO.getAmmount());
+        }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
         payment.setAccount(paymentDTO.getAccount().split(";")[0]);
         payment = paymentRepository.save(payment);
@@ -121,13 +133,39 @@ public class PaymentService {
        paymentDTO.setAmmount(cPaymentDTO.getAmmount());
        paymentDTO.setComments(cPaymentDTO.getComments());
        paymentDTO.setCompanyId(cPaymentDTO.getCompanyId());
-       paymentDTO.setConcept(cPaymentDTO.getComments());
+       if(cPaymentDTO.getTransaction().equals("1")){
+          paymentDTO.setConcept("Abono a cuotas");
+       }else{
+           paymentDTO.setConcept("Adelanto de condómino");
+       }
        paymentDTO.setDate(cPaymentDTO.getDate());
        paymentDTO.setHouseId(cPaymentDTO.getHouseId());
        paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
        paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
        paymentDTO.setTransaction(cPaymentDTO.getTransaction());
        return paymentDTO;
+    }
+
+    public PaymentDTO findPaymentInAdvance(Long houseId){
+        List<Payment> payments = paymentRepository.findPaymentsInAdvance(null,"2","0",houseId).getContent();
+        Payment paymentToUse = null;
+        if(payments.size()>0) {
+            paymentToUse = payments.get(0);
+            for (int i = 0; i < payments.size(); i++) {
+                Payment payment = payments.get(i);
+                if (payment.getDate().isBefore(paymentToUse.getDate())){
+                    paymentToUse = payment;
+                }
+            }
+        }
+
+        if(paymentToUse!=null) {
+            PaymentDTO paymentDTO = paymentMapper.toDto(paymentToUse);
+            paymentDTO.setAmmountLeft(paymentToUse.getAmmountLeft());
+            return paymentDTO;
+        }else {
+            return null;
+        }
     }
 
     private void payCharge(ChargeDTO charge,Payment payment){
@@ -141,3 +179,4 @@ public class PaymentService {
         }
     }
 }
+

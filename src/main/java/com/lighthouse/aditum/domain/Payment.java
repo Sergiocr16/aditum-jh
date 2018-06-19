@@ -52,6 +52,9 @@ public class Payment implements Serializable {
     @Column(name = "company_id")
     private Integer companyId;
 
+    @Column(name = "ammount_left")
+    private String ammountLeft;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -181,6 +184,19 @@ public class Payment implements Serializable {
         this.companyId = companyId;
     }
 
+    public String getAmmountLeft() {
+        return ammountLeft;
+    }
+
+    public Payment ammountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
+        return this;
+    }
+
+    public void setAmmountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -227,6 +243,7 @@ public class Payment implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", concept='" + getConcept() + "'" +
             ", companyId='" + getCompanyId() + "'" +
+            ", ammountLeft='" + getAmmountLeft() + "'" +
             "}";
     }
 }

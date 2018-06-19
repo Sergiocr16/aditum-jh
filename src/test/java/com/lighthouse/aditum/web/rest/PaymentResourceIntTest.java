@@ -73,6 +73,9 @@ public class PaymentResourceIntTest {
     private static final Integer DEFAULT_COMPANY_ID = 1;
     private static final Integer UPDATED_COMPANY_ID = 2;
 
+    private static final String DEFAULT_AMMOUNT_LEFT = "AAAAAAAAAA";
+    private static final String UPDATED_AMMOUNT_LEFT = "BBBBBBBBBB";
+
     @Autowired
     private PaymentRepository paymentRepository;
 
@@ -124,7 +127,8 @@ public class PaymentResourceIntTest {
             .comments(DEFAULT_COMMENTS)
             .ammount(DEFAULT_AMMOUNT)
             .concept(DEFAULT_CONCEPT)
-            .companyId(DEFAULT_COMPANY_ID);
+            .companyId(DEFAULT_COMPANY_ID)
+            .ammountLeft(DEFAULT_AMMOUNT_LEFT);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -163,6 +167,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAmmount()).isEqualTo(DEFAULT_AMMOUNT);
         assertThat(testPayment.getConcept()).isEqualTo(DEFAULT_CONCEPT);
         assertThat(testPayment.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
+        assertThat(testPayment.getAmmountLeft()).isEqualTo(DEFAULT_AMMOUNT_LEFT);
     }
 
     @Test
@@ -299,7 +304,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
             .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())))
             .andExpect(jsonPath("$.[*].concept").value(hasItem(DEFAULT_CONCEPT.toString())))
-            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)));
+            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)))
+            .andExpect(jsonPath("$.[*].ammountLeft").value(hasItem(DEFAULT_AMMOUNT_LEFT.toString())));
     }
 
     @Test
@@ -321,7 +327,8 @@ public class PaymentResourceIntTest {
             .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
             .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()))
             .andExpect(jsonPath("$.concept").value(DEFAULT_CONCEPT.toString()))
-            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID));
+            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID))
+            .andExpect(jsonPath("$.ammountLeft").value(DEFAULT_AMMOUNT_LEFT.toString()));
     }
 
     @Test
@@ -350,7 +357,8 @@ public class PaymentResourceIntTest {
             .comments(UPDATED_COMMENTS)
             .ammount(UPDATED_AMMOUNT)
             .concept(UPDATED_CONCEPT)
-            .companyId(UPDATED_COMPANY_ID);
+            .companyId(UPDATED_COMPANY_ID)
+            .ammountLeft(UPDATED_AMMOUNT_LEFT);
         PaymentDTO paymentDTO = paymentMapper.toDto(updatedPayment);
 
         restPaymentMockMvc.perform(put("/api/payments")
@@ -371,6 +379,7 @@ public class PaymentResourceIntTest {
         assertThat(testPayment.getAmmount()).isEqualTo(UPDATED_AMMOUNT);
         assertThat(testPayment.getConcept()).isEqualTo(UPDATED_CONCEPT);
         assertThat(testPayment.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
+        assertThat(testPayment.getAmmountLeft()).isEqualTo(UPDATED_AMMOUNT_LEFT);
     }
 
     @Test

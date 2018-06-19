@@ -1047,3 +1047,11 @@ color: hsl(0, 0%, 100%);
 background-color:transparent!important;
 }
 
+.datePassed{
+background-color:#F0F0F0!important;
+}
+
+.firstPassed{
+border-top: solid #4DB3A2 2px;
+}
+

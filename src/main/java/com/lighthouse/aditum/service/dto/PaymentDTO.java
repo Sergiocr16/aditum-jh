@@ -38,6 +38,8 @@ public class PaymentDTO implements Serializable {
 
     private Integer companyId;
 
+    private String ammountLeft;
+
     private Long houseId;
 
     public Long getId() {
@@ -163,5 +165,13 @@ public class PaymentDTO implements Serializable {
             ", concept='" + getConcept() + "'" +
             ", companyId='" + getCompanyId() + "'" +
             "}";
+    }
+
+    public String getAmmountLeft() {
+        return ammountLeft;
+    }
+
+    public void setAmmountLeft(String ammountLeft) {
+        this.ammountLeft = ammountLeft;
     }
 }

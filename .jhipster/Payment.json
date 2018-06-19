@@ -62,6 +62,10 @@
         {
             "fieldName": "companyId",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "ammountLeft",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180324014703",
