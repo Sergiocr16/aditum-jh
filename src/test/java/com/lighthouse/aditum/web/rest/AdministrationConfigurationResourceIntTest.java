@@ -43,6 +43,12 @@ public class AdministrationConfigurationResourceIntTest {
     private static final String DEFAULT_SQUARE_METERS_PRICE = "AAAAAAAAAA";
     private static final String UPDATED_SQUARE_METERS_PRICE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_FOLIO_SERIE = "AAAAAAAAAA";
+    private static final String UPDATED_FOLIO_SERIE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_FOLIO_NUMBER = 1;
+    private static final Integer UPDATED_FOLIO_NUMBER = 2;
+
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
 
@@ -86,7 +92,9 @@ public class AdministrationConfigurationResourceIntTest {
      */
     public static AdministrationConfiguration createEntity(EntityManager em) {
         AdministrationConfiguration administrationConfiguration = new AdministrationConfiguration()
-            .squareMetersPrice(DEFAULT_SQUARE_METERS_PRICE);
+            .squareMetersPrice(DEFAULT_SQUARE_METERS_PRICE)
+            .folioSerie(DEFAULT_FOLIO_SERIE)
+            .folioNumber(DEFAULT_FOLIO_NUMBER);
         return administrationConfiguration;
     }
 
@@ -112,6 +120,8 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeCreate + 1);
         AdministrationConfiguration testAdministrationConfiguration = administrationConfigurationList.get(administrationConfigurationList.size() - 1);
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(DEFAULT_SQUARE_METERS_PRICE);
+        assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(DEFAULT_FOLIO_SERIE);
+        assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(DEFAULT_FOLIO_NUMBER);
     }
 
     @Test
@@ -145,7 +155,9 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(administrationConfiguration.getId().intValue())))
-            .andExpect(jsonPath("$.[*].squareMetersPrice").value(hasItem(DEFAULT_SQUARE_METERS_PRICE.toString())));
+            .andExpect(jsonPath("$.[*].squareMetersPrice").value(hasItem(DEFAULT_SQUARE_METERS_PRICE.toString())))
+            .andExpect(jsonPath("$.[*].folioSerie").value(hasItem(DEFAULT_FOLIO_SERIE.toString())))
+            .andExpect(jsonPath("$.[*].folioNumber").value(hasItem(DEFAULT_FOLIO_NUMBER)));
     }
 
     @Test
@@ -159,7 +171,9 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(administrationConfiguration.getId().intValue()))
-            .andExpect(jsonPath("$.squareMetersPrice").value(DEFAULT_SQUARE_METERS_PRICE.toString()));
+            .andExpect(jsonPath("$.squareMetersPrice").value(DEFAULT_SQUARE_METERS_PRICE.toString()))
+            .andExpect(jsonPath("$.folioSerie").value(DEFAULT_FOLIO_SERIE.toString()))
+            .andExpect(jsonPath("$.folioNumber").value(DEFAULT_FOLIO_NUMBER));
     }
 
     @Test
@@ -180,7 +194,9 @@ public class AdministrationConfigurationResourceIntTest {
         // Update the administrationConfiguration
         AdministrationConfiguration updatedAdministrationConfiguration = administrationConfigurationRepository.findOne(administrationConfiguration.getId());
         updatedAdministrationConfiguration
-            .squareMetersPrice(UPDATED_SQUARE_METERS_PRICE);
+            .squareMetersPrice(UPDATED_SQUARE_METERS_PRICE)
+            .folioSerie(UPDATED_FOLIO_SERIE)
+            .folioNumber(UPDATED_FOLIO_NUMBER);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -193,6 +209,8 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeUpdate);
         AdministrationConfiguration testAdministrationConfiguration = administrationConfigurationList.get(administrationConfigurationList.size() - 1);
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(UPDATED_SQUARE_METERS_PRICE);
+        assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(UPDATED_FOLIO_SERIE);
+        assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(UPDATED_FOLIO_NUMBER);
     }
 
     @Test

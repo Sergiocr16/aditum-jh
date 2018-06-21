@@ -153,6 +153,7 @@
             house.cuota.houseId = parseInt(house.id);
             house.cuota.type = vm.globalConcept.type;
             house.cuota.date = vm.globalConcept.date;
+            house.cuota.companyId = $rootScope.companyId;
             house.cuota.state = 1;
             house.cuota.deleted = 0;
             return house.cuota;

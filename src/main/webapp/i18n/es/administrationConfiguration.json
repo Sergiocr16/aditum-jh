@@ -16,6 +16,8 @@
                 "title": "Administration Configuration"
             },
             "squareMetersPrice": "Square Meters Price",
+            "folioSerie": "Folio Serie",
+            "folioNumber": "Folio Number",
             "company": "Company"
         }
     }

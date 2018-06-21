@@ -64,6 +64,9 @@ public class ChargeResourceIntTest {
     private static final Integer DEFAULT_DELETED = 1;
     private static final Integer UPDATED_DELETED = 2;
 
+    private static final ZonedDateTime DEFAULT_PAYMENT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_PAYMENT_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
     @Autowired
     private ChargeRepository chargeRepository;
 
@@ -112,7 +115,8 @@ public class ChargeResourceIntTest {
             .concept(DEFAULT_CONCEPT)
             .ammount(DEFAULT_AMMOUNT)
             .state(DEFAULT_STATE)
-            .deleted(DEFAULT_DELETED);
+            .deleted(DEFAULT_DELETED)
+            .paymentDate(DEFAULT_PAYMENT_DATE);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -148,6 +152,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getAmmount()).isEqualTo(DEFAULT_AMMOUNT);
         assertThat(testCharge.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testCharge.getDeleted()).isEqualTo(DEFAULT_DELETED);
+        assertThat(testCharge.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
     }
 
     @Test
@@ -300,7 +305,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].concept").value(hasItem(DEFAULT_CONCEPT.toString())))
             .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)))
-            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
+            .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(sameInstant(DEFAULT_PAYMENT_DATE))));
     }
 
     @Test
@@ -319,7 +325,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.concept").value(DEFAULT_CONCEPT.toString()))
             .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE))
-            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
+            .andExpect(jsonPath("$.paymentDate").value(sameInstant(DEFAULT_PAYMENT_DATE)));
     }
 
     @Test
@@ -345,7 +352,8 @@ public class ChargeResourceIntTest {
             .concept(UPDATED_CONCEPT)
             .ammount(UPDATED_AMMOUNT)
             .state(UPDATED_STATE)
-            .deleted(UPDATED_DELETED);
+            .deleted(UPDATED_DELETED)
+            .paymentDate(UPDATED_PAYMENT_DATE);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
 
         restChargeMockMvc.perform(put("/api/charges")
@@ -363,6 +371,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getAmmount()).isEqualTo(UPDATED_AMMOUNT);
         assertThat(testCharge.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCharge.getDeleted()).isEqualTo(UPDATED_DELETED);
+        assertThat(testCharge.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
     }
 
     @Test

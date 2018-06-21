@@ -20,6 +20,8 @@
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="squareMetersPrice"><span data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="folioSerie"><span data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="folioNumber"><span data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyId"><span data-translate="aditumApp.administrationConfiguration.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -28,6 +30,8 @@
                 <tr ng-repeat="administrationConfiguration in vm.administrationConfigurations track by administrationConfiguration.id">
                     <td><a ui-sref="administration-configuration-detail({id:administrationConfiguration.id})">{{administrationConfiguration.id}}</a></td>
                     <td>{{administrationConfiguration.squareMetersPrice}}</td>
+                    <td>{{administrationConfiguration.folioSerie}}</td>
+                    <td>{{administrationConfiguration.folioNumber}}</td>
                     <td>
                         <a ui-sref="company-detail({id:administrationConfiguration.companyId})">{{administrationConfiguration.companyId}}</a>
                     </td>
