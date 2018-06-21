@@ -21,8 +21,10 @@
             "ammount": "Ammount",
             "state": "State",
             "deleted": "Deleted",
+            "paymentDate": "Payment Date",
             "house": "House",
-            "payment": "Payment"
+            "payment": "Payment",
+            "company": "Company"
         }
     }
 }

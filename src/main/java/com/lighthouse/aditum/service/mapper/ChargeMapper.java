@@ -8,25 +8,31 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Charge and its DTO ChargeDTO.
  */
-@Mapper(componentModel = "spring", uses = {HouseMapper.class, PaymentMapper.class, })
+@Mapper(componentModel = "spring", uses = {HouseMapper.class, PaymentMapper.class, CompanyMapper.class, })
 public interface ChargeMapper extends EntityMapper <ChargeDTO, Charge> {
 
     @Mapping(source = "house.id", target = "houseId")
 
     @Mapping(source = "payment.id", target = "paymentId")
+
+    @Mapping(source = "company.id", target = "companyId")
     ChargeDTO toDto(Charge charge);
 
     @Mapping(source = "houseId", target = "house")
 
     @Mapping(source = "paymentId", target = "payment")
-    default House houseFromId(Long id) {
+
+    @Mapping(source = "companyId", target = "company")
+
+    default Company companyFromId(Long id) {
         if (id == null) {
             return null;
         }
-        House house = new House();
-        house.setId(id);
-        return house;
+        Company company = new Company();
+        company.setId(id);
+        return company;
     }
+
     default Payment paymentFromId(Long id) {
         if (id == null) {
             return null;
@@ -35,6 +41,16 @@ public interface ChargeMapper extends EntityMapper <ChargeDTO, Charge> {
         payment.setId(id);
         return payment;
     }
+
+    default House houseFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        House house = new House();
+        house.setId(id);
+        return house;
+    }
+
     Charge toEntity(ChargeDTO chargeDTO);
     default Charge fromId(Long id) {
         if (id == null) {

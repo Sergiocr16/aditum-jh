@@ -39,6 +39,8 @@ public class AdministrationConfigurationService {
     public AdministrationConfigurationDTO save(AdministrationConfigurationDTO administrationConfigurationDTO) {
         log.debug("Request to save AdministrationConfiguration : {}", administrationConfigurationDTO);
         AdministrationConfiguration administrationConfiguration = administrationConfigurationMapper.toEntity(administrationConfigurationDTO);
+        administrationConfiguration.setFolioNumber(administrationConfigurationDTO.getFolioNumber());
+        administrationConfiguration.setFolioSerie(administrationConfigurationDTO.getFolioSerie());
         administrationConfiguration = administrationConfigurationRepository.save(administrationConfiguration);
         return administrationConfigurationMapper.toDto(administrationConfiguration);
     }

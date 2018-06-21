@@ -4,6 +4,6 @@
     angular
         .module('aditumApp')
         .constant('paginationConstants', {
-            'itemsPerPage': 5
+            'itemsPerPage': 15
         });
 })();

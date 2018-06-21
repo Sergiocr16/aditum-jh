@@ -21,6 +21,12 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "square_meters_price")
     private String squareMetersPrice;
 
+    @Column(name = "folio_serie")
+    private String folioSerie;
+
+    @Column(name = "folio_number")
+    private Integer folioNumber;
+
     @ManyToOne
     private Company company;
 
@@ -43,6 +49,32 @@ public class AdministrationConfiguration implements Serializable {
 
     public void setSquareMetersPrice(String squareMetersPrice) {
         this.squareMetersPrice = squareMetersPrice;
+    }
+
+    public String getFolioSerie() {
+        return folioSerie;
+    }
+
+    public AdministrationConfiguration folioSerie(String folioSerie) {
+        this.folioSerie = folioSerie;
+        return this;
+    }
+
+    public void setFolioSerie(String folioSerie) {
+        this.folioSerie = folioSerie;
+    }
+
+    public Integer getFolioNumber() {
+        return folioNumber;
+    }
+
+    public AdministrationConfiguration folioNumber(Integer folioNumber) {
+        this.folioNumber = folioNumber;
+        return this;
+    }
+
+    public void setFolioNumber(Integer folioNumber) {
+        this.folioNumber = folioNumber;
     }
 
     public Company getCompany() {
@@ -83,6 +115,8 @@ public class AdministrationConfiguration implements Serializable {
         return "AdministrationConfiguration{" +
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
+            ", folioSerie='" + getFolioSerie() + "'" +
+            ", folioNumber='" + getFolioNumber() + "'" +
             "}";
     }
 }

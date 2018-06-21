@@ -13,6 +13,10 @@ public interface AdministrationConfigurationMapper extends EntityMapper <Adminis
 
     @Mapping(source = "company.id", target = "companyId")
     AdministrationConfigurationDTO toDto(AdministrationConfiguration administrationConfiguration);
+
+    @Mapping(source = "companyId", target = "company")
+    AdministrationConfiguration toEntity(AdministrationConfigurationDTO administrationConfigurationDTO);
+
     default Company companyFromId(Long id) {
         if (id == null) {
             return null;
@@ -21,8 +25,6 @@ public interface AdministrationConfigurationMapper extends EntityMapper <Adminis
         company.setId(id);
         return company;
     }
-    @Mapping(source = "companyId", target = "company")
-    AdministrationConfiguration toEntity(AdministrationConfigurationDTO administrationConfigurationDTO);
     default AdministrationConfiguration fromId(Long id) {
         if (id == null) {
             return null;
