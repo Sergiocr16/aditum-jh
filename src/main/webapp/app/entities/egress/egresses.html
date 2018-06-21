@@ -110,7 +110,7 @@
 
 
                     <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"  >
-                        <td angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'; background-color:'white';><h5 class='bold'>Transferencia saliente<h5><button type='button' class='btn btn-primary' ng-click='vm.gola()' name='button' >Generar reporte</button></div>" mode="mouseover" > {{egress.concept}}</td>
+                        <td> {{egress.concept}}</td>
                         <td>{{egress.folio}}</td>
                         <td>{{egress.category}}</td>
                         <td>{{egress.proveedor}}</td>

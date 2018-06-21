@@ -7,6 +7,7 @@ import com.lighthouse.aditum.service.mapper.EgressCategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +58,12 @@ public class EgressCategoryService {
         Page<EgressCategory> result = egressCategoryRepository.findByCompanyId(pageable,companyId);
         return result.map(egressCategory -> egressCategoryMapper.toDto(egressCategory));
     }
-
+    @Transactional(readOnly = true)
+    public Page<EgressCategoryDTO> findAll(Long companyId) {
+        log.debug("Request to get all Egresses");
+        return new PageImpl<>(egressCategoryRepository.findByCompanyId(companyId))
+            .map(egressCategoryMapper::toDto);
+    }
     /**
      *  Get one egressCategory by id.
      *

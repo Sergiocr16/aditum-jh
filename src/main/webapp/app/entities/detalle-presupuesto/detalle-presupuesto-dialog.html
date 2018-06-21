@@ -44,7 +44,7 @@
                 </select>
             </div>
             <div class="no-padding-right col-md-offset-2 col-sm-offset-2 col-xs-offset-2 col-md-2 col-sm-2 col-xs-2 ">
-              <button class="btn btn-primary col-md-12" ng-click="vm.save()">Guardar presupuesto</button>
+              <button class="btn btn-primary col-md-12" ng-click="vm.confirmSave()">Guardar presupuesto</button>
             </div>
         </div>
     </div>
@@ -79,7 +79,7 @@
                 </td>
                 <td ng-repeat="mantenimientoValue in vm.mantenimientoValues" class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{mantenimientoValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index)" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-change="vm.setTotalIngressByMonth($index,mantenimientoValue)" ng-class="{redBorder: mantenimientoValue.valido==false}" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -90,7 +90,7 @@
                 </td>
                 <td ng-repeat="extraordinariaValue in vm.extraordinariaValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{extraordinariaValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index)" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-change="vm.setTotalIngressByMonth($index,extraordinariaValue)" ng-class="{redBorder: extraordinariaValue.valido==false}" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -101,7 +101,7 @@
                 </td>
                 <td ng-repeat="areasComunesValue in vm.areasComunesValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{areasComunesValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index)" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-change="vm.setTotalIngressByMonth($index,areasComunesValue)" ng-class="{redBorder: areasComunesValue.valido==false}" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -112,7 +112,7 @@
                 </td>
                 <td ng-repeat="otrosIngresosValue in vm.otrosIngresosValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{otrosIngresosValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index)" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-change="vm.setTotalIngressByMonth($index,otrosIngresosValue)" ng-class="{redBorder: otrosIngresosValue.valido==false}" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
@@ -150,7 +150,7 @@
                 </td>
                 <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding-top:9px !Important;">
                     <!--<span style="font-size:10px">{{item.month}}</span>-->
-                    <input ng-change="vm.setTotalEgressByMonth($index)" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-change="vm.setTotalEgressByMonth($index,item)" ng-class="{redBorder: item.valido==false}" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
@@ -164,7 +164,7 @@
         </table>
         <div class="col-md-12 text-center">
             <h5 class="gray-font text-center">
-                <button class="btn btn-primary" style="text-align:center;width:300px" ng-click="vm.save()">Guardar presupuesto</button>
+                <button class="btn btn-primary" style="text-align:center;width:300px" ng-click="vm.confirmSave()">Guardar presupuesto</button>
             </h5>
         </div>
     </div>

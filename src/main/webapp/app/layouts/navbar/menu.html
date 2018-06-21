@@ -334,7 +334,9 @@
 
                     <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
                         <a href="javascript:;">
-                            <i style=" color:white;" class="fa fa-arrow-right"></i>
+
+                            <i class="fa fa-arrow-right" style=" color:white;"></i>
+
                             <span class="title" style=" color:white;">Ingresos</span>
                             <span class="selected">
 					</span>
@@ -346,12 +348,6 @@
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Capturar ingreso</span>
-                                </a>
-                            </li>
-                            <li ui-sref="egress" ng-class="{ 'active' : active === 'a' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style="color:white;">Ingresos</span>
                                 </a>
                             </li>
 
@@ -447,7 +443,31 @@
 
                         </ul>
                     </li>
+                    <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
+                        <a href="javascript:;">
+                            <i class="fa fa-pie-chart" style=" color:white;"></i>
+                            <span class="title" style=" color:white;">Reportes</span>
+                            <span class="selected">
+					</span>
+                            <span class="arrow open">
+					</span>
+                        </a>
+                        <ul class="sub-menu" >
+                            <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span   style=" color:white;">Estado de resultados</span>
+                                </a>
+                            </li>
+                            <li ui-sref="egress-report" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span   style=" color:white;">Reporte de gastos</span>
+                                </a>
+                            </li>
+                        </ul>
 
+                    </li>
                     <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
                         <a href=""  style=" color:white;">
                             <i class="fa fa-user" aria-hidden="true"  style="font-weight:500; color:white;"></i> Saldos

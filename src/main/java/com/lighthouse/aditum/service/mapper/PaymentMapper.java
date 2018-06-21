@@ -32,4 +32,5 @@ public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
         house.setId(id);
         return house;
     }
+
 }

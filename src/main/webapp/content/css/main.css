@@ -987,8 +987,14 @@ div.scrollmenu a:hover {
 
 .active-choose-house {
    background: #fff!important;
-         box-shadow: inset 0 3px #2b3643!important;
-         color:#2b3643!important
+   box-shadow: inset 0 3px #2b3643!important;
+   color:#2b3643!important
+}
+
+.active-anual-mensual-reporte {
+   background: #fff!important;
+   box-shadow: inset 0 3px #1caf9a!important;
+   color:#2b3643!important
 }
 
 .deuda-total-negativa{
@@ -1047,6 +1053,7 @@ color: hsl(0, 0%, 100%);
 background-color:transparent!important;
 }
 
+
 .datePassed{
 background-color:#F0F0F0!important;
 }
@@ -1071,3 +1078,4 @@ color:black;
 border: 1px solid green;
 width:250px;
 }
+

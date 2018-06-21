@@ -96,7 +96,10 @@
                     <div class="caption font-green-haze col-lg-9">
                         <span class="caption-subject bold uppercase">Configurar categorías de egresos</span>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="btn-group pull-right">
+                        <div class="caption font-green-haze">
+                            <a href="" ui-sref="egress.new" class="font-14" style="color:hsl(211, 100%, 61%);"><i class="fa fa-arrow-left" aria-hidden="true"></i> Capturar egreso</a>
+                        </div>
 
                     </div>
                 </div>
@@ -111,7 +114,6 @@
                                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                             <th class="text-center"><b>Grupo</b></th>
                                             <th class="text-center"><b>Categoría</b></th>
-                                            <th class="text-center"><b>Eliminar</b></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -129,7 +131,6 @@
                                                     <input ng-class="{redBorder: egressCategory.categoryIsEmpty==true}" ng-blur="vm.saveCategory(egressCategory,2)" ng-change="vm.validate(egressCategory,2)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="egressCategory.category" required>
                                                 </div>
                                             </td>
-                                            <td ng-click="vm.confirmDeleteCategory($index,egressCategory)" class="text-center"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger font-15" aria-hidden="false">Eliminar</span></td>
 
                                         </tr>
                                         </tbody>

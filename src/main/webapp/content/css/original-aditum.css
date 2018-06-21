@@ -294,6 +294,14 @@ height: 100%;
     padding-right: 15px !important;
 
 }
+.horizontal-padding-5{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+
+}
+.maintenanceReportField:focus{
+    outline:0;
+}
 .vertical-padding-20{
     padding-top: 12px !important;
     padding-bottom:12px !important;
@@ -479,7 +487,6 @@ height: 100%;
   background-color: #F5F5F5 ;
 
 }
-
 #loginCodeWelcomeText{
 font-size:70px;
 }
@@ -512,6 +519,16 @@ color: #C62828;
  background-color:  #ff3333;
  min-height: 500px;
 
+}
+
+.budgetReportBorderTop{
+    border-top:1px solid #4F94CD;
+}
+.budgetReportBorderleft{
+    border-left:1px solid #4F94CD;
+}
+.budgetReportBorderRight{
+    border-left:1px solid #4F94CD;
 }
 #loadingContainer {
 

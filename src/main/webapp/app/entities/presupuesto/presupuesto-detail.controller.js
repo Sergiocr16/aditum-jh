@@ -15,6 +15,7 @@
         vm.egressCategories = [];
         var invalidInputs = 0;
         var inputsFullQuantity = 0;
+
         DetallePresupuesto.getCategoriesByBudget({budgetId:vm.presupuesto.id},onSuccess, onError);
         vm.totalEgressValue = 0;
         vm.totalIngressValue = 0;
@@ -39,7 +40,7 @@
                    if(item.type==1){
                            vm.totalIngressByMonth[i].valuePerMonth = vm.totalIngressByMonth[i].valuePerMonth + parseInt(values[i]);
                    }else if(item.type==2 ){
-                         vm.totalEgressByMonth[i].valuePerMonth = vm.totalEgressByMonth[i].valuePerMonth + parseInt(values[i]);
+                           vm.totalEgressByMonth[i].valuePerMonth = vm.totalEgressByMonth[i].valuePerMonth + parseInt(values[i]);
                    }
 
                  }
@@ -65,7 +66,12 @@
              },900 )
         };
 
-        vm.setTotalIngressByMonth = function(index){
+        vm.setTotalIngressByMonth = function(index,month){
+          if(vm.hasLettersOrSpecial(month.valuePerMonth)){
+            month.valido = false;
+          }else{
+            month.valido = true;
+          }
            vm.totalIngressByMonth[index].valuePerMonth = 0;
            angular.forEach(vm.budgetCategories,function(item,key1){
                 if(item.type == 1){
@@ -84,7 +90,12 @@
 
         }
 
-       vm.setTotalEgressByMonth = function(index){
+       vm.setTotalEgressByMonth = function(index,month){
+          if(vm.hasLettersOrSpecial(month.valuePerMonth)){
+               month.valido = false;
+             }else{
+               month.valido = true;
+             }
            vm.totalEgressByMonth[index].valuePerMonth = 0;
            angular.forEach(vm.budgetCategories,function(item,key1){
                 if(item.type == 2){
@@ -122,11 +133,26 @@
             }
         }
          function updateBudgetCategories (result) {
+                vm.totalEgressValue = 0;
+                vm.totalIngressValue = 0;
                 angular.forEach(vm.ingressCategories,function(item,key){
-                   DetallePresupuesto.update(item);
+                    item.total = 0;
+                    DetallePresupuesto.update(item);
+                    angular.forEach(item.valuesPerMonth,function(month,key){
+                          item.total = item.total + parseInt(month.valuePerMonth);
+
+                     })
+                     vm.totalIngressValue = vm.totalIngressValue + item.total;
+
                 })
                 angular.forEach(vm.egressCategories,function(item,key){
-                   DetallePresupuesto.update(item);
+                    item.total = 0;
+                    DetallePresupuesto.update(item);
+                    angular.forEach(item.valuesPerMonth,function(month,key){
+                          item.total = item.total + parseInt(month.valuePerMonth);
+
+                     })
+                     vm.totalEgressValue = vm.totalEgressValue + item.total;
                 })
                toastr["success"]("Se ha actualizado el presupuesto correctamente");
                  setTimeout(function() {
