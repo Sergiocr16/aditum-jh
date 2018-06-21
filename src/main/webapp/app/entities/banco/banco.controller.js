@@ -18,7 +18,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.accountsQuantity = 0;
 
-        setTimeout(function(){ loadAll();},700)
+        setTimeout(function(){ loadAll();},900)
         function loadAll () {
             Banco.query({
                 companyId: $rootScope.companyId,

@@ -183,6 +183,8 @@
                     id: encryptedId
                 })
         }
+
+
         vm.stopConsulting = function() {
               $("#tableData").fadeOut(0);
             setTimeout(function() {

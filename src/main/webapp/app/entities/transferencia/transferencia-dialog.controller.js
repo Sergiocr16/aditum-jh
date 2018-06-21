@@ -15,7 +15,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
-
+        var transferInfo = {};
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -33,6 +33,7 @@
             $uibModalInstance.dismiss('cancel');
         }
 
+
         function save () {
 
             vm.isSaving = true;
@@ -40,9 +41,54 @@
                toastr["error"]("No puede seleccionar la misma cuenta");
                vm.isSaving = false;
             } else {
-                  Banco.get({id : vm.transferencia.cuentaOrigen.id}).$promise.then(onSuccesTransferenciaOrigen);
+
+              confirmTransferencia();
+
 
             }
+
+        function confirmTransferencia(){
+             bootbox.confirm({
+                   message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px; ">¿Está seguro que desea transferir ₡<span class="bold" id="monto"></span> de la cuenta <span class="bold" id="cuentaOrigen"></span> a la cuenta <span class="bold" id="cuentaDestino"></span>?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                      buttons: {
+                          confirm: {
+                              label: 'Aceptar',
+                              className: 'btn-success'
+                          },
+                          cancel: {
+                              label: 'Cancelar',
+                              className: 'btn-danger'
+                          }
+                      },
+                      callback: function(result) {
+
+                          if (result) {
+                              Banco.get({id : vm.transferencia.cuentaOrigen.id}).$promise.then(onSuccesTransferenciaOrigen);
+
+                          }else{
+                              vm.isSaving = false;
+
+                          }
+                      }
+                  });
+              document.getElementById("monto").innerHTML = ""  + formatearNumero(""+vm.transferencia.monto);
+              document.getElementById("cuentaDestino").innerHTML =  vm.transferencia.cuentaDestino.beneficiario;
+              document.getElementById("cuentaOrigen").innerHTML = vm.transferencia.cuentaOrigen.beneficiario;
+
+
+          }
+
+         function formatearNumero(nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+                     x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+             return x1 + x2;
+         }
 //
 //            vm.transferencia.idCompany =  $rootScope.companyId;
 //            if (vm.transferencia.id !== null) {
@@ -76,7 +122,7 @@
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:transferenciaUpdate', result);
-              $state.go('banco-detail({id:$stateParams.id})')
+              $state.go('banco-configuration');
             $uibModalInstance.close(result);
 
             vm.isSaving = false;

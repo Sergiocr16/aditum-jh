@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "detallePresupuesto" : {
+            "home": {
+                "title": "Detalle Presupuestos",
+                "createLabel": "Crear nuevo Detalle Presupuesto",
+                "createOrEditLabel": "Crear o editar Detalle Presupuesto"
+            },
+            "created": "Un nuevo Detalle Presupuesto ha sido creado con el identificador {{ param }}",
+            "updated": "Un Detalle Presupuesto ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Detalle Presupuesto ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Detalle Presupuesto {{ id }}?"
+            },
+            "detail": {
+                "title": "Detalle Presupuesto"
+            },
+            "category": "Category",
+            "valuePerMonth": "Value Per Month",
+            "type": "Type",
+            "presupuestoId": "Presupuesto Id"
+        }
+    }
+}

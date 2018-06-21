@@ -341,7 +341,9 @@
             vm.totalBalance = saldoActual;
             if(vm.totalBalance>0){
                 vm.balanceColor = 'green';
-            }else{
+            }else if(vm.totalBalance==0){
+                vm.balanceColor = 'black';
+            } else{
                 vm.balanceColor = 'red';
             }
             setTimeout(function() {

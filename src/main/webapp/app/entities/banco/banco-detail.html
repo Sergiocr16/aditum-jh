@@ -34,7 +34,7 @@
                 <h4>{{vm.titleConsult}}</h4>
             </div>
         </h3>
-        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Mostrar todos</button>
+        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
         <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
                 <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"

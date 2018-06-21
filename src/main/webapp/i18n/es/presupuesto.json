@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "presupuesto" : {
+            "home": {
+                "title": "Presupuestos",
+                "createLabel": "Crear nuevo Presupuesto",
+                "createOrEditLabel": "Crear o editar Presupuesto"
+            },
+            "created": "Un nuevo Presupuesto ha sido creado con el identificador {{ param }}",
+            "updated": "Un Presupuesto ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Presupuesto ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Presupuesto {{ id }}?"
+            },
+            "detail": {
+                "title": "Presupuesto"
+            },
+            "date": "Date",
+            "modificationDate": "Modification Date",
+            "anno": "Anno",
+            "company": "Company"
+        }
+    }
+}
