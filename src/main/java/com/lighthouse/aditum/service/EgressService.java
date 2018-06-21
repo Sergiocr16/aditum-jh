@@ -58,6 +58,15 @@ public class EgressService {
         return result.map(egress -> egressMapper.toDto(egress));
     }
     @Transactional(readOnly = true)
+    public Page<EgressDTO> findByDatesBetweenAndCompany(String initialTime,String finalTime,Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return new PageImpl<>(egressRepository.findByDatesBetweenAndCompany(zd_initialTime,zd_finalTime,companyId))
+            .map(egressMapper::toDto);
+
+    }
+    @Transactional(readOnly = true)
     public Page<EgressDTO> findByCobroDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");

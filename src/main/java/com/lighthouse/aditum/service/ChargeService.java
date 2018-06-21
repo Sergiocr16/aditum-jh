@@ -257,7 +257,14 @@ public class ChargeService {
         return chargeRepository.findAll(pageable)
             .map(chargeMapper::toDto);
     }
-
+    @Transactional(readOnly = true)
+    public Page <ChargeDTO> findPaidChargesBetweenDates(String initialTime,String finalTime,int type,Long companyId) {
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        log.debug("Request to get all Charges");
+        return new PageImpl<>(chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime,zd_finalTime,type,2))
+            .map(chargeMapper::toDto);
+    }
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");

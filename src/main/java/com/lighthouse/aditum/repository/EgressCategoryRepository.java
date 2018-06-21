@@ -17,5 +17,5 @@ import java.util.List;
 @Repository
 public interface EgressCategoryRepository extends JpaRepository<EgressCategory,Long> {
     Page<EgressCategory> findByCompanyId(Pageable pageable, Long companyId);
-
+    List<EgressCategory> findByCompanyId(Long companyId);
 }

@@ -41,6 +41,8 @@ public class ChargeDTO implements Serializable {
 
     private Long paymentId;
 
+    private int total;
+
     public Long getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class ChargeDTO implements Serializable {
         this.paymentId = paymentId;
     }
 
+    public ChargeDTO(String concept,int total ) {
+        this.concept = concept;
+        this.total = total;
+
+    }
+    public ChargeDTO() {
+
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) {

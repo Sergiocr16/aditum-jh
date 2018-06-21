@@ -50,14 +50,15 @@
             function onSuccessEgressCategories(data, headers) {
                  angular.forEach(data, function(value, key) {
                        if(value.group=='Gastos fijos'){
-                        vm.gastosFijos.push(value.category)
+                        vm.gastosFijos.push(value)
+                        console.log(vm.gastosFijos);
                        }
                        if(value.group=='Gastos variables'){
-                        vm.gastosVariables.push(value.category)
+                        vm.gastosVariables.push(value)
                        }
 
-                      if(value.group=='Otros'){
-                       vm.gastosOtros.push(value.category)
+                      if(value.group=='Otros gastos'){
+                       vm.gastosOtros.push(value)
                       }
 
                  })

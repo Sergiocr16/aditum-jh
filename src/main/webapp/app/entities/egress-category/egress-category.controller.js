@@ -10,7 +10,7 @@
     function EgressCategoryController(EgressCategory,$rootScope) {
 
         var vm = this;
-            vm.groups = [{id:1,name:'Gastos fijos'},{id:2,name:'Gastos variables'},{id:3,name:'Otros'}]
+            vm.groups = [{id:1,name:'Gastos fijos'},{id:2,name:'Gastos variables'},{id:3,name:'Otros gastos'}]
             vm.egressCategories = [];
 
             vm.validate = function(egressCategory,type){
