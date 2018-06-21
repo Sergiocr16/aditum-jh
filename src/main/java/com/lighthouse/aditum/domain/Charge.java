@@ -44,12 +44,18 @@ public class Charge implements Serializable {
     @Column(name = "deleted", nullable = false)
     private Integer deleted;
 
+    @Column(name = "payment_date")
+    private ZonedDateTime paymentDate;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
 
     @ManyToOne
     private Payment payment;
+
+    @ManyToOne
+    private Company company;
 
     public Long getId() {
         return id;
@@ -137,6 +143,19 @@ public class Charge implements Serializable {
         this.deleted = deleted;
     }
 
+    public ZonedDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public Charge paymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+        return this;
+    }
+
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -161,6 +180,19 @@ public class Charge implements Serializable {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Charge company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override
@@ -193,6 +225,7 @@ public class Charge implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", state='" + getState() + "'" +
             ", deleted='" + getDeleted() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
             "}";
     }
 }

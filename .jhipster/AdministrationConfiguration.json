@@ -12,6 +12,14 @@
         {
             "fieldName": "squareMetersPrice",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "folioSerie",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "folioNumber",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180328213553",

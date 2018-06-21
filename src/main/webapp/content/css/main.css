@@ -1047,3 +1047,27 @@ color: hsl(0, 0%, 100%);
 background-color:transparent!important;
 }
 
+.datePassed{
+background-color:#F0F0F0!important;
+}
+
+.firstPassed{
+border-top: solid #4DB3A2 2px;
+}
+
+.selected-payment{
+color:white;
+background-color:#4DB3A2 !important;;
+border-left: 3px #4DB3A2 solid;
+}
+
+.paymentDescription{
+background-color:white;
+color:grey;
+}
+.money-available-for-payment{
+padding:10px;
+color:black;
+border: 1px solid green;
+width:250px;
+}

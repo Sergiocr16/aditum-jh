@@ -15,6 +15,12 @@
             "otherEntityName": "payment",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [
@@ -59,6 +65,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "paymentDate",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "changelogDate": "20180324000506",
