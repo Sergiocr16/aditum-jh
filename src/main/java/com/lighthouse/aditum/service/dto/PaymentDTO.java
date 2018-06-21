@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -41,6 +42,8 @@ public class PaymentDTO implements Serializable {
     private String ammountLeft;
 
     private Long houseId;
+
+    private List<ChargeDTO> charges;
 
     public Long getId() {
         return id;
@@ -173,5 +176,13 @@ public class PaymentDTO implements Serializable {
 
     public void setAmmountLeft(String ammountLeft) {
         this.ammountLeft = ammountLeft;
+    }
+
+    public List<ChargeDTO> getCharges() {
+        return charges;
+    }
+
+    public void setCharges(List<ChargeDTO> charges) {
+        this.charges = charges;
     }
 }

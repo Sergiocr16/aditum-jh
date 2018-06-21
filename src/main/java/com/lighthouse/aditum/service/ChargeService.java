@@ -288,6 +288,14 @@ public class ChargeService {
             .map(chargeMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByPayment(Long paymentId) {
+        log.debug("Request to get all Charges");
+        return new PageImpl < > (chargeRepository.findByPaymentIdAndDeletedAndState(paymentId, 0,2))
+            .map(chargeMapper::toDto);
+    }
+
+
     /**
      *  Get one charge by id.
      *

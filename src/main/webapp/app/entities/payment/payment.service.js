@@ -21,6 +21,20 @@
                     return data;
                 }
             },
+            'getByHouse':{
+             url:'api/payments/byHouse/:houseId',
+             isArray: true,
+            },
+            'getByHouseFilteredByDate':{
+                 method: 'GET',
+                  url: 'api/payments/between/:initial_time/:final_time/byHouseId/:houseId',
+                  isArray: true,
+                  params:{
+                       initial_time:'@initial_time',
+                       final_time: '@final_time',
+                       companyId: '@houseId',
+                       }
+             },
             'update': { method:'PUT' },
             'findBetweenDatesByCompany':{
                      method: 'GET',
@@ -43,7 +57,6 @@
                       accountId: '@accountId'
             }
             }
-
         });
     }
 })();

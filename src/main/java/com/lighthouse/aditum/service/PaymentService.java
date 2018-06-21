@@ -34,6 +34,7 @@ public class PaymentService {
 
     private final BancoService bancoService;
 
+
     public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService,BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
@@ -52,7 +53,7 @@ public class PaymentService {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(paymentDTO);
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
-        payment.setAccount(paymentDTO.getAccount().split(";")[0]);
+        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
@@ -64,7 +65,7 @@ public class PaymentService {
             payment.setAmmountLeft(paymentDTO.getAmmount());
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
-        payment.setAccount(paymentDTO.getAccount().split(";")[0]);
+        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment = paymentRepository.save(payment);
         bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
         for (int i = 0; i < paymentDTO.getCharges().size(); i++) {
@@ -104,6 +105,29 @@ public class PaymentService {
             .map(paymentMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable,Long houseId,String initialTime,String finalTime) {
+        log.debug("Request to get all Payments");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<PaymentDTO> paymentsDTO = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId).map(paymentMapper::toDto);
+        paymentsDTO.getContent().forEach(paymentDTO -> {
+            paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        });
+        return paymentsDTO;
+    }
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Payments");
+        Page<PaymentDTO> paymentsDTO = paymentRepository.findByHouseId(pageable,houseId).map(paymentMapper::toDto);
+        paymentsDTO.getContent().forEach(paymentDTO -> {
+            paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        });
+        return paymentsDTO;
+    }
+
     /**
      *  Get one payment by id.
      *
@@ -133,11 +157,7 @@ public class PaymentService {
        paymentDTO.setAmmount(cPaymentDTO.getAmmount());
        paymentDTO.setComments(cPaymentDTO.getComments());
        paymentDTO.setCompanyId(cPaymentDTO.getCompanyId());
-       if(cPaymentDTO.getTransaction().equals("1")){
-          paymentDTO.setConcept("Abono a cuotas");
-       }else{
-           paymentDTO.setConcept("Adelanto de condómino");
-       }
+       paymentDTO.setConcept(cPaymentDTO.getConcept());
        paymentDTO.setDate(cPaymentDTO.getDate());
        paymentDTO.setHouseId(cPaymentDTO.getHouseId());
        paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());

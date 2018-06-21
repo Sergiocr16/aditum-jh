@@ -61,6 +61,8 @@ public class PaymentResource {
             .body(result);
     }
 
+
+
     /**
      * PUT  /payments : Updates an existing payment.
      *
@@ -81,6 +83,29 @@ public class PaymentResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, paymentDTO.getId().toString()))
             .body(result);
+    }
+
+    @GetMapping("/payments/between/{initial_time}/{final_time}/byHouseId/{houseId}")
+    @Timed
+    public ResponseEntity<List<PaymentDTO>> getByHouseFilteredByDates(@PathVariable (value = "initial_time")  String initial_time,
+                                                       @PathVariable(value = "final_time")  String  final_time,
+                                                       @PathVariable(value = "houseId")  Long houseId,
+                                                       @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<PaymentDTO> page = paymentService.findByHouseFilteredByDate(pageable,houseId,initial_time,final_time);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouseFilteredByDate");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/payments/byHouse/{houseId}")
+    @Timed
+    public ResponseEntity<List<PaymentDTO>> getByHouse(@PathVariable(value = "houseId")  Long houseId, @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<PaymentDTO> page = paymentService.findByHouse(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payments/byHouse");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
     @GetMapping("/payments/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed

@@ -223,7 +223,7 @@
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
                     companyId: $rootScope.companyId,
-                    concept: 'Abono a cuotas'
+                    concept: 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber,
                 };
                 loadAdminConfig()
             }
@@ -495,7 +495,7 @@
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.ammount = vm.toPay;
-            vm.payment.concept = "Adelanto de condómino"
+            vm.payment.concept = "Adelanto de condómino Filial "+$localStorage.houseSelected.housenumber;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
             Payment.save(vm.payment, onSuccess, onError)
 
@@ -542,6 +542,10 @@
                 }
             })
             return (count > 0)
+        }
+
+        vm.back = function(){
+        window.history.back();
         }
     }
 })();

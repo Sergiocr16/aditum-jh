@@ -264,7 +264,7 @@
                                             <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
                                                 <h3 class="text-right">
                                                     <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined || vm.payment.ammount != 0 && vm.isAnyChargeSelected()==false && vm.charges.length!=0" class="btn blue">Realizar Pago</button>
-                                                    <button type="button" ui-sref="chargeMenu" class="btn red default">Cancelar</button>
+                                                    <button type="button" ng-click="vm.back()" class="btn red default">Cancelar</button>
                                                 </h3>
                                             </div>
                                             <hr>

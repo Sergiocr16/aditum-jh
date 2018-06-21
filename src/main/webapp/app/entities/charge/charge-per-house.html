@@ -10,8 +10,8 @@
            <h2 class="bold uppercase" style="font-size:15px">Deudas vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
         </div>
             <div ng-show="vm.isEditing == false" class="btn-group pull-right">
-                <button class="btn btn-success" style="margin:5px" ng-click="vm.createCharge()"><i class="fa fa-plus"></i> Agregar cuotas</button>
-                <button class="btn btn-primary" ng-show="vm.charges.length!=0" style="margin:5px" ng-click="vm.editing()"><i class="fa fa-pencil"></i> Editar cuotas</button>
+                <button class="btn btn-success" ng-click="vm.createCharge()"><i class="fa fa-plus"></i> Agregar cuotas</button>
+                <button class="btn btn-primary" ng-show="vm.charges.length!=0" style="margin-left:5px" ng-click="vm.editing()"><i class="fa fa-pencil"></i> Editar cuotas</button>
             </div>
 
     </div>
@@ -24,7 +24,7 @@
                 <thead>
                 <tr>
                     <th>
-                        Fecha de vencimiento
+                        Fecha de cobro
                     </th>
                     <th>
                         Concepto
@@ -41,7 +41,7 @@
 
                  <tr ng-repeat="charge in vm.charges | orderBy: 'date'" ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                      <td class="text-center" ng-show="vm.isEditing==false">
-                         <span ng-show="charge.definedFirstDatePassed" style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:300px;color:#4DB3A2'><h5>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+                         <span ng-show="charge.definedFirstDatePassed" style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
                          {{charge.date | date}}
                      </td>
                      <td ng-show="vm.isEditing==false">{{charge.concept}}</td>
