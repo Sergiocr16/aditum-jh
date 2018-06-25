@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.EgressCategoryService;
 import com.lighthouse.aditum.service.EgressService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
@@ -36,8 +37,11 @@ public class EgressResource {
 
     private final EgressService egressService;
 
-    public EgressResource(EgressService egressService) {
+    private final EgressCategoryService egressCategoryService;
+
+    public EgressResource(EgressService egressService,EgressCategoryService egressCategoryService) {
         this.egressService = egressService;
+        this.egressCategoryService = egressCategoryService;
     }
 
     /**
@@ -94,6 +98,10 @@ public class EgressResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Egresses");
         Page<EgressDTO> page = egressService.findAll(pageable,companyId);
+       page.getContent().forEach(egressDTO -> {
+           egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+
+       });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -121,6 +129,10 @@ public class EgressResource {
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Page<EgressDTO> page = egressService.findByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        page.getContent().forEach(egressDTO -> {
+            egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

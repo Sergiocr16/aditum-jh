@@ -120,15 +120,15 @@
                                         <tr ng-repeat="egressCategory in vm.egressCategories | orderBy:'id'">
                                             <td class="text-center">
                                                 <div class="form-group input-group col-md-12">
-                                                    <select ng-class="{redBorder: egressCategory.groupIsEmpty==true}" ng-blur="vm.saveCategory(egressCategory,1)" required type="text" class="form-control" ng-change="vm.validate(egressCategory,1)" name="group" ng-model="egressCategory.group"  ng-options="group.name as group.name for group in vm.groups"  >
-                                                        <option value="">Seleccione un proveedor</option>
+                                                    <select ng-class="{redBorder: egressCategory.groupIsEmpty==true}" ng-blur="vm.saveCategory(egressCategory,1,$index)" required type="text" class="form-control" ng-change="vm.validate(egressCategory,1)" name="group" ng-model="egressCategory.group"  ng-options="group.name as group.name for group in vm.groups"  >
+                                                        <option value="">Seleccione un grupo</option>
                                                     </select>
 
                                                 </div>
                                             </td>
                                             <td  class="text-center">
                                                 <div class="form-group input-group  col-md-12">
-                                                    <input ng-class="{redBorder: egressCategory.categoryIsEmpty==true}" ng-blur="vm.saveCategory(egressCategory,2)" ng-change="vm.validate(egressCategory,2)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="egressCategory.category" required>
+                                                    <input ng-class="{redBorder: egressCategory.categoryIsEmpty==true}" ng-blur="vm.saveCategory(egressCategory,2,$index)" ng-change="vm.validate(egressCategory,2)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="egressCategory.category" required>
                                                 </div>
                                             </td>
 

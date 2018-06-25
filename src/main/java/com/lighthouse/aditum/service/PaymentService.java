@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -68,8 +69,9 @@ public class PaymentService {
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment = paymentRepository.save(payment);
         bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
-        for (int i = 0; i < paymentDTO.getCharges().size(); i++) {
-            this.payCharge(paymentDTO.getCharges().get(i),payment);
+        List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
+        for (int i = 0; i < paymentCharges.size(); i++) {
+            this.payCharge(paymentCharges.get(i),payment);
         }
         return paymentMapper.toDto(payment);
     }
@@ -110,21 +112,28 @@ public class PaymentService {
         log.debug("Request to get all Payments");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<PaymentDTO> paymentsDTO = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId).map(paymentMapper::toDto);
-        paymentsDTO.getContent().forEach(paymentDTO -> {
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        });
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
         return paymentsDTO;
     }
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all Payments");
-        Page<PaymentDTO> paymentsDTO = paymentRepository.findByHouseId(pageable,houseId).map(paymentMapper::toDto);
-        paymentsDTO.getContent().forEach(paymentDTO -> {
+        Page<Payment> payments = paymentRepository.findByHouseId(pageable,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        });
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
+
         return paymentsDTO;
     }
 
@@ -163,9 +172,20 @@ public class PaymentService {
        paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
        paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
        paymentDTO.setTransaction(cPaymentDTO.getTransaction());
+
        return paymentDTO;
     }
 
+    private List<ChargeDTO> filterCharges(CreatePaymentDTO payment){
+        List<ChargeDTO> listaCargos = payment.getCharges();
+        List<ChargeDTO> cargosFiltrados = new ArrayList<>();
+        for (int i = 0; i < listaCargos.size(); i++) {
+            if(Integer.parseInt(listaCargos.get(i).getPaymentAmmount())!=0){
+                cargosFiltrados.add(listaCargos.get(i));
+            }
+        }
+        return cargosFiltrados;
+    }
     public PaymentDTO findPaymentInAdvance(Long houseId){
         List<Payment> payments = paymentRepository.findPaymentsInAdvance(null,"2","0",houseId).getContent();
         Payment paymentToUse = null;

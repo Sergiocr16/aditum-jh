@@ -24,6 +24,7 @@ public class MensualAndAnualReportService {
     public MensualAndAnualIngressReportDTO getMensualAndAnualIngressReportDTO(String initialTime, String finalTime, long companyId){
         Page<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,1,companyId);
         Page<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,2,companyId);
+        String a = "a";
         Page<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,3,companyId);
         Page<ChargeDTO> otherIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,4,companyId);
 

@@ -77,7 +77,7 @@ public class EgressCategoryResource {
         if (egressCategoryDTO.getId() == null) {
             return createEgressCategory(egressCategoryDTO);
         }
-        EgressCategoryDTO result = egressCategoryService.save(egressCategoryDTO);
+        EgressCategoryDTO result = egressCategoryService.update(egressCategoryDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, egressCategoryDTO.getId().toString()))
             .body(result);

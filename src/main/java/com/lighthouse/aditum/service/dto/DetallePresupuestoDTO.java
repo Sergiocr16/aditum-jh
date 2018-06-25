@@ -15,6 +15,8 @@ public class DetallePresupuestoDTO implements Serializable {
     @NotNull
     private String category;
 
+    private String group;
+
     private String valuePerMonth;
 
     @NotNull
@@ -93,5 +95,13 @@ public class DetallePresupuestoDTO implements Serializable {
             ", type='" + getType() + "'" +
             ", presupuestoId='" + getPresupuestoId() + "'" +
             "}";
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
     }
 }

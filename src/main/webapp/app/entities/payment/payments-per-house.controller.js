@@ -59,7 +59,6 @@
             };
             vm.picker2 = {
                 datepickerOptions: {
-                    maxDate: new Date(),
                     minDate: vm.initialTime.date,
                     enableTime: false,
                     showWeeks: false,
@@ -67,18 +66,21 @@
             }
         }
         vm.updatePicker();
-        setTimeout(function() {
+
+
+
             loadAll();
             $('.dating').keypress(function(e) {
                 return false
             });
-        }, 5000)
+
 
         $scope.$watch(function() {
             return $rootScope.houseSelected;
         }, function() {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
+            vm.filtering = false;
             vm.initialTime = {
                 date: undefined,
                 openCalendar: false
@@ -95,7 +97,8 @@
         }
 
         function loadAll() {
-            if (vm.initialTime.date != undefined || vm.finalTime.date != undefined) {
+
+            if (vm.initialTime.date != undefined && vm.filtering==true || vm.finalTime.date != undefined && vm.filtering==true) {
                 Payment.getByHouseFilteredByDate({
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,

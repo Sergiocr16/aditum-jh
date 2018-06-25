@@ -181,6 +181,7 @@
            angular.forEach(data,function(value,key){
              value.movementType = 2;
                  value.paymentDate = value.date;
+                 value.folio = value.receiptNumber;
                  vm.movementsList.push(value);
 
 

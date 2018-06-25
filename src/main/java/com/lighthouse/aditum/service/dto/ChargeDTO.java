@@ -47,8 +47,6 @@ public class ChargeDTO implements Serializable {
 
     private Long companyId;
 
-    private String left;
-
     public Long getId() {
         return id;
     }

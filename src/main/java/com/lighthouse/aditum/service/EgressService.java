@@ -30,9 +30,15 @@ public class EgressService {
 
     private final EgressMapper egressMapper;
 
-    public EgressService(EgressRepository egressRepository, EgressMapper egressMapper) {
+    private final EgressCategoryService egressCategoryService;
+
+
+
+    public EgressService(EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
+        this.egressCategoryService = egressCategoryService;
+
     }
 
     /**
@@ -107,7 +113,9 @@ public class EgressService {
     public EgressDTO findOne(Long id) {
         log.debug("Request to get Egress : {}", id);
         Egress egress = egressRepository.findOne(id);
-        return egressMapper.toDto(egress);
+        EgressDTO egreesDTO = egressMapper.toDto(egress);
+        egreesDTO.setCategoryName(egressCategoryService.findOne(Long.parseLong(egreesDTO.getCategory())).getCategory());
+        return egreesDTO;
     }
 
     /**

@@ -259,7 +259,8 @@
         }
 
        vm.hasLettersOrSpecial = function(s){
-            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","´ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^"]
+            var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+
             var invalido = 0;
             angular.forEach(caracteres,function(val,index){
                 if (s!=undefined){
@@ -315,7 +316,7 @@
         function saveEgressValues (result) {
           angular.forEach(vm.egressCategories,function(item,key){
                var detallePresupuesto = {};
-                detallePresupuesto.category = item.category;
+                detallePresupuesto.category = item.id;
                 detallePresupuesto.valuePerMonth = item.valuePerMonth;
                 detallePresupuesto.type = 2;
                 detallePresupuesto.presupuestoId = result.id;

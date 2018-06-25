@@ -1,11 +1,17 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.DetallePresupuesto;
 import com.lighthouse.aditum.domain.EgressCategory;
+import com.lighthouse.aditum.domain.Presupuesto;
 import com.lighthouse.aditum.repository.EgressCategoryRepository;
+import com.lighthouse.aditum.service.dto.DetallePresupuestoDTO;
 import com.lighthouse.aditum.service.dto.EgressCategoryDTO;
+import com.lighthouse.aditum.service.dto.PresupuestoDTO;
 import com.lighthouse.aditum.service.mapper.EgressCategoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +35,16 @@ public class EgressCategoryService {
 
     private final EgressCategoryMapper egressCategoryMapper;
 
-    public EgressCategoryService(EgressCategoryRepository egressCategoryRepository, EgressCategoryMapper egressCategoryMapper) {
+    private final DetallePresupuestoService detallePresupuestoService;
+
+    private final PresupuestoService presupuestoService;
+
+    @Autowired
+    public EgressCategoryService(EgressCategoryRepository egressCategoryRepository, EgressCategoryMapper egressCategoryMapper, @Lazy DetallePresupuestoService detallePresupuestoService, PresupuestoService presupuestoService) {
         this.egressCategoryRepository = egressCategoryRepository;
         this.egressCategoryMapper = egressCategoryMapper;
+        this.detallePresupuestoService = detallePresupuestoService;
+        this.presupuestoService = presupuestoService;
     }
 
     /**
@@ -44,7 +57,27 @@ public class EgressCategoryService {
         log.debug("Request to save EgressCategory : {}", egressCategoryDTO);
         EgressCategory egressCategory = egressCategoryMapper.toEntity(egressCategoryDTO);
         egressCategory = egressCategoryRepository.save(egressCategory);
+        this.addInBudgets(egressCategory);
         return egressCategoryMapper.toDto(egressCategory);
+    }
+
+    public EgressCategoryDTO update(EgressCategoryDTO egressCategoryDTO) {
+        log.debug("Request to save EgressCategory : {}", egressCategoryDTO);
+        EgressCategory egressCategory = egressCategoryMapper.toEntity(egressCategoryDTO);
+        egressCategory = egressCategoryRepository.save(egressCategory);
+        return egressCategoryMapper.toDto(egressCategory);
+    }
+
+    private void addInBudgets(EgressCategory egressCategory){
+    List<PresupuestoDTO> presupuestos = presupuestoService.findAll(egressCategory.getCompany().getId());
+    presupuestos.forEach(presupuestoDTO -> {
+        DetallePresupuestoDTO detallePresupuesto = new DetallePresupuestoDTO();
+        detallePresupuesto.setCategory(egressCategory.getId()+"");
+        detallePresupuesto.setValuePerMonth("0,0,0,0,0,0,0,0,0,0,0,0");
+        detallePresupuesto.setType("2");
+        detallePresupuesto.setPresupuestoId(presupuestoDTO.getId()+"");
+        detallePresupuestoService.save(detallePresupuesto);
+    });
     }
 
     /**
@@ -56,6 +89,7 @@ public class EgressCategoryService {
     public Page<EgressCategoryDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Egresses");
         Page<EgressCategory> result = egressCategoryRepository.findByCompanyId(pageable,companyId);
+
         return result.map(egressCategory -> egressCategoryMapper.toDto(egressCategory));
     }
     @Transactional(readOnly = true)

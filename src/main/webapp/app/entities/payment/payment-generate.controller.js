@@ -166,7 +166,8 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-            var caracteres = [':', '`', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+                                               var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -239,6 +240,8 @@
             }).$promise.then(function(result) {
                 if (result.folioSerie != null) {
                     vm.admingConfig = result;
+                    vm.folioSerie = result.folioSerie;
+                    vm.folioNumber = result.folioNumber;
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
                 }
             })
@@ -423,14 +426,17 @@
                         if (vm.toPay > 0) {
                             vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
                         }
+                        vm.payment.concept = 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber;
                         Payment.save(vm.payment, onSuccess, onError)
-
                         function onSuccess(result) {
                             bootbox.hideAll();
                             toastr["success"]("Se ha capturado el ingreso correctamente.")
                             increaseFolioNumber(function(result){
+                            console.log(result)
+                            vm.admingConfig = result;
+                              vm.folioSerie = result.folioSerie;
+                              vm.folioNumber = result.folioNumber;
                                 if (vm.toPay > 0) {
-                                 vm.admingConfig = result;
                                  registrarAdelantoCondomino();
                                 } else {
                                     clear();
@@ -454,7 +460,8 @@
 
 
         function increaseFolioNumber(success) {
-            vm.admingConfig.folioNumber = vm.admingConfig.folioNumber + 1;
+            vm.admingConfig.folioNumber = vm.folioNumber + 1;
+            vm.admingConfig.folioSerie = vm.folioSerie;
             AdministrationConfiguration.update(vm.admingConfig,success);
         }
 

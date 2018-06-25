@@ -42,7 +42,10 @@ public class AdministrationConfigurationService {
         administrationConfiguration.setFolioNumber(administrationConfigurationDTO.getFolioNumber());
         administrationConfiguration.setFolioSerie(administrationConfigurationDTO.getFolioSerie());
         administrationConfiguration = administrationConfigurationRepository.save(administrationConfiguration);
-        return administrationConfigurationMapper.toDto(administrationConfiguration);
+        AdministrationConfigurationDTO adminConfigDto = administrationConfigurationMapper.toDto(administrationConfiguration);
+        adminConfigDto.setFolioSerie(administrationConfiguration.getFolioSerie());
+        adminConfigDto.setFolioNumber(administrationConfiguration.getFolioNumber());
+        return adminConfigDto;
     }
 
     /**
@@ -68,7 +71,10 @@ public class AdministrationConfigurationService {
     public AdministrationConfigurationDTO findOneByCompanyId(Long id) {
         log.debug("Request to get AdministrationConfiguration : {}", id);
         AdministrationConfiguration administrationConfiguration = administrationConfigurationRepository.findByCompanyId(id).get(0);
-        return administrationConfigurationMapper.toDto(administrationConfiguration);
+        AdministrationConfigurationDTO adminConfDto = administrationConfigurationMapper.toDto(administrationConfiguration);
+        adminConfDto.setFolioNumber(administrationConfiguration.getFolioNumber());
+        adminConfDto.setFolioSerie(administrationConfiguration.getFolioSerie());
+        return adminConfDto;
     }
 
     /**

@@ -2,14 +2,11 @@
 <div class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
+
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
-        <li>
-            <a ui-sref="residentes()">Contabilidad</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
+
         <li>
             <a ui-sref="residentes()">Generar cuota mensual</a>
         </li>
@@ -109,8 +106,8 @@
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-repeat="cuota in house.cuotas" class="text-center">
                                         <input style="width:150px" ng-disabled="house.isdesocupated == 1" ng-class="{redBorder: cuota.valida==false}" ng-change="vm.validate(cuota)" class="form-control numbers gray-font text-center dating" type="text" fcsa-number  ng-model="cuota.ammount" required>
                                     </td>
-                                    <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-danger" aria-hidden="false">No</span></td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Sí</span></td>
+                                    <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="label label-sm label-danger col-md-12 bold" style="padding: 5px 15px;margin-top:5px" aria-hidden="false">No</span></td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="label label-sm label-success col-md-12 bold" style="padding: 5px 15px;margin-top:5px"  aria-hidden="false">Si</span></td>
                                 </tr>
                                 </tbody>
                             </table>
