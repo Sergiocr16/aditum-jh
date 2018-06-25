@@ -26,6 +26,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="folio_serie" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="folio_number" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

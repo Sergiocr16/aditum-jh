@@ -33,9 +33,19 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
+    private String left;
+
+    private String paymentAmmount;
+
+    private ZonedDateTime paymentDate;
+
     private Long houseId;
 
     private Long paymentId;
+
+    private int total;
+
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -93,6 +103,14 @@ public class ChargeDTO implements Serializable {
         this.deleted = deleted;
     }
 
+    public ZonedDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(ZonedDateTime paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -108,6 +126,24 @@ public class ChargeDTO implements Serializable {
     public void setPaymentId(Long paymentId) {
         this.paymentId = paymentId;
     }
+
+    public ChargeDTO(String concept,int total ) {
+        this.concept = concept;
+        this.total = total;
+
+    }
+    public ChargeDTO() {
+
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -140,6 +176,23 @@ public class ChargeDTO implements Serializable {
             ", ammount='" + getAmmount() + "'" +
             ", state='" + getState() + "'" +
             ", deleted='" + getDeleted() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
             "}";
+    }
+
+    public String getLeft() {
+        return left;
+    }
+
+    public void setLeft(String left) {
+        this.left = left;
+    }
+
+    public String getPaymentAmmount() {
+        return paymentAmmount;
+    }
+
+    public void setPaymentAmmount(String paymentAmmount) {
+        this.paymentAmmount = paymentAmmount;
     }
 }

@@ -28,8 +28,7 @@
         moment.locale("es");
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-                                             var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
+            var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -156,6 +155,7 @@
             cuota.concept = getGlobalConcept(cuota.globalConcept).concept;
             cuota.state = 1;
             cuota.deleted = 0;
+            cuota.companyId = $rootScope.companyId;
             return cuota;
         }
 

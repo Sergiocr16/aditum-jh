@@ -987,8 +987,14 @@ div.scrollmenu a:hover {
 
 .active-choose-house {
    background: #fff!important;
-         box-shadow: inset 0 3px #2b3643!important;
-         color:#2b3643!important
+   box-shadow: inset 0 3px #2b3643!important;
+   color:#2b3643!important
+}
+
+.active-anual-mensual-reporte {
+   background: #fff!important;
+   box-shadow: inset 0 3px #1caf9a!important;
+   color:#2b3643!important
 }
 
 .deuda-total-negativa{
@@ -1014,3 +1020,62 @@ border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important;padding:10px;
        margin-bottom: 15px;
        overflow: hidden;
 }
+
+.no-liquid{
+background-color: rgb(254, 246, 246); opacity: 1;
+}
+.parc-liquid{
+background-color: rgb(255, 247, 217); opacity: 1;
+}
+.liquid{
+background-color: rgb(234, 250, 238); opacity: 1;
+}
+
+.debt-no-selected{
+background-color: rgb(255, 255, 255); opacity: 0.4;
+}
+
+.popover.bottom .arrow:after{
+border-bottom-color: background-color:hsl(36, 100%, 50%)!important;
+}
+
+.balloon{
+color: hsl(0, 0%, 100%);
+    text-align: center;
+    border-radius: 4px!important;
+    padding: 3px;
+    background-color:hsl(36, 100%, 50%);
+        font-size: 11px;
+        font-weight: bold;
+}
+
+.no-bg-color{
+background-color:transparent!important;
+}
+
+
+.datePassed{
+background-color:#F0F0F0!important;
+}
+
+.firstPassed{
+border-top: solid #4DB3A2 2px;
+}
+
+.selected-payment{
+color:white;
+background-color:#4DB3A2 !important;;
+border-left: 3px #4DB3A2 solid;
+}
+
+.paymentDescription{
+background-color:white;
+color:grey;
+}
+.money-available-for-payment{
+padding:10px;
+color:black;
+border: 1px solid green;
+width:250px;
+}
+

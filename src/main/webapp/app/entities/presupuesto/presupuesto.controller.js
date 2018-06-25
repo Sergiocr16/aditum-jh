@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PresupuestoController', PresupuestoController);
 
-    PresupuestoController.$inject = ['Presupuesto','$rootScope'];
+    PresupuestoController.$inject = ['Presupuesto','$rootScope','$state','$localStorage','CommonMethods'];
 
-    function PresupuestoController(Presupuesto,$rootScope) {
+    function PresupuestoController(Presupuesto,$rootScope,$state,$localStorage,CommonMethods) {
 
         var vm = this;
 
@@ -49,12 +49,38 @@
                 callback: function(result) {
                     if (result) {
                           CommonMethods.waitingMessage();
+                          budget.deleted = 1;
+                          $("#loadingIcon").fadeIn(200);
+                          $("#tableData").fadeOut(0);
 
+                          Presupuesto.update(budget, updatedPresupusstoSuccess);
                     }
                 }
             });
         };
 
+       function updatedPresupusstoSuccess(){
+             bootbox.hideAll();
+             toastr["success"]("Se eliminó el presupuesto correctamente");
+             loadAll()
+       }
+       vm.registerBudget = function(){
+            if(vm.presupuestos.length>=4){
+             toastr["error"]("Ya se crearon todos los presupuestos disponibles");
+            }else{
+                $state.go('detalle-presupuesto.new');
+            }
+
+
+       }
+      vm.showBudgetEdit = function(budget){
+          $localStorage.budgetAction = 2;
+           $state.go('presupuesto-detail', {id:budget.id});
+      }
+       vm.showBudgetDetail = function(budget){
+            $localStorage.budgetAction = 1;
+             $state.go('presupuesto-detail', {id:budget.id});
+        }
        function onDeleteSuccess (result) {
             bootbox.hideAll()
             loadAll();

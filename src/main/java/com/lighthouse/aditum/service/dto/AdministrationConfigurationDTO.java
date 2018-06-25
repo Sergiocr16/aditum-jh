@@ -15,6 +15,10 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private String squareMetersPrice;
 
+    private String folioSerie;
+
+    private Integer folioNumber;
+
     private Long companyId;
 
     public Long getId() {
@@ -31,6 +35,22 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     public void setSquareMetersPrice(String squareMetersPrice) {
         this.squareMetersPrice = squareMetersPrice;
+    }
+
+    public String getFolioSerie() {
+        return folioSerie;
+    }
+
+    public void setFolioSerie(String folioSerie) {
+        this.folioSerie = folioSerie;
+    }
+
+    public Integer getFolioNumber() {
+        return folioNumber;
+    }
+
+    public void setFolioNumber(Integer folioNumber) {
+        this.folioNumber = folioNumber;
     }
 
     public Long getCompanyId() {
@@ -67,6 +87,8 @@ public class AdministrationConfigurationDTO implements Serializable {
         return "AdministrationConfigurationDTO{" +
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
+            ", folioSerie='" + getFolioSerie() + "'" +
+            ", folioNumber='" + getFolioNumber() + "'" +
             "}";
     }
 }

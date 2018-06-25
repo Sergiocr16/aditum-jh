@@ -24,7 +24,6 @@ public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
         payment.setId(id);
         return payment;
     }
-
     default House houseFromId(Long id) {
         if (id == null) {
             return null;
@@ -33,4 +32,5 @@ public interface PaymentMapper extends EntityMapper <PaymentDTO, Payment> {
         house.setId(id);
         return house;
     }
+
 }

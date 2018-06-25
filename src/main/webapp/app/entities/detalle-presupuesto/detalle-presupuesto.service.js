@@ -20,7 +20,11 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'getCategoriesByBudget': { method: 'GET',
+                url:'api/detalle-presupuestos/getCategoriesByBudget/:budgetId',
+                isArray:true
+             }
         });
     }
 })();

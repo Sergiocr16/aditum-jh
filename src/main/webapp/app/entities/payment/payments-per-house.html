@@ -1,0 +1,127 @@
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loading">
+    <div class="spinnerLoading" style="margin:70px auto!important;margin-bottom:100px!important">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="col-md-12 display-none" id="data">
+    <div class="col-md-12 no-padding">
+        <div class="pull-left">
+            <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
+        </div>
+        <div class="col-md-7 col-md-offset-2" ng-hide="vm.payments.length==0 && vm.filtering==false">
+            <div class="col-md-4">
+            <input ng-model="vm.initialTime.date" ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating" placeholder="Fecha de inicio">
+            </div>
+            <div class="col-md-4">
+                <input ng-model="vm.finalTime.date" ng-change="vm.updatePicker()" type="text" name="date" ng-click="vm.openCalendar(vm.finalTime)" datepicker-options="vm.picker2.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.finalTime.openCalendar" class="form-control letters gray-font dating" placeholder="Fecha final">
+            </div>
+            <button class="btn btn-info blue" ng-click="vm.filter()" ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined">Consultar</button>
+            <button class="btn btn-success" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">Mostrar todos</button>
+        </div>
+        <div class="btn-group pull-right">
+            <button class="btn btn-success red" ui-sref="generatePayment"><i class="fa fa-money"></i> Realizar pago</button>
+        </div>
+    </div>
+    <hr>
+    <div class="portlet-body">
+        <h3 class="text-center" ng-show="vm.payments.length==0 && vm.filtering==false" style="margin-top:60px!important">La filial no ha realizado ningún pago aún</h3>
+        <h3 class="text-center" ng-show="vm.payments.length==0 && vm.filtering==true" style="margin-top:70px!important">No se encontraron pagos en las fechas seleccionadas</h3>
+
+        <div ng-show="vm.payments.length!=0">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>
+                        Número de recibo
+                    </th>
+                    <th>
+                        Fecha de pago
+                    </th>
+                    <th>
+                        Cuenta
+                    </th>
+                    <th>
+                        Método de pago
+                    </th>
+                    <th>
+                        Concepto
+                    </th>
+                    <th>
+                        Cantidad
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments track by payment.id" ng-click="vm.showCharges(payment)" ng-class="{'selected-payment':payment.isShowingCharges==true}">
+                <tr>
+                    <td ><i ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11" style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true" class="fa fa-chevron-down bold font-11" style="float:left" aria-hidden="true"></i> <span class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
+                    <td>{{payment.date | date}}</td>
+                    <td>{{payment.account}}</td>
+                    <td>{{payment.paymentMethod}}</td>
+                    <td ng-show="payment.transaction==1">Abono a cuotas</td>
+                    <td ng-show="payment.transaction==2">Adelanto de condómino</td>
+                    <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                </tr>
+                <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
+                    <td style="background-color:white!important" colspan="3">
+                        <div class="note note-info" style="margin:0">
+                            <div>
+                                <h5 style="font-weight:bold">Comentarios:</h5>
+                            </div>
+                            <div>
+                                <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
+                                <p ng-hide="payment.comments!=undefined">Ninguno</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12" ng-if="payment.ammountLeft>0">
+                            <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px">  ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray; '><h5 >Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
+                        </div>
+                    </td>
+                    <td class="note note-info" colspan="3">
+                        <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>" mode="mouseover"></i></h5>
+
+                        <h5 class="text-center" style="font-weight:bold!important;margin-top:20px">
+                            No existen cuotas canceladas con este adelanto de condómino aún
+                        </h5>
+                    </td>
+                </tr>
+                <tr ng-repeat="charge in payment.charges track by charge.id" ng-show="payment.isShowingCharges==true">
+                    <td rowspan="{{payment.charges.length+1}}" style="background-color:white!important" colspan="3" ng-if="charge.id == payment.charges[0].id">
+                        <div class="note note-info" style="margin:0">
+                            <div>
+                                <h5 style="font-weight:bold">Comentarios:</h5>
+                            </div>
+                            <div>
+                                <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
+                                <p ng-hide="payment.comments!=undefined">Ninguno</p>
+                            </div>
+                        </div>
+                        <div class="col-md-12" ng-if="payment.ammountLeft>0">
+                            <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px">  ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray;'><h5>Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
+                        </div>
+                    </td>
+                    <td rowspan="{{payment.charges.length+1}}" class="note note-info"  colspan="3" ng-if="charge.id == payment.charges[0].id">
+                        <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>" mode="mouseover"></i></h5>
+                        <table class="table table-bordered">
+                            <h6 ng-show="payment.charges.length>0 && payment.transaction==2">Fecha de cancelación <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>" mode="mouseover"></i></h6>
+                            <tbody>
+                            <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
+                                <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}} </td>
+                                <td class="text-center">{{chargeIn.concept}}</td>
+                                <td class="text-center">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center" ng-show="vm.payments.length!=0">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-show="vm.payments.length!=0"></uib-pager>
+</div>

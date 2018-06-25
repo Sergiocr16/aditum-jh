@@ -14,5 +14,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface PresupuestoRepository extends JpaRepository<Presupuesto,Long> {
-    List<Presupuesto> findByCompanyId(Long companyId);
+    List<Presupuesto> findByCompanyIdAndDeleted(Long companyId,int deleted);
 }

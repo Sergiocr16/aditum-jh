@@ -18,6 +18,7 @@
             "date": "Date",
             "modificationDate": "Modification Date",
             "anno": "Anno",
+            "deleted": "Deleted",
             "company": "Company"
         }
     }

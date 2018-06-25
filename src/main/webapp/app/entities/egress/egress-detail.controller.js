@@ -23,7 +23,7 @@
         console.log( vm.egress)
         $scope.$on('$destroy', unsubscribe);
 //      vm.egress.account = null;
-//      vm.egress.paymentMethod = null;
+        vm.egress.paymentMethod = "";
 //      vm.egress.paymentDate = null;
            if(vm.egress.folio == null || vm.egress.folio == 'undefined' ){
               vm.egress.folio = 'Sin Registrar'

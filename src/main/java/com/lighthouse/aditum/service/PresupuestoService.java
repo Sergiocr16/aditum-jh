@@ -6,6 +6,8 @@ import com.lighthouse.aditum.service.dto.PresupuestoDTO;
 import com.lighthouse.aditum.service.mapper.PresupuestoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +54,7 @@ public class PresupuestoService {
     @Transactional(readOnly = true)
     public List<PresupuestoDTO> findAll(Long companyId) {
         log.debug("Request to get all Presupuestos");
-        return presupuestoRepository.findByCompanyId(companyId).stream()
+        return presupuestoRepository.findByCompanyIdAndDeleted(companyId,0).stream()
             .map(presupuestoMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }

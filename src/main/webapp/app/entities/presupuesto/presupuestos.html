@@ -27,14 +27,14 @@
         </h3>
 
         <div class="form-group no-padding col-md-offset-4 col-md-3" id="index-search-bar">
-            <button type="button" class="btn green col-md-12  col-lg-12 col-sm-12 col-xs-12" ui-sref="detalle-presupuesto.new" name="button">Capturar presupuesto</button>
+            <button type="button" class="btn green col-md-12  col-lg-12 col-sm-12 col-xs-12" ng-click="vm.registerBudget()" name="button">Capturar presupuesto</button>
 
         </div>
 
         <br/>
         <div class="portlet-body ">
             <div ng-show="vm.presupuestos.length==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2 class="text-center gray-font">No hay presupuestos registradoss</h2>
+                <h2 class="text-center gray-font">No hay presupuestos registrados</h2>
             </div>
             <div class="table-scrollable" ng-show="vm.presupuestos.length>0">
                 <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:12px;">
@@ -50,10 +50,10 @@
                     <tbody>
                     <tr  ng-repeat="presupuesto in vm.presupuestos track by presupuesto.id" >
 
-                        <td>PRESUPUESTO {{presupuesto.date | date:'yyyy'}}</td>
+                        <td>PRESUPUESTO {{presupuesto.anno}}</td>
                         <td>{{presupuesto.modificationDate | date:'longDate'}}</td>
-                        <td> <a class="light-gray-font"  ui-sref="banco-detail({id:banco.id})">Ver detalle</a></td>
-                        <td> <a class="light-gray-font"  ui-sref="banco-detail({id:banco.id})">Editar</a></td>
+                        <td> <a class="light-gray-font"  ng-click="vm.showBudgetDetail(presupuesto)" >Ver detalle</a></td>
+                        <td> <a class="light-gray-font"  ng-click="vm.showBudgetEdit(presupuesto)">Editar</a></td>
                         <td> <a class="light-gray-font"  ng-click="vm.deleteBudget(presupuesto)">Eliminar</a></td>
                     </tr>
                     </tbody>

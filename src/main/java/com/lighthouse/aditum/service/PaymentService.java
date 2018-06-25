@@ -2,6 +2,8 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.PaymentRepository;
+import com.lighthouse.aditum.service.dto.ChargeDTO;
+import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
 import org.slf4j.Logger;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -27,9 +31,16 @@ public class PaymentService {
 
     private final PaymentMapper paymentMapper;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper) {
+    private final ChargeService chargeService;
+
+    private final BancoService bancoService;
+
+
+    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService,BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
+        this.chargeService = chargeService;
+        this.bancoService = bancoService;
     }
 
     /**
@@ -38,12 +49,33 @@ public class PaymentService {
      * @param paymentDTO the entity to save
      * @return the persisted entity
      */
-    public PaymentDTO save(PaymentDTO paymentDTO) {
+
+    public PaymentDTO update(PaymentDTO paymentDTO) {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(paymentDTO);
+        payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
+        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        payment.setAmmountLeft(paymentDTO.getAmmountLeft());
         payment = paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
     }
+    public PaymentDTO save(CreatePaymentDTO paymentDTO) {
+        log.debug("Request to save Payment : {}", paymentDTO);
+        Payment payment = paymentMapper.toEntity(createPaymentDTOtoPaymentDTO(paymentDTO));
+        if(payment.getTransaction().equals("2")){
+            payment.setAmmountLeft(paymentDTO.getAmmount());
+        }
+        payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
+        payment.setAccount(paymentDTO.getAccount().split(";")[1]);
+        payment = paymentRepository.save(payment);
+        bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
+        List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
+        for (int i = 0; i < paymentCharges.size(); i++) {
+            this.payCharge(paymentCharges.get(i),payment);
+        }
+        return paymentMapper.toDto(payment);
+    }
+
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,int companyId) {
         log.debug("Request to get all Visitants in last month by house");
@@ -75,6 +107,36 @@ public class PaymentService {
             .map(paymentMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable,Long houseId,String initialTime,String finalTime) {
+        log.debug("Request to get all Payments");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
+            paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
+        return paymentsDTO;
+    }
+    @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
+        log.debug("Request to get all Payments");
+        Page<Payment> payments = paymentRepository.findByHouseId(pageable,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
+            paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
+
+        return paymentsDTO;
+    }
+
     /**
      *  Get one payment by id.
      *
@@ -96,5 +158,64 @@ public class PaymentService {
     public void delete(Long id) {
         log.debug("Request to delete Payment : {}", id);
         paymentRepository.delete(id);
+    }
+
+    private PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
+       PaymentDTO paymentDTO = new PaymentDTO();
+       paymentDTO.setAccount(cPaymentDTO.getAccount());
+       paymentDTO.setAmmount(cPaymentDTO.getAmmount());
+       paymentDTO.setComments(cPaymentDTO.getComments());
+       paymentDTO.setCompanyId(cPaymentDTO.getCompanyId());
+       paymentDTO.setConcept(cPaymentDTO.getConcept());
+       paymentDTO.setDate(cPaymentDTO.getDate());
+       paymentDTO.setHouseId(cPaymentDTO.getHouseId());
+       paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
+       paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
+       paymentDTO.setTransaction(cPaymentDTO.getTransaction());
+
+       return paymentDTO;
+    }
+
+    private List<ChargeDTO> filterCharges(CreatePaymentDTO payment){
+        List<ChargeDTO> listaCargos = payment.getCharges();
+        List<ChargeDTO> cargosFiltrados = new ArrayList<>();
+        for (int i = 0; i < listaCargos.size(); i++) {
+            if(Integer.parseInt(listaCargos.get(i).getPaymentAmmount())!=0){
+                cargosFiltrados.add(listaCargos.get(i));
+            }
+        }
+        return cargosFiltrados;
+    }
+    public PaymentDTO findPaymentInAdvance(Long houseId){
+        List<Payment> payments = paymentRepository.findPaymentsInAdvance(null,"2","0",houseId).getContent();
+        Payment paymentToUse = null;
+        if(payments.size()>0) {
+            paymentToUse = payments.get(0);
+            for (int i = 0; i < payments.size(); i++) {
+                Payment payment = payments.get(i);
+                if (payment.getDate().isBefore(paymentToUse.getDate())){
+                    paymentToUse = payment;
+                }
+            }
+        }
+
+        if(paymentToUse!=null) {
+            PaymentDTO paymentDTO = paymentMapper.toDto(paymentToUse);
+            paymentDTO.setAmmountLeft(paymentToUse.getAmmountLeft());
+            return paymentDTO;
+        }else {
+            return null;
+        }
+    }
+
+    private void payCharge(ChargeDTO charge,Payment payment){
+        if(Integer.parseInt(charge.getLeft())>0){
+            ChargeDTO newCharge = charge;
+            newCharge.setAmmount(charge.getLeft());
+            chargeService.pay(charge,payment);
+            chargeService.create(newCharge);
+        }else{
+            chargeService.pay(charge,payment);
+        }
     }
 }

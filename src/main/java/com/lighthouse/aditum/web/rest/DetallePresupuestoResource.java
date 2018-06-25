@@ -4,9 +4,15 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.DetallePresupuestoService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.DetallePresupuestoDTO;
+import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,7 +81,21 @@ public class DetallePresupuestoResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, detallePresupuestoDTO.getId().toString()))
             .body(result);
     }
-
+    /**
+     * GET  /presupuestos : get all the presupuestos.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of presupuestos in body
+     */
+    @GetMapping("/detalle-presupuestos/getCategoriesByBudget/{budgetId}")
+    @Timed
+    public ResponseEntity<List<DetallePresupuestoDTO>> getCategoriesByBudget(
+        @PathVariable (value = "budgetId")  String budgetId, @ApiParam Pageable pageable
+    )throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<DetallePresupuestoDTO> page = detallePresupuestoService.getCategoriesByBudget(pageable,budgetId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/detalle-presupuestos");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /detalle-presupuestos : get all the detallePresupuestos.
      *

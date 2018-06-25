@@ -103,7 +103,7 @@
                                     <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
                                     <div class="table-scrollable"  ng-show="reporte.gastos.length>0" >
                                         <table class="jh-table table table-bordered table-condensed flip-content" style="font-size:12px;">
-                                            <thead  class="flip-content">
+                                            <thead    style="background-color:#EEEEEE; "class="flip-content">
                                             <tr>
                                                 <th  ng-repeat="selected in vm.selectedCampos">{{vm.camposMultiSelect[selected.id].label}}</th>
 

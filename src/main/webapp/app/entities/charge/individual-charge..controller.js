@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods'];
+    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods','$localStorage'];
 
-    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
+    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods,$localStorage) {
         var vm = this;
          $rootScope.active = 'individual';
         vm.loadPage = loadPage;
@@ -32,7 +32,8 @@
 
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-            var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+                       var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
                 if (s != undefined) {
@@ -108,6 +109,7 @@
                          CommonMethods.waitingMessage();
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
+                            vm.charge.companyId = $rootScope.companyId;
                             Charge.save(vm.charge, function(result) {
                                 vm.isSaving == false;
                                 House.get({

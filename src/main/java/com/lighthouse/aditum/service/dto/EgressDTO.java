@@ -50,6 +50,10 @@ public class EgressDTO implements Serializable {
 
     private Long companyId;
 
+    private String categoryName;
+
+    private String groupName;
+
     public Long getId() {
         return id;
     }
@@ -218,5 +222,21 @@ public class EgressDTO implements Serializable {
             ", state='" + getState() + "'" +
             ", billNumber='" + getBillNumber() + "'" +
             "}";
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 }

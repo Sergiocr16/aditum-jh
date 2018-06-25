@@ -106,7 +106,6 @@
         }
 
         function getEgress(){
-        console.log('adfadfafafa')
              Egress.findBetweenDatesByCompanyAndAccount({
                     initial_time: moment(vm.dates.initial_time).format(),
                      final_time: moment(vm.dates.final_time).format(),
@@ -156,7 +155,7 @@
         }
 
         function onSuccessTransferenciasSalientes(data, headers) {
-        console.log('adfaf')
+
             angular.forEach(data,function(value,key){
                   value.concept = value.concepto;
                   value.total = value.monto;
@@ -182,6 +181,7 @@
            angular.forEach(data,function(value,key){
              value.movementType = 2;
                  value.paymentDate = value.date;
+                 value.folio = value.receiptNumber;
                  vm.movementsList.push(value);
 
 
@@ -208,7 +208,6 @@
 
             }
             function getEgressWhenConsulting(){
-                console.log('daledale')
                  Egress.findBetweenDatesByCompanyAndAccount({
                         initial_time: moment(vm.firstDayConsulting).format(),
                          final_time: moment(vm.dates.initial_time).subtract('days', 1).format(),

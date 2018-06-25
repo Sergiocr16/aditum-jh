@@ -61,8 +61,7 @@
                         <td>{{banco.cuentaCorriente}}</td>
                         <td>{{banco.cuentaCliente}}</td>
 
-                        <td>₡{{vm.formatearNumero(banco.saldo+"")}}</td>
-
+                        <td ng-class="{'greenBalance':banco.saldo>0,'redBalance':banco.saldo<0}" class="bold text-center">₡{{vm.formatearNumero(banco.saldo+"")}}</td>
                         <td> <a class="light-gray-font"  ui-sref="banco-detail({id:banco.id})">Consultar movimientos</a></td>
 
                     </tr>
