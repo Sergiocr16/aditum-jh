@@ -1,6 +1,5 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.Balance;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
@@ -19,7 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 
 /**
@@ -36,15 +36,18 @@ public class ChargeService {
     private final ChargeMapper chargeMapper;
     private final PaymentService paymentService;
     private final BancoService bancoService;
+    private final PaymentEmailSenderService paymentEmailSenderService;
+
 
 
     @Autowired
-    public ChargeService(BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
+    public ChargeService(@Lazy PaymentEmailSenderService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
         this.paymentService = paymentService;
         this.bancoService = bancoService;
+        this.paymentEmailSenderService = paymentEmailSenderService;
     }
 
     /**
@@ -364,7 +367,7 @@ public class ChargeService {
             charge.setState(2);
             charge.setCompanyId(payment.getCompanyId().longValue());
             charge.setPaymentDate(ZonedDateTime.now());
-            paymentService.update(payment);
+            payment = paymentService.update(payment);
         }
         Charge chargeEntity = chargeMapper.toEntity(charge);
         chargeEntity.setHouse(chargeMapper.houseFromId(charge.getHouseId()));
@@ -382,6 +385,13 @@ public class ChargeService {
             newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(savedCharge.getAmmount());
         }
         balanceDTO.setMaintenance(newMaintBalance+"");
+        ChargeDTO savedChargeDTO = this.chargeMapper.toDto(savedCharge);
+        savedChargeDTO.setPaymentAmmount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(savedChargeDTO.getDate()));
+        if(payment!=null) {
+            payment.setCharges(new ArrayList<>());
+            payment.getCharges().add(savedChargeDTO);
+            this.paymentEmailSenderService.sendPaymentEmail(payment,true);
+        }
         balanceService.save(balanceDTO);
         if(newCharge!=charge){
             return this.payIfBalanceIsPositive(newCharge);

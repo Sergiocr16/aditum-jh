@@ -35,12 +35,14 @@ public class PaymentService {
 
     private final BancoService bancoService;
 
+    private final PaymentEmailSenderService paymentEmailSenderService;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService,BancoService bancoService) {
+    public PaymentService(PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
         this.bancoService = bancoService;
+        this.paymentEmailSenderService = paymentEmailSenderService;
     }
 
     /**
@@ -73,6 +75,9 @@ public class PaymentService {
         for (int i = 0; i < paymentCharges.size(); i++) {
             this.payCharge(paymentCharges.get(i),payment);
         }
+        PaymentDTO paymentDTo = paymentMapper.toDto(payment);
+        paymentDTo.setCharges(paymentCharges);
+        this.paymentEmailSenderService.sendPaymentEmail(paymentDTo,false);
         return paymentMapper.toDto(payment);
     }
 
@@ -160,7 +165,7 @@ public class PaymentService {
         paymentRepository.delete(id);
     }
 
-    private PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
+    public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
        PaymentDTO paymentDTO = new PaymentDTO();
        paymentDTO.setAccount(cPaymentDTO.getAccount());
        paymentDTO.setAmmount(cPaymentDTO.getAmmount());
@@ -172,7 +177,6 @@ public class PaymentService {
        paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
        paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
        paymentDTO.setTransaction(cPaymentDTO.getTransaction());
-
        return paymentDTO;
     }
 

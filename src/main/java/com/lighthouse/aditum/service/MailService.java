@@ -1,11 +1,8 @@
 package com.lighthouse.aditum.service;
-
-import com.lighthouse.aditum.domain.AdminInfo;
-import com.lighthouse.aditum.domain.House;
-import com.lighthouse.aditum.domain.User;
-
+import com.lighthouse.aditum.domain.*;
+import com.lighthouse.aditum.service.mapper.CompanyMapper;
+import com.lighthouse.aditum.service.mapper.HouseMapper;
 import io.github.jhipster.config.JHipsterProperties;
-
 import org.apache.commons.lang3.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,11 +13,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
-
 import javax.mail.internet.MimeMessage;
+import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-
 /**
  * Service for sending e-mails.
  * <p>
@@ -31,41 +27,38 @@ import java.util.Locale;
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
-
     private static final String USER = "user";
-
     private static final String HOUSE = "house";
-
     private static final String INITIALTIME = "initialTime";
-
     private static final String FINALTIME = "finalTime";
-
     private static final String BASE_URL = "baseUrl";
 
     private final JHipsterProperties jHipsterProperties;
-
     private final JavaMailSender javaMailSender;
-
     private final MessageSource messageSource;
-
     private final SpringTemplateEngine templateEngine;
+    private final CompanyService companyService;
+    private final CompanyMapper companyMapper;
+    private final HouseService houseService;
+    private final HouseMapper houseMapper;
+    private final ChargeService chargeService;
 
 
-
-    public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
-
+    public MailService(ChargeService chargeService, HouseService houseService,HouseMapper houseMapper,CompanyMapper companyMapper,CompanyService companyService,JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
-
+        this.companyService = companyService;
+        this.companyMapper = companyMapper;
+        this.houseMapper = houseMapper;
+        this.houseService=houseService;
+        this.chargeService = chargeService;
     }
 
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml) {
-        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}",
-            isMultipart, isHtml, to, subject, content);
+        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
 
         // Prepare message using a Spring helper
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -77,6 +70,27 @@ public class MailService {
             message.setText(content, isHtml);
             javaMailSender.send(mimeMessage);
             log.debug("Sent e-mail to User '{}'", to);
+        } catch (Exception e) {
+            log.warn("E-mail could not be sent to user '{}'", to, e);
+        }
+    }
+
+    @Async
+    public void sendEmailWithAtachment(String to, String subject, String content, boolean isHtml, File file) {
+        log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", true, isHtml, to, subject, content);
+
+        // Prepare message using a Spring helper
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true, CharEncoding.UTF_8);
+            message.setTo(to);
+            message.setFrom(jHipsterProperties.getMail().getFrom());
+            message.setSubject(subject);
+            message.setText(content, isHtml);
+            message.addAttachment(file.getName(), file);
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent e-mail to User '{}'", to);
+            file.delete();
         } catch (Exception e) {
             log.warn("E-mail could not be sent to user '{}'", to, e);
         }
@@ -102,12 +116,12 @@ public class MailService {
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("creationEmail", context);
-        String subject = user.getFirstName()+ ", Bienvenido(a) a Aditum ";
+        String subject = user.getFirstName() + ", Bienvenido(a) a Aditum ";
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
     @Async
-    public void sendAbsenceEmail(House house,User user,String companyName) {
+    public void sendAbsenceEmail(House house, User user, String companyName) {
         log.debug("Sending creation e-mail to '{}'", house.getId());
         Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context(locale);
@@ -117,7 +131,7 @@ public class MailService {
         context.setVariable(USER, user);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("absenceEmail", context);
-        String subject = "Reporte de ausencia en filial en condominio "+companyName;
+        String subject = "Reporte de ausencia en filial en condominio " + companyName;
         sendEmail(user.getEmail(), subject, content, false, true);
     }
 
@@ -132,4 +146,6 @@ public class MailService {
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
     }
+
+
 }
