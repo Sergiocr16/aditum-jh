@@ -138,8 +138,8 @@
                                 email: null,
                                 isOwner: null,
                                 enabled: null,
-                                id: null
-
+                                id: null,
+                                principalContact:"0"
                             };
                         },
                         companyUser: ['MultiCompany',function(MultiCompany){
@@ -181,7 +181,8 @@
                                         email: null,
                                         isOwner: null,
                                         enabled: null,
-                                        id: null
+                                        id: null,
+                                        principalContact:"0"
 
                                     };
                                 },
