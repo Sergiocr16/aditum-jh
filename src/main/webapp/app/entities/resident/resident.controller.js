@@ -134,9 +134,9 @@
                             residentsByHouse.push(vm.residents[i])
                         }
                     }
+
                     vm.residents = formatResidents(residentsByHouse);
                 }
-
                 setTimeout(function() {
                           $("#loadingIcon").fadeOut(300);
                 }, 400)

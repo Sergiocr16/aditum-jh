@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -42,9 +43,30 @@ public class ResidentService {
      */
     public ResidentDTO save(ResidentDTO residentDTO) {
         log.debug("Request to save Resident : {}", residentDTO);
-        Resident resident = residentMapper.residentDTOToResident(residentDTO);
+        Resident resident = residentMapper.toEntity(residentDTO);
+        if(residentDTO.getPrincipalContact()==1) {
+            Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
+            Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
+            List<ResidentDTO> allHouseResidents = new ArrayList<>();
+            residentsEnabled.getContent().forEach(residentDTO1 -> {
+                allHouseResidents.add(residentDTO1);
+            });
+            residentsDisabled.getContent().forEach(residentDTO2 -> {
+                allHouseResidents.add(residentDTO2);
+            });
+            ResidentDTO currentPrincipal = null;
+            for (int i = 0; i < allHouseResidents.size(); i++) {
+                if(allHouseResidents.get(i).getPrincipalContact()==1){
+                    currentPrincipal = allHouseResidents.get(i);
+                }
+            }
+            if(currentPrincipal!=null){
+                currentPrincipal.setPrincipalContact(0);
+                residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
+            }
+        }
         resident = residentRepository.save(resident);
-        ResidentDTO result = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO result = residentMapper.toDto(resident);
         return result;
     }
 
@@ -57,7 +79,7 @@ public class ResidentService {
     public Page<ResidentDTO> findAll(Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
@@ -75,21 +97,21 @@ public class ResidentService {
     public Page<ResidentDTO> findEnabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByEnabledAndHouseId(1,houseId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
     public ResidentDTO findByCompanyIdAndIdentifiactionNumber(Long companyId,String identificationNumber) {
         log.debug("Request to get all Residents");
         Resident resident = residentRepository.findByCompanyIdAndIdentificationnumber(companyId,identificationNumber);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabledByHouseId(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByEnabledAndHouseId(0,houseId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
     /**
      *  Get one resident by id.
@@ -101,7 +123,7 @@ public class ResidentService {
     public ResidentDTO findOne(Long id) {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
 
@@ -109,7 +131,7 @@ public class ResidentService {
     public ResidentDTO findOneByUserId(Long id) {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
 
@@ -127,14 +149,14 @@ public class ResidentService {
     public Page<ResidentDTO> findEnabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByEnabledAndCompanyId(1,companyId);
-        return new PageImpl<> (result).map(resident -> resident.image(null)).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<> (result).map(resident -> resident.image(null)).map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByEnabledAndCompanyId(0,companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.residentToResidentDTO(resident));
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
 
     }
 }

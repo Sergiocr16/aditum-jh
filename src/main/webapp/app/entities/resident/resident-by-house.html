@@ -64,9 +64,7 @@
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                 <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3" ng-repeat="resident in vm.residents  | orderBy:'name'">
                     <div class="portlet light bordered  text-center  col-sm-12 col-xs-12" id="">
-                        <a ng-if="event.banner" ng-click="vm.openFile(event.bannerContentType, event.banner)">
-                            <img data-ng-src="{{'data:' + event.bannerContentType + ';base64,' + event.banner}}" style="max-height: 30px;" alt="event image"/>
-                        </a>
+<span style="z-index:-1!important;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>
 
                             <h3 class="text-center">
                                 <img ng-show="resident.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
