@@ -19,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -335,6 +337,14 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         return new PageImpl<>(chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime,zd_finalTime,type,2,companyId))
             .map(chargeMapper::toDto);
+    }
+    public List <ChargeDTO> findPaidChargesBetweenDatesList(String initialTime,String finalTime,int type,Long companyId) {
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        log.debug("Request to get all Charges");
+        return chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime,zd_finalTime,type,2,companyId).stream()
+            .map(chargeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
     private Charge payIfBalanceIsPositive(ChargeDTO charge){
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());

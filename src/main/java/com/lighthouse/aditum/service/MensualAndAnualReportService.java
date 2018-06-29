@@ -1,11 +1,16 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Banco;
+import com.lighthouse.aditum.domain.Charge;
+import com.lighthouse.aditum.domain.Egress;
+import com.lighthouse.aditum.domain.Transferencia;
 import com.lighthouse.aditum.service.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,20 +18,32 @@ import java.util.List;
 public class MensualAndAnualReportService {
 
     private final ChargeService chargeService;
+    private final PaymentService paymentService;
     private final EgressService egressService;
+    private final BancoService bancoService;
+    private final TransferenciaService transferenciaService;
+    private final BalanceByAccountService balanceByAccountService;
     private final EgressCategoryService egressCategoryService;
-    public MensualAndAnualReportService(ChargeService chargeService,EgressService egressService, EgressCategoryService egressCategoryService) {
+    public MensualAndAnualReportService(ChargeService chargeService,EgressService egressService, EgressCategoryService egressCategoryService,BalanceByAccountService balanceByAccountService,BancoService bancoService,PaymentService paymentService,TransferenciaService transferenciaService) {
         this.chargeService = chargeService;
+        this.balanceByAccountService = balanceByAccountService;
         this.egressService = egressService;
         this.egressCategoryService = egressCategoryService;
+        this.bancoService = bancoService;
+        this.paymentService = paymentService;
+        this.transferenciaService = transferenciaService;
     }
 
     public MensualAndAnualIngressReportDTO getMensualAndAnualIngressReportDTO(String initialTime, String finalTime, long companyId){
-        Page<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,1,companyId);
-        Page<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,2,companyId);
-        String a = "a";
-        Page<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,3,companyId);
-        Page<ChargeDTO> otherIngress = chargeService.findPaidChargesBetweenDates(initialTime,finalTime,4,companyId);
+        List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,1,companyId);
+        List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime,finalTime,Integer.parseInt(companyId+""));
+        for (int i = 0; i <adelantosIngress.size() ; i++) {
+            ChargeDTO adelanto = new ChargeDTO(adelantosIngress.get(i).getAmmount(),adelantosIngress.get(i).getDate(),companyId,adelantosIngress.get(i).getId(),adelantosIngress.get(i).getHouseId());
+            maintenanceIngress.add(adelanto);
+        }
+        List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,2,companyId);
+        List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,3,companyId);
+        List<ChargeDTO> otherIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,4,companyId);
 
         MensualAndAnualIngressReportDTO mensualAndAnualIngressReportDTO = new MensualAndAnualIngressReportDTO();
 
@@ -68,5 +85,43 @@ public class MensualAndAnualReportService {
 
         return mensualAndAnualEgressReportDTO;
     }
+
+    public List<MensualAndAnualAccountDTO> getAccountBalance(String initialTime, String finalTime, long companyId){
+        List<MensualAndAnualAccountDTO> listaFinal = new ArrayList<>();
+        List<BancoDTO> bancos = bancoService.findAll(companyId);
+        for (int i = 0; i <bancos.size() ; i++) {
+           MensualAndAnualAccountDTO MensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
+           int inicialBalance;
+           List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(initialTime,finalTime,bancos.get(i).getId());
+           if(balances.size()>0){
+               inicialBalance = balances.get(0).getBalance();
+           }else{
+               inicialBalance = Integer.parseInt(bancos.get(i).getCapitalInicial());
+           }
+           List<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,companyId,bancos.get(i).getId()+"");
+           for (int j = 0; j < egresos.size(); j++) {
+               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(i).getTotal());
+           }
+            List<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,Integer.parseInt(companyId+""),bancos.get(i).getId()+"");
+            for (int j = 0; j < ingresos.size(); j++) {
+                inicialBalance = inicialBalance + Integer.parseInt(ingresos.get(j).getAmmount());
+            }
+            List<Transferencia> transferenciasEntrantes = transferenciaService.getBetweenDatesByInComingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
+            for (int j = 0; j < transferenciasEntrantes.size(); j++) {
+                inicialBalance = inicialBalance + Integer.parseInt(transferenciasEntrantes.get(j).getMonto());
+            }
+            List<Transferencia> transferenciasSalientes = transferenciaService.getBetweenDatesByOutgoingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
+            for (int j = 0; j < transferenciasSalientes.size(); j++) {
+                inicialBalance = inicialBalance - Integer.parseInt(transferenciasSalientes.get(j).getMonto());
+            }
+           MensualAndAnualAccountDTO.setBalance(bancos.get(i).getSaldo());
+           MensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
+           MensualAndAnualAccountDTO.setInicialBalance(inicialBalance);
+           listaFinal.add(MensualAndAnualAccountDTO);
+        }
+
+        return listaFinal;
+    }
+
 
 }

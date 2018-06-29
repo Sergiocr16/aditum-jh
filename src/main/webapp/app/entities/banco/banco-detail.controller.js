@@ -86,6 +86,7 @@
         }
 
         function getInitialBalanceBetweenDates(date){
+
              BalanceByAccount.findBetweenDatesByAccount({
                     initial_time: moment(date).format(),
                      final_time: moment(date).format(),

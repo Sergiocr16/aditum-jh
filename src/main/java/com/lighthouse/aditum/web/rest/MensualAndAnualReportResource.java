@@ -34,8 +34,10 @@ public class MensualAndAnualReportResource {
 
     @Timed
     @Secured({AuthoritiesConstants.MANAGER})
-    @GetMapping("/mensualAndAnualReport/{initial_time}/{final_time}/{companyId}")
+    @GetMapping("/mensualAndAnualReport/{first_month_day}/{final_balance_time}/{initial_time}/{final_time}/{companyId}")
     public ResponseEntity<MensualAndAnualReportDTO> getMensualAndAnualReport(
+        @PathVariable (value = "first_month_day")  String first_month_day,
+        @PathVariable (value = "final_balance_time")  String final_balance_time,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
         @PathVariable(value = "companyId")  Long companyId) {
@@ -46,6 +48,9 @@ public class MensualAndAnualReportResource {
 
         MensualAndAnualEgressReportDTO mensualAndAnualEgressReportDTO = mensualAndAnualReportService.getMensualAndAnualEgressReportDTO(initial_time,final_time,companyId,mensualAndAnualIngressReportDTO);
         mensualAndAnualReportDTO.setMensualEgressReport(mensualAndAnualEgressReportDTO);
+
+        mensualAndAnualReportDTO.setMensualAndAnualAccount(mensualAndAnualReportService.getAccountBalance(first_month_day,final_balance_time,companyId));
+        mensualAndAnualReportDTO.setTotalInitialBalance(mensualAndAnualReportDTO.getMensualAndAnualAccount());
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualAndAnualReportDTO));
     }
 }
