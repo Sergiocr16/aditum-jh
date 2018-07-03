@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration'];
+    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration) {
+    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -20,6 +20,7 @@
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
+        vm.residents = [];
         angular.element(document).ready(function() {
             $('.infoCharge').popover('show')
         });
@@ -166,7 +167,7 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-                                               var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
@@ -219,12 +220,14 @@
                 }
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
+                loadResidentsForEmail($localStorage.houseSelected.id)
                 loadBancos()
+
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
                     companyId: $rootScope.companyId,
-                    concept: 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber,
+                    concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
                 loadAdminConfig()
             }
@@ -232,6 +235,49 @@
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+
+        function loadResidentsForEmail(houseId) {
+            vm.residents = [];
+            Resident.findResidentesEnabledByHouseId({
+                houseId: houseId
+            }).$promise.then(onSuccessResident, onError);
+
+            function onSuccessResident(data, headers) {
+                angular.forEach(data, function(resident, i) {
+                    if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                        resident.selected = false;
+                        if (resident.principalContact == 1) {
+                            resident.selected = true;
+                        }
+
+                        vm.residents.push(resident);
+                    }
+                });
+            }
+
+            function onError() {
+
+            }
+        }
+
+        vm.selectPrincipalContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                if (resident.principalContact == 1) {
+                    resident.selected = true;
+                }
+            });
+        }
+        vm.selectAllContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                resident.selected = true;
+            });
+        }
+
+        vm.selectNoneContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                resident.selected = false;
+            });
         }
 
         function loadAdminConfig() {
@@ -245,6 +291,16 @@
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
                 }
             })
+        }
+
+        function obtainEmailToList() {
+            var residentsToSendEmails = [];
+            angular.forEach(vm.residents, function(resident, i) {
+                if (resident.selected == true) {
+                residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
+                }
+            })
+            return residentsToSendEmails;
         }
 
         function loadCharges(houseId) {
@@ -353,6 +409,7 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 loadCharges($localStorage.houseSelected.id)
+                loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAdminConfig();
             })
 
@@ -426,18 +483,19 @@
                         if (vm.toPay > 0) {
                             vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
                         }
-                        vm.payment.concept = 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber;
+                        vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
+                        vm.payment.emailTo = obtainEmailToList();
                         Payment.save(vm.payment, onSuccess, onError)
+
                         function onSuccess(result) {
                             bootbox.hideAll();
                             toastr["success"]("Se ha capturado el ingreso correctamente.")
-                            increaseFolioNumber(function(result){
-                            console.log(result)
-                            vm.admingConfig = result;
-                              vm.folioSerie = result.folioSerie;
-                              vm.folioNumber = result.folioNumber;
+                            increaseFolioNumber(function(result) {
+                                vm.admingConfig = result;
+                                vm.folioSerie = result.folioSerie;
+                                vm.folioNumber = result.folioNumber;
                                 if (vm.toPay > 0) {
-                                 registrarAdelantoCondomino();
+                                    registrarAdelantoCondomino();
                                 } else {
                                     clear();
                                     loadAll();
@@ -462,7 +520,7 @@
         function increaseFolioNumber(success) {
             vm.admingConfig.folioNumber = vm.folioNumber + 1;
             vm.admingConfig.folioSerie = vm.folioSerie;
-            AdministrationConfiguration.update(vm.admingConfig,success);
+            AdministrationConfiguration.update(vm.admingConfig, success);
         }
 
         function adelantoCondomino() {
@@ -491,26 +549,27 @@
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "1",
                 companyId: $rootScope.companyId,
-                concept:'Abono a cuotas'
+                concept: 'Abono a cuotas'
             };
         }
 
         function registrarAdelantoCondomino() {
             vm.payment.transaction = "2",
-            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.ammount = vm.toPay;
-            vm.payment.concept = "Adelanto de condómino Filial "+$localStorage.houseSelected.housenumber;
+            vm.payment.concept = "Adelanto de condómino Filial " + $localStorage.houseSelected.housenumber;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
+            vm.payment.emailTo = obtainEmailToList();
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
                 bootbox.hideAll();
                 clear();
                 toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
-                increaseFolioNumber(function(){});
+                increaseFolioNumber(function() {});
                 increaseMaintBalance();
                 loadAll();
                 loadAdminConfig();
@@ -551,8 +610,8 @@
             return (count > 0)
         }
 
-        vm.back = function(){
-        window.history.back();
+        vm.back = function() {
+            window.history.back();
         }
     }
 })();

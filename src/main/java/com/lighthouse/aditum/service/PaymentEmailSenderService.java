@@ -5,6 +5,7 @@ import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lowagie.text.DocumentException;
@@ -103,13 +104,19 @@ public class PaymentEmailSenderService {
 
     @Async
     public void sendPaymentEmail(PaymentDTO payment,boolean isCancellingFromPayment) {
-        User user = new User();
-        user.setEmail("sergiojcr16@gmail.com");
+        String contactoPrincipal = "";
+        ResidentDTO resident = null;
+        for (int i = 0; i < payment.getEmailTo().size(); i++) {
+            if(payment.getEmailTo().get(i).getPrincipalContact()==1){
+                resident = payment.getEmailTo().get(i);
+                contactoPrincipal = resident.getName()+" "+ resident.getLastname()+" "+resident.getLastname();
+            }
+        }
         Context context = new Context();
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));
         House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
         context.setVariable(COMPANY,company);
-        context.setVariable(USER, user);
+        context.setVariable(USER, resident);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process("paymentMade", context);
         String subject = this.defineSubjectPaymentEmail(payment,company,house,isCancellingFromPayment);
@@ -131,7 +138,7 @@ public class PaymentEmailSenderService {
             }
             contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);
-            contextTemplate.setVariable(CONTACTO,"Jhon Doe");
+            contextTemplate.setVariable(CONTACTO,contactoPrincipal);
             contextTemplate.setVariable(CHARGES_SIZE,payment.getCharges().size());
             String contentTemplate = templateEngine.process("paymentTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
@@ -141,8 +148,11 @@ public class PaymentEmailSenderService {
             renderer.createPDF(outputStream);
             outputStream.close();
             File file = new File(fileName);
-            this.mailService.sendEmailWithAtachment
-                (user.getEmail(), subject, content, true, file);
+            int emailsToSend = payment.getEmailTo().size();
+            for (int i = 0; i < payment.getEmailTo().size(); i++) {
+                this.mailService.sendEmailWithAtachment
+                    (payment.getEmailTo().get(i).getEmail(), subject, content, true, file,emailsToSend-1,i);
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

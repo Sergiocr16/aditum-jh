@@ -76,7 +76,7 @@ public class MailService {
     }
 
     @Async
-    public void sendEmailWithAtachment(String to, String subject, String content, boolean isHtml, File file) {
+    public void sendEmailWithAtachment(String to, String subject, String content, boolean isHtml, File file, int emailsToSend, int currentEmailNumber) {
         log.debug("Send e-mail[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", true, isHtml, to, subject, content);
 
         // Prepare message using a Spring helper
@@ -90,7 +90,9 @@ public class MailService {
             message.addAttachment(file.getName(), file);
             javaMailSender.send(mimeMessage);
             log.debug("Sent e-mail to User '{}'", to);
-            file.delete();
+            if(currentEmailNumber==emailsToSend) {
+                file.delete();
+            }
         } catch (Exception e) {
             log.warn("E-mail could not be sent to user '{}'", to, e);
         }

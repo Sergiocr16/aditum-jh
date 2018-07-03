@@ -6,6 +6,7 @@ import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.BalanceDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -37,17 +39,18 @@ public class ChargeService {
     private final PaymentService paymentService;
     private final BancoService bancoService;
     private final PaymentEmailSenderService paymentEmailSenderService;
-
+    private final ResidentService residentService;
 
 
     @Autowired
-    public ChargeService(@Lazy PaymentEmailSenderService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
+    public ChargeService(ResidentService residentService,@Lazy PaymentEmailSenderService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
         this.paymentService = paymentService;
         this.bancoService = bancoService;
         this.paymentEmailSenderService = paymentEmailSenderService;
+        this.residentService = residentService;
     }
 
     /**
@@ -390,7 +393,17 @@ public class ChargeService {
         if(payment!=null) {
             payment.setCharges(new ArrayList<>());
             payment.getCharges().add(savedChargeDTO);
-            this.paymentEmailSenderService.sendPaymentEmail(payment,true);
+            Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,payment.getHouseId());
+            List<ResidentDTO> emailTo = new ArrayList<>();
+            for (int i = 0; i < residents.getContent().size(); i++) {
+                if (residents.getContent().get(i).getPrincipalContact()==1){
+                    emailTo.add(residents.getContent().get(i));
+                }
+            }
+            if(emailTo.size()>0) {
+                payment.setEmailTo(emailTo);
+                this.paymentEmailSenderService.sendPaymentEmail(payment, true);
+            }
         }
         balanceService.save(balanceDTO);
         if(newCharge!=charge){

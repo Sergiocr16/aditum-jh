@@ -137,7 +137,7 @@
                                 imageContentType: null,
                                 email: null,
                                 isOwner: null,
-                                enabled: null,
+                                enabled: 1,
                                 id: null,
                                 principalContact:"0"
                             };

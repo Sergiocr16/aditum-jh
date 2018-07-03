@@ -77,7 +77,10 @@ public class PaymentService {
         }
         PaymentDTO paymentDTo = paymentMapper.toDto(payment);
         paymentDTo.setCharges(paymentCharges);
-        this.paymentEmailSenderService.sendPaymentEmail(paymentDTo,false);
+        paymentDTo.setEmailTo(paymentDTO.getEmailTo());
+        if(paymentDTo.getEmailTo().size()>0) {
+            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
+        }
         return paymentMapper.toDto(payment);
     }
 
