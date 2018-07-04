@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MensualAndAnualEgressReportDTO {
+public class MensualEgressReportDTO {
     private List<SumCategoryEgressDTO> fixedCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> variableCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> otherCosts = new ArrayList<>();
@@ -17,23 +17,29 @@ public class MensualAndAnualEgressReportDTO {
     private double variableCostsPercentage;
     private double otherCostsPercentage;
 
+    private double fixedCostsBudgetTotal =0;
+    private double variableCostsBudgetTotal =0;
+    private double otherCostsBudgetTotal =0;
+
+    private double fixedCostsBudgetDiference;
+    private double variableCostsBudgetDiference;
+    private double otherCostsBudgetDiference;
+
     public void setCategoriesNames(Page<EgressDTO> egress,Page<EgressCategoryDTO> egressCategories){
         for (int i =0;egress.getContent().size()>i;i++) {
             for (int j =0;egressCategories.getContent().size()>j;j++){
-                Long egressCategory = Long.parseLong(egress.getContent().get(i).getCategory());
-                Long categoryId = egressCategories.getContent().get(j).getId();
                 if(Long.parseLong(egress.getContent().get(i).getCategory())==egressCategories.getContent().get(j).getId()){
                     egress.getContent().get(i).setCategoryName(egressCategories.getContent().get(j).getCategory());
                     egress.getContent().get(i).setGroupName(egressCategories.getContent().get(j).getGroup());
+                    egress.getContent().get(i).setCategoryId(egressCategories.getContent().get(j).getId());
                 }
             }
-            Page<EgressDTO> egress3 = egress;
-            SumCategoryEgressDTO object = new SumCategoryEgressDTO(egress.getContent().get(i).getCategoryName());
-            EgressDTO egressPrueba = egress.getContent().get(i);
+            SumCategoryEgressDTO object = new SumCategoryEgressDTO(egress.getContent().get(i).getCategoryId(), egress.getContent().get(i).getCategoryName());
+
             switch (egress.getContent().get(i).getGroupName()){
                 case "Gastos fijos":
-                    if(fixedCosts.stream().filter(o -> o.getCategory().toUpperCase().equals(object.getCategory().toUpperCase())).count()==0) {
-                        fixedCosts.add(object);
+                    if(getFixedCosts().stream().filter(o -> o.getCategory().toUpperCase().equals(object.getCategory().toUpperCase())).count()==0) {
+                        getFixedCosts().add(object);
                     }
                     break;
                 case "Gastos variables":
@@ -92,6 +98,25 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
         }
         sumCategory.setEgressList(sumEgreesList);
+    }
+    public void setTotalBudgetPerGroup(){
+        for (int i = 0; i < fixedCosts.size(); i++) {
+            this.setFixedCostsBudgetTotal(this.getFixedCostsBudgetTotal() + fixedCosts.get(i).getBudget());
+        }
+        this.setFixedCostsBudgetDiference(this.getFixedCostsBudgetTotal() - this.getFixedCostsTotal());
+
+        for (int i = 0; i < variableCosts.size(); i++) {
+            this.setVariableCostsBudgetTotal(this.getVariableCostsBudgetTotal() + variableCosts.get(i).getBudget());
+
+        }
+        this.setVariableCostsBudgetDiference(this.getVariableCostsBudgetTotal() - this.getVariableCostsTotal());
+
+        for (int i = 0; i < otherCosts.size(); i++) {
+            this.setOtherCostsBudgetTotal(this.getOtherCostsBudgetTotal() + otherCosts.get(i).getBudget());
+
+        }
+        this.setOtherCostsBudgetDiference(this.getOtherCostsBudgetTotal() - this.getOtherCostsTotal());
+
     }
 
     public void setGroupsTotal(List<SumCategoryEgressDTO> list,int type,int totalIngress){
@@ -180,5 +205,53 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setOtherCostsPercentage(double otherCostsPercentage) {
         this.otherCostsPercentage = otherCostsPercentage;
+    }
+
+    public double getFixedCostsBudgetDiference() {
+        return fixedCostsBudgetDiference;
+    }
+
+    public void setFixedCostsBudgetDiference(double fixedCostsBudgetDiference) {
+        this.fixedCostsBudgetDiference = fixedCostsBudgetDiference;
+    }
+
+    public double getVariableCostsBudgetDiference() {
+        return variableCostsBudgetDiference;
+    }
+
+    public void setVariableCostsBudgetDiference(double variableCostsBudgetDiference) {
+        this.variableCostsBudgetDiference = variableCostsBudgetDiference;
+    }
+
+    public double getOtherCostsBudgetDiference() {
+        return otherCostsBudgetDiference;
+    }
+
+    public void setOtherCostsBudgetDiference(double otherCostsBudgetDiference) {
+        this.otherCostsBudgetDiference = otherCostsBudgetDiference;
+    }
+
+    public double getFixedCostsBudgetTotal() {
+        return fixedCostsBudgetTotal;
+    }
+
+    public void setFixedCostsBudgetTotal(double fixedCostsBudgetTotal) {
+        this.fixedCostsBudgetTotal = fixedCostsBudgetTotal;
+    }
+
+    public double getVariableCostsBudgetTotal() {
+        return variableCostsBudgetTotal;
+    }
+
+    public void setVariableCostsBudgetTotal(double variableCostsBudgetTotal) {
+        this.variableCostsBudgetTotal = variableCostsBudgetTotal;
+    }
+
+    public double getOtherCostsBudgetTotal() {
+        return otherCostsBudgetTotal;
+    }
+
+    public void setOtherCostsBudgetTotal(double otherCostsBudgetTotal) {
+        this.otherCostsBudgetTotal = otherCostsBudgetTotal;
     }
 }

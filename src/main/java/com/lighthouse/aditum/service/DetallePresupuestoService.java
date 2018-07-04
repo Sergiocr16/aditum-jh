@@ -64,10 +64,32 @@ public class DetallePresupuestoService {
         detallesDTO.getContent().forEach(detallePresupuestoDTO -> {
         if(Integer.parseInt(detallePresupuestoDTO.getType())==2){
            EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(Long.parseLong(detallePresupuestoDTO.getCategory()));
-             detallePresupuestoDTO.setCategory(egressCategoryDTO.getCategory());
-            detallePresupuestoDTO.setGroup(egressCategoryDTO.getGroup());
+           detallePresupuestoDTO.setCategoryName(egressCategoryDTO.getCategory());
+           detallePresupuestoDTO.setGroup(egressCategoryDTO.getGroup());
         }
  });
+        return detallesDTO;
+    }
+    public List<DetallePresupuestoDTO> getIngressCategoriesByBudget(String budgetId) {
+        log.debug("Request to get all Visitants in last month by house");
+        List<DetallePresupuestoDTO> detallesDTO = detallePresupuestoRepository.findByPresupuestoIdAndType(budgetId,"1").stream()
+            .map(detallePresupuestoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+
+        detallesDTO.forEach(detallePresupuestoDTO -> {
+            if(Integer.parseInt(detallePresupuestoDTO.getType())==2){
+                EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(Long.parseLong(detallePresupuestoDTO.getCategory()));
+                detallePresupuestoDTO.setCategory(egressCategoryDTO.getCategory());
+                detallePresupuestoDTO.setGroup(egressCategoryDTO.getGroup());
+            }
+        });
+        return detallesDTO;
+    }
+    public List<DetallePresupuestoDTO> getEgressCategoriesByBudget(String budgetId) {
+        log.debug("Request to get all Visitants in last month by house");
+        List<DetallePresupuestoDTO> detallesDTO = detallePresupuestoRepository.findByPresupuestoIdAndType(budgetId,"2").stream()
+            .map(detallePresupuestoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
         return detallesDTO;
     }
     /**

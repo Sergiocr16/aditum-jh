@@ -17,4 +17,5 @@ import java.util.List;
 @Repository
 public interface DetallePresupuestoRepository extends JpaRepository<DetallePresupuesto,Long> {
     Page<DetallePresupuesto> findByPresupuestoId(Pageable pageable, String budgetId);
+    List<DetallePresupuesto> findByPresupuestoIdAndType(String budgetId, String type);
 }

@@ -2,25 +2,25 @@ package com.lighthouse.aditum.service.dto;
 
 import java.util.List;
 
-public class MensualAndAnualReportDTO {
-    private MensualAndAnualIngressReportDTO mensualIngressReport;
-    private MensualAndAnualEgressReportDTO mensualEgressReport;
+public class MensualReportDTO {
+    private MensualIngressReportDTO mensualIngressReport;
+    private MensualEgressReportDTO mensualEgressReport;
     private List<MensualAndAnualAccountDTO> mensualAndAnualAccount;
     private int totalInitialBalance;
 
-    public MensualAndAnualIngressReportDTO getMensualIngressReport() {
+    public MensualIngressReportDTO getMensualIngressReport() {
         return mensualIngressReport;
     }
 
-    public void setMensualIngressReport(MensualAndAnualIngressReportDTO mensualIngressReport) {
+    public void setMensualIngressReport(MensualIngressReportDTO mensualIngressReport) {
         this.mensualIngressReport = mensualIngressReport;
     }
 
-    public MensualAndAnualEgressReportDTO getMensualEgressReport() {
+    public MensualEgressReportDTO getMensualEgressReport() {
         return mensualEgressReport;
     }
 
-    public void setMensualEgressReport(MensualAndAnualEgressReportDTO mensualEgressReport) {
+    public void setMensualEgressReport(MensualEgressReportDTO mensualEgressReport) {
         this.mensualEgressReport = mensualEgressReport;
     }
 

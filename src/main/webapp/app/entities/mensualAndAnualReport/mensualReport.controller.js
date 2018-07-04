@@ -20,6 +20,7 @@
         vm.isShowingCommonAreasDetail = false;
         vm.isShowingOtherIngressDetail = false;
         vm.isShowingInitialBalanceAccounts = false;
+        vm.showPresupuestoFields = false;
         setTimeout(function(){vm.loadAll();},1000)
          var date = new Date(), y = date.getFullYear(), m = date.getMonth();
          var firstDay = new Date(y, m, 1);
@@ -29,6 +30,11 @@
                 final_time: lastDay
          };
 	    vm.loadAll = function() {
+	       if(vm.mensualReportPresupuesto){
+	        vm.withPresupuesto = 1;
+	       }else{
+	         vm.withPresupuesto = 0;
+	       }
            var final_balance_time = new Date();
             if(firstMonthDay.getDate()==vm.dates.initial_time.getDate() && firstMonthDay.getMonth() == vm.dates.initial_time.getMonth() && firstMonthDay.getFullYear()==vm.dates.initial_time.getFullYear()) {
                      final_balance_time.setDate(vm.dates.initial_time.getDate());
@@ -45,7 +51,9 @@
                  final_balance_time: moment(final_balance_time).format(),
                  initial_time: moment(vm.dates.initial_time).format(),
                  final_time: moment(vm.dates.final_time).format(),
-                 companyId: $rootScope.companyId
+                 companyId: $rootScope.companyId,
+                 withPresupuesto: vm.withPresupuesto,
+
 
              },onSuccess,onError);
 
@@ -55,10 +63,26 @@
         function onSuccess(data, headers) {
              vm.report = data;
 
+             if(vm.mensualReportPresupuesto){
+               vm.showPresupuestoFields = true;
+               vm.totalEgressBudget = vm.report.mensualEgressReport.fixedCostsBudgetTotal + vm.report.mensualEgressReport.variableCostsBudgetTotal + vm.report.mensualEgressReport.otherCostsBudgetTotal;
+               vm.egressBudgetDiference = vm.allEgressTotalQuantity - vm.totalEgressBudget;
+               vm.ingressBudgetDiference = vm.report.mensualIngressReport.allIngressCategoriesTotal- vm.report.mensualIngressReport.totalBudget;
+               vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
+
+             }else{
+               vm.showPresupuestoFields = false;
+             }
+
              vm.allEgressTotalQuantity = data.mensualEgressReport.fixedCostsTotal + data.mensualEgressReport.variableCostsTotal + data.mensualEgressReport.otherCostsTotal;
              vm.allEgressPercentageQuantity = data.mensualEgressReport.fixedCostsPercentage + data.mensualEgressReport.variableCostsPercentage + data.mensualEgressReport.otherCostsPercentage
              vm.flujo = vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.allEgressTotalQuantity;
              vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.allEgressTotalQuantity;
+             vm.superHabitPercentage = 100 - vm.allEgressPercentageQuantity;
+             $("#loadingIcon2").fadeOut(0);
+              setTimeout(function() {
+                  $("#reportResults").fadeIn(500);
+              }, 200)
         }
 
         function onError(error) {

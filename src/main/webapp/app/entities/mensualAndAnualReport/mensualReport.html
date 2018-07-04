@@ -1,7 +1,13 @@
 
 <div class="" id="new_egress_form">
     <div class="row">
-        <div class="col-md-12 ">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="loadingIcon2">
+            <div class="spinnerLoading">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <div class="col-md-12 display-none" id="reportResults" >
             <div class="portlet light bordered">
                 <div class="portlet-title">
                     <div class="12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10">
@@ -13,7 +19,7 @@
                             <input id="final_time" name="finalDate"  ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime"
                                    type="text" class="font-15 letters gray-font text-center dating" style="padding:5px; width:160px; font-weight:400!important; border:1px solid #CFD8DC;" placeholder="Seleccione una fecha" required>
 
-                            <input type="checkbox" style="margin-left:5px;" ng-model="vm.resident.isOwner" id="checkbox1" class="md-check">
+                            <input type="checkbox" style="margin-left:5px;" ng-model="vm.mensualReportPresupuesto" id="checkbox1" class="md-check">
                             <span class="font-14" style="font-weight:400!important;">Presupuesto</span>
                             <button type="button" ng-click="vm.loadAll()" style=" margin-left:5px!important; margin-top:-5px!important;" class="btn blue">Generar reporte</button>
 
@@ -22,236 +28,291 @@
                 </div>
                 <div class="portlet-body form" id="register_edit_form">
 
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <hr ng-show="vm.hideReportForm==false">
-                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon2">
-                                <div class="spinnerLoading">
-                                    <div class="double-bounce1"></div>
-                                    <div class="double-bounce2"></div>
-                                </div>
-                            </div>
-                            <h4 ng-show="vm.showNoResults==true" class="text-center  gray-font margin-top-20">No se encontraron resultados con el filtro realizado</h4>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding " id="reportResults" >
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
 
-                                <h5 class="text-center bold gray-font uppercase" style="font-size:12px;">Hacienda de oro</h5>
-                                <h5 class="text-center bold gray-font" style="font-size:12px;">ESTADO DE RESULTADOS</h5>
-                                <h5 class="text-center bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
-                                    <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
-                                    <div class="margin-top-20">
-                                        <table ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.commonAreasIngress.length==0 && vm.report.mensualIngressReport.otherIngress.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
-                                            <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
-                                            <tr class="bold">
-                                               <th style="width:60%; border-color:#4F94CD; font-size:11px;">INGRESOS</th>
-                                               <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
-                                               <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0" class="bold">
-                                              <td ng-click="vm.showBodyTableIngress(1,vm.isShowingMaintenanceDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MANTENIMIENTO</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceIngressTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.maintenanceIngressPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px;" ng-show=" vm.isShowingMaintenanceDetail">
-                                            <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                            <h5 class="text-center bold gray-font uppercase" style="font-size:12px;">Hacienda de oro</h5>
+                            <h5 class="text-center bold gray-font" style="font-size:12px;">ESTADO DE RESULTADOS</h5>
+                            <h5 class="text-center bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
+                                <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
+                                <div class="margin-top-20">
+                                    <table ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.commonAreasIngress.length==0 && vm.report.mensualIngressReport.otherIngress.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
+                                        <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
+                                        <tr class="bold">
+                                           <th style="width:60%; border-color:#4F94CD; font-size:11px;">INGRESOS</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
+                                           <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;" ng-show="vm.showPresupuestoFields">PRESUPUESTO</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;" ng-show="vm.showPresupuestoFields">DIFERENCIA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.maintenanceIngressPercentage==0" class="bold">
+                                          <td ng-click="vm.showBodyTableIngress(1,vm.isShowingMaintenanceDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MANTENIMIENTO</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceIngressTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.maintenanceIngressPercentage  | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;"  ng-class="{'greenBudget':vm.report.mensualIngressReport.maintenanceBudgetDiference<0,'redBudget':vm.report.mensualIngressReport.maintenanceBudgetDiference>0}" class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceBudgetDiference+"")}}</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show=" vm.isShowingMaintenanceDetail">
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                        </tr>
+                                        </tbody>
 
-                                            <tbody style="border-top:0px;">
-                                                <tr ng-hide="vm.report.mensualIngressReport.extraOrdinaryIngress.length==0" class="bold">
+                                        <tbody style="border-top:0px;">
+                                            <tr ng-hide="vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.extraordinaryBudget==0" class="bold">
                                                 <td ng-click="vm.showBodyTableIngress(2,vm.isShowingExtrardinaryDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> EXTRAORDINARIAS</td>
                                                 <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.extraordinaryIngressTotal+"")}}</td>
                                                 <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.extraordinaryIngressPercentage | number:2}}%</td>
+                                                <td ng-show="vm.showPresupuestoFields"  style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.extraordinaryBudget+"")}}</td>
+                                                <td ng-show="vm.showPresupuestoFields"  style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" ng-class="{'greenBudget':vm.report.mensualIngressReport.extraordinaryBudgetDiference<0,'redBudget':vm.report.mensualIngressReport.extraordinaryBudgetDiference>0}" class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.extraordinaryBudgetDiference+"")}}</td>
                                             </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px;" ng-show="vm.isShowingExtrardinaryDetail">
-                                            <tr ng-repeat="item in vm.report.mensualIngressReport.extraOrdinaryIngress| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show="vm.isShowingExtrardinaryDetail">
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.extraOrdinaryIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields"  style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields"  style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                        </tr>
+                                        </tbody>
 
-                                            <tbody style="border-top:0px;">
-                                            <tr ng-hide="vm.report.mensualIngressReport.commonAreasIngress.length==0" class="bold">
-                                                <td ng-click="vm.showBodyTableIngress(3,vm.isShowingCommonAreasDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> AREAS COMUNES</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.commonAreasIngressTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.commonAreasIngressPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px;" ng-show="vm.isShowingCommonAreasDetail">
-                                            <tr ng-repeat="item in vm.report.mensualIngressReport.commonAreasIngress| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                                        <tbody style="border-top:0px;">
+                                        <tr ng-hide="vm.report.mensualIngressReport.commonAreasIngress.length==0 && vm.report.mensualIngressReport.commonAreasBudgetDiference==0" class="bold">
+                                            <td ng-click="vm.showBodyTableIngress(3,vm.isShowingCommonAreasDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> AREAS COMUNES</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.commonAreasIngressTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.commonAreasIngressPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields"  style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.commonAreasBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields"   style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" ng-class="{'greenBudget':vm.report.mensualIngressReport.commonAreasBudgetDiference<0,'redBudget':vm.report.mensualIngressReport.commonAreasBudgetDiference>0}"  class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.commonAreasBudgetDiference+"")}}</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show="vm.isShowingCommonAreasDetail">
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.commonAreasIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td  style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
 
-                                            <tbody style="border-top:0px;">
-                                            <tr ng-hide="vm.report.mensualIngressReport.otherIngress.length==0" class="bold">
-                                                <td ng-click="vm.showBodyTableIngress(4,vm.isShowingOtherIngressDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> OTROS INGRESOS</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.otherIngressTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.otherIngressPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px;" ng-show="vm.isShowingOtherIngressDetail">
-                                            <tr ng-repeat="item in vm.report.mensualIngressReport.otherIngress| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px; " >
-                                            <tr style="font-size:11px;" >
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#4F94CD;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.allIngressCategoriesTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#4F94CD;" class=" text-right bold">100.00%</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                        <table ng-hide="vm.report.mensualEgressReport.fixedCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
-                                            <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
-                                            <tr class="bold">
-                                                <th style="width:60%; border-color:#4F94CD; font-size:11px;">GASTOS FIJOS</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody ng-repeat="fixedCost in vm.report.mensualEgressReport.fixedCosts | orderBy:'total'" style="border-top:0px;">
-                                                <tr  class="bold" >
-                                                    <td ng-click="vm.showBodyTableEgress(fixedCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{fixedCost.category}}</td>
-                                                    <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(fixedCost.total+"")}}</td>
-                                                    <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{fixedCost.percentage | number:2}}%</td>
-                                                </tr>
-                                                <tr ng-show="fixedCost.showDetail" ng-repeat="item in fixedCost.egressList| orderBy:'total'" style="font-size:11px;">
-                                                    <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                    <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                    <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                                </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px; " >
-                                            <tr style="font-size:11px;" >
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.fixedCostsTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.fixedCostsPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                                        </tr>
+                                        </tbody>
 
-                                        </table>
-                                        <table ng-hide="vm.report.mensualEgressReport.variableCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
-                                            <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
-                                            <tr class="bold">
-                                                <th style="width:60%; border-color:#4F94CD; font-size:11px;">GASTOS VARIABLES</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody ng-repeat="variableCost in vm.report.mensualEgressReport.variableCosts | orderBy:'total'" style="border-top:0px;">
+                                        <tbody style="border-top:0px;">
+                                        <tr ng-hide="vm.report.mensualIngressReport.otherIngress.length==0  && vm.report.mensualIngressReport.otherBudgetDiference==0" class="bold">
+                                            <td ng-click="vm.showBodyTableIngress(4,vm.isShowingOtherIngressDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> OTROS INGRESOS</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.otherIngressTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.otherIngressPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.otherBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" ng-class="{'greenBudget':vm.report.mensualIngressReport.otherBudgetDiference<0,'redBudget':vm.report.mensualIngressReport.otherBudgetDiference>0}"  class=" text-right">{{vm.report.mensualIngressReport.otherBudgetDiference | number:2}}%</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show="vm.isShowingOtherIngressDetail">
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.otherIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px; " >
+                                        <tr style="font-size:11px;" >
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#4F94CD;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.allIngressCategoriesTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#4F94CD;" class=" text-right bold">100.00%</td>
+                                            <td ng-show="vm.showPresupuestoFields"  style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#4F94CD;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.totalBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields"  style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#4F94CD;" ng-class="{'greenBudget':vm.report.mensualIngressReport.totalBudgetDiference<0,'redBudget':vm.report.mensualIngressReport.totalBudgetDiference>0}" class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.totalBudgetDiference+"")}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                    <table ng-hide="vm.report.mensualEgressReport.fixedCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
+                                        <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
+                                        <tr class="bold">
+                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">GASTOS FIJOS</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">PRESUPUESTO</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">DIFERENCIA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-repeat="fixedCost in vm.report.mensualEgressReport.fixedCosts | orderBy:'total'" style="border-top:0px;">
                                             <tr  class="bold" >
-                                                <td ng-click="vm.showBodyTableEgress(variableCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{variableCost.category}}</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(variableCost.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{variableCost.percentage | number:2}}%</td>
+                                                <td ng-click="vm.showBodyTableEgress(fixedCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{fixedCost.category}}</td>
+                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(fixedCost.total+"")}}</td>
+                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{fixedCost.percentage | number:2}}%</td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(fixedCost.budget+"")}}</td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" ng-class="{'greenBudget':fixedCost.budgetDiference>0,'redBudget':fixedCost.budgetDiference<0}" class=" text-right">₡ {{vm.formatearNumero(fixedCost.budgetDiference+"")}}</td>
                                             </tr>
-                                            <tr ng-show="variableCost.showDetail" ng-repeat="item in variableCost.egressList| orderBy:'total'" style="font-size:11px;">
+                                            <tr ng-show="fixedCost.showDetail" ng-repeat="item in fixedCost.egressList| orderBy:'total'" style="font-size:11px;">
                                                 <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
                                                 <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
                                                 <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
                                             </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px; " >
-                                            <tr style="font-size:11px;" >
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.variableCostsTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.variableCostsPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                                        </tbody>
+                                        <tbody style="border-top:0px; " >
+                                        <tr style="font-size:11px;" >
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.fixedCostsTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.fixedCostsPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.fixedCostsBudgetTotal+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.fixedCostsBudgetDiference+"")}}</td>
+                                        </tr>
+                                        </tbody>
 
-                                        </table>
-                                        <table ng-hide="vm.report.mensualEgressReport.otherCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
-                                            <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
+                                    </table>
+                                    <table ng-hide="vm.report.mensualEgressReport.variableCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
+                                        <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
+                                        <tr class="bold">
+                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">GASTOS VARIABLES</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">PRESUPUESTO</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">DIFERENCIA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-repeat="variableCost in vm.report.mensualEgressReport.variableCosts | orderBy:'total'" style="border-top:0px;">
+                                        <tr  class="bold" >
+                                            <td ng-click="vm.showBodyTableEgress(variableCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{variableCost.category}}</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(variableCost.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{variableCost.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(variableCost.budget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" ng-class="{'greenBudget':variableCost.budgetDiference>0,'redBudget':variableCost.budgetDiference<0}"  class=" text-right">₡ {{vm.formatearNumero(variableCost.budgetDiference+"")}}</td>
+                                        </tr>
+                                        <tr ng-show="variableCost.showDetail" ng-repeat="item in variableCost.egressList| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px; " >
+                                        <tr style="font-size:11px;" >
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.variableCostsTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.variableCostsPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.variableCostsBudgetTotal+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.variableCostsBudgetDiference+"")}}</td>
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <table ng-hide="vm.report.mensualEgressReport.otherCosts.length==0" class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
+                                        <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
+                                        <tr class="bold">
+                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">OTROS GASTOS</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">PRESUPUESTO</th>
+                                            <th ng-show="vm.showPresupuestoFields" class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">DIFERENCIA</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody ng-repeat="otherCost in vm.report.mensualEgressReport.otherCosts | orderBy:'total'" style="border-top:0px;">
+                                        <tr  class="bold" >
+                                            <td ng-click="vm.showBodyTableEgress(otherCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{otherCost.category}}</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(otherCost.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{otherCost.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(otherCost.budget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;"  ng-class="{'greenBudget':otherCost.budgetDiference>0,'redBudget':otherCost.budgetDiference<0}" class=" text-right">₡ {{vm.formatearNumero(otherCost.budgetDiference+"")}}</td>
+                                        </tr>
+                                        <tr ng-show="otherCost.showDetail" ng-repeat="item in otherCost.egressList| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px; " >
+                                        <tr style="font-size:11px;" >
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
+                                            <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.otherCostsTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.otherCostsPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.otherCostsBudgetTotal+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.otherCostsBudgetDiference+"")}}</td>
+
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+                                    <table class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
+                                        <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
                                             <tr class="bold">
-                                                <th style="width:60%; border-color:#4F94CD; font-size:11px;">OTROS GASTOS</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">RESUMEN</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">TOTAL</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th  ng-show="vm.showPresupuestoFields"class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">PRESUPUESTO</th>
+                                            <th  ng-show="vm.showPresupuestoFields"class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">DIFERENCIA</th>
                                             </tr>
-                                            </thead>
-                                            <tbody ng-repeat="otherCost in vm.report.mensualEgressReport.otherCosts | orderBy:'total'" style="border-top:0px;">
-                                            <tr  class="bold" >
-                                                <td ng-click="vm.showBodyTableEgress(otherCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> {{otherCost.category}}</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(otherCost.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{otherCost.percentage | number:2}}%</td>
-                                            </tr>
-                                            <tr ng-show="otherCost.showDetail" ng-repeat="item in otherCost.egressList| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px; " >
-                                            <tr style="font-size:11px;" >
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
-                                                <td style="border-top:1px solid #4F94CD;  border-bottom:1px solid #4F94CD; color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.otherCostsTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; border-bottom:1px solid #4F94CD; color:#B22222;" class=" text-right bold">{{vm.report.mensualEgressReport.otherCostsPercentage | number:2}}%</td>
-                                            </tr>
-                                            </tbody>
+                                        </thead>
+                                        <tbody  style="border-top:0px;">
+                                        <tr  class="bold" >
+                                            <td ng-click="vm.showInitialBalanceAccount()" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i>  SALDO INICIAL:</td>
+                                            <td style="border-top:1px solid #4F94CD; color:#4F94CD; " class=" text-right">₡{{vm.formatearNumero(vm.report.totalInitialBalance+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; color:#4F94CD; " class=" text-right"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                        </tr>
+                                        <tr ng-show="vm.isShowingInitialBalanceAccounts" ng-repeat="account in vm.report.mensualAndAnualAccount" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{account.name}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(account.inicialBalance+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                            <td  ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                            <td  ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
 
-                                        </table>
-                                        <table class="jh-table table  table-bordered table-condensed flip-content" style=" color:black; font-size:11px!important; ">
-                                            <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#EEEEEE; ">
-                                                <tr class="bold">
-                                                <th style="width:60%; border-color:#4F94CD; font-size:11px;">RESUMEN</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">TOTAL</th>
-                                                <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody  style="border-top:0px;">
-                                            <tr  class="bold" >
-                                                <td ng-click="vm.showInitialBalanceAccount()" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i>  SALDO INICIAL:</td>
-                                                <td style="border-top:1px solid #4F94CD; color:#4F94CD; " class=" text-right">₡{{vm.formatearNumero(vm.report.totalInitialBalance+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
-                                            </tr>
-                                            <tr ng-show="vm.isShowingInitialBalanceAccounts" ng-repeat="account in vm.report.mensualAndAnualAccount" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{account.name}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(account.inicialBalance+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
-                                            </tr>
-                                            </tbody>
-                                            <tbody style="border-top:0px; " >
-                                            <tbody style="border-top:0px; " >
-                                            <tr style="font-size:11px;" >
-                                                <td style="border-top:1px solid #4F94CD; color:#4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
-                                                <td style="border-top:1px solid #4F94CD;   color:#4F94CD;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.allIngressCategoriesTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;  color:#4F94CD;" class=" text-right bold">100.00%</td>
-                                            </tr>
-                                            <tr style="font-size:11px;" >
-                                                <td style="  color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
-                                                <td style=" color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.allEgressTotalQuantity+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold">{{vm.allEgressPercentageQuantity | number:2}}% </td>
-                                            </tr>
-                                            <tr style="font-size:11px;" >
-                                                <td style="  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">FLUJO:</td>
-                                                <td  class=" text-right bold">₡ {{vm.formatearNumero(vm.flujo+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold"></td>
-                                            </tr>
-                                            <tr style="font-size:11px;" >
-                                                <td style=" border-bottom:1px solid #4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">SALDO NETO DISPONIBLE:</td>
-                                                <td  style="border-bottom:1px solid #4F94CD;" class=" text-right bold">₡ {{vm.formatearNumero(vm.saldoNeto+"")}}</td>
-                                                <td style="border-bottom:1px solid #4F94CD; border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold"></td>
-                                            </tr>
-                                            </tbody>
 
-                                        </table>
+                                        </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px; " >
+                                        <tbody style="border-top:0px; " >
+                                        <tr style="font-size:11px;" >
+                                            <td style="border-top:1px solid #4F94CD; color:#4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL INGRESOS:</td>
+                                            <td style="border-top:1px solid #4F94CD;   color:#4F94CD;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.allIngressCategoriesTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;  " class=" text-right bold">100.00%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; "  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.totalBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" ng-class="{'greenBudget':vm.ingressBudgetDiference>0,'redBudget':vm.ingressBudgetDiference<0}" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; " class=" text-right bold">₡ {{vm.formatearNumero(vm.ingressBudgetDiference+"")}}</td>
+                                        </tr>
+                                        <tr style="font-size:11px;" >
+                                            <td style="  color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
+                                            <td style=" color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.allEgressTotalQuantity+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold">{{vm.allEgressPercentageQuantity | number:2}}% </td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; "  class=" text-right bold">₡ {{vm.formatearNumero(vm.totalEgressBudget+"")}}</td>
+                                            <td ng-show="vm.showPresupuestoFields" ng-class="{'greenBudget':vm.egressBudgetDiference<0,'redBudget':vm.egressBudgetDiference>0}" style="border-right:1px solid #4F94CD;" class=" text-right bold">₡ {{vm.formatearNumero(vm.egressBudgetDiference+"")}} </td>
+                                        </tr>
+                                        <tr style="font-size:11px;" >
+                                            <td style="  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">FLUJO <span ng-show="vm.showPresupuestoFields"> / DÉFICIT-SUPERÁVIT</span>:</td>
+                                            <td  class=" text-right bold">₡ {{vm.formatearNumero(vm.flujo+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD;" class=" text-right bold">{{vm.superHabitPercentage | number:2}}%</td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;   color:#4F94CD;"  class=" text-right bold"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; "  ng-class="{'greenBudget':vm.superHabit>0,'redBudget':vm.superHabit<0}"  class=" text-right ">₡ {{vm.formatearNumero( vm.superHabit+"")}}</td>
+                                        </tr>
+                                        <tr style="font-size:11px;" >
+                                            <td style=" border-bottom:1px solid #4F94CD; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">SALDO NETO DISPONIBLE:</td>
+                                            <td  style="border-bottom:1px solid #4F94CD;" class=" text-right bold">₡ {{vm.formatearNumero(vm.saldoNeto+"")}}</td>
+                                            <td style="border-bottom:1px solid #4F94CD; border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold"></td>
+                                            <td  ng-show="vm.showPresupuestoFields" style="border-bottom:1px solid #4F94CD;" class=" text-right bold"></td>
+                                            <td ng-show="vm.showPresupuestoFields" style="border-bottom:1px solid #4F94CD; border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold"></td>
 
-                                    </div>
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+
                                 </div>
-
                             </div>
+
+                        </div>
                         </div>
                         <div class="form-actions noborder" style="padding-bottom:0px;">
 

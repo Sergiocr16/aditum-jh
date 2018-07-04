@@ -14,7 +14,7 @@ public class DetallePresupuestoDTO implements Serializable {
 
     @NotNull
     private String category;
-
+    private String categoryName;
     private String group;
 
     private String valuePerMonth;
@@ -103,5 +103,13 @@ public class DetallePresupuestoDTO implements Serializable {
 
     public void setGroup(String group) {
         this.group = group;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
