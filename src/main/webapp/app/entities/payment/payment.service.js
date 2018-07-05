@@ -21,6 +21,9 @@
                     return data;
                 }
             },
+            'getFileToPrint':{
+               url:'api/payments/fileToPrint/:paymentId',
+             },
             'getByHouse':{
              url:'api/payments/byHouse/:houseId',
              isArray: true,

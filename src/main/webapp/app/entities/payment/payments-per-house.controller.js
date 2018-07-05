@@ -26,7 +26,11 @@
         }
         vm.openCalendar = openCalendar;
         vm.filtering = false;
-
+        vm.print = function(paymentId){
+        myWindow = window.open("/api/payments/file/"+paymentId+"?print=true")
+        myWindow.focus();
+        myWindow.print()
+        }
         vm.cleanSearch = function() {
          $("#data").fadeOut(0);
                  $("#loading").fadeIn("slow");

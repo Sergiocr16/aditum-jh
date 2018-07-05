@@ -50,18 +50,25 @@
                     <th>
                         Cantidad
                     </th>
+                    <th>
+                        Opciones
+                    </th>
                 </tr>
                 </thead>
                 <tbody>
-                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments track by payment.id" ng-click="vm.showCharges(payment)" ng-class="{'selected-payment':payment.isShowingCharges==true}">
+                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments track by payment.id"  ng-class="{'selected-payment':payment.isShowingCharges==true}">
                 <tr>
-                    <td ><i ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11" style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true" class="fa fa-chevron-down bold font-11" style="float:left" aria-hidden="true"></i> <span class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
+                    <td ng-click="vm.showCharges(payment)"><i ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11" style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true" class="fa fa-chevron-down bold font-11" style="float:left" aria-hidden="true"></i> <span class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
                     <td>{{payment.date | date}}</td>
                     <td>{{payment.account}}</td>
                     <td>{{payment.paymentMethod}}</td>
                     <td ng-show="payment.transaction==1">Abono a cuotas</td>
                     <td ng-show="payment.transaction==2">Adelanto de condómino</td>
                     <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                    <td>
+                        <a href="/api/payments/file/{{payment.id}}?print=true" download><i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+                        <i class="fa fa-print" ng-click="vm.print(payment.id)"></i>
+                    </td>
                 </tr>
                 <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
                     <td style="background-color:white!important" colspan="3">

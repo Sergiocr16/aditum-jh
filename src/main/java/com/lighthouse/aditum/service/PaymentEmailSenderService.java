@@ -70,9 +70,9 @@ public class PaymentEmailSenderService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
             chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-            if(payment.getTransaction().equals("1")) {
+            if(payment.getTransaction().equals("1") && chargeDTO.getPaymentAmmount()!= null) {
                 chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getPaymentAmmount())).substring(1));
-            }else{
+            }else if(chargeDTO.getPaymentAmmount()!=null){
                 chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
             }
         });
@@ -101,6 +101,55 @@ public class PaymentEmailSenderService {
         return payment;
     }
 
+    public File obtainFileToPrint(PaymentDTO payment,boolean isCancellingFromPayment) {
+        String contactoPrincipal = "";
+        ResidentDTO resident = null;
+        for (int i = 0; i < payment.getEmailTo().size(); i++) {
+            if(payment.getEmailTo().get(i).getPrincipalContact()==1){
+                resident = payment.getEmailTo().get(i);
+                contactoPrincipal = resident.getName()+" "+ resident.getLastname()+" "+resident.getLastname();
+            }
+        }
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));
+        House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
+        String fileName = this.defineFileNamePaymentEmail(payment);
+//        ENVIO DE COMPROBANTE DE PAGO
+        try {
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextTemplate.setVariable(COMPANY,company);
+            contextTemplate.setVariable(HOUSE,house);
+            payment = this.formatPayment(payment,isCancellingFromPayment);
+            contextTemplate.setVariable(PAYMENT,payment);
+            contextTemplate.setVariable(IS_CANCELLING_FROM_PAYMENT,isCancellingFromPayment);
+            String paymentDate = payment.getAccount();
+            String paymentTotal = payment.getAmmount();
+            if(isCancellingFromPayment == true) {
+                paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
+                paymentTotal = payment.getCharges().get(0).getAmmount();
+            }
+            contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
+            contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);
+            contextTemplate.setVariable(CONTACTO,contactoPrincipal);
+            contextTemplate.setVariable(CHARGES_SIZE,payment.getCharges().size());
+            String contentTemplate = templateEngine.process("paymentTemplate", contextTemplate);
+            OutputStream outputStream = new FileOutputStream(fileName);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(contentTemplate);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File(fileName);
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @Async
     public void sendPaymentEmail(PaymentDTO payment,boolean isCancellingFromPayment) {
