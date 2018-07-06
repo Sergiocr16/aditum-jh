@@ -160,22 +160,6 @@ public class PaymentResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
 
-//        @GetMapping("/payments/fileToPrint/{paymentId}")
-//    public StreamingResponseBody getSteamingFile(@PathVariable Long paymentId, HttpServletResponse response) throws IOException {
-//       File file = paymentService.obtainFileToPrint(paymentId);
-//            response.setContentType("application/pdf");
-//        response.setHeader("Content-Disposition", "attachment; filename="+file.getName());
-//        InputStream inputStream = new FileInputStream(file);
-//        return outputStream -> {
-//            int nRead;
-//            byte[] data = new byte[1024];
-//            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-//                outputStream.write(data, 0, nRead);
-//            }
-//            inputStream.close();
-//        };
-//    }
-
     @GetMapping("/payments/file/{paymentId}")
     @Timed
     public void getFile(@PathVariable Long paymentId, HttpServletResponse response) throws URISyntaxException, IOException {
@@ -189,7 +173,7 @@ public class PaymentResource {
             @Override
             public void run() {
                 try {
-                    this.sleep(10000);
+                    this.sleep(400000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -198,6 +182,11 @@ public class PaymentResource {
 
             }
         }.start();
+    }
+    @GetMapping("/payments/sendEmail/{paymentId}")
+    @Timed
+    public void sendByEmail(@PathVariable Long paymentId){
+        paymentService.sendPaymentEmail(paymentId);
     }
 }
 

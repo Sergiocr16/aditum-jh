@@ -236,6 +236,12 @@ public class PaymentService {
     public File obtainFileToPrint(Long paymentId){
         PaymentDTO paymentDTO = this.findOne(paymentId);
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
         Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
@@ -245,10 +251,33 @@ public class PaymentService {
                 emailTo.add(residents.getContent().get(i));
             }
         }
-        if(emailTo.size()>0) {
-            paymentDTO.setEmailTo(emailTo);
-        }
+
+        paymentDTO.setEmailTo(emailTo);
+
         return paymentEmailSenderService.obtainFileToPrint(paymentDTO,false);
+    }
+    @Async
+    public void sendPaymentEmail(Long paymentId){
+        PaymentDTO paymentDTO = this.findOne(paymentId);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft("0");
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        List<ResidentDTO> emailTo = new ArrayList<>();
+        for (int i = 0; i < residents.getContent().size(); i++) {
+            if (residents.getContent().get(i).getPrincipalContact()==1){
+                emailTo.add(residents.getContent().get(i));
+            }
+        }
+
+        paymentDTO.setEmailTo(emailTo);
+        paymentEmailSenderService.sendPaymentEmail(paymentDTO,false);
     }
 
 

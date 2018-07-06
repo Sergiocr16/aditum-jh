@@ -21,8 +21,8 @@
                     return data;
                 }
             },
-            'getFileToPrint':{
-               url:'api/payments/fileToPrint/:paymentId',
+            'sendPaymentEmail':{
+               url:'api/payments/sendEmail/:paymentId'
              },
             'getByHouse':{
              url:'api/payments/byHouse/:houseId',

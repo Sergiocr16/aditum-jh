@@ -264,10 +264,11 @@
 
                                                 </tbody>
                                             </table>
-                                            <div class="col-md-12">
+                                            <div class="col-md-12 no-padding no-margin">
+                                            <div class="col-md-8">
                                                 <h5><b>Enviar comprobante de pago por correo a:</b></h5>
                                                 <h5 ng-if="vm.residents.length==0" style="font-weight:bold;font-size:12px!important">No existe ningún residente con un correo registrado en esta filial.</h5>
-                                                <div ng-if="vm.residents.length!=0" class="md-radio-list col-md-2 no-padding" style="border-right:solid 1px #CFD8DC">
+                                                <div ng-if="vm.residents.length!=0" class="md-radio-list col-md-4 no-padding" style="border-right:solid 1px #CFD8DC">
                                                     <div class="md-radio">
                                                         <input type="radio" ng-click="vm.selectPrincipalContact()" id="radio1" name="radio1" class="md-radiobtn" checked="">
                                                         <label for="radio1">
@@ -301,7 +302,7 @@
                                                             Ninguno </label>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-4" style="height:150px;overflow-y:auto">
+                                                <div ng-if="vm.residents.length!=0" class="col-md-5" style="height:150px;overflow-y:auto">
                                                     <div class="col-md-12 no-padding">
                                                         <h5 ng-repeat="resident in vm.residents | orderBy: '!principalContact' track by resident.id ">
                                                             <input type="checkbox" id="{{resident.id}}" ng-model="resident.selected" style="float: left;margin: 10px 6px;">
@@ -315,6 +316,23 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                                <div class="col-md-4" style="margin-top:10px">
+                                                    <div style="height:70px;float:right">
+                                                        <div class="col-md-12">
+                                                            <h5 style="display:inline;margin-right:5px"><b>Imprimir recibo de pago</b></h5>
+                                                            <div class="md-checkbox" style="margin:0 auto;height:50px;display:inline;">
+                                                                <input type="checkbox" ng-model="vm.printReceipt" id="checkbox2" class="md-check">
+                                                                <label for="checkbox2">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+
+                                        </div>
                                         </div>
                                         <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
                                             <h3 class="text-right">

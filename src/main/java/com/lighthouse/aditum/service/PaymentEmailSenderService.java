@@ -69,10 +69,9 @@ public class PaymentEmailSenderService {
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
-            chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-            if(payment.getTransaction().equals("1") && chargeDTO.getPaymentAmmount()!= null) {
+            if(payment.getTransaction().equals("1")) {
                 chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getPaymentAmmount())).substring(1));
-            }else if(chargeDTO.getPaymentAmmount()!=null){
+            }else{
                 chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
             }
         });

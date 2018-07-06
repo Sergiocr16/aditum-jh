@@ -1,3 +1,7 @@
+html{
+overflow-x: hidden;
+}
+
 body {
     background: #fafafa;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1078,4 +1082,14 @@ color:black;
 border: 1px solid green;
 width:250px;
 }
+.action-export-payment{
 
+}
+
+.action-export-payment :hover{
+color:4DB3A2!important;
+}
+
+.action-export-payment a:hover{
+color:4DB3A2!important;
+}
