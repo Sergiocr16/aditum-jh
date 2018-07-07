@@ -211,11 +211,11 @@ public class PaymentEmailSenderService {
     }
 
     private String defineSubjectPaymentEmail(PaymentDTO payment,Company company,House house,boolean isCancellingFromPayment){
-        String subject = "Comprobante de Pago - "+payment.getReceiptNumber()+" - "+company.getName();
+        String subject = "Comprobante de Pago "+payment.getReceiptNumber()+" - "+company.getName();
         if(payment.getTransaction().equals("1") || payment.getTransaction().equals("2") && payment.getCharges().size()>0){
-            subject = "Comprobante de Pago - Filial # "+house.getHousenumber()+" - "+company.getName()+ " (Abono a cuotas)";
+            subject = "Comprobante de Pago "+payment.getReceiptNumber()+" Filial # "+house.getHousenumber()+" - "+company.getName()+ " (Abono a cuotas)";
         }else if(payment.getTransaction().equals("2")){
-            subject = "Comprobante de Pago - Filial # "+house.getHousenumber()+" - "+company.getName()+ " (Adelanto de condómino)";
+            subject = "Comprobante de Pago "+payment.getReceiptNumber()+" Filial # "+house.getHousenumber()+" - "+company.getName()+ " (Adelanto de condómino)";
         }
         return subject;
     }

@@ -1039,9 +1039,6 @@ background-color: rgb(234, 250, 238); opacity: 1;
 background-color: rgb(255, 255, 255); opacity: 0.4;
 }
 
-.popover.bottom .arrow:after{
-border-bottom-color: background-color:hsl(36, 100%, 50%)!important;
-}
 
 .balloon{
 color: hsl(0, 0%, 100%);
@@ -1092,4 +1089,9 @@ color:4DB3A2!important;
 
 .action-export-payment a:hover{
 color:4DB3A2!important;
+}
+.disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+    color: grey;
 }

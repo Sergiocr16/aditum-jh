@@ -56,45 +56,68 @@
         }
 
         vm.sendEmail = function(payment) {
-            vm.exportActions.sendingEmail = true;
-            Resident.findResidentesEnabledByHouseId({
-                houseId: parseInt($localStorage.houseSelected.id),
-            }).$promise.then(onSuccessResident, onError);
+                    bootbox.confirm({
+                        message: "¿Está seguro que desea enviarle el comprobante del pago "+payment.receiptNumber+" al contacto principal de la filial "+$localStorage.houseSelected.housenumber+"?",
+                        buttons: {
+                            confirm: {
+                                label: 'Aceptar',
+                                className: 'btn-success'
+                            },
+                            cancel: {
+                                label: 'Cancelar',
+                                className: 'btn-danger'
+                            }
+                        },
+                        callback: function(result) {
+                            if (result) {
+      vm.exportActions.sendingEmail = true;
+                 Resident.findResidentesEnabledByHouseId({
+                     houseId: parseInt($localStorage.houseSelected.id),
+                 }).$promise.then(onSuccessResident, onError);
 
-            function onSuccessResident(data, headers) {
-                var thereIs = false;
-                angular.forEach(data, function(resident, i) {
-                    if (resident.email != undefined && resident.email != "" && resident.email != null) {
-                        resident.selected = false;
-                        if (resident.principalContact == 1) {
-                            thereIs = true;
+                 function onSuccessResident(data, headers) {
+                     var thereIs = false;
+                     angular.forEach(data, function(resident, i) {
+                         if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                             resident.selected = false;
+                             if (resident.principalContact == 1) {
+                                 thereIs = true;
+                             }
+                         }
+                     });
+                     if (thereIs == true) {
+                         Payment.sendPaymentEmail({
+                             paymentId: payment.id
+                         })
+                         setTimeout(function() {
+                             $scope.$apply(function() {
+                                 vm.exportActions.sendingEmail = false;
+                             })
+                             toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
+
+                         }, 6000)
+                     } else {
+
+                                                 vm.exportActions.sendingEmail = false;
+
+                         toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
+
+                     }
+                 }
+
+                 function onError() {
+                     toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
+
+                 }
+                            }
                         }
-                    }
-                });
-                if (thereIs == true) {
-                    Payment.sendPaymentEmail({
-                        paymentId: payment
-                    })
-                    setTimeout(function() {
-                        $scope.$apply(function() {
-                            vm.exportActions.sendingEmail = false;
-                        })
-                        toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
+                    });
 
-                    }, 6000)
-                } else {
 
-                                            vm.exportActions.sendingEmail = false;
 
-                    toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
 
-                }
-            }
 
-            function onError() {
-                toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
 
-            }
 
         }
 
