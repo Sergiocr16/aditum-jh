@@ -5,14 +5,17 @@ import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,12 +40,15 @@ public class PaymentService {
 
     private final PaymentEmailSenderService paymentEmailSenderService;
 
-    public PaymentService(PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    private final ResidentService residentService;
+
+    public PaymentService(ResidentService residentService, PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
         this.bancoService = bancoService;
         this.paymentEmailSenderService = paymentEmailSenderService;
+        this.residentService = residentService;
     }
 
     /**
@@ -225,4 +231,54 @@ public class PaymentService {
             chargeService.pay(charge,payment);
         }
     }
+
+
+    public File obtainFileToPrint(Long paymentId){
+        PaymentDTO paymentDTO = this.findOne(paymentId);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft("0");
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        List<ResidentDTO> emailTo = new ArrayList<>();
+        for (int i = 0; i < residents.getContent().size(); i++) {
+            if (residents.getContent().get(i).getPrincipalContact()==1){
+                emailTo.add(residents.getContent().get(i));
+            }
+        }
+
+        paymentDTO.setEmailTo(emailTo);
+
+        return paymentEmailSenderService.obtainFileToPrint(paymentDTO,false);
+    }
+    @Async
+    public void sendPaymentEmail(Long paymentId){
+        PaymentDTO paymentDTO = this.findOne(paymentId);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft("0");
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        List<ResidentDTO> emailTo = new ArrayList<>();
+        for (int i = 0; i < residents.getContent().size(); i++) {
+            if (residents.getContent().get(i).getPrincipalContact()==1){
+                emailTo.add(residents.getContent().get(i));
+            }
+        }
+
+        paymentDTO.setEmailTo(emailTo);
+        paymentEmailSenderService.sendPaymentEmail(paymentDTO,false);
+    }
+
+
 }

@@ -17,6 +17,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "capturarIngresos";
+        vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
@@ -297,7 +298,7 @@
             var residentsToSendEmails = [];
             angular.forEach(vm.residents, function(resident, i) {
                 if (resident.selected == true) {
-                residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
+                    residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
                 }
             })
             return residentsToSendEmails;
@@ -488,20 +489,50 @@
                         Payment.save(vm.payment, onSuccess, onError)
 
                         function onSuccess(result) {
-                            bootbox.hideAll();
-                            toastr["success"]("Se ha capturado el ingreso correctamente.")
-                            increaseFolioNumber(function(result) {
-                                vm.admingConfig = result;
-                                vm.folioSerie = result.folioSerie;
-                                vm.folioNumber = result.folioNumber;
-                                if (vm.toPay > 0) {
-                                    registrarAdelantoCondomino();
-                                } else {
-                                    clear();
-                                    loadAll();
-                                    loadAdminConfig();
-                                }
-                            })
+                            if (vm.printReceipt == true) {
+                                printJS({
+                                    printable: '/api/payments/file/' + result.id,
+                                    type: 'pdf',
+                                    modalMessage: "Obteniendo comprobante de pago"
+                                })
+
+                                setTimeout(function() {
+                                    bootbox.hideAll();
+                                    toastr["success"]("Se ha capturado el ingreso correctamente.")
+                                    vm.printReceipt = false;
+                                    increaseFolioNumber(function(result) {
+                                        vm.admingConfig = result;
+                                        vm.folioSerie = result.folioSerie;
+                                        vm.folioNumber = result.folioNumber;
+                                        if (vm.toPay > 0) {
+                                            registrarAdelantoCondomino();
+                                        } else {
+                                            clear();
+                                            loadAll();
+                                            loadAdminConfig();
+                                        }
+                                    })
+                                }, 5000)
+
+
+                            } else {
+                                bootbox.hideAll();
+                                toastr["success"]("Se ha capturado el ingreso correctamente.")
+                                increaseFolioNumber(function(result) {
+                                    vm.admingConfig = result;
+                                    vm.folioSerie = result.folioSerie;
+                                    vm.folioNumber = result.folioNumber;
+                                    if (vm.toPay > 0) {
+                                        registrarAdelantoCondomino();
+                                    } else {
+                                        clear();
+                                        loadAll();
+                                        loadAdminConfig();
+                                    }
+                                })
+                            }
+
+
 
                         }
 
@@ -554,6 +585,7 @@
         }
 
         function registrarAdelantoCondomino() {
+            CommonMethods.waitingMessage();
             vm.payment.transaction = "2",
                 vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
@@ -566,13 +598,35 @@
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
-                bootbox.hideAll();
-                clear();
-                toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
-                increaseFolioNumber(function() {});
-                increaseMaintBalance();
-                loadAll();
-                loadAdminConfig();
+                if (vm.printReceipt == true) {
+                    printJS({
+                        printable: '/api/payments/file/' + result.id,
+                        type: 'pdf',
+                        modalMessage: "Obteniendo comprobante de pago"
+                    })
+                    setTimeout(function() {
+                        bootbox.hideAll();
+                        clear();
+                        toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                        vm.printReceipt = false;
+                        increaseFolioNumber(function() {});
+                        increaseMaintBalance();
+                        loadAll();
+                        loadAdminConfig();
+                    }, 5000)
+
+
+                } else {
+                    bootbox.hideAll();
+                    clear();
+                    toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                    increaseFolioNumber(function() {});
+                    increaseMaintBalance();
+                    loadAll();
+                    loadAdminConfig();
+                }
+
+
             }
 
             function onError() {
