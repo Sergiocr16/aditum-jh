@@ -76,6 +76,9 @@ public class ResidentResourceIntTest {
     private static final Integer DEFAULT_TYPE = 1;
     private static final Integer UPDATED_TYPE = 2;
 
+    private static final Integer DEFAULT_PRINCIPAL_CONTACT = 1;
+    private static final Integer UPDATED_PRINCIPAL_CONTACT = 2;
+
     @Autowired
     private ResidentRepository residentRepository;
 
@@ -119,18 +122,19 @@ public class ResidentResourceIntTest {
      */
     public static Resident createEntity(EntityManager em) {
         Resident resident = new Resident()
-                .name(DEFAULT_NAME)
-                .lastname(DEFAULT_LASTNAME)
-                .secondlastname(DEFAULT_SECONDLASTNAME)
-                .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
-                .phonenumber(DEFAULT_PHONENUMBER)
-                .image(DEFAULT_IMAGE)
-                .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-                .email(DEFAULT_EMAIL)
-                .isOwner(DEFAULT_IS_OWNER)
-                .enabled(DEFAULT_ENABLED)
-                .image_url(DEFAULT_IMAGE_URL)
-                .type(DEFAULT_TYPE);
+            .name(DEFAULT_NAME)
+            .lastname(DEFAULT_LASTNAME)
+            .secondlastname(DEFAULT_SECONDLASTNAME)
+            .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
+            .phonenumber(DEFAULT_PHONENUMBER)
+            .image(DEFAULT_IMAGE)
+            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
+            .email(DEFAULT_EMAIL)
+            .isOwner(DEFAULT_IS_OWNER)
+            .enabled(DEFAULT_ENABLED)
+            .image_url(DEFAULT_IMAGE_URL)
+            .type(DEFAULT_TYPE)
+            .principalContact(DEFAULT_PRINCIPAL_CONTACT);
         return resident;
     }
 
@@ -145,8 +149,7 @@ public class ResidentResourceIntTest {
         int databaseSizeBeforeCreate = residentRepository.findAll().size();
 
         // Create the Resident
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
-
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(residentDTO)))
@@ -168,6 +171,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEnabled()).isEqualTo(DEFAULT_ENABLED);
         assertThat(testResident.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testResident.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testResident.getPrincipalContact()).isEqualTo(DEFAULT_PRINCIPAL_CONTACT);
     }
 
     @Test
@@ -176,14 +180,13 @@ public class ResidentResourceIntTest {
         int databaseSizeBeforeCreate = residentRepository.findAll().size();
 
         // Create the Resident with an existing ID
-        Resident existingResident = new Resident();
-        existingResident.setId(1L);
-        ResidentDTO existingResidentDTO = residentMapper.residentToResidentDTO(existingResident);
+        resident.setId(1L);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingResidentDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(residentDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -199,7 +202,7 @@ public class ResidentResourceIntTest {
         resident.setName(null);
 
         // Create the Resident, which fails.
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -218,7 +221,7 @@ public class ResidentResourceIntTest {
         resident.setLastname(null);
 
         // Create the Resident, which fails.
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -237,7 +240,7 @@ public class ResidentResourceIntTest {
         resident.setSecondlastname(null);
 
         // Create the Resident, which fails.
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -256,7 +259,7 @@ public class ResidentResourceIntTest {
         resident.setIdentificationnumber(null);
 
         // Create the Resident, which fails.
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         restResidentMockMvc.perform(post("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -289,7 +292,8 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.[*].isOwner").value(hasItem(DEFAULT_IS_OWNER)))
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
             .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].principalContact").value(hasItem(DEFAULT_PRINCIPAL_CONTACT)));
     }
 
     @Test
@@ -314,7 +318,8 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.isOwner").value(DEFAULT_IS_OWNER))
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
             .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.principalContact").value(DEFAULT_PRINCIPAL_CONTACT));
     }
 
     @Test
@@ -335,19 +340,20 @@ public class ResidentResourceIntTest {
         // Update the resident
         Resident updatedResident = residentRepository.findOne(resident.getId());
         updatedResident
-                .name(UPDATED_NAME)
-                .lastname(UPDATED_LASTNAME)
-                .secondlastname(UPDATED_SECONDLASTNAME)
-                .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
-                .phonenumber(UPDATED_PHONENUMBER)
-                .image(UPDATED_IMAGE)
-                .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-                .email(UPDATED_EMAIL)
-                .isOwner(UPDATED_IS_OWNER)
-                .enabled(UPDATED_ENABLED)
-                .image_url(UPDATED_IMAGE_URL)
-                .type(UPDATED_TYPE);
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(updatedResident);
+            .name(UPDATED_NAME)
+            .lastname(UPDATED_LASTNAME)
+            .secondlastname(UPDATED_SECONDLASTNAME)
+            .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
+            .phonenumber(UPDATED_PHONENUMBER)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .email(UPDATED_EMAIL)
+            .isOwner(UPDATED_IS_OWNER)
+            .enabled(UPDATED_ENABLED)
+            .image_url(UPDATED_IMAGE_URL)
+            .type(UPDATED_TYPE)
+            .principalContact(UPDATED_PRINCIPAL_CONTACT);
+        ResidentDTO residentDTO = residentMapper.toDto(updatedResident);
 
         restResidentMockMvc.perform(put("/api/residents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -370,6 +376,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEnabled()).isEqualTo(UPDATED_ENABLED);
         assertThat(testResident.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testResident.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testResident.getPrincipalContact()).isEqualTo(UPDATED_PRINCIPAL_CONTACT);
     }
 
     @Test
@@ -378,7 +385,7 @@ public class ResidentResourceIntTest {
         int databaseSizeBeforeUpdate = residentRepository.findAll().size();
 
         // Create the Resident
-        ResidentDTO residentDTO = residentMapper.residentToResidentDTO(resident);
+        ResidentDTO residentDTO = residentMapper.toDto(resident);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restResidentMockMvc.perform(put("/api/residents")
@@ -409,7 +416,40 @@ public class ResidentResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Resident.class);
+        Resident resident1 = new Resident();
+        resident1.setId(1L);
+        Resident resident2 = new Resident();
+        resident2.setId(resident1.getId());
+        assertThat(resident1).isEqualTo(resident2);
+        resident2.setId(2L);
+        assertThat(resident1).isNotEqualTo(resident2);
+        resident1.setId(null);
+        assertThat(resident1).isNotEqualTo(resident2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(ResidentDTO.class);
+        ResidentDTO residentDTO1 = new ResidentDTO();
+        residentDTO1.setId(1L);
+        ResidentDTO residentDTO2 = new ResidentDTO();
+        assertThat(residentDTO1).isNotEqualTo(residentDTO2);
+        residentDTO2.setId(residentDTO1.getId());
+        assertThat(residentDTO1).isEqualTo(residentDTO2);
+        residentDTO2.setId(2L);
+        assertThat(residentDTO1).isNotEqualTo(residentDTO2);
+        residentDTO1.setId(null);
+        assertThat(residentDTO1).isNotEqualTo(residentDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(residentMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(residentMapper.fromId(null)).isNull();
     }
 }

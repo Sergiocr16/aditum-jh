@@ -122,6 +122,13 @@
                                 <input ng-model="vm.resident.email" type="email" class="form-control gray-font" placeholder="">
                                 <label class="font-15">Correo electrónico</label>
                             </div>
+                            <div class="form-group form-md-line-input has-info" ng-if="vm.resident.enabled==1">
+                                <select ng-disabled="vm.validEmail(vm.resident.email)==false" class="form-control gray-font"  ng-model="vm.resident.principalContact" >
+                                    <option value="1">Si</option>
+                                    <option value="0">No</option>
+                                </select>
+                                <label class="font-15 ">Contacto principal de la filial</label >
+                            </div>
 
                             <div has-authority="ROLE_USER" class="form-group form-md-line-input">
                                 <input ng-model="vm.resident.identificationnumber" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>

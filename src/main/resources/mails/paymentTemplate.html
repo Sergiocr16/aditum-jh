@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8" />
+    <title>Comprobante de Pago ADITUM</title>
+    <style>
+
+         .invoice-box {
+         max-width: 800px;
+         margin: auto;
+         padding: 30px;
+         font-size: 14px;
+         line-height: 24px;
+         color: #555;
+         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         }
+         .invoice-box table {
+         width: 100%;
+         line-height: inherit;
+         text-align: left;
+         }
+         .invoice-box table td {
+         padding: 5px;
+         vertical-align: top;
+         }
+         .invoice-box table tr td:nth-child(2) {
+         text-align: right;
+         }
+         .invoice-box table tr.top table td {
+         padding-bottom: 20px;
+         }
+         .invoice-box table tr.top table td.title {
+         font-size: 45px;
+         line-height: 45px;
+         color: #333;
+         }
+         .invoice-box table tr.information table td {
+         padding-bottom: 40px;
+         }
+         .invoice-box table tr.heading td {
+         background: #e0e0e0;
+         border-bottom: 4px solid rgb(77, 179, 162);
+         font-weight: bold;
+		 font-size:15px;
+         }
+         .invoice-box table tr.details td {
+         padding-bottom: 20px;
+         padding-top:20px;
+         }
+         .invoice-box table tr.item td{
+         border-bottom: 1px solid #eee;
+         }
+         .invoice-box table tr.item.last td {
+         border-bottom: none;
+         }
+         .invoice-box table tr.total td:nth-child(2) {
+         border-top: 2px solid #eee;
+         font-weight: bold;
+         }
+         @media only screen and (max-width: 600px) {
+         .invoice-box table tr.top table td {
+         width: 100%;
+         display: block;
+         text-align: center;
+         }
+         .invoice-box table tr.information table td {
+         width: 100%;
+         display: block;
+         text-align: center;
+         }
+         }
+         /** RTL **/
+         .rtl {
+         direction: rtl;
+         }
+         .rtl table {
+         text-align: right;
+         }
+         .rtl table tr td:nth-child(2) {
+         text-align: left;
+         }
+         .condominio-name {
+         line-height: 1em;
+         font-weight: bold;
+         font-size: 25px;
+         color: rgb(77, 179, 162);
+         margin-bottom:0px;
+         margin-top:35px;
+         }
+         .text-center{
+         text-align:center!important;
+         }
+         .total-ammount{
+         border-top:3px solid rgb(77, 179, 162);
+         background: rgb(77, 179, 162);
+         border-bottom: 1px solid #ddd;
+         font-weight: bold;
+         color:white;
+         text-align:center;
+         }
+         .payment-method{
+         border-top:3px solid rgb(77, 179, 162);
+         color:#555;
+         font-size:15px;
+         }
+         .comprobante-title{
+         background-color:rgb(77, 179, 162);
+         color:white;
+         font-size:18px;
+         padding:10px;
+         margin-left:-5px;
+         border-top-right-radius:10px;
+         border-bottom-right-radius:10px;
+         }
+         .folio-number{
+         text-align:right;
+         color:rgb(77, 179, 162);
+         font-size:25px;
+         }
+         .text-right{
+         text-align:right!important;
+         }
+      </style>
+</head>
+<body>
+<div class="invoice-box">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td>
+                <h3 class="condominio-name" th:text="|${company.name}|">Condominio los malinches</h3>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"> <img width="100px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/>
+                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
+            </td>
+        </tr>
+        <tr >
+            <td style="padding-top:12px">
+                <span class="comprobante-title"> Comprobante de Pago</span>
+            </td>
+            <td style="padding-top:12px"> </td>
+            <td style="text-align:right;padding-top:12px">
+                <span style="font-size:15px"> Folio N° </span> <span class="folio-number" th:text="|${payment.receiptNumber}|">A-12</span>
+            </td>
+        </tr>
+        <tr class="details">
+            <td>
+                <b><span th:text="|${payment.concept}|"> </span> - Filial # <span th:text="|${house.housenumber}|">numero de casa</span></b>
+            </td>
+            <td >
+            </td>
+            <td class="text-right">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span th:text="|${contacto}|">Contacto Principal</span>
+                <span style="display:block;font-size:11px">Contacto principal</span>
+            </td>
+            <td>
+            </td>
+            <td class="text-right">
+                <b><span th:text="|${paymentDate}|"></span></b>
+                <span style="display:block;font-size:11px">Fecha de emisión</span>
+            </td>
+        </tr>
+        <tr th:if="${isCancellingFromPayment==true || payment.transaction=='2' &amp;&amp; isCancellingFromPayment==true}">
+            <td  colspan="3" style="padding-top:20px;font-size:12px"><b>Notas</b></td>
+        </tr>
+        <tr th:if="${isCancellingFromPayment==true}">
+            <td colspan="3" style="font-size:12px;text-align:left">Este pago se realizo automaticamente gracias a un adelanto de condómino realizado el <span th:text="|${payment.account}|"></span> por un monto de <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"/> <span th:text="${payment.ammount}"></span>.</td>
+        </tr>
+        <tr th:if="${chargesSize > 1 &amp;&amp; payment.transaction=='2' &amp;&amp; isCancellingFromPayment==false}">
+            <td colspan="3" style="font-size:12px;text-align:left">Estas son las cuotas canceladas por este adelanto.</td>
+        </tr>
+        <tr th:if="${isCancellingFromPayment==true}">
+        <td colspan="3" style="font-size:10px;text-align:left"><b>Es posible que las cuotas de este pago no hayan sido canceladas por completo, para verificarlo puede consultar las cuotas de su filial.</b></td>
+        </tr>
+        <tr class="heading">
+            <td>
+                CONCEPTO
+            </td>
+            <td class="text-center">
+                TIPO
+            </td>
+            <td class="text-center">
+                IMPORTE
+            </td>
+        </tr>
+        <tr class="item" th:each="charge : ${payment.charges}">
+            <td th:text="${charge.concept}">
+                Concepto
+            </td>
+            <td class="text-center" th:if="${charge.type==1}">
+                MANTENIMIENTO
+            </td>
+            <td class="text-center" th:if="${charge.type==2}">
+                EXTRAORDINARIA
+            </td>
+            <td class="text-center" th:if="${charge.type==3}">
+                ÁREAS COMUNES
+            </td>
+            <td th:if="${charge.type==4}"></td>
+            <td class="text-center" >
+                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span th:text="${charge.paymentAmmount}"></span>
+            </td>
+        </tr>
+        <tr>
+            <td class="payment-method"><b>METODO DE PAGO:</b> <span th:text="|${payment.paymentMethod}|">Deposito bancario</span></td>
+        <td class="payment-method"></td>
+        <td class="total-ammount">
+            <div style="display:inline;float: right" >
+                <span><span  th:text="|${paymentTotal}|"></span></span>
+            </div>
+            <div style="display:inline;float: right;margin:2px 2px"><img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="20"/> </div>
+            <div style="display:inline;float: right"><b>Total:</b></div>
+        </td>
+        </tr>
+
+        <tr>
+            <td  colspan="3" style="padding-top:20px;font-size:12px"><b>COMENTARIOS</b></td>
+        </tr>
+        <tr>
+            <td colspan="3" style="font-size:12px;text-align:left" th:text="|${payment.comments}|">Comentarios</td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding-top:20px;font-size:10px;text-align:center"><b>EL PAGO DE ESTE RECIBO NO LO LIBERA DE ADEUDOS ANTERIORES. CUALQUIER DUDA O ACLARACIÓN FAVOR DE COMUNICARSE CON LA ADMINISTRACIÓN.</b></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
