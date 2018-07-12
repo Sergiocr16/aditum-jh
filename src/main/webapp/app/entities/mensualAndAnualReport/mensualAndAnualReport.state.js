@@ -33,6 +33,16 @@
             controllerAs: 'vm'
 
         })
+       .state('budgetExecution.anualReport', {
+                url: '/anualReport',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                },
+                templateUrl: 'app/entities/mensualAndAnualReport/anualReport.html',
+                controller: 'AnualReportController',
+                controllerAs: 'vm'
+
+            })
 
 
 

@@ -9,7 +9,7 @@
 
     function ProveedorDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company,$rootScope,CommonMethods) {
         var vm = this;
-
+ $rootScope.active = "proovedores";
         vm.proveedor = entity;
         vm.clear = clear;
         vm.save = save;

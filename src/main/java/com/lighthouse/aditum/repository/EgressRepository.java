@@ -30,4 +30,8 @@ public interface EgressRepository extends JpaRepository<Egress,Long> {
     @Query("select e from Egress e " +
         "where e.date >= ?1 and e.date <= ?2 and e.company.id = ?3")
     Page<Egress> findByCobroDatesBetweenAndCompany(Pageable pageable,ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
+    @Query("select e from Egress e " +
+        "where e.paymentDate >= ?1 and e.paymentDate <= ?2 and e.company.id = ?3 and e.account = ?4")
+    List<Egress> findByDatesBetweenAndCompanyAndAccount(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId,String accountId);
+
 }

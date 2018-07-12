@@ -8,7 +8,7 @@
     EgressGenerateReportController.$inject = ['$scope','$state', 'Banco','Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonMethods','Proveedor','$rootScope'];
 
     function EgressGenerateReportController($scope,$state, Banco,Egress, ParseLinks, AlertService, paginationConstants, pagingParams,CommonMethods,Proveedor,$rootScope) {
-
+ $rootScope.active = "reporteGastos";
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;

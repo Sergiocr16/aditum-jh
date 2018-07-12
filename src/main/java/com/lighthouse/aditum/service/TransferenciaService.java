@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 
 /**
@@ -50,6 +51,20 @@ public class TransferenciaService {
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
         return transferenciaRepository.findBetweenDatesByOutgoingTransfer(pageable,zd_initialTime,zd_finalTime,accountId);
+    }
+    @Transactional(readOnly = true)
+    public List<Transferencia> getBetweenDatesByInComingTransfer(String initialTime,String finalTime,int accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return transferenciaRepository.findBetweenDatesByInComingTransfer(zd_initialTime,zd_finalTime,accountId);
+    }
+    @Transactional(readOnly = true)
+    public List<Transferencia> getBetweenDatesByOutgoingTransfer(String initialTime, String finalTime, int accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return transferenciaRepository.findBetweenDatesByOutgoingTransfer(zd_initialTime,zd_finalTime,accountId);
     }
     /**
      *  Get all the transferencias.

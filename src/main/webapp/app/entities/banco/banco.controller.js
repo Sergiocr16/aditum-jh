@@ -10,7 +10,7 @@
     function BancoController(CommonMethods,$state, Banco, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope) {
 
         var vm = this;
-
+        $rootScope.active = "bancos";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
