@@ -20,6 +20,7 @@
         vm.totalEgressValue = 0;
         vm.totalIngressValue = 0;
          function onSuccess(data){
+         console.log(data);
             vm.budgetCategories = data;
             vm.totalIngressByMonth = [];
             vm.totalEgressByMonth = [];
@@ -155,6 +156,7 @@
                      vm.totalEgressValue = vm.totalEgressValue + item.total;
                 })
                toastr["success"]("Se ha actualizado el presupuesto correctamente");
+
                  setTimeout(function() {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
@@ -203,8 +205,10 @@
 
          function sortMonthValues(item) {
                var valuePerMonth = "";
-               if(item.valuePerMonth=="" || item.valuePerMonth==undefined || item.valuePerMonth=="0"){
+               console.log(item.valuesPerMonth);
+               if(item.valuePerMonth=="" || item.valuePerMonth==undefined || item.valuePerMonth=="0" || item.valuePerMonth==" "){
                   valuePerMonth = "0" + ","
+
                }else{
                   inputsFullQuantity++;
                   valuePerMonth = item.valuePerMonth + ","

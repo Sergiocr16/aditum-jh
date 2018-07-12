@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 
 /**
@@ -19,5 +20,8 @@ public interface BalanceByAccountRepository extends JpaRepository<BalanceByAccou
     @Query("select e from BalanceByAccount e " +
         "where e.date >= ?1 and e.date <= ?2 and e.accountId = ?3")
     Page<BalanceByAccount> findByDatesBetweenAndAccount(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long accountId);
+    @Query("select e from BalanceByAccount e " +
+        "where e.date >= ?1 and e.date <= ?2 and e.accountId = ?3")
+    List<BalanceByAccount> findByDatesBetweenAndAccount(ZonedDateTime initialDate, ZonedDateTime finalDate, Long accountId);
 
 }

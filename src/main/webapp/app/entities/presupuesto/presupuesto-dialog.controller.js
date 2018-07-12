@@ -9,7 +9,7 @@
 
     function PresupuestoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Presupuesto) {
         var vm = this;
-
+        $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};

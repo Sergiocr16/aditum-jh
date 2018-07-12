@@ -290,7 +290,7 @@
             </li>
 
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-money"  style="color:white;" aria-hidden="true"></i>
@@ -302,7 +302,7 @@
                 <ul class="sub-menu">
                     <li ui-sref="houseAdministration" ng-class="{ 'active' : active === 'houseAdministration'}">
                         <a href=""  style="color:white;">
-                            <i class="fa fa-money" style="color:white;" aria-hidden="true"></i> Contabilidad filiales
+                            <i class="fa fa-list-alt" style="color:white;" aria-hidden="true"></i> Contabilidad filiales
                         </a>
                     </li>
                     <li ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
@@ -332,7 +332,7 @@
                         </ul>
                     </li>
 
-                    <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
+                    <li ng-class="{ 'active' : active === 'a' ||  active === 'generatePayment'} " >
                         <a href="javascript:;">
 
                             <i class="fa fa-arrow-right" style=" color:white;"></i>
@@ -344,7 +344,7 @@
 					</span>
                         </a>
                         <ul class="sub-menu" >
-                            <li ui-sref="generatePayment" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
+                            <li ui-sref="generatePayment" ng-class="{ 'active' : active === 'generatePayment' }" style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Capturar ingreso</span>
@@ -385,9 +385,9 @@
 
                         </ul>
                     </li>
-                    <li ng-class="{ 'active' : active === '' ||  active === ''} "  ui-sref="presupuesto">
+                    <li ng-class="{ 'active' : active === 'presupuestos'} "  ui-sref="presupuesto">
                         <a href="javascript:;" >
-                            <i class="fa fa-university"  style="color:white;"></i>
+                            <i class="fa fa-line-chart"  style="color:white;"></i>
                             <span class="title"  style="color:white;">Presupuestos</span>
                             <span class="selected">
                             </span>
@@ -395,7 +395,7 @@
                         </a>
 
                     </li>
-                    <li ng-class="{ 'active' : active === '' ||  active === ''} "  ui-sref="banco">
+                    <li ng-class="{ 'active' : active === 'bancos' } "  ui-sref="banco">
                         <a href="javascript:;" >
                             <i class="fa fa-university"  style="color:white;"></i>
                             <span class="title"  style="color:white;">Bancos</span>
@@ -405,7 +405,7 @@
                         </a>
 
                     </li>
-                    <li ng-class="{ 'active' : active === '' ||  active === ''} ">
+                    <li ng-class="{ 'active' : active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories'  } ">
 
                         <a href="javascript:;">
                             <i class="fa fa-cogs"  style=" color:white;"></i>
@@ -416,7 +416,7 @@
                             </span>
                         </a>
                         <ul class="sub-menu" >
-                            <li ui-sref="proveedor" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                            <li ui-sref="proveedor" ng-class="{ 'active' : active === 'proovedores' }"  style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span  style=" color:white;">Proovedores</span>
@@ -428,13 +428,13 @@
                                     <span  style="color:white;">Cuotas</span>
                                 </a>
                             </li>
-                            <li ui-sref="banco-configuration" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                            <li ui-sref="banco-configuration" ng-class="{ 'active' : active === 'bancoConfiguration' }"  style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span  style=" color:white;">Cuentas de banco</span>
                                 </a>
                             </li>
-                            <li ui-sref="egress-category" ng-class="{ 'active' : active === '' }"  style="border-bottom:1px solid #444c56">
+                            <li ui-sref="egress-category" ng-class="{ 'active' : active === 'egressCategories' }"  style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span  style=" color:white;">Categoría de egresos </span>
@@ -443,7 +443,7 @@
 
                         </ul>
                     </li>
-                    <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
+                    <li ng-class="{ 'active' : active === 'estadoResultados' ||  active === 'reporteGastos'} " >
                         <a href="javascript:;">
                             <i class="fa fa-pie-chart" style=" color:white;"></i>
                             <span class="title" style=" color:white;">Reportes</span>
@@ -453,13 +453,13 @@
 					</span>
                         </a>
                         <ul class="sub-menu" >
-                            <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
+                            <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'estadoResultados' }" style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Estado de resultados</span>
                                 </a>
                             </li>
-                            <li ui-sref="egress-report" ng-class="{ 'active' : active === 'capturarIngresos' }" style="border-bottom:1px solid #444c56">
+                            <li ui-sref="egress-report" ng-class="{ 'active' : active === 'reporteGastos' }" style="border-bottom:1px solid #444c56">
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Reporte de gastos</span>

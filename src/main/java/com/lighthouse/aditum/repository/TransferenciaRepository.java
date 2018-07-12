@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.*;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 
 /**
@@ -23,5 +24,13 @@ public interface TransferenciaRepository extends JpaRepository<Transferencia,Lon
     @Query("select e from Transferencia e " +
         "where e.fecha >= ?1 and e.fecha <= ?2 and e.idBancoOrigen = ?3")
     Page<Transferencia> findBetweenDatesByOutgoingTransfer(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate,  int accountId);
+
+    @Query("select e from Transferencia e " +
+        "where e.fecha >= ?1 and e.fecha <= ?2 and e.idBancoDestino = ?3")
+    List<Transferencia> findBetweenDatesByInComingTransfer(ZonedDateTime initialDate, ZonedDateTime finalDate,  int accountId);
+
+    @Query("select e from Transferencia e " +
+        "where e.fecha >= ?1 and e.fecha <= ?2 and e.idBancoOrigen = ?3")
+    List<Transferencia> findBetweenDatesByOutgoingTransfer(ZonedDateTime initialDate, ZonedDateTime finalDate, int accountId);
 
 }

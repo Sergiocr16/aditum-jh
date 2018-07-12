@@ -18,7 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -107,6 +109,24 @@ public class PaymentService {
         Page<Payment> result = paymentRepository.findByDatesBetweenAndCompanyAndAccount(pageable,zd_initialTime,zd_finalTime,companyId,accountId);
 //        Collections.reverse(result);
         return result.map(payment -> paymentMapper.toDto(payment));
+    }
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(String initialTime,String finalTime,int companyId,String accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return paymentRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime,zd_finalTime,companyId,accountId).stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findAdelantosByDatesBetweenAndCompany(String initialTime,String finalTime,int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime,zd_finalTime,companyId,"2").stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
     /**
      *  Get all the payments.

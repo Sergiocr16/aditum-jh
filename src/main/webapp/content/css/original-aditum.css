@@ -95,8 +95,13 @@ height:659px !important;
 	overflow-y: scroll;
 }
 
+.redBudget{
+color: #B22222;
+}
 
-
+.greenBudget{
+color: #4F94CD;
+}
 .scroll{
 	overflow-y: scroll;
 }
