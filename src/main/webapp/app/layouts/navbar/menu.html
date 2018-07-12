@@ -332,7 +332,7 @@
                         </ul>
                     </li>
 
-                    <li ng-class="{ 'active' : active === 'a' ||  active === 'capturarIngresos'} " >
+                    <li ng-class="{ 'active' : active === 'capturarAdelanto' ||  active === 'capturarIngresos'} " >
                         <a href="javascript:;">
 
                             <i class="fa fa-arrow-right" style=" color:white;"></i>
@@ -350,7 +350,12 @@
                                     <span   style=" color:white;">Capturar ingreso</span>
                                 </a>
                             </li>
-
+                            <li ui-sref="advancePayment" ng-class="{ 'active' : active === 'capturarAdelanto' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span   style=" color:white;">Adelanto de condómino</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
 
