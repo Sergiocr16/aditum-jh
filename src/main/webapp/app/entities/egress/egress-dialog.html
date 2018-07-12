@@ -3,7 +3,7 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a ui-sref="home()">Contabilidad</a>
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -35,7 +35,12 @@
 
                         <span class="caption-subject bold uppercase">{{vm.title}}</span>
                     </div>
+                    <div class="btn-group pull-right">
+                        <div class="caption font-green-haze">
+                            <a href="" ui-sref="egress-category" class="font-14" style="color:hsl(211, 100%, 61%);"><i class="fa fa-cog" aria-hidden="true"></i>  Configurar categorías</a>
+                        </div>
 
+                    </div>
 
                 </div>
                 <div class="portlet-body form display-none" id="register_edit_form">
@@ -61,13 +66,13 @@
                                     <select class="form-control" id="field_category" name="category" ng-model="vm.egress.category" required>
                                         <option value="">Seleccione una Categoría</option>
                                         <optgroup  ng-show="vm.gastosFijos.length>0"  label="GASTOS FIJOS">
-                                            <option ng-repeat="category in vm.gastosFijos" value="category">{{category}}</option>
+                                            <option ng-repeat="item in vm.gastosFijos" value="{{item.id}}">{{item.category}}</option>
                                         </optgroup>
                                         <optgroup ng-show="vm.gastosVariables.length>0" label="GASTOS VARIABLES">
-                                            <option ng-repeat="category in vm.gastosVariables" value="category">{{category}}</option>
+                                            <option ng-repeat="item in vm.gastosVariables" value="{{item.id}}">{{item.category}}</option>
                                         </optgroup>
                                         <optgroup ng-show="vm.gastosOtros.length>0"  label="OTROS">
-                                            <option ng-repeat="category in vm.gastosOtros" value="category">{{category}}</option>
+                                            <option ng-repeat="item in vm.gastosOtros"  value="{{item.id}}">{{item.category}}</option>
                                         </optgroup>
 
                                     </select>

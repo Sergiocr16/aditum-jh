@@ -16,11 +16,11 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-$rootScope.active = "houseAdministration";
+        $rootScope.active = "houseAdministration";
 
         setTimeout(function() {
             loadAll();
-        }, 1500)
+        }, 3000)
 
         function loadAll() {
             Balance.queryBalances({

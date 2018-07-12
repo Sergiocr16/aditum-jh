@@ -145,7 +145,12 @@
                return valuePerMonth;
          }
 
-       vm.setTotalIngressByMonth = function(index){
+       vm.setTotalIngressByMonth = function(index,month){
+           if(vm.hasLettersOrSpecial(month.valuePerMonth)){
+             month.valido = false;
+           }else{
+             month.valido = true;
+           }
            vm.totalIngressByMonth[index].valuePerMonth = 0;
            angular.forEach(vm.mantenimientoValues,function(item,key){
                  if(index==key){
@@ -184,7 +189,12 @@
                 }
           })
         }
-       vm.setTotalEgressByMonth = function(index){
+       vm.setTotalEgressByMonth = function(index,month){
+          if(vm.hasLettersOrSpecial(month.valuePerMonth)){
+            month.valido = false;
+          }else{
+            month.valido = true;
+          }
            vm.totalEgressByMonth[index].valuePerMonth = 0;
            angular.forEach(vm.egressCategories,function(item,key){
               angular.forEach(item.valuesPerMonth,function(item2,key){
@@ -204,6 +214,29 @@
         function onSaveError () {
             vm.isSaving = false;
         }
+         vm.confirmSave = function() {
+
+                bootbox.confirm({
+
+                    message: "¿Está seguro que desea registrar el presupuesto con los valores ingresados?",
+
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
+                        }
+                    },
+                    callback: function(result) {
+                        if (result) {
+                            save ();
+                        }
+                    }
+                });
+            };
          function save (){
            if(vm.presupuesto.anno==undefined){
                 toastr["error"]("Debe seleccionar el año a presupuestar");
@@ -218,6 +251,7 @@
                     vm.presupuesto.date = moment(new Date(), 'DD/MM/YYYY').toDate();
                     vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
                     vm.presupuesto.companyId = $rootScope.companyId;
+                    vm.presupuesto.deleted = 0;
                     Presupuesto.save(vm.presupuesto, saveIngresosValues, onSaveError);
                 }
             }
@@ -225,7 +259,8 @@
         }
 
        vm.hasLettersOrSpecial = function(s){
-            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","´ñ","o","p","q","r","s","t","u","v","w","x","y","z",",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^"]
+            var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+
             var invalido = 0;
             angular.forEach(caracteres,function(val,index){
                 if (s!=undefined){
@@ -281,7 +316,7 @@
         function saveEgressValues (result) {
           angular.forEach(vm.egressCategories,function(item,key){
                var detallePresupuesto = {};
-                detallePresupuesto.category = item.category;
+                detallePresupuesto.category = item.id;
                 detallePresupuesto.valuePerMonth = item.valuePerMonth;
                 detallePresupuesto.type = 2;
                 detallePresupuesto.presupuestoId = result.id;

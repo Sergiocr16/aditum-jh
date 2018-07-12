@@ -1,0 +1,48 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title" style="margin-bottom:0px!important">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="house()">Casas</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="house()">Administrar</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding:5px">
+
+        </div>
+    </div>
+</div>
+<!--<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">-->
+<!--<div class="spinnerLoading">-->
+<!--<div class="double-bounce1"></div>-->
+<!--<div class="double-bounce2"></div>-->
+<!--</div>-->
+<!--</div>-->
+<div class="row " id="tableData">
+    <div class="col-md-12 no-padding" >
+        <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
+
+            <div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">
+                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.mensualReport')}" ui-sref="budgetExecution.mensualReport" >
+                    Reporte mensual
+                </a>
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('')}" ng-click="vm.changeHouse(house)">
+                    Reporte anual
+                </a>
+            </div>
+
+        </div>
+        <div ui-view class="col-md-12 margin-top-10">
+        </div>
+
+    </div>
+</div>
+</div>

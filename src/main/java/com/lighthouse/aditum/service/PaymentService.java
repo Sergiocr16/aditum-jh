@@ -5,15 +5,19 @@ import com.lighthouse.aditum.repository.PaymentRepository;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
+import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.PaymentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -34,12 +38,17 @@ public class PaymentService {
 
     private final BancoService bancoService;
 
+    private final PaymentEmailSenderService paymentEmailSenderService;
 
-    public PaymentService(PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService,BancoService bancoService) {
+    private final ResidentService residentService;
+
+    public PaymentService(ResidentService residentService, PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
         this.bancoService = bancoService;
+        this.paymentEmailSenderService = paymentEmailSenderService;
+        this.residentService = residentService;
     }
 
     /**
@@ -68,8 +77,15 @@ public class PaymentService {
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment = paymentRepository.save(payment);
         bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
-        for (int i = 0; i < paymentDTO.getCharges().size(); i++) {
-            this.payCharge(paymentDTO.getCharges().get(i),payment);
+        List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
+        for (int i = 0; i < paymentCharges.size(); i++) {
+            this.payCharge(paymentCharges.get(i),payment);
+        }
+        PaymentDTO paymentDTo = paymentMapper.toDto(payment);
+        paymentDTo.setCharges(paymentCharges);
+        paymentDTo.setEmailTo(paymentDTO.getEmailTo());
+        if(paymentDTo.getEmailTo().size()>0) {
+            this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
         }
         return paymentMapper.toDto(payment);
     }
@@ -110,21 +126,28 @@ public class PaymentService {
         log.debug("Request to get all Payments");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<PaymentDTO> paymentsDTO = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId).map(paymentMapper::toDto);
-        paymentsDTO.getContent().forEach(paymentDTO -> {
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        });
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
         return paymentsDTO;
     }
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all Payments");
-        Page<PaymentDTO> paymentsDTO = paymentRepository.findByHouseId(pageable,houseId).map(paymentMapper::toDto);
-        paymentsDTO.getContent().forEach(paymentDTO -> {
+        Page<Payment> payments = paymentRepository.findByHouseId(pageable,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-        });
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
+
         return paymentsDTO;
     }
 
@@ -151,7 +174,7 @@ public class PaymentService {
         paymentRepository.delete(id);
     }
 
-    private PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
+    public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
        PaymentDTO paymentDTO = new PaymentDTO();
        paymentDTO.setAccount(cPaymentDTO.getAccount());
        paymentDTO.setAmmount(cPaymentDTO.getAmmount());
@@ -166,6 +189,16 @@ public class PaymentService {
        return paymentDTO;
     }
 
+    private List<ChargeDTO> filterCharges(CreatePaymentDTO payment){
+        List<ChargeDTO> listaCargos = payment.getCharges();
+        List<ChargeDTO> cargosFiltrados = new ArrayList<>();
+        for (int i = 0; i < listaCargos.size(); i++) {
+            if(Integer.parseInt(listaCargos.get(i).getPaymentAmmount())!=0){
+                cargosFiltrados.add(listaCargos.get(i));
+            }
+        }
+        return cargosFiltrados;
+    }
     public PaymentDTO findPaymentInAdvance(Long houseId){
         List<Payment> payments = paymentRepository.findPaymentsInAdvance(null,"2","0",houseId).getContent();
         Payment paymentToUse = null;
@@ -198,5 +231,54 @@ public class PaymentService {
             chargeService.pay(charge,payment);
         }
     }
-}
 
+
+    public File obtainFileToPrint(Long paymentId){
+        PaymentDTO paymentDTO = this.findOne(paymentId);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft("0");
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        List<ResidentDTO> emailTo = new ArrayList<>();
+        for (int i = 0; i < residents.getContent().size(); i++) {
+            if (residents.getContent().get(i).getPrincipalContact()==1){
+                emailTo.add(residents.getContent().get(i));
+            }
+        }
+
+        paymentDTO.setEmailTo(emailTo);
+
+        return paymentEmailSenderService.obtainFileToPrint(paymentDTO,false);
+    }
+    @Async
+    public void sendPaymentEmail(Long paymentId){
+        PaymentDTO paymentDTO = this.findOne(paymentId);
+        paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+        paymentDTO.getCharges().forEach(chargeDTO -> {
+            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+        });
+        if(paymentDTO.getCharges().size()==0){
+            paymentDTO.setCharges(new ArrayList<>());
+        }
+        paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+        paymentDTO.setAmmountLeft("0");
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        List<ResidentDTO> emailTo = new ArrayList<>();
+        for (int i = 0; i < residents.getContent().size(); i++) {
+            if (residents.getContent().get(i).getPrincipalContact()==1){
+                emailTo.add(residents.getContent().get(i));
+            }
+        }
+
+        paymentDTO.setEmailTo(emailTo);
+        paymentEmailSenderService.sendPaymentEmail(paymentDTO,false);
+    }
+
+
+}

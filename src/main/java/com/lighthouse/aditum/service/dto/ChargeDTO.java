@@ -33,17 +33,19 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
+    private String left;
+
+    private String paymentAmmount;
+
     private ZonedDateTime paymentDate;
 
     private Long houseId;
 
     private Long paymentId;
 
+    private int total;
+
     private Long companyId;
-
-    private String left;
-
-    private String paymentAmmount;
 
     public Long getId() {
         return id;
@@ -125,6 +127,15 @@ public class ChargeDTO implements Serializable {
         this.paymentId = paymentId;
     }
 
+    public ChargeDTO(String concept,int total ) {
+        this.concept = concept;
+        this.total = total;
+
+    }
+    public ChargeDTO() {
+
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -132,6 +143,7 @@ public class ChargeDTO implements Serializable {
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
+
 
     @Override
     public boolean equals(Object o) {

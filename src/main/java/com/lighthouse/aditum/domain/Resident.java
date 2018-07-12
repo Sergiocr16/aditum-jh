@@ -61,8 +61,11 @@ public class Resident implements Serializable {
     @Column(name = "image_url")
     private String image_url;
 
-    @Column(name = "type")
+    @Column(name = "jhi_type")
     private Integer type;
+
+    @Column(name = "principal_contact")
+    private Integer principalContact;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -238,6 +241,19 @@ public class Resident implements Serializable {
         this.type = type;
     }
 
+    public Integer getPrincipalContact() {
+        return principalContact;
+    }
+
+    public Resident principalContact(Integer principalContact) {
+        this.principalContact = principalContact;
+        return this;
+    }
+
+    public void setPrincipalContact(Integer principalContact) {
+        this.principalContact = principalContact;
+    }
+
     public User getUser() {
         return user;
     }
@@ -286,33 +302,34 @@ public class Resident implements Serializable {
             return false;
         }
         Resident resident = (Resident) o;
-        if (resident.id == null || id == null) {
+        if (resident.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, resident.id);
+        return Objects.equals(getId(), resident.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Resident{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", lastname='" + lastname + "'" +
-            ", secondlastname='" + secondlastname + "'" +
-            ", identificationnumber='" + identificationnumber + "'" +
-            ", phonenumber='" + phonenumber + "'" +
-            ", image='" + image + "'" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", phonenumber='" + getPhonenumber() + "'" +
+            ", image='" + getImage() + "'" +
             ", imageContentType='" + imageContentType + "'" +
-            ", email='" + email + "'" +
-            ", isOwner='" + isOwner + "'" +
-            ", enabled='" + enabled + "'" +
-            ", image_url='" + image_url + "'" +
-            ", type='" + type + "'" +
-            '}';
+            ", email='" + getEmail() + "'" +
+            ", isOwner='" + getIsOwner() + "'" +
+            ", enabled='" + getEnabled() + "'" +
+            ", image_url='" + getImage_url() + "'" +
+            ", type='" + getType() + "'" +
+            ", principalContact='" + getPrincipalContact() + "'" +
+            "}";
     }
 }

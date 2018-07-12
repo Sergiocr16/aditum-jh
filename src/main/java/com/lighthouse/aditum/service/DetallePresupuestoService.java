@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.DetallePresupuesto;
 import com.lighthouse.aditum.repository.DetallePresupuestoRepository;
 import com.lighthouse.aditum.service.dto.DetallePresupuestoDTO;
+import com.lighthouse.aditum.service.dto.EgressCategoryDTO;
 import com.lighthouse.aditum.service.mapper.DetallePresupuestoMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +29,12 @@ public class DetallePresupuestoService {
 
     private final DetallePresupuestoMapper detallePresupuestoMapper;
 
-    public DetallePresupuestoService(DetallePresupuestoRepository detallePresupuestoRepository, DetallePresupuestoMapper detallePresupuestoMapper) {
+    private final EgressCategoryService egressCategoryService;
+
+    public DetallePresupuestoService(DetallePresupuestoRepository detallePresupuestoRepository, DetallePresupuestoMapper detallePresupuestoMapper,EgressCategoryService egressCategoryService) {
         this.detallePresupuestoRepository = detallePresupuestoRepository;
         this.detallePresupuestoMapper = detallePresupuestoMapper;
+        this.egressCategoryService = egressCategoryService;
     }
 
     /**
@@ -56,7 +60,15 @@ public class DetallePresupuestoService {
     public Page<DetallePresupuestoDTO> getCategoriesByBudget(Pageable pageable, String budgetId) {
         log.debug("Request to get all Visitants in last month by house");
         Page<DetallePresupuesto> result = detallePresupuestoRepository.findByPresupuestoId(pageable,budgetId);
-        return result.map(detallePresupuesto -> detallePresupuestoMapper.toDto(detallePresupuesto));
+        Page<DetallePresupuestoDTO> detallesDTO = result.map(detallePresupuesto -> detallePresupuestoMapper.toDto(detallePresupuesto));
+        detallesDTO.getContent().forEach(detallePresupuestoDTO -> {
+        if(Integer.parseInt(detallePresupuestoDTO.getType())==2){
+           EgressCategoryDTO egressCategoryDTO = egressCategoryService.findOne(Long.parseLong(detallePresupuestoDTO.getCategory()));
+             detallePresupuestoDTO.setCategory(egressCategoryDTO.getCategory());
+            detallePresupuestoDTO.setGroup(egressCategoryDTO.getGroup());
+        }
+ });
+        return detallesDTO;
     }
     /**
      *  Get all the detallePresupuestos.

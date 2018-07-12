@@ -23,6 +23,8 @@ public class PresupuestoDTO implements Serializable {
     @NotNull
     private Integer anno;
 
+    private Integer deleted;
+
     private Long companyId;
 
     public Long getId() {
@@ -55,6 +57,14 @@ public class PresupuestoDTO implements Serializable {
 
     public void setAnno(Integer anno) {
         this.anno = anno;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Long getCompanyId() {
@@ -93,6 +103,7 @@ public class PresupuestoDTO implements Serializable {
             ", date='" + getDate() + "'" +
             ", modificationDate='" + getModificationDate() + "'" +
             ", anno='" + getAnno() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }
