@@ -123,7 +123,7 @@
                                                     <span class="font-13 bold">Cuenta *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <select class="form-control gray-font"  data-ng-model="vm.account" ng-options="banco.beneficiario for banco in vm.bancos | orderBy: 'beneficiario' track by banco.id" required>
+                                                    <select class="form-control gray-font" data-ng-model="vm.account" ng-options="banco.beneficiario for banco in vm.bancos | orderBy: 'beneficiario' track by banco.id" required>
                                                         <option value="">Selecciona una cuenta</option>
                                                     </select>
                                                 </div>
@@ -152,7 +152,7 @@
                                                     <span class="font-13 bold">Fecha de pago *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')"  enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
+                                                    <input ng-model="vm.payment.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" enable-time="false" datetime-picker="longDate" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -178,95 +178,169 @@
 
                                             </div>
                                         </div>
-                                            <hr class="col-md-12">
+                                        <hr class="col-md-12">
                                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingTable">
                                             <div class="spinnerLoading" style="margin:50px auto!important;">
                                                 <div class="double-bounce1"></div>
                                                 <div class="double-bounce2"></div>
                                             </div>
                                         </div>
-                                        <table class="table table-bordered" id="tableContent">
-                                            <thead>
-                                            <tr>
-                                                <th style="border-top:white 1px solid;border-left:white 1px solid;">
-                                                   <span style="display:grid;text-align:center">Liquidar cuota</span>
-                                                    <div class="md-checkbox" style="margin:0 auto">
-                                                        <input type="checkbox" ng-model="vm.selectedAll" ng-change="vm.selectAll()" id="checkbox1" class="md-check">
-                                                        <label for="checkbox1">
-                                                            <span style="margin-left: 45%"></span>
-                                                            <span class="check" style="margin-left: 45%"></span>
-                                                            <span class="box" style="margin-left: 45%"></span>
-                                                        </label>
+                                        <div id="tableContent">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                <tr>
+                                                    <th style="border-top:white 1px solid;border-left:white 1px solid;">
+                                                        <span style="display:grid;text-align:center">Liquidar cuota</span>
+                                                        <div class="md-checkbox" style="margin:0 auto">
+                                                            <input type="checkbox" ng-model="vm.selectedAll" ng-change="vm.selectAll()" id="checkbox1" class="md-check">
+                                                            <label for="checkbox1">
+                                                                <span style="margin-left: 45%"></span>
+                                                                <span class="check" style="margin-left: 45%"></span>
+                                                                <span class="box" style="margin-left: 45%"></span>
+                                                            </label>
+                                                        </div>
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
+                                                        Fecha de vencimiento
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
+
+                                                        Concepto
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
+
+                                                        Cargo
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
+
+                                                        Restante
+                                                    </th>
+                                                    <th style="vertical-align: top;border-right:1px solid white;" class="text-center">
+
+                                                        Pago
+                                                    </th>
+                                                    <th style="width:1.5%; padding:0;border-left:1px solid white;">&nbsp;&nbsp;&nbsp;</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                <tr style="height:35px" ng-hide="vm.charges.length==0" ng-repeat="charge in vm.charges | orderBy: 'date'" ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
+                                                    <td>
+                                                        <h5 class="text-center no-margin">
+                                                            <input type="checkbox" ng-model="charge.isIncluded" ng-change="vm.calculatePayments(vm.payment)">
+                                                        </h5>
+                                                    </td>
+                                                    <td class="text-center">{{charge.date | date}}</td>
+                                                    <td>{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
+                                                    <td>₡ {{charge.ammount | currency : "" : 0}}</td>
+                                                    <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
+                                                    <td ng-show="charge.isIncluded ==false">₡ -</td>
+                                                    <td ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
+                                                    <td ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
+
+                                                    <td id="{{charge.id}}" class="infoCharge" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                    </td>
+                                                </tr>
+                                                <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">
+                                                    <td colspan="7">
+                                                        <h5 class="text-center" style="font-weight:bold;color:green">NO EXISTEN DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE MANTENIMIENTO</h5>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+
+                                                    <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;" colspan="5"><b ng-show="vm.toPay>0">SALDO A FAVOR DE MANTENIMIENTO</b><b id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
+
+
+                                                    <td class="toPay" style="font-weight:bold" colspan="2" ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}">
+                                                        <h6 style="background-color: transparent;text-align:center"><b>₡ {{vm.toPay | currency : "" : 0}}</b></h6>
+                                                    </td>
+
+
+
+                                                </tr>
+
+                                                </tbody>
+                                            </table>
+                                            <div class="col-md-12 no-padding no-margin">
+                                            <div class="col-md-8">
+                                                <h5><b>Enviar comprobante de pago por correo a:</b></h5>
+                                                <h5 ng-if="vm.residents.length==0" style="font-weight:bold;font-size:12px!important">No existe ningún residente con un correo registrado en esta filial.</h5>
+                                                <div ng-if="vm.residents.length!=0" class="md-radio-list col-md-4 no-padding" style="border-right:solid 1px #CFD8DC">
+                                                    <div class="md-radio">
+                                                        <input type="radio" ng-click="vm.selectPrincipalContact()" id="radio1" name="radio1" class="md-radiobtn" checked="">
+                                                        <label for="radio1">
+                                                            <span class="inc"></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span>
+                                                            Contacto principal </label>
                                                     </div>
-                                                </th>
-                                                <th style="vertical-align: top;" class="text-center">
-                                                    Fecha de vencimiento
-                                                </th>
-                                                <th style="vertical-align: top;" class="text-center">
+                                                    <div class="md-radio">
+                                                        <input type="radio" id="radio3" ng-click="vm.selectNoneContact()" name="radio1" class="md-radiobtn">
+                                                        <label for="radio3">
+                                                            <span class="inc"></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span>
+                                                            Seleccionar </label>
+                                                    </div>
+                                                    <div class="md-radio">
+                                                        <input type="radio" id="radio2" ng-click="vm.selectAllContact()" name="radio1" class="md-radiobtn">
+                                                        <label for="radio2">
+                                                            <span class="inc"></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span>
+                                                            Todos </label>
+                                                    </div>
+                                                    <div class="md-radio">
+                                                        <input type="radio" id="radio4" ng-click="vm.selectNoneContact()" name="radio1" class="md-radiobtn">
+                                                        <label for="radio4">
+                                                            <span class="inc"></span>
+                                                            <span class="check"></span>
+                                                            <span class="box"></span>
+                                                            Ninguno </label>
+                                                    </div>
+                                                </div>
+                                                <div ng-if="vm.residents.length!=0" class="col-md-5" style="height:150px;overflow-y:auto">
+                                                    <div class="col-md-12 no-padding">
+                                                        <h5 ng-repeat="resident in vm.residents | orderBy: '!principalContact' track by resident.id ">
+                                                            <input type="checkbox" id="{{resident.id}}" ng-model="resident.selected" style="float: left;margin: 10px 6px;">
+                                                            <label for="{{resident.id}}">
+                                                                <span style="display:block">{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</span>
+                                                                <span style="font-weight:bold;font-size:10px">({{resident.email}})</span>
+                                                                <i style="color:#4DB3A2;font-size:10px!important;margin: 2px 5px;float: left;" class="fa fa-address-book" aria-hidden="true" ng-if="resident.principalContact==1" angular-popover direction="right" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i>
 
-                                                Concepto
-                                                </th>
-                                                <th style="vertical-align: top;" class="text-center">
-
-                                                Cargo
-                                                </th>
-                                                <th style="vertical-align: top;" class="text-center">
-
-                                                Restante
-                                                </th>
-                                                <th style="vertical-align: top;border-right:1px solid white;" class="text-center">
-
-                                                    Pago
-                                                </th>
-                                                <th style="width:1.5%; padding:0;border-left:1px solid white;">&nbsp;&nbsp;&nbsp;</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <tr  style="height:35px" ng-hide="vm.charges.length==0" ng-repeat="charge in vm.charges | orderBy: 'date'"ng-class="{'no-liquid': charge.estado==1,'debt-no-selected':charge.isIncluded==false,'parc-liquid':charge.estado==2,'liquid':charge.estado==3}">
-                                                <td>
-                                                <h5 class="text-center no-margin">
-                                                    <input type="checkbox" ng-model="charge.isIncluded" ng-change="vm.calculatePayments(vm.payment)">
-                                                </h5>
-                                                </td>
-                                                <td class="text-center" >{{charge.date | date}}</td>
-                                                <td >{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
-                                                <td>₡ {{charge.ammount | currency : "" : 0}}</td>
-                                                <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
-                                                <td ng-show="charge.isIncluded ==false">₡ -</td>
-                                                <td  ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
-                                                <td  ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
-
-                                                <td id="{{charge.id}}" class="infoCharge" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
-                                                    <div ng-class="{'no-bg-color':charge.isIncluded==false}"style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
-                                                    <div ng-class="{'no-bg-color':charge.isIncluded==false}"style="background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
-                                                </td>
-                                            </tr>
-                                            <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">
-                                                <td colspan="7"><h5 class="text-center" style="font-weight:bold;color:green">NO EXISTEN DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE MANTENIMIENTO</h5></td>
-                                            </tr>
-
-                                            <tr>
-
-                                                <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;" colspan="5"><b ng-show="vm.toPay>0">SALDO A FAVOR DE MANTENIMIENTO</b><b id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
-
-
-                                                <td class="toPay" style="font-weight:bold" colspan="2" ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}"><h6 style="background-color: transparent;text-align:center"><b>₡ {{vm.toPay | currency : "" : 0}}</b></h6></td>
-
-
-
-                                            </tr>
-
-                                            </tbody>
-                                        </table>
-
-                                            <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
-                                                <h3 class="text-right">
-                                                    <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined || vm.payment.ammount != 0 && vm.isAnyChargeSelected()==false && vm.charges.length!=0" class="btn blue">Realizar Pago</button>
-                                                    <button type="button" ng-click="vm.back()" class="btn red default">Cancelar</button>
-                                                </h3>
+                                                            </label>
+                                                        </h5>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <hr>
+                                                <div class="col-md-4" style="margin-top:10px">
+                                                    <div style="height:70px;float:right">
+                                                        <div class="col-md-12">
+                                                            <h5 style="display:inline;margin-right:5px"><b>Imprimir recibo de pago</b></h5>
+                                                            <div class="md-checkbox" style="margin:0 auto;height:50px;display:inline;">
+                                                                <input type="checkbox" ng-model="vm.printReceipt" id="checkbox2" class="md-check">
+                                                                <label for="checkbox2">
+                                                                    <span></span>
+                                                                    <span class="check"></span>
+                                                                    <span class="box"></span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                        </div>
+
+                                        </div>
+                                        </div>
+                                        <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
+                                            <h3 class="text-right">
+                                                <button type="submit" ng-disabled="vm.isSaving || vm.payment.ammount==0 || vm.payment.ammount==undefined || vm.payment.ammount != 0 && vm.isAnyChargeSelected()==false && vm.charges.length!=0" class="btn blue">Realizar Pago</button>
+                                                <button type="button" ng-click="vm.back()" class="btn red default">Cancelar</button>
+                                            </h3>
+                                        </div>
+                                        <hr>
                                     </form>
                                 </div>
                             </div>
@@ -279,4 +353,4 @@
 
     </div>
 </div>
-</div>
+

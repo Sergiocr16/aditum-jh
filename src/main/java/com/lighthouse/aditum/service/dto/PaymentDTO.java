@@ -45,6 +45,8 @@ public class PaymentDTO implements Serializable {
 
     private List<ChargeDTO> charges;
 
+    private List<ResidentDTO> emailTo;
+
     public Long getId() {
         return id;
     }
@@ -184,5 +186,13 @@ public class PaymentDTO implements Serializable {
 
     public void setCharges(List<ChargeDTO> charges) {
         this.charges = charges;
+    }
+
+    public List<ResidentDTO> getEmailTo() {
+        return emailTo;
+    }
+
+    public void setEmailTo(List<ResidentDTO> emailTo) {
+        this.emailTo = emailTo;
     }
 }

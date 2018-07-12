@@ -21,6 +21,9 @@
                     return data;
                 }
             },
+            'sendPaymentEmail':{
+               url:'api/payments/sendEmail/:paymentId'
+             },
             'getByHouse':{
              url:'api/payments/byHouse/:houseId',
              isArray: true,

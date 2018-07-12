@@ -51,12 +51,12 @@
         </div>
         <!--<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>-->
         <div class="form-group col-md-offset-1 col-md-3 col-sm-4 col-xs-7 no-padding">
-            <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por autorización</label>
+            <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por cuenta en Aditum</label>
             <div class="col-md-7 col-sm-7 col-xs-8 ">
                 <select class="form-control gray-font" ng-model="vm.filterAuthorized" ng-change="vm.setAuthorizedView(vm.filterAuthorized)" required>
                     <option value="2">Todos</option>
-                    <option value="1">Autorizados</option>
-                    <option value="0">No autorizados</option>
+                    <option value="1">Si tiene</option>
+                    <option value="0">No tiene</option>
                 </select>
             </div>
         </div>
@@ -90,8 +90,9 @@
 
                     </div>
                     <div class="col-xs-8 no-padding">
-                        <span style="padding:5px;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.isOwner==1" class=""><i class="fa fa-user-o" aria-hidden="true" style="font-size:20px!important;"></i></span>
-                        <span style="padding:5px;border-radius:5px!important;float:right;color:red" ng-show="resident.isOwner==0" class=""><i class="fa fa-user-o" aria-hidden="true" style="font-size:20px!important;"></i></span>
+                        <span style="z-index:-1!important;padding:5px;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.isOwner==1" class=""><i class="fa fa-user-o" aria-hidden="true" style="font-size:20px!important;" angular-popover direction="left" template="<div style='padding:10px;width:200px;color:gray'><h5>Si tiene cuenta en el sistema<h5></div>" mode="mouseover"></i></span>
+                        <span style="z-index:-1!important;padding:5px;border-radius:5px!important;float:right;color:red" ng-show="resident.isOwner==0" class=""><i class="fa fa-user-o" aria-hidden="true" style="font-size:20px!important;" angular-popover direction="left" template="<div style='padding:10px;width:200px;color:gray'><h5>No tiene cuenta en el sistema<h5></div>" mode="mouseover"></i></span>
+                        <span style="z-index:-1!important;padding:5px;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>
 
                         <div class="col-xs-12">
                             <h5><b>Cédula: </b>  {{resident.identificationnumber.toUpperCase()}}</h5>
@@ -125,7 +126,10 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name'" ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
-                        <td style="text-transform: capitalize;">{{resident.name}} </td>
+                        <td style="text-transform: capitalize;">
+                            <i style="color:#4DB3A2;font-size:16px!important;margin: 2px 5px;float: left;" class="fa fa-address-book" aria-hidden="true" ng-if="resident.principalContact==1" angular-popover direction="right" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i>
+                            <span ng-if="resident.principalContact==0" style="margin-right:22px"></span>
+                            {{resident.name}} </td>
                         <td>{{resident.identificationnumber.toUpperCase()}}</td>
                         <td>{{resident.phonenumber}}</td>
                         <!--<td>{{resident.email}}</td>-->

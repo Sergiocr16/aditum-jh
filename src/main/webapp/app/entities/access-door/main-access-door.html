@@ -680,7 +680,11 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="resident in vm.residents | filter:search | orderBy:'name'">
-                                            <td>{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</td>
+                                            <td>
+                                                <i style="color:#4DB3A2;font-size:16px!important;margin: 2px 5px;float: left;" class="fa fa-address-book" aria-hidden="true" ng-if="resident.principalContact==1" angular-popover direction="right" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i>
+                                                <span ng-if="resident.principalContact==0" style="margin-right:22px"></span>
+                                                {{resident.name}} {{resident.lastname}} {{resident.secondlastname}}
+                                            </td>
                                             <td>{{resident.identificationnumber}}</td>
                                             <td>{{resident.phonenumber}}</td>
                                         </tr>
