@@ -9,6 +9,7 @@
 
     function DetallePresupuestoDialogController ($localStorage,$state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
         var vm = this;
+           $rootScope.active = "presupuestos";
         vm.presupuesto = {};
         vm.detallePresupuesto = entity;
         vm.save = save;

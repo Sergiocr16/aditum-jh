@@ -15,7 +15,34 @@
 
         vm.openCalendar = openCalendar;
          var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
-         var actualMonth = new Date(y1, m1, 1);
+         vm.actualMonth = new Date(y1, m1, 1);
+         vm.month = m1+1;
+         vm.rowsQuantity = vm.month + 4;
+        setTimeout(function(){vm.loadAll();},1000)
+
+        vm.loadAll = function() {
+             MensualAndAnualReport.getAnualReport({
+                  actual_month: moment(vm.actualMonth).format(),
+                  companyId: $rootScope.companyId,
+                  withPresupuesto: 1,
+              },onSuccess,onError);
+
+        }
+        function onSuccess(data, headers) {
+             vm.report = data;
+             vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
+             console.log(vm.report)
+                 $("#loadingIcon2").fadeOut(0);
+                           setTimeout(function() {
+                               $("#reportResults").fadeIn(500);
+                           }, 200)
+//              angular.forEach(vm.report.anualEgressByMonth,function(value,key){
+//               console.log(value)
+//              })
+
+
+        }
+
         function openCalendar(date) {
              vm.datePickerOpenStatus[date] = true;
         }
@@ -47,6 +74,10 @@
                 }
             }
           }
+
+            function onError(error) {
+                      AlertService.error(error.data.message);
+                  }
           vm.datePickerOpenStatus.initialtime = false;
              vm.datePickerOpenStatus.finaltime = false;
 

@@ -7,6 +7,7 @@ public class MensualReportDTO {
     private MensualEgressReportDTO mensualEgressReport;
     private List<MensualAndAnualAccountDTO> mensualAndAnualAccount;
     private int totalInitialBalance;
+    private int flujo;
 
     public MensualIngressReportDTO getMensualIngressReport() {
         return mensualIngressReport;
@@ -42,5 +43,13 @@ public class MensualReportDTO {
             totalBalance = totalBalance +mensualAndAnualAccount.get(i).getInicialBalance();
         }
         this.totalInitialBalance = totalBalance;
+    }
+
+    public int getFlujo() {
+        return flujo;
+    }
+
+    public void setFlujo(int flujo) {
+        this.flujo = flujo;
     }
 }

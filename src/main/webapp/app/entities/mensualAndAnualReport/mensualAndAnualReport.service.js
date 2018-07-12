@@ -26,21 +26,21 @@
                      }
 
              },
-               'getAnualReport': { method: 'GET',
-                           url: 'api/mensualAndAnualReport/:actual_month/:companyId/:withPresupuesto',
-                           params:{
-                              actual_month:'@actual_month',
-                              companyId: '@companyId',
-                              withPresupuesto: '@withPresupuesto'
-                          },
-                          transformResponse: function (data) {
-                              if (data) {
-                                  data = angular.fromJson(data);
-                              }
-                              return data;
-                          }
+             'getAnualReport': { method: 'GET',
+                   url: 'api/anualReport/:actual_month/:companyId/:withPresupuesto',
+                   params:{
+                      actual_month:'@actual_month',
+                      companyId: '@companyId',
+                      withPresupuesto: '@withPresupuesto'
+                  },
+                  transformResponse: function (data) {
+                      if (data) {
+                          data = angular.fromJson(data);
+                      }
+                      return data;
+                  }
 
-                          }
+             }
         });
     }
 })();

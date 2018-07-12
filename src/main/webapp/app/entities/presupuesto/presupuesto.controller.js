@@ -10,7 +10,7 @@
     function PresupuestoController(Presupuesto,$rootScope,$state,$localStorage,CommonMethods) {
 
         var vm = this;
-
+        $rootScope.active = "presupuestos";
         vm.presupuestos = [];
 
         setTimeout(function(){ loadAll();},900)

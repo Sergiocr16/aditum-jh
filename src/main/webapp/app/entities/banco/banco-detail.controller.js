@@ -10,6 +10,7 @@
     function BancoDetailController($scope, $rootScope, $stateParams, previousState, entity, Banco, Company,Egress,pagingParams,ParseLinks,Charge,Payment,BalanceByAccount,Transferencia) {
         var vm = this;
       vm.datePickerOpenStatus = {};
+          $rootScope.active = "bancos";
         vm.openCalendar = openCalendar;
         vm.banco = entity;
         vm.previousState = previousState.name;

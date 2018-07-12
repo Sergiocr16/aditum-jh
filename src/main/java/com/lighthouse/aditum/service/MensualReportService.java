@@ -90,6 +90,7 @@ public class MensualReportService {
 
         mensualEgressReportDTO.setOtherCosts(mensualEgressReportDTO.getSumCategoryEgress(mensualEgressReportDTO.getOtherCosts(),"Otros gastos",mensualAndAnualIngressReportDTO.getAllIngressCategoriesTotal()));
         mensualEgressReportDTO.setGroupsTotal(mensualEgressReportDTO.getOtherCosts(),3,mensualAndAnualIngressReportDTO.getAllIngressCategoriesTotal());
+        mensualEgressReportDTO.setAllEgressTotal();
         if(withPresupuesto==1){
             this.getEgressBudgets(mensualEgressReportDTO,companyId,initialTime,finalTime,egressCategories);
             mensualEgressReportDTO.setTotalBudgetPerGroup();
@@ -137,7 +138,7 @@ public class MensualReportService {
         return listaFinal;
     }
 
-    public void getEgressBudgets(MensualEgressReportDTO mensualEgressReportDTO, Long companyId, String intialTime, String finalTime, Page<EgressCategoryDTO> egressCategories) {
+    private void getEgressBudgets(MensualEgressReportDTO mensualEgressReportDTO, Long companyId, String intialTime, String finalTime, Page<EgressCategoryDTO> egressCategories) {
 
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(intialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
@@ -188,7 +189,7 @@ public class MensualReportService {
 
     }
 
-    public void addEgressWhenHasBudget(MensualEgressReportDTO mensualEgressReportDTO, int intialTime, int finalTime, List<DetallePresupuestoDTO> egressCategoriesBudget, Page<EgressCategoryDTO> egressCategories, int j){
+    private void addEgressWhenHasBudget(MensualEgressReportDTO mensualEgressReportDTO, int intialTime, int finalTime, List<DetallePresupuestoDTO> egressCategoriesBudget, Page<EgressCategoryDTO> egressCategories, int j){
 
 
         int total = getEgressBudgetValuesPerMonths(mensualEgressReportDTO,egressCategoriesBudget.get(j),intialTime,finalTime);
@@ -217,7 +218,7 @@ public class MensualReportService {
         }
 
     }
-    public int getEgressBudgetValuesPerMonths(MensualEgressReportDTO mensualEgressReportDTO, DetallePresupuestoDTO egressCategoriesBudget, int initialMonth, int finalMonth){
+    private int getEgressBudgetValuesPerMonths(MensualEgressReportDTO mensualEgressReportDTO, DetallePresupuestoDTO egressCategoriesBudget, int initialMonth, int finalMonth){
         String[] values = egressCategoriesBudget.getValuePerMonth().split(",");
         int total = 0;
         int noEntro = 0;
@@ -259,7 +260,7 @@ public class MensualReportService {
 
 
     }
-    public void getIngressBudgets(MensualIngressReportDTO mensualAndAnualIngressReportDTO, Long companyId, String intialTime, String finalTime) {
+    private void getIngressBudgets(MensualIngressReportDTO mensualAndAnualIngressReportDTO, Long companyId, String intialTime, String finalTime) {
 
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(intialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
@@ -309,7 +310,7 @@ public class MensualReportService {
 
 
     }
-    public void getIngresBudgetValuesPerMonths(MensualIngressReportDTO mensualAndAnualIngressReportDTO, DetallePresupuestoDTO ingresCategoriesBudget, int initialMonth, int finalMonth, String category){
+    private void getIngresBudgetValuesPerMonths(MensualIngressReportDTO mensualAndAnualIngressReportDTO, DetallePresupuestoDTO ingresCategoriesBudget, int initialMonth, int finalMonth, String category){
         String[] values = ingresCategoriesBudget.getValuePerMonth().split(",");
         int total = 0;
         for (int i = initialMonth-1; i <=finalMonth-1; i++) {

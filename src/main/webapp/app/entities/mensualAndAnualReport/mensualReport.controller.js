@@ -62,6 +62,7 @@
 
         function onSuccess(data, headers) {
              vm.report = data;
+             console.log(vm.report)
 
              if(vm.mensualReportPresupuesto){
                vm.showPresupuestoFields = true;
@@ -74,10 +75,8 @@
                vm.showPresupuestoFields = false;
              }
 
-             vm.allEgressTotalQuantity = data.mensualEgressReport.fixedCostsTotal + data.mensualEgressReport.variableCostsTotal + data.mensualEgressReport.otherCostsTotal;
              vm.allEgressPercentageQuantity = data.mensualEgressReport.fixedCostsPercentage + data.mensualEgressReport.variableCostsPercentage + data.mensualEgressReport.otherCostsPercentage
-             vm.flujo = vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.allEgressTotalQuantity;
-             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.allEgressTotalQuantity;
+             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualEgressReport.allEgressCategoriesTotal;
              vm.superHabitPercentage = 100 - vm.allEgressPercentageQuantity;
              $("#loadingIcon2").fadeOut(0);
               setTimeout(function() {

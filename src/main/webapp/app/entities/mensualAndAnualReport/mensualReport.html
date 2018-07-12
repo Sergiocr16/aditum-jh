@@ -285,14 +285,14 @@
                                         </tr>
                                         <tr style="font-size:11px;" >
                                             <td style="  color:#B22222; border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">TOTAL EGRESOS:</td>
-                                            <td style=" color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.allEgressTotalQuantity+"")}}</td>
+                                            <td style=" color:#B22222;"  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.mensualEgressReport.allEgressCategoriesTotal+"")}}</td>
                                             <td style="border-right:1px solid #4F94CD;color:#B22222;" class=" text-right bold">{{vm.allEgressPercentageQuantity | number:2}}% </td>
                                             <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD; "  class=" text-right bold">₡ {{vm.formatearNumero(vm.totalEgressBudget+"")}}</td>
                                             <td ng-show="vm.showPresupuestoFields" ng-class="{'greenBudget':vm.egressBudgetDiference<0,'redBudget':vm.egressBudgetDiference>0}" style="border-right:1px solid #4F94CD;" class=" text-right bold">₡ {{vm.formatearNumero(vm.egressBudgetDiference+"")}} </td>
                                         </tr>
                                         <tr style="font-size:11px;" >
                                             <td style="  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" class=" text-right bold">FLUJO <span ng-show="vm.showPresupuestoFields"> / DÉFICIT-SUPERÁVIT</span>:</td>
-                                            <td  class=" text-right bold">₡ {{vm.formatearNumero(vm.flujo+"")}}</td>
+                                            <td  class=" text-right bold">₡ {{vm.formatearNumero(vm.report.flujo+"")}}</td>
                                             <td style="border-right:1px solid #4F94CD;" class=" text-right bold">{{vm.superHabitPercentage | number:2}}%</td>
                                             <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;   color:#4F94CD;"  class=" text-right bold"></td>
                                             <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD; "  ng-class="{'greenBudget':vm.superHabit>0,'redBudget':vm.superHabit<0}"  class=" text-right ">₡ {{vm.formatearNumero( vm.superHabit+"")}}</td>

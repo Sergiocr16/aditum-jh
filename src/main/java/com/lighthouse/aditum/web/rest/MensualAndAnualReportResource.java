@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.AnualReportService;
+import com.lighthouse.aditum.service.dto.AnualReportDTO;
 import com.lighthouse.aditum.service.dto.MensualEgressReportDTO;
 import com.lighthouse.aditum.service.dto.MensualReportDTO;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -25,9 +27,10 @@ public class MensualAndAnualReportResource {
     private static final String ENTITY_NAME = "mensualAndAnualReport";
 
     private final MensualReportService mensualReportService;
-
-    public MensualAndAnualReportResource(MensualReportService mensualReportService) {
+    private final AnualReportService anualReportService;
+    public MensualAndAnualReportResource(MensualReportService mensualReportService, AnualReportService anualReportService) {
         this.mensualReportService = mensualReportService;
+        this.anualReportService = anualReportService;
     }
 
     @Timed
@@ -50,18 +53,20 @@ public class MensualAndAnualReportResource {
 
         mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(first_month_day,final_balance_time,companyId));
         mensualReportDTO.setTotalInitialBalance(mensualReportDTO.getMensualAndAnualAccount());
+        int flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
+        mensualReportDTO.setFlujo(flujo);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualReportDTO));
     }
     @Timed
     @Secured({AuthoritiesConstants.MANAGER})
     @GetMapping("/anualReport/{actual_month}/{companyId}/{withPresupuesto}")
-    public ResponseEntity<MensualReportDTO> getAnualReport(
+    public ResponseEntity<AnualReportDTO> getAnualReport(
         @PathVariable (value = "actual_month")  String actual_month,
         @PathVariable(value = "companyId")  Long companyId,
         @PathVariable(value = "withPresupuesto")  int withPresupuesto){
-        log.debug("REST request to info of the dashboard : {}", companyId);
-        MensualReportDTO mensualReportDTO = new MensualReportDTO();
+        AnualReportDTO anualReportDTO = new AnualReportDTO();
+        anualReportService.getReportByMonth(anualReportDTO,actual_month,companyId,withPresupuesto);
 
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualReportDTO));
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(anualReportDTO));
     }
 }

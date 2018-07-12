@@ -10,6 +10,7 @@ public class MensualEgressReportDTO {
     private List<SumCategoryEgressDTO> variableCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> otherCosts = new ArrayList<>();
     private List<EgressDTO> egressList;
+    private int allEgressCategoriesTotal;
     private int fixedCostsTotal;
     private int variableCostsTotal;
     private int otherCostsTotal;
@@ -24,6 +25,7 @@ public class MensualEgressReportDTO {
     private double fixedCostsBudgetDiference;
     private double variableCostsBudgetDiference;
     private double otherCostsBudgetDiference;
+
 
     public void setCategoriesNames(Page<EgressDTO> egress,Page<EgressCategoryDTO> egressCategories){
         for (int i =0;egress.getContent().size()>i;i++) {
@@ -142,6 +144,11 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     }
 
+    public void setAllEgressTotal(){
+        this.allEgressCategoriesTotal = this.getFixedCostsTotal() + this.getOtherCostsTotal() + this.getVariableCostsTotal();
+
+    }
+
     public int getFixedCostsTotal() {
         return fixedCostsTotal;
     }
@@ -253,5 +260,13 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setOtherCostsBudgetTotal(double otherCostsBudgetTotal) {
         this.otherCostsBudgetTotal = otherCostsBudgetTotal;
+    }
+
+    public int getAllEgressCategoriesTotal() {
+        return allEgressCategoriesTotal;
+    }
+
+    public void setAllEgressCategoriesTotal(int allEgressCategoriesTotal) {
+        this.allEgressCategoriesTotal = allEgressCategoriesTotal;
     }
 }
