@@ -301,6 +301,17 @@ public class ChargeService {
     }
 
     @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByHouseAndBetweenDate(Long houseId,String initialTime,String finalTime) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId);
+        String b = "";
+        return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId))
+            .map(chargeMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByPayment(Long paymentId) {
         log.debug("Request to get all Charges");
         Page<Charge> charges = new PageImpl < >(chargeRepository.findByPaymentIdAndDeletedAndState(paymentId, 0,2));

@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.CollectionService;
+import com.lighthouse.aditum.service.dto.HouseYearCollectionDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.CollectionDTO;
@@ -109,6 +110,14 @@ public class CollectionResource {
     public ResponseEntity<CollectionDTO> getCollection(@PathVariable Long id) {
         log.debug("REST request to get Collection : {}", id);
         CollectionDTO collectionDTO = collectionService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(collectionDTO));
+    }
+
+    @GetMapping("/collections/{companyId}/{year}")
+    @Timed
+    public ResponseEntity<List<HouseYearCollectionDTO>> getCollectionsPerYear(@PathVariable Long companyId, @PathVariable String year) {
+        log.debug("REST request to get Collections by year : {}", year);
+        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(companyId,year);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(collectionDTO));
     }
 

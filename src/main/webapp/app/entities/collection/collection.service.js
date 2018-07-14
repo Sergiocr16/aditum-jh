@@ -21,6 +21,11 @@
                     return data;
                 }
             },
+            'getCollectionByYear': {
+                url:'api/collections/:companyId/:year',
+                method: 'GET',
+                isArray: true
+            },
             'update': { method:'PUT' }
         });
     }

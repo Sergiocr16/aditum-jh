@@ -477,7 +477,7 @@
                 callback: function(result) {
                     if (result) {
                         CommonMethods.waitingMessage();
-                        vm.payment.charges = vm.charges;
+                        vm.payment.charges = vm.filterCharges(vm.charges);
                         vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                         vm.payment.houseId = $rootScope.houseSelected.id;
                         if (vm.toPay > 0) {
@@ -661,6 +661,16 @@
                 }
             })
             return (count > 0)
+        }
+
+        vm.filterCharges = function(){
+        var selectedCharges = []
+         angular.forEach(vm.charges, function(charge, i) {
+                        if (charge.isIncluded == true) {
+                            selectedCharges.push(charge)
+                        }
+                    })
+                    return selectedCharges;
         }
 
         vm.back = function() {
