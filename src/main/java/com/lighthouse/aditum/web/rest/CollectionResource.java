@@ -2,12 +2,14 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.CollectionService;
+import com.lighthouse.aditum.service.CollectionTableDocumentService;
 import com.lighthouse.aditum.service.dto.HouseYearCollectionDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.CollectionDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,7 +19,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -36,9 +42,11 @@ public class CollectionResource {
     private static final String ENTITY_NAME = "collection";
 
     private final CollectionService collectionService;
+    private final CollectionTableDocumentService collectionTableDocumentService;
 
-    public CollectionResource(CollectionService collectionService) {
+    public CollectionResource(CollectionTableDocumentService collectionTableDocumentService,CollectionService collectionService) {
         this.collectionService = collectionService;
+        this.collectionTableDocumentService = collectionTableDocumentService;
     }
 
     /**
@@ -133,5 +141,30 @@ public class CollectionResource {
         log.debug("REST request to delete Collection : {}", id);
         collectionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/collections/file/{companyId}/{year}")
+    @Timed
+    public void getFile(@PathVariable Long companyId,@PathVariable String year, HttpServletResponse response) throws URISyntaxException, IOException {
+        List<HouseYearCollectionDTO> collectionDTO = collectionService.findCollectionsByYear(companyId,year);
+        File file = collectionTableDocumentService.obtainFileToPrint(companyId,year,collectionDTO);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
     }
 }

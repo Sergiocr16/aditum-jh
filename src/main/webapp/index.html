@@ -56,8 +56,8 @@
 <div  ui-view="reset">
 </div>
 
-<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
-    <div ui-view="menu" ng-show="vm.isAuthenticated() == true"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+<div ui-view="navbar" ng-if="vm.isAuthenticated() != true"  ></div>
+    <div ui-view="menu" ng-if="vm.isAuthenticated() != true"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 
@@ -66,15 +66,15 @@
     <div  ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
     </div>
 
-    <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
+    <div ui-view="access_door"  ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
-    <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div class="page-content" ng-if="!isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px">
+        <div ui-view="content"  ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" style="margin-bottom:30px">
         </div>
     </div>
-    <div ui-view="footer" ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div ui-view="footer" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 </div>

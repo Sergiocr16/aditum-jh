@@ -5,11 +5,11 @@
         .module('aditumApp')
         .controller('CollectionTableController', CollectionTableController);
 
-    CollectionTableController.$inject = ['$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope'];
+    CollectionTableController.$inject = ['$scope','$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope'];
 
-    function CollectionTableController($state, Collection, ParseLinks, AlertService, $rootScope) {
-
+    function CollectionTableController($scope,$state, Collection, ParseLinks, AlertService, $rootScope) {
         var vm = this;
+
         $rootScope.active = "collectionTable";
         vm.year = moment(new Date()).format("YYYY")
                 vm.exportActions = {
@@ -17,7 +17,28 @@
                     printing: false,
                     sendingEmail: false,
                 }
+            vm.download = function() {
+                vm.exportActions.downloading = true;
+                setTimeout(function() {
+                    $scope.$apply(function() {
+                        vm.exportActions.downloading = false;
+                    })
+                }, 7000)
+            }
 
+            vm.print = function(paymentId) {
+                vm.exportActions.printing = true;
+                setTimeout(function() {
+                    $scope.$apply(function() {
+                        vm.exportActions.printing = false;
+                    })
+                }, 7000)
+                printJS({
+                    printable: '/api/collections/file/' + $rootScope.companyId+'/'+vm.year,
+                    type: 'pdf',
+                    modalMessage: "Obteniendo comprobante de pago"
+                })
+            }
         vm.nextYear = function() {
             return parseInt(vm.year) + 1;
         }
@@ -67,7 +88,9 @@
 
             function onSuccess(data, headers) {
                 vm.collections = data;
-                console.log(vm.collections)
+                angular.forEach(vm.collections,function(collection,i){
+               collection.houseNumber =  parseInt(collection.houseNumber)
+                })
                 setTimeout(function() {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)

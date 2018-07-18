@@ -39,12 +39,12 @@ public class ChargeService {
     private final ChargeMapper chargeMapper;
     private final PaymentService paymentService;
     private final BancoService bancoService;
-    private final PaymentEmailSenderService paymentEmailSenderService;
+    private final PaymentDocumentService paymentEmailSenderService;
     private final ResidentService residentService;
 
 
     @Autowired
-    public ChargeService(ResidentService residentService,@Lazy PaymentEmailSenderService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
+    public ChargeService(ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;

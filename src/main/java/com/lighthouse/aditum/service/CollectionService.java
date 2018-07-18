@@ -12,9 +12,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -34,7 +37,7 @@ public class CollectionService {
     private final HouseService houseService;
 
     private final ChargeService chargeService;
-
+    private Locale locale = new Locale("es", "CR");
     public CollectionService(ChargeService chargeService, HouseService houseService,CollectionRepository collectionRepository, CollectionMapper collectionMapper) {
         this.houseService = houseService;
         this.collectionRepository = collectionRepository;
@@ -80,7 +83,7 @@ public class CollectionService {
             houseYearCollectionDTO.setHouseNumber(houses.get(i).getHousenumber());
             houseYearCollectionDTO.setYearCollection(
                 obtainColectionsPerMonth(houses.get(i).getId(),
-                findChargesPerHouseAndYear(houses.get(i).getId(),year)));
+                findChargesPerHouseAndYear(houses.get(i).getId(),year),year));
 
             houseYearCollection.add(houseYearCollectionDTO);
         }
@@ -93,7 +96,7 @@ public class CollectionService {
         return this.chargeService.findAllByHouseAndBetweenDate(houseId,initialTime,finalTime).getContent();
     }
 
-    private List<MensualCollectionDTO> obtainColectionsPerMonth(Long houseId,List<ChargeDTO> houseCharges){
+    private List<MensualCollectionDTO> obtainColectionsPerMonth(Long houseId,List<ChargeDTO> houseCharges,String year){
         List<MensualCollectionDTO> collectionsPerHouse = new ArrayList<>();
         String[] months = {"Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Setiembre","Octubre","Noviembre","Diciembre"};
         for (int i = 1; i <= 12; i++) {
@@ -103,31 +106,35 @@ public class CollectionService {
                                     filterChargesPerMonth(houseCharges,i),
                                     monthCollection);
             monthCollection.setMonth(months[i-1]);
-            monthCollection.setBgColor(defineCollectionColor(monthCollection.getMensualBalance(),filterChargesPerMonth(houseCharges,i)));
+            monthCollection.setStyle(defineCollectionStyle(monthCollection,i,Integer.parseInt(year),filterChargesPerMonth(houseCharges,i)));
             collectionsPerHouse.add(monthCollection);
         }
         return collectionsPerHouse;
     }
 
-     private String defineCollectionColor(int ammount,List<ChargeDTO> houseCharges){
-        String color = "";
+     private String defineCollectionStyle(MensualCollectionDTO mensualCollection,int month,int year,List<ChargeDTO> houseCharges){
+        String style = "";
+         int ammount = mensualCollection.getMensualBalance();
         int noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
         int totalCharges = houseCharges.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
         int finalAmmount = totalCharges-noPayedAmmount;
         if(totalCharges==noPayedAmmount){
-            color = "hsl(0, 100%, 86%)";
+            style = "background-color:#FFB8B8;";
         }
         if(finalAmmount!=0){
-            color = "hsl(39, 100%, 74%)";
+            style = "background-color:#FFD17A;";
         }
         if(finalAmmount == totalCharges){
-            color = "hsl(134, 100%, 88%);";
+            style = "background-color:#C2FFD0;";
         }
         if(ammount==0){
-            color = "hsla(0, 0%, 83%, 0.46)";
+            style = "background-color:#e8e8e8;";
         }
-        String a = "";
-        return color;
+
+        if(month> ZonedDateTime.now().getMonth().getValue() && ZonedDateTime.now().getYear()==year) {
+            style += "opacity: 0.6;border - right:1 px solid #002 !important;border - left:1 px solid #B3B3B3 !important;";
+        }
+        return style;
      }
 
      private List<ChargeDTO> filterChargesPerMonth(List<ChargeDTO> houseCharges,int montValue){
@@ -146,6 +153,9 @@ public class CollectionService {
         }else{
             finalTotal = payedAmmount;
         }
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        mensualCollectionDTO.setMensualBalanceToShow(format.format((double)finalTotal));
         mensualCollectionDTO.setMensualBalance(finalTotal);
         return mensualCollectionDTO;
     }

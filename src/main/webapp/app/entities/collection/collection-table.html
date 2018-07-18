@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
 
-                    <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/payments/file/{{payment.id}}" download>
+                    <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/collections/file/{{companyId}}/{{vm.year}}" download>
                         <h6 class="text-center no-margin">
                             <span style="display:block;margin-top:4px;font-weight:bold">Descargar    <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                         </h6>
@@ -79,9 +79,9 @@
                     <tbody>
                     <tr ng-repeat="collection in vm.collections |  orderBy:'houseNumber'">
                        <td class="text-center">{{collection.houseNumber}}</td>
-                        <td class="text-center" style="background-color:{{monthCollection.bgColor}}" ng-repeat="monthCollection in collection.yearCollection">
+                        <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
                             <span ng-if="monthCollection.mensualBalance!=0">₡ {{vm.formatearNumero(monthCollection.mensualBalance)}}</span>
-                            <span style="color:hsla(0, 0%, 0%, 0.36);" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
+                            <span style="color:#969696;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
                         </td>
                     </tr>
                     </tbody>

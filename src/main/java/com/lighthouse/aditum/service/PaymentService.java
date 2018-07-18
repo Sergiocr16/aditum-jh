@@ -40,11 +40,11 @@ public class PaymentService {
 
     private final BancoService bancoService;
 
-    private final PaymentEmailSenderService paymentEmailSenderService;
+    private final PaymentDocumentService paymentEmailSenderService;
 
     private final ResidentService residentService;
 
-    public PaymentService(ResidentService residentService, PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    public PaymentService(ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;

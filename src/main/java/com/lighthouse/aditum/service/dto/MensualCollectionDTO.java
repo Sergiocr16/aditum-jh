@@ -10,9 +10,11 @@ public class MensualCollectionDTO implements Serializable {
 
     private int mensualBalance;
 
+    private String mensualBalanceToShow;
+
     private String month;
 
-    private String bgColor;
+    private String style;
 
 
     public int getMensualBalance() {
@@ -31,11 +33,20 @@ public class MensualCollectionDTO implements Serializable {
         this.month = month;
     }
 
-    public String getBgColor() {
-        return bgColor;
+
+    public String getStyle() {
+        return style;
     }
 
-    public void setBgColor(String bgColor) {
-        this.bgColor = bgColor;
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
+    public String getMensualBalanceToShow() {
+        return mensualBalanceToShow;
+    }
+
+    public void setMensualBalanceToShow(String mensualBalanceToShow) {
+        this.mensualBalanceToShow = mensualBalanceToShow;
     }
 }

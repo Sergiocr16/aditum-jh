@@ -2,7 +2,6 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.House;
-import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
@@ -21,14 +20,15 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import java.io.*;
 import java.text.NumberFormat;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Service
 @Transactional
-public class PaymentEmailSenderService {
+public class PaymentDocumentService {
 
-    private final Logger log = LoggerFactory.getLogger(PaymentEmailSenderService.class);
+    private final Logger log = LoggerFactory.getLogger(PaymentDocumentService.class);
     private static final String USER = "user";
     private static final String COMPANY = "company";
     private static final String PAYMENT = "payment";
@@ -39,7 +39,7 @@ public class PaymentEmailSenderService {
     private static final String PAYMENT_TOTAL = "paymentTotal";
     private static final String PAYMENT_DATE = "paymentDate";
     private static final String CHARGES_SIZE = "chargesSize";
-
+    private static final String CURRENT_DATE = "currentDate";
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
@@ -50,7 +50,7 @@ public class PaymentEmailSenderService {
     private final SpringTemplateEngine templateEngine;
 
 
-    public PaymentEmailSenderService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, ChargeService chargeService){
+    public PaymentDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, ChargeService chargeService){
         this.chargeService = chargeService;
         this.companyMapper = companyMapper;
         this.houseService = houseService;
@@ -101,7 +101,7 @@ public class PaymentEmailSenderService {
     }
 
     public File obtainFileToPrint(PaymentDTO payment,boolean isCancellingFromPayment) {
-        String contactoPrincipal = "";
+        String contactoPrincipal = "No definido";
         ResidentDTO resident = null;
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if(payment.getEmailTo().get(i).getPrincipalContact()==1){
@@ -130,6 +130,9 @@ public class PaymentEmailSenderService {
             contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);
             contextTemplate.setVariable(CONTACTO,contactoPrincipal);
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
             contextTemplate.setVariable(CHARGES_SIZE,payment.getCharges().size());
             String contentTemplate = templateEngine.process("paymentTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
@@ -188,6 +191,9 @@ public class PaymentEmailSenderService {
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);
             contextTemplate.setVariable(CONTACTO,contactoPrincipal);
             contextTemplate.setVariable(CHARGES_SIZE,payment.getCharges().size());
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
             String contentTemplate = templateEngine.process("paymentTemplate", contextTemplate);
             OutputStream outputStream = new FileOutputStream(fileName);
             ITextRenderer renderer = new ITextRenderer();
