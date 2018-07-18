@@ -13,6 +13,7 @@
          line-height: 24px;
          color: #555;
          font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         overflow:hidden
          }
          .invoice-box table {
          width: 100%;
@@ -120,14 +121,85 @@
          .text-right{
          text-align:right!important;
          }
+         @page {
+         size: A4 portrait;
+         margin: 1cm;
+         overflow:hidden;
+         }
+         @page {
+         @top-left {
+         content: element(header);
+         }
+         }
+         @page :first {
+         @top-left {
+         content: element(firstPageHeader);
+         }
+         }
+         div.footer {
+         position: running(footer);
+         text-align: right;
+         }
+         @page {
+         @bottom-right {
+         content: element(footer);
+         }
+         }
+         #pagenumber:before {
+         content: counter(page);
+         }
+         #pagecount:before {
+         content: counter(pages);
+         }
+         @media print {
+         .no-page-break {
+         margin-top: 25px;
+         page-break-inside: avoid;
+         -fs-keep-with-inline: keep;
+         -fs-table-paginate: paginate;
+         }
+         }
+         .data-table table {
+         -fs-table-paginate: paginate;
+         }
+         div.header {
+         display: block;
+         text-align: left;
+         position: running(header);
+         font-size: 10px;
+         line-height: 24px;
+         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         color: #555;
+         }
+         div.content {
+         overflow:hidden;
+         }
+         div.footer {
+         counter-increment: page;
+         position: running(footer);
+         text-align: left;
+         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         color: #555;
+         }
       </style>
 </head>
-<body>
-<div class="invoice-box">
+<body style="overflow:hidden">
+<div class='header'>
+    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - <span th:text="|${payment.concept}|"> </span> Filial # <span th:text="|${house.housenumber}|">numero de casa</span> - <b>Folio N° <span th:text="|${payment.receiptNumber}|">anno</span></b>
+    <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
+    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
+</div>
+<div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
+<div class="footer">
+    <b style="font-size:11px" th:text="|${currentDate}|"></b>
+    <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span></h4>
+</div>
+<div class="invoice-box content">
     <table cellpadding="0" cellspacing="0">
         <tr class="top">
             <td>
-                <h3 class="condominio-name" th:text="|${company.name}|">Condominio los malinches</h3>
+                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
             </td>
             <td>
             </td>
@@ -143,13 +215,13 @@
                 </hr>
             </td>
         </tr>
-        <tr >
+        <tr>
             <td style="padding-top:12px">
                 <span class="comprobante-title"> Comprobante de Pago</span>
             </td>
             <td style="padding-top:12px"> </td>
             <td style="text-align:right;padding-top:12px">
-                <span style="font-size:15px"> Folio N° </span> <span class="folio-number" th:text="|${payment.receiptNumber}|">A-12</span>
+                <span style="font-size:15px"> Folio N° </span> <span class="folio-number" th:text="|${payment.receiptNumber}|"></span>
             </td>
         </tr>
         <tr class="details">
@@ -185,54 +257,65 @@
         <tr th:if="${isCancellingFromPayment==true}">
         <td colspan="3" style="font-size:10px;text-align:left"><b>Es posible que las cuotas de este pago no hayan sido canceladas por completo, para verificarlo puede consultar las cuotas de su filial.</b></td>
         </tr>
-        <tr class="heading">
-            <td>
-                CONCEPTO
-            </td>
-            <td class="text-center">
-                TIPO
-            </td>
-            <td class="text-center">
-                IMPORTE
-            </td>
-        </tr>
-        <tr class="item" th:each="charge : ${payment.charges}">
-            <td th:text="${charge.concept}">
-                Concepto
-            </td>
-            <td class="text-center" th:if="${charge.type==1}">
-                MANTENIMIENTO
-            </td>
-            <td class="text-center" th:if="${charge.type==2}">
-                EXTRAORDINARIA
-            </td>
-            <td class="text-center" th:if="${charge.type==3}">
-                ÁREAS COMUNES
-            </td>
-            <td th:if="${charge.type==4}"></td>
-            <td class="text-center" >
-                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span th:text="${charge.paymentAmmount}"></span>
-            </td>
-        </tr>
         <tr>
-            <td class="payment-method"><b>METODO DE PAGO:</b> <span th:text="|${payment.paymentMethod}|">Deposito bancario</span></td>
-        <td class="payment-method"></td>
-        <td class="total-ammount">
-            <div style="display:inline;float: right" >
-                <span><span  th:text="|${paymentTotal}|"></span></span>
-            </div>
-            <div style="display:inline;float: right;margin:2px 2px"><img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="20"/> </div>
-            <div style="display:inline;float: right"><b>Total:</b></div>
-        </td>
+            <td colspan="3">
+                <div class="data-table">
+                <table  cellpadding="0" cellspacing="0">
+                    <thead>
+                    <tr class="heading">
+                        <td>
+                            CONCEPTO
+                        </td>
+                        <td class="text-center">
+                            TIPO
+                        </td>
+                        <td class="text-center">
+                            IMPORTE
+                        </td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="item no-page-break" th:each="charge : ${payment.charges}">
+                        <td th:text="${charge.concept}">
+                            Concepto
+                        </td>
+                        <td class="text-center" th:if="${charge.type==1}">
+                            MANTENIMIENTO
+                        </td>
+                        <td class="text-center" th:if="${charge.type==2}">
+                            EXTRAORDINARIA
+                        </td>
+                        <td class="text-center" th:if="${charge.type==3}">
+                            ÁREAS COMUNES
+                        </td>
+                        <td th:if="${charge.type==4}"></td>
+                        <td class="text-center" >
+                            <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span th:text="${charge.paymentAmmount}"></span>
+                        </td>
+                    </tr>
+                    <tr class="no-page-break">
+                        <td class="payment-method"><b>METODO DE PAGO:</b> <span th:text="|${payment.paymentMethod}|">Deposito bancario</span></td>
+                        <td class="payment-method"></td>
+                        <td class="total-ammount text-center">
+                            <div style="display:inline;float: right" >
+                                <span><span  th:text="|${paymentTotal}|"></span></span>
+                            </div>
+                            <div style="display:inline;float: right;margin:2px 2px"><img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="20"/> </div>
+                            <div style="display:inline;float: right"><b>Total:</b></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </td>
         </tr>
-
-        <tr>
+        <tr class="no-page-break">
             <td  colspan="3" style="padding-top:20px;font-size:12px"><b>COMENTARIOS</b></td>
         </tr>
-        <tr>
+        <tr class="no-page-break">
             <td colspan="3" style="font-size:12px;text-align:left" th:text="|${payment.comments}|">Comentarios</td>
         </tr>
-        <tr>
+        <tr class="no-page-break">
             <td colspan="3" style="padding-top:20px;font-size:10px;text-align:center"><b>EL PAGO DE ESTE RECIBO NO LO LIBERA DE ADEUDOS ANTERIORES. CUALQUIER DUDA O ACLARACIÓN FAVOR DE COMUNICARSE CON LA ADMINISTRACIÓN.</b></td>
         </tr>
     </table>

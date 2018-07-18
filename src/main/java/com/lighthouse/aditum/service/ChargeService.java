@@ -39,12 +39,12 @@ public class ChargeService {
     private final ChargeMapper chargeMapper;
     private final PaymentService paymentService;
     private final BancoService bancoService;
-    private final PaymentEmailSenderService paymentEmailSenderService;
+    private final PaymentDocumentService paymentEmailSenderService;
     private final ResidentService residentService;
 
 
     @Autowired
-    public ChargeService(ResidentService residentService,@Lazy PaymentEmailSenderService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
+    public ChargeService(ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -297,6 +297,17 @@ public class ChargeService {
     public Page < ChargeDTO > findAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
         return new PageImpl < > (chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0,1))
+            .map(chargeMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByHouseAndBetweenDate(Long houseId,String initialTime,String finalTime) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId);
+        String b = "";
+        return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId))
             .map(chargeMapper::toDto);
     }
 

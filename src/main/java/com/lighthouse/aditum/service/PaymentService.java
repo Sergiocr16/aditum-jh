@@ -40,11 +40,11 @@ public class PaymentService {
 
     private final BancoService bancoService;
 
-    private final PaymentEmailSenderService paymentEmailSenderService;
+    private final PaymentDocumentService paymentEmailSenderService;
 
     private final ResidentService residentService;
 
-    public PaymentService(ResidentService residentService, PaymentEmailSenderService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    public PaymentService(ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -94,7 +94,7 @@ public class PaymentService {
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,int companyId) {
-        log.debug("Request to get all Visitants in last month by house");
+        log.debug("Request to get all Payments in last month by house");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
         Page<Payment> result = paymentRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);

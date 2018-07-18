@@ -1,0 +1,93 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Contabilidad</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="house()">Tabla de Cobranza</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+        </div>
+    </div>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row display-none" id="tableData">
+    <div class="col-md-12">
+        <h3 class="page-title col-md-10">Tabla de cobranza</h3>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+                <h2 class="">
+                    <span ng-click="vm.showBackYear()" class="next-year-button"><i class="fa fa-angle-double-left" aria-hidden="true"></i> {{vm.backYear()}}</span>
+                    <b class="font-green-sharp">{{vm.year}}</b>
+                    <span ng-click="vm.showNextYear()" class="next-year-button">{{vm.nextYear()}} <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                </h2>
+
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" style="margin-top:35px">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding" >
+                    <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
+                        <h6 class="text-center no-margin">
+                            <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print" ></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                        </h6>
+                    </a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+
+                    <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/collections/file/{{companyId}}/{{vm.year}}" download>
+                        <h6 class="text-center no-margin">
+                            <span style="display:block;margin-top:4px;font-weight:bold">Descargar    <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                        </h6>
+                    </a>
+                </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                </div>
+
+            </div>
+            <div class="table-scrollable">
+                <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
+                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content">
+                    <thead class="flip-content text-center">
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Filial</th>
+                        <th class="text-center">Enero</th>
+                        <th class="text-center">Febrero</th>
+                        <th class="text-center">Marzo</th>
+                        <th class="text-center">Abril</th>
+                        <th class="text-center">Mayo</th>
+                        <th class="text-center">Junio</th>
+                        <th class="text-center">Julio</th>
+                        <th class="text-center">Agosto</th>
+                        <th class="text-center">Setiembre</th>
+                        <th class="text-center">Octubre</th>
+                        <th class="text-center">Noviembre</th>
+                        <th class="text-center">Diciembre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="collection in vm.collections |  orderBy:'houseNumber'">
+                       <td class="text-center">{{collection.houseNumber}}</td>
+                        <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
+                            <span ng-if="monthCollection.mensualBalance!=0">₡ {{vm.formatearNumero(monthCollection.mensualBalance)}}</span>
+                            <span style="color:#969696;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
