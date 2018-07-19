@@ -41,6 +41,7 @@
             House.query({companyId: $rootScope.companyId}, onSuccessHouses);
             function onSuccessHouses(data, headers) {
                   angular.forEach(data,function(value,key){
+                   value.housenumber = parseInt(value.housenumber);
                                       if(value.housenumber==9999){
                                       value.housenumber="Oficina"
                                       }

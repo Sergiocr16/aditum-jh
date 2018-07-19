@@ -157,8 +157,12 @@
                             <tbody>
                             <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
                                 <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}} </td>
-                                <td class="text-center">{{chargeIn.concept}}</td>
-                                <td class="text-center">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
+                                <td class="text-center" style="padding-top:14px">{{chargeIn.concept}}</td>
+                                <td class="text-center">
+                                    {{chargeIn.date | date}}
+                                 <span style="color:gray;font-size:10px;display:block" class="text-center">Fecha de cobro</span>
+                                </td>
+                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
                             </tr>
                             </tbody>
                         </table>

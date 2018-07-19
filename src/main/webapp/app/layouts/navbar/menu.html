@@ -331,7 +331,7 @@
             </li>
 
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos' || active === 'capturarAdelanto'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos' || active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-money"  style="color:white;" aria-hidden="true"></i>
@@ -515,7 +515,13 @@
                     </li>
                     <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
                         <a href=""  style=" color:white;">
-                            <i class="fa fa-user" aria-hidden="true"  style="font-weight:500; color:white;"></i> Saldos
+                            <i class="fa fa-balance-scale" aria-hidden="true"  style="font-weight:500; color:white;"></i> Saldos
+                        </a>
+                    </li>
+
+                    <li ui-sref="collection-table" ng-class="{ 'active' : active === 'collectionTable'}">
+                        <a href=""  style=" color:white;">
+                            <i class="fa fa-table" aria-hidden="true"  style="font-weight:500; color:white;"></i> Tabla de cobranza
                         </a>
                     </li>
 

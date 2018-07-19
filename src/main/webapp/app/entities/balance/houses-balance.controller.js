@@ -8,7 +8,7 @@
     HousesBalanceController.$inject = ['$state','Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
 
     function HousesBalanceController($state,Balance, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
-        $rootScope.active = "houses";
+        $rootScope.active = "balance";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
