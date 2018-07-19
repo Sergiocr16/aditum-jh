@@ -34,7 +34,7 @@ public class MensualAndAnualReportResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.MANAGER})
+
     @GetMapping("/mensualReport/{first_month_day}/{final_balance_time}/{initial_time}/{final_time}/{companyId}/{withPresupuesto}")
     public ResponseEntity<MensualReportDTO> getMensualReport(
         @PathVariable (value = "first_month_day")  String first_month_day,
@@ -58,7 +58,7 @@ public class MensualAndAnualReportResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualReportDTO));
     }
     @Timed
-    @Secured({AuthoritiesConstants.MANAGER})
+
     @GetMapping("/anualReport/{actual_month}/{companyId}/{withPresupuesto}")
     public ResponseEntity<AnualReportDTO> getAnualReport(
         @PathVariable (value = "actual_month")  String actual_month,

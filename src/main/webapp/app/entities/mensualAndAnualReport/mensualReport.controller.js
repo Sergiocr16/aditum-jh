@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualReportController', MensualReportController);
 
-    MensualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport'];
+    MensualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope'];
 
-    function MensualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport) {
+    function MensualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope) {
 
         var vm = this;
         vm.datePickerOpenStatus = {};
@@ -21,6 +21,7 @@
         vm.isShowingOtherIngressDetail = false;
         vm.isShowingInitialBalanceAccounts = false;
         vm.showPresupuestoFields = false;
+           vm.expanding = false;
         setTimeout(function(){vm.loadAll();},1000)
          var date = new Date(), y = date.getFullYear(), m = date.getMonth();
          var firstDay = new Date(y, m, 1);
@@ -29,6 +30,8 @@
                 initial_time: firstDay,
                 final_time: lastDay
          };
+         vm.fechaInicio = vm.dates.initial_time;
+         vm.fechaFin = vm.dates.final_time;
 	    vm.loadAll = function() {
 	       if(vm.mensualReportPresupuesto){
 	        vm.withPresupuesto = 1;
@@ -63,11 +66,12 @@
         function onSuccess(data, headers) {
              vm.report = data;
              console.log(vm.report)
-
+             vm.fechaInicio = vm.dates.initial_time;
+             vm.fechaFin = vm.dates.final_time;
              if(vm.mensualReportPresupuesto){
                vm.showPresupuestoFields = true;
                vm.totalEgressBudget = vm.report.mensualEgressReport.fixedCostsBudgetTotal + vm.report.mensualEgressReport.variableCostsBudgetTotal + vm.report.mensualEgressReport.otherCostsBudgetTotal;
-               vm.egressBudgetDiference = vm.allEgressTotalQuantity - vm.totalEgressBudget;
+               vm.egressBudgetDiference = vm.report.mensualEgressReport.allEgressCategoriesTotal - vm.totalEgressBudget;
                vm.ingressBudgetDiference = vm.report.mensualIngressReport.allIngressCategoriesTotal- vm.report.mensualIngressReport.totalBudget;
                vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
 
@@ -83,7 +87,15 @@
                   $("#reportResults").fadeIn(500);
               }, 200)
         }
+  vm.expand = function(){
 
+        setTimeout(function () {
+                $scope.$apply(function () {
+                     vm.expanding = !vm.expanding;
+                });
+            }, 200);
+
+        }
         function onError(error) {
             AlertService.error(error.data.message);
         }

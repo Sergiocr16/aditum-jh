@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('HouseAdministrationController', HouseAdministrationController);
 
-    HouseAdministrationController.$inject = ['$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House'];
+    HouseAdministrationController.$inject = ['$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House','$scope'];
 
-    function HouseAdministrationController($localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House) {
+    function HouseAdministrationController($localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House,$scope) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -17,7 +17,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "houseAdministration";
-
+        vm.expanding = false;
         setTimeout(function() {
             loadAll();
         }, 3000)
@@ -76,6 +76,16 @@
                 AlertService.error(error.data.message);
             }
         }
+
+             vm.expand = function(){
+
+                        setTimeout(function () {
+                                $scope.$apply(function () {
+                                     vm.expanding = !vm.expanding;
+                                });
+                            }, 200);
+
+                        }
         vm.defineBalanceClass = function(balance) {
             var b = parseInt(balance);
             if (b != 0) {
