@@ -99,6 +99,14 @@ height:659px !important;
 color: #B22222;
 }
 
+.anualReportBudgetTitleBackground{
+    background-color:#E6E6E6;
+}
+
+.anualReportBudgetBackground{
+    background-color:#F2F2F2;
+}
+
 .greenBudget{
 color: #4F94CD;
 }
@@ -316,6 +324,13 @@ height: 100%;
     margin: 0 !important;
 }
 
+#expandorCollapseAnualReport:hover{
+  text-decoration: underline;
+
+}
+.scroll-vertical{
+overflow-y: auto!important;
+}
 .no-padding {
     padding: 0px !important;
 }
@@ -329,6 +344,10 @@ height: 100%;
     border-color: red !important;
     border-weight: 2px !important;
     border-style:solid;
+}
+
+.menu-li-item{
+    font-weight:500; color:white;
 }
 .padding-5 {
      padding: 5px !important;

@@ -21,6 +21,7 @@
         vm.totalIngressByMonth = [];
         vm.totalEgressByMonth = [];
         var invalidInputs = 0;
+           vm.expanding = false;
         var inputsFullQuantity = 0;
         for(var i=1;i<=12;i++){
             var mantenimientoValue = {month:i,valuePerMonth:"0"}
@@ -79,6 +80,16 @@
                       })
                 });
         }
+          vm.expand = function(){
+
+                setTimeout(function () {
+                        $scope.$apply(function () {
+                             vm.expanding = !vm.expanding;
+                        });
+                    }, 200);
+
+                }
+
         function getValuesPerMonth () {
             invalidInputs=0;
             inputsFullQuantity=0;

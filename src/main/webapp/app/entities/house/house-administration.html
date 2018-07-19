@@ -1,4 +1,5 @@
 <!-- SE REQUIERE EN CADA VISTA -->
+<div></div>
 <div class="page-bar route-title" style="margin-bottom:0px!important">
     <ul class="page-breadcrumb">
         <li>
@@ -32,7 +33,7 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row display-none" id="tableData">
+<div class="row display-none" id="tableData" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" >
     <h2 class="text-center" ng-hide="vm.houses.length!=0" style="margin-top:60px">No hay filiales registradas.</h2>
     <h4 class="text-center gray-font" ng-hide="vm.houses.length!=0">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
     <div class="col-md-12 no-padding" ng-show="vm.houses.length!=0">
@@ -52,7 +53,12 @@
         </div>
         <div class="col-md-12">
             <h3 class="caption-subject font-green-sharp bold uppercase">Filial {{vm.house.housenumber}} <span style="float:right;padding:5px 10px" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger bold">
-										Deshabitada </span></h3>
+										Deshabitada </span>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
+
+                </div>
+            </h3>
 
             <div class="col-md-12 no-padding" style="margin-bottom:10px">
                 <div class="col-md-9 no-padding">
@@ -66,7 +72,7 @@
                             <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
                             <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
                         </div>
-                        <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                        <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px;">
                             <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
                             <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
                         </div>
@@ -74,7 +80,7 @@
 
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-3 no-padding-right">
                     <h5 class="text-center"><b>Adeudos totales</b></h5>
                     <div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
                         <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
@@ -96,7 +102,7 @@
                 </div>
             </div>
             <div class="tab_container">
-                <label><i class="fa fa-bank"></i> <span>Estado de cuenta</span></label>
+                <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"  ui-sref="houseAdministration.accountStatus"><i class="fa fa-bank"></i> <span>Estado de cuenta</span></label>
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.chargePerHouse')}" ui-sref="houseAdministration.chargePerHouse"><i class="fa fa-book"></i> <span>Cuotas</span></label>
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.paymentsPerHouse')}" ui-sref="houseAdministration.paymentsPerHouse"><i class="fa fa-money"></i> <span>Pagos</span></label>
                 <label><i class="fa fa-users"></i> <span>Residentes</span></label>

@@ -15,7 +15,7 @@
         vm.egressCategories = [];
         var invalidInputs = 0;
         var inputsFullQuantity = 0;
-
+   vm.expanding = false;
         DetallePresupuesto.getCategoriesByBudget({budgetId:vm.presupuesto.id},onSuccess, onError);
         vm.totalEgressValue = 0;
         vm.totalIngressValue = 0;
@@ -66,7 +66,15 @@
                  $("#budgetContainer").fadeIn('slow');
              },900 )
         };
+  vm.expand = function(){
 
+        setTimeout(function () {
+                $scope.$apply(function () {
+                     vm.expanding = !vm.expanding;
+                });
+            }, 200);
+
+        }
         vm.setTotalIngressByMonth = function(index,month){
           if(vm.hasLettersOrSpecial(month.valuePerMonth)){
             month.valido = false;

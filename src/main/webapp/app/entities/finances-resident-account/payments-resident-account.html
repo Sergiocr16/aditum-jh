@@ -4,24 +4,29 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
+
 <div class="col-md-12 display-none" id="data">
     <div class="col-md-12 no-padding">
-        <div class="pull-left">
+        <div class="col-md-2 no-padding">
             <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
         </div>
-        <div class="col-md-7 col-md-offset-2" ng-hide="vm.payments.length==0 && vm.filtering==false">
-            <div class="col-md-4 no-padding-right">
-            <input ng-model="vm.initialTime.date" ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating" placeholder="Fecha de inicio">
+        <div class="col-md-2">
+            <button class="btn btn-success col-md-12" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">Mostrar todos</button>
+
+        </div>
+        <div class="col-md-8  no-padding" ng-hide="vm.payments.length==0 && vm.filtering==false" ng-class="{'col-md-offset-2':vm.filtering==false}">
+            <div class="col-md-4 no-padding">
+                <input ng-model="vm.initialTime.date" ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating " placeholder="Fecha de inicio">
             </div>
             <div class="col-md-4">
                 <input ng-model="vm.finalTime.date" ng-change="vm.updatePicker()" type="text" name="date" ng-click="vm.openCalendar(vm.finalTime)" datepicker-options="vm.picker2.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.finalTime.openCalendar" class="form-control letters gray-font dating" placeholder="Fecha final">
             </div>
-            <button class="btn btn-info blue" ng-click="vm.filter()" ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined">Consultar</button>
-            <button class="btn btn-success" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">Mostrar todos</button>
+            <div class="col-md-4 no-padding">
+                <button class="btn btn-info blue col-md-12" ng-click="vm.filter()" ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined">Consultar</button>            </div>
+
+
         </div>
-        <div class="btn-group pull-right">
-            <button class="btn btn-success red" ui-sref="generatePayment"><i class="fa fa-money"></i> Realizar pago</button>
-        </div>
+
     </div>
     <hr>
     <div class="portlet-body">
@@ -80,27 +85,21 @@
                         </div>
                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
                             <hr style="margin:5px">
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                            <div class="col-md-6 col-xs-12 no-padding action-export-payment">
                                 <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/payments/file/{{payment.id}}" download>
                                     <h6 class="text-center no-margin">
                                         <span style="display:block;margin-top:4px;font-weight:bold">Descargar    <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                     </h6>
                                 </a>
                             </div>
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                            <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
+                            <div class="col-md-6 col-xs-12 no-padding action-export-payment">
+                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
                                     <h6 class="text-center no-margin">
                                         <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print" ></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                     </h6>
                                 </a>
                             </div>
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                            <a ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
-                                    <h6 class="text-center no-margin">
-                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.print(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                    </h6>
-                                </a>
-                            </div>
+
                         </div>
                     </td>
                     <td class="note note-info" colspan="3">
@@ -127,27 +126,21 @@
                         </div>
                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
                             <hr style="margin:5px">
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                            <div class="col-md-6 col-xs-12 no-padding action-export-payment">
                                 <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/payments/file/{{payment.id}}" download>
                                     <h6 class="text-center no-margin">
                                         <span style="display:block;margin-top:4px;font-weight:bold">Descargar    <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                     </h6>
                                 </a>
                             </div>
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                            <div class="col-md-6 col-xs-12 no-padding action-export-payment">
                                 <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
                                     <h6 class="text-center no-margin">
                                         <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print" ></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                     </h6>
                                 </a>
                             </div>
-                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                <a  ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
-                                    <h6 class="text-center no-margin">
-                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.print(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                    </h6>
-                                </a>
-                            </div>
+
                         </div>
                     </td>
                     <td rowspan="{{payment.charges.length+1}}" class="note note-info"  colspan="3" ng-if="charge.id == payment.charges[0].id">
@@ -157,12 +150,8 @@
                             <tbody>
                             <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
                                 <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}} </td>
-                                <td class="text-center" style="padding-top:14px">{{chargeIn.concept}}</td>
-                                <td class="text-center">
-                                    {{chargeIn.date | date}}
-                                 <span style="color:gray;font-size:10px;display:block" class="text-center">Fecha de cobro</span>
-                                </td>
-                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
+                                <td class="text-center">{{chargeIn.concept}}</td>
+                                <td class="text-center">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
                             </tr>
                             </tbody>
                         </table>
