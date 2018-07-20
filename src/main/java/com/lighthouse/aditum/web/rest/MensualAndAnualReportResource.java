@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RestController
 @RequestMapping("/api")
 public class MensualAndAnualReportResource {
-    private final Logger log = LoggerFactory.getLogger(AdminInfoResource.class);
+    private final Logger log = LoggerFactory.getLogger(MensualAndAnualReportResource.class);
 
     private static final String ENTITY_NAME = "mensualAndAnualReport";
 

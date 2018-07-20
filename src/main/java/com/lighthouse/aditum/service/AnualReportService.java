@@ -42,7 +42,10 @@ public class AnualReportService {
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
             MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initialDate+"",finalDate+"",companyId,withPresupuesto);
             MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initialDate+"",finalDate+"",companyId,mensualIngressReportDTO,withPresupuesto);
-
+//            Arrays.sort(mensualEgressReportDTO.getFixedCosts(), (a,b) -> a.getClass().getFields().compareTo(b.getClass().getFields()));
+//            Collections.sort(mensualEgressReportDTO.getFixedCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
+//            Collections.sort(mensualEgressReportDTO.getVariableCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
+//            Collections.sort(mensualEgressReportDTO.getOtherCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
             if(withPresupuesto==2){
                 mensualReportService.getEgressBudgets(mensualEgressReportDTO,companyId,initialDate+"",finalDate+"",egressCategories);
                 mensualEgressReportDTO.setTotalBudgetPerGroup();

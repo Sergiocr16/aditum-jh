@@ -157,6 +157,20 @@ public class PaymentService {
         return paymentsDTO;
     }
     @Transactional(readOnly = true)
+    public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable,Long houseId,String initialTime) {
+        log.debug("Request to get all Payments");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable,zd_initialTime,houseId);
+        Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
+        for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
+            PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
+            paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
+            paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
+            paymentDTO.setAmmountLeft(payments.getContent().get(i).getAmmountLeft());
+        }
+        return paymentsDTO;
+    }
+    @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all Payments");
         Page<Payment> payments = paymentRepository.findByHouseId(pageable,houseId);

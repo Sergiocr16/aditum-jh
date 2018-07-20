@@ -10,7 +10,7 @@
         var resourceUrl =  'api/accountStatus/:houseId/:initial_time/:final_time';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', params: {houseId:'@houseId'},
+            'query': { method: 'GET',
              params:{
                 houseId: '@houseId',
                 initial_time:'@initial_time',

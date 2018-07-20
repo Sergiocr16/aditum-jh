@@ -310,7 +310,13 @@ public class ChargeService {
         return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId))
             .map(chargeMapper::toDto);
     }
-
+    @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByHouseAndUnderDate(Long houseId,String initialTime) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        return new PageImpl < > (chargeRepository.findAllUnderDateAndHouseId(zd_initialTime,houseId))
+            .map(chargeMapper::toDto);
+    }
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByPayment(Long paymentId) {
         log.debug("Request to get all Charges");
