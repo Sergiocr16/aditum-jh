@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
+import com.lighthouse.aditum.service.dto.IncomeReportDTO;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
@@ -40,6 +41,10 @@ public class PaymentDocumentService {
     private static final String PAYMENT_DATE = "paymentDate";
     private static final String CHARGES_SIZE = "chargesSize";
     private static final String CURRENT_DATE = "currentDate";
+
+//    INCOME REPORT
+    private static final String INCOME_REPORT = "incomeReport";
+    private static final String RANGO_FECHAS = "rangoFechas";
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
@@ -100,6 +105,22 @@ public class PaymentDocumentService {
         return payment;
     }
 
+    private IncomeReportDTO formatIncomeReport(IncomeReportDTO income){
+        Locale locale = new Locale("es", "CR");
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM. yyyy", locale);
+
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        income.getPayments().forEach(paymentDTO -> {
+                paymentDTO.setAmmount(currencyFormatter.format(Double.parseDouble(paymentDTO.getAmmount())).substring(1));
+            paymentDTO.setStringDate(spanish.format(paymentDTO.getDate()));
+        });
+        income.setTotal(currencyFormatter.format(Double.parseDouble(income.getTotal())).substring(1));
+        income.setTotalCommonArea(currencyFormatter.format(Double.parseDouble(income.getTotalCommonArea())).substring(1));
+        income.setTotalMaintenance(currencyFormatter.format(Double.parseDouble(income.getTotalMaintenance())).substring(1));
+        income.setTotalExtraordinary(currencyFormatter.format(Double.parseDouble(income.getTotalExtraordinary())).substring(1));
+        return income;
+
+    }
     public File obtainFileToPrint(PaymentDTO payment,boolean isCancellingFromPayment) {
         String contactoPrincipal = "No definido";
         ResidentDTO resident = null;
@@ -231,5 +252,43 @@ public class PaymentDocumentService {
         return fileName;
     }
 
+    public File obtainIncomeReportToPrint(IncomeReportDTO incomeReportDTO,Long companyId,ZonedDateTime fechaInicio,ZonedDateTime fechaFinal) {
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
+        String fileName = "Reporte de ingresos.pdf";
+//        ENVIO DE COMPROBANTE DE PAGO
+        try {
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextTemplate.setVariable(COMPANY,company);
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
+            incomeReportDTO = this.formatIncomeReport(incomeReportDTO);
+            contextTemplate.setVariable(INCOME_REPORT,incomeReportDTO);
+            contextTemplate.setVariable(RANGO_FECHAS,this.formatRangoFechas(fechaInicio,fechaFinal));
+            String contentTemplate = templateEngine.process("incomeReportTemplate", contextTemplate);
+            OutputStream outputStream = new FileOutputStream(fileName);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(contentTemplate);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File(fileName);
+            return file;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    private String formatRangoFechas(ZonedDateTime fechaInicial,ZonedDateTime fechaFinal){
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM . yyyy", new Locale("es","ES"));
+        return "Del "+spanish.format(fechaInicial) + " al "+ spanish.format(fechaFinal);
+    }
 }
 

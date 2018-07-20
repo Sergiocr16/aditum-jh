@@ -49,6 +49,19 @@
                           companyId: '@companyId',
                 }
             },
+            'findIncomeReportBetweenDatesByCompany':{
+                     method: 'GET',
+                     url: 'api/payments/report/between/:initial_time/:final_time/byCompany/:companyId/:account/:paymentMethod/:houseId/:category',
+                     params:{
+                          initial_time:'@initial_time',
+                          final_time: '@final_time',
+                          companyId: '@companyId',
+                          account: '@account',
+                          paymentMethod:'@paymentMethod',
+                          houseId:'@houseId',
+                          category:'@category'
+                }
+            },
           'findBetweenDatesByCompanyAndAccount':{
                  method: 'GET',
                  url: 'api/payments/between/:initial_time/:final_time/byCompany/:companyId/andAccount/:accountId',

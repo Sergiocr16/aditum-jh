@@ -41,4 +41,5 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     Page<Payment> findByDatesBetweenAndHouseId(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate,Long houseId);
 
 
+
 }

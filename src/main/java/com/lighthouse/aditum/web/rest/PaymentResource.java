@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.PaymentService;
 import com.lighthouse.aditum.service.dto.CreatePaymentDTO;
+import com.lighthouse.aditum.service.dto.IncomeReportDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.PaymentDTO;
@@ -108,6 +109,21 @@ public class PaymentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/payments/report/between/{initial_time}/{final_time}/byCompany/{companyId}/{account}/{paymentMethod}/{houseId}/{category}")
+    @Timed
+    public ResponseEntity<IncomeReportDTO> getIncomeReportByBetweenDatesAndCompany(@PathVariable(value = "initial_time") String initial_time,
+                                                                                   @PathVariable(value = "final_time") String final_time,
+                                                                                   @PathVariable(value = "companyId") int companyId,
+                                                                                   @PathVariable(value = "houseId") String houseId,
+                                                                                   @PathVariable(value = "paymentMethod") String paymentMethod,
+                                                                                   @PathVariable(value = "category") String category,
+                                                                                   @PathVariable(value = "account") String account,
+                                                                                   @ApiParam Pageable pageable) throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        IncomeReportDTO incomeReport = paymentService.findIncomeReportByCompanyAndDatesBetween(pageable, initial_time, final_time, companyId,houseId,paymentMethod,category,account);
+        return new ResponseEntity<>(incomeReport, HttpStatus.OK);
+    }
+
     @GetMapping("/payments/between/{initial_time}/{final_time}/byCompany/{companyId}/andAccount/{accountId}")
     @Timed
     public ResponseEntity<List<PaymentDTO>> getBetweenDatesAndCompanyAndAccount(@PathVariable(value = "initial_time") String initial_time, @PathVariable(value = "final_time") String final_time, @PathVariable(value = "companyId") int companyId, @PathVariable(value = "accountId") String accountId, @ApiParam Pageable pageable) throws URISyntaxException {
@@ -164,6 +180,37 @@ public class PaymentResource {
     @Timed
     public void getFile(@PathVariable Long paymentId, HttpServletResponse response) throws URISyntaxException, IOException {
         File file = paymentService.obtainFileToPrint(paymentId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+        IOUtils.copy(stream,response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+    }
+
+    @GetMapping("/payments/incomeReport/file/{initial_time}/{final_time}/{companyId}/{account}/{paymentMethod}/{houseId}/{category}")
+    @Timed
+    public void getIncomeReportFile(@PathVariable(value = "initial_time") String initial_time,
+                                    @PathVariable(value = "final_time") String final_time,
+                                    @PathVariable(value = "companyId") int companyId,
+                                    @PathVariable(value = "houseId") String houseId,
+                                    @PathVariable(value = "paymentMethod") String paymentMethod,
+                                    @PathVariable(value = "category") String category,
+                                    @PathVariable(value = "account") String account,
+                                    @ApiParam Pageable pageable, HttpServletResponse response) throws URISyntaxException, IOException {
+        File file = paymentService.obtainIncomeReportToPrint(pageable,companyId,initial_time,final_time,houseId,paymentMethod,category,account);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "inline; filename="+file.getName());

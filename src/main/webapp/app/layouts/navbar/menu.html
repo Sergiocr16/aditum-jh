@@ -290,7 +290,7 @@
             </li>
 
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos' || active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos' || active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance' || active === 'reporteIngresos'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-money"  style="color:white;" aria-hidden="true"></i>
@@ -467,6 +467,12 @@
                                 <a href="">
                                     <i class="fa fa-circle-o"></i>
                                     <span   style=" color:white;">Reporte de gastos</span>
+                                </a>
+                            </li>
+                            <li ui-sref="payment-report" ng-class="{ 'active' : active === 'reporteIngresos' }" style="border-bottom:1px solid #444c56">
+                                <a href="">
+                                    <i class="fa fa-circle-o"></i>
+                                    <span   style=" color:white;">Reporte de ingresos</span>
                                 </a>
                             </li>
                         </ul>
