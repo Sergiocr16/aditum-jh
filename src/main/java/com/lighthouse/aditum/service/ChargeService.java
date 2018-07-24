@@ -310,7 +310,28 @@ public class ChargeService {
         return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId))
             .map(chargeMapper::toDto);
     }
+    @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByHouseAndBetweenDateResidentAccount(Long houseId,String initialTime,String finalTime,String todayTime) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_todayTime = ZonedDateTime.parse((todayTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        if(zd_finalTime.isAfter(zd_todayTime)){
+            return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_todayTime,houseId))
+                .map(chargeMapper::toDto);
+        }else{
+            return new PageImpl < > (chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId))
+                .map(chargeMapper::toDto);
+        }
 
+    }
+    @Transactional(readOnly = true)
+    public Page < ChargeDTO > findAllByHouseAndUnderDate(Long houseId,String initialTime) {
+        log.debug("Request to get all Charges");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        return new PageImpl < > (chargeRepository.findAllUnderDateAndHouseId(zd_initialTime,houseId))
+            .map(chargeMapper::toDto);
+    }
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByPayment(Long paymentId) {
         log.debug("Request to get all Charges");

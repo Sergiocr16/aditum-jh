@@ -2,26 +2,19 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.AccountStatusService;
-import com.lighthouse.aditum.service.ChargeService;
-import com.lighthouse.aditum.web.rest.util.HeaderUtil;
-import com.lighthouse.aditum.web.rest.util.PaginationUtil;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import io.swagger.annotations.ApiParam;
+import com.lighthouse.aditum.service.dto.AccountStatusDTO;
+
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -31,9 +24,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class AccountStatusResource {
 
-    private final Logger log = LoggerFactory.getLogger(ChargeResource.class);
+    private final Logger log = LoggerFactory.getLogger(AccountStatusResource.class);
 
-    private static final String ENTITY_NAME = "charge";
+    private static final String ENTITY_NAME = "accountStatus";
 
     private final AccountStatusService accountStatusService;
 
@@ -41,19 +34,20 @@ public class AccountStatusResource {
         this.accountStatusService = accountStatusService;
     }
 
-
-    @GetMapping("/accountStatus/{houseId}/{initial_time}/{final_time}/")
     @Timed
-    public ResponseEntity<List<ChargeDTO>> getAccountStatusByHouse(
+    @GetMapping("/accountStatus/{houseId}/{initial_time}/{final_time}/{resident_account}/{today_time}")
+
+    public ResponseEntity<AccountStatusDTO> getAccountStatusByHouse(
+        @ApiParam Pageable pageable,
         @PathVariable Long houseId,
         @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time
-    )
-        throws URISyntaxException {
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "resident_account")  boolean  resident_account,
+        @PathVariable(value = "today_time")  String  today_time
+    ) {
         log.debug("REST request to get a page of Charges");
-        Page<ChargeDTO> page = accountStatusService.findAllByHouse(houseId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseId,initial_time,final_time,resident_account,today_time);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
 
 }

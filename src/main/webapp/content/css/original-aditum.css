@@ -534,6 +534,26 @@ color: #C62828;
 
 }
 
+.accountStatusBtn{
+    margin-left:0px!important;
+    border:1px solid #E0E0E0;
+
+
+
+}
+
+.accountStatusBtnDesactive{
+  background-color:white;
+   color:#1caf9a!important;
+
+
+}
+.accountStatusBtnActive{
+    background-color:#F5F5F5!important;;
+    color:#424242!important;
+
+
+}
 .red-font{
 	color: #C62828 !important;
 }
