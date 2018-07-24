@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 
 public class AccountStatusItemDTO {
     private ZonedDateTime date;
@@ -10,6 +11,8 @@ public class AccountStatusItemDTO {
     private int total;
     private int saldo;
     private int abono;
+    private List<ChargeDTO> charges;
+    private boolean showDetail;
 
     public AccountStatusItemDTO(ZonedDateTime date,String concept, int charge,int recharge){
         this.date = date;
@@ -17,13 +20,21 @@ public class AccountStatusItemDTO {
         this.charge = charge;
         this.recharge = recharge;
         this.total = charge + recharge;
+        this.showDetail = false;
 
     }
 
-    public AccountStatusItemDTO(ZonedDateTime date,String concept, int abono){
+    public AccountStatusItemDTO(ZonedDateTime date,int transaction, int abono, List<ChargeDTO> charges){
         this.date = date;
-        this.concept = concept;
+        if(transaction==1){
+            this.concept = "Abono a cuotas";
+        }else if(transaction==2){
+            this.concept = "Adelanto de condómino";
+        }
+
         this.abono = abono;
+        this.charges = charges;
+        this.showDetail = false;
     }
 
     public String getConcept() {
@@ -80,5 +91,21 @@ public class AccountStatusItemDTO {
 
     public void setDate(ZonedDateTime date) {
         this.date = date;
+    }
+
+    public List<ChargeDTO> getCharges() {
+        return charges;
+    }
+
+    public void setCharges(List<ChargeDTO> charges) {
+        this.charges = charges;
+    }
+
+    public boolean isShowDetail() {
+        return showDetail;
+    }
+
+    public void setShowDetail(boolean showDetail) {
+        this.showDetail = showDetail;
     }
 }

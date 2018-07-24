@@ -37,7 +37,7 @@
                 <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.chargePerHouse')}" ui-sref="finanzasPorCasa.chargePerHouse" >
                     Deudas vigentes
                 </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.anualReport')}" ui-sref="budgetExecution.anualReport" >
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.accountStatus')}" ui-sref="finanzasPorCasa.accountStatus" >
                     Estado de cuenta
                 </a>
                 <a  class="hidden-xs " style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.mensualReport') || $state.includes('finanzasPorCasa.anualReport')}" ui-sref="finanzasPorCasa.mensualReport" >
@@ -61,9 +61,11 @@
                 </div>
             </div>
 
-            <div ng-show="$state.includes('finanzasPorCasa.paymentsPerHouse') || $state.includes('finanzasPorCasa.chargePerHouse') " class="col-md-12 display-none" id="tableData2" style="margin-bottom:10px">
+            <div ng-show="$state.includes('finanzasPorCasa.paymentsPerHouse') || $state.includes('finanzasPorCasa.chargePerHouse') || $state.includes('finanzasPorCasa.accountStatus')" class="col-md-12 display-none" id="tableData2" style="margin-bottom:10px">
                 <h4 ng-show="$state.includes('finanzasPorCasa.paymentsPerHouse')">En esta sección podrás encontrar el detalle de tus pagos realizados.</h4>
-                <h4 ng-show="$state.includes('finanzasPorCasa.chargePerHouse') ">En esta sección podrás encontrar el detalle de tus deudas que aún no han sido liquidadas..</h4>
+                <h4 ng-show="$state.includes('finanzasPorCasa.chargePerHouse') ">En esta sección podrás encontrar el detalle de tus deudas que aún no han sido liquidadas.</h4>
+                <h4 ng-show="$state.includes('finanzasPorCasa.accountStatus') ">En esta sección podrás encontrar el detalle de tus acciones financieras en la comunidad; tus pagos, tus deudas y tu balance general.</h4>
+
 
                 <div class="col-md-9 no-padding">
                     <h5 class=""><b>Saldos generales</b></h5>

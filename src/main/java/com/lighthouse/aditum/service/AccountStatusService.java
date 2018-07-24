@@ -8,6 +8,7 @@ import com.lighthouse.aditum.service.dto.PaymentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,16 +31,22 @@ public class AccountStatusService {
         this.paymentService = paymentService;
     }
 
-    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time){
+    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time,boolean resident_account, String today_time){
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         int saldoInicial = this.getSaldoInicial(pageable,houseId,initial_time);
         accountStatusDTO.setSaldoInicial(saldoInicial) ;
         accountStatusDTO.setSaldo(saldoInicial);
         Page<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(pageable,houseId,initial_time,final_time);
-        String b = "a";
-        Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDate(houseId,initial_time,final_time);
-        this.setAccountStatusItem(payments,charges,accountStatusDTO);
+
+        if(resident_account){
+            Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDateResidentAccount(houseId,initial_time,final_time,today_time);
+            this.setAccountStatusItem(payments,charges,accountStatusDTO);
+        }else{
+            Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndBetweenDate(houseId,initial_time,final_time);
+            this.setAccountStatusItem(payments,charges,accountStatusDTO);
+        }
+
 
         return accountStatusDTO;
     }
@@ -49,8 +56,8 @@ public class AccountStatusService {
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i <payments.getContent().size() ; i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(payments.getContent().get(i).getDate(),payments.getContent().get(i).getConcept(),Integer.parseInt(payments.getContent().get(i).getAmmount()));
-           String b = "a";
+            AccountStatusItemDTO object = new AccountStatusItemDTO(payments.getContent().get(i).getDate(),Integer.parseInt(payments.getContent().get(i).getTransaction()),Integer.parseInt(payments.getContent().get(i).getAmmount()),payments.getContent().get(i).getCharges());
+
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
 
@@ -61,10 +68,14 @@ public class AccountStatusService {
             if(accountStatusDTO.getListaAccountStatusItems().get(i).getAbono()>0){
                 int saldo = accountStatusDTO.getSaldo() + accountStatusDTO.getListaAccountStatusItems().get(i).getAbono();
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
+                accountStatusDTO.setTotalAbono(accountStatusDTO.getListaAccountStatusItems().get(i).getAbono());
                 accountStatusDTO.setSaldo(saldo);
 
             }else if(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal()>0){
                 int saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
+                accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
+                accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
+                accountStatusDTO.setTotalTotal(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
                 accountStatusDTO.setSaldo(saldo);
 

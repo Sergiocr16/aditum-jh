@@ -156,6 +156,7 @@ public class PaymentService {
         }
         return paymentsDTO;
     }
+
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable,Long houseId,String initialTime) {
         log.debug("Request to get all Payments");

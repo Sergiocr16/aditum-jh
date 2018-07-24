@@ -35,9 +35,8 @@
                     </thead>
                     <tbody>
 
-                    <tr ng-repeat="charge in vm.charges | orderBy: 'date'" ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+                    <tr ng-repeat="charge in vm.charges | orderBy: 'date'" ng-if="charge.datePassed!==true">
                         <td class="text-center" ng-show="vm.isEditing==false">
-                            <span ng-show="charge.definedFirstDatePassed" style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
                             {{charge.date | date}}
                         </td>
                         <td ng-show="vm.isEditing==false">{{charge.concept}}</td>

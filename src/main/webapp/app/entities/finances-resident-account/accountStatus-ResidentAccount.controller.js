@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('AccountStatusController', AccountStatusController);
+        .controller('AccountStatusResidentAccountController', AccountStatusResidentAccountController);
 
-    AccountStatusController.$inject = ['$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusResidentAccountController.$inject = ['$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
-    function AccountStatusController($rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function AccountStatusResidentAccountController($rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -70,12 +70,11 @@
             }
 
         }
-
-         vm.consult = function(){
-                   $("#loading2").fadeIn(0);
-                   $("#accountStatusContainer").fadeOut(0);
-                   loadAll();
-                }
+        vm.consult = function(){
+           $("#loading2").fadeIn(0);
+           $("#accountStatusContainer").fadeOut(0);
+           loadAll();
+        }
 
         function loadAll() {
 
@@ -83,7 +82,7 @@
                 houseId: $localStorage.houseSelected.id,
                 initial_time:  moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
-                resident_account: false,
+                resident_account: true,
                 today_time:  moment(new Date()).format(),
 
             }, onSuccess, onError);
@@ -108,10 +107,11 @@
                 console.log(data)
                 vm.accountStatusItems = data;
                 $("#loading").fadeOut(300);
-                      $("#loading2").fadeOut(300);
+                 $("#loading2").fadeOut(300);
                 setTimeout(function() {
                     $("#data").fadeIn("slow");
-                          $("#accountStatusContainer").fadeIn("slow");
+                    $("#accountStatusContainer").fadeIn("slow");
+
 
                 }, 900)
             }

@@ -35,16 +35,18 @@ public class AccountStatusResource {
     }
 
     @Timed
-    @GetMapping("/accountStatus/{houseId}/{initial_time}/{final_time}")
+    @GetMapping("/accountStatus/{houseId}/{initial_time}/{final_time}/{resident_account}/{today_time}")
 
     public ResponseEntity<AccountStatusDTO> getAccountStatusByHouse(
         @ApiParam Pageable pageable,
         @PathVariable Long houseId,
         @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "resident_account")  boolean  resident_account,
+        @PathVariable(value = "today_time")  String  today_time
     ) {
         log.debug("REST request to get a page of Charges");
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseId,initial_time,final_time);
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseId,initial_time,final_time,resident_account,today_time);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(accountStatusDTO));
     }
 

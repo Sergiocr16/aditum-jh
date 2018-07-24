@@ -62,13 +62,13 @@
                                         </tr>
                                         </tbody>
                                         <tbody style="border-top:0px;" ng-show=" vm.isShowingMaintenanceDetail">
-                                        <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
-                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
-                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
-                                            <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
-                                        </tr>
+                                            <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
+                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px; text-transform:uppercase" >-{{item.concept}}</td>
+                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-top:1px solid #4F94CD;"  class=" text-right"></td>
+                                                <td ng-show="vm.showPresupuestoFields" style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"></td>
+                                            </tr>
                                         </tbody>
 
                                         <tbody style="border-top:0px;">
