@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate'];
+    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate','$localStorage'];
 
-    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate) {
+    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate,$localStorage) {
 
 
 
@@ -103,6 +103,7 @@
                                                        $rootScope.companyId = data.companyId;
                                                        $rootScope.currentUserImage = data.image_url;
                                                        $rootScope.companyUser = data;
+                                                       $localStorage.houseSelected = house;
                          setTimeout(function(){   $state.go('residentByHouse');}, 300);
                         })
      })

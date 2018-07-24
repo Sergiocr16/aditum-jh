@@ -10,7 +10,7 @@
             <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
         </div>
         <div class="col-md-7 col-md-offset-2" ng-hide="vm.payments.length==0 && vm.filtering==false">
-            <div class="col-md-4">
+            <div class="col-md-4 no-padding-right">
             <input ng-model="vm.initialTime.date" ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating" placeholder="Fecha de inicio">
             </div>
             <div class="col-md-4">

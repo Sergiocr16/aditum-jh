@@ -10,21 +10,21 @@ public class MensualEgressReportDTO {
     private List<SumCategoryEgressDTO> variableCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> otherCosts = new ArrayList<>();
     private List<EgressDTO> egressList;
-    private int allEgressCategoriesTotal;
-    private int fixedCostsTotal;
-    private int variableCostsTotal;
-    private int otherCostsTotal;
-    private double fixedCostsPercentage;
-    private double variableCostsPercentage;
-    private double otherCostsPercentage;
+    private int allEgressCategoriesTotal = 0;
+    private int fixedCostsTotal = 0;
+    private int variableCostsTotal = 0;
+    private int otherCostsTotal = 0;
+    private double fixedCostsPercentage = 0.0;
+    private double variableCostsPercentage = 0.0;
+    private double otherCostsPercentage = 0.0;
 
     private double fixedCostsBudgetTotal =0;
     private double variableCostsBudgetTotal =0;
     private double otherCostsBudgetTotal =0;
 
-    private double fixedCostsBudgetDiference;
-    private double variableCostsBudgetDiference;
-    private double otherCostsBudgetDiference;
+    private double fixedCostsBudgetDiference = 0;
+    private double variableCostsBudgetDiference  = 0;
+    private double otherCostsBudgetDiference  = 0;
 
 
     public void setCategoriesNames(Page<EgressDTO> egress,Page<EgressCategoryDTO> egressCategories){

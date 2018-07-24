@@ -26,16 +26,20 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row display-none" id="budgetContainer">
+<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }"  class="row display-none" id="budgetContainer">
     <div class="col-md-12">
         <div style="margin-bottom:15px;" class="caption font-green-haze">
             <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==2">Editar PRESUPUESTO {{vm.presupuesto.anno}}</span>
             <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==1">PRESUPUESTO {{vm.presupuesto.anno}}</span>
+            <div class="btn-group pull-right">
+                <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
+
+            </div>
         </div>
+
         <div class="col-md-12 no-padding" style="margin-bottom:15px;">
             <div class="col-md-6 col-sm-6 col-xs-6 no-padding"  ng-show="vm.budgetAction==2">
-                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Seleccione el año que desea presupuestar.</span>
-                <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom:10px;">Únicamente podrá seleccionar los años en los que no haya un presupuesto creado.</span>
+
                 <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. <span class="bold">(SÓLO NÚMEROS Ej. 15000)</span> </span>
             </div>
 
@@ -45,6 +49,7 @@
             </div>
             <div class="no-padding-right col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2 col-xs-12 "  ng-show="vm.budgetAction==1">
                 <button class="btn btn-primary col-md-12" ng-click="vm.showEditOptions()">Editar presupuesto</button>
+
             </div>
         </div>
     </div>
@@ -117,7 +122,7 @@
                     <th class="budgetTableHeader">NOVIEMBRE</th>
                     <th class="budgetTableHeader">DICIEMBRE</th>
                 </tr>
-                <tr  ng-repeat="egressCategory in vm.egressCategories track by egressCategory.id"   >
+                <tr  ng-repeat="egressCategory in vm.egressCategories | orderBy: 'group' track by egressCategory.id"   >
                     <td style=" text-transform:uppercase;" class=" text-left">
                         <span style="font-size:8px;" class="col-md-12 no-padding bold">{{egressCategory.group}}</span>
                         <span  style="font-size:11px;" >{{egressCategory.categoryName}}</span>

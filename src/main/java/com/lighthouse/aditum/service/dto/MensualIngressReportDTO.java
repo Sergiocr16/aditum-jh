@@ -14,29 +14,30 @@ public class MensualIngressReportDTO implements Serializable {
     private List<SumChargeDTO> commonAreasIngress;
     private List<SumChargeDTO> otherIngress;
 
-    private int maintenanceIngressTotal;
-    private int extraordinaryIngressTotal;
-    private int commonAreasIngressTotal;
-    private int otherIngressTotal;
+    private int maintenanceIngressTotal = 0;
+    private int extraordinaryIngressTotal = 0;
+    private int commonAreasIngressTotal = 0;
+    private int otherIngressTotal = 0;
 
     private double maintenanceIngressPercentage = 0;
     private double extraordinaryIngressPercentage = 0;
     private double commonAreasIngressPercentage = 0;
     private double otherIngressPercentage = 0;
 
-    private int maintenanceBudget;
-    private int extraordinaryBudget;
-    private int commonAreasBudget;
-    private int otherBudget;
-    private int totalBudget;
+    private int maintenanceBudget = 0;
+    private int extraordinaryBudget = 0;
+    private int commonAreasBudget = 0;
+    private int otherBudget = 0;
 
-    private int maintenanceBudgetDiference;
-    private int extraordinaryBudgetDiference;
-    private int commonAreasBudgetDiference;
-    private int otherBudgetDiference;
-    private int totalBudgetDiference;
+    private int totalBudget = 0;
 
-    private int allIngressCategoriesTotal;
+    private int maintenanceBudgetDiference = 0;
+    private int extraordinaryBudgetDiference = 0;
+    private int commonAreasBudgetDiference = 0;
+    private int otherBudgetDiference = 0;
+    private int totalBudgetDiference = 0;
+
+    private int allIngressCategoriesTotal = 0;
 
     public List<SumChargeDTO> getSumChargeIngress(List<ChargeDTO> ingress) {
         List<SumChargeDTO> finalList = new ArrayList<>();

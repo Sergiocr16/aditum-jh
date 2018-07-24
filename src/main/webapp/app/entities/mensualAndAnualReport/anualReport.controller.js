@@ -7,46 +7,161 @@
         .module('aditumApp')
         .controller('AnualReportController', AnualReportController);
 
-    AnualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport'];
+    AnualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope'];
 
-    function AnualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport) {
-        var vm = this;
-        vm.datePickerOpenStatus = {};
-
-        vm.openCalendar = openCalendar;
+    function AnualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope) {
+         var vm = this;
+         vm.datePickerOpenStatus = {};
+         vm.isShowingMaintenanceDetail = false;
+         vm.isShowingExtrardinaryDetail = false;
+         vm.isShowingCommonAreasDetail = false;
+         vm.isShowingOtherIngressDetail = false;
+         vm.openCalendar = openCalendar;
          var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
          vm.actualMonth = new Date(y1, m1, 1);
          vm.month = m1+1;
          vm.rowsQuantity = vm.month + 4;
-        setTimeout(function(){vm.loadAll();},1000)
+         vm.showPresupuestoFields = false;
+         var withPresupuestos = 3;
+         vm.expanding = false;
+         setTimeout(function(){vm.loadAll();},1000)
 
-        vm.loadAll = function() {
+         vm.loadAll = function() {
              MensualAndAnualReport.getAnualReport({
                   actual_month: moment(vm.actualMonth).format(),
                   companyId: $rootScope.companyId,
-                  withPresupuesto: 1,
+                  withPresupuesto: withPresupuestos,
               },onSuccess,onError);
 
-        }
-        function onSuccess(data, headers) {
+         }
+         function onSuccess(data, headers) {
              vm.report = data;
              vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
              console.log(vm.report)
                  $("#loadingIcon2").fadeOut(0);
-                           setTimeout(function() {
-                               $("#reportResults").fadeIn(500);
-                           }, 200)
-//              angular.forEach(vm.report.anualEgressByMonth,function(value,key){
-//               console.log(value)
-//              })
+                     setTimeout(function() {
+                     $("#reportResults").fadeIn(500);
+                  }, 200)
+         }
 
-
+        vm.showWithBudget = function(){
+            $("#reportResults").fadeOut(0);
+                 setTimeout(function() {
+                 $("#loadingIcon2").fadeIn(0);
+              }, 200)
+            withPresupuestos = 2;
+            vm.loadAll();
+            vm.showPresupuestoFields = !vm.showPresupuestoFields;
         }
 
         function openCalendar(date) {
              vm.datePickerOpenStatus[date] = true;
         }
+        vm.showBodyTableIngress = function(type){
 
+            switch(type){
+                case 1:
+                     vm.isShowingMaintenanceDetail = !vm.isShowingMaintenanceDetail;
+                break;
+                case 2:
+                    vm.isShowingExtrardinaryDetail = !vm.isShowingExtrardinaryDetail;
+                    break;
+                case 3:
+                   vm.isShowingCommonAreasDetail = !vm.isShowingCommonAreasDetail;
+                   break;
+                case 4:
+                    vm.isShowingOtherIngressDetail = !vm.isShowingOtherIngressDetail;
+                    break;
+                case 5:
+                    vm.isShowingTotalIngressDetail = !vm.isShowingTotalIngressDetail;
+                    break;
+            }
+
+        };
+
+               vm.showBodyTotalEgress = function(type){
+
+                    switch(type){
+                        case 1:
+                             vm.isShowingFixedCostsDetail = !vm.isShowingFixedCostsDetail;
+                        break;
+                        case 2:
+                            vm.isShowingVariableCostsDetail = !vm.isShowingVariableCostsDetail;
+                            break;
+                        case 3:
+                           vm.isShowingOtherCostsDetail = !vm.isShowingOtherCostsDetail;
+                           break;
+                        case 4:
+                           vm.isShowingAllIngressDetail = !vm.isShowingAllIngressDetail;
+                           break;
+                        case 5:
+                           vm.isShowingAllEgressDetail = !vm.isShowingAllEgressDetail;
+                           break;
+                    }
+
+                };
+         vm.showBodyTableEgress = function(cost){
+
+             cost.showDetail = !cost.showDetail;
+
+        }
+
+
+        vm.expand = function(){
+
+        setTimeout(function () {
+                $scope.$apply(function () {
+                     vm.expanding = !vm.expanding;
+                });
+            }, 200);
+
+        }
+
+        vm.expandDetail = function(){
+            if(vm.isShowingMaintenanceDetail == true){
+              vm.isShowingMaintenanceDetail = false;
+              vm.isShowingExtrardinaryDetail = false;
+              vm.isShowingCommonAreasDetail = false;
+              vm.isShowingOtherIngressDetail = false;
+              vm.isShowingTotalIngressDetail = false;
+              vm.isShowingFixedCostsDetail = false;
+              vm.isShowingVariableCostsDetail = false;
+              vm.isShowingOtherCostsDetail = false;
+              vm.isShowingAllIngressDetail = false;
+              vm.isShowingAllEgressDetail = false;
+              angular.forEach(vm.report.fixedCostEgress,function(value,key){
+                value.showDetail = false;
+              })
+              angular.forEach(vm.report.variableCostEgress,function(value,key){
+                  value.showDetail = false;
+              })
+              angular.forEach(vm.report.otherCostEgress,function(value,key){
+                  value.showDetail = false;
+              })
+
+            }else{
+              vm.isShowingMaintenanceDetail = true;
+              vm.isShowingExtrardinaryDetail = true;
+              vm.isShowingCommonAreasDetail = true;
+              vm.isShowingOtherIngressDetail = true;
+              vm.isShowingTotalIngressDetail = true;
+              vm.isShowingFixedCostsDetail = true;
+              vm.isShowingVariableCostsDetail = true;
+              vm.isShowingOtherCostsDetail = true;
+              vm.isShowingAllIngressDetail = true;
+              vm.isShowingAllEgressDetail = true;
+              angular.forEach(vm.report.fixedCostEgress,function(value,key){
+                  value.showDetail = true;
+              })
+              angular.forEach(vm.report.variableCostEgress,function(value,key){
+                  value.showDetail = true;
+              })
+              angular.forEach(vm.report.otherCostEgress,function(value,key){
+                  value.showDetail = true;
+              })
+              }
+
+        }
         vm.formatearNumero = function(nStr) {
 
             var x = nStr.split('.');
