@@ -276,7 +276,7 @@
             return x1 + x2;
         }
         vm.changeHouse = function(houseId) {
- $("#loadingTable").fadeIn(10);
+            $("#loadingTable").fadeIn(10);
             $("#tableContent").fadeOut(10);
 
             House.get({
@@ -284,8 +284,11 @@
             }, function(result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
+                vm.selectedHouse = result;
+                console.log(result)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAdminConfig();
+
             })
 
         }
@@ -338,96 +341,11 @@
 
 
         vm.createPayment = function() {
-                adelantoCondomino();
-        }
-
-        function paymentTransaction() {
-            var messageS = "¿Está seguro que desea capturar este ingreso?";
-            if (vm.toPay > 0) {
-                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condomino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
-            }
-            bootbox.confirm({
-                message: messageS,
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        vm.payment.charges = vm.charges;
-                        vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
-                        vm.payment.houseId = $rootScope.houseSelected.id;
-                        if (vm.toPay > 0) {
-                            vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
-                        }
-                        vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
-                        vm.payment.emailTo = obtainEmailToList();
-                        Payment.save(vm.payment, onSuccess, onError)
-
-                        function onSuccess(result) {
-                            if (vm.printReceipt == true) {
-                                printJS({
-                                    printable: '/api/payments/file/' + result.id,
-                                    type: 'pdf',
-                                    modalMessage: "Obteniendo comprobante de pago"
-                                })
-
-                                setTimeout(function() {
-                                    bootbox.hideAll();
-                                    toastr["success"]("Se ha capturado el ingreso correctamente.")
-                                    vm.printReceipt = false;
-                                    increaseFolioNumber(function(result) {
-                                        vm.admingConfig = result;
-                                        vm.folioSerie = result.folioSerie;
-                                        vm.folioNumber = result.folioNumber;
-                                        if (vm.toPay > 0) {
-                                            registrarAdelantoCondomino();
-                                        } else {
-                                            clear();
-                                            loadAll();
-                                            loadAdminConfig();
-                                        }
-                                    })
-                                }, 5000)
-
-
-                            } else {
-                                bootbox.hideAll();
-                                toastr["success"]("Se ha capturado el ingreso correctamente.")
-                                increaseFolioNumber(function(result) {
-                                    vm.admingConfig = result;
-                                    vm.folioSerie = result.folioSerie;
-                                    vm.folioNumber = result.folioNumber;
-                                    if (vm.toPay > 0) {
-                                        registrarAdelantoCondomino();
-                                    } else {
-                                        clear();
-                                        loadAll();
-                                        loadAdminConfig();
-                                    }
-                                })
-                            }
-
-
-
-                        }
-
-                        function onError() {
-                            bootbox.hideAll();
-                            clear()
-                            toastr["error"]("Ups. No fue posible capturar el ingreso.")
-
-                        }
-                    }
-                }
-            });
+        if(vm.selectedHouse.balance.total<0){
+                toastr["error"]("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
+           }else{
+           adelantoCondomino();
+           }
         }
 
 

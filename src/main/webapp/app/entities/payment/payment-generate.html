@@ -50,31 +50,31 @@
                 <span style="float:right;padding:5px 10px" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger">
             Deshabitada </span>
             </h3>
-            <div class="col-md-12 no-padding" style="margin-bottom:10px">
-                <div class="col-md-9 no-padding">
-                    <h5 class="text-center"><b>Saldos generales</b></h5>
-                    <div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                        <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
-                            <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
-                            <h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}} bold">₡ {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
-                        </div>
-                        <div class="col-md-4">
-                            <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
-                            <h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}} bold">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
-                        </div>
-                        <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">
-                            <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
-                            <h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}} bold">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <h5 class="text-center"><b>Adeudos totales</b></h5>
-                    <div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
-                        <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
-                    </div>
-                </div>
-            </div>
+            <!--<div class="col-md-12 no-padding" style="margin-bottom:10px">-->
+                <!--<div class="col-md-9 no-padding">-->
+                    <!--<h5 class="text-center"><b>Saldos generales</b></h5>-->
+                    <!--<div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">-->
+                        <!--<div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>-->
+                            <!--<h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}} bold">₡ {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>-->
+                            <!--<h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}} bold">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>-->
+                            <!--<h5 class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}} bold">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-3">-->
+                    <!--<h5 class="text-center"><b>Adeudos totales</b></h5>-->
+                    <!--<div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">-->
+                        <!--<h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="little-container col-md-12">
                 <div class="col-md-4">
                     <b>Área m2:</b> {{vm.house.squareMeters}}

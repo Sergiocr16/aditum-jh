@@ -28,5 +28,8 @@ public interface ChargeRepository extends JpaRepository<Charge,Long> {
     @Query("select c from Charge c " +
         "where c.date >= ?1 and c.date <= ?2 and c.house.id = ?3")
     List<Charge> findAllBetweenDatesAndHouseId(ZonedDateTime initialDate, ZonedDateTime finalDate,Long houseId);
+    @Query("select c from Charge c " +
+        "where c.date <= ?1 and c.house.id = ?2 and c.type= ?3 and c.state = ?4")
+    List<Charge> findBeforeDateAndHouseAndTypeAndState(ZonedDateTime initialDate,Long houseId,int type,int state);
 
 }
