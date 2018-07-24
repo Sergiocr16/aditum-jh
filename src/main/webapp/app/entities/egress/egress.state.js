@@ -55,7 +55,7 @@
               url: '/report',
               data: {
                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                  pageTitle: 'aditumApp.egress.home.title'
+                  pageTitle: 'Aditum'
               },
               views: {
                   'content@': {

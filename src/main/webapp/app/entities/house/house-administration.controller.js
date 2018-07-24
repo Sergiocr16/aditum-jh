@@ -128,6 +128,7 @@
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
+                console.log(result);
             })
 
         }

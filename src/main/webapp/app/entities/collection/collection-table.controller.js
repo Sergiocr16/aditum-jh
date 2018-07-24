@@ -5,11 +5,14 @@
         .module('aditumApp')
         .controller('CollectionTableController', CollectionTableController);
 
-    CollectionTableController.$inject = ['$scope','$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope'];
+    CollectionTableController.$inject = ['$timeout','ExcelExport','$scope','$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope'];
 
-    function CollectionTableController($scope,$state, Collection, ParseLinks, AlertService, $rootScope) {
+    function CollectionTableController($timeout,ExcelExport,$scope,$state, Collection, ParseLinks, AlertService, $rootScope) {
         var vm = this;
-
+//        vm.exportToExcel=function(tableId){ // ex: '#my-table'
+//                    var exportHref=ExcelExport.tableToExcel(tableId,'sheet name');
+//                    $timeout(function(){location.href=exportHref;},100); // trigger download
+//                }
         $rootScope.active = "collectionTable";
         vm.year = moment(new Date()).format("YYYY")
                 vm.exportActions = {

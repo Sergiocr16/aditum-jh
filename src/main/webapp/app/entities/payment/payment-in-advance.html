@@ -194,8 +194,11 @@
                                         </div>
                                         <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
                                             <h3 class="text-right">
-                                                <button type="submit" ng-disabled="vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true" class="btn blue">Realizar Pago</button>
+                                                <button type="submit" ng-disabled="vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0" class="btn blue">Realizar Pago</button>
                                                 <button type="button" ng-click="vm.back()" class="btn red default">Cancelar</button>
+                                            </h3>
+                                            <h3 class="text-right" ng-if="vm.selectedHouse.balance.total<0">
+                                                <span style="font-size:13px;font-weight:bold;color:#c23f44">La filial {{vm.selectedHouse.housenumber}} no puede realizar un adelanto porque aún tiene cuotas pendientes. *</span>
                                             </h3>
                                         </div>
                                         <hr>

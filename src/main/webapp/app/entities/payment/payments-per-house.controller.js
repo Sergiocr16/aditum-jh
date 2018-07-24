@@ -38,7 +38,7 @@
                 $scope.$apply(function() {
                     vm.exportActions.printing = false;
                 })
-            }, 6000)
+            }, 8000)
             printJS({
                 printable: '/api/payments/file/' + paymentId,
                 type: 'pdf',
@@ -52,7 +52,7 @@
                 $scope.$apply(function() {
                     vm.exportActions.downloading = false;
                 })
-            }, 6000)
+            }, 8000)
         }
 
         vm.sendEmail = function(payment) {
@@ -95,7 +95,7 @@
                              })
                              toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
 
-                         }, 6000)
+                         }, 8000)
                      } else {
 
                                                  vm.exportActions.sendingEmail = false;

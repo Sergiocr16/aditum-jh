@@ -100,8 +100,7 @@
                       }
                   })
             vm.houses = data;
-             setTimeout(function() {
-                                                 $("#loadingIcon").fadeOut(300);
+             setTimeout(function() {$("#loadingIcon").fadeOut(300);
                                        }, 400)
                                         setTimeout(function() {
                                             $("#edit_resident_form").fadeIn('slow');

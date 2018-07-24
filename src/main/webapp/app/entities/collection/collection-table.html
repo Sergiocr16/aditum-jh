@@ -35,6 +35,9 @@
 
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" style="margin-top:35px">
+                    <!--<button class="btn btn-link" ng-click="vm.exportToExcel('#tableToExport')">-->
+                        <!--<span class="glyphicon glyphicon-share"></span> Export to Excel-->
+                    <!--</button>-->
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding" >
                     <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
                         <h6 class="text-center no-margin">
@@ -58,7 +61,7 @@
             </div>
             <div class="table-scrollable">
                 <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
-                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content">
+                <table id="tableToExport" class="jh-table table table-striped table-bordered table-hover table-condensed flip-content">
                     <thead class="flip-content text-center">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Filial</th>
