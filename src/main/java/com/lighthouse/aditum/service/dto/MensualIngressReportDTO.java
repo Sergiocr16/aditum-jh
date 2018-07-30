@@ -251,11 +251,11 @@ public class MensualIngressReportDTO implements Serializable {
         this.setCategoriesBudgetDiference();
     }
     public void setCategoriesBudgetDiference() {
-        this.setMaintenanceBudgetDiference(this.getMaintenanceBudget() - this.getMaintenanceIngressTotal());
-        this.setExtraordinaryBudgetDiference(this.getExtraordinaryBudget() - this.getExtraordinaryIngressTotal());
-        this.setCommonAreasBudgetDiference(this.getCommonAreasBudget() - this.getCommonAreasIngressTotal());
-        this.setOtherBudgetDiference(this.getOtherBudget() - this.getOtherIngressTotal());
-        this.setTotalBudgetDiference(this.getTotalBudget() - this.getAllIngressCategoriesTotal());
+        this.setMaintenanceBudgetDiference( this.getMaintenanceIngressTotal() - this.getMaintenanceBudget());
+        this.setExtraordinaryBudgetDiference(this.getExtraordinaryIngressTotal() - this.getExtraordinaryBudget());
+        this.setCommonAreasBudgetDiference(this.getCommonAreasIngressTotal() - this.getCommonAreasBudget());
+        this.setOtherBudgetDiference(this.getOtherIngressTotal() - this.getOtherBudget());
+        this.setTotalBudgetDiference( this.getAllIngressCategoriesTotal() - this.getTotalBudget());
     }
 
     public int getMaintenanceBudgetDiference() {

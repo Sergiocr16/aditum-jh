@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('PaymentReportController', PaymentReportController);
 
-    PaymentReportController.$inject = ['Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope'];
+    PaymentReportController.$inject = ['Resident','Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope'];
 
-    function PaymentReportController(Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope) {
-        $rootScope.active = "egress";
+    function PaymentReportController(Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope) {
+        $rootScope.active = "reporteIngresos";
         var vm = this;
         vm.exportActions = {
             downloading: false,
@@ -91,6 +91,21 @@
             });
         }
 
+        vm.printPayment = function(paymentId) {
+            vm.exportActions.printing = true;
+            setTimeout(function() {
+                $scope.$apply(function() {
+                    vm.exportActions.printing = false;
+                })
+            }, 8000)
+            printJS({
+                printable: '/api/payments/file/' + paymentId,
+                type: 'pdf',
+                modalMessage: "Obteniendo comprobante de pago"
+            })
+        }
+
+
         vm.print = function() {
             vm.exportActions.printing = true;
             $timeout(function() {
@@ -104,10 +119,10 @@
                 modalMessage: "Obteniendo comprobante de pago"
             })
         }
-vm.urlToDownload = function(){
+        vm.urlToDownload = function(){
                return '/api/payments/incomeReport/file/' + moment(vm.dates.initial_time).format()+"/"+moment(vm.dates.final_time).format()+"/"+$rootScope.companyId+"/"+vm.banco+"/"+vm.paymentMethod+"/"+vm.houseId+"/"+vm.category;
 
-}
+         }
         vm.download = function() {
             vm.exportActions.downloading = true;
             $timeout(function() {
@@ -121,7 +136,7 @@ vm.urlToDownload = function(){
         }, 2000)
         vm.sendEmail = function(payment) {
             bootbox.confirm({
-                message: "¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?",
+                message: "¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + payment.houseNumber + "?",
                 buttons: {
                     confirm: {
                         label: 'Aceptar',
@@ -136,7 +151,7 @@ vm.urlToDownload = function(){
                     if (result) {
                         vm.exportActions.sendingEmail = true;
                         Resident.findResidentesEnabledByHouseId({
-                            houseId: parseInt($localStorage.houseSelected.id),
+                            houseId: parseInt(payment.houseId),
                         }).$promise.then(onSuccessResident, onError);
 
                         function onSuccessResident(data, headers) {

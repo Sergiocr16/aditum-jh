@@ -77,7 +77,7 @@ public class MensualReportService {
 
     public MensualEgressReportDTO getMensualAndAnualEgressReportDTO(String initialTime, String finalTime, long companyId, MensualIngressReportDTO mensualAndAnualIngressReportDTO, int withPresupuesto){
         Page<EgressCategoryDTO> egressCategories = egressCategoryService.findAll(companyId);
-        Page<EgressDTO> allEgressList = egressService.findByDatesBetweenAndCompany(initialTime,finalTime,companyId);
+        Page<EgressDTO> allEgressList = egressService.findPaymentEgressByDatesBetweenAndCompany(initialTime,finalTime,companyId);
 
         MensualEgressReportDTO mensualEgressReportDTO = new MensualEgressReportDTO();
         mensualEgressReportDTO.setCategoriesNames(allEgressList,egressCategories);
@@ -94,7 +94,7 @@ public class MensualReportService {
         if(withPresupuesto==1){
             this.getEgressBudgets(mensualEgressReportDTO,companyId,initialTime,finalTime,egressCategories);
             mensualEgressReportDTO.setTotalBudgetPerGroup();
-
+            this.setEgressDiferences(mensualEgressReportDTO);
         }
 
         return mensualEgressReportDTO;
@@ -114,8 +114,9 @@ public class MensualReportService {
                inicialBalance = Integer.parseInt(bancos.get(i).getCapitalInicial());
            }
            List<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,companyId,bancos.get(i).getId()+"");
+
            for (int j = 0; j < egresos.size(); j++) {
-               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(i).getTotal());
+               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(j).getTotal());
            }
             List<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,Integer.parseInt(companyId+""),bancos.get(i).getId()+"");
             for (int j = 0; j < ingresos.size(); j++) {
@@ -219,6 +220,25 @@ public class MensualReportService {
         }
 
     }
+
+    private void setEgressDiferences(MensualEgressReportDTO mensualEgressReportDTO){
+        for (int i = 0; i < mensualEgressReportDTO.getFixedCosts().size() ; i++) {
+
+            mensualEgressReportDTO.getFixedCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getFixedCosts().get(i).getBudget() - mensualEgressReportDTO.getFixedCosts().get(i).getTotal());
+        }
+        for (int i = 0; i < mensualEgressReportDTO.getVariableCosts().size() ; i++) {
+
+            mensualEgressReportDTO.getVariableCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getVariableCosts().get(i).getBudget() - mensualEgressReportDTO.getVariableCosts().get(i).getTotal());
+
+        }
+        for (int i = 0; i < mensualEgressReportDTO.getOtherCosts().size() ; i++) {
+
+            mensualEgressReportDTO.getOtherCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getOtherCosts().get(i).getBudget() - mensualEgressReportDTO.getOtherCosts().get(i).getTotal());
+
+        }
+
+    }
+
     private int getEgressBudgetValuesPerMonths(MensualEgressReportDTO mensualEgressReportDTO, DetallePresupuestoDTO egressCategoriesBudget, int initialMonth, int finalMonth){
         String[] values = egressCategoriesBudget.getValuePerMonth().split(",");
         int total = 0;
@@ -230,27 +250,30 @@ public class MensualReportService {
 
             if( mensualEgressReportDTO.getFixedCosts().get(i).getId()==Long.parseLong(egressCategoriesBudget.getCategory())){
                 mensualEgressReportDTO.getFixedCosts().get(i).setBudget(total);
-                mensualEgressReportDTO.getFixedCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getFixedCosts().get(i).getBudget() - mensualEgressReportDTO.getFixedCosts().get(i).getTotal());
+
                 noEntro++;
             }
+            mensualEgressReportDTO.getFixedCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getFixedCosts().get(i).getBudget() - mensualEgressReportDTO.getFixedCosts().get(i).getTotal());
         }
         for (int i = 0; i < mensualEgressReportDTO.getVariableCosts().size() ; i++) {
 
             if( mensualEgressReportDTO.getVariableCosts().get(i).getId()==Long.parseLong(egressCategoriesBudget.getCategory())){
                 mensualEgressReportDTO.getVariableCosts().get(i).setBudget(total);
-                mensualEgressReportDTO.getVariableCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getVariableCosts().get(i).getBudget() - mensualEgressReportDTO.getVariableCosts().get(i).getTotal());
 
                 noEntro++;
             }
+            mensualEgressReportDTO.getVariableCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getVariableCosts().get(i).getBudget() - mensualEgressReportDTO.getVariableCosts().get(i).getTotal());
+
         }
         for (int i = 0; i < mensualEgressReportDTO.getOtherCosts().size() ; i++) {
 
             if( mensualEgressReportDTO.getOtherCosts().get(i).getId()==Long.parseLong(egressCategoriesBudget.getCategory())){
                 mensualEgressReportDTO.getOtherCosts().get(i).setBudget(total);
-                mensualEgressReportDTO.getOtherCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getOtherCosts().get(i).getBudget() - mensualEgressReportDTO.getOtherCosts().get(i).getTotal());
 
                 noEntro++;
             }
+            mensualEgressReportDTO.getOtherCosts().get(i).setBudgetDiference(mensualEgressReportDTO.getOtherCosts().get(i).getBudget() - mensualEgressReportDTO.getOtherCosts().get(i).getTotal());
+
         }
         if(total>0&&noEntro==0){
             return total;

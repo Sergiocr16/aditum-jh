@@ -180,6 +180,9 @@
                                 toastr["success"]("Se generaron las cuotas correctamente.")
                             }
                         }
+                    },function(){
+                     bootbox.hideAll();
+                     toastr["error"]("Hubo un error al crear las cuotas mensuales, por favor verificar los datos ingresados.")
                     })
                 }else{
                    if (house.cuotas.length - 1 >  cuotaNumber) {

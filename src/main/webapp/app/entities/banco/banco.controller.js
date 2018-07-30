@@ -5,12 +5,19 @@
         .module('aditumApp')
         .controller('BancoController', BancoController);
 
-    BancoController.$inject = ['CommonMethods','$state', 'Banco', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope'];
+    BancoController.$inject = ['CommonMethods','$state', '$location','Banco', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','$scope'];
 
-    function BancoController(CommonMethods,$state, Banco, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope) {
+    function BancoController(CommonMethods,$state, $location,Banco, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,$scope) {
 
         var vm = this;
-        $rootScope.active = "bancos";
+        vm.location=$location.path();
+
+          if(vm.location=="/banco"){
+            $rootScope.active = "bancos";
+          }else{
+            $rootScope.active = "bancoConfiguration";
+          }
+
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

@@ -34,9 +34,12 @@
     </div>
 </div>
 <div class="row display-none" id="tableData" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" >
-    <h2 class="text-center" ng-hide="vm.houses.length!=0" style="margin-top:60px">No hay filiales registradas.</h2>
-    <h4 class="text-center gray-font" ng-hide="vm.houses.length!=0">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
-    <div class="col-md-12 no-padding" ng-show="vm.houses.length!=0">
+    <div ng-if="vm.houses.length==0">
+         <h2 class="text-center"  style="margin-top:60px">No hay filiales registradas.</h2>
+         <h4 class="text-center gray-font">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
+    </div>
+
+    <div class="col-md-12 no-padding" ng-if="vm.houses.length!=0">
         <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
 
             <!--<div class="col-md-12" style="padding:5px 5px">-->
@@ -52,10 +55,11 @@
 
         </div>
         <div class="col-md-12">
-            <h3 class="caption-subject font-green-sharp bold uppercase">Filial {{vm.house.housenumber}} <span style="float:right;padding:5px 10px" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger bold">
-										Deshabitada </span>
+            <h3 class="caption-subject font-green-sharp bold uppercase">Filial {{vm.house.housenumber}}
                 <div class="btn-group pull-right">
-                    <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                    <span style="padding:5px 10px; margin-right:13px;" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger bold">
+										Deshabitada </span>
+                    <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px; float:none!important;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
 
                 </div>
             </h3>

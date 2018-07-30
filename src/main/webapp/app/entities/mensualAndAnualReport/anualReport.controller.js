@@ -7,9 +7,9 @@
         .module('aditumApp')
         .controller('AnualReportController', AnualReportController);
 
-    AnualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope'];
+    AnualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope','Presupuesto'];
 
-    function AnualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope) {
+    function AnualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope,Presupuesto) {
          var vm = this;
          vm.datePickerOpenStatus = {};
          vm.isShowingMaintenanceDetail = false;
@@ -45,13 +45,30 @@
          }
 
         vm.showWithBudget = function(){
-            $("#reportResults").fadeOut(0);
-                 setTimeout(function() {
-                 $("#loadingIcon2").fadeIn(0);
-              }, 200)
-            withPresupuestos = 2;
-            vm.loadAll();
-            vm.showPresupuestoFields = !vm.showPresupuestoFields;
+            Presupuesto.query({companyId:$rootScope.companyId},function(result) {
+                if(result.length>0){
+                    var yearExist = 0;
+                    angular.forEach(result,function(value,key){
+                        if(value.anno==dateMonthDay.getFullYear()){
+                            yearExist++;
+                            $("#reportResults").fadeOut(0);
+                            $("#loadingIcon2").fadeIn(0);
+                            withPresupuestos = 2;
+                            vm.loadAll();
+                            vm.showPresupuestoFields = !vm.showPresupuestoFields;
+                        }
+
+                    })
+                    if(yearExist==0){
+                        toastr["error"]("No existe un presupuesto del 2018 registrado.");
+                    }
+                }else{
+                     toastr["error"]("No existe un presupuesto del 2018 registrado.");
+                }
+
+            });
+
+
         }
 
         function openCalendar(date) {

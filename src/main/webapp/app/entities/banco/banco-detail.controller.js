@@ -144,6 +144,7 @@
                   value.ammount = value.monto;
                   value.paymentDate = value.fecha;
                   value.movementType = 3;
+                  value.bancoEntrante = value.cuentaOrigen;
                   vm.movementsList.push(value)
             })
                 getTransferenciasSalientes();
@@ -163,6 +164,7 @@
                   value.total = value.monto;
                   value.paymentDate = value.fecha;
                   value.movementType = 4;
+                  value.bancoEntrante = value.cuentaDestino;
                   vm.movementsList.push(value)
             })
                 getIngress();
@@ -247,6 +249,7 @@
                       value.ammount = value.monto;
                       value.paymentDate = value.fecha;
                       value.movementType = 3;
+                      value.bancoEntrante = value.cuenta_origen;
                       vm.movementsListConsulting.push(value)
                 })
                     getTransferenciasSalientesWhenConsulting();

@@ -9,8 +9,8 @@ public class SumCategoryEgressDTO {
     private int total;
     private double percentage;
     private boolean showDetail;
-    private int budget;
-    private int budgetDiference;
+    private int budget = 0;
+    private int budgetDiference = 0;
 
     public String getCategory() {
         return category;

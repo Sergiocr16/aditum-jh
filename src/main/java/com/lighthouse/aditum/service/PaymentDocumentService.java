@@ -147,6 +147,9 @@ public class PaymentDocumentService {
             if(isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
                 paymentTotal = payment.getCharges().get(0).getAmmount();
+                Locale locale = new Locale("es", "CR");
+                NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+                paymentTotal=currencyFormatter.format(Double.parseDouble(paymentTotal)).substring(1);
             }
             contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);

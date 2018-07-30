@@ -15,6 +15,8 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        $localStorage.houseSelected = {};
+        $rootScope.houseSelected = {};
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "houseAdministration";
         vm.expanding = false;
@@ -48,12 +50,14 @@
                     value.debit = value.balance.debit;
                 })
                 vm.houses = data;
+                if(vm.houses.length>0){
+                $localStorage.houseSelected = vm.houses[0]
+                }
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
                         id: $localStorage.houseSelected.id
                     }, function(result) {
                     $localStorage.houseSelected = result
-
                         vm.house = $localStorage.houseSelected;
                         $rootScope.houseSelected = $localStorage.houseSelected;
                     })

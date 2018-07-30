@@ -167,7 +167,7 @@
                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                         <div class="table-scrollable">
                                             <table class="jh-table table table-bordered table-condensed flip-content" style="font-size:12px;">
-                                                <thead>
+                                                <thead  style="background-color:#EEEEEE; ">
                                                 <tr>
                                                     <th>
                                                         Filial
@@ -192,8 +192,8 @@
                                                     </th>
                                                 </tr>
                                                 </thead>
-                                                <tbody>
-                                                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id" ng-class="{'selected-payment':payment.isShowingCharges==true}">
+
+                                                <tbody style="outline: none; border-top:0px; " ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id" ng-class="{'selected-payment':payment.isShowingCharges==true}">
                                                 <tr>
                                                     <td class="text-center">{{payment.houseNumber}}</td>
                                                     <td style="outline: none;" ng-click="vm.showCharges(payment)"><i ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11" style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true" class="fa fa-chevron-down bold font-11" style="float:left" aria-hidden="true"></i> <span class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
@@ -206,7 +206,6 @@
                                                 </tr>
                                                 <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
                                                     <td style="background-color:white!important;position:relative" colspan="4">
-
                                                         <div class="note note-info" style="margin:0">
                                                             <div>
                                                                 <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
@@ -232,7 +231,7 @@
                                                                 </a>
                                                             </div>
                                                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
+                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.printPayment(payment.id)">
                                                                     <h6 class="text-center no-margin">
                                                                         <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print"></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                                                     </h6>
@@ -241,7 +240,7 @@
                                                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
                                                                 <a ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
                                                                     <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.print(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.printPayment(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                                                     </h6>
                                                                 </a>
                                                             </div>
@@ -255,8 +254,8 @@
                                                         </h5>
                                                     </td>
                                                 </tr>
-                                                <tr ng-repeat="charge in payment.charges track by charge.id" ng-show="payment.isShowingCharges==true">
-                                                    <td rowspan="{{payment.charges.length}}" style="background-color:white!important;position:relative" colspan="4" ng-if="charge.id == payment.charges[0].id">
+                                                <tr   ng-repeat="charge in payment.charges track by charge.id" ng-show="payment.isShowingCharges==true">
+                                                    <td  style="background-color:white!important;position:relative" colspan="4" ng-if="charge.id == payment.charges[0].id">
                                                         <div class="note note-info col-md-12" style="margin-bottom:30px">
                                                             <div>
                                                                 <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
@@ -269,7 +268,7 @@
                                                                 <p ng-hide="payment.comments!=undefined">Ninguno</p>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12" ng-if="payment.ammountLeft>0">
+                                                        <div class="col-md-12" ng-if="payment.ammountLeft>0" style="margin-bottom:30px">
                                                             <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px"> ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray;'><h5>Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
                                                         </div>
                                                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
@@ -282,7 +281,7 @@
                                                                 </a>
                                                             </div>
                                                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print(payment.id)">
+                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.printPayment(payment.id)">
                                                                     <h6 class="text-center no-margin">
                                                                         <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print"></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                                                     </h6>
@@ -291,7 +290,7 @@
                                                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
                                                                 <a ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
                                                                     <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.print(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.printPayment(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
                                                                     </h6>
                                                                 </a>
                                                             </div>
@@ -316,13 +315,13 @@
                                                     </td>
                                                 </tr>
                                                 </tbody>
-
-                                                <tr>
-                                                    <td colspan="6" class="bold text-right">Total</td>
-                                                    <td class="bold">₡ {{vm.incomeReport.total | currency : "" : 0}}</td>
+                                                <tbody style="border-top:0px!important;">
+                                                <tr >
+                                                    <td colspan="6" style="border-top:0px!important;" class="bold text-right">Total</td>
+                                                    <td class="bold" style="border-top:0px!important;" >₡ {{vm.incomeReport.total | currency : "" : 0}}</td>
                                                 </tr>
                                                 </tbody>
-                                                </tbody>
+
                                             </table>
                                         </div>
                                     </div>

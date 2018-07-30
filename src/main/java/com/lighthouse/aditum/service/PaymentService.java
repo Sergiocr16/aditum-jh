@@ -329,8 +329,11 @@ public class PaymentService {
         }
 
         paymentDTO.setEmailTo(emailTo);
-
-        return paymentEmailSenderService.obtainFileToPrint(paymentDTO,false);
+        boolean cancelingFromPayment = false;
+        if(paymentDTO.getTransaction().equals("2")&& paymentDTO.getCharges().size()>0){
+            cancelingFromPayment = true;
+        }
+        return paymentEmailSenderService.obtainFileToPrint(paymentDTO,cancelingFromPayment);
     }
 
     public File obtainIncomeReportToPrint(Pageable pageable,int companyId,String initial_time,String final_time,String houseId,String paymentMethod,String category,String account){
@@ -406,12 +409,16 @@ public class PaymentService {
         int total = 0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
+            if (payment.getTransaction().equals("2") && type ==1) {
+                total+= Integer.parseInt(payment.getAmmount());
+            } else {
             for (int j = 0; j < payment.getCharges().size(); j++) {
                 ChargeDTO charge = payment.getCharges().get(j);
-                if(charge.getType()==type){
-                    total+=Integer.parseInt(charge.getAmmount());
+                if (charge.getType() == type) {
+                    total += Integer.parseInt(charge.getAmmount());
                 }
             }
+        }
         }
         return total;
     }

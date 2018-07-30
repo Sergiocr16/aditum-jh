@@ -69,15 +69,19 @@ public class AnualReportService {
         this.setFlujoByMonth(anualReportDTO);
         this.setAllIngressAcumulado(anualReportDTO);
 
-        this.getAllEgressBudgetAndDiference(anualReportDTO);
 
-        this.setIngressBudgets(anualReportDTO);
+        if(withPresupuesto==2){
+            this.getAllEgressBudgetAndDiference(anualReportDTO);
+            this.setIngressBudgets(anualReportDTO);
+        }
+
 
     }
 
     private void getAllEgressBudgetAndDiference(AnualReportDTO anualReportDTO){
         anualReportDTO.setAllEgressBudgetByMonth(new ArrayList<>());
         anualReportDTO.setAllEgressDiferenceByMonth(new ArrayList<>());
+
         for (int i = 0; i < anualReportDTO.getFixedCostsBudgetTotal().size(); i++) {
             double totalBudget = anualReportDTO.getAnualEgressByMonth().get(i).getFixedCostsBudgetTotal() + anualReportDTO.getAnualEgressByMonth().get(i).getVariableCostsBudgetTotal() + anualReportDTO.getAnualEgressByMonth().get(i).getOtherCostsBudgetTotal();
             double totalDiference = anualReportDTO.getAnualEgressByMonth().get(i).getFixedCostsBudgetDiference() + anualReportDTO.getAnualEgressByMonth().get(i).getVariableCostsBudgetDiference() + anualReportDTO.getAnualEgressByMonth().get(i).getOtherCostsBudgetDiference();
@@ -119,40 +123,33 @@ public class AnualReportService {
     }
     private void setfixedEgressCategoriesByMonth(AnualReportDTO anualReportDTO){
         List<EgressCategoryByMonthDTO> fixedCostsEgressList = new ArrayList<>();
-
+        anualReportDTO.setFixedCostsBudgetTotal(new ArrayList<>());
+        anualReportDTO.setFixedCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().size(); i++) {
 
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getCategory());
-
             object.setTotalByMonth(new ArrayList<>());
-
             object.setBudgetByMonth(new ArrayList<>());
             object.setDiferenceByMonth(new ArrayList<>());
-            anualReportDTO.setFixedCostsBudgetTotal(new ArrayList<>());
-            anualReportDTO.setFixedCostsBudgetDiference(new ArrayList<>());
 
             object.getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getTotal()+"");
             object.setAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getTotal());
 
             object.getBudgetByMonth().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getBudget()+"");
 
-
-
-
-
-
             object.getDiferenceByMonth().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getBudgetDiference()+"");
 
             object.setBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getBudget());
             object.setDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getBudgetDiference());
 
-            anualReportDTO.setFixedCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
-            anualReportDTO.setFixedCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
-            anualReportDTO.getFixedCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
-            anualReportDTO.getFixedCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
 
             fixedCostsEgressList.add(object);
         }
+        anualReportDTO.setFixedCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
+        anualReportDTO.setFixedCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
+        anualReportDTO.getFixedCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
+        anualReportDTO.getFixedCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
+
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().size(); j++) {
                 fixedCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().get(j).getTotal()+"");
@@ -178,6 +175,8 @@ public class AnualReportService {
     private void setvariableEgressCategoriesByMonth(AnualReportDTO anualReportDTO){
         List<EgressCategoryByMonthDTO> variableCostsEgressList = new ArrayList<>();
 
+        anualReportDTO.setFvariableCostsBudgetTotal(new ArrayList<>());
+        anualReportDTO.setVariableCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().size(); i++) {
 
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getCategory());
@@ -186,8 +185,6 @@ public class AnualReportService {
 
             object.setBudgetByMonth(new ArrayList<>());
             object.setDiferenceByMonth(new ArrayList<>());
-            anualReportDTO.setFvariableCostsBudgetTotal(new ArrayList<>());
-            anualReportDTO.setVariableCostsBudgetDiference(new ArrayList<>());
 
             object.getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getTotal()+"");
             object.setAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getTotal());
@@ -198,13 +195,15 @@ public class AnualReportService {
             object.setBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getBudget());
             object.setDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getBudgetDiference());
 
-            anualReportDTO.setVariableCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetDiference());
-            anualReportDTO.setVariableCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
-            anualReportDTO.getvariableCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
-            anualReportDTO.getVariableCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetDiference());
 
             variableCostsEgressList.add(object);
         }
+
+        anualReportDTO.setVariableCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetDiference());
+        anualReportDTO.setVariableCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
+        anualReportDTO.getvariableCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
+        anualReportDTO.getVariableCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetDiference());
+
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().size(); j++) {
                 variableCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().get(j).getTotal()+"");
@@ -228,15 +227,14 @@ public class AnualReportService {
 
     private void setOtherEgressCategoriesByMonth(AnualReportDTO anualReportDTO){
         List<EgressCategoryByMonthDTO> otherCostsEgressList = new ArrayList<>();
+        anualReportDTO.setOtherCostsBudgetTotal(new ArrayList<>());
+        anualReportDTO.setOtherCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().size(); i++) {
 
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getCategory());
             object.setTotalByMonth(new ArrayList<>());
-
             object.setBudgetByMonth(new ArrayList<>());
             object.setDiferenceByMonth(new ArrayList<>());
-            anualReportDTO.setOtherCostsBudgetTotal(new ArrayList<>());
-            anualReportDTO.setOtherCostsBudgetDiference(new ArrayList<>());
 
             object.getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getTotal()+"");
 
@@ -248,14 +246,15 @@ public class AnualReportService {
             object.setBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getBudget());
             object.setDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getBudgetDiference());
 
-            anualReportDTO.setOtherCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetDiference());
-            anualReportDTO.setOtherCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
-            anualReportDTO.getOtherCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
-            anualReportDTO.getOtherCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetDiference());
 
             object.setAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getTotal());
             otherCostsEgressList.add(object);
         }
+        anualReportDTO.setOtherCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetDiference());
+        anualReportDTO.setOtherCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
+        anualReportDTO.getOtherCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
+        anualReportDTO.getOtherCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetDiference());
+
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().size(); j++) {
                 otherCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().get(j).getTotal()+"");

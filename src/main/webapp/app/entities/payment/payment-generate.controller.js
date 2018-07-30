@@ -461,7 +461,7 @@
         function paymentTransaction() {
             var messageS = "¿Está seguro que desea capturar este ingreso?";
             if (vm.toPay > 0) {
-                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condomino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
+                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condómino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
             }
             bootbox.confirm({
                 message: messageS,

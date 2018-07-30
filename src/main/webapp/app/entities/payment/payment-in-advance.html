@@ -21,8 +21,13 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
+
 <div class="display-none" id="tableData">
-    <div class="row">
+    <div ng-if="vm.houses.length==0">
+        <h2 class="text-center"  style="margin-top:60px">No hay filiales registradas.</h2>
+        <h4 class="text-center gray-font">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
+    </div>
+    <div class="row" ng-if="vm.houses.length!==0">
         <div class="col-md-12" style="padding:18px">
                         <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="portlet-title">

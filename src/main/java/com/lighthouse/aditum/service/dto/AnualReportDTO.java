@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnualReportDTO {
@@ -13,20 +14,21 @@ public class AnualReportDTO {
     private List<String> realBalanceByMonth;
 
     private int fixedCostsAcumulado = 0;
-    private List<Double> fixedCostsBudgetTotal;
-    private List<Double> fixedCostsBudgetDiference;
+    private List<Double> fixedCostsBudgetTotal = new ArrayList<>();
+    private List<Double> fixedCostsBudgetDiference = new ArrayList<>();
     private double fixedCostsBudgetAcumulado = 0;
     private double fixedCostsBudgetDiferenceAcumulado = 0;
 
     private int variableCostsAcumulado = 0;
-    private List<Double> variableCostsBudgetTotal;
-    private List<Double> variableCostsBudgetDiference;
+    private List<Double> variableCostsBudgetTotal = new ArrayList<>();
+    private List<Double> variableCostsBudgetDiference = new ArrayList<>();
     private double variableCostsBudgetAcumulado = 0;
     private double variableCostsBudgetDiferenceAcumulado = 0;
 
     private int otherCostsAcumulado = 0;
-    private List<Double> otherCostsBudgetTotal;
-    private List<Double> otherCostsBudgetDiference;
+
+    private List<Double> otherCostsBudgetTotal = new ArrayList<>();
+    private List<Double> otherCostsBudgetDiference = new ArrayList<>();
     private double otherCostsBudgetAcumulado = 0;
     private double otherCostsBudgetDiferenceAcumulado = 0;
 
@@ -289,13 +291,6 @@ public class AnualReportDTO {
         this.variableCostsBudgetTotal = variableCostsBudgetTotal;
     }
 
-    public List<Double> getOtherCostsBudgetTotal() {
-        return otherCostsBudgetTotal;
-    }
-
-    public void setOtherCostsBudgetTotal(List<Double> otherCostsBudgetTotal) {
-        this.otherCostsBudgetTotal = otherCostsBudgetTotal;
-    }
 
     public List<Double> getFixedCostsBudgetDiference() {
         return fixedCostsBudgetDiference;
@@ -399,5 +394,13 @@ public class AnualReportDTO {
 
     public void setAllEgressDiferenceAcumulado(Double allEgressDiferenceAcumulado) {
         this.allEgressDiferenceAcumulado = this.allEgressDiferenceAcumulado + allEgressDiferenceAcumulado;
+    }
+
+    public List<Double> getOtherCostsBudgetTotal() {
+        return otherCostsBudgetTotal;
+    }
+
+    public void setOtherCostsBudgetTotal(List<Double> otherCostsBudgetTotal) {
+        this.otherCostsBudgetTotal = otherCostsBudgetTotal;
     }
 }

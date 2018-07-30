@@ -194,8 +194,8 @@
 
             <li ui-sref="dashboard.selectCompany" ng-show="showSelectCompany" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'selectCondominio'}">
                 <a href="javascript:;">
-                    <i class="glyphicon glyphicon-transfer" aria-hidden="true"></i>
-                    <span class="title">Seleccionar condominio</span>
+                    <i class="glyphicon glyphicon-transfer" style="color:white;" aria-hidden="true"></i>
+                    <span class="title" style="font-weight:500; color:white;">Seleccionar condominio</span>
                 </a>
             </li>
             <li ui-sref="finanzasPorCasa" has-authority="ROLE_USER"  class="start hidden-xs hidden-sm" ng-class="{ 'active' : active === 'financesResidentAccount'  }">
@@ -331,7 +331,7 @@
             </li>
 
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' || active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories' || active === 'estadoResultados' ||  active === 'reporteGastos' || active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance' || active === 'reporteIngresos'} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' ||    active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance' } ">
 
                 <a href="javascript:;">
                     <i class="fa fa-money"  style="color:white;" aria-hidden="true"></i>
@@ -450,75 +450,7 @@
                         </a>
 
                     </li>
-                    <li ng-class="{ 'active' : active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories'  } ">
 
-                        <a href="javascript:;">
-                            <i class="fa fa-cogs"  style=" color:white;"></i>
-                            <span class="title"  style="color:white;">Configuracion</span>
-                            <span class="selected">
-                            </span>
-                            <span class="arrow open">
-                            </span>
-                        </a>
-                        <ul class="sub-menu" >
-                            <li ui-sref="proveedor" ng-class="{ 'active' : active === 'proovedores' }"  style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style=" color:white;">Proovedores</span>
-                                </a>
-                            </li>
-                            <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'configureCharges' }"  style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style="color:white;">Cuotas</span>
-                                </a>
-                            </li>
-                            <li ui-sref="banco-configuration" ng-class="{ 'active' : active === 'bancoConfiguration' }"  style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style=" color:white;">Cuentas de banco</span>
-                                </a>
-                            </li>
-                            <li ui-sref="egress-category" ng-class="{ 'active' : active === 'egressCategories' }"  style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style=" color:white;">Categoría de egresos </span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li ng-class="{ 'active' : active === 'estadoResultados' ||  active === 'reporteGastos'} " >
-                        <a href="javascript:;">
-                            <i class="fa fa-pie-chart" style=" color:white;"></i>
-                            <span class="title" style=" color:white;">Reportes</span>
-                            <span class="selected">
-					</span>
-                            <span class="arrow open">
-					</span>
-                        </a>
-                        <ul class="sub-menu" >
-                            <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'estadoResultados' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span   style=" color:white;">Estado de resultados</span>
-                                </a>
-                            </li>
-                            <li ui-sref="egress-report" ng-class="{ 'active' : active === 'reporteGastos' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span   style=" color:white;">Reporte de gastos</span>
-                                </a>
-                            </li>
-                            <li ui-sref="payment-report" ng-class="{ 'active' : active === 'reporteIngresos' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span   style=" color:white;">Reporte de ingresos</span>
-                                </a>
-                            </li>
-                        </ul>
-
-                    </li>
                     <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
                         <a href=""  style=" color:white;">
                             <i class="fa fa-balance-scale" aria-hidden="true"  style="font-weight:500; color:white;"></i> Saldos
@@ -534,6 +466,76 @@
                 </ul>
 
             </li>
+            <li ng-class="{ 'active' : active === 'estadoResultados' ||  active === 'reporteGastos'  ||  active === 'reporteIngresos'} " >
+                <a href="javascript:;">
+                    <i class="fa fa-pie-chart" style=" color:white;"></i>
+                    <span class="title" style=" color:white; font-weight:500;">Reportes</span>
+                    <span class="selected">
+					</span>
+                    <span class="arrow open">
+					</span>
+                </a>
+                <ul class="sub-menu" >
+                    <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'estadoResultados' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Estado de resultados</span>
+                        </a>
+                    </li>
+                    <li ui-sref="egress-report" ng-class="{ 'active' : active === 'reporteGastos' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Reporte de gastos</span>
+                        </a>
+                    </li>
+                    <li ui-sref="payment-report" ng-class="{ 'active' : active === 'reporteIngresos' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Reporte de ingresos</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
+            <li ng-class="{ 'active' : active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories'  } ">
+
+                <a href="javascript:;">
+                    <i class="fa fa-cogs"  style=" color:white;"></i>
+                    <span class="title"  style="color:white;">Configuracion</span>
+                    <span class="selected">
+                            </span>
+                    <span class="arrow open">
+                            </span>
+                </a>
+                <ul class="sub-menu" >
+                    <li ui-sref="proveedor" ng-class="{ 'active' : active === 'proovedores' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span  style=" color:white;">Proveedores</span>
+                        </a>
+                    </li>
+                    <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'configureCharges' }"  >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span  style="color:white;">Cuotas</span>
+                        </a>
+                    </li>
+                    <li ui-sref="banco-configuration" ng-class="{ 'active' : active === 'bancoConfiguration' }"  >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span  style=" color:white;">Cuentas de banco</span>
+                        </a>
+                    </li>
+                    <li ui-sref="egress-category" ng-class="{ 'active' : active === 'egressCategories' }"  >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span  style=" color:white;">Categoría de egresos </span>
+                        </a>
+                    </li>
+
+                </ul>
+            </li>
+
             <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
                 <a ui-sref="soporte"  style="font-weight:500; color:white;">
                     <i class="fa fa-life-ring" aria-hidden="true"  style="font-weight:600; color:white;"></i> Soporte

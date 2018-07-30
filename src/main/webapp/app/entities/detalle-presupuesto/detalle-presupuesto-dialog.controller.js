@@ -39,6 +39,19 @@
 
         }
 
+        vm.eliminateZero = function(item){
+            if(item.valuePerMonth=="0"){
+                item.valuePerMonth = "";
+            }
+
+        }
+        vm.putZero = function(item){
+            if(item.valuePerMonth=="" || item.valuePerMonth==null || item.valuePerMonth==undefined){
+                item.valuePerMonth = "0";
+            }
+
+        }
+
          $timeout(function (){
            angular.element('.form-group:eq(1)>input').focus();
          });

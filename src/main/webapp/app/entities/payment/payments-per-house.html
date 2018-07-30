@@ -122,7 +122,7 @@
                                 <p ng-hide="payment.comments!=undefined">Ninguno</p>
                             </div>
                         </div>
-                        <div class="col-md-12" ng-if="payment.ammountLeft>0">
+                        <div class="col-md-12" ng-if="payment.ammountLeft>0" style="margin-bottom:30px">
                             <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px">  ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray;'><h5>Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
                         </div>
                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">

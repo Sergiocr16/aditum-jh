@@ -70,6 +70,13 @@
 
        function onSuccessBancos(data, headers) {
           vm.bancos = data;
+             vm.egressCategories = data;
+                           setTimeout(function() {
+                                        $("#loadingIcon").fadeOut(300);
+                            }, 400)
+                               setTimeout(function() {
+                                   $("#new_egress_form").fadeIn('slow');
+                            },900 )
        }
 
          function formatEgresses() {

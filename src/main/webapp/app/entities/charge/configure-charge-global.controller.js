@@ -71,7 +71,7 @@
                       house.due = vm.ammount;
                       House.update(house,function(result){
                       vm.cont++;
-                      if(vm.houses.length-1==vm.cont){
+                      if(vm.houses.length==vm.cont){
                       $scope.$emit('aditumApp:globaChargeUpdate', result);
                                  $uibModalInstance.close(result);
                                  vm.isSaving = false;

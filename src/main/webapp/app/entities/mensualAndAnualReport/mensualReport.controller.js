@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualReportController', MensualReportController);
 
-    MensualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope'];
+    MensualReportController.$inject = ['AlertService','$rootScope','Principal','MensualAndAnualReport','$scope','Presupuesto'];
 
-    function MensualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope) {
+    function MensualReportController(AlertService,$rootScope,Principal,MensualAndAnualReport,$scope,Presupuesto) {
 
         var vm = this;
         vm.datePickerOpenStatus = {};
@@ -62,18 +62,30 @@
 
 		}
 
-
+        vm.isFinite = function(percentage){
+        console.log(isFinite(percentage))
+            return isFinite(percentage);
+        }
         function onSuccess(data, headers) {
              vm.report = data;
-             console.log(vm.report)
+             vm.initialDateBalance =  vm.dates.initial_time;
              vm.fechaInicio = vm.dates.initial_time;
              vm.fechaFin = vm.dates.final_time;
              if(vm.mensualReportPresupuesto){
-               vm.showPresupuestoFields = true;
-               vm.totalEgressBudget = vm.report.mensualEgressReport.fixedCostsBudgetTotal + vm.report.mensualEgressReport.variableCostsBudgetTotal + vm.report.mensualEgressReport.otherCostsBudgetTotal;
-               vm.egressBudgetDiference = vm.report.mensualEgressReport.allEgressCategoriesTotal - vm.totalEgressBudget;
-               vm.ingressBudgetDiference = vm.report.mensualIngressReport.allIngressCategoriesTotal- vm.report.mensualIngressReport.totalBudget;
-               vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
+                   Presupuesto.query({companyId:$rootScope.companyId},function(result) {
+                         if(result.length>0){
+                             vm.showPresupuestoFields = true;
+                             vm.totalEgressBudget = vm.report.mensualEgressReport.fixedCostsBudgetTotal + vm.report.mensualEgressReport.variableCostsBudgetTotal + vm.report.mensualEgressReport.otherCostsBudgetTotal;
+                             vm.egressBudgetDiference = vm.report.mensualEgressReport.allEgressCategoriesTotal - vm.totalEgressBudget;
+                             vm.ingressBudgetDiference = vm.report.mensualIngressReport.allIngressCategoriesTotal- vm.report.mensualIngressReport.totalBudget;
+                             vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
+
+                         }else{
+                              toastr["error"]("No existen un presupuesto del 2018 registrado.");
+                         }
+
+                    });
+
 
              }else{
                vm.showPresupuestoFields = false;

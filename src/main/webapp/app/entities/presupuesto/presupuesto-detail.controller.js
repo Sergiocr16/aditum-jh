@@ -75,6 +75,20 @@
             }, 200);
 
         }
+           vm.eliminateZero = function(item){
+                    if(item.valuePerMonth=="0"){
+                        item.valuePerMonth = "";
+                    }
+
+                }
+                vm.putZero = function(item){
+                    if(item.valuePerMonth=="" || item.valuePerMonth==null || item.valuePerMonth==undefined){
+                        item.valuePerMonth = "0";
+                    }
+
+                }
+
+
         vm.setTotalIngressByMonth = function(index,month){
           if(vm.hasLettersOrSpecial(month.valuePerMonth)){
             month.valido = false;
