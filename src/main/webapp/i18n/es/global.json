@@ -38,6 +38,7 @@
                 "presupuesto": "Presupuesto",
                 "detallePresupuesto": "Detalle Presupuesto",
                 "commonArea": "Common Area",
+                "announcement": "Announcement",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

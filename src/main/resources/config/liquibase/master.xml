@@ -36,6 +36,7 @@
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_Presupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528184225_added_entity_DetallePresupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180724215437_added_entity_CommonArea.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_Announcement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -61,5 +62,6 @@
     <include file="classpath:config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_constraints_EgressCategory.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_constraints_Presupuesto.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_constraints_Announcement.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

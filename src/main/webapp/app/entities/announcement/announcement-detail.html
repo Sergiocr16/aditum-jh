@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.announcement.detail.title">Announcement</span> {{vm.announcement.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.announcement.title">Title</span></dt>
+        <dd>
+            <span>{{vm.announcement.title}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.announcement.publishingDate">Publishing Date</span></dt>
+        <dd>
+            <span>{{vm.announcement.publishingDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.announcement.description">Description</span></dt>
+        <dd>
+            <span>{{vm.announcement.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.announcement.status">Status</span></dt>
+        <dd>
+            <span>{{vm.announcement.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.announcement.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.announcement.companyId})">{{vm.announcement.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="announcement-detail.edit({id:vm.announcement.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
