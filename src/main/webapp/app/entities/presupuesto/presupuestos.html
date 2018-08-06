@@ -50,7 +50,7 @@
                     <tbody>
                     <tr  ng-repeat="presupuesto in vm.presupuestos track by presupuesto.id" >
 
-                        <td>PRESUPUESTO {{presupuesto.anno}}</td>
+                        <td>PRESUPUESTO <span class="bold">{{presupuesto.anno}}</span></td>
                         <td>{{presupuesto.modificationDate | date:'longDate'}}</td>
                         <td> <a class="light-gray-font"  ng-click="vm.showBudgetDetail(presupuesto)" >Ver detalle</a></td>
                         <td> <a class="light-gray-font"  ng-click="vm.showBudgetEdit(presupuesto)">Editar</a></td>

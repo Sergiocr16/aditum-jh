@@ -1,0 +1,360 @@
+
+<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="" id="new_egress_form">
+    <div class="row">
+        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="loadingIcon2">
+            <div class="spinnerLoading">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+        </div>
+        <div class="col-md-12 display-none" id="reportResults" >
+            <div class="portlet light bordered">
+
+                <div class="portlet-body form" id="register_edit_form">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <div class="btn-group pull-right" style="padding:5px">
+
+                            <button type="button" ng-click="vm.showWithBudget()"  ng-show="vm.showPresupuestoFields==false" style=" margin-left:5px!important; ; margin-right:20px;" class="btn blue">Mostrar con presupuesto</button>
+                            <button type="button" ng-click="vm.showWithBudget()" ng-show="vm.showPresupuestoFields" style="margin-left:5px!important; ; margin-right:20px;" class="btn red">Mostrar sin presupuesto</button>
+                            <button class="btn btn-circle btn-icon-only btn-default fullscreen" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                        </div>
+                        <div ng-show="vm.showPresupuestoFields" class="btn-group" style="padding:5px">
+                            <a id="expandorCollapseAnualReport" ng-click="vm.expandDetail()" style="color:#0088cc;"> Expandir/colapsar todo</a>
+                        </div>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
+
+                            <h5 class="text-center bold gray-font uppercase" style="font-size:12px;">Hacienda de oro</h5>
+                            <h5 class="text-center bold gray-font" style="font-size:12px;">ESTADO DE RESULTADOS</h5>
+                            <h5 class="text-center bold gray-font">EJERCICIO {{vm.actualMonth | date:'yyyy'}}</h5>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
+                                <div class="margin-top-20 " >
+
+                                    <table class="jh-table table  table-bordered table-condensed flip-content " style=" color:black; font-size:11px!important; ">
+
+                                        <tbody>
+                                            <tr  class="bold">
+                                                <th colspan="3" class=" text-center" style="font-size:11px;">CONCEPTO</th>
+                                                <th  ng-show="vm.month>=1" class=" text-center" style="font-size:11px;">ENERO</th>
+                                                <th class=" text-center" ng-show="vm.month>=2"style="font-size:11px;">FEBRERO</th>
+                                                <th class=" text-center" ng-show="vm.month>=3"style="font-size:11px;">MARZO</th>
+                                                <th class=" text-center" ng-show="vm.month>=4"style="font-size:11px;">ABRIL</th>
+                                                <th class=" text-center" ng-show="vm.month>=5"style="font-size:11px;">MAYO</th>
+                                                <th class=" text-center" ng-show="vm.month>=6"style="font-size:11px;">JUNIO</th>
+                                                <th class=" text-center" ng-show="vm.month>=7"style="font-size:11px;">JULIO</th>
+                                                <th class=" text-center" ng-show="vm.month>=8"style="font-size:11px;">AGOSTO</th>
+                                                <th class=" text-center" ng-show="vm.month>=9"style="font-size:11px;">SETIEMBRE</th>
+                                                <th class=" text-center" ng-show="vm.month>=10"style="font-size:11px;">OCTUBRE</th>
+                                                <th class=" text-center" ng-show="vm.month>=11"style="font-size:11px;">NOVIEMBRE</th>
+                                                <th class=" text-center" ng-show="vm.month>=12"style="font-size:11px;">DICIEMBRE</th>
+                                                <th class=" text-center" style="font-size:11px;">ACUMULADO</th>
+                                            </tr>
+                                            <tr style="height:30px;">
+
+                                            </tr>
+                                            <tr class="bold">
+                                                <th colspan="{{vm.rowsQuantity}}" style="font-size:11px;">INGRESOS</th>
+                                            </tr>
+                                            <tr class="maintenanceReportField" ng-click="vm.showBodyTableIngress(1)" ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-show="vm.report.maintenanceIngressAcumulado>0 || vm.report.maintenanceIngressBudgetAcumulado>0">
+                                                <td  colspan="3" class="bold " ><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  MANTENIMIENTO</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.maintenanceIngressTotal+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.maintenanceIngressAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr class="anualReportBudgetBackground" ng-show="vm.isShowingMaintenanceDetail && vm.showPresupuestoFields && vm.report.maintenanceIngressAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;">PRESUPUESTO</td>
+                                            <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.maintenanceBudget+"")}}</td>
+                                            <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.maintenanceBudgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr  style="border-color: inherit;"  ng-show="vm.isShowingMaintenanceDetail && vm.showPresupuestoFields && vm.report.maintenanceIngressAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;">DIFERENCIA</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"  ng-class="{'font-green':item.maintenanceBudgetDiference>0,'redBudget':item.maintenanceBudgetDiference<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(item.maintenanceBudgetDiference+"")}}</td>
+                                                <td class=" text-right bold" ng-class="{'font-green':vm.report.maintenanceBudgetDiferenceAcumulado>0,'redBudget':vm.report.maintenanceBudgetDiferenceAcumulado<0}" ><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.maintenanceBudgetDiferenceAcumulado+"")}}</td>
+                                            </tr>
+
+
+
+
+
+                                            <tr class="maintenanceReportField" ng-click="vm.showBodyTableIngress(2)" ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-show="vm.report.extraordinaryIngressAcumulado>0 || vm.report.extraordinaryIngressBudgetAcumulado>0">
+                                                <td  colspan="3" class="bold" ><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>EXTRORDINARIAS</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.extraordinaryIngressTotal+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.extraordinaryIngressAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr  class="anualReportBudgetBackground"  ng-show="vm.isShowingExtrardinaryDetail && vm.showPresupuestoFields && vm.report.extraordinaryIngressAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;">PRESUPUESTO</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.extraordinaryBudget+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.extraordinaryIngressBudgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr  ng-show="vm.isShowingExtrardinaryDetail && vm.showPresupuestoFields && vm.report.extraordinaryIngressAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;" >DIFERENCIA</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right" ng-class="{'font-green':item.extraordinaryBudgetDiference>0,'redBudget':item.extraordinaryBudgetDiference<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(item.extraordinaryBudgetDiference+"")}}</td>
+                                                <td class=" text-right bold" ng-class="{'font-green':vm.report.extraordinaryIngressBudgetDiferenceAcumulado>0,'redBudget':vm.report.extraordinaryIngressBudgetDiferenceAcumulado<0}"  ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.extraordinaryIngressBudgetDiferenceAcumulado+"")}}</td>
+                                            </tr>
+
+
+
+
+                                            <tr class="maintenanceReportField" ng-click="vm.showBodyTableIngress(3)" ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-show="vm.report.commonAreasAcumulado>0 || vm.report.commonAreasBudgetAcumulado>0" >
+                                                <td   colspan="3" class="bold" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>ÁREAS COMUNES</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.commonAreasIngressTotal+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.commonAreasAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr  class="anualReportBudgetBackground" ng-show="vm.isShowingCommonAreasDetail && vm.showPresupuestoFields && vm.report.commonAreasAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;">PRESUPUESTO</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.commonAreasBudget+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.commonAreasBudgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr ng-show="vm.isShowingCommonAreasDetail && vm.showPresupuestoFields && vm.report.commonAreasAcumulado>0">
+                                                <td colspan="3" style="padding-left:40px;">DIFERENCIA</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"  ng-class="{'font-green':item.commonAreasBudgetDiference>0,'redBudget':item.commonAreasBudgetDiference<0}"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.commonAreasBudgetDiference+"")}}</td>
+                                                <td class=" text-right bold" ng-class="{'font-green':vm.report.commonAreasBudgetDiferenceAcumulado>0,'redBudget':vm.report.commonAreasBudgetDiferenceAcumulado<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.commonAreasBudgetDiferenceAcumulado+"")}}</td>
+                                            </tr>
+
+
+
+
+
+
+                                            <tr class="maintenanceReportField" ng-click="vm.showBodyTableIngress(4)" ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-show="vm.report.otherIngressAcumulado>0 || vm.report.otherIngressBudgetAcumulado>0">
+                                                <td colspan="3" class="bold" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>OTROS INGRESOS</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.otherIngressTotal+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.otherIngressAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr ng-show="vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressAcumulado" class="anualReportBudgetBackground" >
+                                                <td colspan="3" style="padding-left:40px;">PRESUPUESTO</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.otherBudget+"")}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.otherIngressBudgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr ng-show="vm.isShowingOtherIngressDetail  && vm.showPresupuestoFields && vm.report.otherIngressAcumulado">
+                                                <td colspan="3" style="padding-left:40px;">DIFERENCIA</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right" ng-class="{'font-green':item.otherBudgetDiference>0,'redBudget':item.otherBudgetDiference<0}"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.otherBudgetDiference+"")}}</td>
+                                                <td class=" text-right bold" ng-class="{'font-green':vm.report.otherIngressBudgetDiferenceAcumulado>0,'redBudget':vm.report.otherIngressBudgetDiferenceAcumulado<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.otherIngressBudgetDiferenceAcumulado+"")}}</td>
+                                            </tr>
+
+
+                                            <tr ng-click="vm.showBodyTableIngress(5)" class="bold font-green maintenanceReportField" ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" >
+                                                <td colspan="3"  class="maintenanceReportField bold "><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black;" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>TOTAL INGRESOS</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.allIngressCategoriesTotal+"")}}</td>
+                                                <td class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.allIngressAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr class="bold anualReportBudgetBackground"  ng-show="vm.isShowingTotalIngressDetail  && vm.showPresupuestoFields">
+                                                <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold ">PRESUPUESTO</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.totalBudget+"")}}</td>
+                                                <td class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.totalIngressBudget+"")}}</td>
+                                            </tr>
+                                            <tr class="bold "  ng-show="vm.isShowingTotalIngressDetail  && vm.showPresupuestoFields">
+                                                <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold "> DIFERENCIA</td>
+                                                <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right " ng-class="{'font-green':item.totalBudgetDiference>0,'redBudget':item.totalBudgetDiference<0}"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.totalBudgetDiference+"")}}</td>
+                                                <td class=" text-right " ng-class="{'font-green':vm.report.totalIngressBudgetDiference>0,'redBudget':vm.report.totalIngressBudgetDiference<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.totalIngressBudgetDiference+"")}}</td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody style="border-top:0px;" ng-show="vm.report.fixedCostsAcumulado>0 || vm.report.fixedCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                        <tr style="height:30px;">
+
+                                        </tr>
+                                        <th colspan="{{vm.rowsQuantity}}" style="font-size:11px;">GASTOS FIJOS</th>
+                                        </tbody>
+                                        <tbody  ng-show="vm.report.fixedCostsAcumulado>0"  ng-repeat="item in vm.report.fixedCostEgress" style="border-top:0px;">
+
+                                            <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTableEgress(item)"  ng-show="item.acumulado>0 || item.budgetAcumulado>0" class="maintenanceReportField">
+                                                <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>{{item.name}}</td>
+                                                <td class="text-right" class="maintenanceReportField" ng-repeat="totalEgress in item.totalByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(totalEgress)}}</td>
+                                                 <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.acumulado+"")}}</td>
+                                            </tr>
+                                            <tr class="anualReportBudgetBackground"  ng-show="vm.showPresupuestoFields && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields && item.showDetail && item.acumulado>0" class="maintenanceReportField" >
+                                                <td  style="padding-left:40px;" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                                <td class="text-right" class="maintenanceReportField" ng-repeat="budget in item.budgetByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(budget)}}</td>
+                                                <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.budgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0" class="maintenanceReportField">
+                                                <td style="padding-left:40px;"  style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">DIFERENCIA</td>
+                                               <td ng-class="{'font-green':diference>0,'redBudget':diference<0}" class="text-right" class="maintenanceReportField" ng-repeat="diference in item.diferenceByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(diference)}}</td>
+                                                <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}" class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.diferenceAcumulado+"")}}</td>
+                                            </tr>
+
+                                        </tbody>
+                                        <tbody style="border-top:0px;">
+                                            <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}"ng-click="vm.showBodyTotalEgress(1)" class="redBudget bold maintenanceReportField" ng-show="vm.report.fixedCostsAcumulado>0 || vm.report.fixedCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                                <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  TOTAL GASTOS FIJOS</td>
+                                                <td  class="text-right"  ng-repeat="item2 in vm.report.anualEgressByMonth"><span style="font-weight:normal;">₡ </span>{{vm.formatearNumero(item2.fixedCostsTotal+"")}}</td>
+                                                <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.fixedCostsAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr class="anualReportBudgetBackground" class="redBudget bold" ng-show="vm.showPresupuestoFields &&  vm.isShowingFixedCostsDetail && vm.report.fixedCostsAcumulado>0">
+                                                <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                                <td  class="text-right"  ng-repeat="item in vm.report.fixedCostsBudgetTotal track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                                <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.fixedCostsBudgetAcumulado+"")}}</td>
+                                            </tr>
+                                            <tr class=" bold" ng-show="vm.showPresupuestoFields && vm.isShowingFixedCostsDetail && vm.report.fixedCostsAcumulado>0">
+                                                <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField"  colspan="3">DIFERENCIA</td>
+                                                <td ng-class="{'font-green':item>0,'redBudget':item<0}" class="text-right"   ng-repeat="item in vm.report.fixedCostsBudgetDiference track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                                <td ng-class="{'font-green':vm.report.fixedCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.fixedCostsBudgetDiferenceAcumulado<0}" class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.fixedCostsBudgetDiferenceAcumulado+"")}}</td>
+                                            </tr>
+                                        </tbody>
+
+
+
+
+                                        <tbody style="border-top:0px;" ng-show="vm.report.variableCostsAcumulado>0 || vm.report.variableCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                        <tr style="height:30px;">
+
+                                        </tr>
+                                        <th colspan="{{vm.rowsQuantity}}" style="font-size:11px;">GASTOS VARIABLES</th>
+                                        </tbody>
+                                        <tbody  ng-show="vm.report.variableCostsAcumulado>0 || vm.report.variableCostsBudgetAcumulado && vm.showPresupuestoFields"  ng-repeat="item in vm.report.variableCostEgress" style="border-top:0px;">
+
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTableEgress(item)"  ng-show="item.acumulado>0 || item.budgetAcumulado>0" class="maintenanceReportField">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>{{item.name}}</td>
+                                            <td class="text-right" class="maintenanceReportField" ng-repeat="totalEgress in item.totalByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(totalEgress)}}</td>
+                                            <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.acumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="anualReportBudgetBackground"  ng-show="vm.showPresupuestoFields && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields && item.showDetail && item.acumulado>0" class="maintenanceReportField" >
+                                            <td  style="padding-left:40px;" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                            <td class="text-right" class="maintenanceReportField" ng-repeat="budget in item.budgetByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(budget)}}</td>
+                                            <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.budgetAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0" class="maintenanceReportField">
+                                            <td style="padding-left:40px;"  style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">DIFERENCIA</td>
+                                            <td ng-class="{'font-green':diference>0,'redBudget':diference<0}" class="text-right" class="maintenanceReportField" ng-repeat="diference in item.diferenceByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(diference)}}</td>
+                                            <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}" class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.diferenceAcumulado+"")}}</td>
+                                        </tr>
+
+                                        </tbody>
+                                        <tbody style="border-top:0px;">
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}"ng-click="vm.showBodyTotalEgress(2)" class="redBudget bold maintenanceReportField" ng-show="vm.report.variableCostsAcumulado>0 || vm.report.variableCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  TOTAL GASTOS VARIABLES</td>
+                                            <td  class="text-right"  ng-repeat="item2 in vm.report.anualEgressByMonth"><span style="font-weight:normal;">₡ </span>{{vm.formatearNumero(item2.variableCostsTotal+"")}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.variableCostsAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="anualReportBudgetBackground" class="redBudget bold" ng-show="vm.showPresupuestoFields &&  vm.isShowingVariableCostsDetail &&  vm.report.variableCostsAcumulado>0">
+                                            <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                            <td  class="text-right"  ng-repeat="item in vm.report.variableCostsBudgetTotal track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.variableCostsBudgetAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class=" bold" ng-show="vm.showPresupuestoFields && vm.isShowingVariableCostsDetail &&  vm.report.variableCostsAcumulado>0">
+                                            <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField"  colspan="3">DIFERENCIA</td>
+                                            <td ng-class="{'font-green':item>0,'redBudget':item<0}" class="text-right"   ng-repeat="item in vm.report.variableCostsBudgetDiference track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td ng-class="{'font-green':vm.report.variableCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.variableCostsBudgetDiferenceAcumulado<0}" class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.variableCostsBudgetDiferenceAcumulado+"")}}</td>
+                                        </tr>
+                                        </tbody>
+
+
+
+                                        <tbody style="border-top:0px;" ng-show="vm.report.otherCostsAcumulado>0 || vm.report.otherCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                        <tr style="height:30px;">
+
+                                        </tr>
+                                        <th colspan="{{vm.rowsQuantity}}" style="font-size:11px;">OTROS GASTOS</th>
+                                        </tbody>
+                                        <tbody   ng-show="vm.report.otherCostsAcumulado>0 || vm.report.otherCostsBudgetAcumulado && vm.showPresupuestoFields"  ng-repeat="item in vm.report.otherCostEgress" style="border-top:0px;">
+
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTableEgress(item)"  ng-show="item.acumulado>0 || item.budgetAcumulado>0" class="maintenanceReportField">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>{{item.name}}</td>
+                                            <td class="text-right" class="maintenanceReportField" ng-repeat="totalEgress in item.totalByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(totalEgress)}}</td>
+                                            <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.acumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="anualReportBudgetBackground"  ng-show="vm.showPresupuestoFields && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields && item.showDetail && item.acumulado>0" class="maintenanceReportField" >
+                                            <td  style="padding-left:40px;" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                            <td class="text-right" class="maintenanceReportField" ng-repeat="budget in item.budgetByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(budget)}}</td>
+                                            <td class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.budgetAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr ng-show="vm.showPresupuestoFields==true && item.showDetail && item.budgetAcumulado>0 || vm.showPresupuestoFields==true && item.showDetail && item.acumulado>0" class="maintenanceReportField">
+                                            <td style="padding-left:40px;"  style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">DIFERENCIA</td>
+                                            <td ng-class="{'font-green':diference>0,'redBudget':diference<0}" class="text-right" class="maintenanceReportField" ng-repeat="diference in item.diferenceByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(diference)}}</td>
+                                            <td ng-class="{'font-green':item.diferenceAcumulado>0,'redBudget':item.diferenceAcumulado<0}" class=" text-right bold"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.diferenceAcumulado+"")}}</td>
+                                        </tr>
+
+                                        </tbody>
+                                        <tbody style="border-top:0px;">
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTotalEgress(3)" class="redBudget bold maintenanceReportField" ng-show="vm.report.otherCostsAcumulado>0 || vm.report.otherCostsBudgetAcumulado && vm.showPresupuestoFields">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  TOTAL OTROS GASTOS</td>
+                                            <td  class="text-right"  ng-repeat="item2 in vm.report.anualEgressByMonth"><span style="font-weight:normal;">₡ </span>{{vm.formatearNumero(item2.otherCostsTotal+"")}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.otherCostsAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="anualReportBudgetBackground" class="redBudget bold" ng-show="vm.showPresupuestoFields &&  vm.isShowingOtherCostsDetail && vm.report.otherCostsAcumulado>0">
+                                            <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">PRESUPUESTO</td>
+                                            <td  class="text-right"  ng-repeat="item in vm.report.otherCostsBudgetTotal track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.otherCostsBudgetAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class=" bold" ng-show="vm.showPresupuestoFields && vm.isShowingOtherCostsDetail && vm.report.otherCostsAcumulado>0">
+                                            <td style="padding-left:40px;" class="bold" style="text-transform:uppercase;" class="maintenanceReportField"  colspan="3">DIFERENCIA</td>
+                                            <td ng-class="{'font-green':item>0,'redBudget':item<0}" class="text-right"   ng-repeat="item in vm.report.otherCostsBudgetDiference track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td ng-class="{'font-green':vm.report.otherCostsBudgetDiferenceAcumulado>0,'redBudget':vm.report.otherCostsBudgetDiferenceAcumulado<0}" class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.otherCostsBudgetDiferenceAcumulado+"")}}</td>
+                                        </tr>
+                                        </tbody>
+
+
+                                        <tbody style="border-top:0px;">
+                                        <tr style="height:30px;" >
+
+                                        </tr>
+                                        <tr>
+                                            <th colspan="{{vm.rowsQuantity}}" style="font-size:11px;">RESUMEN</th>
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTotalEgress(4)" class="bold font-green maintenanceReportField">
+                                            <td colspan="3"  class="maintenanceReportField bold "><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  TOTAL INGRESOS</td>
+                                            <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.allIngressCategoriesTotal+"")}}</td>
+                                            <td class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.allIngressAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="bold anualReportBudgetBackground"  ng-show="vm.isShowingAllIngressDetail  && vm.showPresupuestoFields">
+                                            <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold ">PRESUPUESTO</td>
+                                            <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.totalBudget+"")}}</td>
+                                            <td class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.totalIngressBudget+"")}}</td>
+                                        </tr>
+                                        <tr class="bold "  ng-show="vm.isShowingAllIngressDetail  && vm.showPresupuestoFields">
+                                            <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold "> DIFERENCIA</td>
+                                            <td ng-repeat="item in vm.report.anualIngressByMonth" class=" text-right " ng-class="{'font-green':item.totalBudgetDiference>0,'redBudget':item.totalBudgetDiference<0}"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item.totalBudgetDiference+"")}}</td>
+                                            <td class=" text-right " ng-class="{'font-green':vm.report.totalIngressBudgetDiference>0,'redBudget':vm.report.totalIngressBudgetDiference<0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.totalIngressBudgetDiference+"")}}</td>
+                                        </tr>
+                                        <tr ng-class="{'anualReportBudgetTitleBackground':vm.showPresupuestoFields}" ng-click="vm.showBodyTotalEgress(5)" class="redBudget bold maintenanceReportField">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" style="color:black" ng-show="vm.showPresupuestoFields" aria-hidden="true"></i>  TOTAL EGRESOS</td>
+                                            <td  class="text-right"  ng-repeat="item2 in vm.report.anualEgressByMonth"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item2.allEgressCategoriesTotal+"")}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.allEgressAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="bold anualReportBudgetBackground"  ng-show="vm.isShowingAllEgressDetail  && vm.showPresupuestoFields">
+                                            <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold ">PRESUPUESTO</td>
+                                            <td ng-repeat="item in vm.report.allEgressBudgetByMonth  track by $index" class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td class=" text-right "><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.report.allEgressBudgetAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class="bold "  ng-show="vm.isShowingAllEgressDetail  && vm.showPresupuestoFields">
+                                            <td colspan="3"  style="padding-left:40px;" class="maintenanceReportField bold "> DIFERENCIA</td>
+                                            <td ng-repeat="item in vm.report.allEgressDiferenceByMonth track by $index" class=" text-right " ng-class="{'font-green':item<0,'redBudget':item>0}"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(item+"")}}</td>
+                                            <td class=" text-right " ng-class="{'font-green':vm.report.allEgressDiferenceAcumulado<0,'redBudget':vm.report.allEgressDiferenceAcumulado>0}"><span style="font-weight:normal;" >₡ </span> {{vm.formatearNumero(vm.report.allEgressDiferenceAcumulado+"")}}</td>
+                                        </tr>
+                                        <tr class=" bold">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">FLUJO</td>
+                                            <td  class="text-right"  ng-repeat="flujo in vm.report.flujoByMonth track by $index"><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(flujo)}}</td>
+                                            <td  class="text-right" ><span style="font-weight:normal;">₡ </span> {{vm.formatearNumero(vm.totalFlujo+"")}}</td>
+                                        </tr>
+                                        <tr class=" bold">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">SALDO INICIAL</td>
+                                            <td  class="text-right"  ng-repeat="initialBalance in vm.report.initialBalanceByMonth track by $index"><span style="font-weight:normal;"><span style="font-weight:normal;">₡ </span> </span> {{vm.formatearNumero(initialBalance)}}</td>
+
+                                        </tr>
+                                        <tr class=" bold">
+                                            <td class="bold" style="text-transform:uppercase;" class="maintenanceReportField" colspan="3">SALDO REAL</td>
+                                            <td  class="text-right"  ng-repeat="realBalance in vm.report.realBalanceByMonth track by $index"><span style="font-weight:normal;"><span style="font-weight:normal;">₡ </span> </span> {{vm.formatearNumero(realBalance)}}</td>
+
+                                        </tr>
+                                        </tr>
+
+                                        </tbody>
+                                    </table>
+
+
+
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-actions noborder" style="padding-bottom:0px;">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

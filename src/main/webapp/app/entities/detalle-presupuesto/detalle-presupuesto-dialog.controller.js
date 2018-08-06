@@ -9,6 +9,7 @@
 
     function DetallePresupuestoDialogController ($localStorage,$state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
         var vm = this;
+           $rootScope.active = "presupuestos";
         vm.presupuesto = {};
         vm.detallePresupuesto = entity;
         vm.save = save;
@@ -20,6 +21,7 @@
         vm.totalIngressByMonth = [];
         vm.totalEgressByMonth = [];
         var invalidInputs = 0;
+           vm.expanding = false;
         var inputsFullQuantity = 0;
         for(var i=1;i<=12;i++){
             var mantenimientoValue = {month:i,valuePerMonth:"0"}
@@ -34,6 +36,19 @@
             var month2 = {month:i,valuePerMonth:0}
             vm.totalEgressByMonth.push(month1)
             vm.totalIngressByMonth.push(month2)
+
+        }
+
+        vm.eliminateZero = function(item){
+            if(item.valuePerMonth=="0"){
+                item.valuePerMonth = "";
+            }
+
+        }
+        vm.putZero = function(item){
+            if(item.valuePerMonth=="" || item.valuePerMonth==null || item.valuePerMonth==undefined){
+                item.valuePerMonth = "0";
+            }
 
         }
 
@@ -78,6 +93,16 @@
                       })
                 });
         }
+          vm.expand = function(){
+
+                setTimeout(function () {
+                        $scope.$apply(function () {
+                             vm.expanding = !vm.expanding;
+                        });
+                    }, 200);
+
+                }
+
         function getValuesPerMonth () {
             invalidInputs=0;
             inputsFullQuantity=0;
@@ -238,6 +263,7 @@
                 });
             };
          function save (){
+
            if(vm.presupuesto.anno==undefined){
                 toastr["error"]("Debe seleccionar el año a presupuestar");
            }else{
@@ -247,8 +273,12 @@
                 }else if(inputsFullQuantity==0){
                     toastr["error"]("Debe ingresar al menos un valor en algún campo");}
                 else{
-                    vm.presupuesto.anno = vm.presupuesto.anno.year;
-                    vm.presupuesto.date = moment(new Date(), 'DD/MM/YYYY').toDate();
+                  var date = new Date();
+                  date.setDate(1);
+                  date.setMonth(0);
+                  date.setYear(vm.presupuesto.anno.year);
+                  vm.presupuesto.date = date;
+                  vm.presupuesto.anno = vm.presupuesto.anno.year;
                     vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
                     vm.presupuesto.companyId = $rootScope.companyId;
                     vm.presupuesto.deleted = 0;

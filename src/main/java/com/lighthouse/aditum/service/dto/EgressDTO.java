@@ -54,6 +54,8 @@ public class EgressDTO implements Serializable {
 
     private String groupName;
 
+    private Long categoryId;
+
     public Long getId() {
         return id;
     }
@@ -238,5 +240,13 @@ public class EgressDTO implements Serializable {
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }

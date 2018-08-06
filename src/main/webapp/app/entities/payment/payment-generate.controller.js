@@ -5,10 +5,10 @@
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration'];
+    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration) {
-
+    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration,Resident) {
+        $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -16,10 +16,11 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        $rootScope.active = "capturarIngresos";
+        vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
+        vm.residents = [];
         angular.element(document).ready(function() {
             $('.infoCharge').popover('show')
         });
@@ -166,7 +167,7 @@
         }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
-                                               var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
             angular.forEach(caracteres, function(val, index) {
@@ -196,6 +197,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function(value, key) {
+                value.housenumber = parseInt(value.housenumber);
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -219,12 +221,14 @@
                 }
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
+                loadResidentsForEmail($localStorage.houseSelected.id)
                 loadBancos()
+
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
                     companyId: $rootScope.companyId,
-                    concept: 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber,
+                    concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
                 loadAdminConfig()
             }
@@ -232,6 +236,49 @@
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+
+        function loadResidentsForEmail(houseId) {
+            vm.residents = [];
+            Resident.findResidentesEnabledByHouseId({
+                houseId: houseId
+            }).$promise.then(onSuccessResident, onError);
+
+            function onSuccessResident(data, headers) {
+                angular.forEach(data, function(resident, i) {
+                    if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                        resident.selected = false;
+                        if (resident.principalContact == 1) {
+                            resident.selected = true;
+                        }
+
+                        vm.residents.push(resident);
+                    }
+                });
+            }
+
+            function onError() {
+
+            }
+        }
+
+        vm.selectPrincipalContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                if (resident.principalContact == 1) {
+                    resident.selected = true;
+                }
+            });
+        }
+        vm.selectAllContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                resident.selected = true;
+            });
+        }
+
+        vm.selectNoneContact = function() {
+            angular.forEach(vm.residents, function(resident, i) {
+                resident.selected = false;
+            });
         }
 
         function loadAdminConfig() {
@@ -245,6 +292,16 @@
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
                 }
             })
+        }
+
+        function obtainEmailToList() {
+            var residentsToSendEmails = [];
+            angular.forEach(vm.residents, function(resident, i) {
+                if (resident.selected == true) {
+                    residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
+                }
+            })
+            return residentsToSendEmails;
         }
 
         function loadCharges(houseId) {
@@ -353,6 +410,7 @@
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 loadCharges($localStorage.houseSelected.id)
+                loadResidentsForEmail($localStorage.houseSelected.id)
                 loadAdminConfig();
             })
 
@@ -403,7 +461,7 @@
         function paymentTransaction() {
             var messageS = "¿Está seguro que desea capturar este ingreso?";
             if (vm.toPay > 0) {
-                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condomino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
+                messageS = "SALDO A FAVOR. Además de realizar el pago se creará un adelanto del condómino con el saldo a favor, ¿Está seguro que desea capturar este ingreso?";
             }
             bootbox.confirm({
                 message: messageS,
@@ -420,30 +478,61 @@
                 callback: function(result) {
                     if (result) {
                         CommonMethods.waitingMessage();
-                        vm.payment.charges = vm.charges;
+                        vm.payment.charges = vm.filterCharges(vm.charges);
                         vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
                         vm.payment.houseId = $rootScope.houseSelected.id;
                         if (vm.toPay > 0) {
                             vm.payment.ammount = parseInt(vm.payment.ammount) - parseInt(vm.toPay);
                         }
-                        vm.payment.concept = 'Abono a cuotas Filial '+$localStorage.houseSelected.housenumber;
+                        vm.payment.concept = 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber;
+                        vm.payment.emailTo = obtainEmailToList();
                         Payment.save(vm.payment, onSuccess, onError)
+
                         function onSuccess(result) {
-                            bootbox.hideAll();
-                            toastr["success"]("Se ha capturado el ingreso correctamente.")
-                            increaseFolioNumber(function(result){
-                            console.log(result)
-                            vm.admingConfig = result;
-                              vm.folioSerie = result.folioSerie;
-                              vm.folioNumber = result.folioNumber;
-                                if (vm.toPay > 0) {
-                                 registrarAdelantoCondomino();
-                                } else {
-                                    clear();
-                                    loadAll();
-                                    loadAdminConfig();
-                                }
-                            })
+                            if (vm.printReceipt == true) {
+                                printJS({
+                                    printable: '/api/payments/file/' + result.id,
+                                    type: 'pdf',
+                                    modalMessage: "Obteniendo comprobante de pago"
+                                })
+
+                                setTimeout(function() {
+                                    bootbox.hideAll();
+                                    toastr["success"]("Se ha capturado el ingreso correctamente.")
+                                    vm.printReceipt = false;
+                                    increaseFolioNumber(function(result) {
+                                        vm.admingConfig = result;
+                                        vm.folioSerie = result.folioSerie;
+                                        vm.folioNumber = result.folioNumber;
+                                        if (vm.toPay > 0) {
+                                            registrarAdelantoCondomino();
+                                        } else {
+                                            clear();
+                                            loadAll();
+                                            loadAdminConfig();
+                                        }
+                                    })
+                                }, 5000)
+
+
+                            } else {
+                                bootbox.hideAll();
+                                toastr["success"]("Se ha capturado el ingreso correctamente.")
+                                increaseFolioNumber(function(result) {
+                                    vm.admingConfig = result;
+                                    vm.folioSerie = result.folioSerie;
+                                    vm.folioNumber = result.folioNumber;
+                                    if (vm.toPay > 0) {
+                                        registrarAdelantoCondomino();
+                                    } else {
+                                        clear();
+                                        loadAll();
+                                        loadAdminConfig();
+                                    }
+                                })
+                            }
+
+
 
                         }
 
@@ -462,7 +551,7 @@
         function increaseFolioNumber(success) {
             vm.admingConfig.folioNumber = vm.folioNumber + 1;
             vm.admingConfig.folioSerie = vm.folioSerie;
-            AdministrationConfiguration.update(vm.admingConfig,success);
+            AdministrationConfiguration.update(vm.admingConfig, success);
         }
 
         function adelantoCondomino() {
@@ -491,29 +580,53 @@
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "1",
                 companyId: $rootScope.companyId,
-                concept:'Abono a cuotas'
+                concept: 'Abono a cuotas'
             };
         }
 
         function registrarAdelantoCondomino() {
+            CommonMethods.waitingMessage();
             vm.payment.transaction = "2",
-            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = $rootScope.houseSelected.id;
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
             vm.payment.ammount = vm.toPay;
-            vm.payment.concept = "Adelanto de condómino Filial "+$localStorage.houseSelected.housenumber;
+            vm.payment.concept = "Adelanto de condómino Filial " + $localStorage.houseSelected.housenumber;
             vm.payment.receiptNumber = vm.admingConfig.folioSerie + "-" + vm.admingConfig.folioNumber;
+            vm.payment.emailTo = obtainEmailToList();
             Payment.save(vm.payment, onSuccess, onError)
 
             function onSuccess(result) {
-                bootbox.hideAll();
-                clear();
-                toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
-                increaseFolioNumber(function(){});
-                increaseMaintBalance();
-                loadAll();
-                loadAdminConfig();
+                if (vm.printReceipt == true) {
+                    printJS({
+                        printable: '/api/payments/file/' + result.id,
+                        type: 'pdf',
+                        modalMessage: "Obteniendo comprobante de pago"
+                    })
+                    setTimeout(function() {
+                        bootbox.hideAll();
+                        clear();
+                        toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                        vm.printReceipt = false;
+                        increaseFolioNumber(function() {});
+                        increaseMaintBalance();
+                        loadAll();
+                        loadAdminConfig();
+                    }, 5000)
+
+
+                } else {
+                    bootbox.hideAll();
+                    clear();
+                    toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                    increaseFolioNumber(function() {});
+                    increaseMaintBalance();
+                    loadAll();
+                    loadAdminConfig();
+                }
+
+
             }
 
             function onError() {
@@ -551,8 +664,18 @@
             return (count > 0)
         }
 
-        vm.back = function(){
-        window.history.back();
+        vm.filterCharges = function(){
+        var selectedCharges = []
+         angular.forEach(vm.charges, function(charge, i) {
+                        if (charge.isIncluded == true) {
+                            selectedCharges.push(charge)
+                        }
+                    })
+                    return selectedCharges;
+        }
+
+        vm.back = function() {
+            window.history.back();
         }
     }
 })();

@@ -56,8 +56,8 @@
 <div  ui-view="reset">
 </div>
 
-<div ui-view="navbar" ng-show="vm.isAuthenticated() == true"  ></div>
-    <div ui-view="menu" ng-show="vm.isAuthenticated() == true"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+<div ui-view="navbar" ng-if="vm.isAuthenticated() != true"  ></div>
+    <div ui-view="menu" ng-if="vm.isAuthenticated() != true"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 
@@ -66,15 +66,15 @@
     <div  ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
     </div>
 
-    <div ui-view="access_door"  ng-show="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
+    <div ui-view="access_door"  ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER">   </div>
     <div class="clear-fix"></div>
 
-    <div class="page-content" ng-hide="isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div class="page-content" ng-if="!isInManual" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
 
-        <div ui-view="content"  ng-hide="isInManual" ng-show="vm.isAuthenticated()" style="margin-bottom:30px">
+        <div ui-view="content"  ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" style="margin-bottom:30px">
         </div>
     </div>
-    <div ui-view="footer" ng-hide="isInManual" ng-show="vm.isAuthenticated()" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+    <div ui-view="footer" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
     </div>
 
 </div>
@@ -155,6 +155,8 @@
 
     <script src="app/services/customjs/u-toaster.js"></script>
 
+    <script src="app/services/customjs/print.min.js"></script>
+
     <script src="app/services/customjs/p-jquery-migrate.min.js"></script>
 
     <script src="app/services/customjs/o-jquery.blockui.min.js"></script>
@@ -206,6 +208,8 @@
     <script src="app/services/customjs/_jquery.counterup.js"></script>
 
     <script src="app/services/customjs/__light.js"></script>
+
+    <script src="app/services/excel/excel.service.js"></script>
 
     <script src="app/services/cloudinary/cloudinaryURL.filter.js"></script>
 
@@ -359,8 +363,6 @@
 
     <script src="app/entities/proveedor/proveedor.controller.js"></script>
 
-    <script src="app/entities/payment/payments-per-house.controller.js"></script>
-
     <script src="app/entities/presupuesto/presupuesto-dialog.controller.js"></script>
 
     <script src="app/entities/presupuesto/presupuesto-detail.controller.js"></script>
@@ -372,6 +374,10 @@
     <script src="app/entities/presupuesto/presupuesto.service.js"></script>
 
     <script src="app/entities/presupuesto/presupuesto.controller.js"></script>
+
+    <script src="app/entities/payment/payments-per-house.controller.js"></script>
+
+    <script src="app/entities/payment/payment-in-advance.controller.js"></script>
 
     <script src="app/entities/payment/payment-generate.controller.js"></script>
 
@@ -387,13 +393,9 @@
 
     <script src="app/entities/payment/payment.controller.js"></script>
 
-    <script src="app/entities/mensualAndAnualReport/mensualAndAnualReport.state.js"></script>
+<script src="app/entities/payment/payment-report.controller.js"></script>
 
-    <script src="app/entities/mensualAndAnualReport/mensualAndAnualReport.service.js"></script>
 
-    <script src="app/entities/mensualAndAnualReport/mensualReport.controller.js"></script>
-
-    <script src="app/entities/mensualAndAnualReport/budgetExecution.controller.js"></script>
 
     <script src="app/entities/officer-account/officer-accounts-by-company.controller.js"></script>
 
@@ -440,6 +442,16 @@
     <script src="app/entities/note/note.service.js"></script>
 
     <script src="app/entities/note/note.controller.js"></script>
+
+    <script src="app/entities/mensualAndAnualReport/mensualReport.controller.js"></script>
+
+    <script src="app/entities/mensualAndAnualReport/mensualAndAnualReport.state.js"></script>
+
+    <script src="app/entities/mensualAndAnualReport/mensualAndAnualReport.service.js"></script>
+
+    <script src="app/entities/mensualAndAnualReport/budgetExecution.controller.js"></script>
+
+    <script src="app/entities/mensualAndAnualReport/anualReport.controller.js"></script>
 
     <script src="app/entities/manuals/manuals.state.js"></script>
 
@@ -600,6 +612,20 @@
     <script src="app/entities/company/company.service.js"></script>
 
     <script src="app/entities/company/company.controller.js"></script>
+
+    <script src="app/entities/finances-resident-account/accountStatus-ResidentAccount.controller.js"></script>
+
+    <script src="app/entities/account-status/accountStatus.controller.js"></script>
+
+    <script src="app/entities/account-status/accountStatus.service.js"></script>
+
+    <script src="app/entities/finances-resident-account/finances-resident-account.service.js"></script>
+
+    <script src="app/entities/finances-resident-account/finances-resident-account.state.js"></script>
+
+    <script src="app/entities/finances-resident-account/finances-resident-account.controller.js"></script>
+
+    <script src="app/entities/collection/collection-table.controller.js"></script>
 
     <script src="app/entities/collection/collection-dialog.controller.js"></script>
 

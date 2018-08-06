@@ -15,11 +15,12 @@
         vm.egressCategories = [];
         var invalidInputs = 0;
         var inputsFullQuantity = 0;
-
+   vm.expanding = false;
         DetallePresupuesto.getCategoriesByBudget({budgetId:vm.presupuesto.id},onSuccess, onError);
         vm.totalEgressValue = 0;
         vm.totalIngressValue = 0;
          function onSuccess(data){
+         console.log(data);
             vm.budgetCategories = data;
             vm.totalIngressByMonth = [];
             vm.totalEgressByMonth = [];
@@ -65,6 +66,28 @@
                  $("#budgetContainer").fadeIn('slow');
              },900 )
         };
+  vm.expand = function(){
+
+        setTimeout(function () {
+                $scope.$apply(function () {
+                     vm.expanding = !vm.expanding;
+                });
+            }, 200);
+
+        }
+           vm.eliminateZero = function(item){
+                    if(item.valuePerMonth=="0"){
+                        item.valuePerMonth = "";
+                    }
+
+                }
+                vm.putZero = function(item){
+                    if(item.valuePerMonth=="" || item.valuePerMonth==null || item.valuePerMonth==undefined){
+                        item.valuePerMonth = "0";
+                    }
+
+                }
+
 
         vm.setTotalIngressByMonth = function(index,month){
           if(vm.hasLettersOrSpecial(month.valuePerMonth)){
@@ -155,6 +178,7 @@
                      vm.totalEgressValue = vm.totalEgressValue + item.total;
                 })
                toastr["success"]("Se ha actualizado el presupuesto correctamente");
+
                  setTimeout(function() {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
@@ -203,8 +227,10 @@
 
          function sortMonthValues(item) {
                var valuePerMonth = "";
-               if(item.valuePerMonth=="" || item.valuePerMonth==undefined || item.valuePerMonth=="0"){
+               console.log(item.valuesPerMonth);
+               if(item.valuePerMonth=="" || item.valuePerMonth==undefined || item.valuePerMonth=="0" || item.valuePerMonth==" "){
                   valuePerMonth = "0" + ","
+
                }else{
                   inputsFullQuantity++;
                   valuePerMonth = item.valuePerMonth + ","

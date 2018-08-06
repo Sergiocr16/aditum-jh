@@ -10,7 +10,7 @@
     function ProveedorController($state, Proveedor, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope) {
 
         var vm = this;
-
+      $rootScope.active = "proovedores";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

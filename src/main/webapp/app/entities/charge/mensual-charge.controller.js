@@ -180,6 +180,9 @@
                                 toastr["success"]("Se generaron las cuotas correctamente.")
                             }
                         }
+                    },function(){
+                     bootbox.hideAll();
+                     toastr["error"]("Hubo un error al crear las cuotas mensuales, por favor verificar los datos ingresados.")
                     })
                 }else{
                    if (house.cuotas.length - 1 >  cuotaNumber) {
@@ -273,9 +276,9 @@
              $('.dating').keydown(function() {
                                     return false;
                                 });
-                                $('.numbers').keypress(function(tecla) {
-                                                           if (tecla.charCode < 48 || tecla.charCode > 57) return false;
-                                                       });
+             $('.numbers').keypress(function(tecla) {
+               if (tecla.charCode < 48 || tecla.charCode > 57) return false;
+             });
                 AdministrationConfiguration.get({
                     companyId: $rootScope.companyId
                 }).$promise.then(function(result) {
@@ -293,6 +296,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function(value, key) {
+                value.housenumber = parseInt(value.housenumber);
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }

@@ -8,7 +8,7 @@
     HousesBalanceController.$inject = ['$state','Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
 
     function HousesBalanceController($state,Balance, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
-        $rootScope.active = "houses";
+        $rootScope.active = "balance";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
@@ -61,6 +61,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                   angular.forEach(data,function(value,key){
+                  value.housenumber=parseInt(value.housenumber)
                       if(value.housenumber==9999){
                       value.housenumber="Oficina"
                       }

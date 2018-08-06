@@ -16,5 +16,5 @@ import java.util.List;
 @Repository
 public interface BancoRepository extends JpaRepository<Banco,Long> {
     Page<Banco> findByCompanyIdAndDeleted(Pageable pageable, Long companyId,int deleted);
-
+    List<Banco> findByCompanyIdAndDeleted( Long companyId,int deleted);
 }

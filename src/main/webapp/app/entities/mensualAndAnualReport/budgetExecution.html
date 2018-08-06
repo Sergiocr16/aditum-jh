@@ -3,15 +3,15 @@
     <ul class="page-breadcrumb">
         <li>
             <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a ui-sref="house()">Casas</a>
+            <a ui-sref="house()">Reportes</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a ui-sref="house()">Administrar</a>
+            <a ui-sref="house()">Estado de resultados</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -34,7 +34,7 @@
                 <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.mensualReport')}" ui-sref="budgetExecution.mensualReport" >
                     Reporte mensual
                 </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('')}" ng-click="vm.changeHouse(house)">
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.anualReport')}" ui-sref="budgetExecution.anualReport" >
                     Reporte anual
                 </a>
             </div>

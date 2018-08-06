@@ -3,16 +3,21 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.BalanceRepository;
 import com.lighthouse.aditum.repository.HouseRepository;
+import com.lighthouse.aditum.service.dto.BalanceDTO;
+import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
+import com.lighthouse.aditum.service.dto.PaymentDTO;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,12 +38,17 @@ public class HouseService {
 
     private final BalanceService balanceService;
 
+    private final ChargeService chargeService;
+
+    private final PaymentService paymentService;
 
 
-    public HouseService(HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
+    public HouseService(@Lazy PaymentService paymentService, ChargeService chargeService, HouseRepository houseRepository, HouseMapper houseMapper, BalanceService balanceService) {
         this.houseRepository = houseRepository;
         this.houseMapper = houseMapper;
         this.balanceService = balanceService;
+        this.chargeService = chargeService;
+        this.paymentService = paymentService;
     }
 
     /**
@@ -69,7 +79,6 @@ public class HouseService {
         List<House> result = houseRepository.findByCompanyId(companyId);
         List<House> onlyHouses = new ArrayList<>();
         Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
-
         result.forEach(house->{
             int existe = 0;
               for (int i = 0;i<letras.length;i++){
@@ -95,7 +104,6 @@ public class HouseService {
         List<House> result = houseRepository.findByCompanyId(companyId);
         List<House> onlyHouses = new ArrayList<>();
         Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
-
         result.forEach(house->{
             int existe = 0;
             for (int i = 0;i<letras.length;i++){
@@ -110,15 +118,9 @@ public class HouseService {
 
         return  new PageImpl<>(onlyHouses).map(house ->{
             HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
-            house1.setBalance(balanceService.findOneByHouse(house1.getId()));
             house1.setCodeStatus(house.getCodeStatus());
             house1.setLoginCode(house.getLoginCode());
-            if(house1.getBalance().getTotal()>=0){
-                house1.getBalance().setDebit(0);
-            }else{
-                house1.getBalance().setDebit(1);
-            }
-            house1.getBalance().setTotal(house1.getBalance().getTotal()+"");
+            house1.setBalance(this.getBalanceByHouse(house1.getId()));
             return house1;
         });
     }
@@ -156,7 +158,7 @@ public class HouseService {
         log.debug("Request to get House : {}", id);
         House house = houseRepository.findOne(id);
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(house);
-        houseDTO.setBalance(balanceService.findOneByHouse(house.getId()));
+        houseDTO.setBalance(this.getBalanceByHouse(houseDTO.getId()));
         houseDTO.setCodeStatus(house.getCodeStatus());
         houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
@@ -221,11 +223,6 @@ public class HouseService {
         houseDTO.setLoginCode(house.getLoginCode());
         return houseDTO;
     }
-
-
-
-
-
     /**
      *  Delete the  house by id.
      *
@@ -234,5 +231,39 @@ public class HouseService {
     public void delete(Long id) {
         log.debug("Request to delete House : {}", id);
         houseRepository.delete(id);
+    }
+
+    private BalanceDTO getBalanceByHouse(Long houseId){
+        BalanceDTO balance = new BalanceDTO();
+        balance.setMaintenance(this.getBalanceByType(houseId,1)+"");
+        balance.setCommonAreas(this.getBalanceByType(houseId,3)+"");
+        balance.setExtraordinary(this.getBalanceByType(houseId,2)+"");
+        balance.setTotal(this.getTotalBalanceByHouse(houseId)+"");
+     return balance;
+    }
+
+    private int getBalanceByType(Long houseId,int type){
+        ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
+        List<ChargeDTO> charges = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today,houseId,type,1);
+        int ammountCharges = charges.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
+        if(type!=1) {
+            return -ammountCharges;
+        }else{
+            List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
+            int ammountPaymentInAdvance = payments.stream().mapToInt(o -> Integer.parseInt(o.getAmmountLeft())).sum();
+            int total = ammountPaymentInAdvance-ammountCharges;
+            return total;
+        }
+    }
+
+    private int getTotalBalanceByHouse(Long houseId){
+        ZonedDateTime today = ZonedDateTime.now().withHour(23).withSecond(59).withMinute(59);
+        List<ChargeDTO> chargesMaint = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today,houseId,1,1);
+        int ammountChargesMaint = chargesMaint.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
+        List<ChargeDTO> chargesExtra = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today,houseId,2,1);
+        int ammountChargesExtra = chargesExtra.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
+        List<ChargeDTO> chargesAreas = this.chargeService.findBeforeDateAndHouseAndTypeAndState(today,houseId,3,1);
+        int ammountChargesArea = chargesAreas.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
+        return -(ammountChargesArea+ammountChargesExtra+ammountChargesMaint);
     }
 }

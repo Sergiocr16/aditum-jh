@@ -10,6 +10,7 @@
     function BancoDetailController($scope, $rootScope, $stateParams, previousState, entity, Banco, Company,Egress,pagingParams,ParseLinks,Charge,Payment,BalanceByAccount,Transferencia) {
         var vm = this;
       vm.datePickerOpenStatus = {};
+          $rootScope.active = "bancos";
         vm.openCalendar = openCalendar;
         vm.banco = entity;
         vm.previousState = previousState.name;
@@ -86,6 +87,7 @@
         }
 
         function getInitialBalanceBetweenDates(date){
+
              BalanceByAccount.findBetweenDatesByAccount({
                     initial_time: moment(date).format(),
                      final_time: moment(date).format(),
@@ -142,6 +144,7 @@
                   value.ammount = value.monto;
                   value.paymentDate = value.fecha;
                   value.movementType = 3;
+                  value.bancoEntrante = value.cuentaOrigen;
                   vm.movementsList.push(value)
             })
                 getTransferenciasSalientes();
@@ -161,6 +164,7 @@
                   value.total = value.monto;
                   value.paymentDate = value.fecha;
                   value.movementType = 4;
+                  value.bancoEntrante = value.cuentaDestino;
                   vm.movementsList.push(value)
             })
                 getIngress();
@@ -245,6 +249,7 @@
                       value.ammount = value.monto;
                       value.paymentDate = value.fecha;
                       value.movementType = 3;
+                      value.bancoEntrante = value.cuenta_origen;
                       vm.movementsListConsulting.push(value)
                 })
                     getTransferenciasSalientesWhenConsulting();

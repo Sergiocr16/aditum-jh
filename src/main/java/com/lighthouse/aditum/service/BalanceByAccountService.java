@@ -68,6 +68,17 @@ public class BalanceByAccountService {
 //        Collections.reverse(result);
         return result.map(balanceByAccount -> balanceByAccountMapper.toDto(balanceByAccount));
     }
+    @Transactional(readOnly = true)
+    public List<BalanceByAccountDTO> findByDatesBetweenAndAccount(String initialTime, String finalTime, Long accountId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+
+        return balanceByAccountRepository.findByDatesBetweenAndAccount(zd_initialTime,zd_finalTime,accountId).stream()
+            .map(balanceByAccountMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+
+    }
     /**
      *  Get one balanceByAccount by id.
      *

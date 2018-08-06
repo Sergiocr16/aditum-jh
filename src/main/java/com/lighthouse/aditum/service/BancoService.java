@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -58,7 +60,14 @@ public class BancoService {
         Page<Banco> result = bancoRepository.findByCompanyIdAndDeleted(pageable,companyId,1);
         return result.map(banco -> bancoMapper.toDto(banco));
     }
+    @Transactional(readOnly = true)
+    public List<BancoDTO> findAll(Long companyId) {
+        log.debug("Request to get all Bancos");
+        return  bancoRepository.findByCompanyIdAndDeleted(companyId,1).stream()
+            .map(bancoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
 
+    }
     @Transactional(readOnly = true)
     public List<Banco> findAllCompanies(Pageable pageable) {
         log.debug("Request to get all Bancos");

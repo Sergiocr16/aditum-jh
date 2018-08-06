@@ -37,6 +37,7 @@
                 "egressCategory": "Egress Category",
                 "presupuesto": "Presupuesto",
                 "detallePresupuesto": "Detalle Presupuesto",
+                "commonArea": "Common Area",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

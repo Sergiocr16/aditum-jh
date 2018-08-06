@@ -13,11 +13,15 @@
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
+        vm.resident.principalContact = vm.resident.principalContact+"";
         if(entity.image_url==undefined){
         entity.image_url = null;
         }
         vm.required = 1;
-
+       vm.validEmail = function(email){
+           var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+           return re.test(String(email).toLowerCase());
+       }
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -90,13 +94,13 @@
         setTimeout(function(){House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
          angular.forEach(data,function(value,key){
+         value.housenumber = parseInt(value.housenumber);
                       if(value.housenumber==9999){
                       value.housenumber="Oficina"
                       }
                   })
             vm.houses = data;
-             setTimeout(function() {
-                                                 $("#loadingIcon").fadeOut(300);
+             setTimeout(function() {$("#loadingIcon").fadeOut(300);
                                        }, 400)
                                         setTimeout(function() {
                                             $("#edit_resident_form").fadeIn('slow');

@@ -9,6 +9,7 @@
 
     function EgressCategoryController(EgressCategory, $rootScope) {
 
+      $rootScope.active = "egressCategories";
         var vm = this;
         vm.groups = [{
             id: 1,

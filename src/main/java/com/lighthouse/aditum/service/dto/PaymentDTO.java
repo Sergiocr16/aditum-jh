@@ -19,6 +19,8 @@ public class PaymentDTO implements Serializable {
     @NotNull
     private ZonedDateTime date;
 
+    private String stringDate;
+
     @NotNull
     private String receiptNumber;
 
@@ -43,7 +45,13 @@ public class PaymentDTO implements Serializable {
 
     private Long houseId;
 
+    private int houseNumber;
+
+    private String categories;
+
     private List<ChargeDTO> charges;
+
+    private List<ResidentDTO> emailTo;
 
     public Long getId() {
         return id;
@@ -184,5 +192,37 @@ public class PaymentDTO implements Serializable {
 
     public void setCharges(List<ChargeDTO> charges) {
         this.charges = charges;
+    }
+
+    public List<ResidentDTO> getEmailTo() {
+        return emailTo;
+    }
+
+    public void setEmailTo(List<ResidentDTO> emailTo) {
+        this.emailTo = emailTo;
+    }
+
+    public int getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(int houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getCategories() {
+        return categories;
+    }
+
+    public void setCategories(String categories) {
+        this.categories = categories;
+    }
+
+    public String getStringDate() {
+        return stringDate;
+    }
+
+    public void setStringDate(String stringDate) {
+        this.stringDate = stringDate;
     }
 }

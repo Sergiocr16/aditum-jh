@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "commonArea" : {
+            "home": {
+                "title": "Common Areas",
+                "createLabel": "Crear nuevo Common Area",
+                "createOrEditLabel": "Crear o editar Common Area"
+            },
+            "created": "Un nuevo Common Area ha sido creado con el identificador {{ param }}",
+            "updated": "Un Common Area ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Common Area ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Common Area {{ id }}?"
+            },
+            "detail": {
+                "title": "Common Area"
+            },
+            "name": "Name",
+            "description": "Description",
+            "reservationCharge": "Reservation Charge",
+            "devolutionAmmount": "Devolution Ammount",
+            "chargeRequired": "Charge Required",
+            "reservationWithDebt": "Reservation With Debt",
+            "picture": "Picture",
+            "maximunHours": "Maximun Hours"
+        }
+    }
+}

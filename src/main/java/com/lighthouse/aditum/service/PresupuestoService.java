@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -59,6 +60,18 @@ public class PresupuestoService {
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
+    /**
+     *  Get all the presupuestos.
+     *
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<PresupuestoDTO> findByBudgetsDatesBetweenAndCompany(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId) {
+        log.debug("Request to get all Presupuestos");
+        return presupuestoRepository.findByBudgetsDatesBetweenAndCompany(initialDate,finalDate,companyId,0).stream()
+            .map(presupuestoMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
     /**
      *  Get one presupuesto by id.
      *

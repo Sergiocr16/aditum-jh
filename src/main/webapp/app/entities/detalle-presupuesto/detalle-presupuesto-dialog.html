@@ -25,11 +25,15 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row display-none" id="budgetContainer">
+<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="row display-none" id="budgetContainer">
     <div class="col-md-12">
         <div style="margin-bottom:15px;" class="caption font-green-haze">
 
             <span class="caption-subject bold uppercase font-15">Capturar presupuesto</span>
+            <div class="btn-group pull-right">
+                <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
+
+            </div>
         </div>
         <div class="col-md-12 no-padding" style="margin-bottom:15px;">
             <div class="col-md-6 col-sm-6 col-xs-6 no-padding">
@@ -79,7 +83,7 @@
                 </td>
                 <td ng-repeat="mantenimientoValue in vm.mantenimientoValues" class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{mantenimientoValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index,mantenimientoValue)" ng-class="{redBorder: mantenimientoValue.valido==false}" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(mantenimientoValue)" ng-focus="vm.eliminateZero(mantenimientoValue)" ng-change="vm.setTotalIngressByMonth($index,mantenimientoValue)" ng-class="{redBorder: mantenimientoValue.valido==false}" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -90,7 +94,7 @@
                 </td>
                 <td ng-repeat="extraordinariaValue in vm.extraordinariaValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{extraordinariaValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index,extraordinariaValue)" ng-class="{redBorder: extraordinariaValue.valido==false}" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(extraordinariaValue)" ng-focus="vm.eliminateZero(extraordinariaValue)" ng-change="vm.setTotalIngressByMonth($index,extraordinariaValue)" ng-class="{redBorder: extraordinariaValue.valido==false}" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -101,7 +105,7 @@
                 </td>
                 <td ng-repeat="areasComunesValue in vm.areasComunesValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{areasComunesValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index,areasComunesValue)" ng-class="{redBorder: areasComunesValue.valido==false}" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input  ng-blur="vm.putZero(areasComunesValue)" ng-focus="vm.eliminateZero(areasComunesValue)" ng-change="vm.setTotalIngressByMonth($index,areasComunesValue)" ng-class="{redBorder: areasComunesValue.valido==false}" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
 
@@ -112,7 +116,7 @@
                 </td>
                 <td ng-repeat="otrosIngresosValue in vm.otrosIngresosValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{otrosIngresosValue.month}}</span>-->
-                    <input ng-change="vm.setTotalIngressByMonth($index,otrosIngresosValue)" ng-class="{redBorder: otrosIngresosValue.valido==false}" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(otrosIngresosValue)" ng-focus="vm.eliminateZero(otrosIngresosValue)"  ng-change="vm.setTotalIngressByMonth($index,otrosIngresosValue)" ng-class="{redBorder: otrosIngresosValue.valido==false}" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
@@ -143,14 +147,14 @@
                 <th class="budgetTableHeader">NOVIEMBRE</th>
                 <th class="budgetTableHeader">DICIEMBRE</th>
             </tr>
-            <tr  ng-repeat="egressCategory in vm.egressCategories track by egressCategory.id"   >
+            <tr  ng-repeat="egressCategory in vm.egressCategories | orderBy: 'group' track by egressCategory.id"   >
                 <td style=" text-transform:uppercase;" class=" text-left">
                     <span style="font-size:8px;" class="col-md-12 no-padding bold">{{egressCategory.group}}</span>
                     <span  style="font-size:11px;" >{{egressCategory.category}}</span>
                 </td>
                 <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding-top:9px !Important;">
                     <!--<span style="font-size:10px">{{item.month}}</span>-->
-                    <input ng-change="vm.setTotalEgressByMonth($index,item)" ng-class="{redBorder: item.valido==false}" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)" ng-change="vm.setTotalEgressByMonth($index,item)" ng-class="{redBorder: item.valido==false}" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>

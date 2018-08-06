@@ -9,6 +9,8 @@
 
     function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
         var vm = this;
+
+              $rootScope.active = "configureCharges";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -114,6 +116,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function(value, key) {
+                value.housenumber = parseInt(value.housenumber)
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }

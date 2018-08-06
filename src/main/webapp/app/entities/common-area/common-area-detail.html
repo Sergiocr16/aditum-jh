@@ -1,0 +1,56 @@
+
+<div>
+    <h2><span data-translate="aditumApp.commonArea.detail.title">Common Area</span> {{vm.commonArea.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.commonArea.name">Name</span></dt>
+        <dd>
+            <span>{{vm.commonArea.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.description">Description</span></dt>
+        <dd>
+            <span>{{vm.commonArea.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.reservationCharge">Reservation Charge</span></dt>
+        <dd>
+            <span>{{vm.commonArea.reservationCharge}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.devolutionAmmount">Devolution Ammount</span></dt>
+        <dd>
+            <span>{{vm.commonArea.devolutionAmmount}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.chargeRequired">Charge Required</span></dt>
+        <dd>
+            <span>{{vm.commonArea.chargeRequired}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.reservationWithDebt">Reservation With Debt</span></dt>
+        <dd>
+            <span>{{vm.commonArea.reservationWithDebt}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.picture">Picture</span></dt>
+        <dd>
+            <div ng-if="vm.commonArea.picture">
+                <a ng-click="vm.openFile(vm.commonArea.pictureContentType, vm.commonArea.picture)">
+                    <img data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}" style="max-width: 100%;" alt="commonArea image"/>
+                </a>
+                {{vm.commonArea.pictureContentType}}, {{vm.byteSize(vm.commonArea.picture)}}
+            </div>
+        </dd>
+        <dt><span data-translate="aditumApp.commonArea.maximunHours">Maximun Hours</span></dt>
+        <dd>
+            <span>{{vm.commonArea.maximunHours}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="common-area-detail.edit({id:vm.commonArea.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

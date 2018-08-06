@@ -8,7 +8,7 @@
     EgressGenerateReportController.$inject = ['$scope','$state', 'Banco','Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonMethods','Proveedor','$rootScope'];
 
     function EgressGenerateReportController($scope,$state, Banco,Egress, ParseLinks, AlertService, paginationConstants, pagingParams,CommonMethods,Proveedor,$rootScope) {
-
+ $rootScope.active = "reporteGastos";
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -70,6 +70,13 @@
 
        function onSuccessBancos(data, headers) {
           vm.bancos = data;
+             vm.egressCategories = data;
+                           setTimeout(function() {
+                                        $("#loadingIcon").fadeOut(300);
+                            }, 400)
+                               setTimeout(function() {
+                                   $("#new_egress_form").fadeIn('slow');
+                            },900 )
        }
 
          function formatEgresses() {

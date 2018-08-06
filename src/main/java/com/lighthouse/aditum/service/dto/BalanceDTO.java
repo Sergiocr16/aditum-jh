@@ -111,13 +111,7 @@ public class BalanceDTO implements Serializable {
             "}";
     }
 
-    public Integer getTotal() {
-        return  Integer.parseInt(this.getMaintenance())+Integer.parseInt(this.getCommonAreas())+Integer.parseInt(this.getExtraordinary());
-    }
 
-    public void setTotal(String total) {
-        this.total = total;
-    }
 
     public int getDebit() {
         return debit;
@@ -125,5 +119,13 @@ public class BalanceDTO implements Serializable {
 
     public void setDebit(int debit) {
         this.debit = debit;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 }

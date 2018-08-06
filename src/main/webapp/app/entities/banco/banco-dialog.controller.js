@@ -9,6 +9,7 @@
 
     function BancoDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity,$state, Banco, Company,$rootScope,CommonMethods) {
         var vm = this;
+            $rootScope.active = "bancoConfiguration";
         CommonMethods.validateNumbers();
         vm.banco = entity;
         vm.clear = clear;
