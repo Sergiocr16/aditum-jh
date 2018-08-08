@@ -30,7 +30,7 @@
                                         <span class="font-13 bold">Fecha de cobro*</span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                        <input ng-model="vm.charge.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" min="vm.minDate" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
+                                        <input ng-model="vm.charge.date" id="field_contable_date" ng-change="vm.autoConcept()" name="date" ng-click="vm.openCalendar('date')" min="vm.minDate" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
                                     </div>
                                 </div>
 

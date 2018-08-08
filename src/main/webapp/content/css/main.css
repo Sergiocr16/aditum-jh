@@ -1103,3 +1103,31 @@ cursor:pointer;
 .next-year-button:hover{
 color:#4DB3A2 !important;
 }
+
+.green-box {
+width: 15px;
+height: 15px;
+background-color: #C2FFD0;
+border: 1px solid #eee;
+display: inline-block;
+float: left;
+margin-right: 6px;
+}
+.red-box {
+width: 15px;
+height: 15px;
+background-color: #FFB8B8;
+border: 1px solid #eee;
+display: inline-block;
+float: left;
+margin-right: 6px;
+}
+.yellow-box {
+width: 15px;
+height: 15px;
+background-color: #FFD17A;
+border: 1px solid #eee;
+display: inline-block;
+float: left;
+margin-right: 6px;
+}

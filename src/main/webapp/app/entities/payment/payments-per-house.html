@@ -153,10 +153,12 @@
                     <td rowspan="{{payment.charges.length+1}}" class="note note-info"  colspan="3" ng-if="charge.id == payment.charges[0].id">
                         <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="down" template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>" mode="mouseover"></i></h5>
                         <table class="table table-bordered">
-                            <h6 ng-show="payment.charges.length>0 && payment.transaction==2">Fecha de cancelación <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>" mode="mouseover"></i></h6>
+                            <h6 ng-show="payment.charges.length>0 && payment.transaction==2">Fecha de cancelación </h6>
                             <tbody>
                             <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
-                                <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}} </td>
+                                <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}}
+                                    <span style="color:gray;font-size:10px;display:block" class="text-center">Cancelación <i class="fa fa-info-circle" style="color:#2a6496;font-size:12px" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>" mode="mouseover"></i></span>
+                                </td>
                                 <td class="text-center" style="padding-top:14px">{{chargeIn.concept}}</td>
                                 <td class="text-center">
                                     {{chargeIn.date | date}}
