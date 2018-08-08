@@ -29,7 +29,17 @@
             deleted: 0
         }
         moment.locale("es");
-
+        vm.autoConcept = function() {
+        if(vm.charge.type=="1"){
+        vm.charge.concept = "";
+            String.prototype.capitalize = function() {
+                return this.replace(/(?:^|\s)\S/g, function(a) {
+                    return a.toUpperCase();
+                });
+            };
+            vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
+}
+        }
         vm.validate = function(cuota) {
             var s = cuota.ammount;
                        var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
