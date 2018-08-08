@@ -38,7 +38,14 @@ public class AnnouncementService {
      */
     public AnnouncementDTO save(AnnouncementDTO announcementDTO) {
         log.debug("Request to save Announcement : {}", announcementDTO);
+        if(announcementDTO.getDescription().equals("")){
+            AnnouncementDTO oldAnnouncement = this.findOne(announcementDTO.getId());
+            if(oldAnnouncement!=null){
+                announcementDTO.setDescription(oldAnnouncement.getDescription());
+            }
+        }
         Announcement announcement = announcementMapper.toEntity(announcementDTO);
+        announcement.setDeleted(0);
         announcement = announcementRepository.save(announcement);
         return announcementMapper.toDto(announcement);
     }
@@ -50,9 +57,19 @@ public class AnnouncementService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<AnnouncementDTO> findAll(Pageable pageable) {
+    public Page<AnnouncementDTO> findAllAsAdmin(Pageable pageable, Long companyId) {
         log.debug("Request to get all Announcements");
-        return announcementRepository.findAll(pageable)
+        Page<Announcement> page = announcementRepository.findByCompanyIdAndStatusAdmin(pageable,companyId,2,3);
+        page.getContent().forEach(announcement -> {
+            announcement.setDescription("");
+        });
+        return page.map(announcementMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AnnouncementDTO> findAll(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Announcements");
+        return announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,2,0)
             .map(announcementMapper::toDto);
     }
 
@@ -76,6 +93,8 @@ public class AnnouncementService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Announcement : {}", id);
-        announcementRepository.delete(id);
+        Announcement announcement = this.announcementRepository.getOne(id);
+        announcement.setDeleted(1);
+        announcementRepository.save(announcement);
     }
 }

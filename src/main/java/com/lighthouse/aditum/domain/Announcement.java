@@ -36,6 +36,9 @@ public class Announcement implements Serializable {
     @Column(name = "status", nullable = false)
     private Integer status;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
@@ -100,6 +103,19 @@ public class Announcement implements Serializable {
         this.status = status;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Announcement deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -141,6 +157,7 @@ public class Announcement implements Serializable {
             ", publishingDate='" + getPublishingDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

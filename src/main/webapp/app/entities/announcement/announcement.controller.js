@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementController', AnnouncementController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants','$rootScope'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants) {
+    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants,$rootScope) {
 
         var vm = this;
 
@@ -21,11 +21,37 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
+        setTimeout(function(){
+                loadAll();
+        },400)
 
-        loadAll();
+        vm.publish = function(announcement){
+        announcement.status = 2;
+        announcement.publishingDate = moment(new Date()).format();
+        Announcement.update(announcement, onSaveSuccess, onError);
+         function onSaveSuccess(){
+         loadAll();
+         }
+          function onError(error) {
+             toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+         }
+        }
+
+        vm.unPublish = function(announcement){
+        announcement.status = 3;
+        Announcement.update(announcement, onSaveSuccess, onError);
+         function onSaveSuccess(){
+                 loadAll();
+                 }
+                  function onError(error) {
+                                 toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+                             }
+        }
+
 
         function loadAll () {
-            Announcement.query({
+            Announcement.queryAsAdmin({
+                companyId: $rootScope.companyId,
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -39,15 +65,22 @@
             }
 
             function onSuccess(data, headers) {
+                vm.announcements = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
                     vm.announcements.push(data[i]);
                 }
+                setTimeout(function() {
+                $("#loadingIcon").fadeOut(300);
+                }, 400)
+                setTimeout(function() {
+                $("#tableData").fadeIn('slow');
+                },900 )
             }
 
             function onError(error) {
-                AlertService.error(error.data.message);
+                toastr["error"]("Ha ocurrido un error actualizando la noticia.")
             }
         }
 

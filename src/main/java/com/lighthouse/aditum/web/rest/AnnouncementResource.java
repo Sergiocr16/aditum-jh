@@ -88,11 +88,20 @@ public class AnnouncementResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of announcements in body
      */
-    @GetMapping("/announcements")
+    @GetMapping("/announcementsPerCompany/{companyId}")
     @Timed
-    public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncements(@ApiParam Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncements(@ApiParam Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
         log.debug("REST request to get a page of Announcements");
-        Page<AnnouncementDTO> page = announcementService.findAll(pageable);
+        Page<AnnouncementDTO> page = announcementService.findAll(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/announcements/asAdmin/{companyId}")
+    @Timed
+    public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncementsAdmin(@ApiParam Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of Announcements");
+        Page<AnnouncementDTO> page = announcementService.findAllAsAdmin(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -27,6 +27,8 @@ public class AnnouncementDTO implements Serializable {
     @NotNull
     private Integer status;
 
+    private Integer deleted;
+
     private Long companyId;
 
     public Long getId() {
@@ -69,6 +71,14 @@ public class AnnouncementDTO implements Serializable {
         this.status = status;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -106,6 +116,7 @@ public class AnnouncementDTO implements Serializable {
             ", publishingDate='" + getPublishingDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", status='" + getStatus() + "'" +
+            ", deleted='" + getDeleted() + "'" +
             "}";
     }
 }

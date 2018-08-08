@@ -1,31 +1,33 @@
-
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Noticias</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Detalle</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding-top:10px;">
+            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
+        </div>
+    </div>
+</div>
 <div>
-    <h2><span data-translate="aditumApp.announcement.detail.title">Announcement</span> {{vm.announcement.id}}</h2>
+    <h2>{{vm.announcement.title}}</h2>
     <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.announcement.title">Title</span></dt>
-        <dd>
-            <span>{{vm.announcement.title}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.announcement.publishingDate">Publishing Date</span></dt>
-        <dd>
-            <span>{{vm.announcement.publishingDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.announcement.description">Description</span></dt>
-        <dd>
-            <span>{{vm.announcement.description}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.announcement.status">Status</span></dt>
-        <dd>
-            <span>{{vm.announcement.status}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.announcement.company">Company</span></dt>
-        <dd>
-            <a ui-sref="company-detail({id:vm.announcement.companyId})">{{vm.announcement.companyId}}</a>
-        </dd>
-    </dl>
-
+    <div>
+        <div ng-bind-html="vm.announcement.description"></div>
+    </div>
+    <div>
+        <h3 class="text-right">
     <button type="submit"
             ui-sref="{{ vm.previousState }}"
             class="btn btn-info">
@@ -36,4 +38,6 @@
         <span class="glyphicon glyphicon-pencil"></span>
         <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
     </button>
+        </h3>
+    </div>
 </div>

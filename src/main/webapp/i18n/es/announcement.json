@@ -19,6 +19,7 @@
             "publishingDate": "Publishing Date",
             "description": "Description",
             "status": "Status",
+            "deleted": "Deleted",
             "company": "Company"
         }
     }

@@ -39,6 +39,10 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180806172946",

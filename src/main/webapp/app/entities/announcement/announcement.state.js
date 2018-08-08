@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/announcement',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.announcement.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'announcement',
             url: '/announcement/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.announcement.detail.title'
             },
             views: {
@@ -67,7 +67,7 @@
             parent: 'announcement-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -92,63 +92,68 @@
             parent: 'announcement',
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/announcement/announcement-dialog.html',
-                    controller: 'AnnouncementDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                title: null,
-                                publishingDate: null,
-                                description: null,
-                                status: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('announcement', null, { reload: 'announcement' });
-                }, function() {
-                    $state.go('announcement');
-                });
-            }]
+            views: {
+                'content@': {
+                     templateUrl: 'app/entities/announcement/announcement-dialog.html',
+                                        controller: 'AnnouncementDialogController',
+                                        controllerAs: 'vm',
+                }
+            },
+            resolve: {
+                entity: function () {
+                                        return {
+                                            title: null,
+                                            publishingDate: null,
+                                            description: null,
+                                            status: null,
+                                            id: null
+                                        };
+                                    },
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('announcement');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }]
+            }
         })
         .state('announcement.edit', {
             parent: 'announcement',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/announcement/announcement-dialog.html',
-                    controller: 'AnnouncementDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Announcement', function(Announcement) {
-                            return Announcement.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('announcement', null, { reload: 'announcement' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
+            views: {
+                'content@': {
+                     templateUrl: 'app/entities/announcement/announcement-dialog.html',
+                                        controller: 'AnnouncementDialogController',
+                                        controllerAs: 'vm',
+                }
+            },
+              resolve: {
+                  translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                      $translatePartialLoader.addPart('announcement');
+                      return $translate.refresh();
+                  }],
+                  entity: ['$stateParams', 'Announcement', function($stateParams, Announcement) {
+                      return Announcement.get({id : $stateParams.id}).$promise;
+                  }],
+                  previousState: ["$state", function ($state) {
+                      var currentStateData = {
+                          name: $state.current.name || 'announcement',
+                          params: $state.params,
+                          url: $state.href($state.current.name, $state.params)
+                      };
+                      return currentStateData;
+                  }]
+              }
         })
         .state('announcement.delete', {
             parent: 'announcement',
             url: '/{id}/delete',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

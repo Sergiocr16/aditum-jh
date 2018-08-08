@@ -58,6 +58,9 @@ public class AnnouncementResourceIntTest {
     private static final Integer DEFAULT_STATUS = 1;
     private static final Integer UPDATED_STATUS = 2;
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private AnnouncementRepository announcementRepository;
 
@@ -104,7 +107,8 @@ public class AnnouncementResourceIntTest {
             .title(DEFAULT_TITLE)
             .publishingDate(DEFAULT_PUBLISHING_DATE)
             .description(DEFAULT_DESCRIPTION)
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .deleted(DEFAULT_DELETED);
         // Add required entity
         Company company = CompanyResourceIntTest.createEntity(em);
         em.persist(company);
@@ -138,6 +142,7 @@ public class AnnouncementResourceIntTest {
         assertThat(testAnnouncement.getPublishingDate()).isEqualTo(DEFAULT_PUBLISHING_DATE);
         assertThat(testAnnouncement.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAnnouncement.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testAnnouncement.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -250,7 +255,8 @@ public class AnnouncementResourceIntTest {
             .andExpect(jsonPath("$.[*].title").value(hasItem(DEFAULT_TITLE.toString())))
             .andExpect(jsonPath("$.[*].publishingDate").value(hasItem(sameInstant(DEFAULT_PUBLISHING_DATE))))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -267,7 +273,8 @@ public class AnnouncementResourceIntTest {
             .andExpect(jsonPath("$.title").value(DEFAULT_TITLE.toString()))
             .andExpect(jsonPath("$.publishingDate").value(sameInstant(DEFAULT_PUBLISHING_DATE)))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -291,7 +298,8 @@ public class AnnouncementResourceIntTest {
             .title(UPDATED_TITLE)
             .publishingDate(UPDATED_PUBLISHING_DATE)
             .description(UPDATED_DESCRIPTION)
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .deleted(UPDATED_DELETED);
         AnnouncementDTO announcementDTO = announcementMapper.toDto(updatedAnnouncement);
 
         restAnnouncementMockMvc.perform(put("/api/announcements")
@@ -307,6 +315,7 @@ public class AnnouncementResourceIntTest {
         assertThat(testAnnouncement.getPublishingDate()).isEqualTo(UPDATED_PUBLISHING_DATE);
         assertThat(testAnnouncement.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAnnouncement.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testAnnouncement.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test
