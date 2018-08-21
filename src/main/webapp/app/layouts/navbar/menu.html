@@ -497,6 +497,37 @@
                 </ul>
 
             </li>
+            <li ng-class="{ 'active' : active === '' ||  active === ''  ||  active === ''} " >
+                <a href="javascript:;">
+                    <i class="fa fa-tree" style=" color:white;"></i>
+                    <span class="title" style=" color:white; font-weight:500;">Áreas comunes</span>
+                    <span class="selected">
+					</span>
+                    <span class="arrow open">
+					</span>
+                </a>
+                <ul class="sub-menu" >
+                    <li ui-sref="common-area" ng-class="{ 'active' : active === '' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Administrar</span>
+                        </a>
+                    </li>
+                    <li ui-sref="egress-report" ng-class="{ 'active' : active === '' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Ver calendario</span>
+                        </a>
+                    </li>
+                    <li ui-sref="payment-report" ng-class="{ 'active' : active === '' }" >
+                        <a href="">
+                            <i class="fa fa-circle-o"></i>
+                            <span   style=" color:white;">Reservar</span>
+                        </a>
+                    </li>
+                </ul>
+
+            </li>
             <li ng-class="{ 'active' : active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories'  } ">
 
                 <a href="javascript:;">

@@ -1,106 +1,416 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myCommonAreaLabel" data-translate="aditumApp.commonArea.home.createOrEditLabel">Create or edit a Common Area</h4>
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myCommonAreaLabel" data-translate="aditumApp.commonArea.home.createOrEditLabel">Create or edit a Common Area</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<jhi-alert-error></jhi-alert-error>-->
+        <!--<div class="form-group" ng-show="vm.commonArea.id">-->
+            <!--<label for="id" data-translate="global.field.id">ID</label>-->
+            <!--<input type="text" class="form-control" id="id" name="id"-->
+                    <!--ng-model="vm.commonArea.id" readonly />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.name" for="field_name">Name</label>-->
+            <!--<input type="text" class="form-control" name="name" id="field_name"-->
+                    <!--ng-model="vm.commonArea.name"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.name.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.name.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.description" for="field_description">Description</label>-->
+            <!--<input type="text" class="form-control" name="description" id="field_description"-->
+                    <!--ng-model="vm.commonArea.description"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.reservationCharge" for="field_reservationCharge">Reservation Charge</label>-->
+            <!--<input type="text" class="form-control" name="reservationCharge" id="field_reservationCharge"-->
+                    <!--ng-model="vm.commonArea.reservationCharge"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.devolutionAmmount" for="field_devolutionAmmount">Devolution Ammount</label>-->
+            <!--<input type="text" class="form-control" name="devolutionAmmount" id="field_devolutionAmmount"-->
+                    <!--ng-model="vm.commonArea.devolutionAmmount"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.chargeRequired" for="field_chargeRequired">Charge Required</label>-->
+            <!--<input type="number" class="form-control" name="chargeRequired" id="field_chargeRequired"-->
+                    <!--ng-model="vm.commonArea.chargeRequired"-->
+                    <!--max="1"/>-->
+            <!--<div ng-show="editForm.chargeRequired.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.chargeRequired.$error.max" data-translate="entity.validation.max" translate-value-max="1">-->
+                    <!--This field cannot be more than 1.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.chargeRequired.$error.number" data-translate="entity.validation.number">-->
+                    <!--This field should be a number.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.reservationWithDebt" for="field_reservationWithDebt">Reservation With Debt</label>-->
+            <!--<input type="number" class="form-control" name="reservationWithDebt" id="field_reservationWithDebt"-->
+                    <!--ng-model="vm.commonArea.reservationWithDebt"-->
+                    <!--/>-->
+        <!--</div>-->
+        <!--<div class="form-group" ngf-drop ngf-change="vm.setPicture($file, vm.commonArea)" ngf-pattern="'image/*'">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.picture" for="field_picture">Picture</label>-->
+            <!--<div>-->
+                <!--<img data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}" style="max-height: 100px;" ng-if="vm.commonArea.picture" alt="commonArea image"/>-->
+                <!--<div ng-if="vm.commonArea.picture" class="help-block clearfix">-->
+                    <!--<span class="pull-left">{{vm.commonArea.pictureContentType}}, {{vm.byteSize(vm.commonArea.picture)}}</span>-->
+                    <!--<button type="button" ng-click="vm.commonArea.picture=null;vm.commonArea.pictureContentType=null;"-->
+                            <!--class="btn btn-default btn-xs pull-right">-->
+                        <!--<span class="glyphicon glyphicon-remove"></span>-->
+                    <!--</button>-->
+                <!--</div>-->
+                <!--<button type="button" ngf-select class="btn btn-default btn-block"-->
+                        <!--ngf-change="vm.setPicture($file, vm.commonArea)" accept="image/*" data-translate="entity.action.addimage">-->
+                    <!--Add image-->
+                <!--</button>-->
+            <!--</div>-->
+            <!--<input type="hidden" class="form-control" name="picture" id="field_picture"-->
+                    <!--ng-model="vm.commonArea.picture"-->
+                    <!--/>-->
+            <!--<input type="hidden" class="form-control" name="pictureContentType" id="field_pictureContentType"-->
+                    <!--ng-model="vm.commonArea.pictureContentType" />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonArea.maximunHours" for="field_maximunHours">Maximun Hours</label>-->
+            <!--<input type="number" class="form-control" name="maximunHours" id="field_maximunHours"-->
+                    <!--ng-model="vm.commonArea.maximunHours"-->
+                    <!--/>-->
+        <!--</div>-->
+
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-tree"></i>
+            <a ui-sref="common-area()">Áreas comunes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">{{vm.button}}</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+
+        </div>
     </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.commonArea.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.commonArea.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
-                    ng-model="vm.commonArea.name"
-                    required/>
-            <div ng-show="editForm.name.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description"
-                    ng-model="vm.commonArea.description"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.reservationCharge" for="field_reservationCharge">Reservation Charge</label>
-            <input type="text" class="form-control" name="reservationCharge" id="field_reservationCharge"
-                    ng-model="vm.commonArea.reservationCharge"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.devolutionAmmount" for="field_devolutionAmmount">Devolution Ammount</label>
-            <input type="text" class="form-control" name="devolutionAmmount" id="field_devolutionAmmount"
-                    ng-model="vm.commonArea.devolutionAmmount"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.chargeRequired" for="field_chargeRequired">Charge Required</label>
-            <input type="number" class="form-control" name="chargeRequired" id="field_chargeRequired"
-                    ng-model="vm.commonArea.chargeRequired"
-                    max="1"/>
-            <div ng-show="editForm.chargeRequired.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.chargeRequired.$error.max" data-translate="entity.validation.max" translate-value-max="1">
-                    This field cannot be more than 1.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.chargeRequired.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.reservationWithDebt" for="field_reservationWithDebt">Reservation With Debt</label>
-            <input type="number" class="form-control" name="reservationWithDebt" id="field_reservationWithDebt"
-                    ng-model="vm.commonArea.reservationWithDebt"
-                    />
-        </div>
-        <div class="form-group" ngf-drop ngf-change="vm.setPicture($file, vm.commonArea)" ngf-pattern="'image/*'">
-            <label class="control-label" data-translate="aditumApp.commonArea.picture" for="field_picture">Picture</label>
-            <div>
-                <img data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}" style="max-height: 100px;" ng-if="vm.commonArea.picture" alt="commonArea image"/>
-                <div ng-if="vm.commonArea.picture" class="help-block clearfix">
-                    <span class="pull-left">{{vm.commonArea.pictureContentType}}, {{vm.byteSize(vm.commonArea.picture)}}</span>
-                    <button type="button" ng-click="vm.commonArea.picture=null;vm.commonArea.pictureContentType=null;"
-                            class="btn btn-default btn-xs pull-right">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="" id="new_egress_form">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+
+                        <span class="caption-subject bold uppercase">{{vm.button}} área común</span>
+                    </div>
+
+
                 </div>
-                <button type="button" ngf-select class="btn btn-default btn-block"
-                        ngf-change="vm.setPicture($file, vm.commonArea)" accept="image/*" data-translate="entity.action.addimage">
-                    Add image
-                </button>
-            </div>
-            <input type="hidden" class="form-control" name="picture" id="field_picture"
-                    ng-model="vm.commonArea.picture"
-                    />
-            <input type="hidden" class="form-control" name="pictureContentType" id="field_pictureContentType"
-                    ng-model="vm.commonArea.pictureContentType" />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonArea.maximunHours" for="field_maximunHours">Maximun Hours</label>
-            <input type="number" class="form-control" name="maximunHours" id="field_maximunHours"
-                    ng-model="vm.commonArea.maximunHours"
-                    />
-        </div>
+                <div class="portlet-body form display-none" id="register_edit_form">
+                    <form name="editForm" id="form" role="form" novalidate ng-submit=" vm.confirmMessage()" show-validation>
 
+                        <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 no-padding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold  control-label">Nombre del área común *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input type="text" class="form-control" name="name" id="field_name"
+                                        ng-model="vm.commonArea.name" placeholder="Piscina, gimnasio, cancha de tenis..."
+                                        required/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Descripciónaeeeeee</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                    <textarea type="text" class="form-control"  rows="3" name="description" id="field_description" ng-model="vm.commonArea.description" placeholder="Ubicación, reglas del área común, etc."></textarea>
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                    <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2 no-padding-left " style="margin-top:25px;">
+                                        <span class="font-13 bold control-label" >Días permitidos para adsadsdf</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <div class="form-group form-md-line-input">
+
+                                            <div class="md-checkbox-inline">
+                                                <div class="md-checkbox">
+                                                    <input type="checkbox" id="checkbox33" class="md-check" ng-click="vm.selectDay(0)">
+                                                    <label for="checkbox33">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Lunes </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox34" class="md-check" ng-click="vm.selectDay(1)">
+                                                    <label for="checkbox34">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Martes </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox35" class="md-check" ng-click="vm.selectDay(2)">
+                                                    <label for="checkbox35">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Miércoles </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox36" class="md-check" ng-click="vm.selectDay(3)">
+                                                    <label for="checkbox36">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Jueves </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox37" class="md-check" ng-click="vm.selectDay(4)">
+                                                    <label for="checkbox37">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Viernes </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox38" class="md-check" ng-click="vm.selectDay(5)">
+                                                    <label for="checkbox38">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Sábado </label>
+                                                </div>
+                                                <div class="md-checkbox ">
+                                                    <input type="checkbox" id="checkbox39" class="md-check" ng-click="vm.selectDay(6)">
+                                                    <label for="checkbox39">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Domingo </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="item.selected" ng-repeat="item in vm.daysOfWeek">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Horas permitidas para reservar el {{item.day}}</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <select>
+                                            <option value="5000">5:00AM</option>
+                                            <option value="5000">Saab</option>
+                                            <option value="mercedes">Mercedes</option>
+                                            <option value="audi">Audi</option>
+                                        </select>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8 no-padding" style="margin-top:0px;">
+                                <hr>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Requiere cobro *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <div class="form-group form-md-radios">
+                                            <div class="md-radio-inline">
+                                                <div class="md-radio">
+                                                    <input type="radio" ng-click="vm.paymentRequired=true"  id="radio14" name="radio2" class="md-radiobtn">
+                                                    <label for="radio14">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Si </label>
+                                                </div>
+                                                <div class="md-radio has-error">
+                                                    <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.paymentRequired=false" >
+                                                    <label for="radio15">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        No </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="vm.paymentRequired">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Cuota por reservación *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <div class="input-group form-group">
+                                            <span class="input-group-addon">₡</span>
+                                            <input type="text" class="form-control numbers" name="total" id="field_reservationCharge"
+                                                   ng-model="vm.commonArea.reservationCharge" required
+                                            />
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="vm.paymentRequired">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Dinero a devolver</span>
+                                        <span  style="z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Dinero que se devuelve al condómino una vez que el área comùn se utilizó.<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <div class="input-group form-group">
+                                            <span class="input-group-addon">₡</span>
+                                            <input type="text" class="form-control numbers" name="total" id="field_devolutionAmmount"
+                                                   ng-model="vm.commonArea.devolutionAmmount" required
+                                            />
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Permite reservar con deudas? *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <div class="form-group form-md-radios">
+                                            <div class="md-radio-inline">
+                                                <div class="md-radio">
+                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt==1"  id="radio16" name="radio3" class="md-radiobtn">
+                                                    <label for="radio16">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        Si </label>
+                                                </div>
+                                                <div class="md-radio has-error">
+                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt==0" id="radio17" name="radio3" class="md-radiobtn" >
+                                                    <label for="radio17">
+                                                        <span></span>
+                                                        <span class="check"></span>
+                                                        <span class="box"></span>
+                                                        No </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Foto </span>
+                                    </div>
+
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                        <button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                                                ngf-change="vm.setPicture($file, vm.commonArea)" accept="image/*" >
+                                            Subir imagen
+                                        </button>
+                                        <div class="form-group" ngf-drop ngf-change="vm.setPicture($file, vm.commonArea)" ngf-pattern="'image/*'">
+
+                                            <div class="margin-top-10">
+                                                <img data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}" style="max-height: 400px;" ng-if="vm.commonArea.picture" alt="commonArea image"/>
+
+
+                                            </div>
+                                            <input type="hidden" class="form-control" name="picture" id="field_picture"
+                                                   ng-model="vm.commonArea.picture"
+                                            />
+                                            <input type="hidden" class="form-control" name="pictureContentType" id="field_pictureContentType"
+                                                   ng-model="vm.commonArea.pictureContentType" />
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+
+                        <div class="form-actions noborder" style="padding-bottom:0px;">
+                            <h3 class="text-right">
+
+                                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
+                                <button type="button"  ui-sref="egress()" class="btn red default">Cancelar</button>
+
+
+                            </h3>
+                            <h3 class="text-right" ng-if="vm.proveedores.length==0">
+                                <span style="font-size:13px;font-weight:bold;color:#c23f44">No es posible capturar un egreso sin tener ningún proveedor registrado. *</span>
+                            </h3>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+<!--<script>-->
+    <!--jQuery(document).ready(function() {-->
+        <!--$("#loadingIcon").fadeIn("slow");-->
+    <!--});-->
+<!--</script>-->
+<script>
+    jQuery(document).ready(function() {
+        $("#register_edit_form").fadeIn("slow");
+    });
+</script>
