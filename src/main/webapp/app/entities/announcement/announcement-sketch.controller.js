@@ -3,18 +3,17 @@
 
     angular
         .module('aditumApp')
-        .controller('AnnouncementController', AnnouncementController);
+        .controller('AnnouncementSketchController', AnnouncementSketchController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', '$scope'];
+    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', '$scope'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
+    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
 
         var vm = this;
 
         vm.announcements = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.showingNews = true;
         vm.loadAll = loadAll;
         vm.page = 0;
         vm.links = {
@@ -60,30 +59,8 @@
                 }
             });
 
-        }
-
-
-        vm.unPublish = function (announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea retirar la noticia? , una vez retirada no será visible para los condóminos.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        announcement.status = 3;
-                        Announcement.update(announcement, onSaveSuccess, onError);
-                    }
-                }
-            });
         };
+
 
         function onSuccess(data, headers) {
             vm.announcements = [];
@@ -93,6 +70,7 @@
             for (var i = 0; i < data.length; i++) {
                 vm.announcements.push(data[i]);
             }
+            console.log(vm.announcements)
             setTimeout(function () {
                 $("#loadingIcon").fadeOut(300);
             }, 400);
@@ -116,13 +94,12 @@
         function loadAll() {
             vm.announcements = [];
             vm.showingNews = true;
-            Announcement.queryAsAdmin({
+            Announcement.querySketches({
                 companyId: $rootScope.companyId,
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
-
 
         }
 

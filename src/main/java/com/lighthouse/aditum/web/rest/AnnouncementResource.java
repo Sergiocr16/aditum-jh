@@ -106,6 +106,15 @@ public class AnnouncementResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/announcements/sketches/{companyId}")
+    @Timed
+    public ResponseEntity<List<AnnouncementDTO>> getAllAnnouncementsSkectches(@ApiParam Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
+        log.debug("REST request to get a page of Announcements");
+        Page<AnnouncementDTO> page = announcementService.findAllSkectches(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     /**
      * GET  /announcements/:id : get the "id" announcement.
      *

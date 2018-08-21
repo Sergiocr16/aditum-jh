@@ -67,6 +67,16 @@ public class AnnouncementService {
     }
 
     @Transactional(readOnly = true)
+    public Page<AnnouncementDTO> findAllSkectches(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Announcements");
+        Page<Announcement> page = announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,1,0);
+        page.getContent().forEach(announcement -> {
+            announcement.setDescription("");
+        });
+        return page.map(announcementMapper::toDto);
+    }
+
+    @Transactional(readOnly = true)
     public Page<AnnouncementDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Announcements");
         return announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,2,0)

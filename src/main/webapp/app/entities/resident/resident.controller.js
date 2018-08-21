@@ -222,7 +222,6 @@
 
         };
         function onSuccessDelete (result) {
-        console.log(result)
             if(vm.login!==null){
                 User.delete({login: vm.login},
                     function () {
