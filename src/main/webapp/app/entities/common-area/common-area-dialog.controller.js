@@ -11,7 +11,7 @@
         var vm = this;
 
         vm.commonArea = entity;
-        vm.clear = clear;
+
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
@@ -22,15 +22,14 @@
         });
 
         vm.daysOfWeek = [{day:'Lunes',selected:false},{day:'Martes',selected:false},{day:'Miercoles',selected:false},{day:'Jueves',selected:false},{day:'Viernes',selected:false},{day:'Sábado',selected:false},{day:'Domingo',selected:false}];
-
+        vm.hours = [{value:500,time:'5:00AM'},{value:600,time:'6:00AM'}];
+        vm.hoursPerDay=[]
         if (vm.commonArea.id !== null) {
                 vm.button="Editar";
         } else {
             vm.button="Registrar";
         }
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
+
         vm.selectDay = function(index){
             vm.daysOfWeek[index].selected = !vm.daysOfWeek[index].selected;
         }
@@ -45,8 +44,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:commonAreaUpdate', result);
-            $uibModalInstance.close(result);
+
             vm.isSaving = false;
         }
 

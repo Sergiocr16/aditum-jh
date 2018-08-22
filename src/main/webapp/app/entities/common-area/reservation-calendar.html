@@ -1,4 +1,10 @@
 <div>
-<h1>{{vm.events[0].title}}</h1>
-    <div ui-calendar="vm.uiConfig.calendar" ng-model="vm.events"></div>
+
+    <div class="btn-group">
+        <button class="btn btn-success" ng-click="vm.changeView('agendaDay')">AgendaDay</button>
+        <button class="btn btn-success" ng-click="vm.changeView('basicWeek')">AgendaWeek</button>
+        <button class="btn btn-success" ng-click="vm.changeView('month')">Month</button>
+        <button class="btn btn-success" ng-click="vm.changeView('listWeek')">Lista semanal</button>
+    </div>
+    <div ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources"></div>
 </div>
