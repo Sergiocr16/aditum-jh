@@ -24,6 +24,7 @@
             'angularjs-dropdown-multiselect',
             'angular-popover',
             'ngPopover',
+            'ui.calendar'
         ])
         .run(run);
 
