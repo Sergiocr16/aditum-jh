@@ -948,7 +948,13 @@ li.active span.round-tabs.six{
 .ballsInCodePage{
 
 }
+.redfont{
+    color:red;
+}
 
+.borderRed{
+    border-color:red;
+}
 .btn.green{
     background-color:#5cb85c;
     /*border: 2px solid #5cb85c;*/
