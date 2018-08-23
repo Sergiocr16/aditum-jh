@@ -36,9 +36,9 @@
                             <span ng-if="vm.isCreatingOne==true" class="caption-subject bold uppercase">Crear nuevo anuncio</span>
                             <span ng-if="vm.isCreatingOne==false"
                                   class="caption-subject bold uppercase">Editar anuncio</span>
-                            <span ng-if="vm.isCreatingOne==false"
-                                style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-left: 15px!important;color: white;float: right;"
-                                ng-if="vm.announcement.status==1">Borrador</span>
+                            <span style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-left: 15px!important;color:
+                            white;float: right;"
+                                  ng-if="vm.announcement.status==1">Borrador</span>
 
                         </div>
                     </div>
@@ -75,13 +75,14 @@
                             <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
                                 <span>Cancelar</span>
                             </button>
-                            <button ng-if="vm.isCreatingOne==true || vm.announcement.status==1" ng-click="vm.saveAsSketch()"
+                            <button ng-if="vm.isCreatingOne==true || vm.announcement.status==1"
+                                    ng-click="vm.saveAsSketch()"
                                     ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-warning">
                                 <span>Guardar borrador</span>
                             </button>
                             <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving"
                                     class="btn btn-primary">
-                                <span>Guardar</span>
+                                <span>Publicar</span>
                             </button>
                         </h3>
                     </div>

@@ -31,6 +31,28 @@
                     }]
                 }
             })
+            .state('announcement-user', {
+                parent: 'entity',
+                url: '/noticias',
+                data: {
+                    authorities: ['ROLE_MANAGER','ROLE_USER'],
+                    pageTitle: 'aditumApp.announcement.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/announcement/announcement-user.html',
+                        controller: 'AnnouncementUserController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('announcement');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('announcement-sketch', {
                 parent: 'entity',
                 url: '/announcement/sketches',

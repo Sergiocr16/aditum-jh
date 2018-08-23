@@ -128,6 +128,13 @@
                 </a>
             </li>
 
+            <li ui-sref="announcement-user" has-any-authority="ROLE_MANAGER,ROLE_USER" ng-class="{ 'active' : active === 'announcements'}">
+                <a href="javascript:;">
+                    <i class="fa fa-newspaper-o" style="color:white; " aria-hidden="true"></i>
+                    <span class="title" style="font-weight:500; color:white; ">Noticias</span>
+                </a>
+            </li>
+
             <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
                 <a href="javascript:;"  style="font-weight:500; color:white;">
                     <i class="glyphicon glyphicon-home" style="color:white;  " aria-hidden="true"></i>

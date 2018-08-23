@@ -86,7 +86,6 @@
         };
 
         function onSuccess(data, headers) {
-            vm.announcements = [];
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
 
@@ -106,15 +105,41 @@
         }
 
         function sort() {
-            var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-            if (vm.predicate !== 'id') {
-                result.push('id');
+            var result = [];
+            if (vm.predicate !== 'publishingDate') {
+                result.push('publishingDate,desc');
             }
             return result;
         }
 
+        vm.delete = function(announcement){
+            bootbox.confirm({
+                message: "¿Está seguro que desea eliminar la noticia? , una vez eliminada no podrá ser recuperada.",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        Announcement.delete({id: announcement.id},
+                            function () {
+                                toastr["success"]("Se ha elminado la noticia correctamente.")
+                                loadAll();
+                            });
+                    }
+                }
+            });
+
+        };
+
+
         function loadAll() {
-            vm.announcements = [];
             vm.showingNews = true;
             Announcement.queryAsAdmin({
                 companyId: $rootScope.companyId,

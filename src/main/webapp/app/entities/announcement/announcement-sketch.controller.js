@@ -62,6 +62,32 @@
         };
 
 
+        vm.delete = function (announcement) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea eliminar la noticia? , una vez eliminada no podrá ser recuperada.",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        Announcement.delete({id: announcement.id},
+                            function () {
+                                toastr["success"]("Se ha elminado la noticia correctamente.")
+                                loadAll();
+                            });
+                    }
+                }
+            });
+
+        };
+
         function onSuccess(data, headers) {
             vm.announcements = [];
             vm.links = ParseLinks.parse(headers('link'));

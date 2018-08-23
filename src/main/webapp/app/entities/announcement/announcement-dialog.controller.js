@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'Company'];
+    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, Company) {
+    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods) {
         var vm = this;
 
         vm.announcement = entity;
@@ -16,7 +16,7 @@
         vm.save = save;
         vm.saveAsSketch = saveAsSketch;
         vm.isCreatingOne = $state.includes('announcement.new');
-
+        console.log(vm.announcement)
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -30,18 +30,40 @@
 
         function save() {
             vm.isSaving = true;
-            vm.announcement.publishingDate = moment(new Date()).format();
-            vm.announcement.status = 2;
-            vm.announcement.companyId = $rootScope.companyId;
-            if (vm.announcement.id !== null) {
-                Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
-            } else {
-                Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
-            }
+
+            bootbox.confirm({
+                message: "¿Está seguro que desea publicar la noticia? , una vez publicada será visible para los condóminos.",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        CommonMethods.waitingMessage();
+                        vm.announcement.publishingDate = moment(new Date()).format();
+                        vm.announcement.status = 2;
+                        vm.announcement.companyId = $rootScope.companyId;
+                        if (vm.announcement.id !== null) {
+                            Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
+                        } else {
+                            Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
+                        }
+                    }
+                }
+            });
+
+
         }
 
         function saveAsSketch() {
             vm.isSaving = true;
+            CommonMethods.waitingMessage();
             vm.announcement.publishingDate = moment(new Date()).format();
             vm.announcement.status = 1;
             vm.announcement.companyId = $rootScope.companyId;
@@ -54,14 +76,17 @@
 
         function onSaveSuccess(result) {
             vm.announcement = result;
-            toastr["success"]("Se ha publicado exitosamente el anuncio en el condominio.")
+            bootbox.hideAll();
+            toastr["success"]("Se ha publicado exitosamente el anuncio en el condominio.");
+            $state.go("announcement");
             vm.isSaving = false;
         }
 
         function onSaveSuccessSketch(result) {
             vm.announcement = result;
+            bootbox.hideAll();
             toastr["success"]("Guardado como borrador.");
-            $state.go("announcement");
+            $state.go("announcement-sketch");
             vm.isSaving = false;
         }
 

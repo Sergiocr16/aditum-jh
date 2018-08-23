@@ -17,6 +17,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement,Long>
     Page<Announcement> findByCompanyIdAndStatusAndDeleted(Pageable pageable, Long companyId, Integer status, Integer deleted);
 
     @Query("select e from Announcement e " +
-        "where e.company.id = ?1 and (e.status= ?2 or e.status =?3) and e.deleted = 0")
+        "where e.company.id = ?1 and (e.status= ?2 or e.status =?3) and e.deleted = 0 order by e.publishingDate desc")
     Page<Announcement> findByCompanyIdAndStatusAdmin(Pageable pageable, Long companyId, Integer status1, Integer status2);
 }
