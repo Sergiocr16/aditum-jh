@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.commonAreaReservations.detail.title">Common Area Reservations</span> {{vm.commonAreaReservations.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.commonAreaReservations.houseId">House Id</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.houseId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.residentId">Resident Id</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.residentId}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.date">Date</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.date | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.initialTime">Initial Time</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.initialTime}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.finalTime">Final Time</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.finalTime}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.comments">Comments</span></dt>
+        <dd>
+            <span>{{vm.commonAreaReservations.comments}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaReservations.commonArea">Common Area</span></dt>
+        <dd>
+            <a ui-sref="common-area-detail({id:vm.commonAreaReservations.commonAreaId})">{{vm.commonAreaReservations.commonAreaId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="common-area-reservations-detail.edit({id:vm.commonAreaReservations.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

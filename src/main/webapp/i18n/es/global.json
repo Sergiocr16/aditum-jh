@@ -39,6 +39,7 @@
                 "detallePresupuesto": "Detalle Presupuesto",
                 "commonArea": "Common Area",
                 "commonAreaSchedule": "Common Area Schedule",
+                "commonAreaReservations": "Common Area Reservations",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

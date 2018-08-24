@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "commonAreaReservations" : {
+            "home": {
+                "title": "Common Area Reservations",
+                "createLabel": "Crear nuevo Common Area Reservations",
+                "createOrEditLabel": "Crear o editar Common Area Reservations"
+            },
+            "created": "Un nuevo Common Area Reservations ha sido creado con el identificador {{ param }}",
+            "updated": "Un Common Area Reservations ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Common Area Reservations ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Common Area Reservations {{ id }}?"
+            },
+            "detail": {
+                "title": "Common Area Reservations"
+            },
+            "houseId": "House Id",
+            "residentId": "Resident Id",
+            "date": "Date",
+            "initialTime": "Initial Time",
+            "finalTime": "Final Time",
+            "comments": "Comments",
+            "commonArea": "Common Area"
+        }
+    }
+}
