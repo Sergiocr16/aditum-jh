@@ -1312,7 +1312,7 @@ div.scrollmenu a:hover {
 }
 
 .comments-button:hover {
-    color: #365899;
+    color: #365899!important;
 }
 
 .comment-input {
@@ -1321,4 +1321,12 @@ div.scrollmenu a:hover {
     border: 1px solid #ccd0d5;
     padding: 10px;
     outline: none;
+}
+
+.comment-actions{
+    outline: none;
+}
+
+.comment-actions:hover{
+    color: #365899!important;
 }

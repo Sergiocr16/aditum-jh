@@ -18,6 +18,11 @@
         vm.loadAll = loadAll;
         vm.saveComment = saveComment;
         vm.loadComments = loadComments;
+        vm.showActionEdit = showActionEdit;
+        vm.showActionDelete = showActionDelete;
+        vm.editComment = editComment;
+        vm.cancelEditing = cancelEditing;
+        vm.submitEditComment = submitEditComment;
         vm.page = 0;
         vm.links = {
             last: 0
@@ -98,6 +103,8 @@
                 }, function (data) {
                     for (var i = 0; i < data.length; i++) {
                         data[i].creationDate = moment(data[i].creationDate).fromNow();
+                        data[i].editing = false;
+                        data[i].newComment =  data[i].comment;
                         announcement.comments.push(data[i]);
                     }
                     announcement.showingComments = true;
@@ -133,8 +140,8 @@
                         var comment = {
                             comment: announcement.currentComment.comment,
                             creationDate: moment(new Date()).format(),
-                            residentId: companyUser.companies == undefined ? companyUser.id : null,
-                            adminInfoId: companyUser.companies != undefined ? companyUser.id : null,
+                            residentId: companyUser.companies === undefined ? companyUser.id : null,
+                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
                             announcementId: announcement.id
                         };
                         Announcement.saveComment(comment,
@@ -152,6 +159,60 @@
             });
 
         }
+
+        function showActionEdit(comment) {
+            return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
+        }
+
+        function showActionDelete(comment) {
+            return showActionEdit(comment) || companyUser.companies !== undefined
+        }
+
+        function editComment(comment) {
+            comment.editing = true;
+        }
+
+        function submitEditComment(comment, announcement) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea editar el comentario?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var editedComment = {
+                            comment: comment.newComment,
+                            creationDate: moment(new Date()).format(),
+                            residentId: companyUser.companies === undefined ? companyUser.id : null,
+                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                            announcementId: announcement.id,
+                            id: comment.id
+                        };
+                        Announcement.editComment(editedComment,
+                            function (result) {
+                                toastr["success"]("Comentario editado correctamente.");
+                                loadComments(announcement);
+                            }, function () {
+                                toastr["error"]("Ha ocurrido un error editando tu comentario.")
+                            });
+                    }
+                }
+            });
+        }
+
+
+        function cancelEditing(comment) {
+            comment.newComment = comment.comment;
+            comment.editing = false;
+        }
+
 
         function reset() {
             vm.page = 0;

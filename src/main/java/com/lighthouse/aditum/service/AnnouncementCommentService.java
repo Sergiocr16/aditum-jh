@@ -98,7 +98,9 @@ public class AnnouncementCommentService {
                adminAsResident.setLastname(adminInfoFound.getLastname());
                adminAsResident.setSecondlastname(adminInfoFound.getSecondlastname());
                adminAsResident.setImage_url(adminInfoFound.getImage_url());
+               adminAsResident.setIdentificationnumber(adminInfoFound.getIdentificationnumber());
                announcementCommentDTO.setResident(adminAsResident);
+
            }
        });
        return announcementCommentDTOS;
