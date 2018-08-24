@@ -9,20 +9,29 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('common-area', {
+            .state('common-area-administration', {
                 parent: 'entity',
+                url: '/common-area-administration',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area/common-area-administration.html',
+                        controller: 'CommonAreaAdministrationController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('common-area-administration.common-area', {
                 url: '/common-area?page&sort&search',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.commonArea.home.title'
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/common-area/common-areas.html',
-                        controller: 'CommonAreaController',
-                        controllerAs: 'vm'
-                    }
-                },
+                templateUrl: 'app/entities/common-area/common-areas.html',
+                controller: 'CommonAreaController',
+                controllerAs: 'vm',
                 params: {
                     page: {
                         value: '1',

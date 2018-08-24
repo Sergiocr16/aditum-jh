@@ -39,7 +39,9 @@ public class CommonAreaService {
     public CommonAreaDTO save(CommonAreaDTO commonAreaDTO) {
         log.debug("Request to save CommonArea : {}", commonAreaDTO);
         CommonArea commonArea = commonAreaMapper.toEntity(commonAreaDTO);
+        String a = "aaa";
         commonArea = commonAreaRepository.save(commonArea);
+
         return commonAreaMapper.toDto(commonArea);
     }
 

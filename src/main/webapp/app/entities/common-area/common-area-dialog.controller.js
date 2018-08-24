@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaDialogController', CommonAreaDialogController);
 
-    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods'];
+    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods','CommonAreaSchedule','$state'];
 
-    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods) {
+    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods,CommonAreaSchedule,$state) {
         var vm = this;
 
         vm.commonArea = entity;
@@ -23,21 +23,21 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
-        vm.daysOfWeek = [{day:'Lunes',selected:false},{day:'Martes',selected:false},{day:'Miercoles',selected:false},{day:'Jueves',selected:false},{day:'Viernes',selected:false},{day:'Sábado',selected:false},{day:'Domingo',selected:false}];
-        vm.bloques = [{value:1,hour:"1 hora"},{value:2,hour:"2 horas"},{value:3,hour:"3 horas"},{value:4,hour:"4 horas"},{value:5,hour:"5 horas"},{value:6,hour:"6 horas"},{value:7,hour:"7 horas"},{value:8,hour:"8 horad"}]
+        vm.daysOfWeek = [{day:'Lunes',selected:false,initialTime:"",finalTime:""},{day:'Martes',selected:false,initialTime:"",finalTime:""},{day:'Miercoles',selected:false,initialTime:"",finalTime:""},{day:'Jueves',selected:false,initialTime:"",finalTime:""},{day:'Viernes',selected:false,initialTime:"",finalTime:""},{day:'Sábado',selected:false,initialTime:"",finalTime:""},{day:'Domingo',selected:false,initialTime:"",finalTime:""}];
+        vm.bloques = [{value:1,hour:"1 hora"},{value:2,hour:"2 horas"},{value:3,hour:"3 horas"},{value:4,hour:"4 horas"},{value:5,hour:"5 horas"},{value:6,hour:"6 horas"},{value:7,hour:"7 horas"},{value:8,hour:"8 horas"}]
         vm.hours = [];
         addHourseToSelect();
         function addHourseToSelect(){
-            var item = {value:'0',time:'12:00AM'};
+            var item = {value:'00:00',time:'12:00AM'};
             vm.hours.push(item);
             for (var i=1;i<12;i++){
-                var item = {value:i+'00',time:i+':00AM'};
+                var item = {value:i+':00',time:i+':00AM'};
                 vm.hours.push(item);
             }
-            var item2 = {value:'1200',time:'12:00PM'};
+            var item2 = {value:'12:00',time:'12:00PM'};
             vm.hours.push(item2);
             for (var i=1;i<12;i++){
-                var item = {value:i+12+'00',time:i+':00PM'};
+                var item = {value:i+12+':00',time:i+':00PM'};
                 vm.hours.push(item);
             }
         }
@@ -53,11 +53,8 @@
             vm.daysOfWeek[index].selected = !vm.daysOfWeek[index].selected;
         }
         vm.validateDaysHours =function (index,item) {
-            console.log(item)
-
 
             if(item.initialTime!==undefined && item.finalTime!==undefined){
-                console.log('a333df')
                 if(parseInt(item.initialTime)>=parseInt(item.finalTime)){
                     setTimeout(function () {
                         $scope.$apply(function () {
@@ -106,7 +103,12 @@
 
                     toastr["error"]("Debe seleccionar al menos un día permitido para reservar");
                 }else{
-                    save();
+                    if(vm.isAllHoursValid()==false){
+                        toastr["error"]("Debe corregir las horas permitidas para reservar");{}
+
+                    }else{
+                        save();
+                    }
                 }
             }else{
                 toastr["error"]("No se permite agregar carácteres especiales");
@@ -122,8 +124,9 @@
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
                     vm.commonArea.maximunHours = 0;
                 }
-                vm.commonArea.daysOfWeek = vm.daysOfWeek;
                 CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
+
+
             }
 
             }
@@ -135,6 +138,7 @@
                 if(item.selected){
                     selectedDays++;
                 }
+
             })
             if(selectedDays>0){
 
@@ -144,11 +148,45 @@
                 return false;
             }
         }
+        vm.isAllHoursValid = function () {
+
+            var invalid = 0;
+            angular.forEach(vm.daysOfWeek, function (item, key) {
+                if(item.isValid==false){
+                    invalid++;
+                }
+
+
+            })
+            if(invalid>0){
+
+                return false;
+            }else{
+
+                return true;
+            }
+        }
+
         function onSaveSuccess (result) {
+            var commonAreaScheadule ={};
+            commonAreaScheadule.lunes = vm.daysOfWeek[0].initialTime + "-" + vm.daysOfWeek[0].finalTime;
+            commonAreaScheadule.martes = vm.daysOfWeek[1].initialTime + "-" + vm.daysOfWeek[1].finalTime;
+            commonAreaScheadule.miercoles = vm.daysOfWeek[2].initialTime + "-" + vm.daysOfWeek[2].finalTime;
+            commonAreaScheadule.jueves = vm.daysOfWeek[3].initialTime + "-" + vm.daysOfWeek[3].finalTime;
+            commonAreaScheadule.viernes = vm.daysOfWeek[4].initialTime + "-" + vm.daysOfWeek[4].finalTime;
+            commonAreaScheadule.sabado = vm.daysOfWeek[5].initialTime + "-" + vm.daysOfWeek[5].finalTime;
+            commonAreaScheadule.domingo = vm.daysOfWeek[6].initialTime + "-" + vm.daysOfWeek[6].finalTime;
+            commonAreaScheadule.commonAreaId = result.id;
+            CommonAreaSchedule.save(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
+
+
+        }
+        function onSaveScheduleSuccess (result) {
+            $state.go('common-area');
+            toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
 
             vm.isSaving = false;
         }
-
         function onSaveError () {
             vm.isSaving = false;
         }

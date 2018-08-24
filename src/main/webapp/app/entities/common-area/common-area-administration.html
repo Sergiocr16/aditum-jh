@@ -1,0 +1,48 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title" style="margin-bottom:0px!important">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Finanzas</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="house()">Reportes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="house()">Estado de resultados</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding:5px">
+
+        </div>
+    </div>
+</div>
+
+<div class="row " id="tableData">
+    <div class="col-md-12 no-padding" >
+        <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
+
+            <div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">
+                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area')}" ui-sref="common-area-administration.common-area" >
+                    Administrar áreas comunes
+                </a>
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.chargePerHouse')}" ui-sref="finanzasPorCasa.chargePerHouse" >
+                    Reservaciones pendientes
+                </a>
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.accountStatus')}" ui-sref="finanzasPorCasa.accountStatus" >
+                    Administrar reservaciones
+                </a>
+
+
+            </div>
+
+        </div>
+
+        <div ui-view class="col-md-12 ">
+        </div>
+    </div>
+</div>
+</div>
