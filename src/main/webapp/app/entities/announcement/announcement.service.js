@@ -14,6 +14,8 @@
             'queryAsAdmin': { method: 'GET',url:"api/announcements/asAdmin/:companyId", isArray: true},
             'queryAsUser': { method: 'GET',url:"api/announcementsPerCompany/:companyId", isArray: true},
             'querySketches': { method: 'GET',url:"api/announcements/sketches/:companyId", isArray: true},
+            'getComments': { method: 'GET',url:"api/announcement-comments/:announcementId", isArray: true},
+            'saveComment': { method:'POST',url:"api/announcement-comments"},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

@@ -5,17 +5,19 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', '$scope'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser) {
 
         var vm = this;
         moment.locale("es")
         vm.announcements = [];
         vm.loadPage = loadPage;
-        vm.itemsPerPage = 2;
+        vm.itemsPerPage = 4;
         vm.showingNews = true;
         vm.loadAll = loadAll;
+        vm.saveComment = saveComment;
+        vm.loadComments = loadComments;
         vm.page = 0;
         vm.links = {
             last: 0
@@ -25,7 +27,7 @@
         vm.reverse = false;
         setTimeout(function () {
             loadAll();
-        }, 1000);
+        }, 2000);
 
 
         function onSaveSuccess() {
@@ -44,6 +46,9 @@
 
             for (var i = 0; i < data.length; i++) {
                 data[i].publishingDate = moment(data[i].publishingDate).fromNow();
+                data[i].comments = [];
+                data[i].showingComments = false;
+                data[i].currentComment = {comment: ""};
                 vm.announcements.push(data[i]);
             }
             console.log(vm.announcements)
@@ -59,6 +64,10 @@
             toastr["error"]("Ha ocurrido un error actualizando la noticia.")
         }
 
+        function onErrorComments(error) {
+            toastr["error"]("Ha ocurrido un error cargando los comentarios.")
+        }
+
         function sort() {
             var result = [];
             if (vm.predicate !== 'publishingDate') {
@@ -67,6 +76,34 @@
             return result;
         }
 
+        function sortComment() {
+            var result = [];
+            if (vm.predicate !== 'publishingDate') {
+                result.push('creationDate,asc');
+            }
+            return result;
+        }
+
+        function loadComments(announcement) {
+            announcement.comments = [];
+            if (announcement.showingComments === true) {
+                announcement.showingComments = false;
+            } else {
+
+                Announcement.getComments({
+                    announcementId: announcement.id,
+                    // page: vm.page,
+                    // size: vm.itemsPerPage,
+                    sort: sortComment()
+                }, function (data) {
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].creationDate = moment(data[i].creationDate).fromNow();
+                        announcement.comments.push(data[i]);
+                    }
+                    announcement.showingComments = true;
+                }, onErrorComments);
+            }
+        }
 
         function loadAll() {
             vm.showingNews = true;
@@ -76,6 +113,44 @@
                 size: vm.itemsPerPage,
                 sort: sort()
             }, onSuccess, onError);
+        }
+
+        function saveComment(announcement) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea realizar el comentario?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        var comment = {
+                            comment: announcement.currentComment.comment,
+                            creationDate: moment(new Date()).format(),
+                            residentId: companyUser.companies == undefined ? companyUser.id : null,
+                            adminInfoId: companyUser.companies != undefined ? companyUser.id : null,
+                            announcementId: announcement.id
+                        };
+                        Announcement.saveComment(comment,
+                            function () {
+                                toastr["success"]("Comentario enviado.")
+                                announcement.currentComment = {comment: ""};
+                                announcement.commentsQuantity++;
+                                loadComments(announcement);
+                            }, function () {
+                                toastr["error"]("Ha ocurrido un error enviando tu comentario.")
+
+                            });
+                    }
+                }
+            });
+
         }
 
         function reset() {

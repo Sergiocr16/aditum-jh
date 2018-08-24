@@ -15,6 +15,8 @@ public class AnnouncementDTO implements Serializable {
 
     private Long id;
 
+    private int commentsQuantity;
+
     @NotNull
     private String title;
 
@@ -118,5 +120,13 @@ public class AnnouncementDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", deleted='" + getDeleted() + "'" +
             "}";
+    }
+
+    public int getCommentsQuantity() {
+        return commentsQuantity;
+    }
+
+    public void setCommentsQuantity(int commentsQuantity) {
+        this.commentsQuantity = commentsQuantity;
     }
 }

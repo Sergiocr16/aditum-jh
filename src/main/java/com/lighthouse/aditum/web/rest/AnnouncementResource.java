@@ -115,6 +115,8 @@ public class AnnouncementResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
+
     /**
      * GET  /announcements/:id : get the "id" announcement.
      *

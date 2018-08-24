@@ -25,9 +25,12 @@ public class AnnouncementService {
 
     private final AnnouncementMapper announcementMapper;
 
-    public AnnouncementService(AnnouncementRepository announcementRepository, AnnouncementMapper announcementMapper) {
+    private final AnnouncementCommentService announcementCommentService;
+
+    public AnnouncementService(AnnouncementCommentService announcementCommentService, AnnouncementRepository announcementRepository, AnnouncementMapper announcementMapper) {
         this.announcementRepository = announcementRepository;
         this.announcementMapper = announcementMapper;
+        this.announcementCommentService = announcementCommentService;
     }
 
     /**
@@ -59,28 +62,33 @@ public class AnnouncementService {
     @Transactional(readOnly = true)
     public Page<AnnouncementDTO> findAllAsAdmin(Pageable pageable, Long companyId) {
         log.debug("Request to get all Announcements");
-        Page<Announcement> page = announcementRepository.findByCompanyIdAndStatusAdmin(pageable,companyId,2,3);
-        page.getContent().forEach(announcement -> {
+        Page<AnnouncementDTO> announcementDTOS = announcementRepository.findByCompanyIdAndStatusAdmin(pageable,companyId,2,3).map(announcementMapper::toDto);
+        announcementDTOS.getContent().forEach(announcement -> {
             announcement.setDescription("");
+            announcement.setCommentsQuantity(announcementCommentService.countByAnnouncement(announcement.getId()));
         });
-        return page.map(announcementMapper::toDto);
+        return  announcementDTOS;
     }
 
     @Transactional(readOnly = true)
     public Page<AnnouncementDTO> findAllSkectches(Pageable pageable, Long companyId) {
         log.debug("Request to get all Announcements");
-        Page<Announcement> page = announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,1,0);
-        page.getContent().forEach(announcement -> {
+        Page<AnnouncementDTO> announcementDTOS = announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,1,0).map(announcementMapper::toDto);
+        announcementDTOS.getContent().forEach(announcement -> {
             announcement.setDescription("");
+            announcement.setCommentsQuantity(announcementCommentService.countByAnnouncement(announcement.getId()));
         });
-        return page.map(announcementMapper::toDto);
+        return announcementDTOS;
     }
 
     @Transactional(readOnly = true)
     public Page<AnnouncementDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Announcements");
-        return announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,2,0)
-            .map(announcementMapper::toDto);
+        Page<AnnouncementDTO> announcementDTOS = announcementRepository.findByCompanyIdAndStatusAndDeleted(pageable,companyId,2,0).map(announcementMapper::toDto);
+        announcementDTOS.getContent().forEach(announcement -> {
+            announcement.setCommentsQuantity(announcementCommentService.countByAnnouncement(announcement.getId()));
+        });
+        return announcementDTOS;
     }
 
     /**

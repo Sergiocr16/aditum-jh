@@ -28,7 +28,7 @@
         },
         {
             "fieldName": "description",
-            "fieldType": "String",
+            "fieldType": "longtext",
             "fieldValidateRules": [
                 "required"
             ]

@@ -22,21 +22,77 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="display-none" id="tableData">
+<div class="display-none" id="tableData" class="container">
     <div ng-show="vm.announcements == 0">
         <h2 class="text-center gray-font">El condominio no ha realizado ningún anuncio aún.</h2>
     </div>
     <div infinite-scroll="vm.loadPage(vm.page + 1)"
-         infinite-scroll-disabled="vm.page >= vm.links['last']" >
-
-        <div class="announcement margin-bottom-25"
+         infinite-scroll-disabled="vm.page >= vm.links['last']" class="row">
+        <div class="announcement margin-bottom-25 col-md-12"
              ng-repeat="announcement in vm.announcements track by announcement.id">
-            <h2>{{announcement.title}}
-                <spam style="float: right;font-size:12px">{{announcement.publishingDate}}</spam>
+            <h2 class="announcement-title">
+                {{announcement.title}}
+                <spam style="float: right;font-size:12px;color:#616770;">{{announcement.publishingDate}}</spam>
             </h2>
-            <hr>
             <div>
                 <div ng-bind-html="announcement.description"></div>
+            </div>
+            <hr style="margin-bottom: 8px!important">
+            <div class="col-md-12 margin-bottom-10 comments-button" ng-click="vm.loadComments(announcement)">
+                Comentarios ({{announcement.commentsQuantity}})
+            </div>
+            <div ng-if="announcement.showingComments==true" class="col-md-12 no-padding">
+                <div class="col-md-12  no-padding" style="margin-bottom:10px;"
+                     ng-repeat="comment in announcement.comments track by comment.id">
+                    <div class="col-md-1">
+                        <div class="image" style="float: right">
+                            <img ng-hide="comment.resident.image_url" class="object-fit_scale-down"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
+                                 class="object-fit_scale-down"/>
+                        </div>
+                    </div>
+                    <div class="announcement-comment-description col-md-11">
+                        <span style="color:#365899; font-weight: bold;">{{comment.resident.name +" "+ comment.resident.lastname +" "+ comment.resident.secondlastname}} </span>
+                        <p style="display: inline">{{comment.comment}}</p>
+                    </div>
+                    <div>
+                        <button style="border: none;background-color: white;color: #616770;font-size: 11px;margin:5px;cursor:default"
+                                class="comments-button">{{comment.creationDate}}</button>
+                        <button style="border: none;background-color: white;color: #616770;font-size: 11px;margin:5px"
+                                class="comments-button float-right">Eliminar</button>
+                        <button style="border: none;background-color: white;color: #616770;font-size: 11px;margin:5px"
+                                class="comments-button float-right">Editar</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+
+                <div class="col-md-12 no-padding">
+                    <hr style="margin-top:0px!important">
+                    <form ng-submit="vm.saveComment(announcement)">
+                        <div class="col-md-1">
+                            <div class="image" style="float: right">
+                                <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
+                                     class="object-fit_scale-down"/>
+                                <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                     class="object-fit_scale-down"/>
+                            </div>
+                        </div>
+                        <div class="col-md-11">
+                     <textarea class="comment-input col-md-12 textarea" type="text"
+                               ng-model="announcement.currentComment.comment"
+                               placeholder="Escribe un comentario..." required></textarea>
+                        </div>
+                        <div class="col-md-11 col-md-offset-1">
+                            <button type="submit"
+                                    style="border: none;background-color: white;color: #616770;font-size: 11px;margin:5px"
+                                    class="comments-button float-right">
+                                Enviar comentario <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
