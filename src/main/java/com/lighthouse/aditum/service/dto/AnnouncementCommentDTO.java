@@ -18,6 +18,12 @@ public class AnnouncementCommentDTO implements Serializable {
     @NotNull
     private ZonedDateTime creationDate;
 
+
+    private ZonedDateTime editedDate;
+
+    @NotNull
+    private Integer deleted;
+
     private Long residentId;
 
     private ResidentDTO resident;
@@ -113,5 +119,22 @@ public class AnnouncementCommentDTO implements Serializable {
 
     public void setResident(ResidentDTO resident) {
         this.resident = resident;
+    }
+
+    public ZonedDateTime getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(ZonedDateTime editedDate) {
+        this.editedDate = editedDate;
+    }
+
+    @NotNull
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(@NotNull Integer deleted) {
+        this.deleted = deleted;
     }
 }

@@ -15,7 +15,7 @@ import org.springframework.data.domain.Pageable;
 @Repository
 public interface AnnouncementCommentRepository extends JpaRepository<AnnouncementComment, Long> {
 
-    int countAnnouncementCommentByAnnouncement_Id(Long id);
+    int countAnnouncementCommentByAnnouncement_IdAndDeleted(Long id,Integer deleted);
 
-    Page<AnnouncementComment> findAnnouncementCommentByAnnouncement_Id(Pageable pageable, Long id);
+    Page<AnnouncementComment> findAnnouncementCommentByAnnouncement_IdAndDeleted(Pageable pageable, Long id,Integer deleted);
 }

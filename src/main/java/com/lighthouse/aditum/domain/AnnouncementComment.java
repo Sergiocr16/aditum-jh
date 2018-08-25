@@ -30,6 +30,13 @@ public class AnnouncementComment implements Serializable {
     @Column(name = "creation_date", nullable = false)
     private ZonedDateTime creationDate;
 
+
+    @Column(name = "edited_date")
+    private ZonedDateTime editedDate;
+
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne
     @JsonIgnoreProperties("")
     private Resident resident;
@@ -145,5 +152,21 @@ public class AnnouncementComment implements Serializable {
             ", comment='" + getComment() + "'" +
             ", creationDate='" + getCreationDate() + "'" +
             "}";
+    }
+
+    public ZonedDateTime getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(ZonedDateTime editedDate) {
+        this.editedDate = editedDate;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 }

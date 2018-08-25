@@ -1262,27 +1262,30 @@ div.scrollmenu a:hover {
 }
 
 .announcement {
-    box-shadow: 0 3px 1px 0 rgba(0, 0, 0, 0.2);
-    border-radius: 3px !important;
-    padding: 5px 15px;
+    background-color: #f7f7f738;
+    color: #777;
+    border: 1px solid #EEEEEE;
+    padding: 15px;
+    border-radius: 5px !important;
 }
 
 .announcement-title {
-    font-size: 24px;
+    font-size: 20px;
     line-height: 1.153846153846154;
     font-family: 'Lato', sans-serif;
-    font-weight: 400;
-    color: #1e2428;
+    color: #4DB3A2 !important;
     font-style: normal;
     margin: 0px 5px 30px 5px;
+    font-weight: bold !important;
+    text-transform: uppercase !important;
 }
 
 .announcement-title:after, .announcement-title:after {
-    border-bottom: 2px solid #2a93c9;
+    border-bottom: 2px solid #4DB3A2;
     content: '';
     display: block;
-    max-width: 65px;
-    padding-top: 25px;
+    max-width: 120px;
+    padding-top: 20px;
 }
 
 .announcement-comment-description {
@@ -1296,9 +1299,27 @@ div.scrollmenu a:hover {
     height: 35px;
 }
 
+.image-navbar {
+    width: 29px;
+    height: 29px;
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+    margin-top: -5px
+}
+
+
+.object-fit_scale-down-navbar {
+    object-fit: scale-down;
+    height: 29px;
+    width: 29px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+
 .object-fit_scale-down {
     object-fit: scale-down;
-    height: 35px;
+    height: 29px;
     background-color: #ebedf0;
     border-radius: 50% !important;
 }
@@ -1309,24 +1330,26 @@ div.scrollmenu a:hover {
 
 .comments-button {
     outline: none;
+    background-color: #f7f7f738;
 }
 
 .comments-button:hover {
-    color: #365899!important;
+    color: #4DB3A2 !important;
 }
 
 .comment-input {
     background-color: #f2f3f5;
-    border-radius: 18px!important;
+    border-radius: 18px !important;
     border: 1px solid #ccd0d5;
     padding: 10px;
     outline: none;
 }
 
-.comment-actions{
+.comment-actions {
     outline: none;
+    background-color: #f7f7f738;
 }
 
-.comment-actions:hover{
-    color: #365899!important;
+.comment-actions:hover {
+    color: #4DB3A2 !important;
 }

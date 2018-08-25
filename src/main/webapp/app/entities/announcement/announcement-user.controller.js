@@ -23,6 +23,7 @@
         vm.editComment = editComment;
         vm.cancelEditing = cancelEditing;
         vm.submitEditComment = submitEditComment;
+        vm.deleteComment = deleteComment;
         vm.page = 0;
         vm.links = {
             last: 0
@@ -44,6 +45,13 @@
             toastr["error"]("Ha ocurrido un error actualizando la noticia.")
         }
 
+        vm.hideCommentForm = function(announcement){
+            announcement.showingCommentForm = false;
+        };
+
+        vm.showCommentForm = function(announcement){
+            announcement.showingCommentForm = true;
+        };
 
         function onSuccess(data, headers) {
             vm.links = ParseLinks.parse(headers('link'));
@@ -54,6 +62,7 @@
                 data[i].comments = [];
                 data[i].showingComments = false;
                 data[i].currentComment = {comment: ""};
+                data[i].showingCommentForm = false;
                 vm.announcements.push(data[i]);
             }
             console.log(vm.announcements)
@@ -90,26 +99,26 @@
         }
 
         function loadComments(announcement) {
-            announcement.comments = [];
-            if (announcement.showingComments === true) {
-                announcement.showingComments = false;
-            } else {
+                announcement.comments = [];
+                if (announcement.showingComments === true) {
+                    announcement.showingComments = false;
+                } else {
+                    Announcement.getComments({
+                        announcementId: announcement.id,
+                        // page: vm.page,
+                        // size: vm.itemsPerPage,
+                        sort: sortComment()
+                    }, function (data) {
+                        for (var i = 0; i < data.length; i++) {
+                            data[i].showingDate = moment(data[i].creationDate).fromNow();
+                            data[i].editing = false;
+                            data[i].newComment = data[i].comment;
+                            announcement.comments.push(data[i]);
+                        }
+                        announcement.showingComments = true;
+                    }, onErrorComments);
+                }
 
-                Announcement.getComments({
-                    announcementId: announcement.id,
-                    // page: vm.page,
-                    // size: vm.itemsPerPage,
-                    sort: sortComment()
-                }, function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        data[i].creationDate = moment(data[i].creationDate).fromNow();
-                        data[i].editing = false;
-                        data[i].newComment =  data[i].comment;
-                        announcement.comments.push(data[i]);
-                    }
-                    announcement.showingComments = true;
-                }, onErrorComments);
-            }
         }
 
         function loadAll() {
@@ -142,13 +151,15 @@
                             creationDate: moment(new Date()).format(),
                             residentId: companyUser.companies === undefined ? companyUser.id : null,
                             adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
-                            announcementId: announcement.id
+                            announcementId: announcement.id,
+                            deleted: 0
                         };
                         Announcement.saveComment(comment,
                             function () {
                                 toastr["success"]("Comentario enviado.")
                                 announcement.currentComment = {comment: ""};
                                 announcement.commentsQuantity++;
+                                announcement.showingComments = false;
                                 loadComments(announcement);
                             }, function () {
                                 toastr["error"]("Ha ocurrido un error enviando tu comentario.")
@@ -158,6 +169,36 @@
                 }
             });
 
+        }
+
+        function deleteComment(comment, announcement) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea eliminar el comentario?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        comment.deleted = 1;
+                        Announcement.deleteComment(comment,
+                            function (result) {
+                                toastr["success"]("Comentario eliminado correctamente.");
+                                announcement.commentsQuantity--;
+
+                                loadComments(announcement);
+                            }, function () {
+                                toastr["error"]("Ha ocurrido un error eliminando tu comentario.")
+                            });
+                    }
+                }
+            });
         }
 
         function showActionEdit(comment) {
@@ -189,14 +230,16 @@
                     if (result) {
                         var editedComment = {
                             comment: comment.newComment,
-                            creationDate: moment(new Date()).format(),
+                            creationDate: comment.creationDate,
                             residentId: companyUser.companies === undefined ? companyUser.id : null,
                             adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
                             announcementId: announcement.id,
-                            id: comment.id
+                            id: comment.id,
+                            deleted:0,
+                            editedDate: moment(new Date()).format()
                         };
                         Announcement.editComment(editedComment,
-                            function (result) {
+                            function () {
                                 toastr["success"]("Comentario editado correctamente.");
                                 loadComments(announcement);
                             }, function () {

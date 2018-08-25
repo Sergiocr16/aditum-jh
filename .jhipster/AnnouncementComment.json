@@ -33,6 +33,17 @@
             ]
         },
         {
+            "fieldName": "editedDate",
+            "fieldType": "ZonedDateTime",
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
             "fieldName": "creationDate",
             "fieldType": "ZonedDateTime",
             "fieldValidateRules": [

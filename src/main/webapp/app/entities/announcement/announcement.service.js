@@ -17,6 +17,7 @@
             'getComments': {method: 'GET', url: "api/announcement-comments/:announcementId", isArray: true},
             'saveComment': {method: 'POST', url: "api/announcement-comments"},
             'editComment': {method: 'PUT', url: "api/announcement-comments"},
+            'deleteComment': {method: 'DELETE', url: "api/announcement-comments/:id"},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

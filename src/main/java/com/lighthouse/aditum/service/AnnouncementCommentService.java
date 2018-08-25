@@ -49,9 +49,11 @@ public class AnnouncementCommentService {
     public AnnouncementCommentDTO save(AnnouncementCommentDTO announcementCommentDTO) {
         log.debug("Request to save AnnouncementComment : {}", announcementCommentDTO);
         AnnouncementComment announcementComment = announcementCommentMapper.toEntity(announcementCommentDTO);
-        announcementComment = announcementCommentRepository.save(announcementComment);
         announcementComment.setResident(announcementCommentMapper.residentFromId(announcementCommentDTO.getResidentId()));
         announcementComment.setAdminInfo(announcementCommentMapper.adminInfoFromId(announcementCommentDTO.getAdminInfoId()));
+        announcementComment.setDeleted(announcementCommentDTO.getDeleted());
+        announcementComment.setEditedDate(announcementCommentDTO.getEditedDate());
+        announcementComment = announcementCommentRepository.save(announcementComment);
         return announcementCommentMapper.toDto(announcementComment);
     }
 
@@ -70,13 +72,13 @@ public class AnnouncementCommentService {
 
     @Transactional(readOnly = true)
     public int countByAnnouncement(Long id) {
-       return announcementCommentRepository.countAnnouncementCommentByAnnouncement_Id(id);
+       return announcementCommentRepository.countAnnouncementCommentByAnnouncement_IdAndDeleted(id,0);
     }
 
     @Transactional(readOnly = true)
     public Page<AnnouncementCommentDTO> findByAnnouncement(Pageable pageable,Long id) {
         log.debug("Request to get all AnnouncementComments");
-       Page<AnnouncementCommentDTO> announcementCommentDTOS = announcementCommentRepository.findAnnouncementCommentByAnnouncement_Id(pageable,id).map(announcementComment -> {
+       Page<AnnouncementCommentDTO> announcementCommentDTOS = announcementCommentRepository.findAnnouncementCommentByAnnouncement_IdAndDeleted(pageable,id,0).map(announcementComment -> {
             AnnouncementCommentDTO announcementCommentDTO = announcementCommentMapper.toDto(announcementComment);
             if(announcementComment.getAdminInfo()!=null) {
                 announcementCommentDTO.setAdminInfoId(announcementComment.getAdminInfo().getId());
@@ -84,6 +86,7 @@ public class AnnouncementCommentService {
            if(announcementComment.getResident()!=null) {
                announcementCommentDTO.setResidentId(announcementComment.getResident().getId());
            }
+           announcementCommentDTO.setEditedDate(announcementComment.getEditedDate());
             return announcementCommentDTO;
         });
 
@@ -102,6 +105,7 @@ public class AnnouncementCommentService {
                announcementCommentDTO.setResident(adminAsResident);
 
            }
+
        });
        return announcementCommentDTOS;
     }
@@ -127,6 +131,8 @@ public class AnnouncementCommentService {
      */
     public void delete(Long id) {
         log.debug("Request to delete AnnouncementComment : {}", id);
-        announcementCommentRepository.delete(id);
+        AnnouncementComment announcementComment = this.announcementCommentRepository.findOne(id);
+        announcementComment.setDeleted(1);
+        announcementCommentRepository.save(announcementComment);
     }
 }

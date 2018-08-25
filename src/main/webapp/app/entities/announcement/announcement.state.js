@@ -50,6 +50,9 @@
                         $translatePartialLoader.addPart('announcement');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
+                    }],
+                    companyUser: ['MultiCompany',function(MultiCompany){
+                        return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             })
