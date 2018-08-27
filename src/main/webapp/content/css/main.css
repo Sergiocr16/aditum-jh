@@ -1308,7 +1308,6 @@ div.scrollmenu a:hover {
     margin-top: -5px
 }
 
-
 .object-fit_scale-down-navbar {
     object-fit: scale-down;
     height: 29px;
@@ -1331,6 +1330,7 @@ div.scrollmenu a:hover {
 .comments-button {
     outline: none;
     background-color: #f7f7f738;
+    cursor: pointer;
 }
 
 .comments-button:hover {

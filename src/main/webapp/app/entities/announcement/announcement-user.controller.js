@@ -10,6 +10,8 @@
     function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser) {
 
         var vm = this;
+        $rootScope.active = 'userNews';
+
         moment.locale("es")
         vm.announcements = [];
         vm.loadPage = loadPage;
@@ -24,6 +26,7 @@
         vm.cancelEditing = cancelEditing;
         vm.submitEditComment = submitEditComment;
         vm.deleteComment = deleteComment;
+        vm.loadCommentsPage = loadCommentsPage;
         vm.page = 0;
         vm.links = {
             last: 0
@@ -45,11 +48,11 @@
             toastr["error"]("Ha ocurrido un error actualizando la noticia.")
         }
 
-        vm.hideCommentForm = function(announcement){
+        vm.hideCommentForm = function (announcement) {
             announcement.showingCommentForm = false;
         };
 
-        vm.showCommentForm = function(announcement){
+        vm.showCommentForm = function (announcement) {
             announcement.showingCommentForm = true;
         };
 
@@ -63,6 +66,10 @@
                 data[i].showingComments = false;
                 data[i].currentComment = {comment: ""};
                 data[i].showingCommentForm = false;
+                data[i].commentsPage = 0;
+                data[i].links = {
+                    last: 0
+                };
                 vm.announcements.push(data[i]);
             }
             console.log(vm.announcements)
@@ -93,32 +100,69 @@
         function sortComment() {
             var result = [];
             if (vm.predicate !== 'publishingDate') {
-                result.push('creationDate,asc');
+                result.push('creationDate,desc');
             }
             return result;
         }
 
         function loadComments(announcement) {
+            if (announcement.showingComments === true) {
+                announcement.showingComments = false;
                 announcement.comments = [];
-                if (announcement.showingComments === true) {
-                    announcement.showingComments = false;
-                } else {
-                    Announcement.getComments({
-                        announcementId: announcement.id,
-                        // page: vm.page,
-                        // size: vm.itemsPerPage,
-                        sort: sortComment()
-                    }, function (data) {
-                        for (var i = 0; i < data.length; i++) {
-                            data[i].showingDate = moment(data[i].creationDate).fromNow();
-                            data[i].editing = false;
-                            data[i].newComment = data[i].comment;
-                            announcement.comments.push(data[i]);
-                        }
-                        announcement.showingComments = true;
-                    }, onErrorComments);
-                }
+                announcement.commentsPage = 0;
+                announcement.links = {
+                    last: 0
+                };
+            } else {
+                Announcement.getComments({
+                    announcementId: announcement.id,
+                    page: announcement.commentsPage,
+                    size: 5,
+                    sort: sortComment()
+                }, function (data, headers) {
+                    announcement.links = ParseLinks.parse(headers('link'));
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].showingDate = moment(data[i].creationDate).fromNow();
+                        data[i].editing = false;
+                        data[i].newComment = data[i].comment;
+                        announcement.comments.push(data[i]);
+                    }
+                    announcement.showingComments = true;
+                }, onErrorComments);
+            }
 
+        }
+
+        function loadCommentsPage(announcement) {
+            announcement.commentsPage =  announcement.commentsPage + 1;
+        console.log(announcement.links['last']);
+        console.log(  announcement.commentsPage)
+                Announcement.getComments({
+                    announcementId: announcement.id,
+                    page: announcement.commentsPage,
+                    size: vm.itemsPerPage,
+                    sort: sortComment()
+                }, function (data, headers) {
+                    announcement.links = ParseLinks.parse(headers('link'));
+                    for (var i = 0; i < data.length; i++) {
+                        data[i].showingDate = moment(data[i].creationDate).fromNow();
+                        data[i].editing = false;
+                        data[i].newComment = data[i].comment;
+                        console.log( announcement.comments.indexOf(data[i]));
+                        verifyIfCommentExist(data[i],announcement.comments) === false ? announcement.comments.push(data[i]) : false ;
+                    }
+                    console.log(announcement.comments)
+                    announcement.showingComments = true;
+                }, onErrorComments);
+        }
+
+        function verifyIfCommentExist(comment,comments){
+            for (var i = 0; i < comments.length; i++) {
+                if(comment.id===comments[i].id){
+                    return true;
+                }
+            }
+            return false;
         }
 
         function loadAll() {
@@ -159,7 +203,7 @@
                                 toastr["success"]("Comentario enviado.")
                                 announcement.currentComment = {comment: ""};
                                 announcement.commentsQuantity++;
-                                announcement.showingComments = false;
+                                announcement.showingComments = true;
                                 loadComments(announcement);
                             }, function () {
                                 toastr["error"]("Ha ocurrido un error enviando tu comentario.")
@@ -235,7 +279,7 @@
                             adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
                             announcementId: announcement.id,
                             id: comment.id,
-                            deleted:0,
+                            deleted: 0,
                             editedDate: moment(new Date()).format()
                         };
                         Announcement.editComment(editedComment,

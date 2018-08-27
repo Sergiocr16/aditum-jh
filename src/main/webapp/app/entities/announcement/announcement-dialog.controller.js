@@ -93,6 +93,7 @@
         function onSaveError() {
             vm.isSaving = false;
             toastr["error"]("Ah ocurrido un error, es posible que el contenido del anuncio sea demasiado largo o tenga muchas imagenes en el mismo.")
+            bootbox.hideAll();
         }
 
         vm.datePickerOpenStatus.publishingDate = false;

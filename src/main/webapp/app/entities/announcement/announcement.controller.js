@@ -10,7 +10,7 @@
     function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
 
         var vm = this;
-
+        $rootScope.active = 'announcements';
         vm.announcements = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;

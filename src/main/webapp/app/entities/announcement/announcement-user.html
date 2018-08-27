@@ -42,12 +42,15 @@
                 <div class="col-md-6 margin-bottom-10 comments-button" ng-click="vm.loadComments(announcement)">
                     Comentarios ({{announcement.commentsQuantity}})
                 </div>
-                <div class="col-md-6 margin-bottom-10 comments-button" ng-if="announcement.showingCommentForm===false">
+                <div class="col-md-6 margin-bottom-10 comments-button" ng-if="announcement.showingCommentForm===false && announcement.showingComments===false">
                     <span style="float: right;" ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
                 </div>
                 <div ng-if="announcement.showingComments==true" class="col-md-12 no-padding">
+                    <div class="col-md-12 text-center margin-bottom-10" ng-if="announcement.commentsPage < announcement.links['last']">
+                        <span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>
+                    </div>
                     <div class="col-md-12  no-padding" style="margin-bottom:10px;"
-                         ng-repeat="comment in announcement.comments track by comment.id">
+                         ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id ">
                         <div class="col-md-1">
                             <div class="image" style="float: right">
                                 <img ng-hide="comment.resident.image_url" class="object-fit_scale-down"
@@ -99,7 +102,12 @@
                     </div>
                 </div>
                 <div>
-
+                    <div class="col-md-12" ng-if="announcement.showingCommentForm===false && announcement.showingComments===true">
+                        <hr style="margin-bottom: 10px!important">
+                        <div class="text-center comments-button">
+                        <span ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
                     <div class="col-md-12 no-padding" ng-if="announcement.showingCommentForm===true">
                         <hr style="margin-top:0px!important">
                         <form ng-submit="vm.saveComment(announcement)">
