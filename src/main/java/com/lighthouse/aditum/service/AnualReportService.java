@@ -74,8 +74,7 @@ public class AnualReportService {
             this.getAllEgressBudgetAndDiference(anualReportDTO);
             this.setIngressBudgets(anualReportDTO);
         }
-
-
+        this.setRealBalanceByMonth(anualReportDTO);
     }
 
     private void getAllEgressBudgetAndDiference(AnualReportDTO anualReportDTO){
@@ -92,10 +91,17 @@ public class AnualReportService {
         }
 
     }
+    private void setRealBalanceByMonth(AnualReportDTO anualReportDTO){
+        anualReportDTO.setRealBalanceByMonth(new ArrayList<>());
+        for (int i = 0; i <anualReportDTO.getFlujoByMonth().size() ; i++) {
+            anualReportDTO.getRealBalanceByMonth().add(Integer.parseInt(anualReportDTO.getInitialBalanceByMonth().get(i))+Integer.parseInt(anualReportDTO.getFlujoByMonth().get(i))+"");
+
+        }
+    }
 
 
     private void setIngressBudgets(AnualReportDTO anualReportDTO){
-        anualReportDTO.setRealBalanceByMonth(new ArrayList<>());
+
         for (int i = 0; i <anualReportDTO.getFlujoByMonth().size() ; i++) {
             anualReportDTO.setMaintenanceBudgetAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getMaintenanceBudget());
             anualReportDTO.setExtraordinaryIngressBudgetAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getExtraordinaryBudget());
@@ -110,7 +116,6 @@ public class AnualReportService {
             anualReportDTO.setTotalIngressBudget(anualReportDTO.getAnualIngressByMonth().get(i).getTotalBudget());
             anualReportDTO.setTotalIngressBudgetDiference(anualReportDTO.getAnualIngressByMonth().get(i).getTotalBudgetDiference());
 
-            anualReportDTO.getRealBalanceByMonth().add(Integer.parseInt(anualReportDTO.getInitialBalanceByMonth().get(i))+Integer.parseInt(anualReportDTO.getFlujoByMonth().get(i))+"");
         }
     }
 

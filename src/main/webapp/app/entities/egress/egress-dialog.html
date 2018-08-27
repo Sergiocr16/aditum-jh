@@ -37,8 +37,12 @@
                     </div>
                     <div class="btn-group pull-right">
                         <div class="caption font-green-haze">
-                            <a href="" ui-sref="egress-category" class="font-14" style="color:hsl(211, 100%, 61%);"><i class="fa fa-cog" aria-hidden="true"></i>  Configurar categorías</a>
-                            <a href="" ui-sref="proveedor" class="font-14" style="color:hsl(211, 100%, 61%); margin-left:15px;"><i class="fa fa-cog" aria-hidden="true"></i>  Configurar proveedores</a>
+                            <a href="" ui-sref="egress-category" class="font-14" style="color:hsl(211, 100%, 61%);"><i
+                                class="fa fa-cog" aria-hidden="true"></i> Configurar categorías</a>
+                            <a href="" ui-sref="proveedor" class="font-14"
+                               style="color:hsl(211, 100%, 61%); margin-left:15px;"><i class="fa fa-cog"
+                                                                                       aria-hidden="true"></i>
+                                Configurar proveedores</a>
 
                         </div>
 
@@ -46,189 +50,217 @@
 
                 </div>
                 <div class="portlet-body form display-none" id="register_edit_form">
-                    <form name="editForm" id="form" role="form" novalidate ng-submit=" vm.confirmMessage()" show-validation>
+                    <form name="editForm" id="form" role="form" novalidate ng-submit=" vm.confirmMessage()"
+                          show-validation>
 
-                    <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold  control-label">Folio</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input type="text" class="form-control gray" name="folio" id="field_folio"
-                                           ng-model="vm.egress.folio"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label" >Categoría *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <select class="form-control" id="field_category" name="category" ng-model="vm.egress.category" required>
-                                        <option value="">Seleccione una Categoría</option>
-                                        <optgroup  ng-show="vm.gastosFijos.length>0"  label="GASTOS FIJOS">
-                                            <option ng-repeat="item in vm.gastosFijos" value="{{item.id}}">{{item.category}}</option>
-                                        </optgroup>
-                                        <optgroup ng-show="vm.gastosVariables.length>0" label="GASTOS VARIABLES">
-                                            <option ng-repeat="item in vm.gastosVariables" value="{{item.id}}">{{item.category}}</option>
-                                        </optgroup>
-                                        <optgroup ng-show="vm.gastosOtros.length>0"  label="OTROS">
-                                            <option ng-repeat="item in vm.gastosOtros"  value="{{item.id}}">{{item.category}}</option>
-                                        </optgroup>
-
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label" >Fecha contable *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input ng-model="vm.egress.date" id="field_contable_date" name="date" ng-click="vm.openCalendar('date')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.date"
-                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
-                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label">Fecha vencimiento * </span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                    <input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"
-                                           type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
-
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label" >Concepto *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input type="text" class="form-control" name="concept" id="field_concept"
-                                           ng-model="vm.egress.concept"
-                                           required/>
-                                </div>
-                            </div>
-
-                        </div>
-
-
-                        <!--ESTOS CAMPOS NO SE MUESTRAN EN XS-->
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-xs">
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                    <span class="font-13 bold" ># Factura</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <input type="text" class="form-control" name="billNumber" id="field_billNumber"
-                                           ng-model="vm.egress.billNumber"
-                                    />
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-right form-group" ng-class="{'has-error':vm.proveedores.length==0}">
-                                <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                    <span class="font-13 bold control-label">Proovedor *</span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                    <select required type="text" class="form-control" id="field_proveedor" name="proveedor" ng-model="vm.egress.proveedor"  ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores"  >
-                                        <option value="">Seleccione un proveedor</option>
-                                    </select>
-
-
-                                </div>
-                            </div>
-
-                            <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
-                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                        <span class="font-13 bold control-label " >Total * </span>
+                        <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold  control-label">Folio</span>
                                     </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" >
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input type="text" class="form-control gray" name="folio" id="field_folio"
+                                               ng-model="vm.egress.folio"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Categoría *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <select class="form-control" id="field_category" name="category"
+                                                ng-model="vm.egress.category" required>
+                                            <option value="">Seleccione una Categoría</option>
+                                            <optgroup ng-show="vm.gastosFijos.length>0" label="GASTOS FIJOS">
+                                                <option ng-repeat="item in vm.gastosFijos" value="{{item.id}}">
+                                                    {{item.category}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup ng-show="vm.gastosVariables.length>0" label="GASTOS VARIABLES">
+                                                <option ng-repeat="item in vm.gastosVariables" value="{{item.id}}">
+                                                    {{item.category}}
+                                                </option>
+                                            </optgroup>
+                                            <optgroup ng-show="vm.gastosOtros.length>0" label="OTROS">
+                                                <option ng-repeat="item in vm.gastosOtros" value="{{item.id}}">
+                                                    {{item.category}}
+                                                </option>
+                                            </optgroup>
+
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Fecha contable *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input ng-model="vm.egress.date" id="field_contable_date" name="date"
+                                               ng-click="vm.openCalendar('date')" ng-change="vm.updatePicker()"
+                                               enable-time="false" datetime-picker="longDate"
+                                               datepicker-options="vm.picker1.datepickerOptions"
+                                               is-open="vm.datePickerOpenStatus.date"
+                                               type="text" class="form-control letters gray-font  dating"
+                                               placeholder="Seleccione una fecha" required>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Fecha vencimiento * </span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                        <input ng-model="vm.egress.expirationDate" id="field_expirationDate"
+                                               name="expirationDate" ng-click="vm.openCalendar('expirationDate')"
+                                               ng-change="vm.updatePicker()" enable-time="false"
+                                               datetime-picker="longDate"
+                                               datepicker-options="vm.picker2.datepickerOptions"
+                                               is-open="vm.datePickerOpenStatus.expirationDate"
+                                               type="text" class="form-control letters gray-font  dating"
+                                               placeholder="Seleccione una fecha" required>
+
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Concepto *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input type="text" class="form-control" name="concept" id="field_concept"
+                                               ng-model="vm.egress.concept"
+                                               required/>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <!--ESTOS CAMPOS NO SE MUESTRAN EN XS-->
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-xs">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                        <span class="font-13 bold"># Factura</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input type="text" class="form-control" name="billNumber" id="field_billNumber"
+                                               ng-model="vm.egress.billNumber"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-right form-group"
+                                     ng-class="{'has-error':vm.proveedores.length==0}">
+                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                        <span class="font-13 bold control-label">Proovedor *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                        <select required type="text" class="form-control" id="field_proveedor"
+                                                name="proveedor" ng-model="vm.egress.proveedor"
+                                                ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores">
+                                            <option value="">Seleccione un proveedor</option>
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
+                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                        <span class="font-13 bold control-label ">Total * </span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
-                                            <input type="text" class="form-control numbers " name="total" id="field_total"  pattern="[0-9]*"
-                                                   ng-model="vm.egress.total"  ng-change="formatearNumero(vm.egress.total)" required
+                                            <input type="text" class="form-control numbers " name="total"
+                                                   id="field_total" pattern="[0-9]*"
+                                                   ng-model="vm.egress.total"
+                                                   ng-change="formatearNumero(vm.egress.total)" required
                                             />
                                         </div>
 
                                     </div>
 
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                    <span class="font-13 bold control-label" >Comentarios</span>
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                         <textarea rows="4" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_comments">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                        <span class="font-13 bold control-label">Comentarios</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                         <textarea rows="4" ng-model="vm.egress.comments" cols="50" type="text"
+                                                   class="form-control" name="comments" id="field_comments">
                                          </textarea>
 
+                                    </div>
                                 </div>
-                            </div>
-
-                        </div>
-
-
-                        <!--ESTOS CAMPOS SE MUESTRAN SOLO EN XS-->
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                <span class="font-13 bold" ># Factura</span>
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                <input type="text" class="form-control" name="billNumber2" id="field_billNumber2"
-                                       ng-model="vm.egress.billNumber"
-                                />
-                            </div>
-                        </div>
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group" ng-class="{'has-error':vm.proveedores.length==0}">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                <span class="font-13 bold control-label">Proovedor *</span>
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                <select required type="text" class="form-control" id="field_proveedorxs" name="proveedor" ng-model="vm.egress.proveedor"  ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores"  >
-                                    <option value="">Seleccione un proveedor</option>
-                                </select>
-
 
                             </div>
-                        </div>
 
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label " >Total * </span>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
-                                    <div class="input-group form-group">
-                                        <span class="input-group-addon">₡</span>
-                                        <input type="text" class="form-control numbers" name="total" id="field_totalxs"
-                                               ng-model="vm.egress.total" required
+
+                            <!--ESTOS CAMPOS SE MUESTRAN SOLO EN XS-->
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding hidden-md hidden-lg hidden-sm">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold"># Factura</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                        <input type="text" class="form-control" name="billNumber2"
+                                               id="field_billNumber2"
+                                               ng-model="vm.egress.billNumber"
                                         />
                                     </div>
-
-                                 </div>
-
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding hidden-md hidden-lg hidden-sm form-group">
-                                <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                    <span class="font-13 bold control-label" >Comentarios</span>
                                 </div>
-                                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                         <textarea rows="3" ng-model="vm.egress.comments" cols="50" type="text" class="form-control" name="comments" id="field_commentsxs">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group"
+                                     ng-class="{'has-error':vm.proveedores.length==0}">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Proovedor *</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                        <select required type="text" class="form-control" id="field_proveedorxs"
+                                                name="proveedor" ng-model="vm.egress.proveedor"
+                                                ng-options="proveedor.id as proveedor.empresa for proveedor in vm.proveedores">
+                                            <option value="">Seleccione un proveedor</option>
+                                        </select>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label ">Total * </span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+                                        <div class="input-group form-group">
+                                            <span class="input-group-addon">₡</span>
+                                            <input type="text" class="form-control numbers" name="total"
+                                                   id="field_totalxs"
+                                                   ng-model="vm.egress.total" required
+                                            />
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div
+                                    class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding hidden-md hidden-lg hidden-sm form-group">
+                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label">Comentarios</span>
+                                    </div>
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
+                                         <textarea rows="3" ng-model="vm.egress.comments" cols="50" type="text"
+                                                   class="form-control" name="comments" id="field_commentsxs">
                                          </textarea>
 
+                                    </div>
                                 </div>
                             </div>
-                    </div>
-
-
-
-
 
 
                         </div>
@@ -236,8 +268,10 @@
                         <div class="form-actions noborder" style="padding-bottom:0px;">
                             <h3 class="text-right">
 
-                                    <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button type="button"  ui-sref="egress()" class="btn red default">Cancelar</button>
+                                <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i
+                                    class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}
+                                </button>
+                                <button type="button" ui-sref="egress()" class="btn red default">Cancelar</button>
 
 
                             </h3>
@@ -252,12 +286,12 @@
     </div>
 </div>
 <script>
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         $("#loadingIcon").fadeIn("slow");
     });
 </script>
 <script>
-    jQuery(document).ready(function() {
+    jQuery(document).ready(function () {
         $("#register_edit_form").fadeIn("slow");
     });
 </script>

@@ -1,37 +1,68 @@
-<div>
-    <h2 data-translate="aditumApp.commonArea.home.title">Common Areas</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="common-area.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.commonArea.home.createLabel">
-                        Create new Common Area
-                    </span>
-                </button>
-            </div>
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="residentes()">Residentes</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a ui-sref="residentes()">Consultar</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right">
+
         </div>
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span data-translate="aditumApp.commonArea.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="aditumApp.commonArea.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="reservationCharge"><span data-translate="aditumApp.commonArea.reservationCharge">Reservation Charge</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="devolutionAmmount"><span data-translate="aditumApp.commonArea.devolutionAmmount">Devolution Ammount</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="chargeRequired"><span data-translate="aditumApp.commonArea.chargeRequired">Charge Required</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="reservationWithDebt"><span data-translate="aditumApp.commonArea.reservationWithDebt">Reservation With Debt</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="picture"><span data-translate="aditumApp.commonArea.picture">Picture</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="maximunHours"><span data-translate="aditumApp.commonArea.maximunHours">Maximun Hours</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="commonArea in vm.commonAreas track by commonArea.id">
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row " id="tableData">
+    <div class="col-lg-12 col-md-12">
+        <h3 class="page-title col-md-9 ">Áreas comunes</h3>
+
+        <!--<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>-->
+
+        <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
+
+            <div class="input-icon col-md-7 col-lg-7  col-md-5 col-xs-12">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
+            </div>
+            <button type="button" class="btn green default col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area.new" name="button">Registrar área común</button>
+        </div>
+
+        <div class="portlet-body ">
+            <div ng-show="vm.residents.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2 class="text-center gray-font">No hay residentes registrados</h2>
+            </div>
+
+            <div class="table-scrollable hidden-xs">
+                <table  class="table table-striped table-hover font-12">
+                    <thead>
+                    <tr>
+                        <th>Nombre completo</th>
+                        <th>Cédula</th>
+                        <th>Número de celular</th>
+                        <!--<th>Correo</th>-->
+                        <th>Num casa</th>
+                        <th>Ver detalle</th>
+                        <th>Editar</th>
+                        <th>{{vm.actionButtonTitle}}</th>
+                        <th>Eliminar</th>
+                        <th>Cuenta en sistema</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="commonArea in vm.commonAreas track by commonArea.id">
                     <td><a ui-sref="common-area-detail({id:commonArea.id})">{{commonArea.id}}</a></td>
                     <td>{{commonArea.name}}</td>
                     <td>{{commonArea.description}}</td>
@@ -68,12 +99,91 @@
                             </button>
                         </div>
                     </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="text-center">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
+
+
+<!--<div>-->
+    <!--<h2 data-translate="aditumApp.commonArea.home.title">Common Areas</h2>-->
+    <!--<jhi-alert></jhi-alert>-->
+    <!--<div class="container-fluid">-->
+        <!--<div class="row">-->
+            <!--<div class="col-xs-4 no-padding-left">-->
+                <!--<button class="btn btn-primary" ui-sref="common-area.new" >-->
+                    <!--<span class="glyphicon glyphicon-plus"></span>-->
+                    <!--<span  data-translate="aditumApp.commonArea.home.createLabel">-->
+                        <!--Create new Common Area-->
+                    <!--</span>-->
+                <!--</button>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<br/>-->
+    <!--<div class="table-responsive">-->
+        <!--<table class="jh-table table table-striped">-->
+            <!--<thead>-->
+                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
+                    <!--<th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="name"><span data-translate="aditumApp.commonArea.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="description"><span data-translate="aditumApp.commonArea.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="reservationCharge"><span data-translate="aditumApp.commonArea.reservationCharge">Reservation Charge</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="devolutionAmmount"><span data-translate="aditumApp.commonArea.devolutionAmmount">Devolution Ammount</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="chargeRequired"><span data-translate="aditumApp.commonArea.chargeRequired">Charge Required</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="reservationWithDebt"><span data-translate="aditumApp.commonArea.reservationWithDebt">Reservation With Debt</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="picture"><span data-translate="aditumApp.commonArea.picture">Picture</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="maximunHours"><span data-translate="aditumApp.commonArea.maximunHours">Maximun Hours</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th></th>-->
+                <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+                <!--<tr ng-repeat="commonArea in vm.commonAreas track by commonArea.id">-->
+                    <!--<td><a ui-sref="common-area-detail({id:commonArea.id})">{{commonArea.id}}</a></td>-->
+                    <!--<td>{{commonArea.name}}</td>-->
+                    <!--<td>{{commonArea.description}}</td>-->
+                    <!--<td>{{commonArea.reservationCharge}}</td>-->
+                    <!--<td>{{commonArea.devolutionAmmount}}</td>-->
+                    <!--<td>{{commonArea.chargeRequired}}</td>-->
+                    <!--<td>{{commonArea.reservationWithDebt}}</td>-->
+                    <!--<td>-->
+                        <!--<a ng-if="commonArea.picture" ng-click="vm.openFile(commonArea.pictureContentType, commonArea.picture)">-->
+                            <!--<img data-ng-src="{{'data:' + commonArea.pictureContentType + ';base64,' + commonArea.picture}}" style="max-height: 30px;" alt="commonArea image"/>-->
+                        <!--</a>-->
+                        <!--<span ng-if="commonArea.picture">{{commonArea.pictureContentType}}, {{vm.byteSize(commonArea.picture)}}</span>-->
+                    <!--</td>-->
+                    <!--<td>{{commonArea.maximunHours}}</td>-->
+                    <!--<td class="text-right">-->
+                        <!--<div class="btn-group flex-btn-group-container">-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="common-area-detail({id:commonArea.id})"-->
+                                    <!--class="btn btn-info btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
+                                <!--<span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
+                            <!--</button>-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="common-area.edit({id:commonArea.id})"-->
+                                    <!--class="btn btn-primary btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-pencil"></span>-->
+                                <!--<span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
+                            <!--</button>-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="common-area.delete({id:commonArea.id})"-->
+                                    <!--class="btn btn-danger btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
+                                <!--<span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+    <!--</div>-->
+    <!--<div class="text-center">-->
+        <!--<jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
+        <!--<uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>-->
+    <!--</div>-->
+<!--</div>-->
