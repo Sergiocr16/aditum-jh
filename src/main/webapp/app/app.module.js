@@ -1,3 +1,4 @@
+
 (function() {
     'use strict';
 
@@ -24,6 +25,7 @@
             'angularjs-dropdown-multiselect',
             'angular-popover',
             'ngPopover',
+            'summernote'
         ])
         .run(run);
 
