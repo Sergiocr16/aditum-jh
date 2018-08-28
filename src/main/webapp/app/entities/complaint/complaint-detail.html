@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.complaint.detail.title">Complaint</span> {{vm.complaint.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.complaint.description">Description</span></dt>
+        <dd>
+            <span>{{vm.complaint.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span></dt>
+        <dd>
+            <span>{{vm.complaint.complaintType}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.status">Status</span></dt>
+        <dd>
+            <span>{{vm.complaint.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.complaint.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.creationDate">Creation Date</span></dt>
+        <dd>
+            <span>{{vm.complaint.creationDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span></dt>
+        <dd>
+            <span>{{vm.complaint.resolutionDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.complaint.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.complaint.houseId})">{{vm.complaint.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="complaint-detail.edit({id:vm.complaint.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

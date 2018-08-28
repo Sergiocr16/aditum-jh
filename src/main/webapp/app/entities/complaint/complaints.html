@@ -1,0 +1,70 @@
+<div>
+    <h2 data-translate="aditumApp.complaint.home.title">Complaints</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="complaint.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.complaint.home.createLabel">
+                        Create new Complaint
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="description"><span data-translate="aditumApp.complaint.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="complaintType"><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="status"><span data-translate="aditumApp.complaint.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.complaint.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.complaint.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="resolutionDate"><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="houseId"><span data-translate="aditumApp.complaint.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
+                <tr ng-repeat="complaint in vm.complaints track by complaint.id">
+                    <td><a ui-sref="complaint-detail({id:complaint.id})">{{complaint.id}}</a></td>
+                    <td>{{complaint.description}}</td>
+                    <td>{{complaint.complaintType}}</td>
+                    <td>{{complaint.status}}</td>
+                    <td>{{complaint.deleted}}</td>
+                    <td>{{complaint.creationDate | date:'medium'}}</td>
+                    <td>{{complaint.resolutionDate | date:'medium'}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:complaint.houseId})">{{complaint.houseId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="complaint-detail({id:complaint.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="complaint.edit({id:complaint.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="complaint.delete({id:complaint.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

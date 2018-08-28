@@ -10,7 +10,7 @@
         
         <addForeignKeyConstraint baseColumnNames="resident_id"
                                  baseTableName="announcement_comment"
-                                 constraintName="fk_announcement_comment_resident_id"
+                                 constraintName="fk_announcement_comments_resident_id"
                                  referencedColumnNames="id"
                                  referencedTableName="resident"/>
 
