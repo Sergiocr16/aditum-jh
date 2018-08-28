@@ -112,6 +112,18 @@ public class CommonAreaReservationsResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(commonAreaReservationsDTO));
     }
 
+    @GetMapping("/common-area-reservations/isAvailableToReserve/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}")
+    @Timed
+    public CommonAreaReservationsDTO isAvailableToReserve(
+        @PathVariable (value = "maximun_hours")  int maximun_hours,
+        @PathVariable (value = "reservation_date")  String reservation_date,
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "common_area_id")  Long common_area_id){
+        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id);
+
+            return commonAreaReservationsDTO;
+    }
     /**
      * DELETE  /common-area-reservations/:id : delete the "id" commonAreaReservations.
      *

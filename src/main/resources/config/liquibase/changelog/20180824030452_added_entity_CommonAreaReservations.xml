@@ -30,10 +30,6 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_date" type="timestamp">
-                <constraints nullable="false" />
-            </column>
-
             <column name="initial_time" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -46,13 +42,34 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="inital_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="final_date" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="reservation_charge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="devolution_ammount" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="status" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="common_area_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="common_area_reservations" columnName="jhi_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="common_area_reservations" columnName="inital_date" columnDataType="datetime"/>
+        <dropDefaultValue tableName="common_area_reservations" columnName="final_date" columnDataType="datetime"/>
         
     </changeSet>
 </databaseChangeLog>

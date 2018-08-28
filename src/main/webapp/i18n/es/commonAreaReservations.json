@@ -17,10 +17,14 @@
             },
             "houseId": "House Id",
             "residentId": "Resident Id",
-            "date": "Date",
             "initialTime": "Initial Time",
             "finalTime": "Final Time",
             "comments": "Comments",
+            "initalDate": "Inital Date",
+            "finalDate": "Final Date",
+            "reservationCharge": "Reservation Charge",
+            "devolutionAmmount": "Devolution Ammount",
+            "status": "Status",
             "commonArea": "Common Area"
         }
     }

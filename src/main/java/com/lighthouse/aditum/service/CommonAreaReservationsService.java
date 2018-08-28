@@ -11,6 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
+import java.util.List;
+
 
 /**
  * Service Implementation for managing CommonAreaReservations.
@@ -38,11 +41,46 @@ public class CommonAreaReservationsService {
      */
     public CommonAreaReservationsDTO save(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         log.debug("Request to save CommonAreaReservations : {}", commonAreaReservationsDTO);
+
+        commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
+        commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
+
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         return commonAreaReservationsMapper.toDto(commonAreaReservations);
     }
+    @Transactional(readOnly = true)
+    public  CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours,String reservation_date,String initial_time,String final_time, Long common_area_id) {
+        CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
 
+        if(maximun_hours==0){
+            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date+"[America/Regina]");
+            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date+"[America/Regina]").replace("00:00:00","23:59:59"));
+            List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
+            if(reservations.size()>0){
+                commonAreaReservationsDTO.setAvailable(false);
+            }else{
+                commonAreaReservationsDTO.setAvailable(true);
+            }
+        }else{
+
+            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date+"[America/Regina]");
+            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date+"[America/Regina]"));
+            zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
+            zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
+            List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
+            List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
+            List<CommonAreaReservations> test3 = commonAreaReservationsRepository. findReservationInIT(zd_reservation_initial_date,common_area_id);
+
+
+            if(test1.size()>0 || test2.size()>0|| test3.size()>0 ){
+                commonAreaReservationsDTO.setAvailable(false);
+            }else{
+                commonAreaReservationsDTO.setAvailable(true);
+            }
+        }
+        return commonAreaReservationsDTO;
+    }
     /**
      *  Get all the commonAreaReservations.
      *

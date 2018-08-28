@@ -117,19 +117,16 @@
                     });
                 }]
             })
-            .state('common-area.new', {
-                parent: 'common-area',
-                url: '/new',
+            .state('common-area-administration.new', {
+                url: '/newcommonArea',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/common-area/common-area-dialog.html',
-                        controller: 'CommonAreaDialogController',
-                        controllerAs: 'vm',
-                    }
-                },
+
+                templateUrl: 'app/entities/common-area/common-area-dialog.html',
+                controller: 'CommonAreaDialogController',
+                controllerAs: 'vm',
+
                 resolve: {
                     entity: function () {
                         return {

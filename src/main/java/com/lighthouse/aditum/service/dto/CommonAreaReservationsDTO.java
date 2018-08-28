@@ -22,15 +22,24 @@ public class CommonAreaReservationsDTO implements Serializable {
     private Long residentId;
 
     @NotNull
-    private ZonedDateTime date;
-
-    @NotNull
     private String initialTime;
 
     @NotNull
     private String finalTime;
 
     private String comments;
+
+    private ZonedDateTime initalDate;
+
+    private ZonedDateTime finalDate;
+
+    private Integer reservationCharge;
+
+    private Integer devolutionAmmount;
+
+    private boolean isAvailable;
+
+    private Integer status;
 
     private Long commonAreaId;
 
@@ -58,14 +67,6 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.residentId = residentId;
     }
 
-    public ZonedDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(ZonedDateTime date) {
-        this.date = date;
-    }
-
     public String getInitialTime() {
         return initialTime;
     }
@@ -88,6 +89,46 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setComments(String comments) {
         this.comments = comments;
+    }
+
+    public ZonedDateTime getInitalDate() {
+        return initalDate;
+    }
+
+    public void setInitalDate(ZonedDateTime initalDate) {
+        this.initalDate = initalDate;
+    }
+
+    public ZonedDateTime getFinalDate() {
+        return finalDate;
+    }
+
+    public void setFinalDate(ZonedDateTime finalDate) {
+        this.finalDate = finalDate;
+    }
+
+    public Integer getReservationCharge() {
+        return reservationCharge;
+    }
+
+    public void setReservationCharge(Integer reservationCharge) {
+        this.reservationCharge = reservationCharge;
+    }
+
+    public Integer getDevolutionAmmount() {
+        return devolutionAmmount;
+    }
+
+    public void setDevolutionAmmount(Integer devolutionAmmount) {
+        this.devolutionAmmount = devolutionAmmount;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Long getCommonAreaId() {
@@ -125,10 +166,22 @@ public class CommonAreaReservationsDTO implements Serializable {
             "id=" + getId() +
             ", houseId='" + getHouseId() + "'" +
             ", residentId='" + getResidentId() + "'" +
-            ", date='" + getDate() + "'" +
             ", initialTime='" + getInitialTime() + "'" +
             ", finalTime='" + getFinalTime() + "'" +
             ", comments='" + getComments() + "'" +
+            ", initalDate='" + getInitalDate() + "'" +
+            ", finalDate='" + getFinalDate() + "'" +
+            ", reservationCharge='" + getReservationCharge() + "'" +
+            ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
+            ", status='" + getStatus() + "'" +
             "}";
+    }
+
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setAvailable(boolean available) {
+        isAvailable = available;
     }
 }

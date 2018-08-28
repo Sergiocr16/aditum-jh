@@ -51,9 +51,6 @@ public class CommonAreaReservationsResourceIntTest {
     private static final Long DEFAULT_RESIDENT_ID = 1L;
     private static final Long UPDATED_RESIDENT_ID = 2L;
 
-    private static final ZonedDateTime DEFAULT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
-
     private static final String DEFAULT_INITIAL_TIME = "AAAAAAAAAA";
     private static final String UPDATED_INITIAL_TIME = "BBBBBBBBBB";
 
@@ -62,6 +59,21 @@ public class CommonAreaReservationsResourceIntTest {
 
     private static final String DEFAULT_COMMENTS = "AAAAAAAAAA";
     private static final String UPDATED_COMMENTS = "BBBBBBBBBB";
+
+    private static final ZonedDateTime DEFAULT_INITAL_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_INITAL_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_FINAL_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_FINAL_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Integer DEFAULT_RESERVATION_CHARGE = 1;
+    private static final Integer UPDATED_RESERVATION_CHARGE = 2;
+
+    private static final Integer DEFAULT_DEVOLUTION_AMMOUNT = 1;
+    private static final Integer UPDATED_DEVOLUTION_AMMOUNT = 2;
+
+    private static final Integer DEFAULT_STATUS = 1;
+    private static final Integer UPDATED_STATUS = 2;
 
     @Autowired
     private CommonAreaReservationsRepository commonAreaReservationsRepository;
@@ -108,10 +120,14 @@ public class CommonAreaReservationsResourceIntTest {
         CommonAreaReservations commonAreaReservations = new CommonAreaReservations()
             .houseId(DEFAULT_HOUSE_ID)
             .residentId(DEFAULT_RESIDENT_ID)
-            .date(DEFAULT_DATE)
             .initialTime(DEFAULT_INITIAL_TIME)
             .finalTime(DEFAULT_FINAL_TIME)
-            .comments(DEFAULT_COMMENTS);
+            .comments(DEFAULT_COMMENTS)
+            .initalDate(DEFAULT_INITAL_DATE)
+            .finalDate(DEFAULT_FINAL_DATE)
+            .reservationCharge(DEFAULT_RESERVATION_CHARGE)
+            .devolutionAmmount(DEFAULT_DEVOLUTION_AMMOUNT)
+            .status(DEFAULT_STATUS);
         return commonAreaReservations;
     }
 
@@ -138,10 +154,14 @@ public class CommonAreaReservationsResourceIntTest {
         CommonAreaReservations testCommonAreaReservations = commonAreaReservationsList.get(commonAreaReservationsList.size() - 1);
         assertThat(testCommonAreaReservations.getHouseId()).isEqualTo(DEFAULT_HOUSE_ID);
         assertThat(testCommonAreaReservations.getResidentId()).isEqualTo(DEFAULT_RESIDENT_ID);
-        assertThat(testCommonAreaReservations.getDate()).isEqualTo(DEFAULT_DATE);
         assertThat(testCommonAreaReservations.getInitialTime()).isEqualTo(DEFAULT_INITIAL_TIME);
         assertThat(testCommonAreaReservations.getFinalTime()).isEqualTo(DEFAULT_FINAL_TIME);
         assertThat(testCommonAreaReservations.getComments()).isEqualTo(DEFAULT_COMMENTS);
+        assertThat(testCommonAreaReservations.getInitalDate()).isEqualTo(DEFAULT_INITAL_DATE);
+        assertThat(testCommonAreaReservations.getFinalDate()).isEqualTo(DEFAULT_FINAL_DATE);
+        assertThat(testCommonAreaReservations.getReservationCharge()).isEqualTo(DEFAULT_RESERVATION_CHARGE);
+        assertThat(testCommonAreaReservations.getDevolutionAmmount()).isEqualTo(DEFAULT_DEVOLUTION_AMMOUNT);
+        assertThat(testCommonAreaReservations.getStatus()).isEqualTo(DEFAULT_STATUS);
     }
 
     @Test
@@ -189,25 +209,6 @@ public class CommonAreaReservationsResourceIntTest {
         int databaseSizeBeforeTest = commonAreaReservationsRepository.findAll().size();
         // set the field null
         commonAreaReservations.setResidentId(null);
-
-        // Create the CommonAreaReservations, which fails.
-        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-
-        restCommonAreaReservationsMockMvc.perform(post("/api/common-area-reservations")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(commonAreaReservationsDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<CommonAreaReservations> commonAreaReservationsList = commonAreaReservationsRepository.findAll();
-        assertThat(commonAreaReservationsList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkDateIsRequired() throws Exception {
-        int databaseSizeBeforeTest = commonAreaReservationsRepository.findAll().size();
-        // set the field null
-        commonAreaReservations.setDate(null);
 
         // Create the CommonAreaReservations, which fails.
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
@@ -272,10 +273,14 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(commonAreaReservations.getId().intValue())))
             .andExpect(jsonPath("$.[*].houseId").value(hasItem(DEFAULT_HOUSE_ID.intValue())))
             .andExpect(jsonPath("$.[*].residentId").value(hasItem(DEFAULT_RESIDENT_ID.intValue())))
-            .andExpect(jsonPath("$.[*].date").value(hasItem(sameInstant(DEFAULT_DATE))))
             .andExpect(jsonPath("$.[*].initialTime").value(hasItem(DEFAULT_INITIAL_TIME.toString())))
             .andExpect(jsonPath("$.[*].finalTime").value(hasItem(DEFAULT_FINAL_TIME.toString())))
-            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())));
+            .andExpect(jsonPath("$.[*].comments").value(hasItem(DEFAULT_COMMENTS.toString())))
+            .andExpect(jsonPath("$.[*].initalDate").value(hasItem(sameInstant(DEFAULT_INITAL_DATE))))
+            .andExpect(jsonPath("$.[*].finalDate").value(hasItem(sameInstant(DEFAULT_FINAL_DATE))))
+            .andExpect(jsonPath("$.[*].reservationCharge").value(hasItem(DEFAULT_RESERVATION_CHARGE)))
+            .andExpect(jsonPath("$.[*].devolutionAmmount").value(hasItem(DEFAULT_DEVOLUTION_AMMOUNT)))
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
     }
 
     @Test
@@ -291,10 +296,14 @@ public class CommonAreaReservationsResourceIntTest {
             .andExpect(jsonPath("$.id").value(commonAreaReservations.getId().intValue()))
             .andExpect(jsonPath("$.houseId").value(DEFAULT_HOUSE_ID.intValue()))
             .andExpect(jsonPath("$.residentId").value(DEFAULT_RESIDENT_ID.intValue()))
-            .andExpect(jsonPath("$.date").value(sameInstant(DEFAULT_DATE)))
             .andExpect(jsonPath("$.initialTime").value(DEFAULT_INITIAL_TIME.toString()))
             .andExpect(jsonPath("$.finalTime").value(DEFAULT_FINAL_TIME.toString()))
-            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()));
+            .andExpect(jsonPath("$.comments").value(DEFAULT_COMMENTS.toString()))
+            .andExpect(jsonPath("$.initalDate").value(sameInstant(DEFAULT_INITAL_DATE)))
+            .andExpect(jsonPath("$.finalDate").value(sameInstant(DEFAULT_FINAL_DATE)))
+            .andExpect(jsonPath("$.reservationCharge").value(DEFAULT_RESERVATION_CHARGE))
+            .andExpect(jsonPath("$.devolutionAmmount").value(DEFAULT_DEVOLUTION_AMMOUNT))
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
     }
 
     @Test
@@ -317,10 +326,14 @@ public class CommonAreaReservationsResourceIntTest {
         updatedCommonAreaReservations
             .houseId(UPDATED_HOUSE_ID)
             .residentId(UPDATED_RESIDENT_ID)
-            .date(UPDATED_DATE)
             .initialTime(UPDATED_INITIAL_TIME)
             .finalTime(UPDATED_FINAL_TIME)
-            .comments(UPDATED_COMMENTS);
+            .comments(UPDATED_COMMENTS)
+            .initalDate(UPDATED_INITAL_DATE)
+            .finalDate(UPDATED_FINAL_DATE)
+            .reservationCharge(UPDATED_RESERVATION_CHARGE)
+            .devolutionAmmount(UPDATED_DEVOLUTION_AMMOUNT)
+            .status(UPDATED_STATUS);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(updatedCommonAreaReservations);
 
         restCommonAreaReservationsMockMvc.perform(put("/api/common-area-reservations")
@@ -334,10 +347,14 @@ public class CommonAreaReservationsResourceIntTest {
         CommonAreaReservations testCommonAreaReservations = commonAreaReservationsList.get(commonAreaReservationsList.size() - 1);
         assertThat(testCommonAreaReservations.getHouseId()).isEqualTo(UPDATED_HOUSE_ID);
         assertThat(testCommonAreaReservations.getResidentId()).isEqualTo(UPDATED_RESIDENT_ID);
-        assertThat(testCommonAreaReservations.getDate()).isEqualTo(UPDATED_DATE);
         assertThat(testCommonAreaReservations.getInitialTime()).isEqualTo(UPDATED_INITIAL_TIME);
         assertThat(testCommonAreaReservations.getFinalTime()).isEqualTo(UPDATED_FINAL_TIME);
         assertThat(testCommonAreaReservations.getComments()).isEqualTo(UPDATED_COMMENTS);
+        assertThat(testCommonAreaReservations.getInitalDate()).isEqualTo(UPDATED_INITAL_DATE);
+        assertThat(testCommonAreaReservations.getFinalDate()).isEqualTo(UPDATED_FINAL_DATE);
+        assertThat(testCommonAreaReservations.getReservationCharge()).isEqualTo(UPDATED_RESERVATION_CHARGE);
+        assertThat(testCommonAreaReservations.getDevolutionAmmount()).isEqualTo(UPDATED_DEVOLUTION_AMMOUNT);
+        assertThat(testCommonAreaReservations.getStatus()).isEqualTo(UPDATED_STATUS);
     }
 
     @Test

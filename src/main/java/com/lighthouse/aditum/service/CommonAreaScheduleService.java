@@ -56,7 +56,13 @@ public class CommonAreaScheduleService {
             .map(commonAreaScheduleMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+    public List<CommonAreaScheduleDTO> findSchedulesByCommonArea(Long commonAreaId) {
+        log.debug("Request to get all Visitants in last month by house");
+        return commonAreaScheduleRepository.findByCommonAreaId(commonAreaId).stream()
+            .map(commonAreaScheduleMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
 
+    }
     /**
      *  Get one commonAreaSchedule by id.
      *

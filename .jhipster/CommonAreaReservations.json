@@ -24,13 +24,6 @@
             ]
         },
         {
-            "fieldName": "date",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
             "fieldName": "initialTime",
             "fieldType": "String",
             "fieldValidateRules": [
@@ -47,6 +40,26 @@
         {
             "fieldName": "comments",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "initalDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "finalDate",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "reservationCharge",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "devolutionAmmount",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180824030452",

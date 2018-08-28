@@ -28,16 +28,16 @@
         vm.hours = [];
         addHourseToSelect();
         function addHourseToSelect(){
-            var item = {value:'00:00',time:'12:00AM'};
+            var item = {value:'0',time:'12:00AM'};
             vm.hours.push(item);
             for (var i=1;i<12;i++){
-                var item = {value:i+':00',time:i+':00AM'};
+                var item = {value:i,time:i+':00AM'};
                 vm.hours.push(item);
             }
-            var item2 = {value:'12:00',time:'12:00PM'};
+            var item2 = {value:'12',time:'12:00PM'};
             vm.hours.push(item2);
             for (var i=1;i<12;i++){
-                var item = {value:i+12+':00',time:i+':00PM'};
+                var item = {value:i+12,time:i+':00PM'};
                 vm.hours.push(item);
             }
         }
@@ -182,7 +182,7 @@
 
         }
         function onSaveScheduleSuccess (result) {
-            $state.go('common-area');
+            $state.go('common-area-administration.common-area');
             toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
 
             vm.isSaving = false;
@@ -259,7 +259,7 @@
         }
         vm.confirmMessage = function() {
             bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
+                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar el área común?</h3></div>',
                 buttons: {
                     confirm: {
                         label: 'Aceptar',

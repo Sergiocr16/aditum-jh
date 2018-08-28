@@ -8,23 +8,18 @@
 <div class="row " id="tableData">
     <div class="col-lg-12 col-md-12">
 
-        <!--<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>-->
-
         <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
 
-            <div class="input-icon col-md-7 col-lg-7  col-md-5 col-xs-12">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
-            </div>
-            <button type="button" class="btn green default col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area.new" name="button">Registrar área común</button>
+
+            <button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.new" name="button">Registrar área común</button>
         </div>
 
         <div class="portlet-body ">
-            <div ng-show="vm.commonAreas.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div ng-if="vm.commonAreas.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2 class="text-center gray-font">No hay áreas comunes registradas</h2>
             </div>
 
-            <div class="table-scrollable hidden-xs">
+            <div class="table-scrollable hidden-xs" ng-if="vm.commonAreas.length>0">
                 <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">
                     <thead>
                     <tr>

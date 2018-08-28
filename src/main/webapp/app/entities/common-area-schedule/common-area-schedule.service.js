@@ -21,6 +21,11 @@
                 }
             },
             'update': { method:'PUT' }
+            ,'findSchedulesByCommonArea': {
+            method: 'GET',
+                url: 'api/schedules/byCommonArea/:commonAreaId',
+                isArray: true
+        }
         });
     }
 })();

@@ -9,20 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('common-area-reservations', {
-            parent: 'entity',
+        .state('common-area-administration.common-area-reservations', {
+
             url: '/common-area-reservations?page&sort&search',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.commonAreaReservations.home.title'
             },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
-                    controller: 'CommonAreaReservationsController',
-                    controllerAs: 'vm'
-                }
-            },
+            templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
+            controller: 'CommonAreaReservationsController',
+            controllerAs: 'vm',
+
             params: {
                 page: {
                     value: '1',
@@ -55,7 +52,7 @@
             parent: 'common-area-reservations',
             url: '/common-area-reservations/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.commonAreaReservations.detail.title'
             },
             views: {
@@ -87,7 +84,7 @@
             parent: 'common-area-reservations-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -108,44 +105,42 @@
                 });
             }]
         })
-        .state('common-area-reservations.new', {
-            parent: 'common-area-reservations',
+        .state('common-area-administration.newReservation', {
             url: '/new',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
-                    controller: 'CommonAreaReservationsDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                houseId: null,
-                                residentId: null,
-                                date: null,
-                                initialTime: null,
-                                finalTime: null,
-                                comments: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('common-area-reservations', null, { reload: 'common-area-reservations' });
-                }, function() {
-                    $state.go('common-area-reservations');
-                });
-            }]
+            templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+            controller: 'CommonAreaReservationsDialogController',
+            controllerAs: 'vm',
+            resolve: {
+                entity: function () {
+                    return {
+                        houseId: null,
+                        residentId: null,
+                        initalDate: null,
+                        finalDate: null,
+                        initialTime: null,
+                        finalTime: null,
+                        comments: null,
+                        id: null
+                    };
+                },
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'common-area-reservations',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
         })
         .state('common-area-reservations.edit', {
             parent: 'common-area-reservations',
             url: '/{id}/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

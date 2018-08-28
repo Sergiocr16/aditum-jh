@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsController', CommonAreaReservationsController);
 
-    CommonAreaReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    CommonAreaReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea'];
 
-    function CommonAreaReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function CommonAreaReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea) {
 
         var vm = this;
 
@@ -17,8 +17,20 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        loadAll();
+        loadCommonAreas();
+        function loadCommonAreas(){
+            CommonArea.query({},onSuccessCommonAreas, onError);
 
+        }
+        function onSuccessCommonAreas(data, headers) {
+            vm.commonAreas = data;
+            if(data.length>0){
+                loadAll();
+            }
+        }
+        function onError(error) {
+            AlertService.error(error.data.message);
+        }
         function loadAll () {
             CommonAreaReservations.query({
                 page: pagingParams.page - 1,

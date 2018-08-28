@@ -4,9 +4,15 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.CommonAreaScheduleService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.service.dto.CommonAreaScheduleDTO;
+import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,7 +80,13 @@ public class CommonAreaScheduleResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, commonAreaScheduleDTO.getId().toString()))
             .body(result);
     }
-
+    @GetMapping("/schedules/byCommonArea/{commonAreaId}")
+    @Timed
+    public List<CommonAreaScheduleDTO> findSchedulesByCommonArea(@PathVariable (value = "commonAreaId") Long commonAreaId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        return commonAreaScheduleService.findSchedulesByCommonArea(commonAreaId);
+    }
     /**
      * GET  /common-area-schedules : get all the commonAreaSchedules.
      *

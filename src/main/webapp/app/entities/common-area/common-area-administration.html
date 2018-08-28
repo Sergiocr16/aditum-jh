@@ -26,10 +26,10 @@
         <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
 
             <div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">
-                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area')}" ui-sref="common-area-administration.common-area" >
+                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.new')}" ui-sref="common-area-administration.common-area" >
                     Administrar áreas comunes
                 </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.chargePerHouse')}" ui-sref="finanzasPorCasa.chargePerHouse" >
+                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-reservations')}" ui-sref="common-area-administration.common-area-reservations" >
                     Reservaciones pendientes
                 </a>
                 <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.accountStatus')}" ui-sref="finanzasPorCasa.accountStatus" >

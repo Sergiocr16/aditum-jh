@@ -1,114 +1,337 @@
-
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myCommonAreaReservationsLabel" data-translate="aditumApp.commonAreaReservations.home.createOrEditLabel">Create or edit a Common Area Reservations</h4>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
     </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.commonAreaReservations.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.commonAreaReservations.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.houseId" for="field_houseId">House Id</label>
-            <input type="number" class="form-control" name="houseId" id="field_houseId"
-                    ng-model="vm.commonAreaReservations.houseId"
-                    required/>
-            <div ng-show="editForm.houseId.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.houseId.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.houseId.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.residentId" for="field_residentId">Resident Id</label>
-            <input type="number" class="form-control" name="residentId" id="field_residentId"
-                    ng-model="vm.commonAreaReservations.residentId"
-                    required/>
-            <div ng-show="editForm.residentId.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.residentId.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.residentId.$error.number" data-translate="entity.validation.number">
-                    This field should be a number.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.date" for="field_date">Date</label>
-                <div class="input-group">
-                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.commonAreaReservations.date" is-open="vm.datePickerOpenStatus.date"
-                    required/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
+</div>
+<div class="" id="new_egress_form">
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="portlet light bordered">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+
+                        <span class="caption-subject bold uppercase">Crear reservación</span>
+                    </div>
+
+
                 </div>
-            <div ng-show="editForm.date.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.date.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.initialTime" for="field_initialTime">Initial Time</label>
-            <input type="text" class="form-control" name="initialTime" id="field_initialTime"
-                    ng-model="vm.commonAreaReservations.initialTime"
-                    required/>
-            <div ng-show="editForm.initialTime.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.initialTime.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.finalTime" for="field_finalTime">Final Time</label>
-            <input type="text" class="form-control" name="finalTime" id="field_finalTime"
-                    ng-model="vm.commonAreaReservations.finalTime"
-                    required/>
-            <div ng-show="editForm.finalTime.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.finalTime.$error.required" data-translate="entity.validation.required">
-                    This field is required.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.commonAreaReservations.comments" for="field_comments">Comments</label>
-            <input type="text" class="form-control" name="comments" id="field_comments"
-                    ng-model="vm.commonAreaReservations.comments"
-                    />
-        </div>
+                <div class="portlet-body form display-none" id="register_edit_form">
+                    <form name="editForm" id="form" role="form" novalidate ng-submit=" vm.confirmMessage()" show-validation>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.commonAreaReservations.commonArea" for="field_commonArea">Common Area</label>
-            <select class="form-control" id="field_commonArea" name="commonArea" ng-model="vm.commonAreaReservations.commonAreaId" ng-options="commonArea.id as commonArea.id for commonArea in vm.commonareas"            >
-                <option value=""></option>
-            </select>
+                        <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <div class="col-lg-9 col-md-9 col-sm-9 col-xs-9 no-padding">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                                    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-padding-left margin-top-10">
+                                        <span class="font-13 bold  control-label">Número de filial </span>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                        <select class="form-control gray-font" id="field_house" name="house" ng-change="vm.residentsByHouse()" ng-model="vm.commonAreaReservations.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'" required ng-required='vm.required==1'>
+                                            <option value="">Seleccione una filial</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                                    <div class=" col-lg-5 col-md-5  col-sm-5 col-xs-5 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Condómino responsable</span>
+                                    </div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                        <select class="form-control gray-font" id="field_responsable" name="responsable" ng-model="vm.commonAreaReservations.residentId" ng-options="resident.id as resident.name for resident in vm.residents | orderBy: 'name'" required ng-required='vm.required==1'>
+                                            <option value="">Seleccione un condómino</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-5 no-padding-left margin-top-10">
+                                        <span class="font-13 bold  control-label">Área común </span>
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right no-padding-right padding-top-10"><span id="loadingSchedule" class="display-none"> <i  style="font-size:18px;color:#5b9bd1!important"  class="fa fa-circle-o-notch fa-spin " aria-hidden="true"></i></span></div>
+                                    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group ">
+                                        <select class="form-control gray-font" id="field_commonarea" name="house" ng-change="vm.loadSchedule()" ng-model="vm.commonarea" ng-options="commonarea as commonarea.name for commonarea in vm.commonareas " required ng-required='vm.required==1'>
+                                            <option value="">Seleccione una área común</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding display-none" id="scheduleDiv">
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 no-padding  ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding ">
+                                            <div class=" col-lg-5 col-md-5  col-sm-5 col-xs-5 no-padding-left margin-top-10">
+                                                <span class="font-13 bold control-label" >Horas permitidas para reservar</span>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                                <table class="jh-table table  table-bordered  flip-content" style="font-size:13px;">
+                                                    <thead style="background-color: #F1F8E9">
+                                                    <tr>
+                                                        <th>Días disponibles</th>
+                                                        <th>Horario</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody style="background-color: #f8fafc">
+                                                    <tr ng-repeat="schedule in vm.schedule track by $index">
+                                                        <td >{{schedule.day}}</td>
+                                                        <td >{{schedule.time}}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2" class="text-center">{{vm.maximunHoursTitle}} <span class="bold">{{vm.maximunHours}} </span></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " >
+                                    <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 no-padding ">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group" style="margin-bottom:0px;">
+
+                                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                                <span class="font-13 bold control-label" >Fecha</span>
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right no-padding-right padding-top-10"><span id="loadingAvailability" class="display-none"> <i  style="font-size:18px;color:#5b9bd1!important"  class="fa fa-circle-o-notch fa-spin " aria-hidden="true"></i></span></div>
+
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                                <input ng-model="vm.commonAreaReservations.initalDate" id="field_expirationDate"
+                                                       name="expirationDate" ng-click="vm.openCalendar('expirationDate')"
+                                                       enable-time="false"
+                                                       datetime-picker="fullDate"
+                                                       datepicker-options="vm.picker.datepickerOptions"
+                                                       is-open="vm.datePickerOpenStatus.expirationDate"
+                                                       ng-change="vm.checkAvailability()"
+                                                       type="text" class="form-control letters gray-font dating"
+                                                       placeholder="Seleccione una fecha" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group no-margin"  ng-if="vm.allDaySchedule==1">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 no-padding-left margin-top-10">
+                                                <span class="font-13 bold control-label" >Horario</span>
+                                            </div>
+
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  form-group">
+
+                                                <select ng-change="vm.validateDaysHours($index,vm.hours)" required type="text" name="initialTime" class="form-control" ng-model="vm.timeSelected.initialTime" ng-options="hour as hour.time for hour in vm.hours" ng-required='vm.required==1'>
+                                                    <option value="">Seleccione una hora</option>
+                                                </select>
+
+                                            </div>
+                                            <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding form-group">
+                                                <h6 class="text-center font-16">hasta</h6>
+
+                                            </div>
+                                            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  form-group ">
+                                                <select ng-change="vm.validateDaysHours($index,vm.hours)" ng-class="{borderRed: item.isValid==false}"  name="finalTime" required type="text" class="form-control " ng-model="vm.timeSelected.finalTime" ng-options="hour as hour.time for hour in vm.hours" ng-required='vm.required==1'>
+                                                    <option value="">Seleccione una hora</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" >
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-3 no-padding-left margin-top-10">
+
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                                <div class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center " ng-if="vm.scheduleIsAvailable" style="padding: 10px; background-color:#c8e6c9" >
+
+                                                    <span class="font-13" style="color:#388e3c"><i class="fa fa-check-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran disponibles para reservar.</span>
+
+                                                </div>
+                                                <div class="input-group form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center " ng-if="vm.scheduleNotAvailable" style="padding: 10px; background-color:#ef9a9a" >
+
+                                                    <span class="font-13" style="color:#b71c1c"><i class="fa fa-times-circle font-19" aria-hidden="true"></i>  Las horas seleccionadas se encuentran ocupadas para reservar.</span>
+
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="vm.commonarea.chargeRequired==1">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-3 no-padding-left margin-top-10">
+                                                <span class="font-13 bold control-label" >Cuota por reservación </span>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                                <div class="input-group form-group">
+                                                    <span class="input-group-addon">₡</span>
+                                                    <input ng-class="{redBorder: vm.commonArea.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.commonarea)" type="text" class="form-control numbers" name="total" id="field_reservationCharge"
+                                                           ng-model="vm.commonarea.reservationCharge"  placeholder="0.00" required
+                                                    />
+                                                </div>
+
+                                            </div>
+
+
+                                        </div>
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-3 no-padding-left margin-top-10">
+                                                <span class="font-13 bold control-label" >Comentarios</span>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                                <div class="input-group form-group">
+                                                     <textarea rows="4" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"
+                                                               class="form-control col-md-12" name="comments" id="field_comments">
+                                                      </textarea>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-actions noborder" style="padding-bottom:0px;">
+                            <h3 class="text-right">
+
+                                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue">Reservar </button>
+                                <button type="button"  ui-sref="common-area-administration.common-area" class="btn red default">Cancelar</button>
+
+
+                            </h3>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+</div>
+<script>
+    jQuery(document).ready(function() {
+        $("#register_edit_form").fadeIn("slow");
+    });
+</script>
+
+
+
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myCommonAreaReservationsLabel" data-translate="aditumApp.commonAreaReservations.home.createOrEditLabel">Create or edit a Common Area Reservations</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<jhi-alert-error></jhi-alert-error>-->
+        <!--<div class="form-group" ng-show="vm.commonAreaReservations.id">-->
+            <!--<label for="id" data-translate="global.field.id">ID</label>-->
+            <!--<input type="text" class="form-control" id="id" name="id"-->
+                    <!--ng-model="vm.commonAreaReservations.id" readonly />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.houseId" for="field_houseId">House Id</label>-->
+            <!--<input type="number" class="form-control" name="houseId" id="field_houseId"-->
+                    <!--ng-model="vm.commonAreaReservations.houseId"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.houseId.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.houseId.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.houseId.$error.number" data-translate="entity.validation.number">-->
+                    <!--This field should be a number.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.residentId" for="field_residentId">Resident Id</label>-->
+            <!--<input type="number" class="form-control" name="residentId" id="field_residentId"-->
+                    <!--ng-model="vm.commonAreaReservations.residentId"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.residentId.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.residentId.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.residentId.$error.number" data-translate="entity.validation.number">-->
+                    <!--This field should be a number.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.date" for="field_date">Date</label>-->
+                <!--<div class="input-group">-->
+                    <!--<input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.commonAreaReservations.date" is-open="vm.datePickerOpenStatus.date"-->
+                    <!--required/>-->
+                    <!--<span class="input-group-btn">-->
+                        <!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>-->
+                    <!--</span>-->
+                <!--</div>-->
+            <!--<div ng-show="editForm.date.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.date.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.date.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">-->
+                    <!--This field should be a date and time.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.initialTime" for="field_initialTime">Initial Time</label>-->
+            <!--<input type="text" class="form-control" name="initialTime" id="field_initialTime"-->
+                    <!--ng-model="vm.commonAreaReservations.initialTime"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.initialTime.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.initialTime.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.finalTime" for="field_finalTime">Final Time</label>-->
+            <!--<input type="text" class="form-control" name="finalTime" id="field_finalTime"-->
+                    <!--ng-model="vm.commonAreaReservations.finalTime"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.finalTime.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.finalTime.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.commonAreaReservations.comments" for="field_comments">Comments</label>-->
+            <!--<input type="text" class="form-control" name="comments" id="field_comments"-->
+                    <!--ng-model="vm.commonAreaReservations.comments"-->
+                    <!--/>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.commonAreaReservations.commonArea" for="field_commonArea">Common Area</label>-->
+            <!--<select class="form-control" id="field_commonArea" name="commonArea" ng-model="vm.commonAreaReservations.commonAreaId" ng-options="commonArea.id as commonArea.id for commonArea in vm.commonareas"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->
