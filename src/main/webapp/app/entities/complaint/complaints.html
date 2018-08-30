@@ -1,70 +1,104 @@
-<div>
-    <h2 data-translate="aditumApp.complaint.home.title">Complaints</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="complaint.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.complaint.home.createLabel">
-                        Create new Complaint
-                    </span>
-                </button>
-            </div>
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Gestionar quejas o sugerencias</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding-top:10px;">
+            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
         </div>
     </div>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="display-none" id="tableData">
+    <div class="col-md-6">
+        <h2 style="margin-top:0px!important">Quejas y sugerencias</h2>
+    </div>
+    <div class="col-md-6 no-padding" style="margin-bottom: 20px;">
+        <div class="col-md-7 no-padding">
+            <div class="col-md-4 no-padding">
+                <span>Filtrar por estado: </span>
+            </div>
+            <div class="col-md-8">
+                <select class="form-control gray-font" ng-model="vm.status" ng-change="vm.changeStatus()" required>
+                    <option value="-1">Todos</option>
+                    <option value="1">Pendiente</option>
+                    <option value="2">Activo</option>
+                    <option value="3">Resuelto</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <button class="btn green" ui-sref="complaint.new">
+                    <span>
+                       Registrar queja o sugerencia
+                    </span>
+            </button>
+        </div>
+
+    </div>
     <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="description"><span data-translate="aditumApp.complaint.description">Description</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="complaintType"><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="status"><span data-translate="aditumApp.complaint.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="deleted"><span data-translate="aditumApp.complaint.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="creationDate"><span data-translate="aditumApp.complaint.creationDate">Creation Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="resolutionDate"><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="houseId"><span data-translate="aditumApp.complaint.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-                <tr ng-repeat="complaint in vm.complaints track by complaint.id">
-                    <td><a ui-sref="complaint-detail({id:complaint.id})">{{complaint.id}}</a></td>
-                    <td>{{complaint.description}}</td>
-                    <td>{{complaint.complaintType}}</td>
-                    <td>{{complaint.status}}</td>
-                    <td>{{complaint.deleted}}</td>
-                    <td>{{complaint.creationDate | date:'medium'}}</td>
-                    <td>{{complaint.resolutionDate | date:'medium'}}</td>
-                    <td>
-                        <a ui-sref="house-detail({id:complaint.houseId})">{{complaint.houseId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="complaint-detail({id:complaint.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="complaint.edit({id:complaint.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="complaint.delete({id:complaint.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
+    <div style="margin:25px 10px;">
+        <div ng-show="vm.complaints.length == 0" class="margin-top-25">
+            <h2 class="text-center gray-font">No existe ninguna queja o sugerencia registrada.</h2>
+        </div>
+        <div infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-top-15">
+            <div ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id" class="portlet light bordered col-md-12"
+                 style="box-shadow: none!important">
+                <div class="portlet-title">
+                    <div class="caption font-yellow-crusta">
+                        <div class="image-navbar">
+                            <img ng-if="complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                 class="object-fit_scale-down-navbar"/>
+                            <img ng-if="complaint.resident.image_url!==null" src="{{complaint.resident.image_url}}"
+                                 class="object-fit_scale-down-navbar"/>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                        <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"> {{complaint.resident.name+" "+complaint.resident.lastname+" "+complaint.resident.secondlastname}}</span>
+                        <span class="caption-helper">
+                    <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{complaint.id}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{complaint.complaintType}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                       Filial {{complaint.houseNumber}}
+                    </span>
+                     <span style="padding:0px 4px">
+                       {{complaint.showingCreationDate}}
+                    </span>
+                 </span>
+                    </div>
+                    <div class="actions">
+                    <span class="item-status">
+                         <span ng-if="complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
+                         <span  ng-if="complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
+                         <span ng-if="complaint.status===3"><span  class="badge badge-empty badge-success"></span> Resuelto</span>
+                         <span ui-sref="complaint-detail({id:complaint.id})" class="item-status complaint-detail" style="border-left:1px solid #e1e1e1;margin-left: 4px;padding:0px 4px">Ver detalle / Atender</span>
+                         </span>
+                    </div>
+                </div>
+                <div class="portlet-body" style="max-height: 180px;overflow-y: auto">
+
+                    <p>
+                        {{complaint.description}}
+                    </p>
+
+                </div>
+            </div>
+        </div>
     </div>
 </div>

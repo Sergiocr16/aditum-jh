@@ -4,6 +4,8 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Complaint;
 import com.lighthouse.aditum.domain.House;
+import com.lighthouse.aditum.domain.Company;
+import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ComplaintRepository;
 import com.lighthouse.aditum.service.ComplaintService;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
@@ -120,6 +122,16 @@ public class ComplaintResourceIntTest {
         em.persist(house);
         em.flush();
         complaint.setHouse(house);
+        // Add required entity
+        Company company = CompanyResourceIntTest.createEntity(em);
+        em.persist(company);
+        em.flush();
+        complaint.setCompany(company);
+        // Add required entity
+        Resident resident = ResidentResourceIntTest.createEntity(em);
+        em.persist(resident);
+        em.flush();
+        complaint.setResident(resident);
         return complaint;
     }
 

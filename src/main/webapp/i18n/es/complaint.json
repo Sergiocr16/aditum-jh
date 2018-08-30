@@ -21,7 +21,9 @@
             "deleted": "Deleted",
             "creationDate": "Creation Date",
             "resolutionDate": "Resolution Date",
-            "house": "House"
+            "house": "House",
+            "company": "Company",
+            "resident": "Resident"
         }
     }
 }

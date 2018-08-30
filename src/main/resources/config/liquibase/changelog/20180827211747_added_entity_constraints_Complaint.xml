@@ -14,5 +14,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="house"/>
 
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="complaint"
+                                 constraintName="fk_complaint_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="resident_id"
+                                 baseTableName="complaint"
+                                 constraintName="fk_complaint_resident_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="resident"/>
+
     </changeSet>
 </databaseChangeLog>

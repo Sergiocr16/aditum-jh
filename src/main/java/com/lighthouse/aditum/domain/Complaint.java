@@ -48,6 +48,14 @@ public class Complaint implements Serializable {
     @NotNull
     private House house;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    private Company company;
+
+    @ManyToOne(optional = false)
+    @NotNull
+    private Resident resident;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -146,6 +154,32 @@ public class Complaint implements Serializable {
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public Complaint company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public Resident getResident() {
+        return resident;
+    }
+
+    public Complaint resident(Resident resident) {
+        this.resident = resident;
+        return this;
+    }
+
+    public void setResident(Resident resident) {
+        this.resident = resident;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

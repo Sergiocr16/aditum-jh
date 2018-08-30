@@ -173,7 +173,6 @@ public class HouseResource {
     public ResponseEntity<HouseDTO> getHouse(@PathVariable Long id) {
         log.debug("REST request to get House : {}", id);
         HouseDTO houseDTO = houseService.findOne(id);
-
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(houseDTO));
     }
 

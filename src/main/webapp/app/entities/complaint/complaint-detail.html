@@ -1,47 +1,163 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Gestionar quejas o sugerencias</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Ver detalle</a>
 
-<div>
-    <h2><span data-translate="aditumApp.complaint.detail.title">Complaint</span> {{vm.complaint.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.complaint.description">Description</span></dt>
-        <dd>
-            <span>{{vm.complaint.description}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span></dt>
-        <dd>
-            <span>{{vm.complaint.complaintType}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.status">Status</span></dt>
-        <dd>
-            <span>{{vm.complaint.status}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.deleted">Deleted</span></dt>
-        <dd>
-            <span>{{vm.complaint.deleted}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.creationDate">Creation Date</span></dt>
-        <dd>
-            <span>{{vm.complaint.creationDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span></dt>
-        <dd>
-            <span>{{vm.complaint.resolutionDate | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.complaint.house">House</span></dt>
-        <dd>
-            <a ui-sref="house-detail({id:vm.complaint.houseId})">{{vm.complaint.houseId}}</a>
-        </dd>
-    </dl>
-
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button" ui-sref="complaint-detail.edit({id:vm.complaint.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding-top:10px;">
+            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
+        </div>
+    </div>
 </div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="portlet light bordered col-md-12 display-none" id="tableData"
+     style="box-shadow: none!important">
+    <div class="portlet-title">
+        <div class="caption font-yellow-crusta">
+            <i class="fa fa-arrow-left complaint-detail" ui-sref="complaint" style="margin-right: 20px;font-size: 20px;"></i>
+            <div class="image-navbar">
+                <img ng-if="vm.complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                     class="object-fit_scale-down-navbar"/>
+                <img ng-if="vm.complaint.resident.image_url!==null" src="{{vm.complaint.resident.image_url}}"
+                     class="object-fit_scale-down-navbar"/>
+            </div>
+            <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"> {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</span>
+            <span class="caption-helper">
+                    <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{vm.complaint.id}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{vm.complaint.complaintType}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                       Filial {{vm.complaint.houseNumber}}
+                    </span>
+                     <span style="padding:0px 4px">
+                       {{vm.complaint.showingCreationDate}}
+                    </span>
+                 </span>
+        </div>
+        <div class="actions">
+                    <span class="item-status" style="border-right:1px solid #e1e1e1;margin-left: 4px;padding:0px 8px;margin-right: 8px">
+                         <span ng-if="vm.complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
+                         <span ng-if="vm.complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
+                         <span ng-if="vm.complaint.status===3"><span class="badge badge-empty badge-success"></span> Resuelto</span>
+                                 </span>
+            <div class="form-group form-md-radios" style="display: inline-block;">
+                <div class="md-radio-inline">
+                    <div class="md-radio has-error" ng-if="vm.complaint.status!==1" angular-popover direction="bottom" template="<div style='width:100px;'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como pendiente.<h5></div>" mode="mouseover">
+                        <input type="radio" id="radio18" name="radio2"
+                               class="md-radiobtn"
+                               ng-click="vm.setStatus(1)">
+                        <label for="radio18" style="color:#45B6AF">
+                            <span class="inc"></span>
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                        </label>
+                    </div>
+
+                    <div class="md-radio has-warning" ng-if="vm.complaint.status!==2" angular-popover direction="bottom" template="<div style='width:100px;padding:0px 4px'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como activo.<h5></div>" mode="mouseover">
+                        <input type="radio" id="radio19" name="radio2" class="md-radiobtn"
+                               ng-click="vm.setStatus(2)">
+                        <label for="radio19">
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                        </label>
+                    </div>
+                    <div class="md-radio has-success" ng-if="vm.complaint.status!==3" angular-popover direction="bottom" template="<div style='width:100px;'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como resuelto.<h5></div>" mode="mouseover">
+                        <input type="radio" id="radio20" name="radio2"
+                               class="md-radiobtn"
+                               ng-click="vm.setStatus(3)">
+                        <label for="radio20" style="color:#45B6AF">
+                            <span class="inc"></span>
+                            <span class="inc"></span>
+                            <span class="check"></span>
+                            <span class="box"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="portlet-body">
+
+        <p>
+            {{vm.complaint.description}}
+        </p>
+
+    </div>
+</div>
+<!--<div>-->
+<!--<h2><span data-translate="aditumApp.complaint.detail.title">Complaint</span> {{vm.complaint.id}}</h2>-->
+<!--<hr>-->
+<!--<jhi-alert-error></jhi-alert-error>-->
+<!--<dl class="dl-horizontal jh-entity-details">-->
+<!--<dt><span data-translate="aditumApp.complaint.description">Description</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.description}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.complaintType}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.status">Status</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.status}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.deleted">Deleted</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.deleted}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.creationDate">Creation Date</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.creationDate | date:'medium'}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.complaint.resolutionDate | date:'medium'}}</span>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.house">House</span></dt>-->
+<!--<dd>-->
+<!--<a ui-sref="house-detail({id:vm.complaint.houseId})">{{vm.complaint.houseId}}</a>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.company">Company</span></dt>-->
+<!--<dd>-->
+<!--<a ui-sref="company-detail({id:vm.complaint.companyId})">{{vm.complaint.companyId}}</a>-->
+<!--</dd>-->
+<!--<dt><span data-translate="aditumApp.complaint.resident">Resident</span></dt>-->
+<!--<dd>-->
+<!--<a ui-sref="resident-detail({id:vm.complaint.residentId})">{{vm.complaint.residentId}}</a>-->
+<!--</dd>-->
+<!--</dl>-->
+
+<!--<button type="submit"-->
+<!--ui-sref="{{ vm.previousState }}"-->
+<!--class="btn btn-info">-->
+<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
+<!--</button>-->
+
+<!--<button type="button" ui-sref="complaint-detail.edit({id:vm.complaint.id})" class="btn btn-primary">-->
+<!--<span class="glyphicon glyphicon-pencil"></span>-->
+<!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
+<!--</button>-->
+<!--</div>-->

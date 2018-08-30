@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import org.springframework.data.domain.Page;
+
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -33,6 +35,16 @@ public class ComplaintDTO implements Serializable {
     private ZonedDateTime resolutionDate;
 
     private Long houseId;
+
+    private String houseNumber;
+
+    private ResidentDTO resident;
+
+    private Long companyId;
+
+    private Long residentId;
+
+    private Page<ComplaintCommentDTO> complaintComments;
 
     public Long getId() {
         return id;
@@ -98,6 +110,22 @@ public class ComplaintDTO implements Serializable {
         this.houseId = houseId;
     }
 
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public Long getResidentId() {
+        return residentId;
+    }
+
+    public void setResidentId(Long residentId) {
+        this.residentId = residentId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -130,5 +158,29 @@ public class ComplaintDTO implements Serializable {
             ", creationDate='" + getCreationDate() + "'" +
             ", resolutionDate='" + getResolutionDate() + "'" +
             "}";
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
+
+    public Page<ComplaintCommentDTO> getComplaintComments() {
+        return complaintComments;
+    }
+
+    public void setComplaintComments(Page<ComplaintCommentDTO> complaintComments) {
+        this.complaintComments = complaintComments;
     }
 }

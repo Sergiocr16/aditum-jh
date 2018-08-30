@@ -10,7 +10,8 @@
         var resourceUrl =  'api/complaints/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': { method: 'GET', url:"api/complaints/admin/:companyId", isArray: true},
+            'queryByStatus': { method: 'GET', url:"api/complaints/admin/:companyId/status/:status", isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

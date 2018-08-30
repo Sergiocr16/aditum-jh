@@ -20,9 +20,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="announcement"/>
 
-        <addForeignKeyConstraint baseColumnNames="admininfo_id"
+        <addForeignKeyConstraint baseColumnNames="admin_info_id"
                                  baseTableName="announcement_comment"
-                                 constraintName="fk_announcement_comment_admininfo_id"
+                                 constraintName="fk_announcement_comment_admin_info_id"
                                  referencedColumnNames="id"
                                  referencedTableName="admin_info"/>
 

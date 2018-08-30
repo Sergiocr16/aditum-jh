@@ -52,7 +52,6 @@ public class ComplaintResource {
         log.debug("REST request to save Complaint : {}", complaintDTO);
         if (complaintDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new complaint cannot already have an ID")).body(null);
-
         }
         ComplaintDTO result = complaintService.save(complaintDTO);
         return ResponseEntity.created(new URI("/api/complaints/" + result.getId()))
@@ -88,15 +87,23 @@ public class ComplaintResource {
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of complaints in body
      */
-    @GetMapping("/complaints")
+    @GetMapping("/complaints/admin/{companyId}")
     @Timed
-    public ResponseEntity<List<ComplaintDTO>> getAllComplaints(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaints(Pageable pageable,@PathVariable Long companyId) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
-        Page<ComplaintDTO> page = complaintService.findAll(pageable);
+        Page<ComplaintDTO> page = complaintService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/complaints/admin/{companyId}/status/{status}")
+    @Timed
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByStatus(Pageable pageable,@PathVariable Long companyId, @PathVariable int status) throws URISyntaxException {
+        log.debug("REST request to get a page of Complaints");
+        Page<ComplaintDTO> page = complaintService.findAllByStatus(pageable, companyId, status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /complaints/:id : get the "id" complaint.
      *

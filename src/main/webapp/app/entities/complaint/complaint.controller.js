@@ -1,18 +1,21 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ComplaintController', ComplaintController);
 
-    ComplaintController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants'];
+    ComplaintController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope'];
 
-    function ComplaintController(Complaint, ParseLinks, AlertService, paginationConstants) {
+    function ComplaintController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope) {
 
         var vm = this;
-
+        $rootScope.active = 'complaint';
+        vm.status = "-1";
+        moment.locale("es");
         vm.complaints = [];
         vm.loadPage = loadPage;
+        vm.loadAllByStatus = loadAllByStatus;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
         vm.links = {
@@ -21,19 +24,40 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
+        setTimeout(function () {
+            loadAll();
+        }, 1000);
 
-        loadAll();
+        vm.changeStatus = function(){
+            vm.page = 0;
+           vm.loadAllByStatus();
+           setTimeout(function () {
+               vm.complaints=[]
+               },400)
+       }
 
-        function loadAll () {
-            Complaint.query({
-                page: vm.page,
-                size: vm.itemsPerPage,
-                sort: sort()
-            }, onSuccess, onError);
+        function loadAllByStatus() {
+            $("#tableData").fadeOut();
+            setTimeout(function () {
+                $("#loadingIcon").fadeIn();
+
+
+            if(vm.status!=="-1") {
+                Complaint.queryByStatus({
+                    companyId: $rootScope.companyId,
+                    status: parseInt(vm.status),
+                    page: vm.page,
+                    size: 10,
+                    sort: sort()
+                }, onSuccess, onError);
+            }else{
+                loadAll();
+            }
+            }, 400);
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'creationDate') {
+                    result.push('creationDate,desc');
                 }
                 return result;
             }
@@ -42,8 +66,52 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 for (var i = 0; i < data.length; i++) {
+                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
                     vm.complaints.push(data[i]);
                 }
+                console.log(vm.complaints)
+                setTimeout(function () {
+                    $("#loadingIcon").fadeOut(300);
+                }, 400);
+                setTimeout(function () {
+                    $("#tableData").fadeIn('slow');
+                }, 900);
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
+        function loadAll() {
+            Complaint.query({
+                companyId: $rootScope.companyId,
+                page: vm.page,
+                size: 10,
+                sort: sort()
+            }, onSuccess, onError);
+
+            function sort() {
+                var result = [];
+                if (vm.predicate !== 'creationDate') {
+                    result.push('creationDate,desc');
+                }
+                return result;
+            }
+
+            function onSuccess(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                for (var i = 0; i < data.length; i++) {
+                    data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
+                    vm.complaints.push(data[i]);
+                }
+                console.log(vm.complaints)
+                setTimeout(function () {
+                    $("#loadingIcon").fadeOut(300);
+                }, 400);
+                setTimeout(function () {
+                    $("#tableData").fadeIn('slow');
+                }, 900);
             }
 
             function onError(error) {
@@ -51,7 +119,7 @@
             }
         }
 
-        function reset () {
+        function reset() {
             vm.page = 0;
             vm.complaints = [];
             loadAll();
@@ -59,7 +127,12 @@
 
         function loadPage(page) {
             vm.page = page;
-            loadAll();
+            if(vm.status!=="-1"){
+                loadAllByStatus();
+            }else{
+                loadAll();
+            }
+
         }
     }
 })();

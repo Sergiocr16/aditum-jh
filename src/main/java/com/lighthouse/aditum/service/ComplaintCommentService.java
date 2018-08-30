@@ -56,6 +56,13 @@ public class ComplaintCommentService {
             .map(complaintCommentMapper::toDto);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ComplaintCommentDTO> findAllByComplaint(Pageable pageable) {
+        log.debug("Request to get all ComplaintComments");
+        return complaintCommentRepository.findAll(pageable)
+            .map(complaintCommentMapper::toDto);
+    }
+
     /**
      * Get one complaintComment by id.
      *

@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Complaint;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -13,4 +15,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
+    Page<Complaint> findByCompanyIdAndDeleted(Pageable pageable, Long companyId , int deleted );
+    Page<Complaint> findByCompanyIdAndDeletedAndStatus(Pageable pageable, Long companyId , int deleted, int status );
 }

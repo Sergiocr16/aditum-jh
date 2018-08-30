@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/complaint',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.complaint.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'complaint',
             url: '/complaint/{id}',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.complaint.detail.title'
             },
             views: {
@@ -67,7 +67,7 @@
             parent: 'complaint-detail',
             url: '/detail/edit',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({
@@ -90,36 +90,32 @@
         })
         .state('complaint.new', {
             parent: 'complaint',
-            url: '/new',
+            url: '/nueva',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_MANAGER'],
+                pageTitle: 'aditumApp.complaint.detail.title'
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
+            views: {
+                'content@': {
                     templateUrl: 'app/entities/complaint/complaint-dialog.html',
                     controller: 'ComplaintDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                description: null,
-                                complaintType: null,
-                                status: null,
-                                deleted: null,
-                                creationDate: null,
-                                resolutionDate: null,
-                                id: null
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('complaint', null, { reload: 'complaint' });
-                }, function() {
-                    $state.go('complaint');
-                });
-            }]
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('complaint');
+                    return $translate.refresh();
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'complaint',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
         })
         .state('complaint.edit', {
             parent: 'complaint',
