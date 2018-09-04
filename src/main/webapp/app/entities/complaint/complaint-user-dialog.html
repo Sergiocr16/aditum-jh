@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-12">
             <form ng-submit="vm.save()">
-                <div class="portlet light bordered">
+                <div class="portlet light bordered col-md-12">
                     <div class="portlet-title">
                         <div class="caption font-green-haze">
                             <i class="fa fa-user font-green-haze"></i>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="portlet-body form">
                         <div class="col-lg-4 col-md-4 col-sm-4 marging-top-20">
-                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
+                            <div  class="form-group form-md-line-input has-info">
                                 <select style="border-bottom: none;margin-top:5px" class="form-control gray-font" id="complaintType" ng-model="vm.complaint.complaintType" required>
                                     <option value="Vigilancia">Vigilancia</option>
                                     <option value="Mascotas">Mascotas</option>
@@ -49,29 +49,13 @@
                                 <label class="font-15 ">Categoría</label >
                             </div>
                         </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-4 marging-top-20">
-                                <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                                    <select style="border-bottom: none;margin-top:5px"  class="form-control gray-font" id="field_house"  ng-model="vm.complaint.houseId" ng-change="vm.loadResidentsByHouse(vm.complaint.houseId)" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'" required>
-                                        <option value="">Seleccione una casa</option>
-                                    </select>
-                                    <label class="font-15 ">Número de casa</label >
-                                </div>
-                            </div>
-
-                            <div class="col-lg-4 col-md-4 col-sm-4 marging-top-20">
-                                <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                                    <select style="border-bottom: none;margin-top:5px"  class="form-control gray-font" id="field_resident"  ng-model="vm.complaint.residentId" ng-options="resident.id as resident.fullName for resident in vm.residents | orderBy: 'fullName'"  required>
-                                        <option value="">Seleccione un residente</option>
-                                    </select>
-                                    <label class="font-15 ">Residente que reporta</label >
-                                </div>
-                            </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8">
+                        </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 marging-top-20 margin-bottom-15">
                             <label class="font-15 gray-font">Queja o sugerencia *</label >
                             <textarea class="form-control gray-font" id="" cols="30" rows="10"  ng-model="vm.complaint.description" required></textarea>
                         </div>
-                        <div class="form-actions noborder">
+                        <div class="form-actions noborder col-md-12">
                             <h3 class="text-right margin-top-25">
                                 <button type="submit" class="btn blue"  ng-disabled="editForm.$invalid || vm.isSaving"> Registrar</button>
                                 <button  type="button" ng-click="vm.clear()" class="btn red default">Cancelar</button>

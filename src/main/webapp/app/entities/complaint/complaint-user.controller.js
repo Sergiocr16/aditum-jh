@@ -3,14 +3,14 @@
 
     angular
         .module('aditumApp')
-        .controller('ComplaintController', ComplaintController);
+        .controller('ComplaintUserController', ComplaintUserController);
 
-    ComplaintController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state'];
+    ComplaintUserController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state','companyUser'];
 
-    function ComplaintController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state) {
+    function ComplaintUserController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser) {
 
         var vm = this;
-        $rootScope.active = 'complaint';
+        $rootScope.active = 'complaint-user';
         vm.status = "-1";
         moment.locale("es");
         vm.complaints = [];
@@ -30,11 +30,11 @@
 
         vm.changeStatus = function(){
             vm.page = 0;
-           vm.loadAllByStatus();
-           setTimeout(function () {
-               vm.complaints=[]
-               },400)
-       }
+            vm.loadAllByStatus();
+            setTimeout(function () {
+                vm.complaints=[]
+            },400)
+        }
 
         function loadAllByStatus() {
             $("#tableData").fadeOut();
@@ -42,17 +42,17 @@
                 $("#loadingIcon").fadeIn();
 
 
-            if(vm.status!=="-1") {
-                Complaint.queryByStatus({
-                    companyId: $rootScope.companyId,
-                    status: parseInt(vm.status),
-                    page: vm.page,
-                    size: 10,
-                    sort: sort()
-                }, onSuccess, onError);
-            }else{
-                loadAll();
-            }
+                if(vm.status!=="-1") {
+                    Complaint.queryByStatus({
+                        companyId: $rootScope.companyId,
+                        status: parseInt(vm.status),
+                        page: vm.page,
+                        size: 10,
+                        sort: sort()
+                    }, onSuccess, onError);
+                }else{
+                    loadAll();
+                }
             }, 400);
             function sort() {
                 var result = [];
@@ -83,8 +83,8 @@
             }
         }
         function loadAll() {
-            Complaint.query({
-                companyId: $rootScope.companyId,
+            Complaint.queryAsResident({
+                residentId: companyUser.id,
                 page: vm.page,
                 size: 10,
                 sort: sort()

@@ -23,12 +23,16 @@ public class ComplaintCommentDTO implements Serializable {
 
     private ZonedDateTime editedDate;
 
+    private ResidentDTO resident;
+
     @NotNull
     private Integer deleted;
 
     private Long residentId;
 
     private Long adminInfoId;
+
+    private Long complaintId;
 
     public Long getId() {
         return id;
@@ -86,6 +90,14 @@ public class ComplaintCommentDTO implements Serializable {
         this.adminInfoId = adminInfoId;
     }
 
+    public Long getComplaintId() {
+        return complaintId;
+    }
+
+    public void setComplaintId(Long complaintId) {
+        this.complaintId = complaintId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -116,5 +128,13 @@ public class ComplaintCommentDTO implements Serializable {
             ", editedDate='" + getEditedDate() + "'" +
             ", deleted=" + getDeleted() +
             "}";
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
     }
 }

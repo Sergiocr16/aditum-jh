@@ -29,11 +29,14 @@ public class ComplaintService {
 
     private final HouseService houseService;
 
-    public ComplaintService(HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
+    private final ComplaintCommentService complaintCommentService;
+
+    public ComplaintService(ComplaintCommentService complaintCommentService, HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
         this.complaintRepository = complaintRepository;
         this.complaintMapper = complaintMapper;
         this.residentService = residentService;
         this.houseService = houseService;
+        this.complaintCommentService = complaintCommentService;
     }
 
     /**
@@ -46,7 +49,11 @@ public class ComplaintService {
         log.debug("Request to save Complaint : {}", complaintDTO);
         Complaint complaint = complaintMapper.toEntity(complaintDTO);
         complaint = complaintRepository.save(complaint);
-        return complaintMapper.toDto(complaint);
+        ComplaintDTO complaintDTO1 = complaintMapper.toDto(complaint);
+        complaintDTO1.setResident(residentService.findOne(complaintDTO1.getResidentId()));
+        complaintDTO1.setHouseNumber(houseService.findOne(complaintDTO1.getHouseId()).getHousenumber());
+        complaintDTO1.setComplaintComments(this.complaintCommentService.findAllByComplaint(null,complaintDTO1.getId()));
+        return complaintDTO1;
     }
 
     /**
@@ -59,6 +66,18 @@ public class ComplaintService {
     public Page<ComplaintDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Complaints");
         return complaintRepository.findByCompanyIdAndDeleted(pageable , companyId, 0).map(complaint -> {
+            ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
+            complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
+            complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+            return complaintDTO;
+        });
+
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ComplaintDTO> findAllByResident(Pageable pageable, Long residentId) {
+        log.debug("Request to get all Complaints");
+        return complaintRepository.findByResidentIdAndDeleted(pageable , residentId, 0).map(complaint -> {
             ComplaintDTO complaintDTO = complaintMapper.toDto(complaint);
             complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
             complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
@@ -90,6 +109,7 @@ public class ComplaintService {
         ComplaintDTO complaintDTO = complaintMapper.toDto(complaintRepository.findOne(id));
         complaintDTO.setResident(residentService.findOne(complaintDTO.getResidentId()));
         complaintDTO.setHouseNumber(houseService.findOne(complaintDTO.getHouseId()).getHousenumber());
+        complaintDTO.setComplaintComments(this.complaintCommentService.findAllByComplaint(null,complaintDTO.getId()));
         return complaintDTO;
     }
 

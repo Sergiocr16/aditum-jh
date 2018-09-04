@@ -20,7 +20,8 @@
             "editedDate": "Edited Date",
             "deleted": "Deleted",
             "resident": "Resident",
-            "adminInfo": "Admin Info"
+            "adminInfo": "Admin Info",
+            "complaint": "Complaint"
         }
     }
 }

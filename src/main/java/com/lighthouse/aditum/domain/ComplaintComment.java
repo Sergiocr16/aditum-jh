@@ -42,6 +42,10 @@ public class ComplaintComment implements Serializable {
     @ManyToOne
     private AdminInfo adminInfo;
 
+    @ManyToOne(optional = false)
+    @NotNull
+    private Complaint complaint;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -127,6 +131,19 @@ public class ComplaintComment implements Serializable {
 
     public void setAdminInfo(AdminInfo adminInfo) {
         this.adminInfo = adminInfo;
+    }
+
+    public Complaint getComplaint() {
+        return complaint;
+    }
+
+    public ComplaintComment complaint(Complaint complaint) {
+        this.complaint = complaint;
+        return this;
+    }
+
+    public void setComplaint(Complaint complaint) {
+        this.complaint = complaint;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

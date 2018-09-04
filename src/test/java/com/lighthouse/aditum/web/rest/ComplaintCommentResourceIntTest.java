@@ -3,6 +3,7 @@ package com.lighthouse.aditum.web.rest;
 import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.ComplaintComment;
+import com.lighthouse.aditum.domain.Complaint;
 import com.lighthouse.aditum.repository.ComplaintCommentRepository;
 import com.lighthouse.aditum.service.ComplaintCommentService;
 import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
@@ -106,6 +107,11 @@ public class ComplaintCommentResourceIntTest {
             .creationDate(DEFAULT_CREATION_DATE)
             .editedDate(DEFAULT_EDITED_DATE)
             .deleted(DEFAULT_DELETED);
+        // Add required entity
+        Complaint complaint = ComplaintResourceIntTest.createEntity(em);
+        em.persist(complaint);
+        em.flush();
+        complaintComment.setComplaint(complaint);
         return complaintComment;
     }
 

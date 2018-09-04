@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="admin_info"/>
 
+        <addForeignKeyConstraint baseColumnNames="complaint_id"
+                                 baseTableName="complaint_comment"
+                                 constraintName="fk_complaint_comment_complaint_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="complaint"/>
+
     </changeSet>
 </databaseChangeLog>

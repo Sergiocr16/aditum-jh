@@ -51,8 +51,7 @@ public class ComplaintCommentResource {
     public ResponseEntity<ComplaintCommentDTO> createComplaintComment(@Valid @RequestBody ComplaintCommentDTO complaintCommentDTO) throws URISyntaxException {
         log.debug("REST request to save ComplaintComment : {}", complaintCommentDTO);
         if (complaintCommentDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new complain-comment cannot already have an ID")).body(null);
-
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new complaint comment cannot already have an ID")).body(null);
         }
         ComplaintCommentDTO result = complaintCommentService.save(complaintCommentDTO);
         return ResponseEntity.created(new URI("/api/complaint-comments/" + result.getId()))

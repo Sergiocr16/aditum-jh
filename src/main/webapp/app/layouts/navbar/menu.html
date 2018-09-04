@@ -586,7 +586,11 @@
 
                 </ul>
             </li>
-
+            <li has-any-authority="ROLE_USER" ng-class="{ 'active' : active === 'complaint-user'}">
+                <a ui-sref="complaint-user"  style="font-weight:500; color:white;">
+                    <i class="fa  fa-commenting-o" aria-hidden="true"  style="font-weight:600; color:white;"></i> Quejas y sugerencias
+                </a>
+            </li>
             <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
                 <a ui-sref="soporte"  style="font-weight:500; color:white;">
                     <i class="fa fa-life-ring" aria-hidden="true"  style="font-weight:600; color:white;"></i> Soporte

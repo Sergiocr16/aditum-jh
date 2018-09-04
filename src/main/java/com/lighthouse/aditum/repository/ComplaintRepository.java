@@ -16,5 +16,6 @@ import org.springframework.data.jpa.repository.*;
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
     Page<Complaint> findByCompanyIdAndDeleted(Pageable pageable, Long companyId , int deleted );
+    Page<Complaint> findByResidentIdAndDeleted(Pageable pageable, Long residentId , int deleted );
     Page<Complaint> findByCompanyIdAndDeletedAndStatus(Pageable pageable, Long companyId , int deleted, int status );
 }

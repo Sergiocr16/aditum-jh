@@ -12,6 +12,7 @@
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', url:"api/complaints/admin/:companyId", isArray: true},
             'queryByStatus': { method: 'GET', url:"api/complaints/admin/:companyId/status/:status", isArray: true},
+            'queryAsResident': { method: 'GET', url:"api/complaints/user/:residentId", isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

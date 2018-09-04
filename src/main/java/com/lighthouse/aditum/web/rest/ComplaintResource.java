@@ -96,11 +96,21 @@ public class ComplaintResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
     @GetMapping("/complaints/admin/{companyId}/status/{status}")
     @Timed
     public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByStatus(Pageable pageable,@PathVariable Long companyId, @PathVariable int status) throws URISyntaxException {
         log.debug("REST request to get a page of Complaints");
         Page<ComplaintDTO> page = complaintService.findAllByStatus(pageable, companyId, status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/complaints/user/{residentId}")
+    @Timed
+    public ResponseEntity<List<ComplaintDTO>> getAllComplaintsByUser(Pageable pageable,@PathVariable Long residentId) throws URISyntaxException {
+        log.debug("REST request to get a page of Complaints");
+        Page<ComplaintDTO> page = complaintService.findAllByResident(pageable, residentId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/complaints");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

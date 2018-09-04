@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintCommentDialogController', ComplaintCommentDialogController);
 
-    ComplaintCommentDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ComplaintComment', 'Resident', 'AdminInfo'];
+    ComplaintCommentDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'ComplaintComment', 'Resident', 'AdminInfo', 'Complaint'];
 
-    function ComplaintCommentDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ComplaintComment, Resident, AdminInfo) {
+    function ComplaintCommentDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, ComplaintComment, Resident, AdminInfo, Complaint) {
         var vm = this;
 
         vm.complaintComment = entity;
@@ -17,6 +17,7 @@
         vm.save = save;
         vm.residents = Resident.query();
         vm.admininfos = AdminInfo.query();
+        vm.complaints = Complaint.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

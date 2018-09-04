@@ -7,7 +7,7 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a>Gestionar quejas o sugerencias</a>
+            <a>Quejas y sugerencias</a>
         </li>
     </ul>
     <div class="page-toolbar">
@@ -23,25 +23,12 @@
     </div>
 </div>
 <div class="display-none" id="tableData">
-    <div class="col-md-6">
+    <div class="col-md-9">
         <h2 style="margin-top:0px!important">Quejas y sugerencias</h2>
     </div>
-    <div class="col-md-6 no-padding" style="margin-bottom: 20px;">
-        <div class="col-md-7 no-padding">
-            <div class="col-md-4 no-padding">
-                <span>Filtrar por estado: </span>
-            </div>
-            <div class="col-md-8">
-                <select class="form-control gray-font" ng-model="vm.status" ng-change="vm.changeStatus()" required>
-                    <option value="-1">Todos</option>
-                    <option value="1">Pendiente</option>
-                    <option value="2">Activo</option>
-                    <option value="3">Resuelto</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <button class="btn green" ui-sref="complaint.new">
+    <div class="col-md-3 no-padding" style="margin-bottom: 20px;">
+        <div class="col-md-12 no-padding">
+            <button class="btn green float-right" ui-sref="complaint-user.new">
                     <span>
                        Registrar queja o sugerencia
                     </span>
@@ -87,7 +74,7 @@
                          <span ng-if="complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
                          <span  ng-if="complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
                          <span ng-if="complaint.status===3"><span  class="badge badge-empty badge-success"></span> Resuelto</span>
-                         <span ng-click="vm.viewDetail(complaint.id)" class="item-status complaint-detail" style="border-left:1px solid #e1e1e1;margin-left: 4px;padding:0px 4px">Ver detalle / Atender</span>
+                         <span ng-click="vm.viewDetail(complaint.id)" class="item-status complaint-detail" style="border-left:1px solid #e1e1e1;margin-left: 4px;padding:0px 4px">Ver seguimiento</span>
                          </span>
                     </div>
                 </div>

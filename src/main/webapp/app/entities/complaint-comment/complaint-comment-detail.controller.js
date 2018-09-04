@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintCommentDetailController', ComplaintCommentDetailController);
 
-    ComplaintCommentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'ComplaintComment', 'Resident', 'AdminInfo'];
+    ComplaintCommentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'ComplaintComment', 'Resident', 'AdminInfo', 'Complaint'];
 
-    function ComplaintCommentDetailController($scope, $rootScope, $stateParams, previousState, entity, ComplaintComment, Resident, AdminInfo) {
+    function ComplaintCommentDetailController($scope, $rootScope, $stateParams, previousState, entity, ComplaintComment, Resident, AdminInfo, Complaint) {
         var vm = this;
 
         vm.complaintComment = entity;
