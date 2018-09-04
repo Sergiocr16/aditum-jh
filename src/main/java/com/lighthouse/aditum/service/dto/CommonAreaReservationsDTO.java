@@ -37,11 +37,13 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private Integer devolutionAmmount;
 
-    private boolean isAvailable;
-
     private Integer status;
 
     private Long commonAreaId;
+
+    private boolean isAvailable;
+
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -137,6 +139,14 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setCommonAreaId(Long commonAreaId) {
         this.commonAreaId = commonAreaId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override

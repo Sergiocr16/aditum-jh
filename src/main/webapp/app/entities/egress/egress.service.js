@@ -33,7 +33,7 @@
                       initial_time:'@initial_time',
                       final_time: '@final_time',
                       companyId: '@companyId',
-            }
+                 }
             },
             'findBetweenDatesByCompanyAndAccount':{
                  method: 'GET',

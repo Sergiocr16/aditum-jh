@@ -1,47 +1,140 @@
 
-<div>
-    <h2><span data-translate="aditumApp.commonAreaReservations.detail.title">Common Area Reservations</span> {{vm.commonAreaReservations.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.commonAreaReservations.houseId">House Id</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.houseId}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.residentId">Resident Id</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.residentId}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.date">Date</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.date | date:'medium'}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.initialTime">Initial Time</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.initialTime}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.finalTime">Final Time</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.finalTime}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.comments">Comments</span></dt>
-        <dd>
-            <span>{{vm.commonAreaReservations.comments}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.commonAreaReservations.commonArea">Common Area</span></dt>
-        <dd>
-            <a ui-sref="common-area-detail({id:vm.commonAreaReservations.commonAreaId})">{{vm.commonAreaReservations.commonAreaId}}</a>
-        </dd>
-    </dl>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
+<form name="editForm" role="form" novalidate ng-submit="vm.acceptReservation()" show-validation>
 
-    <button type="button" ui-sref="common-area-reservations-detail.edit({id:vm.commonAreaReservations.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
-</div>
+    <div class="modal-body">
+        <div class=" pull-right no-padding">
+            <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
+                    ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #939393; ">
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
+                        <div class="margin-bottom-5 bold">Área común</div>
+                        <span>{{ vm.commonAreaReservations.commonAreaName}}</span>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
+                        <div class="margin-bottom-5 bold">Fecha de reservación</div>
+                        <span>{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
+                    </div>
+                    <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-10" style="border-right: 1px solid #b0b0b0;">
+                        <div class="margin-bottom-5 bold">Horario</div>
+                        <span>{{vm.commonAreaReservations.schedule}}</span>
+                    </div>
+                    <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-10" >
+                        <div class="margin-bottom-5 bold">Responsable</div>
+                        <span>{{vm.commonAreaReservations.residentName}} - Filial {{vm.commonAreaReservations.houseNumber}}</span>
+                    </div>
+
+                </div>
+                <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
+                    <span>Generar costo por reservación</span>
+                </div>
+                <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #939393;">
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 form-group" style="border-right: 1px solid #b0b0b0;  padding-bottom: 10px!important;">
+                        <div class="margin-bottom-10 bold control-label">Fecha del cargo</div>
+                        <input ng-model="vm.charge.date" id="field_chargeDate"
+                               name="chargeDate" ng-click="vm.openCalendar('chargeDate')"
+                               enable-time="false"
+                               datetime-picker="mediumDate"
+                               datepicker-options="vm.picker.datepickerOptions"
+                               is-open="vm.datePickerOpenStatus.chargeDate"
+                               type="text" class="form-control letters gray-font dating"
+                               placeholder="Seleccione una fecha"
+                               required>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 form-group" style="border-right: 1px solid #b0b0b0; padding-bottom: 10px!important;">
+                        <div class="margin-bottom-10 bold control-label">Concepto</div>
+                        <input  type="text" class="form-control numbers" name="chargeConcept" id="field_chargeConcept"
+                               ng-model="vm.charge.concept" required
+                        />
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 form-group" style="border-right: 1px solid #b0b0b0; padding-bottom: 10px!important;">
+                        <div class="margin-bottom-10 bold control-label">Cantidad</div>
+                        <div class="input-group ">
+                            <span class="input-group-addon">₡</span>
+                            <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control numbers" name="reservationCharge" id="field_reservationCharge"
+                                   ng-model="vm.charge.ammount"  placeholder="0.00" required
+                            />
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20" >
+                        <div class="margin-bottom-10 bold">Devolución</div>
+                        <div class="input-group ">
+                            <span class="input-group-addon">₡</span>
+                            <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" class="form-control numbers" name="devolutionCharge" id="field_devolutionCharge"
+                                   ng-model="vm.commonAreaReservations.devolutionAmmount"  placeholder="0.00"
+                            />
+                        </div>
+                    </div>
+
+                </div>
+                <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; ">
+                    <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span>Enviar por correo</span></div>
+
+                    <div class="no-padding pull-right">
+                        <div class="md-radio-inline no-padding no-margin" >
+                            <div class="md-radio" >
+                                <input type="radio" id="radio18" name="radio2"   class="md-radiobtn"  ng-click="vm.switchSendEmail()">
+                                <label for="radio18" style="color:#45B6AF">
+                                    <span class="inc"></span>
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    Si </label>
+                            </div>
+                            <div class="md-radio has-error">
+                                <input type="radio" id="radio19" name="radio2" ng-checked="true" class="md-radiobtn" ng-click="vm.switchSendEmail()">
+                                <label for="radio19">
+                                    <span class="inc"></span>
+                                    <span class="check"></span>
+                                    <span class="box"></span>
+                                    No </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="vm.sendEmail" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #939393; border-top:0px;">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20 form-group" style="padding-bottom: 10px!important;">
+                        <div class="margin-bottom-10 bold control-label">Correo electrónico *</div>
+                        <input type="text" class="form-control numbers col-md-12 col-sm-12 col-lg-12 col-sm-12" name="devolutionCharge" id="field_email"
+                               ng-model="vm.email"  placeholder="Correo electrónico" required
+                        />
+
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" >
+                        <div class="margin-bottom-10 bold">Comentarios</div>
+                        <textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"
+                                  class="form-control col-md-12" name="comments" id="field_comments">
+                         </textarea>
+                    </div>
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-bottom-20" ></div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 no-padding-left">
+                    <button type="button" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" style="background-color: white; border:1px solid red; color:red" data-dismiss="modal" ng-click="vm.cancelReservation()">
+                        <span><i class="fa fa-times" aria-hidden="true"></i> Rechazar solicitud</span>
+                    </button>
+                </div>
+                <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 no-padding">
+                    <button type="submit" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" ng-disabled="editForm.$invalid || vm.isSaving" style="background-color: white; border:1px solid green; color:green"  data-dismiss="modal" >
+                        <span><i class="fa fa-check" aria-hidden="true"></i> Aprobar solicitud</span>
+                    </button>
+                </div>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+                <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+                <!--</button>-->
+
+            </div>
+
+    </div>
+    <div class="modal-footer">
+
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    </div>
+</form>

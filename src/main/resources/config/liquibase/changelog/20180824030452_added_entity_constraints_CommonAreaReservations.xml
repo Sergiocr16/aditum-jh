@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="common_area"/>
 
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="common_area_reservations"
+                                 constraintName="fk_common_area_reservations_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
     </changeSet>
 </databaseChangeLog>

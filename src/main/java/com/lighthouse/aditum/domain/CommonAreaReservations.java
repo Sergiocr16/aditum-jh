@@ -57,6 +57,9 @@ public class CommonAreaReservations implements Serializable {
     @ManyToOne
     private CommonArea commonArea;
 
+    @ManyToOne
+    private Company company;
+
     public Long getId() {
         return id;
     }
@@ -206,6 +209,19 @@ public class CommonAreaReservations implements Serializable {
 
     public void setCommonArea(CommonArea commonArea) {
         this.commonArea = commonArea;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public CommonAreaReservations company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     @Override

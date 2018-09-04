@@ -118,6 +118,7 @@
         }
 
         function save() {
+            CommonMethods.waitingMessage();
             if (vm.commonArea.id !== null) {
                 CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
             } else {
@@ -182,12 +183,14 @@
 
         }
         function onSaveScheduleSuccess (result) {
+            bootbox.hideAll();
             $state.go('common-area-administration.common-area');
             toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
 
             vm.isSaving = false;
         }
         function onSaveError () {
+            bootbox.hideAll();
             vm.isSaving = false;
         }
 
@@ -259,7 +262,7 @@
         }
         vm.confirmMessage = function() {
             bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar el área común?</h3></div>',
+                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:10px;">¿Está seguro que desea registrar el área común?</h3></div>',
                 buttons: {
                     confirm: {
                         label: 'Aceptar',

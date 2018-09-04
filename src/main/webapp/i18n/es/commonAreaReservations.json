@@ -25,7 +25,8 @@
             "reservationCharge": "Reservation Charge",
             "devolutionAmmount": "Devolution Ammount",
             "status": "Status",
-            "commonArea": "Common Area"
+            "commonArea": "Common Area",
+            "company": "Company"
         }
     }
 }

@@ -1,126 +1,109 @@
-<!--<div>-->
-    <!--<h2 data-translate="aditumApp.commonAreaReservations.home.title">Common Area Reservations</h2>-->
-    <!--<jhi-alert></jhi-alert>-->
-    <!--<div class="container-fluid">-->
-        <!--<div class="row">-->
-            <!--<div class="col-xs-4 no-padding-left">-->
-                <!--<button class="btn btn-primary" ui-sref="common-area-administration.newReservation" >-->
-                    <!--<span class="glyphicon glyphicon-plus"></span>-->
-                    <!--<span  data-translate="aditumApp.commonAreaReservations.home.createLabel">-->
-                        <!--Create new Common Area Reservations-->
-                    <!--</span>-->
-                <!--</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<br/>-->
-    <!--<div class="table-responsive">-->
-        <!--<table class="jh-table table table-striped">-->
-            <!--<thead>-->
-                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
-                    <!--<th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="houseId"><span data-translate="aditumApp.commonAreaReservations.houseId">House Id</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="residentId"><span data-translate="aditumApp.commonAreaReservations.residentId">Resident Id</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="date"><span data-translate="aditumApp.commonAreaReservations.date">Date</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="initialTime"><span data-translate="aditumApp.commonAreaReservations.initialTime">Initial Time</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="finalTime"><span data-translate="aditumApp.commonAreaReservations.finalTime">Final Time</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="comments"><span data-translate="aditumApp.commonAreaReservations.comments">Comments</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="commonAreaId"><span data-translate="aditumApp.commonAreaReservations.commonArea">Common Area</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th></th>-->
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr ng-repeat="commonAreaReservations in vm.commonAreaReservations track by commonAreaReservations.id">-->
-                    <!--<td><a ui-sref="common-area-reservations-detail({id:commonAreaReservations.id})">{{commonAreaReservations.id}}</a></td>-->
-                    <!--<td>{{commonAreaReservations.houseId}}</td>-->
-                    <!--<td>{{commonAreaReservations.residentId}}</td>-->
-                    <!--<td>{{commonAreaReservations.date | date:'medium'}}</td>-->
-                    <!--<td>{{commonAreaReservations.initialTime}}</td>-->
-                    <!--<td>{{commonAreaReservations.finalTime}}</td>-->
-                    <!--<td>{{commonAreaReservations.comments}}</td>-->
-                    <!--<td>-->
-                        <!--<a ui-sref="common-area-detail({id:commonAreaReservations.commonAreaId})">{{commonAreaReservations.commonAreaId}}</a>-->
-                    <!--</td>-->
-                    <!--<td class="text-right">-->
-                        <!--<div class="btn-group flex-btn-group-container">-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="common-area-reservations-detail({id:commonAreaReservations.id})"-->
-                                    <!--class="btn btn-info btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="common-area-reservations.edit({id:commonAreaReservations.id})"-->
-                                    <!--class="btn btn-primary btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="common-area-reservations.delete({id:commonAreaReservations.id})"-->
-                                    <!--class="btn btn-danger btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-    <!--</div>-->
-    <!--<div class="text-center">-->
-        <!--<jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
-        <!--<uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>-->
-    <!--</div>-->
-<!--</div>-->
-
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
     <div class="spinnerLoading">
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row " id="tableData">
-    <div class="col-lg-12 col-md-12">
+<div class="row " >
 
-        <!--<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>-->
-
-        <div ng-if="vm.commonAreas.length>0" class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
-
+    <div class="col-lg-12 col-md-12 display-none" id="tableDatas">
+        <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
 
             <button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.newReservation" name="button">Crear nueva reservación</button>
         </div>
+        <div class="portlet-body">
+                 <div ng-if="vm.commonAreaReservations.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h2 class="text-center gray-font">No hay reservaciones pendientes</h2>
+                 </div>
 
-        <div class="portlet-body ">
-            <div ng-if="vm.commonAreas.length==0">
-                <h2 class="text-center"  style="margin-top:60px">No hay áreas comunes registradas.</h2>
-                <h4 class="text-center gray-font">Proceda a registrar áreas comunes para utilizar esta funcionalidad.</h4>
-            </div>
-            <div ng-if="vm.commonAreaReservations.length == 0 && vm.commonAreas.length>0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h2 class="text-center gray-font">No hay reservaciones pendientes</h2>
-            </div>
+                 <div class="table-scrollable hidden-xs" ng-if="vm.commonAreaReservations.length>0">
+                    <table class="jh-table table   table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">
+                            <thead>
+                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                    <th class="text-center">Ver</th>
+                                    <th>Responsable</th>
+                                    <th class="text-center">Filial</th>
+                                    <th>Fecha</th>
+                                    <th>Área común</th>
+                                    <th>Horario</th>
+                                    <th class="text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations track by commonAreaReservations.id">
 
-            <div class="table-scrollable hidden-xs" ng-if="vm.commonAreaReservations.length>0">
-                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">
-                    <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cuota por reservación</th>
-                        <th>Ver calendario</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="commonArea in vm.commonAreas track by commonArea.id">
-                        <td>{{commonAreaReservations.residentId}}</td>
-                        <td>{{commonAreaReservations.date | date:'medium'}}</td>
-                        <td>{{commonAreaReservations.initialTime}}</td>
-                        <td>{{commonAreaReservations.finalTime}}</td>
-                        <td>{{commonAreaReservations.comments}}</td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                                    <td class="text-center" > <button type="button" class="btn " style="border: 1px solid #0d638f; background-color: white; color: #0d638f;" ui-sref="common-area-administration.common-area-reservations.reservationDetail({id:commonAreaReservations.id})" name="button">Ver</button>
+                                    </td>
+                                    <td>{{commonAreaReservations.residentName}}</td>
+                                    <td class="text-center">{{commonAreaReservations.houseNumber}}</td>
+
+
+                                    <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
+                                    <td>{{commonAreaReservations.commonAreaName}}</td>
+                                    <td>{{commonAreaReservations.schedule}}</td>
+                                    <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false">PENDIENTE</span></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+                <div class="text-center" ng-if="vm.commonAreaReservations.length>0">
+                    <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+                    <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+                </div>
         </div>
     </div>
 </div>
+
+<!--<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">-->
+    <!--<div class="spinnerLoading">-->
+        <!--<div class="double-bounce1"></div>-->
+        <!--<div class="double-bounce2"></div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--<div class="row " id="tableData">-->
+    <!--<div class="col-lg-12 col-md-12">-->
+
+        <!--&lt;!&ndash;<button type="submit" class="btn blue col-md-3 col-sm-3 col-xs-12 small-margin-bottom" >{{vm.buttonTitle}}</button>&ndash;&gt;-->
+
+        <!--<div ng-if="vm.commonAreas.length>0" class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">-->
+
+
+            <!--<button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.newReservation" name="button">Crear nueva reservación</button>-->
+        <!--</div>-->
+
+        <!--<div class="portlet-body ">-->
+            <!--<div ng-if="vm.commonAreas.length==0">-->
+                <!--<h2 class="text-center"  style="margin-top:60px">No hay áreas comunes registradas.</h2>-->
+                <!--<h4 class="text-center gray-font">Proceda a registrar áreas comunes para utilizar esta funcionalidad.</h4>-->
+            <!--</div>-->
+            <!--<div ng-if="vm.commonAreaReservations.length == 0 && vm.commonAreas.length>0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">-->
+                <!--<h2 class="text-center gray-font">No hay reservaciones pendientes</h2>-->
+            <!--</div>-->
+
+            <!--<div class="table-scrollable hidden-xs" ng-if="vm.commonAreaReservations.length>0">-->
+                <!--<table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">-->
+                    <!--<thead>-->
+                    <!--<tr>-->
+                        <!--<th>Filial</th>-->
+                        <!--<th>Responsable</th>-->
+                        <!--<th>Ver calendario</th>-->
+                        <!--<th>Editar</th>-->
+                        <!--<th>Eliminar</th>-->
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="commonAreaReservations in vm.commonAreaReservations track by commonAreaReservations.id">-->
+                        <!--<td>{{commonAreaReservations.houseId}}</td>-->
+                        <!--<td>{{commonAreaReservations.residentId}}</td>-->
+                        <!--<td>{{commonAreaReservations.initialDate | date:'medium'}}</td>-->
+                        <!--<td>{{commonAreaReservations.initialTime}}</td>-->
+                        <!--<td>{{commonAreaReservations.finalTime}}</td>-->
+                        <!--<td>{{commonAreaReservations.comments}}</td>-->
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

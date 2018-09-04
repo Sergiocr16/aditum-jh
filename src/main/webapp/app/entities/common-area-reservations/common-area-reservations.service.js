@@ -32,6 +32,14 @@
                     final_time: '@final_time',
                     common_area_id: '@common_area_id'
                 }
+            },
+            'getPendingReservations':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getPendingReservations/:companyId',
+                isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
             }
         });
     }

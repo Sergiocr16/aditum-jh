@@ -1,6 +1,9 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.CommonAreaReservations;
+import com.lighthouse.aditum.domain.EgressCategory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -21,15 +24,17 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
     List<CommonAreaReservations> findByBetweenDatesAndCommonArea(ZonedDateTime zd_reservation_initial_date, ZonedDateTime zd_reservation_final_date, Long common_area_id);
 
     @Query("select e from CommonAreaReservations e " +
-        "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.commonArea.id = ?3")
+        "where e.initalDate >= ?1 and e.initalDate < ?2 and e.commonArea.id = ?3")
     List<CommonAreaReservations> findReservationBetweenIT(ZonedDateTime zd_reservation_initial_date, ZonedDateTime zd_reservation_final_date, Long common_area_id);
 
     @Query("select e from CommonAreaReservations e " +
-        "where e.finalDate >= ?1 and e.finalDate <= ?2 and e.commonArea.id = ?3")
+        "where e.finalDate > ?1 and e.finalDate < ?2 and e.commonArea.id = ?3")
     List<CommonAreaReservations> findReservationBetweenFT(ZonedDateTime zd_reservation_initial_date, ZonedDateTime zd_reservation_final_date, Long common_area_id);
 
     @Query("select e from CommonAreaReservations e " +
-        "where e.initalDate <= ?1 and e.finalDate >= ?1 and e.commonArea.id = ?2")
+        "where e.initalDate < ?1 and e.finalDate > ?1 and e.commonArea.id = ?2")
     List<CommonAreaReservations> findReservationInIT(ZonedDateTime zd_reservation_initial_date, Long common_area_id);
+
+    Page<CommonAreaReservations> findByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
 
 }

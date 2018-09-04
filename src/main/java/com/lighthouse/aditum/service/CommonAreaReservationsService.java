@@ -93,7 +93,13 @@ public class CommonAreaReservationsService {
         return commonAreaReservationsRepository.findAll(pageable)
             .map(commonAreaReservationsMapper::toDto);
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getPendingReservations(Pageable pageable,Long companyId) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable,companyId,1)
+            .map(commonAreaReservationsMapper::toDto);
 
+    }
     /**
      *  Get one commonAreaReservations by id.
      *

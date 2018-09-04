@@ -132,6 +132,7 @@
             <!--<div class="bs-example">-->
                 <!--<button type="button" class="btn btn-primary" data-toggle="13" ng-click="vm.clickPopover()">Click Me</button>-->
             <!--</div>-->
+            <!--</div>-->
             <div class="text-center" ng-show="vm.egresses.length>0">
                 <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
             </div>
@@ -140,87 +141,3 @@
 
     </div>
 </div>
-
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a ui-sref="home()">Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Residentes</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Consultar</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right">-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div  class="row " id="tableData">-->
-    <!--<h3 class="page-title col-md-10">	Casas </h3>-->
-    <!--<div class="container-fluid">-->
-        <!--<button type="submit" class="btn green col-lg-2 col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="house.new()">Registrar casa</button>-->
-
-    <!--</div>-->
-    <!--<br/>-->
-    <!--<div class="table-scrollable">-->
-        <!--<table class="jh-table table table-striped table-hover font-12">-->
-            <!--<thead>-->
-                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
-                    <!--<th jh-sort-by="concept"><span >Concepto</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-
-                    <!--<th jh-sort-by="folio"><span data-translate="aditumApp.egress.folio">Folio</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="account"><span data-translate="aditumApp.egress.account">Account</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="reference"><span data-translate="aditumApp.egress.reference">Reference</span>  <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="paymentDate"><span>Fecha pagado</span> </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="total"><span data-translate="aditumApp.egress.total">Total &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp    </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>-->
-                    <!--<th><span>Estado</span></th>-->
-
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr ng-repeat="egress in vm.egresses track by egress.id">-->
-                    <!--<td>{{egress.concept}}</td>-->
-                    <!--<td>{{egress.folio}}</td>-->
-                    <!--<td>{{egress.account}}</td>-->
-
-
-
-                    <!--<td>{{egress.reference}}</td>-->
-
-                    <!--<td>{{egress.paymentDate | date:'mediumDate'}}</td>-->
-                    <!--<td>₡{{egress.total}}</td>-->
-                    <!--<td  ><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Pagado</span></td>-->
-
-                    <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="btn-group flex-btn-group-container">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<button type="submit"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;ui-sref="egress-detail({id:egress.id})"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;class="btn btn-info btn-sm">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-eye-open"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="hidden-sm-down" ></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<button type="submit"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;ng-click="vm.payEgress(egress.id)"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;class="btn btn-primary btn-sm">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-pencil"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="hidden-sm-down">Pagar</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-    <!--</div>-->
-    <!--<div class="text-center">-->
-        <!--<jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
-    <!--</div>-->
-    <!--<uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>-->
-<!--</div>-->
