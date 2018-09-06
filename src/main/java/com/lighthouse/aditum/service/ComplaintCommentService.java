@@ -4,10 +4,12 @@ import com.lighthouse.aditum.domain.ComplaintComment;
 import com.lighthouse.aditum.repository.ComplaintCommentRepository;
 import com.lighthouse.aditum.service.dto.AdminInfoDTO;
 import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
+import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ComplaintCommentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,11 +33,17 @@ public class ComplaintCommentService {
 
     private final AdminInfoService adminInfoService;
 
-    public ComplaintCommentService(AdminInfoService adminInfoService, ResidentService residentService, ComplaintCommentRepository complaintCommentRepository, ComplaintCommentMapper complaintCommentMapper) {
+    private final ComplaintMailService complaintMailService;
+
+    private final ComplaintService complaintService;
+
+    public ComplaintCommentService(ComplaintMailService complaintMailService, @Lazy ComplaintService complaintService, AdminInfoService adminInfoService, ResidentService residentService, ComplaintCommentRepository complaintCommentRepository, ComplaintCommentMapper complaintCommentMapper) {
         this.complaintCommentRepository = complaintCommentRepository;
         this.complaintCommentMapper = complaintCommentMapper;
         this.adminInfoService = adminInfoService;
         this.residentService = residentService;
+        this.complaintMailService = complaintMailService;
+        this.complaintService = complaintService;
     }
 
     /**
@@ -48,6 +56,8 @@ public class ComplaintCommentService {
         log.debug("Request to save ComplaintComment : {}", complaintCommentDTO);
         ComplaintComment complaintComment = complaintCommentMapper.toEntity(complaintCommentDTO);
         complaintComment = complaintCommentRepository.save(complaintComment);
+        ComplaintDTO complaintDTO = this.complaintService.findOne(complaintCommentDTO.getComplaintId());
+        this.complaintMailService.sendComplaintEmailChangeStatus(complaintDTO);
         return complaintCommentMapper.toDto(complaintComment);
     }
 

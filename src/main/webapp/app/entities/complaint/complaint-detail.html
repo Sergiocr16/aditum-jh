@@ -134,7 +134,7 @@
             </div>
             <div class="portlet-body col-md-12">
                 <div class="col-md-12  no-padding" style="margin-bottom:10px;padding-right: 15px!important"
-                     ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: '-creationDate' track by comment.id ">
+                     ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id ">
                     <div class="col-md-1">
                         <div class="image" style="float: right">
                             <img ng-hide="comment.resident.image_url" class="object-fit_scale-down"

@@ -6,6 +6,7 @@ import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import com.lighthouse.aditum.service.mapper.ComplaintMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -31,12 +32,15 @@ public class ComplaintService {
 
     private final ComplaintCommentService complaintCommentService;
 
-    public ComplaintService(ComplaintCommentService complaintCommentService, HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
+    private final ComplaintMailService complaintMailService;
+
+    public ComplaintService(ComplaintMailService complaintMailService, @Lazy ComplaintCommentService complaintCommentService, HouseService houseService, ResidentService residentService, ComplaintRepository complaintRepository, ComplaintMapper complaintMapper) {
         this.complaintRepository = complaintRepository;
         this.complaintMapper = complaintMapper;
         this.residentService = residentService;
         this.houseService = houseService;
         this.complaintCommentService = complaintCommentService;
+        this.complaintMailService = complaintMailService;
     }
 
     /**
@@ -53,6 +57,9 @@ public class ComplaintService {
         complaintDTO1.setResident(residentService.findOne(complaintDTO1.getResidentId()));
         complaintDTO1.setHouseNumber(houseService.findOne(complaintDTO1.getHouseId()).getHousenumber());
         complaintDTO1.setComplaintComments(this.complaintCommentService.findAllByComplaint(null,complaintDTO1.getId()));
+        if(complaintDTO.getId()==null){
+            this.complaintMailService.sendNewComplaintEmail(complaintDTO1);
+        }
         return complaintDTO1;
     }
 

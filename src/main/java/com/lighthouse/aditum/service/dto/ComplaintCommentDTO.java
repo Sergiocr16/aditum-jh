@@ -21,6 +21,8 @@ public class ComplaintCommentDTO implements Serializable {
     @NotNull
     private ZonedDateTime creationDate;
 
+    private String formattedCreationDate;
+
     private ZonedDateTime editedDate;
 
     private ResidentDTO resident;
@@ -136,5 +138,13 @@ public class ComplaintCommentDTO implements Serializable {
 
     public void setResident(ResidentDTO resident) {
         this.resident = resident;
+    }
+
+    public String getFormattedCreationDate() {
+        return formattedCreationDate;
+    }
+
+    public void setFormattedCreationDate(String formattedCreationDate) {
+        this.formattedCreationDate = formattedCreationDate;
     }
 }
