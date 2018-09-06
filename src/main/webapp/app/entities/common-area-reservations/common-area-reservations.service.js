@@ -15,8 +15,9 @@
                 method: 'GET',
                 transformResponse: function (data) {
                     if (data) {
+
                         data = angular.fromJson(data);
-                        data.date = DateUtils.convertDateTimeFromServer(data.date);
+                        console.log(data)
                     }
                     return data;
                 }
@@ -32,7 +33,19 @@
                     final_time: '@final_time',
                     common_area_id: '@common_area_id'
                 }
-            },
+            }
+            ,'isAvailableToReserveNotNull': {
+            method: 'GET',
+                url: 'api/common-area-reservations/isAvailableToReserveNotNull/:maximun_hours/:reservation_date/:initial_time/:final_time/:common_area_id/:reservation_id',
+                params:{
+                maximun_hours:'@maximun_hours',
+                    reservation_date: '@reservation_date',
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    common_area_id: '@common_area_id',
+                    reservation_id: '@reservation_id'
+            }
+        },
             'getPendingReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getPendingReservations/:companyId',

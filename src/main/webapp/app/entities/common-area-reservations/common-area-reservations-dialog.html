@@ -12,7 +12,7 @@
                 <div class="portlet-title">
                     <div class="caption font-green-haze">
 
-                        <span class="caption-subject bold uppercase">Crear reservación</span>
+                        <span class="caption-subject bold uppercase">{{vm.reservationTitle}} reservación</span>
                     </div>
 
 
@@ -49,7 +49,7 @@
                                     </div>
                                     <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right no-padding-right padding-top-10"><span id="loadingSchedule" class="display-none"> <i  style="font-size:18px;color:#5b9bd1!important"  class="fa fa-circle-o-notch fa-spin " aria-hidden="true"></i></span></div>
                                     <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group ">
-                                        <select class="form-control gray-font" id="field_commonarea" name="house" ng-change="vm.loadSchedule()" ng-model="vm.commonarea" ng-options="commonarea as commonarea.name for commonarea in vm.commonareas " required ng-required='vm.required==1'>
+                                        <select class="form-control gray-font" id="field_commonarea" name="house" ng-change="vm.loadSchedule()" ng-model="vm.commonarea.id" ng-options="commonarea.id as commonarea.name for commonarea in vm.commonareas " required ng-required='vm.required==1'>
                                             <option value="">Seleccione una área común</option>
                                         </select>
                                     </div>
@@ -88,11 +88,24 @@
                                             </div>
                                             <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 text-right no-padding-right padding-top-10"><span id="loadingAvailability" class="display-none"> <i  style="font-size:18px;color:#5b9bd1!important"  class="fa fa-circle-o-notch fa-spin " aria-hidden="true"></i></span></div>
 
-                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group" ng-if="vm.commonAreaReservations.id==undefined">
                                                 <input ng-model="vm.commonAreaReservations.initalDate" id="field_expirationDate"
                                                        name="expirationDate" ng-click="vm.openCalendar('expirationDate')"
                                                        enable-time="false"
                                                        datetime-picker="fullDate"
+                                                       datepicker-options="vm.picker.datepickerOptions"
+                                                       is-open="vm.datePickerOpenStatus.expirationDate"
+                                                       ng-change="vm.checkAvailability()"
+                                                       type="text" class="form-control letters gray-font dating"
+                                                       placeholder="Seleccione una fecha"
+                                                       ng-class="{redBorder: vm.dateNotPermited==true}"
+                                                       required>
+                                            </div>
+                                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group" ng-if="vm.commonAreaReservations.id!=undefined">
+                                                <input ng-model="vm.commonAreaReservations.initalDate" id="field_initialDate"
+                                                       name="expirationDate" ng-click="vm.openCalendar('expirationDate')"
+                                                       enable-time="false"
+                                                       datetime-picker="dd MMMM yyyy"
                                                        datepicker-options="vm.picker.datepickerOptions"
                                                        is-open="vm.datePickerOpenStatus.expirationDate"
                                                        ng-change="vm.checkAvailability()"

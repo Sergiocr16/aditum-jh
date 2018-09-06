@@ -162,6 +162,9 @@
             vm.isSaving = true;
             vm.charge.houseId = vm.commonAreaReservations.houseId;
             vm.charge.companyId = $rootScope.companyId;
+            vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
+            vm.commonAreaReservations.initalDate.setHours(0);
+            vm.commonAreaReservations.initalDate.setMinutes(0);
             if (vm.commonAreaReservations.reservationCharge == null) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
@@ -177,7 +180,7 @@
             }
 
             function onSaveSuccess(result) {
-                .go('common-area-administration.common-area-reservations')
+                $state.go('common-area-administration.common-area-reservations')
                 toastr["success"]("Se ha aprobado la reservación correctamente.")
                 bootbox.hideAll();
             }
@@ -200,6 +203,9 @@
                     CommonMethods.waitingMessage();
                     if (result) {
                         vm.commonAreaReservations.status = 3;
+                        vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
+                        vm.commonAreaReservations.initalDate.setHours(0);
+                        vm.commonAreaReservations.initalDate.setMinutes(0);
                         CommonAreaReservations.update(vm.commonAreaReservations, onCancelSuccess, onSaveError);
 
 
@@ -213,7 +219,7 @@
         function onCancelSuccess(result) {
                 bootbox.hideAll();
                 toastr["success"]("Se ha generado la cuota correctamente.")
-                $state.go('houseAdministration.chargePerHouse')
+                $state.go('common-area-administration.common-area-reservations')
 
         }
         vm.acceptReservation = function() {

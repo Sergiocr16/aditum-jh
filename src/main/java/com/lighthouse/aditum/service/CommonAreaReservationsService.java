@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,8 +50,11 @@ public class CommonAreaReservationsService {
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         return commonAreaReservationsMapper.toDto(commonAreaReservations);
     }
+
+
+
     @Transactional(readOnly = true)
-    public  CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours,String reservation_date,String initial_time,String final_time, Long common_area_id) {
+    public  CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours,String reservation_date,String initial_time,String final_time, Long common_area_id,Long reservation_id) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
 
         if(maximun_hours==0){
@@ -71,9 +75,19 @@ public class CommonAreaReservationsService {
             List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
             List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
             List<CommonAreaReservations> test3 = commonAreaReservationsRepository. findReservationInIT(zd_reservation_initial_date,common_area_id);
+            List<CommonAreaReservations> allReservations = new ArrayList<>();
+            allReservations.addAll(test1);
+            allReservations.addAll(test2);
+            allReservations.addAll(test3);
+            int cantidad = 0;
 
+            for(int i = 0; i < allReservations.size(); i++) {
+                if(allReservations.get(i).getId()!=reservation_id){
+                    cantidad++;
+                };
+            }
+            if(allReservations.size()>0 && cantidad>0){
 
-            if(test1.size()>0 || test2.size()>0|| test3.size()>0 ){
                 commonAreaReservationsDTO.setAvailable(false);
             }else{
                 commonAreaReservationsDTO.setAvailable(true);
@@ -88,9 +102,9 @@ public class CommonAreaReservationsService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findAll(Pageable pageable) {
+    public Page<CommonAreaReservationsDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        return commonAreaReservationsRepository.findAll(pageable)
+        return commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable,companyId,4)
             .map(commonAreaReservationsMapper::toDto);
     }
     @Transactional(readOnly = true)
@@ -110,6 +124,7 @@ public class CommonAreaReservationsService {
     public CommonAreaReservationsDTO findOne(Long id) {
         log.debug("Request to get CommonAreaReservations : {}", id);
         CommonAreaReservations commonAreaReservations = commonAreaReservationsRepository.findOne(id);
+
         return commonAreaReservationsMapper.toDto(commonAreaReservations);
     }
 

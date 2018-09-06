@@ -10,6 +10,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +75,7 @@ public class CommonAreaReservationsResource {
     @Timed
     public ResponseEntity<CommonAreaReservationsDTO> updateCommonAreaReservations(@Valid @RequestBody CommonAreaReservationsDTO commonAreaReservationsDTO) throws URISyntaxException {
         log.debug("REST request to update CommonAreaReservations : {}", commonAreaReservationsDTO);
-        if (commonAreaReservationsDTO.getId() == null) {
+        if (commonAreaReservationsDTO.getId() == null ) {
             return createCommonAreaReservations(commonAreaReservationsDTO);
         }
         CommonAreaReservationsDTO result = commonAreaReservationsService.save(commonAreaReservationsDTO);
@@ -90,10 +92,16 @@ public class CommonAreaReservationsResource {
      */
     @GetMapping("/common-area-reservations")
     @Timed
-    public ResponseEntity<List<CommonAreaReservationsDTO>> getAllCommonAreaReservations(@ApiParam Pageable pageable)
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getAllCommonAreaReservations(@ApiParam Pageable pageable,Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findAll(pageable);
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findAll(pageable,companyId);
+//        Page<CommonAreaReservationsDTO> page2 = new ArrayList<>();
+//        for (int i = 0; i <page.getContent().size(); i++) {
+//            if(page.getContent().get(i).getStatus()!=4){
+//                page2.getContent().add(page.getContent().get(i));
+//            }
+//        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/common-area-reservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -118,6 +126,7 @@ public class CommonAreaReservationsResource {
     public ResponseEntity<CommonAreaReservationsDTO> getCommonAreaReservations(@PathVariable Long id) {
         log.debug("REST request to get CommonAreaReservations : {}", id);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findOne(id);
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(commonAreaReservationsDTO));
     }
 
@@ -128,10 +137,25 @@ public class CommonAreaReservationsResource {
         @PathVariable (value = "reservation_date")  String reservation_date,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "common_area_id")  Long common_area_id){
-        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id);
+        @PathVariable(value = "common_area_id")  Long common_area_id
+        ){
+        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,null);
 
             return commonAreaReservationsDTO;
+    }
+    @GetMapping("/common-area-reservations/isAvailableToReserveNotNull/{maximun_hours}/{reservation_date}/{initial_time}/{final_time}/{common_area_id}/{reservation_id}")
+    @Timed
+    public CommonAreaReservationsDTO isAvailableToReserveNotNull(
+        @PathVariable (value = "maximun_hours")  int maximun_hours,
+        @PathVariable (value = "reservation_date")  String reservation_date,
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "common_area_id")  Long common_area_id,
+        @PathVariable(value = "reservation_id")  Long reservation_id
+        ){
+        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.isAvailableToReserve(maximun_hours,reservation_date,initial_time,final_time,common_area_id,reservation_id);
+
+        return commonAreaReservationsDTO;
     }
     /**
      * DELETE  /common-area-reservations/:id : delete the "id" commonAreaReservations.
