@@ -1333,6 +1333,16 @@ div.scrollmenu a:hover {
     cursor: pointer;
 }
 
+.complaint-detail {
+    outline: none;
+    cursor: pointer;
+    color: #4DB3A2 !important;
+}
+
+.complaint-detail:hover {
+    color: #5194ca !important;
+}
+
 .comments-button:hover {
     color: #4DB3A2 !important;
 }
@@ -1355,29 +1365,31 @@ div.scrollmenu a:hover {
 }
 
 .green-box {
-width: 15px;
-height: 15px;
-background-color: #C2FFD0;
-border: 1px solid #eee;
-display: inline-block;
-float: left;
-margin-right: 6px;
+    width: 15px;
+    height: 15px;
+    background-color: #C2FFD0;
+    border: 1px solid #eee;
+    display: inline-block;
+    float: left;
+    margin-right: 6px;
 }
+
 .red-box {
-width: 15px;
-height: 15px;
-background-color: #FFB8B8;
-border: 1px solid #eee;
-display: inline-block;
-float: left;
-margin-right: 6px;
+    width: 15px;
+    height: 15px;
+    background-color: #FFB8B8;
+    border: 1px solid #eee;
+    display: inline-block;
+    float: left;
+    margin-right: 6px;
 }
+
 .yellow-box {
-width: 15px;
-height: 15px;
-background-color: #FFD17A;
-border: 1px solid #eee;
-display: inline-block;
-float: left;
-margin-right: 6px;
+    width: 15px;
+    height: 15px;
+    background-color: #FFD17A;
+    border: 1px solid #eee;
+    display: inline-block;
+    float: left;
+    margin-right: 6px;
 }

@@ -40,6 +40,8 @@
                 "commonArea": "Common Area",
                 "announcement": "Announcement",
                 "announcementComment": "Announcement Comment",
+                "complaint": "Complaint",
+                "complaintComment": "Complaint Comment",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -135,8 +135,6 @@
 
         function loadCommentsPage(announcement) {
             announcement.commentsPage =  announcement.commentsPage + 1;
-        console.log(announcement.links['last']);
-        console.log(  announcement.commentsPage)
                 Announcement.getComments({
                     announcementId: announcement.id,
                     page: announcement.commentsPage,
