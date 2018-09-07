@@ -18,6 +18,10 @@
             "squareMetersPrice": "Square Meters Price",
             "folioSerie": "Folio Serie",
             "folioNumber": "Folio Number",
+            "usesFinePerDay": "Uses Fine Per Day",
+            "finePerDay": "Fine Per Day",
+            "daysToBeDefaulter": "Days To Be Defaulter",
+            "percentageFincePerDay": "Percentage Fince Per Day",
             "company": "Company"
         }
     }

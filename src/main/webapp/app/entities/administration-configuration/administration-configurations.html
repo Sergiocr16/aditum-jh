@@ -22,6 +22,10 @@
                     <th jh-sort-by="squareMetersPrice"><span data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="folioSerie"><span data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="folioNumber"><span data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="usesFinePerDay"><span data-translate="aditumApp.administrationConfiguration.usesFinePerDay">Uses Fine Per Day</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="finePerDay"><span data-translate="aditumApp.administrationConfiguration.finePerDay">Fine Per Day</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="daysToBeDefaulter"><span data-translate="aditumApp.administrationConfiguration.daysToBeDefaulter">Days To Be Defaulter</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="percentageFincePerDay"><span data-translate="aditumApp.administrationConfiguration.percentageFincePerDay">Percentage Fince Per Day</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="companyId"><span data-translate="aditumApp.administrationConfiguration.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -32,6 +36,10 @@
                     <td>{{administrationConfiguration.squareMetersPrice}}</td>
                     <td>{{administrationConfiguration.folioSerie}}</td>
                     <td>{{administrationConfiguration.folioNumber}}</td>
+                    <td>{{administrationConfiguration.usesFinePerDay}}</td>
+                    <td>{{administrationConfiguration.finePerDay}}</td>
+                    <td>{{administrationConfiguration.daysToBeDefaulter}}</td>
+                    <td>{{administrationConfiguration.percentageFincePerDay}}</td>
                     <td>
                         <a ui-sref="company-detail({id:administrationConfiguration.companyId})">{{administrationConfiguration.companyId}}</a>
                     </td>

@@ -34,6 +34,22 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="uses_fine_per_day" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="fine_per_day" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_to_be_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="percentage_fine_per_day" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -42,4 +58,5 @@
         </createTable>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

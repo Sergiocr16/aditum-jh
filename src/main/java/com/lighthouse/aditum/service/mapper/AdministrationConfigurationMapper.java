@@ -8,8 +8,8 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity AdministrationConfiguration and its DTO AdministrationConfigurationDTO.
  */
-@Mapper(componentModel = "spring", uses = {CompanyMapper.class, })
-public interface AdministrationConfigurationMapper extends EntityMapper <AdministrationConfigurationDTO, AdministrationConfiguration> {
+@Mapper(componentModel = "spring", uses = {CompanyMapper.class})
+public interface AdministrationConfigurationMapper extends EntityMapper<AdministrationConfigurationDTO, AdministrationConfiguration> {
 
     @Mapping(source = "company.id", target = "companyId")
     AdministrationConfigurationDTO toDto(AdministrationConfiguration administrationConfiguration);
@@ -25,6 +25,7 @@ public interface AdministrationConfigurationMapper extends EntityMapper <Adminis
         company.setId(id);
         return company;
     }
+
     default AdministrationConfiguration fromId(Long id) {
         if (id == null) {
             return null;

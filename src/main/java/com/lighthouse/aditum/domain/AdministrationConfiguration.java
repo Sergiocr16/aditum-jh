@@ -2,8 +2,10 @@ package com.lighthouse.aditum.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 /**
  * A AdministrationConfiguration.
@@ -27,9 +29,23 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "folio_number")
     private Integer folioNumber;
 
+    @NotNull
+    @Column(name = "uses_fine_per_day", nullable = false)
+    private Boolean usesFinePerDay;
+
+    @Column(name = "fine_per_day")
+    private String finePerDay;
+
+    @Column(name = "days_to_be_defaulter")
+    private Integer daysToBeDefaulter;
+
+    @Column(name = "percentage_fine_per_day")
+    private Double percentageFinePerDay;
+
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -77,6 +93,58 @@ public class AdministrationConfiguration implements Serializable {
         this.folioNumber = folioNumber;
     }
 
+    public Boolean isUsesFinePerDay() {
+        return usesFinePerDay;
+    }
+
+    public AdministrationConfiguration usesFinePerDay(Boolean usesFinePerDay) {
+        this.usesFinePerDay = usesFinePerDay;
+        return this;
+    }
+
+    public void setUsesFinePerDay(Boolean usesFinePerDay) {
+        this.usesFinePerDay = usesFinePerDay;
+    }
+
+    public String getFinePerDay() {
+        return finePerDay;
+    }
+
+    public AdministrationConfiguration finePerDay(String finePerDay) {
+        this.finePerDay = finePerDay;
+        return this;
+    }
+
+    public void setFinePerDay(String finePerDay) {
+        this.finePerDay = finePerDay;
+    }
+
+    public Integer getDaysToBeDefaulter() {
+        return daysToBeDefaulter;
+    }
+
+    public AdministrationConfiguration daysToBeDefaulter(Integer daysToBeDefaulter) {
+        this.daysToBeDefaulter = daysToBeDefaulter;
+        return this;
+    }
+
+    public void setDaysToBeDefaulter(Integer daysToBeDefaulter) {
+        this.daysToBeDefaulter = daysToBeDefaulter;
+    }
+
+    public Double getPercentageFinePerDay() {
+        return percentageFinePerDay;
+    }
+
+    public AdministrationConfiguration percentageFinePerDay(Double percentageFinePerDay) {
+        this.percentageFinePerDay = percentageFinePerDay;
+        return this;
+    }
+
+    public void setPercentageFinePerDay(Double percentageFinePerDay) {
+        this.percentageFinePerDay = percentageFinePerDay;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -89,6 +157,7 @@ public class AdministrationConfiguration implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -116,7 +185,11 @@ public class AdministrationConfiguration implements Serializable {
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
             ", folioSerie='" + getFolioSerie() + "'" +
-            ", folioNumber='" + getFolioNumber() + "'" +
+            ", folioNumber=" + getFolioNumber() +
+            ", usesFinePerDay='" + isUsesFinePerDay() + "'" +
+            ", finePerDay='" + getFinePerDay() + "'" +
+            ", daysToBeDefaulter=" + getDaysToBeDefaulter() +
+            ", percentageFincePerDay=" + getPercentageFinePerDay() +
             "}";
     }
 }

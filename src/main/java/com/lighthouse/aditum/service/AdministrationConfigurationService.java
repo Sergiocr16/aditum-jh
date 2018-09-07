@@ -41,6 +41,7 @@ public class AdministrationConfigurationService {
         AdministrationConfiguration administrationConfiguration = administrationConfigurationMapper.toEntity(administrationConfigurationDTO);
         administrationConfiguration.setFolioNumber(administrationConfigurationDTO.getFolioNumber());
         administrationConfiguration.setFolioSerie(administrationConfigurationDTO.getFolioSerie());
+        administrationConfiguration.setPercentageFinePerDay(administrationConfigurationDTO.getPercentageFinePerDay());
         administrationConfiguration = administrationConfigurationRepository.save(administrationConfiguration);
         AdministrationConfigurationDTO adminConfigDto = administrationConfigurationMapper.toDto(administrationConfiguration);
         adminConfigDto.setFolioSerie(administrationConfiguration.getFolioSerie());

@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,6 +49,18 @@ public class AdministrationConfigurationResourceIntTest {
 
     private static final Integer DEFAULT_FOLIO_NUMBER = 1;
     private static final Integer UPDATED_FOLIO_NUMBER = 2;
+
+    private static final Boolean DEFAULT_USES_FINE_PER_DAY = false;
+    private static final Boolean UPDATED_USES_FINE_PER_DAY = true;
+
+    private static final String DEFAULT_FINE_PER_DAY = "AAAAAAAAAA";
+    private static final String UPDATED_FINE_PER_DAY = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_DAYS_TO_BE_DEFAULTER = 1;
+    private static final Integer UPDATED_DAYS_TO_BE_DEFAULTER = 2;
+
+    private static final Double DEFAULT_PERCENTAGE_FINE_PER_DAY = 1D;
+    private static final Double UPDATED_PERCENTAGE_FINCE_PER_DAY = 2D;
 
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
@@ -77,10 +90,11 @@ public class AdministrationConfigurationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AdministrationConfigurationResource administrationConfigurationResource = new AdministrationConfigurationResource(administrationConfigurationService);
+        final AdministrationConfigurationResource administrationConfigurationResource = new AdministrationConfigurationResource(administrationConfigurationService);
         this.restAdministrationConfigurationMockMvc = MockMvcBuilders.standaloneSetup(administrationConfigurationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -94,7 +108,11 @@ public class AdministrationConfigurationResourceIntTest {
         AdministrationConfiguration administrationConfiguration = new AdministrationConfiguration()
             .squareMetersPrice(DEFAULT_SQUARE_METERS_PRICE)
             .folioSerie(DEFAULT_FOLIO_SERIE)
-            .folioNumber(DEFAULT_FOLIO_NUMBER);
+            .folioNumber(DEFAULT_FOLIO_NUMBER)
+            .usesFinePerDay(DEFAULT_USES_FINE_PER_DAY)
+            .finePerDay(DEFAULT_FINE_PER_DAY)
+            .daysToBeDefaulter(DEFAULT_DAYS_TO_BE_DEFAULTER)
+            .percentageFinePerDay(DEFAULT_PERCENTAGE_FINE_PER_DAY);
         return administrationConfiguration;
     }
 
@@ -122,6 +140,10 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(DEFAULT_SQUARE_METERS_PRICE);
         assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(DEFAULT_FOLIO_SERIE);
         assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(DEFAULT_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.isUsesFinePerDay()).isEqualTo(DEFAULT_USES_FINE_PER_DAY);
+        assertThat(testAdministrationConfiguration.getFinePerDay()).isEqualTo(DEFAULT_FINE_PER_DAY);
+        assertThat(testAdministrationConfiguration.getDaysToBeDefaulter()).isEqualTo(DEFAULT_DAYS_TO_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getPercentageFinePerDay()).isEqualTo(DEFAULT_PERCENTAGE_FINE_PER_DAY);
     }
 
     @Test
@@ -139,9 +161,28 @@ public class AdministrationConfigurationResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(administrationConfigurationDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the AdministrationConfiguration in the database
         List<AdministrationConfiguration> administrationConfigurationList = administrationConfigurationRepository.findAll();
         assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkUsesFinePerDayIsRequired() throws Exception {
+        int databaseSizeBeforeTest = administrationConfigurationRepository.findAll().size();
+        // set the field null
+        administrationConfiguration.setUsesFinePerDay(null);
+
+        // Create the AdministrationConfiguration, which fails.
+        AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(administrationConfiguration);
+
+        restAdministrationConfigurationMockMvc.perform(post("/api/administration-configurations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(administrationConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<AdministrationConfiguration> administrationConfigurationList = administrationConfigurationRepository.findAll();
+        assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -157,7 +198,11 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(administrationConfiguration.getId().intValue())))
             .andExpect(jsonPath("$.[*].squareMetersPrice").value(hasItem(DEFAULT_SQUARE_METERS_PRICE.toString())))
             .andExpect(jsonPath("$.[*].folioSerie").value(hasItem(DEFAULT_FOLIO_SERIE.toString())))
-            .andExpect(jsonPath("$.[*].folioNumber").value(hasItem(DEFAULT_FOLIO_NUMBER)));
+            .andExpect(jsonPath("$.[*].folioNumber").value(hasItem(DEFAULT_FOLIO_NUMBER)))
+            .andExpect(jsonPath("$.[*].usesFinePerDay").value(hasItem(DEFAULT_USES_FINE_PER_DAY.booleanValue())))
+            .andExpect(jsonPath("$.[*].finePerDay").value(hasItem(DEFAULT_FINE_PER_DAY.toString())))
+            .andExpect(jsonPath("$.[*].daysToBeDefaulter").value(hasItem(DEFAULT_DAYS_TO_BE_DEFAULTER)))
+            .andExpect(jsonPath("$.[*].percentageFincePerDay").value(hasItem(DEFAULT_PERCENTAGE_FINE_PER_DAY.doubleValue())));
     }
 
     @Test
@@ -173,7 +218,11 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.id").value(administrationConfiguration.getId().intValue()))
             .andExpect(jsonPath("$.squareMetersPrice").value(DEFAULT_SQUARE_METERS_PRICE.toString()))
             .andExpect(jsonPath("$.folioSerie").value(DEFAULT_FOLIO_SERIE.toString()))
-            .andExpect(jsonPath("$.folioNumber").value(DEFAULT_FOLIO_NUMBER));
+            .andExpect(jsonPath("$.folioNumber").value(DEFAULT_FOLIO_NUMBER))
+            .andExpect(jsonPath("$.usesFinePerDay").value(DEFAULT_USES_FINE_PER_DAY.booleanValue()))
+            .andExpect(jsonPath("$.finePerDay").value(DEFAULT_FINE_PER_DAY.toString()))
+            .andExpect(jsonPath("$.daysToBeDefaulter").value(DEFAULT_DAYS_TO_BE_DEFAULTER))
+            .andExpect(jsonPath("$.percentageFincePerDay").value(DEFAULT_PERCENTAGE_FINE_PER_DAY.doubleValue()));
     }
 
     @Test
@@ -193,10 +242,16 @@ public class AdministrationConfigurationResourceIntTest {
 
         // Update the administrationConfiguration
         AdministrationConfiguration updatedAdministrationConfiguration = administrationConfigurationRepository.findOne(administrationConfiguration.getId());
+        // Disconnect from session so that the updates on updatedAdministrationConfiguration are not directly saved in db
+        em.detach(updatedAdministrationConfiguration);
         updatedAdministrationConfiguration
             .squareMetersPrice(UPDATED_SQUARE_METERS_PRICE)
             .folioSerie(UPDATED_FOLIO_SERIE)
-            .folioNumber(UPDATED_FOLIO_NUMBER);
+            .folioNumber(UPDATED_FOLIO_NUMBER)
+            .usesFinePerDay(UPDATED_USES_FINE_PER_DAY)
+            .finePerDay(UPDATED_FINE_PER_DAY)
+            .daysToBeDefaulter(UPDATED_DAYS_TO_BE_DEFAULTER)
+            .percentageFinePerDay(UPDATED_PERCENTAGE_FINCE_PER_DAY);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -211,6 +266,10 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(UPDATED_SQUARE_METERS_PRICE);
         assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(UPDATED_FOLIO_SERIE);
         assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(UPDATED_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.isUsesFinePerDay()).isEqualTo(UPDATED_USES_FINE_PER_DAY);
+        assertThat(testAdministrationConfiguration.getFinePerDay()).isEqualTo(UPDATED_FINE_PER_DAY);
+        assertThat(testAdministrationConfiguration.getDaysToBeDefaulter()).isEqualTo(UPDATED_DAYS_TO_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getPercentageFinePerDay()).isEqualTo(UPDATED_PERCENTAGE_FINCE_PER_DAY);
     }
 
     @Test

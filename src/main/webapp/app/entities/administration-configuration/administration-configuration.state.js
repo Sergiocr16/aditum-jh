@@ -127,6 +127,10 @@
                                 squareMetersPrice: null,
                                 folioSerie: null,
                                 folioNumber: null,
+                                usesFinePerDay: false,
+                                finePerDay: null,
+                                daysToBeDefaulter: null,
+                                percentageFincePerDay: null,
                                 id: null
                             };
                         }

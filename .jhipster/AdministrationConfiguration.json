@@ -20,11 +20,31 @@
         {
             "fieldName": "folioNumber",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "usesFinePerDay",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "finePerDay",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "daysToBeDefaulter",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "percentageFinePerDay",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20180328213553",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "administration_configuration",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }
