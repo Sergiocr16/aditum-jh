@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import java.util.List;
 
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -48,6 +49,21 @@ public class AdministrationConfigurationResourceIntTest {
 
     private static final Integer DEFAULT_FOLIO_NUMBER = 1;
     private static final Integer UPDATED_FOLIO_NUMBER = 2;
+
+    private static final Boolean DEFAULT_HAS_SUB_CHARGES = false;
+    private static final Boolean UPDATED_HAS_SUB_CHARGES = true;
+
+    private static final Integer DEFAULT_DAYS_TO_BE_DEFAULTER = 1;
+    private static final Integer UPDATED_DAYS_TO_BE_DEFAULTER = 2;
+
+    private static final Integer DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER = 1;
+    private static final Integer UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER = 2;
+
+    private static final Integer DEFAULT_INCREASE_SUB_CHARGE_DAYS = 1;
+    private static final Integer UPDATED_INCREASE_SUB_CHARGE_DAYS = 2;
+
+    private static final Double DEFAULT_SUBCHARGE_PERCENTAGE = 1D;
+    private static final Double UPDATED_SUBCHARGE_PERCENTAGE = 2D;
 
     @Autowired
     private AdministrationConfigurationRepository administrationConfigurationRepository;
@@ -77,10 +93,11 @@ public class AdministrationConfigurationResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        AdministrationConfigurationResource administrationConfigurationResource = new AdministrationConfigurationResource(administrationConfigurationService);
+        final AdministrationConfigurationResource administrationConfigurationResource = new AdministrationConfigurationResource(administrationConfigurationService);
         this.restAdministrationConfigurationMockMvc = MockMvcBuilders.standaloneSetup(administrationConfigurationResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -94,7 +111,12 @@ public class AdministrationConfigurationResourceIntTest {
         AdministrationConfiguration administrationConfiguration = new AdministrationConfiguration()
             .squareMetersPrice(DEFAULT_SQUARE_METERS_PRICE)
             .folioSerie(DEFAULT_FOLIO_SERIE)
-            .folioNumber(DEFAULT_FOLIO_NUMBER);
+            .folioNumber(DEFAULT_FOLIO_NUMBER)
+            .hasSubCharges(DEFAULT_HAS_SUB_CHARGES)
+            .daysToBeDefaulter(DEFAULT_DAYS_TO_BE_DEFAULTER)
+            .daysToSendEmailBeforeBeDefaulter(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)
+            .increaseSubChargeDays(DEFAULT_INCREASE_SUB_CHARGE_DAYS)
+            .subchargePercentage(DEFAULT_SUBCHARGE_PERCENTAGE);
         return administrationConfiguration;
     }
 
@@ -122,6 +144,11 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(DEFAULT_SQUARE_METERS_PRICE);
         assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(DEFAULT_FOLIO_SERIE);
         assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(DEFAULT_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.isHasSubCharges()).isEqualTo(DEFAULT_HAS_SUB_CHARGES);
+        assertThat(testAdministrationConfiguration.getDaysToBeDefaulter()).isEqualTo(DEFAULT_DAYS_TO_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getDaysToSendEmailBeforeBeDefaulter()).isEqualTo(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getIncreaseSubChargeDays()).isEqualTo(DEFAULT_INCREASE_SUB_CHARGE_DAYS);
+        assertThat(testAdministrationConfiguration.getSubchargePercentage()).isEqualTo(DEFAULT_SUBCHARGE_PERCENTAGE);
     }
 
     @Test
@@ -139,9 +166,28 @@ public class AdministrationConfigurationResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(administrationConfigurationDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the AdministrationConfiguration in the database
         List<AdministrationConfiguration> administrationConfigurationList = administrationConfigurationRepository.findAll();
         assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkHasSubChargesIsRequired() throws Exception {
+        int databaseSizeBeforeTest = administrationConfigurationRepository.findAll().size();
+        // set the field null
+        administrationConfiguration.setHasSubCharges(null);
+
+        // Create the AdministrationConfiguration, which fails.
+        AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(administrationConfiguration);
+
+        restAdministrationConfigurationMockMvc.perform(post("/api/administration-configurations")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(administrationConfigurationDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<AdministrationConfiguration> administrationConfigurationList = administrationConfigurationRepository.findAll();
+        assertThat(administrationConfigurationList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -157,7 +203,12 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(administrationConfiguration.getId().intValue())))
             .andExpect(jsonPath("$.[*].squareMetersPrice").value(hasItem(DEFAULT_SQUARE_METERS_PRICE.toString())))
             .andExpect(jsonPath("$.[*].folioSerie").value(hasItem(DEFAULT_FOLIO_SERIE.toString())))
-            .andExpect(jsonPath("$.[*].folioNumber").value(hasItem(DEFAULT_FOLIO_NUMBER)));
+            .andExpect(jsonPath("$.[*].folioNumber").value(hasItem(DEFAULT_FOLIO_NUMBER)))
+            .andExpect(jsonPath("$.[*].hasSubCharges").value(hasItem(DEFAULT_HAS_SUB_CHARGES.booleanValue())))
+            .andExpect(jsonPath("$.[*].daysToBeDefaulter").value(hasItem(DEFAULT_DAYS_TO_BE_DEFAULTER)))
+            .andExpect(jsonPath("$.[*].daysToSendEmailBeforeBeDefaulter").value(hasItem(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)))
+            .andExpect(jsonPath("$.[*].increaseSubChargeDays").value(hasItem(DEFAULT_INCREASE_SUB_CHARGE_DAYS)))
+            .andExpect(jsonPath("$.[*].subchargePercentage").value(hasItem(DEFAULT_SUBCHARGE_PERCENTAGE.doubleValue())));
     }
 
     @Test
@@ -173,7 +224,12 @@ public class AdministrationConfigurationResourceIntTest {
             .andExpect(jsonPath("$.id").value(administrationConfiguration.getId().intValue()))
             .andExpect(jsonPath("$.squareMetersPrice").value(DEFAULT_SQUARE_METERS_PRICE.toString()))
             .andExpect(jsonPath("$.folioSerie").value(DEFAULT_FOLIO_SERIE.toString()))
-            .andExpect(jsonPath("$.folioNumber").value(DEFAULT_FOLIO_NUMBER));
+            .andExpect(jsonPath("$.folioNumber").value(DEFAULT_FOLIO_NUMBER))
+            .andExpect(jsonPath("$.hasSubCharges").value(DEFAULT_HAS_SUB_CHARGES.booleanValue()))
+            .andExpect(jsonPath("$.daysToBeDefaulter").value(DEFAULT_DAYS_TO_BE_DEFAULTER))
+            .andExpect(jsonPath("$.daysToSendEmailBeforeBeDefaulter").value(DEFAULT_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER))
+            .andExpect(jsonPath("$.increaseSubChargeDays").value(DEFAULT_INCREASE_SUB_CHARGE_DAYS))
+            .andExpect(jsonPath("$.subchargePercentage").value(DEFAULT_SUBCHARGE_PERCENTAGE.doubleValue()));
     }
 
     @Test
@@ -193,10 +249,17 @@ public class AdministrationConfigurationResourceIntTest {
 
         // Update the administrationConfiguration
         AdministrationConfiguration updatedAdministrationConfiguration = administrationConfigurationRepository.findOne(administrationConfiguration.getId());
+        // Disconnect from session so that the updates on updatedAdministrationConfiguration are not directly saved in db
+        em.detach(updatedAdministrationConfiguration);
         updatedAdministrationConfiguration
             .squareMetersPrice(UPDATED_SQUARE_METERS_PRICE)
             .folioSerie(UPDATED_FOLIO_SERIE)
-            .folioNumber(UPDATED_FOLIO_NUMBER);
+            .folioNumber(UPDATED_FOLIO_NUMBER)
+            .hasSubCharges(UPDATED_HAS_SUB_CHARGES)
+            .daysToBeDefaulter(UPDATED_DAYS_TO_BE_DEFAULTER)
+            .daysToSendEmailBeforeBeDefaulter(UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER)
+            .increaseSubChargeDays(UPDATED_INCREASE_SUB_CHARGE_DAYS)
+            .subchargePercentage(UPDATED_SUBCHARGE_PERCENTAGE);
         AdministrationConfigurationDTO administrationConfigurationDTO = administrationConfigurationMapper.toDto(updatedAdministrationConfiguration);
 
         restAdministrationConfigurationMockMvc.perform(put("/api/administration-configurations")
@@ -211,6 +274,11 @@ public class AdministrationConfigurationResourceIntTest {
         assertThat(testAdministrationConfiguration.getSquareMetersPrice()).isEqualTo(UPDATED_SQUARE_METERS_PRICE);
         assertThat(testAdministrationConfiguration.getFolioSerie()).isEqualTo(UPDATED_FOLIO_SERIE);
         assertThat(testAdministrationConfiguration.getFolioNumber()).isEqualTo(UPDATED_FOLIO_NUMBER);
+        assertThat(testAdministrationConfiguration.isHasSubCharges()).isEqualTo(UPDATED_HAS_SUB_CHARGES);
+        assertThat(testAdministrationConfiguration.getDaysToBeDefaulter()).isEqualTo(UPDATED_DAYS_TO_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getDaysToSendEmailBeforeBeDefaulter()).isEqualTo(UPDATED_DAYS_TO_SEND_EMAIL_BEFORE_BE_DEFAULTER);
+        assertThat(testAdministrationConfiguration.getIncreaseSubChargeDays()).isEqualTo(UPDATED_INCREASE_SUB_CHARGE_DAYS);
+        assertThat(testAdministrationConfiguration.getSubchargePercentage()).isEqualTo(UPDATED_SUBCHARGE_PERCENTAGE);
     }
 
     @Test

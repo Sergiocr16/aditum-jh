@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -29,6 +29,41 @@
             <label class="control-label" data-translate="aditumApp.administrationConfiguration.folioNumber" for="field_folioNumber">Folio Number</label>
             <input type="number" class="form-control" name="folioNumber" id="field_folioNumber"
                     ng-model="vm.administrationConfiguration.folioNumber"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.hasSubCharges" for="field_hasSubCharges">Has Sub Charges</label>
+                <input type="checkbox" name="hasSubCharges" id="field_hasSubCharges"
+                          ng-model="vm.administrationConfiguration.hasSubCharges"/>
+            <div ng-show="editForm.hasSubCharges.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.hasSubCharges.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.daysToBeDefaulter" for="field_daysToBeDefaulter">Days To Be Defaulter</label>
+            <input type="number" class="form-control" name="daysToBeDefaulter" id="field_daysToBeDefaulter"
+                    ng-model="vm.administrationConfiguration.daysToBeDefaulter"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.daysToSendEmailBeforeBeDefaulter" for="field_daysToSendEmailBeforeBeDefaulter">Days To Send Email Before Be Defaulter</label>
+            <input type="number" class="form-control" name="daysToSendEmailBeforeBeDefaulter" id="field_daysToSendEmailBeforeBeDefaulter"
+                    ng-model="vm.administrationConfiguration.daysToSendEmailBeforeBeDefaulter"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.increaseSubChargeDays" for="field_increaseSubChargeDays">Increase Sub Charge Days</label>
+            <input type="number" class="form-control" name="increaseSubChargeDays" id="field_increaseSubChargeDays"
+                    ng-model="vm.administrationConfiguration.increaseSubChargeDays"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.subchargePercentage" for="field_subchargePercentage">Subcharge Percentage</label>
+            <input type="number" class="form-control" name="subchargePercentage" id="field_subchargePercentage"
+                    ng-model="vm.administrationConfiguration.subchargePercentage"
                     />
         </div>
 

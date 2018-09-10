@@ -127,6 +127,11 @@
                                 squareMetersPrice: null,
                                 folioSerie: null,
                                 folioNumber: null,
+                                hasSubCharges: false,
+                                daysToBeDefaulter: null,
+                                daysToSendEmailBeforeBeDefaulter: null,
+                                increaseSubChargeDays: null,
+                                subchargePercentage: null,
                                 id: null
                             };
                         }

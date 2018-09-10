@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,17 @@ public class AdministrationConfigurationDTO implements Serializable {
     private String folioSerie;
 
     private Integer folioNumber;
+
+    @NotNull
+    private Boolean hasSubCharges;
+
+    private Integer daysToBeDefaulter;
+
+    private Integer daysToSendEmailBeforeBeDefaulter;
+
+    private Integer increaseSubChargeDays;
+
+    private Double subchargePercentage;
 
     private Long companyId;
 
@@ -51,6 +63,46 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     public void setFolioNumber(Integer folioNumber) {
         this.folioNumber = folioNumber;
+    }
+
+    public Boolean isHasSubCharges() {
+        return hasSubCharges;
+    }
+
+    public void setHasSubCharges(Boolean hasSubCharges) {
+        this.hasSubCharges = hasSubCharges;
+    }
+
+    public Integer getDaysToBeDefaulter() {
+        return daysToBeDefaulter;
+    }
+
+    public void setDaysToBeDefaulter(Integer daysToBeDefaulter) {
+        this.daysToBeDefaulter = daysToBeDefaulter;
+    }
+
+    public Integer getDaysToSendEmailBeforeBeDefaulter() {
+        return daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public void setDaysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public Integer getIncreaseSubChargeDays() {
+        return increaseSubChargeDays;
+    }
+
+    public void setIncreaseSubChargeDays(Integer increaseSubChargeDays) {
+        this.increaseSubChargeDays = increaseSubChargeDays;
+    }
+
+    public Double getSubchargePercentage() {
+        return subchargePercentage;
+    }
+
+    public void setSubchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
     }
 
     public Long getCompanyId() {
@@ -88,7 +140,12 @@ public class AdministrationConfigurationDTO implements Serializable {
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
             ", folioSerie='" + getFolioSerie() + "'" +
-            ", folioNumber='" + getFolioNumber() + "'" +
+            ", folioNumber=" + getFolioNumber() +
+            ", hasSubCharges='" + isHasSubCharges() + "'" +
+            ", daysToBeDefaulter=" + getDaysToBeDefaulter() +
+            ", daysToSendEmailBeforeBeDefaulter=" + getDaysToSendEmailBeforeBeDefaulter() +
+            ", increaseSubChargeDays=" + getIncreaseSubChargeDays() +
+            ", subchargePercentage=" + getSubchargePercentage() +
             "}";
     }
 }

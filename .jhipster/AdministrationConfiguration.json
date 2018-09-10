@@ -20,11 +20,35 @@
         {
             "fieldName": "folioNumber",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasSubCharges",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "daysToBeDefaulter",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "daysToSendEmailBeforeBeDefaulter",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "increaseSubChargeDays",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "subchargePercentage",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20180328213553",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "administration_configuration",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

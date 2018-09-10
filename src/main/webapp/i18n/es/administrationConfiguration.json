@@ -18,6 +18,11 @@
             "squareMetersPrice": "Square Meters Price",
             "folioSerie": "Folio Serie",
             "folioNumber": "Folio Number",
+            "hasSubCharges": "Has Sub Charges",
+            "daysToBeDefaulter": "Days To Be Defaulter",
+            "daysToSendEmailBeforeBeDefaulter": "Days To Send Email Before Be Defaulter",
+            "increaseSubChargeDays": "Increase Sub Charge Days",
+            "subchargePercentage": "Subcharge Percentage",
             "company": "Company"
         }
     }

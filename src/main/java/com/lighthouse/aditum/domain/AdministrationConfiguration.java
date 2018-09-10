@@ -2,8 +2,10 @@ package com.lighthouse.aditum.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 /**
  * A AdministrationConfiguration.
@@ -27,9 +29,26 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "folio_number")
     private Integer folioNumber;
 
+    @NotNull
+    @Column(name = "has_sub_charges", nullable = false)
+    private Boolean hasSubCharges;
+
+    @Column(name = "days_to_be_defaulter")
+    private Integer daysToBeDefaulter;
+
+    @Column(name = "days_to_send_email_before_be_defaulter")
+    private Integer daysToSendEmailBeforeBeDefaulter;
+
+    @Column(name = "increase_sub_charge_days")
+    private Integer increaseSubChargeDays;
+
+    @Column(name = "subcharge_percentage")
+    private Double subchargePercentage;
+
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -77,6 +96,71 @@ public class AdministrationConfiguration implements Serializable {
         this.folioNumber = folioNumber;
     }
 
+    public Boolean isHasSubCharges() {
+        return hasSubCharges;
+    }
+
+    public AdministrationConfiguration hasSubCharges(Boolean hasSubCharges) {
+        this.hasSubCharges = hasSubCharges;
+        return this;
+    }
+
+    public void setHasSubCharges(Boolean hasSubCharges) {
+        this.hasSubCharges = hasSubCharges;
+    }
+
+    public Integer getDaysToBeDefaulter() {
+        return daysToBeDefaulter;
+    }
+
+    public AdministrationConfiguration daysToBeDefaulter(Integer daysToBeDefaulter) {
+        this.daysToBeDefaulter = daysToBeDefaulter;
+        return this;
+    }
+
+    public void setDaysToBeDefaulter(Integer daysToBeDefaulter) {
+        this.daysToBeDefaulter = daysToBeDefaulter;
+    }
+
+    public Integer getDaysToSendEmailBeforeBeDefaulter() {
+        return daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public AdministrationConfiguration daysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+        return this;
+    }
+
+    public void setDaysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public Integer getIncreaseSubChargeDays() {
+        return increaseSubChargeDays;
+    }
+
+    public AdministrationConfiguration increaseSubChargeDays(Integer increaseSubChargeDays) {
+        this.increaseSubChargeDays = increaseSubChargeDays;
+        return this;
+    }
+
+    public void setIncreaseSubChargeDays(Integer increaseSubChargeDays) {
+        this.increaseSubChargeDays = increaseSubChargeDays;
+    }
+
+    public Double getSubchargePercentage() {
+        return subchargePercentage;
+    }
+
+    public AdministrationConfiguration subchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
+        return this;
+    }
+
+    public void setSubchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -89,6 +173,7 @@ public class AdministrationConfiguration implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -116,7 +201,12 @@ public class AdministrationConfiguration implements Serializable {
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
             ", folioSerie='" + getFolioSerie() + "'" +
-            ", folioNumber='" + getFolioNumber() + "'" +
+            ", folioNumber=" + getFolioNumber() +
+            ", hasSubCharges='" + isHasSubCharges() + "'" +
+            ", daysToBeDefaulter=" + getDaysToBeDefaulter() +
+            ", daysToSendEmailBeforeBeDefaulter=" + getDaysToSendEmailBeforeBeDefaulter() +
+            ", increaseSubChargeDays=" + getIncreaseSubChargeDays() +
+            ", subchargePercentage=" + getSubchargePercentage() +
             "}";
     }
 }

@@ -34,6 +34,26 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="has_sub_charges" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="days_to_be_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_to_send_email_before_be_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="increase_sub_charge_days" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="subcharge_percentage" type="double">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -42,4 +62,5 @@
         </createTable>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
