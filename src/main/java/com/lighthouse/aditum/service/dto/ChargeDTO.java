@@ -4,8 +4,6 @@ package com.lighthouse.aditum.service.dto;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -13,6 +11,25 @@ import java.util.Objects;
  */
 public class ChargeDTO implements Serializable {
 
+    public ChargeDTO() {
+    }
+    public ChargeDTO(String concept,int total ) {
+        this.concept = concept;
+        this.total = total;
+
+    }
+    public ChargeDTO(String ammount, ZonedDateTime date,Long companyId,Long id,Long houseId) {
+        this.concept = "Pagos anticipados";
+        this.ammount = ammount;
+        this.date = date;
+        this.state = 2;
+        this.type = 1;
+        this.companyId = companyId;
+        this.id = id;
+        this.houseId = houseId;
+        this.deleted = 0;
+
+    }
     private Long id;
 
     @NotNull
@@ -33,17 +50,19 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
+    private ZonedDateTime paymentDate;
+
     private String left;
+
+    private int total;
 
     private String paymentAmmount;
 
-    private ZonedDateTime paymentDate;
+    private String subcharge;
 
     private Long houseId;
 
     private Long paymentId;
-
-    private int total;
 
     private Long companyId;
 
@@ -111,6 +130,14 @@ public class ChargeDTO implements Serializable {
         this.paymentDate = paymentDate;
     }
 
+    public String getSubcharge() {
+        return subcharge;
+    }
+
+    public void setSubcharge(String subcharge) {
+        this.subcharge = subcharge;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -127,27 +154,6 @@ public class ChargeDTO implements Serializable {
         this.paymentId = paymentId;
     }
 
-    public ChargeDTO(String concept,int total ) {
-        this.concept = concept;
-        this.total = total;
-
-    }
-    public ChargeDTO(String ammount, ZonedDateTime date,Long companyId,Long id,Long houseId) {
-        this.concept = "Pagos anticipados";
-        this.ammount = ammount;
-        this.date = date;
-        this.state = 2;
-        this.type = 1;
-        this.companyId = companyId;
-        this.id = id;
-        this.houseId = houseId;
-        this.deleted = 0;
-
-    }
-    public ChargeDTO() {
-
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
@@ -155,7 +161,6 @@ public class ChargeDTO implements Serializable {
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -182,13 +187,14 @@ public class ChargeDTO implements Serializable {
     public String toString() {
         return "ChargeDTO{" +
             "id=" + getId() +
-            ", type='" + getType() + "'" +
+            ", type=" + getType() +
             ", date='" + getDate() + "'" +
             ", concept='" + getConcept() + "'" +
             ", ammount='" + getAmmount() + "'" +
-            ", state='" + getState() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", state=" + getState() +
+            ", deleted=" + getDeleted() +
             ", paymentDate='" + getPaymentDate() + "'" +
+            ", subcharge='" + getSubcharge() + "'" +
             "}";
     }
 
@@ -206,5 +212,13 @@ public class ChargeDTO implements Serializable {
 
     public void setPaymentAmmount(String paymentAmmount) {
         this.paymentAmmount = paymentAmmount;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

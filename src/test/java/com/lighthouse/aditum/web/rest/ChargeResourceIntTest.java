@@ -32,6 +32,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 import static com.lighthouse.aditum.web.rest.TestUtil.sameInstant;
+//import static com.lighthouse.aditum.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -67,6 +68,9 @@ public class ChargeResourceIntTest {
     private static final ZonedDateTime DEFAULT_PAYMENT_DATE = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_PAYMENT_DATE = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final String DEFAULT_SUBCHARGE = "AAAAAAAAAA";
+    private static final String UPDATED_SUBCHARGE = "BBBBBBBBBB";
+
     @Autowired
     private ChargeRepository chargeRepository;
 
@@ -95,10 +99,11 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ChargeResource chargeResource = new ChargeResource(chargeService);
+        final ChargeResource chargeResource = new ChargeResource(chargeService);
         this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
+//            .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
@@ -116,7 +121,8 @@ public class ChargeResourceIntTest {
             .ammount(DEFAULT_AMMOUNT)
             .state(DEFAULT_STATE)
             .deleted(DEFAULT_DELETED)
-            .paymentDate(DEFAULT_PAYMENT_DATE);
+            .paymentDate(DEFAULT_PAYMENT_DATE)
+            .subcharge(DEFAULT_SUBCHARGE);
         // Add required entity
         House house = HouseResourceIntTest.createEntity(em);
         em.persist(house);
@@ -153,6 +159,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getState()).isEqualTo(DEFAULT_STATE);
         assertThat(testCharge.getDeleted()).isEqualTo(DEFAULT_DELETED);
         assertThat(testCharge.getPaymentDate()).isEqualTo(DEFAULT_PAYMENT_DATE);
+        assertThat(testCharge.getSubcharge()).isEqualTo(DEFAULT_SUBCHARGE);
     }
 
     @Test
@@ -170,7 +177,7 @@ public class ChargeResourceIntTest {
             .content(TestUtil.convertObjectToJsonBytes(chargeDTO)))
             .andExpect(status().isBadRequest());
 
-        // Validate the Alice in the database
+        // Validate the Charge in the database
         List<Charge> chargeList = chargeRepository.findAll();
         assertThat(chargeList).hasSize(databaseSizeBeforeCreate);
     }
@@ -306,7 +313,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.[*].ammount").value(hasItem(DEFAULT_AMMOUNT.toString())))
             .andExpect(jsonPath("$.[*].state").value(hasItem(DEFAULT_STATE)))
             .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
-            .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(sameInstant(DEFAULT_PAYMENT_DATE))));
+            .andExpect(jsonPath("$.[*].paymentDate").value(hasItem(sameInstant(DEFAULT_PAYMENT_DATE))))
+            .andExpect(jsonPath("$.[*].subcharge").value(hasItem(DEFAULT_SUBCHARGE.toString())));
     }
 
     @Test
@@ -326,7 +334,8 @@ public class ChargeResourceIntTest {
             .andExpect(jsonPath("$.ammount").value(DEFAULT_AMMOUNT.toString()))
             .andExpect(jsonPath("$.state").value(DEFAULT_STATE))
             .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
-            .andExpect(jsonPath("$.paymentDate").value(sameInstant(DEFAULT_PAYMENT_DATE)));
+            .andExpect(jsonPath("$.paymentDate").value(sameInstant(DEFAULT_PAYMENT_DATE)))
+            .andExpect(jsonPath("$.subcharge").value(DEFAULT_SUBCHARGE.toString()));
     }
 
     @Test
@@ -346,6 +355,8 @@ public class ChargeResourceIntTest {
 
         // Update the charge
         Charge updatedCharge = chargeRepository.findOne(charge.getId());
+        // Disconnect from session so that the updates on updatedCharge are not directly saved in db
+        em.detach(updatedCharge);
         updatedCharge
             .type(UPDATED_TYPE)
             .date(UPDATED_DATE)
@@ -353,7 +364,8 @@ public class ChargeResourceIntTest {
             .ammount(UPDATED_AMMOUNT)
             .state(UPDATED_STATE)
             .deleted(UPDATED_DELETED)
-            .paymentDate(UPDATED_PAYMENT_DATE);
+            .paymentDate(UPDATED_PAYMENT_DATE)
+            .subcharge(UPDATED_SUBCHARGE);
         ChargeDTO chargeDTO = chargeMapper.toDto(updatedCharge);
 
         restChargeMockMvc.perform(put("/api/charges")
@@ -372,6 +384,7 @@ public class ChargeResourceIntTest {
         assertThat(testCharge.getState()).isEqualTo(UPDATED_STATE);
         assertThat(testCharge.getDeleted()).isEqualTo(UPDATED_DELETED);
         assertThat(testCharge.getPaymentDate()).isEqualTo(UPDATED_PAYMENT_DATE);
+        assertThat(testCharge.getSubcharge()).isEqualTo(UPDATED_SUBCHARGE);
     }
 
     @Test
