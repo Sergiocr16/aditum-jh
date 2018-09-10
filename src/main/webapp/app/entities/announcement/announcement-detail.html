@@ -1,0 +1,50 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Noticias</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Detalle</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding-top:10px;">
+            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
+        </div>
+    </div>
+</div>
+<div class="announcement col-md-12">
+    <h2 class="col-md-9">
+        {{vm.announcement.title}} <span
+        style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-right: 15px!important;color: white;float: left;"
+        ng-if="vm.announcement.status==1">Borrador</span>
+    </h2>
+    <h3 class="col-md-3">
+        <h3 class="text-right">
+            <button type="submit" has-authority="ROLE_MANAGER"
+                    ui-sref="{{ vm.previousState }}"
+                    class="btn btn-info">
+                <span class="glyphicon glyphicon-arrow-left"></span><span> Atrás</span>
+            </button>
+            <button has-authority="ROLE_MANAGER" type="button" ui-sref="announcement.edit({id:vm.announcement.id})"
+                    class="btn btn-primary">
+                <span class="glyphicon glyphicon-pencil"></span>
+                <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+            </button>
+        </h3>
+    </h3>
+    <hr class="col-md-12 col-xs-12 col-lg-12">
+    <div class="col-md-12 col-xs-12 col-lg-12">
+        <div ng-bind-html="vm.announcement.description"></div>
+    </div>
+    <div>
+
+    </div>
+</div>

@@ -183,6 +183,7 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findAllInvited(Long companyId) {
         log.debug("Request to get all Visitants");

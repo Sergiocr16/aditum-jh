@@ -1,3 +1,4 @@
+
 (function() {
     'use strict';
 
@@ -24,7 +25,9 @@
             'angularjs-dropdown-multiselect',
             'angular-popover',
             'ngPopover',
-            'ui.calendar'
+            'ui.calendar',
+            'summernote'
+
         ])
         .run(run);
 

@@ -1,0 +1,91 @@
+<!-- SE REQUIERE EN CADA VISTA -->
+<div class="page-bar route-title">
+    <ul class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a>Condominio</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a>Quejas y sugerencias</a>
+        </li>
+    </ul>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right" style="padding-top:10px;">
+            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
+        </div>
+    </div>
+</div>
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="display-none" id="tableData">
+    <div class="col-md-9">
+        <h2 style="margin-top:0px!important">Quejas y sugerencias</h2>
+    </div>
+    <div class="col-md-3 no-padding" style="margin-bottom: 20px;">
+        <div class="col-md-12 no-padding">
+            <button class="btn green float-right" ui-sref="complaint-user.new">
+                    <span>
+                       Registrar queja o sugerencia
+                    </span>
+            </button>
+        </div>
+
+    </div>
+    <br/>
+    <div style="margin:25px 10px;">
+        <div ng-show="vm.complaints.length == 0" class="margin-top-25">
+            <h2 class="text-center gray-font">No existe ninguna queja o sugerencia registrada.</h2>
+        </div>
+        <div infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-top-15">
+            <div ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id" class="portlet light bordered col-md-12"
+                 style="box-shadow: none!important">
+                <div class="portlet-title">
+                    <div class="caption font-yellow-crusta">
+                        <div class="image-navbar">
+                            <img ng-if="complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                 class="object-fit_scale-down-navbar"/>
+                            <img ng-if="complaint.resident.image_url!==null" src="{{complaint.resident.image_url}}"
+                                 class="object-fit_scale-down-navbar"/>
+                        </div>
+                        <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"> {{complaint.resident.name+" "+complaint.resident.lastname+" "+complaint.resident.secondlastname}}</span>
+                        <span class="caption-helper">
+                    <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{complaint.id}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{complaint.complaintType}}
+                    </span>
+                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                       Filial {{complaint.houseNumber}}
+                    </span>
+                     <span style="padding:0px 4px">
+                       {{complaint.showingCreationDate}}
+                    </span>
+                 </span>
+                    </div>
+                    <div class="actions">
+                    <span class="item-status">
+                         <span ng-if="complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
+                         <span  ng-if="complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
+                         <span ng-if="complaint.status===3"><span  class="badge badge-empty badge-success"></span> Resuelto</span>
+                         <span ng-click="vm.viewDetail(complaint.id)" class="item-status complaint-detail" style="border-left:1px solid #e1e1e1;margin-left: 4px;padding:0px 4px">Ver seguimiento</span>
+                         </span>
+                    </div>
+                </div>
+                <div class="portlet-body" style="max-height: 180px;overflow-y: auto">
+
+                    <p>
+                        {{complaint.description}}
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
