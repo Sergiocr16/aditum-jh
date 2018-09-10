@@ -1,7 +1,11 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.domain.CommonArea;
 import com.lighthouse.aditum.service.CommonAreaReservationsService;
+import com.lighthouse.aditum.service.CommonAreaService;
+import com.lighthouse.aditum.service.HouseService;
+import com.lighthouse.aditum.service.ResidentService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.CommonAreaReservationsDTO;
@@ -37,9 +41,14 @@ public class CommonAreaReservationsResource {
     private static final String ENTITY_NAME = "commonAreaReservations";
 
     private final CommonAreaReservationsService commonAreaReservationsService;
-
-    public CommonAreaReservationsResource(CommonAreaReservationsService commonAreaReservationsService) {
+    private final ResidentService residentService;
+    private final HouseService houseService;
+    private final CommonAreaService commonAreaService;
+    public CommonAreaReservationsResource(CommonAreaReservationsService commonAreaReservationsService,ResidentService residentService,HouseService houseService,CommonAreaService commonAreaService) {
         this.commonAreaReservationsService = commonAreaReservationsService;
+        this.residentService = residentService;
+        this.houseService = houseService;
+        this.commonAreaService = commonAreaService;
     }
 
     /**
@@ -96,12 +105,6 @@ public class CommonAreaReservationsResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
         Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findAll(pageable,companyId);
-//        Page<CommonAreaReservationsDTO> page2 = new ArrayList<>();
-//        for (int i = 0; i <page.getContent().size(); i++) {
-//            if(page.getContent().get(i).getStatus()!=4){
-//                page2.getContent().add(page.getContent().get(i));
-//            }
-//        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/common-area-reservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -112,6 +115,36 @@ public class CommonAreaReservationsResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of CommonAreaReservations");
         Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingReservations(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/common-area-reservations/getPendingAndAcceptedReservations/{companyId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getPendingAndAcceptedReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getPendingAndAcceptedReservations(pageable,companyId);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
+            commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
+
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/common-area-reservations/getReservationsByCommonArea/{commonAreaId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getReservationsByCommonArea(@ApiParam Pageable pageable, @PathVariable Long commonAreaId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getReservationsByCommonArea(pageable,commonAreaId);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
+
+
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

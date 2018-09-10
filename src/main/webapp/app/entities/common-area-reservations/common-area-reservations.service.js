@@ -53,6 +53,22 @@
                 params:{
                     companyId: '@companyId'
                 }
+            },
+            'getPendingAndAcceptedReservations':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getPendingAndAcceptedReservations/:companyId',
+                isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
+            },
+            'getReservationsByCommonArea':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getReservationsByCommonArea/:commonAreaId',
+                isArray: true,
+                params:{
+                    commonAreaId: '@commonAreaId'
+                }
             }
         });
     }

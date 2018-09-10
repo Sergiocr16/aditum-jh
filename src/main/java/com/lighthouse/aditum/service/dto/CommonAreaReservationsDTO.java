@@ -45,6 +45,12 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private Long companyId;
 
+    private ResidentDTO resident;
+
+    private HouseDTO house;
+
+    private CommonAreaDTO commonArea;
+
     public Long getId() {
         return id;
     }
@@ -193,5 +199,29 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setAvailable(boolean available) {
         isAvailable = available;
+    }
+
+    public ResidentDTO getResident() {
+        return resident;
+    }
+
+    public void setResident(ResidentDTO resident) {
+        this.resident = resident;
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
+    }
+
+    public CommonAreaDTO getCommonArea() {
+        return commonArea;
+    }
+
+    public void setCommonArea(CommonAreaDTO commonArea) {
+        this.commonArea = commonArea;
     }
 }

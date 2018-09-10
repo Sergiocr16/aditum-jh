@@ -481,20 +481,20 @@
                 </a>
                 <ul class="sub-menu" >
                     <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'estadoResultados' }" >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
+                        <a href=""  style="color:white;">
+                            <i class="fa fa-circle-o" style=" color:white;"></i>
                             <span   style=" color:white;">Estado de resultados</span>
                         </a>
                     </li>
                     <li ui-sref="egress-report" ng-class="{ 'active' : active === 'reporteGastos' }" >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
+                        <a href=""  style="color:white;">
+                            <i class="fa fa-circle-o" style=" color:white;"></i>
                             <span   style=" color:white;">Reporte de gastos</span>
                         </a>
                     </li>
                     <li ui-sref="payment-report" ng-class="{ 'active' : active === 'reporteIngresos' }" >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
+                        <a href=""  style="color:white;">
+                            <i class="fa fa-circle-o" style=" color:white;"></i>
                             <span   style=" color:white;">Reporte de ingresos</span>
                         </a>
                     </li>
@@ -502,7 +502,7 @@
 
             </li>
 
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === '' ||  active === ''  ||  active === ''} ">
+            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'reservationAdministration' ||  active === 'generaCalendar'  ||  active === 'createReservation'} ">
 
                 <a href="javascript:;">
                     <i class="fa fa-tree"  style=" color:white;" aria-hidden="true"></i>
@@ -511,16 +511,22 @@
                     <span class="selected "></span>
                 </a>
                 <ul class="sub-menu">
-                    <li ui-sref="common-area-administration" ng-class="{ 'active' : active === ''}">
+                    <li ui-sref="common-area-administration.common-area" ng-class="{ 'active' : active === 'reservationAdministration'}">
                         <a href="" style="color:white;">
-                            <i class="fa fa-shield"  style=" color:white;" aria-hidden="true"></i> Administrar
+                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Administrar
                         </a>
                     </li>
-                    <li ng-click="vm.viewWatch()" ng-class="{ 'active' : active === 'watches'}">
+                    <li ui-sref="common-area-administration.general-reservation-calendar"  ng-class="{ 'active' : active === 'generaCalendar'}">
                         <a href="" style=" color:white;">
-                            <i class="fa fa-clock-o"  style=" color:white;" aria-hidden="true"></i> Reservar
+                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Calendario general
                         </a>
                     </li>
+                    <li ui-sref="common-area-administration.newReservation"  ng-class="{ 'active' : active === 'createReservation'}">
+                        <a href="" style=" color:white;">
+                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Reservar
+                        </a>
+                    </li>
+
                 </ul>
 
             </li>

@@ -162,7 +162,7 @@
 
                                             <div class="md-checkbox-inline">
                                                 <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox33" class="md-check" ng-click="vm.selectDay(0)">
+                                                    <input type="checkbox" id="checkbox33" name="day1" ng-model="vm.lunesSelected" class="md-check" ng-click="vm.selectDay(0)">
                                                     <label for="checkbox33">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -170,7 +170,7 @@
                                                         Lunes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox34" class="md-check" ng-click="vm.selectDay(1)">
+                                                    <input type="checkbox" id="checkbox34" name="day2" ng-model="vm.martesSelected" class="md-check" ng-click="vm.selectDay(1)">
                                                     <label for="checkbox34">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -178,7 +178,7 @@
                                                         Martes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox35" class="md-check" ng-click="vm.selectDay(2)">
+                                                    <input type="checkbox" id="checkbox35" name="day3" ng-model="vm.miercolesSelected"  class="md-check" ng-click="vm.selectDay(2)">
                                                     <label for="checkbox35">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -186,7 +186,7 @@
                                                         Miércoles </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox36" class="md-check" ng-click="vm.selectDay(3)">
+                                                    <input type="checkbox" id="checkbox36" name="day4" ng-model="vm.juevesSelected"  class="md-check" ng-click="vm.selectDay(3)">
                                                     <label for="checkbox36">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -194,7 +194,7 @@
                                                         Jueves </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox37" class="md-check" ng-click="vm.selectDay(4)">
+                                                    <input type="checkbox" id="checkbox37"name="day5"  ng-model="vm.viernesSelected" class="md-check" ng-click="vm.selectDay(4)">
                                                     <label for="checkbox37">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -202,7 +202,7 @@
                                                         Viernes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox38" class="md-check" ng-click="vm.selectDay(5)">
+                                                    <input type="checkbox" id="checkbox38" name="day6" ng-model="vm.sabadoSelected" class="md-check" ng-click="vm.selectDay(5)">
                                                     <label for="checkbox38">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -210,7 +210,7 @@
                                                         Sábado </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox39" class="md-check" ng-click="vm.selectDay(6)">
+                                                    <input type="checkbox" id="checkbox39" name="day7" ng-model="vm.domingoSelected"  class="md-check" ng-click="vm.selectDay(6)">
                                                     <label for="checkbox39">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -275,7 +275,7 @@
                                         <div class="form-group form-md-radios">
                                             <div class="md-radio-inline ">
                                                 <div class="md-radio">
-                                                    <input type="radio" ng-click="vm.changeChargeRequired(true)"  id="radio14" name="radio2" class="md-radiobtn">
+                                                    <input type="radio" ng-checked="vm.paymentRequiredUpdate==1" ng-click="vm.changeChargeRequired(true)"  id="radio14" name="radio2" class="md-radiobtn">
                                                     <label for="radio14">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -283,7 +283,7 @@
                                                         Si </label>
                                                 </div>
                                                 <div class="md-radio has-error">
-                                                    <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.changeChargeRequired(false)" >
+                                                    <input type="radio" id="radio15" ng-checked="vm.paymentRequiredUpdate==2" name="radio2" class="md-radiobtn" ng-click="vm.changeChargeRequired(false)" >
                                                     <label for="radio15">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -339,7 +339,7 @@
                                         <div class="form-group form-md-radios">
                                             <div class="md-radio-inline">
                                                 <div class="md-radio">
-                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt=1; vm.spaceInvalid2=false "  id="radio16" name="radio3" class="md-radiobtn" required>
+                                                    <input type="radio" ng-checked="vm.reservationWithDebts==1"  ng-click="vm.commonArea.reservationWithDebt=1; vm.spaceInvalid2=false "  id="radio16" name="radio3" class="md-radiobtn" required>
                                                     <label for="radio16">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -347,7 +347,7 @@
                                                         Si </label>
                                                 </div>
                                                 <div class="md-radio has-error">
-                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt=0; vm.spaceInvalid2=false " id="radio17" name="radio3" class="md-radiobtn" required>
+                                                    <input type="radio" ng-checked="vm.reservationWithDebts==2" ng-click="vm.commonArea.reservationWithDebt=0; vm.spaceInvalid2=false " id="radio17" name="radio3" class="md-radiobtn" required>
                                                     <label for="radio17">
                                                         <span></span>
                                                         <span class="check"></span>

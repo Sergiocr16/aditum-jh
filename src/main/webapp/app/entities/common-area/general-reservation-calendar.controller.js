@@ -3,14 +3,13 @@
 
     angular
         .module('aditumApp')
-        .controller('ReservationCalendarController', ReservationCalendarController);
+        .controller('GeneralReservationCalendarController', GeneralReservationCalendarController);
 
-    ReservationCalendarController.$inject = ['$compile','uiCalendarConfig','entity','CommonAreaReservations','AlertService','Resident','$state','$rootScope'];
+    GeneralReservationCalendarController.$inject = ['$compile','uiCalendarConfig','CommonAreaReservations','AlertService','Resident','$state','$rootScope'];
 
-    function ReservationCalendarController($compile,uiCalendarConfig,entity,CommonAreaReservations,AlertService,Resident,$state,$rootScope) {
+    function GeneralReservationCalendarController($compile,uiCalendarConfig,CommonAreaReservations,AlertService,Resident,$state,$rootScope) {
         var vm = this;
-        vm.commonArea = entity;
-        $rootScope.active = "reservationAdministration";
+        $rootScope.active = "generaCalendar";
         vm.reservations = [];
         var date = new Date();
         var d = date.getDate();
@@ -20,6 +19,8 @@
         vm.alertOnEventClick = alertOnEventClick
         vm.searchType = 1;
         vm.searchByType = function(type){
+
+
             switch(type){
                 case 1:
                     vm.changeView('month')
@@ -83,17 +84,13 @@
             console.log (date.status + ' was clicked ');
             if(date.status==1){
                 console.log('adfadf')
-                $state.go('common-area-administration.reservation-calendar.reservationDetail', {
-                    id: vm.commonArea.id,
-                    id2: date.id,
-
+                $state.go('common-area-administration.general-reservation-calendar.reservationDetail', {
+                    id: date.id
                 });
             }else if(date.status==2){
                 console.log('adf22adf')
-                $state.go('common-area-administration.reservation-calendar.acceptedReservationsDetail', {
-                    id: vm.commonArea.id,
-                    id2: date.id,
-
+                $state.go('common-area-administration.general-reservation-calendar.acceptedReservationsDetail', {
+                    id: date.id
                 });
             }
 
@@ -166,8 +163,8 @@
             calendar:{
                 events: function(start, end, timezone, callback) {
                     var events = [];
-                        CommonAreaReservations.getReservationsByCommonArea({
-                            commonAreaId: vm.commonArea.id
+                        CommonAreaReservations.getPendingAndAcceptedReservations({
+                            companyId: $rootScope.companyId
                         }, function(data) {
                             console.log(data)
                             angular.forEach(data,function(value){
@@ -180,8 +177,8 @@
                                 }
                                 events.push({
                                     id:value.id,
-
-                                    title:value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber  ,
+                                    commonAreaId:value.commonAreaId,
+                                    title: value.commonArea.name + " - " + value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber  ,
 
                                     start:new Date(value.initalDate),
 
@@ -195,6 +192,7 @@
                             });
 
                             callback(events);
+
                         });
 
 
@@ -256,7 +254,7 @@
         }
 
         /* event sources array*/
-         // vm.eventSources = [vm.events];
+        // vm.eventSources = [vm.events];
         // vm.eventSources2 = [vm.calEventsExt, vm.eventsF, vm.events];
 
     }

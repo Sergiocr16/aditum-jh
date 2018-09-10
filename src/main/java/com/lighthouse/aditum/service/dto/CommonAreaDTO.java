@@ -33,6 +33,10 @@ public class CommonAreaDTO implements Serializable {
 
     private Integer maximunHours;
 
+    private Integer deleted;
+
+    private Integer companyId;
+
     public Long getId() {
         return id;
     }
@@ -113,6 +117,22 @@ public class CommonAreaDTO implements Serializable {
         this.maximunHours = maximunHours;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -146,6 +166,8 @@ public class CommonAreaDTO implements Serializable {
             ", reservationWithDebt='" + getReservationWithDebt() + "'" +
             ", picture='" + getPicture() + "'" +
             ", maximunHours='" + getMaximunHours() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            ", companyId='" + getCompanyId() + "'" +
             "}";
     }
 }

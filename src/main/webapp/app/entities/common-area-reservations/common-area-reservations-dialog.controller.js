@@ -10,7 +10,7 @@
     function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods) {
         var vm = this;
         vm.commonarea = {};
-
+        $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
         var initialDateTemporal;
         vm.datePickerOpenStatus = {};

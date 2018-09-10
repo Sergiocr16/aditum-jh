@@ -5,20 +5,24 @@
         .module('aditumApp')
         .controller('CommonAreaDialogController', CommonAreaDialogController);
 
-    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods','CommonAreaSchedule','$state'];
+    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods','CommonAreaSchedule','$state','$rootScope','Principal'];
 
-    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods,CommonAreaSchedule,$state) {
+    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods,CommonAreaSchedule,$state,$rootScope,Principal) {
         var vm = this;
-
+        $rootScope.active = "reservationAdministration";
+        vm.isAuthenticated = Principal.isAuthenticated;
         vm.commonArea = entity;
-
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
         vm.paymentRequired=false;
         vm.commonArea.reservationChargeValida=true;
         vm.commonArea.devolutionAmmountValida=true;
-        vm.commonArea.devolutionAmmount = 0;
+        if (vm.commonArea.id == null) {
+            vm.commonArea.devolutionAmmount = 0;
+        }
+
+
         CommonMethods.validateNumbers();
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -40,17 +44,103 @@
                 var item = {value:i+12,time:i+':00PM'};
                 vm.hours.push(item);
             }
+
+            if (vm.commonArea.id !== null) {
+                vm.button="Editar";
+                var autorizadorStatus = vm.commonArea.chargeRequired;
+                if( vm.commonArea.chargeRequired==1){
+
+                    vm.paymentRequired=true;
+                    vm.paymentRequiredUpdate=1;
+                }else{
+                    vm.paymentRequiredUpdate=2;
+                }
+                if( vm.commonArea.reservationWithDebt==1){
+                    vm.reservationWithDebts = 1;
+
+                }else{
+                    vm.reservationWithDebts = 2;
+                }
+                loadSchedule();
+            } else {
+                vm.paymentRequiredUpdate=3;
+                vm.reservationWithDebts = 3;
+                vm.button="Registrar";
+            }
         }
 
-        if (vm.commonArea.id !== null) {
-                vm.button="Editar";
-        } else {
-            vm.button="Registrar";
+
+
+        function loadSchedule(){
+            CommonAreaSchedule.findSchedulesByCommonArea({
+                commonAreaId: vm.commonArea.id
+            }, onSuccessSchedule);
+
+        }
+        function onSuccessSchedule(data) {
+            console.log(data)
+              vm.scheduleId = data[0].id;
+            if (data[0].lunes !== "-") {
+                vm.daysOfWeek[0].selected=true;
+                vm.lunesSelected=true;
+                var times = data[0].lunes.split("-");
+                console.log(times)
+                vm.daysOfWeek[0].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[0].finalTime =  parseInt(times[1]);
+
+            }
+            if (data[0].martes !== "-") {
+                vm.daysOfWeek[1].selected=true;
+                vm.martesSelected = true;
+                var times = data[0].martes.split("-");
+                vm.daysOfWeek[1].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[1].finalTime =  parseInt(times[1]);
+            }
+            if (data[0].miercoles !== "-") {
+                vm.daysOfWeek[2].selected=true;
+                vm.miercolesSelected = true;
+                var times = data[0].miercoles.split("-");
+                vm.daysOfWeek[2].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[2].finalTime =  parseInt(times[1]);
+            }
+            if (data[0].jueves !== "-") {
+                vm.daysOfWeek[3].selected=true;
+                vm.juevesSelected = true;
+                var times = data[0].jueves.split("-");
+                vm.daysOfWeek[3].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[3].finalTime =  parseInt(times[1]);
+
+            }
+            if (data[0].viernes !== "-") {
+                vm.daysOfWeek[4].selected=true;
+                vm.viernesSelected = true;
+                var times = data[0].viernes.split("-");
+                vm.daysOfWeek[4].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[4].finalTime =  parseInt(times[1]);
+            }
+            if (data[0].sabado !== "-") {
+                vm.daysOfWeek[5].selected=true;
+                vm.sabadoSelected = true;
+                var times = data[0].sabado.split("-");
+                vm.daysOfWeek[5].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[5].finalTime =  parseInt(times[1]);
+            }
+            if (data[0].domingo !== "-") {
+                vm.daysOfWeek[6].selected=true;
+                vm.domingoSelected = true;
+                var times = data[0].domingo.split("-");
+                vm.daysOfWeek[6].initialTime = parseInt(times[0]);
+                vm.daysOfWeek[6].finalTime =  parseInt(times[1]);
+            }
         }
 
         vm.selectDay = function(index){
             vm.spaceInvalid3=false;
             vm.daysOfWeek[index].selected = !vm.daysOfWeek[index].selected;
+            if(vm.daysOfWeek[index].selected==false){
+                vm.daysOfWeek[index].initialTime = "";
+                vm.daysOfWeek[index].finalTime = "";
+            }
         }
         vm.validateDaysHours =function (index,item) {
 
@@ -72,7 +162,8 @@
 
 
 
-        }
+        };
+
         function validateForm () {
             if(vm.commonArea.reservationChargeValida && vm.commonArea.devolutionAmmountValida){
                 if(vm.commonArea.chargeRequired==null || vm.commonArea.reservationWithDebt==null){
@@ -120,6 +211,10 @@
         function save() {
             CommonMethods.waitingMessage();
             if (vm.commonArea.id !== null) {
+                if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
+                    vm.commonArea.maximunHours = 0;
+                }
+                console.log(vm.commonArea)
                 CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
             } else {
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
@@ -178,7 +273,14 @@
             commonAreaScheadule.sabado = vm.daysOfWeek[5].initialTime + "-" + vm.daysOfWeek[5].finalTime;
             commonAreaScheadule.domingo = vm.daysOfWeek[6].initialTime + "-" + vm.daysOfWeek[6].finalTime;
             commonAreaScheadule.commonAreaId = result.id;
-            CommonAreaSchedule.save(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
+            if (vm.commonArea.id !== null) {
+                commonAreaScheadule.id = vm.scheduleId;
+                console.log(commonAreaScheadule.id)
+                CommonAreaSchedule.update(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
+            } else {
+                CommonAreaSchedule.save(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
+            }
+
 
 
         }

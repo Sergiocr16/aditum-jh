@@ -114,6 +114,22 @@ public class CommonAreaReservationsService {
             .map(commonAreaReservationsMapper::toDto);
 
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservations(Pageable pageable,Long companyId) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findgetPendingAndAcceptedReservations(pageable,companyId)
+            .map(commonAreaReservationsMapper::toDto);
+
+    }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getReservationsByCommonArea(Pageable pageable,Long commonAreaId) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable,commonAreaId)
+            .map(commonAreaReservationsMapper::toDto);
+
+    }
+
+
     /**
      *  Get one commonAreaReservations by id.
      *

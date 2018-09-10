@@ -333,7 +333,7 @@ temporary rendered events).
   /* for resize handle and other inner positioning */
   display: block;
   /* make the <a> tag block */
-  font-size: .85em;
+  font-size: .95em;
   line-height: 1.3;
   border-radius: 3px;
   border: 1px solid #3a87ad;
@@ -808,7 +808,9 @@ NOTE: use percentage font sizes or else old IE chokes
   float: right; }
 
 .fc-toolbar .fc-center {
-  display: inline-block; }
+  display: inline-block;
+    font-weight: bold!important;
+}
 
 /* the things within each left/right/center section */
 .fc .fc-toolbar > * > * {
@@ -823,6 +825,8 @@ NOTE: use percentage font sizes or else old IE chokes
 
 /* title text */
 .fc-toolbar h2 {
+  font-weight: bold!important;
+    text-transform: capitalize;
   margin: 0; }
 
 /* button layering (for border precedence) */

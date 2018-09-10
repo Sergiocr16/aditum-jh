@@ -4,11 +4,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
+        .controller('ReservationCalendarReservationDetailController', ReservationCalendarReservationDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
+    ReservationCalendarReservationDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
 
-    function CommonAreaReservationsDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
+    function ReservationCalendarReservationDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -217,9 +217,12 @@
             });
         };
         function onCancelSuccess(result) {
-                bootbox.hideAll();
-                toastr["success"]("Se ha rechazado la reservación correctamente.")
-                $state.go('common-area-administration.common-area-reservations')
+            bootbox.hideAll();
+            toastr["success"]("Se ha rechazado la reservación correctamente.")
+            $state.go('common-area-administration.reservation-calendar', {
+                id: $stateParams.id,
+            });
+
 
         }
         vm.acceptReservation = function() {

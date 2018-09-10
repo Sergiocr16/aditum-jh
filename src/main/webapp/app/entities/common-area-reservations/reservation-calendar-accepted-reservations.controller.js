@@ -4,11 +4,11 @@
 
     angular
         .module('aditumApp')
-        .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
+        .controller('ReservationsCalentarAcceptedReservations', ReservationsCalentarAcceptedReservations);
 
-    CommonAreaReservationsDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
+    ReservationsCalentarAcceptedReservations.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
 
-    function CommonAreaReservationsDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
+    function ReservationsCalentarAcceptedReservations ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -116,6 +116,17 @@
                 todayBtn: false
             }
         };
+        vm.formatearNumero = function (nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        };
         vm.validateReservationCharge = function(cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -217,9 +228,9 @@
             });
         };
         function onCancelSuccess(result) {
-                bootbox.hideAll();
-                toastr["success"]("Se ha rechazado la reservación correctamente.")
-                $state.go('common-area-administration.common-area-reservations')
+            bootbox.hideAll();
+            toastr["success"]("Se ha rechazado la reservación correctamente.")
+            $state.go('common-area-administration.common-area-reservations')
 
         }
         vm.acceptReservation = function() {

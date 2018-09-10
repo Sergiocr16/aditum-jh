@@ -57,6 +57,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="deleted" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_id" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         

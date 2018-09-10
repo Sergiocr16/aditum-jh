@@ -22,7 +22,9 @@
             "chargeRequired": "Charge Required",
             "reservationWithDebt": "Reservation With Debt",
             "picture": "Picture",
-            "maximunHours": "Maximun Hours"
+            "maximunHours": "Maximun Hours",
+            "deleted": "Deleted",
+            "companyId": "Company Id"
         }
     }
 }

@@ -9,7 +9,7 @@
             <h2 class="bold uppercase" style="font-size:15px">Estado de cuenta <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
 
         <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
-        <div class=" col-md-6 col-lg-56 col-sm-12 col-xs-12 no-padding">
+        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
             <button  ng-click="vm.searchByType(1)" style="" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
             <button  ng-click="vm.searchByType(2)" style="border-left:0px!important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
             <button  ng-click="vm.searchByType(3)" style="border-left:0px!important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>

@@ -39,9 +39,7 @@ public class CommonAreaService {
     public CommonAreaDTO save(CommonAreaDTO commonAreaDTO) {
         log.debug("Request to save CommonArea : {}", commonAreaDTO);
         CommonArea commonArea = commonAreaMapper.toEntity(commonAreaDTO);
-        String a = "aaa";
         commonArea = commonAreaRepository.save(commonArea);
-
         return commonAreaMapper.toDto(commonArea);
     }
 
@@ -52,9 +50,9 @@ public class CommonAreaService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommonAreaDTO> findAll(Pageable pageable) {
+    public Page<CommonAreaDTO> findAll(Pageable pageable,int companyId) {
         log.debug("Request to get all CommonAreas");
-        return commonAreaRepository.findAll(pageable)
+        return commonAreaRepository.findByCompanyIdAndDeleted(pageable,companyId,0)
             .map(commonAreaMapper::toDto);
     }
 

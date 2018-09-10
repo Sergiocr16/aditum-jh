@@ -1,10 +1,38 @@
-<div>
+<div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 margin-top-10" >
+    <h3 class="caption-subject font-green-sharp bold uppercase" style="margin-top: 0px!important;">{{vm.commonArea.name}}</h3>
+    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-10">
+        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 no-padding" style="padding-right:20px!important;">
+            <p>{{vm.commonArea.description}}</p>
+            <span ng-if="vm.commonArea.reservationCharge!=null">Costo por reservación: ₡<span class="bold">{{vm.formatearNumero(vm.commonArea.reservationCharge+"")}}</span></span>
+        </div>
+        <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 no-padding bold" style="color:white; font-size:13px;">
+            <span   style="padding:5px; background-color: #ef5350" class=" col-md-6 col-sm-6 col-xs-12 text-center">Eventos sin aprobar</span>
+            <span   style="padding:5px; background-color: #42a5f5" class="col-md-6 col-sm-6 col-xs-12 text-center">Eventos aprobados</span>
+            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-top-20">
+                <button  ng-click="vm.searchByType(1)" style="" class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Mes</button>
+                <button  ng-click="vm.searchByType(2)" style="border-left:0px!important;" class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Semana</button>
+                <button  ng-click="vm.searchByType(3)" style="border-left:0px!important;" class="btn   col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Día</button>
+                <button  ng-click="vm.searchByType(4)" style="border-left:0px!important;"  class="btn  col-md-3 col-sm-3 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Lista</button>
 
-    <div class="btn-group">
-        <button class="btn btn-success" ng-click="vm.changeView('agendaDay')">AgendaDay</button>
-        <button class="btn btn-success" ng-click="vm.changeView('basicWeek')">AgendaWeek</button>
-        <button class="btn btn-success" ng-click="vm.changeView('month')">Month</button>
-        <button class="btn btn-success" ng-click="vm.changeView('listWeek')">Lista semanal</button>
+            </div>
+
+        </div>
+
     </div>
-    <div ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources"></div>
+
+    <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-20">
+        <div class="col-md-8 col-lg-8 no-padding">
+
+        </div>
+        <div class=" col-md-4 col-lg-4 col-sm-12 col-xs-12 no-padding ">
+           </div>
+    </div>
+    <!--<div class="btn-group">-->
+        <!--<button class="btn btn-success" ng-click="vm.changeView('agendaDay')">AgendaDay</button>-->
+        <!--<button class="btn btn-success" ng-click="vm.changeView('agendaWeek')">AgendaWeek</button>-->
+        <!--<button class="btn btn-success" ng-click="vm.changeView('month')">Month</button>-->
+        <!--<button class="btn btn-success" ng-click="vm.changeView('listWeek')">Lista semanal</button>-->
+
+    <!--</div>-->
+    <div ui-calendar="vm.uiConfig.calendar" ng-model="vm.eventSources" style="cursor:pointer; margin-bottom:20px;"></div>
 </div>
