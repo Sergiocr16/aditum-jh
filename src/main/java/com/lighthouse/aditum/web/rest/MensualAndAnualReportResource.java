@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 import com.lighthouse.aditum.service.MensualReportService;
-import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.service.dto.MensualIngressReportDTO;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 

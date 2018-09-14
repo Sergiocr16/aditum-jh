@@ -3,10 +3,7 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
-import com.lighthouse.aditum.service.dto.BalanceDTO;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import com.lighthouse.aditum.service.dto.PaymentDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +14,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.temporal.ChronoUnit;
+import static java.lang.Math.toIntExact;
+
+import java.sql.Date;
+import java.time.Period;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.time.format.DateTimeFormatter;
@@ -42,10 +44,11 @@ public class ChargeService {
     private final PaymentDocumentService paymentEmailSenderService;
     private final ResidentService residentService;
     private final HouseService houseService;
+    private final AdministrationConfigurationService administrationConfigurationService;
 
 
     @Autowired
-    public ChargeService(@Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
+    public ChargeService(AdministrationConfigurationService administrationConfigurationService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -54,6 +57,7 @@ public class ChargeService {
         this.paymentEmailSenderService = paymentEmailSenderService;
         this.residentService = residentService;
         this.houseService = houseService;
+        this.administrationConfigurationService = administrationConfigurationService;
     }
 
     /**
@@ -298,13 +302,53 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouse(Long houseId) {
         log.debug("Request to get all Charges");
-        return new PageImpl < > (chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0,1))
-            .map(chargeMapper::toDto);
+        log.info("SIIIIIIIIIIII");
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(houseId).getCompanyId());
+        log.debug(administrationConfigurationDTO.toString());
+        if(administrationConfigurationDTO.isHasSubCharges()) {
+            log.debug("SI");
+            ZonedDateTime now =  ZonedDateTime.now();
+            log.debug("ahora " + now);
+            return new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1))
+                .map(charge -> {
+                        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+                        int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(),now.toLocalDate()));
+                    log.debug("DIFERENCIA DE DIAS 2 "+diffBetweenChargeDateAndNow);
+                    log.debug("DIAS PARA SER MOROSO "+administrationConfigurationDTO.getDaysToBeDefaulter());
+                        if(diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysToBeDefaulter()){
+                            int daysAfter = Math.abs(diffBetweenChargeDateAndNow -  administrationConfigurationDTO.getDaysToBeDefaulter());
+                            int timesToIncreaseSubCharge = daysAfter/administrationConfigurationDTO.getIncreaseSubChargeDays();
+                            log.debug("DIAS DESPUES "+daysAfter);
+                            log.debug("VECES PARA INCREMENTAR "+timesToIncreaseSubCharge);
+                            double subCharge = Double.parseDouble(chargeDTO.getAmmount())*(administrationConfigurationDTO.getSubchargePercentage()/100);
+                            log.info("RECARGO"+subCharge);
+
+                            if(timesToIncreaseSubCharge!=0){
+                                subCharge = subCharge * timesToIncreaseSubCharge;
+                            }
+                            chargeDTO.setSubcharge(subCharge+"");
+                            chargeDTO.setTotal((Integer.parseInt(chargeDTO.getAmmount())+subCharge)+"");
+                        }else{
+                            chargeDTO.setSubcharge("0");
+                        }
+                        return chargeDTO;
+                    }
+                );
+        }else{
+            return new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1))
+                .map(charge -> {
+                        ChargeDTO chargeDTO = chargeMapper.toDto(charge);
+                         chargeDTO.setSubcharge("0");
+                        return chargeDTO;
+                    }
+                );
+        }
     }
 
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouseAndBetweenDate(Long houseId,String initialTime,String finalTime) {
         log.debug("Request to get all Charges");
+
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
         List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime,zd_finalTime,houseId);

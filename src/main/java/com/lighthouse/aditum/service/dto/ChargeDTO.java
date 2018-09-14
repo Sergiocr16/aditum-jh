@@ -13,7 +13,7 @@ public class ChargeDTO implements Serializable {
 
     public ChargeDTO() {
     }
-    public ChargeDTO(String concept,int total ) {
+    public ChargeDTO(String concept,String total ) {
         this.concept = concept;
         this.total = total;
 
@@ -54,7 +54,7 @@ public class ChargeDTO implements Serializable {
 
     private String left;
 
-    private int total;
+    private String total;
 
     private String paymentAmmount;
 
@@ -214,11 +214,11 @@ public class ChargeDTO implements Serializable {
         this.paymentAmmount = paymentAmmount;
     }
 
-    public int getTotal() {
+    public String getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(String total) {
         this.total = total;
     }
 }

@@ -1,6 +1,5 @@
 package com.lighthouse.aditum.service;
 
-import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.service.dto.AccountStatusDTO;
 import com.lighthouse.aditum.service.dto.AccountStatusItemDTO;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
@@ -8,7 +7,6 @@ import com.lighthouse.aditum.service.dto.PaymentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 @Service
 @Transactional
@@ -31,7 +28,7 @@ public class AccountStatusService {
         this.paymentService = paymentService;
     }
 
-    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time,boolean resident_account, String today_time){
+    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time, boolean resident_account, String today_time){
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         int saldoInicial = this.getSaldoInicial(pageable,houseId,initial_time);
@@ -98,4 +95,5 @@ public class AccountStatusService {
         saldoInicial = totalPayments - totalCharges;
         return saldoInicial;
     }
+
 }
