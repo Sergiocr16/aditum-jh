@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods'];
+    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods','companyUser'];
 
-    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods) {
+    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods,companyUser) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
+        console.log(CommonAreaReservations)
         var initialDateTemporal;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -19,7 +20,7 @@
         vm.required = 1;
         vm.hours = [];
         vm.schedule = [];
-        vm.commonareas = CommonArea.query();
+
         vm.allDaySchedule = 1;
         vm.scheduleIsAvailable = false;
         vm.diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', ''];
@@ -46,6 +47,13 @@
                 }
             });
             vm.houses = data;
+            CommonArea.query({
+                companyId: $rootScope.companyId
+            }, onSuccessCommonAreas, onError);
+        }
+        function onSuccessCommonAreas(data, headers) {
+
+            vm.commonareas = data;
             setTimeout(function() {
                 $("#loadingIcon").fadeOut(300);
             }, 400)
@@ -55,8 +63,8 @@
             if (vm.commonAreaReservations.id !== null) {
                 loadInfoToUpdate();
             }
-        }
 
+        }
         function loadInfoToUpdate() {
             vm.reservationTitle = "Editar"
             vm.residentsByHouse();
@@ -129,7 +137,42 @@
             $("#commonAreaImage").fadeIn('300');
             if(vm.commonAreaReservations.id!=null){
                 if(isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())){
-                    addHoursToSelect();
+                    if (vm.commonarea.maximunHours == 0) {
+                        $("#loadingAvailability").fadeIn('50');
+                        var initialTime = "0";
+                        var finalTime = "0";
+                        if (vm.commonarea.maximunHours !== 0) {
+                            initialTime = vm.timeSelected.initialTime.value;
+                            finalTime = vm.timeSelected.finalTime.value;
+                        }
+
+                        if (vm.commonAreaReservations.id !== null) {
+                            vm.commonAreaReservations.initalDate.setHours(0);
+                            vm.commonAreaReservations.initalDate.setMinutes(0);
+                            CommonAreaReservations.isAvailableToReserveNotNull({
+                                maximun_hours: vm.commonarea.maximunHours,
+                                reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
+                                initial_time: initialTime,
+                                final_time: finalTime,
+                                common_area_id: vm.commonarea.id,
+                                reservation_id: vm.commonAreaReservations.id
+
+                            }).$promise.then(onSuccessIsAvailable, onError);
+                        }else{
+                            CommonAreaReservations.isAvailableToReserve({
+                                maximun_hours: vm.commonarea.maximunHours,
+                                reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
+                                initial_time: initialTime,
+                                final_time: finalTime,
+                                common_area_id: vm.commonarea.id
+
+                            }).$promise.then(onSuccessIsAvailable, onError);
+                        }
+
+
+                    } else {
+                        addHoursToSelect()
+                    }
                 }
             }
         }
@@ -451,6 +494,9 @@
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
+
+
+
             if (vm.commonarea.maximunHours == 0) {
                 vm.commonAreaReservations.initialTime = vm.daySelected.initialValue;
                 vm.commonAreaReservations.finalTime = vm.daySelected.finalValue;
@@ -462,8 +508,20 @@
                 vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
+                if(companyUser.companies == null){
+                    vm.commonAreaReservations.sendPendingEmail = false;
+                }else{
+
+                    vm.commonAreaReservations.sendPendingEmail = true ;
+                }
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             } else {
+                if(companyUser.companies == null){
+                    vm.commonAreaReservations.sendPendingEmail = true;
+                }else{
+
+                    vm.commonAreaReservations.sendPendingEmail = false ;
+                }
                 vm.commonAreaReservations.status = 1;
                 vm.commonAreaReservations.companyId = $rootScope.companyId;
                 CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);

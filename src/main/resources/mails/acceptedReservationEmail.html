@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Solicitud de reservación</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <style>
+
+        .bold {
+            font-weight: 700 !important;
+        }
+
+        .font-15{
+            font-size: 15px;
+        }
+        .font-14{
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body style="margin:0;padding:5px;background-size:700% 100%;font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
+<div style="background: #4DB3A2;  /* fallback for old browsers */
+         background: -webkit-linear-gradient(to left, #00b19d, #009987);  /* Chrome 10-25, Safari 5.1-6 */
+         background: linear-gradient(to right, #00b19d, #009987); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+         padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;
+         -moz-border-radius: 15px;
+         border-radius: 15px!important;">
+    <h1 style="text-align:center;margin-bottom:1px"><img th:src="@{|${baseUrl}/content/images/logoAditum.png|}" alt="" height="40"/></h1>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-bottom:10px"></div>
+    <div style="background-color:rgba(255,255,255,0.9);border-radius:15px;padding:15px;color:#3c3e42; text-align: center">
+        <div style="color:black;">
+            <h2>Estimado(a) residente</h2>
+            <p class="font-15">El administrador ha actualizado la información de la reservación del área común en el condominio <span th:text="|${company}|"></span></p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Área común</th>
+                        <th>Fecha de reservación</th>
+                        <th>Horario</th>
+
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>
+    <h1 style="text-align:right;"><a style="margin:5px" href="https://lhousecr.com/"><img th:src="@{|${baseUrl}/content/images/lhlogo.png|}" alt="" height="30"/></a></h1>
+</div>
+</body>
+</html>

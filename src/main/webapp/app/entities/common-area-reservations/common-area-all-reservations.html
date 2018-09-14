@@ -20,6 +20,7 @@
                 <table class="jh-table table   table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">
                     <thead>
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Ver</th>
                         <th>Fecha</th>
                         <th>Horario</th>
                         <th class="text-center">Filial</th>
@@ -32,6 +33,7 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="finalListReservations in vm.finalListReservations | orderBy:'initalDate':true"  >
+                        <td class="text-center" ><button type="button" class="btn " style="border: 1px solid #0d638f; background-color: white; color: #0d638f;" ng-if="finalListReservations.status==1" ui-sref="common-area-administration.common-area-all-reservations.reservationDetail({id:finalListReservations.id})" name="button">Ver</button> <button type="button" class="btn " style="border: 1px solid #0d638f; background-color: white; color: #0d638f;" ng-if="finalListReservations.status==2" ui-sref="common-area-administration.common-area-all-reservations.acceptedReservationsDetail({id:finalListReservations.id})" name="button">Ver</button></td>
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td>{{finalListReservations.schedule}}</td>
                         <td class="text-center">{{finalListReservations.houseNumber}}</td>

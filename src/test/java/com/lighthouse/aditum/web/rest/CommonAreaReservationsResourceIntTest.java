@@ -5,9 +5,6 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.repository.CommonAreaReservationsRepository;
 import com.lighthouse.aditum.service.CommonAreaReservationsService;
-import com.lighthouse.aditum.service.CommonAreaService;
-import com.lighthouse.aditum.service.HouseService;
-import com.lighthouse.aditum.service.ResidentService;
 import com.lighthouse.aditum.service.dto.CommonAreaReservationsDTO;
 import com.lighthouse.aditum.service.mapper.CommonAreaReservationsMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -86,12 +83,7 @@ public class CommonAreaReservationsResourceIntTest {
 
     @Autowired
     private CommonAreaReservationsService commonAreaReservationsService;
-    @Autowired
-    private  ResidentService residentService;
-    @Autowired
-    private  HouseService houseService;
-    @Autowired
-    private CommonAreaService CommonAreaService;
+
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -108,15 +100,15 @@ public class CommonAreaReservationsResourceIntTest {
 
     private CommonAreaReservations commonAreaReservations;
 
-    @Before
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService,residentService,houseService,CommonAreaService);
-        this.restCommonAreaReservationsMockMvc = MockMvcBuilders.standaloneSetup(commonAreaReservationsResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setMessageConverters(jacksonMessageConverter).build();
-    }
+//    @Before
+//    public void setup() {
+//        MockitoAnnotations.initMocks(this);
+//        CommonAreaReservationsResource commonAreaReservationsResource = new CommonAreaReservationsResource(commonAreaReservationsService);
+//        this.restCommonAreaReservationsMockMvc = MockMvcBuilders.standaloneSetup(commonAreaReservationsResource)
+//            .setCustomArgumentResolvers(pageableArgumentResolver)
+//            .setControllerAdvice(exceptionTranslator)
+//            .setMessageConverters(jacksonMessageConverter).build();
+//    }
 
     /**
      * Create an entity for this test.

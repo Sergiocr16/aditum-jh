@@ -1,7 +1,6 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.CommonAreaReservations;
-import com.lighthouse.aditum.domain.EgressCategory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -49,6 +48,5 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
 //    @Query("select e from CommonAreaReservations e " +
 //        "where e.company.id < ?2  and e.status <>4")
 //    Page<CommonAreaReservations> findAllByCompanyId(Pageable pageable, Long companyId);
-
 
 }

@@ -165,14 +165,24 @@
             vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
             vm.commonAreaReservations.initalDate.setHours(0);
             vm.commonAreaReservations.initalDate.setMinutes(0);
+            if(vm.sendEmail){
+                vm.commonAreaReservations.sendPendingEmail = true ;
+            }else{
+                vm.commonAreaReservations.sendPendingEmail = false ;
+            }
+
             if (vm.commonAreaReservations.reservationCharge == null) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-
+                console.log('asaaad')
             } else {
+                vm.charge.companyId = $rootScope.companyId;
                 Charge.save(vm.charge, function (result) {
+
                     vm.commonAreaReservations.status = 2;
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
+                    vm.commonAreaReservations.chargeIdId = result.id
+                    console.log(vm.commonAreaReservations)
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
 

@@ -228,6 +228,34 @@
                 </a>
             </li>
             <!--//es residente-->
+            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === '' ||  active === '' ||  active === '' || active === '' || active === ''}">
+
+                <a href="javascript:;">
+                    <i class="fa fa-tree"  style=" color:white;" aria-hidden="true"></i>
+                    <span class="title menu-li-item"> Áreas comunes</span>
+                    <span class="arrow "  style=" color:white;"></span>
+                    <span class="selected "></span>
+                </a>
+                <ul class="sub-menu">
+                    <li ui-sref="common-area-resident-account" ng-class="{'active' : active === ''}">
+                        <a href="">
+                            <i class="fa fa-circle-o" aria-hidden="true" style=" color:white;"></i> <span class=" menu-li-item"> Ver todas</span>
+                        </a>
+                    </li>
+                    <li ui-sref="visitant-invited-user.new-list" ng-class="{'active' : active === 'reportInvitationList'}">
+                        <a href="">
+                            <i class="fa fa-circle-o" aria-hidden="true" style=" color:white;"></i><span class=" menu-li-item"> Reservar</span>
+                        </a>
+                    </li>
+
+                    <!--<li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">-->
+                    <!--<a href="">-->
+                    <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
+                    <!--</a>-->
+                    <!--</li>-->
+                </ul>
+            </li>
+            <!--//es residente-->
             <li  class="start hidden-lg  hidden-md"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
 
                 <a href="javascript:;">
@@ -332,6 +360,7 @@
                     <!--</li>-->
                 </ul>
             </li>
+
             <!--//es residente-->
 
             <li ui-sref="emergency.new" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">

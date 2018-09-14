@@ -129,6 +129,9 @@
                         id: null
                     };
                 },
+                companyUser: ['MultiCompany', function (MultiCompany) {
+                    return MultiCompany.getCurrentUserCompany()
+                }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
                         name: $state.current.name || 'common-area-reservations',
@@ -163,6 +166,56 @@
                 });
             }]
         })
+            .state('common-area-administration.common-area-all-reservations.reservationDetail', {
+                parent: 'common-area-administration.common-area-all-reservations',
+                url: '/{id}/detail',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
+                        controller: 'CommonAreaReservationsDetailController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['CommonAreaReservations', function(CommonAreaReservations) {
+                                return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('common-area-administration.common-area-all-reservations.reservationDetail', null, { reload: 'common-area-administration.common-area-all-reservations.reservationDetail' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
+            .state('common-area-administration.common-area-all-reservations.acceptedReservationsDetail', {
+                parent: 'common-area-administration.common-area-all-reservations',
+                url: '/{id}/accepted-reservation-detail',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
+                        controller: 'ReservationsCalentarAcceptedReservations',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['CommonAreaReservations', function(CommonAreaReservations) {
+                                return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('common-area-administration.common-area-all-reservations.acceptedReservationsDetail', null, { reload: 'common-area-administration.common-area-all-reservations.acceptedReservationsDetail' });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
             .state('common-area-administration.edit', {
                 url: '/{id}/edit',
                 data: {

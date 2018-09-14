@@ -967,6 +967,10 @@ li.active span.round-tabs.six{
     padding-top: 15px!important;
 }
 
+.commonAreaDivResidentView:hover{
+    background-color: rgba(235,235,235,0.57);
+}
+
 @media( max-width : 585px ){
 
     .board {

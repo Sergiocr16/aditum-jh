@@ -12,6 +12,14 @@
             "otherEntityName": "company",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "chargeId",
+            "otherEntityName": "charge",
+            "relationshipType": "one-to-one",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "chargeId"
         }
     ],
     "fields": [

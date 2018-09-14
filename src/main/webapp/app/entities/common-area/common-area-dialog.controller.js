@@ -78,7 +78,7 @@
 
         }
         function onSuccessSchedule(data) {
-            console.log(data)
+
               vm.scheduleId = data[0].id;
             if (data[0].lunes !== "-") {
                 vm.daysOfWeek[0].selected=true;
@@ -220,6 +220,8 @@
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
                     vm.commonArea.maximunHours = 0;
                 }
+                vm.commonArea.companyId = $rootScope.companyId;
+                vm.commonArea.deleted = 0;
                 CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
 
 
@@ -287,7 +289,7 @@
         function onSaveScheduleSuccess (result) {
             bootbox.hideAll();
             $state.go('common-area-administration.common-area');
-            toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
+            toastr["success"]("Se ha gestionado el área común correctamente.")
 
             vm.isSaving = false;
         }

@@ -27,11 +27,26 @@ public class CommonAreaReservationsService {
 
     private final CommonAreaReservationsRepository commonAreaReservationsRepository;
 
+    private final ResidentService residentService;
+
+    private final HouseService houseService;
+
+    private final CommonAreaService commonAreaService;
+
+    private final CommonAreaMailService commonAreaMailService;
+
+    private final ChargeService chargeService;
+
     private final CommonAreaReservationsMapper commonAreaReservationsMapper;
 
-    public CommonAreaReservationsService(CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper) {
+    public CommonAreaReservationsService(CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper, HouseService houseService, ResidentService residentService,CommonAreaMailService commonAreaMailService,CommonAreaService commonAreaService,ChargeService chargeService) {
         this.commonAreaReservationsRepository = commonAreaReservationsRepository;
         this.commonAreaReservationsMapper = commonAreaReservationsMapper;
+        this.houseService = houseService;
+        this.residentService = residentService;
+        this.commonAreaMailService = commonAreaMailService;
+        this.commonAreaService = commonAreaService;
+        this.chargeService = chargeService;
     }
 
     /**
@@ -45,10 +60,31 @@ public class CommonAreaReservationsService {
 
         commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
         commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
-
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
-        return commonAreaReservationsMapper.toDto(commonAreaReservations);
+        CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
+        commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
+        commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
+        commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
+        commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
+
+        if(commonAreaReservationsDTO.getId()==null){
+            this.commonAreaMailService.sendNewCommonAreaReservationEmailToResident(commonAreaReservationsDTO1);
+            if(commonAreaReservationsDTO.isSendPendingEmail()){
+                this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
+            }
+
+        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==1){
+            this.commonAreaMailService.sendUpdateCommonAreaReservationEmail(commonAreaReservationsDTO1);
+        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==2){
+            commonAreaReservationsDTO1.getResident().setEmail(commonAreaReservationsDTO.getResident().getEmail());
+            this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
+        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==3){
+            this.commonAreaMailService.sendCanceledCommonAreaReservationEmail(commonAreaReservationsDTO1);
+        }
+
+        return commonAreaReservationsDTO1;
+
     }
 
 
@@ -140,8 +176,9 @@ public class CommonAreaReservationsService {
     public CommonAreaReservationsDTO findOne(Long id) {
         log.debug("Request to get CommonAreaReservations : {}", id);
         CommonAreaReservations commonAreaReservations = commonAreaReservationsRepository.findOne(id);
-
-        return commonAreaReservationsMapper.toDto(commonAreaReservations);
+        CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+        commonAreaReservationsDTO.setResident(residentService.findOne(commonAreaReservationsDTO.getResidentId()));
+        return commonAreaReservationsDTO ;
     }
 
     /**

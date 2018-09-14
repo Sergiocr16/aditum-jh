@@ -60,6 +60,10 @@ public class CommonAreaReservations implements Serializable {
     @ManyToOne
     private Company company;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Charge chargeId;
+
     public Long getId() {
         return id;
     }
@@ -222,6 +226,19 @@ public class CommonAreaReservations implements Serializable {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public Charge getChargeId() {
+        return chargeId;
+    }
+
+    public CommonAreaReservations chargeId(Charge charge) {
+        this.chargeId = charge;
+        return this;
+    }
+
+    public void setChargeId(Charge charge) {
+        this.chargeId = charge;
     }
 
     @Override

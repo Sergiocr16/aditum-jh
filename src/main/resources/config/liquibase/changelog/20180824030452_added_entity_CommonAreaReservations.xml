@@ -69,7 +69,9 @@
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-
+            <column name="charge_id_id" type="bigint">
+                <constraints unique="true" nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="common_area_reservations" columnName="inital_date" columnDataType="datetime"/>

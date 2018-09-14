@@ -21,7 +21,7 @@
             concept: "",
             ammount: vm.commonAreaReservations.reservationCharge,
             devolution: vm.commonAreaReservations.devolutionAmmount,
-            date: new Date(),
+            date: null,
             valida: true,
             state: 1,
             deleted: 0
@@ -43,6 +43,12 @@
                         vm.commonAreaReservations.commonAreaName = result.name ;
                         vm.charge.concept = "Uso de " + vm.commonAreaReservations.commonAreaName;
                         vm.commonAreaReservations.schedule = formatScheduleTime(vm.commonAreaReservations.initialTime, vm.commonAreaReservations.finalTime);
+                        Charge.get({
+                            id: vm.commonAreaReservations.chargeIdId
+                        }, function(result) {
+                            vm.charge.date = result.date;
+
+                        })
                     })
                 })
             })

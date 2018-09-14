@@ -26,7 +26,8 @@
             "devolutionAmmount": "Devolution Ammount",
             "status": "Status",
             "commonArea": "Common Area",
-            "company": "Company"
+            "company": "Company",
+            "chargeId": "Charge Id"
         }
     }
 }

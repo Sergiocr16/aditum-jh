@@ -23,7 +23,49 @@
                     }
                 }
             })
-            .state('common-area-administration.common-area', {
+            .state('common-area-resident-account', {
+                parent: 'entity',
+                url: '/common-area-resident-account?page&sort&search',
+                data: {
+                    authorities: ['ROLE_USER'],
+                    pageTitle: 'aditumApp.commonArea.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area/common-area-resident-account.html',
+                        controller: 'CommonAreaController',
+                        controllerAs: 'vm'
+                    }
+                },
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('commonArea');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('common-area', {
                 url: '/common-area?page&sort&search',
                 data: {
                     authorities: ['ROLE_MANAGER'],

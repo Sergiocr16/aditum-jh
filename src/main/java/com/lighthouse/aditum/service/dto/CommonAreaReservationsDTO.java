@@ -41,16 +41,25 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private Long commonAreaId;
 
-    private boolean isAvailable;
-
     private Long companyId;
+
+    private Long chargeIdId;
+
+    private boolean isAvailable;
 
     private ResidentDTO resident;
 
     private HouseDTO house;
 
+    private ChargeDTO charge;
+
     private CommonAreaDTO commonArea;
 
+    private boolean sendPendingEmail;
+
+    private String emailTitle;
+
+    private int userType;
     public Long getId() {
         return id;
     }
@@ -155,6 +164,14 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.companyId = companyId;
     }
 
+    public Long getChargeIdId() {
+        return chargeIdId;
+    }
+
+    public void setChargeIdId(Long chargeId) {
+        this.chargeIdId = chargeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -223,5 +240,37 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setCommonArea(CommonAreaDTO commonArea) {
         this.commonArea = commonArea;
+    }
+
+    public boolean isSendPendingEmail() {
+        return sendPendingEmail;
+    }
+
+    public void setSendPendingEmail(boolean sendPendingEmail) {
+        this.sendPendingEmail = sendPendingEmail;
+    }
+
+    public String getEmailTitle() {
+        return emailTitle;
+    }
+
+    public void setEmailTitle(String emailTitle) {
+        this.emailTitle = emailTitle;
+    }
+
+    public int getUserType() {
+        return userType;
+    }
+
+    public void setUserType(int userType) {
+        this.userType = userType;
+    }
+
+    public ChargeDTO getCharge() {
+        return charge;
+    }
+
+    public void setCharge(ChargeDTO charge) {
+        this.charge = charge;
     }
 }
