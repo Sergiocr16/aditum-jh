@@ -297,7 +297,8 @@ public class PaymentService {
         }
     }
 
-    private void payCharge(ChargeDTO charge,Payment payment){
+    private void
+    payCharge(ChargeDTO charge,Payment payment){
         if(Integer.parseInt(charge.getLeft())>0){
             ChargeDTO newCharge = charge;
             newCharge.setAmmount(charge.getLeft());

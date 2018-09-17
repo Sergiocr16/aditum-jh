@@ -129,13 +129,13 @@
                 vm.toPay = parseInt(vm.toPay) + parseInt(vm.ammount);
                 angular.forEach(vm.charges, function(chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
-                        chargeIn.left = chargeIn.ammount - vm.ammount;
-                        chargeIn.paymentAmmount = chargeIn.ammount - chargeIn.left;
-                        if (chargeIn.paymentAmmount >= chargeIn.ammount) {
-                            chargeIn.paymentAmmount = chargeIn.ammount;
+                        chargeIn.left = chargeIn.total - vm.ammount;
+                        chargeIn.paymentAmmount = chargeIn.total - chargeIn.left;
+                        if (chargeIn.paymentAmmount >= chargeIn.total) {
+                            chargeIn.paymentAmmount = chargeIn.total;
                         }
                         defineNewStateCharge(chargeIn)
-                        vm.ammount = parseInt(vm.ammount - chargeIn.ammount)
+                        vm.ammount = parseInt(vm.ammount - chargeIn.total)
                         if (vm.ammount <= 0) {
                             vm.ammount = 0;
                         }
@@ -152,14 +152,14 @@
 
         function defineNewStateCharge(chargeIn) {
             if (vm.payment.ammount == undefined) {
-                chargeIn.left = chargeIn.ammount;
+                chargeIn.left = chargeIn.total;
                 chargeIn.paymentAmmount = 0;
                 chargeIn.estado = 1;
             }
             if (chargeIn.left <= 0) {
                 chargeIn.left = 0;
                 chargeIn.estado = 3;
-            } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.ammount) {
+            } else if (chargeIn.left > 0 && chargeIn.left < chargeIn.total) {
                 chargeIn.estado = 2;
             } else if (chargeIn.left >= 0) {
                 chargeIn.estado = 1;
@@ -321,11 +321,11 @@
                 angular.forEach(data, function(charge, i) {
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
-                    charge.left = charge.ammount;
+                    charge.left = charge.total;
                     charge.paymentAmmount = 0;
                     charge.estado = 1;
-                    vm.toPay = vm.toPay - parseInt(charge.ammount);
-                })
+                    vm.toPay = vm.toPay - parseInt(charge.total);
+                });
                 vm.charges = data.sort(function(a, b) {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.

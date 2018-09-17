@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Charge;
+import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.*;
@@ -301,50 +302,45 @@ public class ChargeService {
 
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouse(Long houseId) {
-        log.debug("Request to get all Charges");
-        log.info("SIIIIIIIIIIII");
-        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(houseId).getCompanyId());
-        log.debug(administrationConfigurationDTO.toString());
+      return new PageImpl<>(this.withSubcharges(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1), houseId).getContent());
+    }
+
+
+    private Page<ChargeDTO> withSubcharges(List<Charge> charges, Long houseId){
+        ZonedDateTime now =  ZonedDateTime.now();
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOneWithOutBalance(houseId).getCompanyId());
         if(administrationConfigurationDTO.isHasSubCharges()) {
-            log.debug("SI");
-            ZonedDateTime now =  ZonedDateTime.now();
-            log.debug("ahora " + now);
-            return new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1))
+            return new PageImpl<>(charges)
                 .map(charge -> {
                         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
                         int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(),now.toLocalDate()));
-                    log.debug("DIFERENCIA DE DIAS 2 "+diffBetweenChargeDateAndNow);
-                    log.debug("DIAS PARA SER MOROSO "+administrationConfigurationDTO.getDaysToBeDefaulter());
                         if(diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysToBeDefaulter()){
                             int daysAfter = Math.abs(diffBetweenChargeDateAndNow -  administrationConfigurationDTO.getDaysToBeDefaulter());
                             int timesToIncreaseSubCharge = daysAfter/administrationConfigurationDTO.getIncreaseSubChargeDays();
-                            log.debug("DIAS DESPUES "+daysAfter);
-                            log.debug("VECES PARA INCREMENTAR "+timesToIncreaseSubCharge);
                             double subCharge = Double.parseDouble(chargeDTO.getAmmount())*(administrationConfigurationDTO.getSubchargePercentage()/100);
-                            log.info("RECARGO"+subCharge);
-
                             if(timesToIncreaseSubCharge!=0){
                                 subCharge = subCharge * timesToIncreaseSubCharge;
                             }
                             chargeDTO.setSubcharge(subCharge+"");
-                            chargeDTO.setTotal((Integer.parseInt(chargeDTO.getAmmount())+subCharge)+"");
+                            chargeDTO.setTotal((Integer.parseInt(chargeDTO.getAmmount())+Math.round(subCharge))+"");
                         }else{
                             chargeDTO.setSubcharge("0");
+                            chargeDTO.setTotal(chargeDTO.getAmmount());
                         }
                         return chargeDTO;
                     }
                 );
         }else{
-            return new PageImpl<>(chargeRepository.findByHouseIdAndDeletedAndState(houseId, 0, 1))
+            return new PageImpl<>(charges)
                 .map(charge -> {
                         ChargeDTO chargeDTO = chargeMapper.toDto(charge);
-                         chargeDTO.setSubcharge("0");
+                        chargeDTO.setSubcharge("0");
+                        chargeDTO.setTotal(chargeDTO.getAmmount());
                         return chargeDTO;
                     }
                 );
         }
     }
-
     @Transactional(readOnly = true)
     public Page < ChargeDTO > findAllByHouseAndBetweenDate(Long houseId,String initialTime,String finalTime) {
         log.debug("Request to get all Charges");
@@ -503,7 +499,7 @@ public class ChargeService {
 
 
     public List<ChargeDTO> findBeforeDateAndHouseAndTypeAndState(ZonedDateTime initialDate,Long houseId,int type,int state){
-        return new PageImpl<>(chargeRepository.findBeforeDateAndHouseAndTypeAndState(initialDate,houseId,type,state))
-            .map(chargeMapper::toDto).getContent();
+        List<Charge> charges = chargeRepository.findBeforeDateAndHouseAndTypeAndState(initialDate,houseId,type,state);
+        return new PageImpl<>(this.withSubcharges(charges, houseId).getContent()).getContent();
     }
 }

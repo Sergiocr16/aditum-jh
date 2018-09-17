@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.AccountStatusService;
 import com.lighthouse.aditum.service.dto.AccountStatusDTO;
 
 import io.github.jhipster.web.util.ResponseUtil;

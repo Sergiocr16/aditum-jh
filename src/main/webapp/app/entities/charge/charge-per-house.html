@@ -34,6 +34,9 @@
                         Categoría
                     </th>
                     <th ng-show="vm.isEditing==false">
+                        Monto
+                    </th>
+                    <th ng-show="vm.isEditing==false">
                         Recargo
                     </th>
                     <th>
@@ -49,8 +52,9 @@
                      </td>
                      <td ng-show="vm.isEditing==false">{{charge.concept}}</td>
                      <td ng-show="vm.isEditing==false">{{vm.getCategory(charge.type)}}</td>
-                     <td ng-show="vm.isEditing==false">₡ {{charge.subcharge | currency : "" : 0}}</td>
                      <td ng-show="vm.isEditing==false">₡ {{charge.ammount | currency : "" : 0}}</td>
+                     <td ng-show="vm.isEditing==false">₡ {{charge.subcharge | currency : "" : 0}}</td>
+                     <td ng-show="vm.isEditing==false">₡ {{charge.total | currency : "" : 0}}</td>
 
                      <td class="text-center" ng-hide="vm.isEditing==false">
                          <div class="col-lg-12">

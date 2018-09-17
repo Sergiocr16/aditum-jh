@@ -199,6 +199,9 @@
                                                         Cargo
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
+                                                        Recargo
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
                                                         Restante
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;" class="text-center">
@@ -217,6 +220,7 @@
                                                     <td class="text-center">{{charge.date | date}}</td>
                                                     <td>{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
                                                     <td>₡ {{charge.ammount | currency : "" : 0}}</td>
+                                                    <td>₡ {{charge.subcharge | currency : "" : 0}}</td>
                                                     <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
                                                     <td ng-show="charge.isIncluded ==false">₡ -</td>
                                                     <td ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
@@ -227,12 +231,12 @@
                                                     </td>
                                                 </tr>
                                                 <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">
-                                                    <td colspan="7">
+                                                    <td colspan="8">
                                                         <h5 class="text-center" style="font-weight:bold;color:green">NO EXISTEN DEUDAS VIGENTES. SE GENERARÁ UN SALDO A FAVOR DE MANTENIMIENTO</h5>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;" colspan="5"><b ng-show="vm.toPay>0">SALDO A FAVOR DE MANTENIMIENTO</b><b id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
+                                                    <td style="text-align:right;border-bottom: 1px solid white;; border-left:1px solid white;" colspan="6"><b ng-show="vm.toPay>0">SALDO A FAVOR DE MANTENIMIENTO</b><b id="totalLabel" ng-show="vm.toPay<=0">POR PAGAR</b></td>
                                                     <td class="toPay" style="font-weight:bold" colspan="2" ng-class="{'no-liquid': vm.toPay<0,'liquid':vm.toPay>=0}">
                                                         <h6 style="background-color: transparent;text-align:center"><b>₡ {{vm.toPay | currency : "" : 0}}</b></h6>
                                                     </td>
