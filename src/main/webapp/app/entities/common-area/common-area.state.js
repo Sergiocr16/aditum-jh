@@ -58,10 +58,83 @@
                             search: $stateParams.search
                         };
                     }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('commonArea');
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
+                    }]
+                }
+            })
+            .state('common-area-administration.common-area', {
+                parent: 'common-area-administration',
+                url: '/common-area?page&sort&search',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.commonArea.home.title'
+                },
+
+                templateUrl: 'app/entities/common-area/common-areas.html',
+                controller: 'CommonAreaController',
+                controllerAs: 'vm',
+
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('commonArea');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('reservation-calendar-resident-view', {
+                parent: 'entity',
+                url: '/{id}/reservation-calendar-resident',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area/reservation-calendar-resident-view.html',
+                        controller: 'ReservationCalendarResidentViewController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    entity: function ($stateParams,CommonArea) {
+                        return CommonArea.get({id : $stateParams.id}).$promise;
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'reservation-calendar-resident-view',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
                     }]
                 }
             })
@@ -94,6 +167,9 @@
                             ascending: PaginationUtil.parseAscending($stateParams.sort),
                             search: $stateParams.search
                         };
+                    }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
                     }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('commonArea');

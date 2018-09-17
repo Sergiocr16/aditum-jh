@@ -238,7 +238,83 @@
                     }]
                 }
             })
+            .state('common-area-new-reservation-resident-view', {
+                parent: 'entity',
+                url: '/{id}/new-reservation-resident',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
+                        controller: 'CommonAreaReservationsDialogResidentViewController',
+                        controllerAs: 'vm',
+                    }
+                },
 
+                resolve: {
+                    entity: function ($stateParams,CommonArea) {
+                        if($stateParams!==null){
+                            return CommonArea.get({id : $stateParams.id}).$promise;
+                        }else{
+                            return null;
+                        }
+
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-new-reservation-resident-view',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('common-area-reservation-resident-view', {
+                parent: 'entity',
+                url: '/new-reservation-resident',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.html',
+                        controller: 'CommonAreaReservationsDialogResidentViewController',
+                        controllerAs: 'vm'
+                    }
+                },
+
+                resolve: {
+                    entity: function () {
+                        return {
+                            houseId: null,
+                            residentId: null,
+                            initalDate: null,
+                            finalDate: null,
+                            initialTime: null,
+                            finalTime: null,
+                            comments: null,
+                            id: null,
+                            chargeIdId: null
+                        };
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-resident-account',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
         .state('common-area-reservations.delete', {
             parent: 'common-area-reservations',
             url: '/{id}/delete',

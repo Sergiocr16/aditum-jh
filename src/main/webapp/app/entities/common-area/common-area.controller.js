@@ -5,12 +5,20 @@
         .module('aditumApp')
         .controller('CommonAreaController', CommonAreaController);
 
-    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods'];
+    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods','companyUser'];
 
-    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods) {
+    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods,companyUser) {
 
         var vm = this;
-        $rootScope.active = "reservationAdministration";
+        if(companyUser.companies == null){
+
+            $rootScope.active = "common-area-resident-account";
+        }else{
+
+            $rootScope.active = "reservationAdministration";
+        }
+
+
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

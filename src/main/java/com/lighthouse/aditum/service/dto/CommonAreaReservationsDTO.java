@@ -60,6 +60,7 @@ public class CommonAreaReservationsDTO implements Serializable {
     private String emailTitle;
 
     private int userType;
+
     public Long getId() {
         return id;
     }
