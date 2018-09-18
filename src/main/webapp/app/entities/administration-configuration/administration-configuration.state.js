@@ -52,10 +52,10 @@
             }
         })
         .state('administration-configuration-detail', {
-            parent: 'administration-configuration',
-            url: '/administration-configuration/{id}',
+            parent: 'entity',
+            url: '/administration-config',
             data: {
-                authorities: ['ROLE_USER'],
+                authorities: ['ROLE_MANAGER'],
                 pageTitle: 'aditumApp.administrationConfiguration.detail.title'
             },
             views: {
@@ -70,8 +70,8 @@
                     $translatePartialLoader.addPart('administrationConfiguration');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'AdministrationConfiguration', function($stateParams, AdministrationConfiguration) {
-                    return AdministrationConfiguration.get({id : $stateParams.id}).$promise;
+                entity: ['$rootScope', 'AdministrationConfiguration', function($rootScope, AdministrationConfiguration) {
+                    return AdministrationConfiguration.get({companyId : $rootScope.companyId}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {
