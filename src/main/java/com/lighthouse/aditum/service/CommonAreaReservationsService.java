@@ -65,7 +65,7 @@ public class CommonAreaReservationsService {
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
         commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
         commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
-        commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
+//        commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
         commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
 
         if(commonAreaReservationsDTO.getId()==null){
@@ -164,7 +164,13 @@ public class CommonAreaReservationsService {
             .map(commonAreaReservationsMapper::toDto);
 
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable,Long houseId) {
+        log.debug("Request to get all CommonAreaReservations");
+        return commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable,houseId,4)
+            .map(commonAreaReservationsMapper::toDto);
 
+    }
 
     /**
      *  Get one commonAreaReservations by id.

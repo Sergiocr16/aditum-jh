@@ -46,40 +46,43 @@
                 vm.queryCount = vm.totalItems;
                 vm.finalListReservations = data;
                 vm.page = pagingParams.page;
-
-                angular.forEach(data,function(value){
-                    // if(value.status!==4){
-                        House.get({
-                            id: value.houseId
-                        }, function(result) {
-                            value.houseNumber = result.housenumber;
-                            Resident.get({
-                                id: value.residentId
-                            }, function(result) {
-                                value.residentName = result.name + " " + result.lastname;
-                                CommonArea.get({
-                                    id: value.commonAreaId
-                                }, function(result) {
-                                    value.commonAreaName = result.name ;
-                                    value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-
-                                })
-                            })
-                        });
-                    //     vm.finalListReservations.push(value)
-                    // }
-                });
+                loadInfoByReservation(data);
                 setTimeout(function() {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
                 setTimeout(function() {
                     $("#tableDatas").fadeIn(300);
-                },900 )
+                },1000 )
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+        function loadInfoByReservation(data){
+            angular.forEach(data,function(value){
+                // if(value.status!==4){
+                House.get({
+                    id: value.houseId
+                }, function(result) {
+                    value.houseNumber = result.housenumber;
+                    Resident.get({
+                        id: value.residentId
+                    }, function(result) {
+                        value.residentName = result.name + " " + result.lastname;
+                        CommonArea.get({
+                            id: value.commonAreaId
+                        }, function(result) {
+                            value.commonAreaName = result.name ;
+                            value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
+
+                        })
+                    })
+                });
+                //     vm.finalListReservations.push(value)
+                // }
+            });
+        }
+
         function formatScheduleTime(initialTime, finalTime){
             var times = [];
             times.push(initialTime);

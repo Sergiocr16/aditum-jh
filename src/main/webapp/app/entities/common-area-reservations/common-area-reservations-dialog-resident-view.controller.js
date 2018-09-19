@@ -199,7 +199,8 @@
         };
 
         vm.checkAvailabilityBetweenHours = function() {
-
+            $("#loadingAvailability").fadeIn('50');
+            console.log('23')
             if (parseInt(vm.timeSelected.initialTime.value) == parseInt(vm.timeSelected.finalTime.value)) {
                 setTimeout(function() {
                     $scope.$apply(function() {
@@ -276,9 +277,10 @@
 
             } else {
 
-                $("#loadingAvailability").fadeOut('50');
+
                 vm.dateNotPermited = true;
                 toastr["error"]("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
+                $("#loadingAvailability").fadeOut('50');
             }
 
 
@@ -405,7 +407,7 @@
         function onSaveSuccess(result) {
             bootbox.hideAll();
 
-            $state.go('reservation-calendar-resident-view');
+            $state.go('common-area-resident-account');
             toastr["success"]("Se ha enviado la reservación correctamente para su respectiva aprobación")
             vm.isSaving = false;
         }

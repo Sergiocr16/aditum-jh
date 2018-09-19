@@ -11,9 +11,7 @@
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
                 <span>Información de la reservación</span>
                 <div class=" pull-right no-padding">
-                    <span ng-if="vm.commonAreaReservations.status==2">Estado: <span class="bold">aprobada</span></span>
-                    <span ng-if="vm.commonAreaReservations.status==1">Estado: <span class="bold">pendiente</span></span>
-
+                    <span>Estado: <span class="bold">aprobada</span></span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #939393; ">
@@ -52,13 +50,13 @@
                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
                     <div class=" bold control-label">Cantidad</div>
 
-                        <span>₡{{vm.formatearNumero(vm.charge.ammount+"")}}</span>
+                    <span>₡{{vm.formatearNumero(vm.charge.ammount+"")}}</span>
 
                 </div>
                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20" >
                     <div class=" bold">Devolución</div>
 
-                        <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
+                    <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
 
                 </div>
 
@@ -73,36 +71,18 @@
 
 
                 </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" ng-if="vm.commonAreaReservations.comments!==null">
-                    <div class="margin-bottom-10 "><span class="bold">Comentarios: </span>{{vm.commonAreaReservations.comments}}</div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" >
+                    <div class="margin-bottom-10 "><span class="bold">Comentarios: </span> Ejemplo de un comentario que podria ponerse</div>
 
-                    <!--<textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"-->
-                              <!--class="form-control col-md-12" name="comments" id="field_comments">-->
-                         <!--</textarea>-->
                 </div>
 
             </div>
-            <!--<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-bottom-20" ></div>-->
 
-                <!--<button type="button" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" style="background-color: white; border:1px solid red; color:red" data-dismiss="modal" ng-click="vm.clear()">-->
-                    <!--<span>Atrás</span>-->
-                <!--</button>-->
-
-
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-            <!--</button>-->
 
         </div>
 
     </div>
     <div class="modal-footer">
 
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-        <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-        <!--</button>-->
-        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
-        <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
-        <!--</button>-->
     </div>
 </form>

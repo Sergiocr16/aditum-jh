@@ -148,6 +148,15 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/common-area-reservations/findByHouseId/{houseId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> findByHouseId(@ApiParam Pageable pageable, @PathVariable Long houseId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.findByHouseId(pageable,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/findByHouseId");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /common-area-reservations/:id : get the "id" commonAreaReservations.
      *

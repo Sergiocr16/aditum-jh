@@ -69,7 +69,15 @@
                 params:{
                     commonAreaId: '@commonAreaId'
                 }
-            }
+            },
+            'findByHouseId':{
+                method: 'GET',
+                url: 'api/common-area-reservations/findByHouseId/:houseId',
+                isArray: true,
+                params:{
+                    houseId: '@houseId'
+                }
+            },
         });
     }
 })();

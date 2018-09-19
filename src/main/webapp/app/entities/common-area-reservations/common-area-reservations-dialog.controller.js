@@ -253,7 +253,7 @@
         };
 
         vm.checkAvailabilityBetweenHours = function() {
-
+            $("#loadingAvailability").fadeIn('0');
             if (parseInt(vm.timeSelected.initialTime.value) == parseInt(vm.timeSelected.finalTime.value)) {
                 setTimeout(function() {
                     $scope.$apply(function() {
@@ -371,7 +371,7 @@
             $("#loadingAvailability").fadeOut('50');
 
             if (data.available) {
-                console.log('a')
+
                 vm.scheduleIsAvailable = true;
                 vm.scheduleNotAvailable = false;
 

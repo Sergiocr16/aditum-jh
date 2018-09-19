@@ -36,6 +36,8 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
 
     Page<CommonAreaReservations> findByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
 
+    Page<CommonAreaReservations> findByHouseIdAndStatusNot(Pageable pageable, Long houseId, int status);
+
     Page<CommonAreaReservations> findByCompanyIdAndStatusNot(Pageable pageable, Long companyId, int status);
 
     @Query("select e from CommonAreaReservations e " +

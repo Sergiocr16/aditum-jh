@@ -50,6 +50,7 @@ public class CommonAreaMailService {
 
     private static final String SCHEDULE = "schedule";
 
+    private static final String TYPE = "type";
 
 
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
@@ -71,20 +72,25 @@ public class CommonAreaMailService {
             timeInitial = "12:00AM";
         }else if(Integer.parseInt(initialTime)<12){
             timeInitial = initialTime+":00AM";
-        }else if(Integer.parseInt(initialTime)>=12){
-            timeInitial = initialTime+":00PM";
+        }else if(Integer.parseInt(initialTime)>12){
+            timeInitial = Integer.parseInt(initialTime)-12 + ":00PM";
+
+        }else if(Integer.parseInt(initialTime)==12){
+            timeInitial = "12:00PM";
         }
         if(Integer.parseInt(finalTime)==0){
             timeFinal = "12:00AM";
         }else if(Integer.parseInt(finalTime)<12){
             timeFinal = finalTime+":00AM";
-        }else if(Integer.parseInt(finalTime)>=12){
-            timeFinal = finalTime+":00PM";
+        }else if(Integer.parseInt(finalTime)>12){
+            timeFinal = Integer.parseInt(finalTime)-12 + ":00PM";
+        }else if(Integer.parseInt(finalTime)==12){
+            timeFinal = "12:00PM";
         }
    return timeInitial + " - " + timeFinal;
     }
 
-    private String defineContent(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+    private String defineContentAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
         Locale locale = new Locale("es", "CR");
         Context context = new Context(locale);
@@ -92,32 +98,48 @@ public class CommonAreaMailService {
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
+        context.setVariable(TYPE, "Administrador");
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
-        context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+//        context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
         return templateEngine.process("pendingReservationEmail", context);
 
     }
+    private String defineContentResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
+        Locale locale = new Locale("es", "CR");
+        Context context = new Context(locale);
+        context.setVariable(RESERVATION, commonAreaReservationsDTO);
+        context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        context.setVariable(TYPE, "Residente");
+        context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
+        context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
+        context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
+        context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
+//        context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+        return templateEngine.process("pendingReservationEmail", context);
+
+    }
     @Async
     public void sendNewCommonAreaReservationEmailToAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
+        commonAreaReservationsDTO.setUserType(1);
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Tiene una nueva solicitud de reservación de la filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " en el condominio " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
-        commonAreaReservationsDTO.setUserType(1);
-        String content = this.defineContent(commonAreaReservationsDTO);
+
+        String content = this.defineContentAdmin(commonAreaReservationsDTO);
         this.adminInfoService.findAllByCompany(null, commonAreaReservationsDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
         });
     }
     @Async
     public void sendNewCommonAreaReservationEmailToResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
+        commonAreaReservationsDTO.setUserType(2);
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha creado una nueva solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
-        commonAreaReservationsDTO.setUserType(2);
-        String content = this.defineContent(commonAreaReservationsDTO);
+
+        String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
@@ -127,7 +149,7 @@ public class CommonAreaMailService {
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         commonAreaReservationsDTO.setUserType(2);
-        String content = this.defineContent(commonAreaReservationsDTO);
+        String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
@@ -139,7 +161,7 @@ public class CommonAreaMailService {
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha rechazado la solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         commonAreaReservationsDTO.setUserType(2);
-        String content = this.defineContent(commonAreaReservationsDTO);
+        String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
@@ -150,7 +172,7 @@ public class CommonAreaMailService {
         String subject = "Actualización de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setUserType(2);
         commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
-        String content = this.defineContent(commonAreaReservationsDTO);
+        String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
         }
