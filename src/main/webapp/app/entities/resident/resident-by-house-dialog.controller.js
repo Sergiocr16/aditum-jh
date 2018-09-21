@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary'];
+    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary','globalCompany'];
 
-    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary) {
+    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, globalCompany) {
         $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
@@ -98,7 +98,7 @@
 
 
         House.query({
-            companyId: $rootScope.companyId
+            companyId: globalCompany.getId()
         }).$promise.then(onSuccessHouses);
 
         function onSuccessHouses(data, headers) {
@@ -123,7 +123,7 @@
                 if (vm.resident.id !== null) {
                     if (vm.temporalIndentification !== vm.resident.identificationnumber) {
                         Resident.getByCompanyAndIdentification({
-                            companyId: $rootScope.companyId,
+                            companyId: globalCompany.getId(),
                             identificationID: vm.resident.identificationnumber
                         }, alreadyExist, allClearUpdate)
 
@@ -206,7 +206,7 @@
 
                 } else {
                     Resident.getByCompanyAndIdentification({
-                        companyId: $rootScope.companyId,
+                        companyId: globalCompany.getId(),
                         identificationID: vm.resident.identificationnumber
                     }, alreadyExist, allClearInsert)
 
@@ -225,7 +225,7 @@
                 CommonMethods.waitingMessage();
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
-                vm.resident.companyId = $rootScope.companyId;
+                vm.resident.companyId = globalCompany.getId();
                 vm.resident.houseId = $rootScope.companyUser.houseId
                 if (fileImage !== null) {
                     console.log("HAY IMAGEN")

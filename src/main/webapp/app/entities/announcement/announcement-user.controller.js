@@ -5,14 +5,14 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser','globalCompany'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'userNews';
 
-        moment.locale("es")
+        moment.locale("es");
         vm.announcements = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = 4;
@@ -34,9 +34,9 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = false;
-        setTimeout(function () {
+        // setTimeout(function () {
             loadAll();
-        }, 2000);
+        // }, 2000);
 
 
         function onSaveSuccess() {
@@ -166,7 +166,7 @@
         function loadAll() {
             vm.showingNews = true;
             Announcement.queryAsUser({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementSketchController', AnnouncementSketchController);
 
-    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', '$scope'];
+    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany'];
 
-    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
+    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany) {
 
         var vm = this;
 
@@ -22,9 +22,9 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
-        setTimeout(function () {
+        // setTimeout(function () {
             loadAll();
-        }, 1000);
+        // }, 1000);
 
 
         function onSaveSuccess() {
@@ -121,7 +121,7 @@
             vm.announcements = [];
             vm.showingNews = true;
             Announcement.querySketches({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -133,7 +133,7 @@
             vm.announcements = [];
             vm.showingNews = false;
             Announcement.querySketches({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()

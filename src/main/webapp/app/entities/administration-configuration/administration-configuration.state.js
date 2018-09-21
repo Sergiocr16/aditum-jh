@@ -70,8 +70,8 @@
                     $translatePartialLoader.addPart('administrationConfiguration');
                     return $translate.refresh();
                 }],
-                entity: ['$rootScope', 'AdministrationConfiguration', function($rootScope, AdministrationConfiguration) {
-                    return AdministrationConfiguration.get({companyId : $rootScope.companyId}).$promise;
+                entity: ['globalCompany', 'AdministrationConfiguration', function(globalCompany, AdministrationConfiguration) {
+                    return AdministrationConfiguration.get({companyId : globalCompany.getId()}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {

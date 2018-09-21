@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintDialogController', ComplaintDialogController);
 
-    ComplaintDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope','$state'];
+    ComplaintDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope','$state', 'globalCompany'];
 
-    function ComplaintDialogController ($timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state) {
+    function ComplaintDialogController ($timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany) {
         var vm = this;
 
         vm.complaint = {complaintType:"Vigilancia"};
@@ -21,9 +21,9 @@
         vm.residents = Resident.query();
 
 
-        $timeout(function (){
+        // $timeout(function (){
             loadAll()
-        },1000);
+        // },1000);
 
         function clear () {
          history.back();
@@ -46,7 +46,7 @@
         function loadAll () {
             House.query({
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
@@ -96,7 +96,7 @@
                     if (result) {
                         vm.isSaving = true;
                         vm.complaint.creationDate = moment(new Date).format();
-                        vm.complaint.companyId = $rootScope.companyId;
+                        vm.complaint.companyId = globalCompany.getId();
                         vm.complaint.status = 1;
                         vm.complaint.deleted = 0;
                         if (vm.complaint.id !== null) {

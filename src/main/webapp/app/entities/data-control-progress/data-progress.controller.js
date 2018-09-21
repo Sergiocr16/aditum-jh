@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DataProgressController', DataProgressController);
 
-    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company'];
+    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage'];
 
-    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company) {
+    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage) {
 
         var vm = this;
         $rootScope.active = "dataprogress";
@@ -24,15 +24,15 @@
                 }
             }
         }
-        setTimeout(function(){
+        // setTimeout(function(){
                  Principal.identity().then(function(account){
                  if(account.authorities[0]=="ROLE_ADMIN"){
                       loadCompanies();
                  }else if(  account.authorities[0]=="ROLE_MANAGER"){
-                     vm.loadHouses($rootScope.companyId)
+                     vm.loadHouses($localStorage.companyId)
                  }
                  })
-        },1000)
+        // },1000)
         function initGraphs() {
             var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
                 var chart = AmCharts.makeChart(id, {

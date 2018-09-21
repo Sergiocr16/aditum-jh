@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDialogController', EgressDialogController);
 
-    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory'];
+    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany'];
 
-    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory) {
+    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
 
@@ -29,17 +29,17 @@
 
 
         setTimeout(function () {
-            Proveedor.query({companyId: $rootScope.companyId}).$promise.then(onSuccessProveedores);
+            Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
 
             function onSuccessProveedores(data, headers) {
                 vm.proveedores = data;
 
-                Banco.query({companyId: $rootScope.companyId}).$promise.then(onSuccessBancos);
+                Banco.query({companyId: globalCompany.getId()}).$promise.then(onSuccessBancos);
 
                 function onSuccessBancos(data, headers) {
                     vm.bancos = data;
 
-                    EgressCategory.query({companyId: $rootScope.companyId}).$promise.then(onSuccessEgressCategories);
+                    EgressCategory.query({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
                 }
 
 
@@ -51,7 +51,6 @@
             angular.forEach(data, function (value, key) {
                 if (value.group == 'Gastos fijos') {
                     vm.gastosFijos.push(value)
-                    console.log(vm.gastosFijos);
                 }
                 if (value.group == 'Gastos variables') {
                     vm.gastosVariables.push(value)
@@ -202,7 +201,7 @@
                 Egress.update(vm.egress, onSaveReport, onSaveError);
 
             } else {
-                vm.egress.companyId = $rootScope.companyId;
+                vm.egress.companyId = globalCompany.getId();
                 vm.egress.paymentMethod = 0;
                 vm.egress.account = 0;
                 vm.egress.account = 0;

@@ -1,11 +1,11 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope','Resident'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident'];
 
     function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident) {
 
@@ -32,10 +32,10 @@
         }
         vm.openCalendar = openCalendar;
         vm.filtering = false;
-        vm.print = function(paymentId) {
+        vm.print = function (paymentId) {
             vm.exportActions.printing = true;
-            setTimeout(function() {
-                $scope.$apply(function() {
+            setTimeout(function () {
+                $scope.$apply(function () {
                     vm.exportActions.printing = false;
                 })
             }, 8000)
@@ -46,82 +46,77 @@
             })
         }
 
-        vm.download = function() {
+        vm.download = function () {
             vm.exportActions.downloading = true;
-            setTimeout(function() {
-                $scope.$apply(function() {
+            setTimeout(function () {
+                $scope.$apply(function () {
                     vm.exportActions.downloading = false;
                 })
             }, 8000)
         }
 
-        vm.sendEmail = function(payment) {
-                    bootbox.confirm({
-                        message: "¿Está seguro que desea enviarle el comprobante del pago "+payment.receiptNumber+" al contacto principal de la filial "+$localStorage.houseSelected.housenumber+"?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-      vm.exportActions.sendingEmail = true;
-                 Resident.findResidentesEnabledByHouseId({
-                     houseId: parseInt($localStorage.houseSelected.id),
-                 }).$promise.then(onSuccessResident, onError);
+        vm.sendEmail = function (payment) {
+            bootbox.confirm({
+                message: "¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function (result) {
+                    if (result) {
+                        vm.exportActions.sendingEmail = true;
+                        Resident.findResidentesEnabledByHouseId({
+                            houseId: parseInt($localStorage.houseSelected.id),
+                        }).$promise.then(onSuccessResident, onError);
 
-                 function onSuccessResident(data, headers) {
-                     var thereIs = false;
-                     angular.forEach(data, function(resident, i) {
-                         if (resident.email != undefined && resident.email != "" && resident.email != null) {
-                             resident.selected = false;
-                             if (resident.principalContact == 1) {
-                                 thereIs = true;
-                             }
-                         }
-                     });
-                     if (thereIs == true) {
-                         Payment.sendPaymentEmail({
-                             paymentId: payment.id
-                         })
-                         setTimeout(function() {
-                             $scope.$apply(function() {
-                                 vm.exportActions.sendingEmail = false;
-                             })
-                             toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
+                        function onSuccessResident(data, headers) {
+                            var thereIs = false;
+                            angular.forEach(data, function (resident, i) {
+                                if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                                    resident.selected = false;
+                                    if (resident.principalContact == 1) {
+                                        thereIs = true;
+                                    }
+                                }
+                            });
+                            if (thereIs == true) {
+                                Payment.sendPaymentEmail({
+                                    paymentId: payment.id
+                                })
+                                setTimeout(function () {
+                                    $scope.$apply(function () {
+                                        vm.exportActions.sendingEmail = false;
+                                    })
+                                    toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
 
-                         }, 8000)
-                     } else {
+                                }, 8000)
+                            } else {
 
-                                                 vm.exportActions.sendingEmail = false;
+                                vm.exportActions.sendingEmail = false;
 
-                         toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
+                                toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
 
-                     }
-                 }
-
-                 function onError() {
-                     toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
-
-                 }
                             }
                         }
-                    });
 
+                        function onError() {
+                            toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
 
-
-
-
+                        }
+                    }
+                }
+            });
 
 
         }
 
-        vm.cleanSearch = function() {
+        vm.cleanSearch = function () {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
             vm.initialTime = {
@@ -137,13 +132,13 @@
             loadAll();
         }
 
-        vm.filter = function() {
+        vm.filter = function () {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
             vm.filtering = true;
             loadAll();
         }
-        vm.updatePicker = function() {
+        vm.updatePicker = function () {
             vm.picker1 = {
                 datepickerOptions: {
                     maxDate: vm.initialTime.date == undefined ? new Date() : vm.finalTime.date,
@@ -161,21 +156,18 @@
         }
 
 
-
         vm.updatePicker();
 
 
-
         loadAll();
-        $('.dating').keypress(function(e) {
+        $('.dating').keypress(function (e) {
             return false
         });
 
 
-
-        $scope.$watch(function() {
+        $scope.$watch(function () {
             return $rootScope.houseSelected;
-        }, function() {
+        }, function () {
             $("#data").fadeOut(0);
             $("#loading").fadeIn("slow");
             vm.filtering = false;
@@ -227,12 +219,12 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.payments = data;
-                angular.forEach(vm.payments, function(payment, i) {
+                angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
                 })
                 vm.page = pagingParams.page;
                 $("#loading").fadeOut(300);
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#data").fadeIn("slow");
                 }, 900)
             }
@@ -247,9 +239,9 @@
             vm.transition();
         }
 
-        vm.showCharges = function(payment) {
+        vm.showCharges = function (payment) {
             payment.isShowingCharges = !payment.isShowingCharges;
-            angular.forEach(vm.payments, function(paymentIn, i) {
+            angular.forEach(vm.payments, function (paymentIn, i) {
                 if (paymentIn.id != payment.id) {
                     paymentIn.isShowingCharges = false;
                 }
