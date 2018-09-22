@@ -25,6 +25,7 @@
             "reservationCharge": "Reservation Charge",
             "devolutionAmmount": "Devolution Ammount",
             "status": "Status",
+            "chargeEmail": "Charge Email",
             "commonArea": "Common Area",
             "company": "Company",
             "chargeId": "Charge Id"

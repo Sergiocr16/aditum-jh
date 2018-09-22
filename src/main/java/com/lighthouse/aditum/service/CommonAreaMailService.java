@@ -102,7 +102,9 @@ public class CommonAreaMailService {
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
-//        context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+        if(commonAreaReservationsDTO.getCharge()!=null){
+            context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+        }
         return templateEngine.process("pendingReservationEmail", context);
 
     }
@@ -118,7 +120,10 @@ public class CommonAreaMailService {
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
-//        context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+        if(commonAreaReservationsDTO.getCharge()!=null){
+            context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
+        }
+
         return templateEngine.process("pendingReservationEmail", context);
 
     }
@@ -150,8 +155,8 @@ public class CommonAreaMailService {
         commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         commonAreaReservationsDTO.setUserType(2);
         String content = this.defineContentResident(commonAreaReservationsDTO);
-        if(commonAreaReservationsDTO.getResident().getEmail()!=null){
-            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+        if(commonAreaReservationsDTO.getChargeEmail()!=null){
+            this.mailService.sendEmail(commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
         }
     }
 

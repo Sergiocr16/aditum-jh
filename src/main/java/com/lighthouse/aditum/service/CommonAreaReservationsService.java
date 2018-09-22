@@ -61,11 +61,15 @@ public class CommonAreaReservationsService {
         commonAreaReservationsDTO.setFinalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getFinalTime())));
         commonAreaReservationsDTO.setInitalDate(commonAreaReservationsDTO.getInitalDate().plusHours(Integer.parseInt(commonAreaReservationsDTO.getInitialTime())));
         CommonAreaReservations commonAreaReservations = commonAreaReservationsMapper.toEntity(commonAreaReservationsDTO);
+        commonAreaReservations.setChargeEmail(commonAreaReservationsDTO.getChargeEmail());
         commonAreaReservations = commonAreaReservationsRepository.save(commonAreaReservations);
         CommonAreaReservationsDTO commonAreaReservationsDTO1 = commonAreaReservationsMapper.toDto(commonAreaReservations);
+        commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
         commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
         commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
-//        commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
+        if(commonAreaReservationsDTO1.getChargeIdId()!=null){
+            commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
+        }
         commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
 
         if(commonAreaReservationsDTO.getId()==null){
@@ -183,6 +187,7 @@ public class CommonAreaReservationsService {
         log.debug("Request to get CommonAreaReservations : {}", id);
         CommonAreaReservations commonAreaReservations = commonAreaReservationsRepository.findOne(id);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
+        commonAreaReservationsDTO.setChargeEmail(commonAreaReservations.getChargeEmail());
         commonAreaReservationsDTO.setResident(residentService.findOne(commonAreaReservationsDTO.getResidentId()));
         return commonAreaReservationsDTO ;
     }

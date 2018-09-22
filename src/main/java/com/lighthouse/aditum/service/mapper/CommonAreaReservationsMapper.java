@@ -23,9 +23,7 @@ public interface CommonAreaReservationsMapper extends EntityMapper <CommonAreaRe
     @Mapping(source = "companyId", target = "company")
 
     @Mapping(source = "chargeIdId", target = "chargeId")
-    CommonAreaReservations toEntity(CommonAreaReservationsDTO commonAreaReservationsDTO);
-
-
+    CommonAreaReservations toEntity(CommonAreaReservationsDTO commonAreaReservationsDTO); 
     default CommonAreaReservations fromId(Long id) {
         if (id == null) {
             return null;

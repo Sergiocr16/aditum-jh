@@ -37,6 +37,7 @@
             <h2  class="black">Estimado(a) <span th:text="|${type}|"></span></h2>
             <p class="font-15 black" style="margin-bottom: 50px;" th:text="|${reservation.getEmailTitle()}|"></p>
             <p class="font-14 black" th:if="${reservation.getStatus()==1}"><span class="bold">Estado: </span><span>Pendiente</span></p>
+            <p class="font-14 black"  th:if="${reservation.getStatus()==2}"><span class="bold">Estado: </span><span>Aprobada</span></p>
             <p class="font-14 black"  th:if="${reservation.getStatus()==3}"><span class="bold">Estado: </span><span>Rechazada</span></p>
             <p class="font-14 black"><span class="bold">Área común: </span><span th:text="|${commonArea.getName()}|"></span></p>
             <p class="font-14 black"><span class="bold">Fecha de reservación: </span><span th:text="|${date}|"></span></p>
@@ -45,7 +46,7 @@
             <div th:if="${commonArea.getChargeRequired()==1}" >
                 <p class="font-14 black"><span class="bold">Costo por reservación: </span>₡<span th:text="|${reservation.getReservationCharge()}|"></span></p>
                 <p class="font-14 black"><span class="bold">Devolución: </span>₡<span th:text="|${reservation.getDevolutionAmmount()}|"></span></p>
-                <!--<p class="font-14 black"><span class="bold">Fecha de cargo: </span><span th:text="|${chargeDate}|"></span></p>-->
+                <p class="font-14 black" th:if="${reservation.getStatus()==2}"><span class="bold">Fecha de cargo: </span><span th:text="|${chargeDate}|"></span></p>
 
             </div>
             <p class="font-14 black" style="margin-top: 30px ;" th:if="${reservation.getComments()!=null}"><span class="bold">Comentarios: </span><span th:text="|${reservation.getComments()}|"></span></p>

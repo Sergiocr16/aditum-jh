@@ -32,9 +32,9 @@
                 companyId: $rootScope.companyId
             }, onSuccess, onError);
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'initalDate') {
+                    result.push('initalDate,desc');
                 }
                 return result;
             }
@@ -58,6 +58,8 @@
                 AlertService.error(error.data.message);
             }
         }
+
+
         function loadInfoByReservation(data){
             angular.forEach(data,function(value){
                 // if(value.status!==4){

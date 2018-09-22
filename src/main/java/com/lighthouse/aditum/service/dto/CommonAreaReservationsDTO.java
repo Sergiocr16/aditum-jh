@@ -39,6 +39,8 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private Integer status;
 
+    private String chargeEmail;
+
     private Long commonAreaId;
 
     private Long companyId;
@@ -149,6 +151,14 @@ public class CommonAreaReservationsDTO implements Serializable {
         this.status = status;
     }
 
+    public String getChargeEmail() {
+        return chargeEmail;
+    }
+
+    public void setChargeEmail(String chargeEmail) {
+        this.chargeEmail = chargeEmail;
+    }
+
     public Long getCommonAreaId() {
         return commonAreaId;
     }
@@ -208,6 +218,7 @@ public class CommonAreaReservationsDTO implements Serializable {
             ", reservationCharge='" + getReservationCharge() + "'" +
             ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
             ", status='" + getStatus() + "'" +
+            ", chargeEmail='" + getChargeEmail() + "'" +
             "}";
     }
 
@@ -233,6 +244,14 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setHouse(HouseDTO house) {
         this.house = house;
+    }
+
+    public ChargeDTO getCharge() {
+        return charge;
+    }
+
+    public void setCharge(ChargeDTO charge) {
+        this.charge = charge;
     }
 
     public CommonAreaDTO getCommonArea() {
@@ -265,13 +284,5 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setUserType(int userType) {
         this.userType = userType;
-    }
-
-    public ChargeDTO getCharge() {
-        return charge;
-    }
-
-    public void setCharge(ChargeDTO charge) {
-        this.charge = charge;
     }
 }

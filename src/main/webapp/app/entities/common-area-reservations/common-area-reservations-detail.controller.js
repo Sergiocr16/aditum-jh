@@ -37,6 +37,7 @@
                     id: vm.commonAreaReservations.residentId
                 }, function(result) {
                     vm.commonAreaReservations.residentName = result.name + " " + result.lastname;
+                    vm.commonAreaReservations.chargeEmail = result.email;
                     CommonArea.get({
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
@@ -183,6 +184,7 @@
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
                     vm.commonAreaReservations.chargeIdId = result.id
                     console.log(vm.commonAreaReservations)
+
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
 

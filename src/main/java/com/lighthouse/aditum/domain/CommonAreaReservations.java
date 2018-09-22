@@ -54,6 +54,9 @@ public class CommonAreaReservations implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "charge_email")
+    private String chargeEmail;
+
     @ManyToOne
     private CommonArea commonArea;
 
@@ -202,6 +205,19 @@ public class CommonAreaReservations implements Serializable {
         this.status = status;
     }
 
+    public String getChargeEmail() {
+        return chargeEmail;
+    }
+
+    public CommonAreaReservations chargeEmail(String chargeEmail) {
+        this.chargeEmail = chargeEmail;
+        return this;
+    }
+
+    public void setChargeEmail(String chargeEmail) {
+        this.chargeEmail = chargeEmail;
+    }
+
     public CommonArea getCommonArea() {
         return commonArea;
     }
@@ -275,6 +291,7 @@ public class CommonAreaReservations implements Serializable {
             ", reservationCharge='" + getReservationCharge() + "'" +
             ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
             ", status='" + getStatus() + "'" +
+            ", chargeEmail='" + getChargeEmail() + "'" +
             "}";
     }
 }

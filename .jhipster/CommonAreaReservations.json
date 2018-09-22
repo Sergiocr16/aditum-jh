@@ -74,6 +74,10 @@
         {
             "fieldName": "status",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "chargeEmail",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20180824030452",
