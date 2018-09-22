@@ -39,7 +39,7 @@
         vm.publish = function (announcement) {
 
             bootbox.confirm({
-                message: "¿Está seguro que desea publicar la noticia? , una vez publicada será visible para los condóminos.",
+                message: "¿Está seguro que desea publicar la noticia? Una vez publicada será visible para los condóminos.",
                 buttons: {
                     confirm: {
                         label: 'Aceptar',
