@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,19 @@ public class AdministrationConfigurationDTO implements Serializable {
     private String folioSerie;
 
     private Integer folioNumber;
+
+    private Integer daysTobeDefaulter;
+
+    @NotNull
+    private Boolean hasSubcharges;
+
+    private Double subchargePercentage;
+
+    private Double subchargeAmmount;
+
+    private Integer daysToSendEmailBeforeBeDefaulter;
+
+    private Boolean usingSubchargePercentage;
 
     private Long companyId;
 
@@ -51,6 +65,54 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     public void setFolioNumber(Integer folioNumber) {
         this.folioNumber = folioNumber;
+    }
+
+    public Integer getDaysTobeDefaulter() {
+        return daysTobeDefaulter;
+    }
+
+    public void setDaysTobeDefaulter(Integer daysTobeDefaulter) {
+        this.daysTobeDefaulter = daysTobeDefaulter;
+    }
+
+    public Boolean isHasSubcharges() {
+        return hasSubcharges;
+    }
+
+    public void setHasSubcharges(Boolean hasSubcharges) {
+        this.hasSubcharges = hasSubcharges;
+    }
+
+    public Double getSubchargePercentage() {
+        return subchargePercentage;
+    }
+
+    public void setSubchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
+    }
+
+    public Double getSubchargeAmmount() {
+        return subchargeAmmount;
+    }
+
+    public void setSubchargeAmmount(Double subchargeAmmount) {
+        this.subchargeAmmount = subchargeAmmount;
+    }
+
+    public Integer getDaysToSendEmailBeforeBeDefaulter() {
+        return daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public void setDaysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public Boolean isUsingSubchargePercentage() {
+        return usingSubchargePercentage;
+    }
+
+    public void setUsingSubchargePercentage(Boolean usingSubchargePercentage) {
+        this.usingSubchargePercentage = usingSubchargePercentage;
     }
 
     public Long getCompanyId() {
@@ -88,7 +150,13 @@ public class AdministrationConfigurationDTO implements Serializable {
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
             ", folioSerie='" + getFolioSerie() + "'" +
-            ", folioNumber='" + getFolioNumber() + "'" +
+            ", folioNumber=" + getFolioNumber() +
+            ", daysTobeDefaulter=" + getDaysTobeDefaulter() +
+            ", hasSubcharges='" + isHasSubcharges() + "'" +
+            ", subchargePercentage=" + getSubchargePercentage() +
+            ", subchargeAmmount=" + getSubchargeAmmount() +
+            ", daysToSendEmailBeforeBeDefaulter=" + getDaysToSendEmailBeforeBeDefaulter() +
+            ", usingSubchargePercentage='" + isUsingSubchargePercentage() + "'" +
             "}";
     }
 }

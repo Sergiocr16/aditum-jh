@@ -79,7 +79,19 @@
             }
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
-            var adminConfig = {squareMetersPrice:0, companyId:result.id,folioSerie:"A",folioNumber:1};
+            var adminConfig = {
+                squareMetersPrice: 0,
+                companyId: result.id,
+                folioSerie: "A",
+                folioNumber: 1,
+                hasSubcharges: true,
+                daysTobeDefaulter: 15,
+                daysToSendEmailBeforeBeDefaulter: 5,
+                subchargeAmmount: 0,
+                subchargePercentage: 5,
+                usingSubchargePercentage: true
+
+            };
             AdministrationConfiguration.save(adminConfig);
         }
         function onSaveSuccess (result) {

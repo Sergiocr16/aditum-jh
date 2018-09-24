@@ -2,8 +2,10 @@ package com.lighthouse.aditum.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 /**
  * A AdministrationConfiguration.
@@ -27,9 +29,29 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "folio_number")
     private Integer folioNumber;
 
+    @Column(name = "days_tobe_defaulter")
+    private Integer daysTobeDefaulter;
+
+    @NotNull
+    @Column(name = "has_subcharges", nullable = false)
+    private Boolean hasSubcharges;
+
+    @Column(name = "subcharge_percentage")
+    private Double subchargePercentage;
+
+    @Column(name = "subcharge_ammount")
+    private Double subchargeAmmount;
+
+    @Column(name = "days_to_send_email_before_be_defaulter")
+    private Integer daysToSendEmailBeforeBeDefaulter;
+
+    @Column(name = "using_subcharge_percentage")
+    private Boolean usingSubchargePercentage;
+
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -77,6 +99,84 @@ public class AdministrationConfiguration implements Serializable {
         this.folioNumber = folioNumber;
     }
 
+    public Integer getDaysTobeDefaulter() {
+        return daysTobeDefaulter;
+    }
+
+    public AdministrationConfiguration daysTobeDefaulter(Integer daysTobeDefaulter) {
+        this.daysTobeDefaulter = daysTobeDefaulter;
+        return this;
+    }
+
+    public void setDaysTobeDefaulter(Integer daysTobeDefaulter) {
+        this.daysTobeDefaulter = daysTobeDefaulter;
+    }
+
+    public Boolean isHasSubcharges() {
+        return hasSubcharges;
+    }
+
+    public AdministrationConfiguration hasSubcharges(Boolean hasSubcharges) {
+        this.hasSubcharges = hasSubcharges;
+        return this;
+    }
+
+    public void setHasSubcharges(Boolean hasSubcharges) {
+        this.hasSubcharges = hasSubcharges;
+    }
+
+    public Double getSubchargePercentage() {
+        return subchargePercentage;
+    }
+
+    public AdministrationConfiguration subchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
+        return this;
+    }
+
+    public void setSubchargePercentage(Double subchargePercentage) {
+        this.subchargePercentage = subchargePercentage;
+    }
+
+    public Double getSubchargeAmmount() {
+        return subchargeAmmount;
+    }
+
+    public AdministrationConfiguration subchargeAmmount(Double subchargeAmmount) {
+        this.subchargeAmmount = subchargeAmmount;
+        return this;
+    }
+
+    public void setSubchargeAmmount(Double subchargeAmmount) {
+        this.subchargeAmmount = subchargeAmmount;
+    }
+
+    public Integer getDaysToSendEmailBeforeBeDefaulter() {
+        return daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public AdministrationConfiguration daysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+        return this;
+    }
+
+    public void setDaysToSendEmailBeforeBeDefaulter(Integer daysToSendEmailBeforeBeDefaulter) {
+        this.daysToSendEmailBeforeBeDefaulter = daysToSendEmailBeforeBeDefaulter;
+    }
+
+    public Boolean isUsingSubchargePercentage() {
+        return usingSubchargePercentage;
+    }
+
+    public AdministrationConfiguration usingSubchargePercentage(Boolean usingSubchargePercentage) {
+        this.usingSubchargePercentage = usingSubchargePercentage;
+        return this;
+    }
+
+    public void setUsingSubchargePercentage(Boolean usingSubchargePercentage) {
+        this.usingSubchargePercentage = usingSubchargePercentage;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -89,6 +189,7 @@ public class AdministrationConfiguration implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -116,7 +217,13 @@ public class AdministrationConfiguration implements Serializable {
             "id=" + getId() +
             ", squareMetersPrice='" + getSquareMetersPrice() + "'" +
             ", folioSerie='" + getFolioSerie() + "'" +
-            ", folioNumber='" + getFolioNumber() + "'" +
+            ", folioNumber=" + getFolioNumber() +
+            ", daysTobeDefaulter=" + getDaysTobeDefaulter() +
+            ", hasSubcharges='" + isHasSubcharges() + "'" +
+            ", subchargePercentage=" + getSubchargePercentage() +
+            ", subchargeAmmount=" + getSubchargeAmmount() +
+            ", daysToSendEmailBeforeBeDefaulter=" + getDaysToSendEmailBeforeBeDefaulter() +
+            ", usingSubchargePercentage='" + isUsingSubchargePercentage() + "'" +
             "}";
     }
 }
