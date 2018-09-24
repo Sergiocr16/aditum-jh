@@ -142,7 +142,7 @@ public class CommonAreaMailService {
     public void sendNewCommonAreaReservationEmailToResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         commonAreaReservationsDTO.setUserType(2);
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha creado una nueva solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
+        commonAreaReservationsDTO.setEmailTitle("Se ha creado una nueva solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
 
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
@@ -152,7 +152,7 @@ public class CommonAreaMailService {
     @Async
     public void sendAcceptedCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
+        commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         commonAreaReservationsDTO.setUserType(2);
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getChargeEmail()!=null){
@@ -164,7 +164,7 @@ public class CommonAreaMailService {
     public void sendCanceledCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setEmailTitle("Se ha rechazado la solicitud de reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
+        commonAreaReservationsDTO.setEmailTitle("Se ha rechazado la solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         commonAreaReservationsDTO.setUserType(2);
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
@@ -176,7 +176,7 @@ public class CommonAreaMailService {
 
         String subject = "Actualización de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setUserType(2);
-        commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en el condominio "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
+        commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);

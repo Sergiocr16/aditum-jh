@@ -37,6 +37,7 @@
                     id: vm.commonAreaReservations.residentId
                 }, function(result) {
                     vm.commonAreaReservations.residentName = result.name + " " + result.lastname;
+                    vm.commonAreaReservations.chargeEmail = result.email;
                     CommonArea.get({
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
@@ -200,8 +201,9 @@
                     }
                 },
                 callback: function (result) {
-                    CommonMethods.waitingMessage();
+
                     if (result) {
+                        CommonMethods.waitingMessage();
                         vm.commonAreaReservations.status = 3;
                         vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                         vm.commonAreaReservations.initalDate.setHours(0);

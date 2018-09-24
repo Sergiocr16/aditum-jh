@@ -42,7 +42,8 @@
                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10 " style="border-right: 1px solid #b0b0b0;  ">
                     <div class=" bold control-label">Fecha del cargo</div>
 
-                    <span>{{vm.charge.date | date:'longDate'}}</span>
+                    <span  ng-if="vm.commonAreaReservations.status==1">No realizado</span>
+                    <span ng-if="vm.commonAreaReservations.status==2">{{vm.charge.date | date:'longDate'}}</span>
                 </div>
                 <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
                     <div class=" bold control-label">Concepto</div>
@@ -63,11 +64,11 @@
                 </div>
 
             </div>
-            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; ">
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; " ng-if="vm.commonAreaReservations.status==2">
                 <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span>Información de envío de correo</span></div>
 
             </div>
-            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #939393; border-top:0px;">
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #939393; border-top:0px;" ng-if="vm.commonAreaReservations.status==2">
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20 form-group" style="padding-bottom: 10px!important;">
                     <div class="control-label"><span class="bold">Correo electrónico: </span> {{vm.commonAreaReservations.chargeEmail}} </div>
 

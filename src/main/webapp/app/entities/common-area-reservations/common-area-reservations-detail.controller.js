@@ -13,7 +13,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.commonAreaReservations = entity;
-        console.log(vm.commonAreaReservations);
+        console.log('fadfda')
         vm.minDate = new Date();
         vm.sendEmail = false;
         vm.charge = {
@@ -29,6 +29,7 @@
         loadInfo();
 
         function loadInfo(){
+
             House.get({
                 id:  vm.commonAreaReservations.houseId
             }, function(result) {
@@ -38,6 +39,8 @@
                 }, function(result) {
                     vm.commonAreaReservations.residentName = result.name + " " + result.lastname;
                     vm.commonAreaReservations.chargeEmail = result.email;
+                    console.log("dafadf")
+                    console.log(result.email)
                     CommonArea.get({
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
@@ -71,7 +74,7 @@
 
             });
             return times[0] + " - " + times[1]
-            console.log(times)
+
         }
 
         vm.clear = clear;
@@ -86,7 +89,7 @@
         }
 
         function save () {
-            console.log('ad')
+
             vm.isSaving = true;
 
 
@@ -175,7 +178,7 @@
             if (vm.commonAreaReservations.reservationCharge == null) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
-                console.log('asaaad')
+
             } else {
                 vm.charge.companyId = $rootScope.companyId;
                 Charge.save(vm.charge, function (result) {
@@ -183,7 +186,7 @@
                     vm.commonAreaReservations.status = 2;
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
                     vm.commonAreaReservations.chargeIdId = result.id
-                    console.log(vm.commonAreaReservations)
+
 
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
@@ -212,8 +215,9 @@
                     }
                 },
                 callback: function (result) {
-                    CommonMethods.waitingMessage();
+
                     if (result) {
+                        CommonMethods.waitingMessage();
                         vm.commonAreaReservations.status = 3;
                         vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                         vm.commonAreaReservations.initalDate.setHours(0);
