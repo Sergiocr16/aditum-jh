@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Charge.
  */
@@ -47,6 +48,9 @@ public class Charge implements Serializable {
     @Column(name = "payment_date")
     private ZonedDateTime paymentDate;
 
+    @Column(name = "subcharge")
+    private String subcharge;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -57,6 +61,7 @@ public class Charge implements Serializable {
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -156,6 +161,19 @@ public class Charge implements Serializable {
         this.paymentDate = paymentDate;
     }
 
+    public String getSubcharge() {
+        return subcharge;
+    }
+
+    public Charge subcharge(String subcharge) {
+        this.subcharge = subcharge;
+        return this;
+    }
+
+    public void setSubcharge(String subcharge) {
+        this.subcharge = subcharge;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -194,6 +212,7 @@ public class Charge implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -219,13 +238,14 @@ public class Charge implements Serializable {
     public String toString() {
         return "Charge{" +
             "id=" + getId() +
-            ", type='" + getType() + "'" +
+            ", type=" + getType() +
             ", date='" + getDate() + "'" +
             ", concept='" + getConcept() + "'" +
             ", ammount='" + getAmmount() + "'" +
-            ", state='" + getState() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", state=" + getState() +
+            ", deleted=" + getDeleted() +
             ", paymentDate='" + getPaymentDate() + "'" +
+            ", subcharge='" + getSubcharge() + "'" +
             "}";
     }
 }

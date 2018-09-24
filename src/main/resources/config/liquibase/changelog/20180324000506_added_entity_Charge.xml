@@ -50,6 +50,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="subcharge" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>
@@ -68,4 +72,5 @@
         <dropDefaultValue tableName="charge" columnName="payment_date" columnDataType="datetime"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
