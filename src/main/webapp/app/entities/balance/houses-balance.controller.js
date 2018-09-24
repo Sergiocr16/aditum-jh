@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('HousesBalanceController', HousesBalanceController);
 
-    HousesBalanceController.$inject = ['$state','Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
+    HousesBalanceController.$inject = ['$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'globalCompany'];
 
-    function HousesBalanceController($state,Balance, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
+    function HousesBalanceController($state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, globalCompany) {
         $rootScope.active = "balance";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -18,36 +18,37 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
         vm.ocultarACondos = false;
-        setTimeout(function(){loadAll();
-        if($rootScope.companyId>2){
-        vm.ocultarACondos = true;
+        loadAll();
+        if (globalCompany.getId() > 2) {
+            vm.ocultarACondos = true;
         }
-        },1500)
 
-       vm.defineBalanceClass = function(balance){
-        var b = parseInt(balance);
-        if(b!=0){
-        if(b>0){
-        return "greenBalance";
-        }else{
-        return "redBalance";
+        vm.defineBalanceClass = function (balance) {
+            var b = parseInt(balance);
+            if (b != 0) {
+                if (b > 0) {
+                    return "greenBalance";
+                } else {
+                    return "redBalance";
+                }
+            }
         }
-        }
-       }
 
-        vm.editHouse = function(id){
-         var encryptedId = CommonMethods.encryptIdUrl(id)
-                    $state.go('house.edit', {
-                        id: encryptedId
-                    })
+        vm.editHouse = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('house.edit', {
+                id: encryptedId
+            })
         }
-        function loadAll () {
+
+        function loadAll() {
             Balance.queryBalances({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
@@ -55,27 +56,29 @@
                 }
                 return result;
             }
+
             function onSuccess(data, headers) {
 
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                  angular.forEach(data,function(value,key){
-                  value.housenumber=parseInt(value.housenumber)
-                      if(value.housenumber==9999){
-                      value.housenumber="Oficina"
-                      }
-                      value.debit=value.balance.debit;
-                  })
+                angular.forEach(data, function (value, key) {
+                    value.housenumber = parseInt(value.housenumber)
+                    if (value.housenumber == 9999) {
+                        value.housenumber = "Oficina"
+                    }
+                    value.debit = value.balance.debit;
+                })
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                  setTimeout(function() {
-                            $("#loadingIcon").fadeOut(300);
-                  }, 400)
-                   setTimeout(function() {
-                       $("#tableData").fadeIn('slow');
-                   },700 )
+                setTimeout(function () {
+                    $("#loadingIcon").fadeOut(300);
+                }, 400)
+                setTimeout(function () {
+                    $("#tableData").fadeIn('slow');
+                }, 700)
             }
+
             function onError(error) {
                 AlertService.error(error.data.message);
             }
@@ -95,9 +98,8 @@
         }
 
 
-
-       vm.showKeys = function(house_number, securityKey, emergencyKey) {
-            if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "" ) {
+        vm.showKeys = function (house_number, securityKey, emergencyKey) {
+            if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "") {
                 toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas.");
             } else {
                 bootbox.dialog({
@@ -115,13 +117,18 @@
                 document.getElementById("emergency_key").innerHTML = "" + emergencyKey;
             }
         }
-       vm.showLoginCode = function(house_number, codeStatus, loginCode) {
-             var estado = "";
+        vm.showLoginCode = function (house_number, codeStatus, loginCode) {
+            var estado = "";
             if (loginCode == null) {
                 toastr["error"]("Esta casa aún no tiene un código de iniciación asignado.");
             } else {
 
-                if(codeStatus==false || codeStatus ==0){estado = 'No activada'} else { estado = "Activada"};
+                if (codeStatus == false || codeStatus == 0) {
+                    estado = 'No activada'
+                } else {
+                    estado = "Activada"
+                }
+                ;
                 bootbox.dialog({
                     message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Código de iniciación: <span class="font-15 bold" id="login_code">1134314</span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Estado: <span class="font-15 bold" id="code_status">1134314</span></h1></div>',
                     closeButton: false,

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintUserController', ComplaintUserController);
 
-    ComplaintUserController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state','companyUser'];
+    ComplaintUserController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state','companyUser', 'globalCompany'];
 
-    function ComplaintUserController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser) {
+    function ComplaintUserController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint-user';
@@ -24,9 +24,9 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
-        setTimeout(function () {
+        // setTimeout(function () {
             loadAll();
-        }, 1000);
+        // }, 1000);
 
         vm.changeStatus = function(){
             vm.page = 0;
@@ -44,7 +44,7 @@
 
                 if(vm.status!=="-1") {
                     Complaint.queryByStatus({
-                        companyId: $rootScope.companyId,
+                        companyId: globalCompany.getId(),
                         status: parseInt(vm.status),
                         page: vm.page,
                         size: 10,

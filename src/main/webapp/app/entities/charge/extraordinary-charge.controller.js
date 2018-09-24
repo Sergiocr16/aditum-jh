@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods'];
+    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany'];
 
-    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
+    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany) {
         var vm = this;
         $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;
@@ -30,8 +30,8 @@
         };
         moment.locale("es");
 
-        vm.selectAll = function() {
-            angular.forEach(vm.houses, function(house, i) {
+        vm.selectAll = function () {
+            angular.forEach(vm.houses, function (house, i) {
                 if (vm.selectedAll == true && house.isdesocupated == 0) {
                     house.isIncluded = true;
                 } else {
@@ -39,7 +39,7 @@
                 }
             })
         }
-        vm.globalCuotaSelected = function() {
+        vm.globalCuotaSelected = function () {
             if (vm.globalConcept.cuota.ammount != undefined && vm.globalConcept.cuota.valida == true) {
                 bootbox.confirm({
                     message: "¿Está seguro que desea modificar la cuota de todas las cuotas?",
@@ -53,10 +53,10 @@
                             className: 'btn-danger'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         if (result) {
-                            $scope.$apply(function() {
-                                angular.forEach(vm.houses, function(house, i) {
+                            $scope.$apply(function () {
+                                angular.forEach(vm.houses, function (house, i) {
 
                                     house.cuota.ammount = vm.globalConcept.cuota.ammount;
 
@@ -68,7 +68,7 @@
                 });
             }
         }
-        vm.globalConceptSelected = function() {
+        vm.globalConceptSelected = function () {
             if (vm.globalConcept.text != undefined) {
                 bootbox.confirm({
                     message: "¿Está seguro que desea modificar el concepto de todas las cuotas?",
@@ -82,10 +82,10 @@
                             className: 'btn-danger'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         if (result) {
-                            $scope.$apply(function() {
-                                angular.forEach(vm.houses, function(house, i) {
+                            $scope.$apply(function () {
+                                angular.forEach(vm.houses, function (house, i) {
 
                                     house.cuota.concept = vm.globalConcept.text;
 
@@ -97,12 +97,12 @@
                 });
             }
         }
-        vm.validate = function(cuota) {
+        vm.validate = function (cuota) {
             var s = cuota.ammount;
-                       var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
+            angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
                     for (var i = 0; i < s.length; i++) {
                         if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
@@ -118,18 +118,16 @@
                 cuota.valida = false
             }
         }
-        setTimeout(function() {
-            loadAll();
-        }, 1500)
-        vm.verificarCargos = function() {
+        loadAll();
+        vm.verificarCargos = function () {
             var invalid = 0;
             vm.selectedHouses = [];
-            angular.forEach(vm.houses, function(house, key) {
+            angular.forEach(vm.houses, function (house, key) {
                 if (house.isIncluded == true) {
                     vm.selectedHouses.push(house)
                 }
             })
-            angular.forEach(vm.selectedHouses, function(house, key) {
+            angular.forEach(vm.selectedHouses, function (house, key) {
                 if (house.cuota.valida == false) {
                     invalid++;
                 }
@@ -145,7 +143,7 @@
                 }
             }
         }
-        vm.cancelar = function() {
+        vm.cancelar = function () {
             vm.verificando = false;
         }
 
@@ -153,18 +151,18 @@
             house.cuota.houseId = parseInt(house.id);
             house.cuota.type = vm.globalConcept.type;
             house.cuota.date = vm.globalConcept.date;
-            house.cuota.companyId = $rootScope.companyId;
+            house.cuota.companyId = globalCompany.getId();
             house.cuota.state = 1;
             house.cuota.deleted = 0;
             return house.cuota;
         }
 
-        vm.createDues = function() {
+        vm.createDues = function () {
             var allReady = 0;
             CommonMethods.waitingMessage();
-            angular.forEach(vm.selectedHouses, function(house, i) {
+            angular.forEach(vm.selectedHouses, function (house, i) {
                 if (house.cuota.ammount != 0) {
-                    Charge.save(buildCharge(house), function(result) {
+                    Charge.save(buildCharge(house), function (result) {
                         allReady++;
                         if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
                             bootbox.hideAll();
@@ -184,7 +182,7 @@
             House.query({
                 page: pagingParams.page - 1,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
@@ -197,8 +195,8 @@
 
             function onSuccess(data, headers) {
                 AdministrationConfiguration.get({
-                    companyId: $rootScope.companyId
-                }).$promise.then(function(result) {
+                    companyId: globalCompany.getId()
+                }).$promise.then(function (result) {
                     vm.adminConfig = result;
 
                 })
@@ -211,8 +209,8 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
-                value.housenumber = parseInt(value.housenumber);
+                angular.forEach(data, function (value, key) {
+                    value.housenumber = parseInt(value.housenumber);
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -241,10 +239,10 @@
                 vm.houses = data;
 
                 vm.page = pagingParams.page;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }

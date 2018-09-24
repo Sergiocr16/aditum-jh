@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('GeneratePaymentController', GeneratePaymentController);
 
-    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident'];
+    GeneratePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany'];
 
-    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration,Resident) {
+    function GeneratePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany) {
         $rootScope.active = "generatePayment";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -21,11 +21,11 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.residents = [];
-        angular.element(document).ready(function() {
+        angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
 
-        vm.defineContent = function(charge) {
+        vm.defineContent = function (charge) {
             var content = "";
             switch (charge.estado) {
                 case 3:
@@ -43,7 +43,7 @@
             }
             return content;
         }
-        vm.showPopOver = function(charge) {
+        vm.showPopOver = function (charge) {
             var element = '#' + charge.id;
             $(element).popover({
                 placement: 'left',
@@ -54,15 +54,13 @@
         }
 
 
-        setTimeout(function() {
-            loadAll();
-            $('.dating').keypress(function(e) {
-                return false
-            });
-        }, 2000)
+        loadAll();
+        $('.dating').keypress(function (e) {
+            return false
+        });
 
-        vm.selectAll = function() {
-            angular.forEach(vm.charges, function(change, i) {
+        vm.selectAll = function () {
+            angular.forEach(vm.charges, function (change, i) {
                 change.isIncluded = vm.selectedAll;
             })
             vm.defineIfAllSelected()
@@ -75,10 +73,10 @@
             vm.calculatePayments(vm.payment)
         }
 
-        vm.defineIfAllSelected = function() {
+        vm.defineIfAllSelected = function () {
             var countIncluded = 0;
             vm.toPay = 0;
-            angular.forEach(vm.charges, function(charge, i) {
+            angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
                     vm.toPay = vm.toPay - parseInt(charge.ammount)
                     countIncluded++;
@@ -93,7 +91,7 @@
         }
 
 
-        vm.showPopOverNoPaymentsSelected = function() {
+        vm.showPopOverNoPaymentsSelected = function () {
             var textContent = "POR FAVOR SELECCIONA MÁS CUOTAS. ₡" + vm.payment.ammount + " NO TIENE UNA CUOTA A LA CUAL ASIGNARSE.";
             $('.toPay').popover({
                 content: textContent,
@@ -116,7 +114,8 @@
                 $('.toPay').popover('destroy')
             }
         }
-        vm.calculatePayments = function(charge) {
+
+        vm.calculatePayments = function (charge) {
             vm.savedCharges = vm.charges;
             vm.validate(charge)
             defineIfShowPopOverPayment();
@@ -127,7 +126,7 @@
                     vm.ammount = 0;
                 }
                 vm.toPay = parseInt(vm.toPay) + parseInt(vm.ammount);
-                angular.forEach(vm.charges, function(chargeIn, i) {
+                angular.forEach(vm.charges, function (chargeIn, i) {
                     if (chargeIn.isIncluded == true) {
                         chargeIn.left = chargeIn.ammount - vm.ammount;
                         chargeIn.paymentAmmount = chargeIn.ammount - chargeIn.left;
@@ -165,12 +164,13 @@
                 chargeIn.estado = 1;
             }
         }
-        vm.validate = function(cuota) {
+
+        vm.validate = function (cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
+            angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
                     for (var i = 0; i < s.length; i++) {
                         if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
@@ -188,7 +188,7 @@
 
         function loadAll() {
             Balance.queryBalances({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
 
@@ -196,8 +196,8 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
-                value.housenumber = parseInt(value.housenumber);
+                angular.forEach(data, function (value, key) {
+                    value.housenumber = parseInt(value.housenumber);
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -207,7 +207,7 @@
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
                         id: $localStorage.houseSelected.id
-                    }, function(result) {
+                    }, function (result) {
                         $localStorage.houseSelected = result
                         vm.house = $localStorage.houseSelected;
                         $rootScope.houseSelected = $localStorage.houseSelected;
@@ -227,7 +227,7 @@
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
-                    companyId: $rootScope.companyId,
+                    companyId: globalCompany.getId(),
                     concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
                 loadAdminConfig()
@@ -245,7 +245,7 @@
             }).$promise.then(onSuccessResident, onError);
 
             function onSuccessResident(data, headers) {
-                angular.forEach(data, function(resident, i) {
+                angular.forEach(data, function (resident, i) {
                     if (resident.email != undefined && resident.email != "" && resident.email != null) {
                         resident.selected = false;
                         if (resident.principalContact == 1) {
@@ -262,29 +262,29 @@
             }
         }
 
-        vm.selectPrincipalContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectPrincipalContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 if (resident.principalContact == 1) {
                     resident.selected = true;
                 }
             });
         }
-        vm.selectAllContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectAllContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 resident.selected = true;
             });
         }
 
-        vm.selectNoneContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectNoneContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 resident.selected = false;
             });
         }
 
         function loadAdminConfig() {
             AdministrationConfiguration.get({
-                companyId: $rootScope.companyId
-            }).$promise.then(function(result) {
+                companyId: globalCompany.getId()
+            }).$promise.then(function (result) {
                 if (result.folioSerie != null) {
                     vm.admingConfig = result;
                     vm.folioSerie = result.folioSerie;
@@ -296,7 +296,7 @@
 
         function obtainEmailToList() {
             var residentsToSendEmails = [];
-            angular.forEach(vm.residents, function(resident, i) {
+            angular.forEach(vm.residents, function (resident, i) {
                 if (resident.selected == true) {
                     residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
                 }
@@ -318,7 +318,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.toPay = 0;
-                angular.forEach(data, function(charge, i) {
+                angular.forEach(data, function (charge, i) {
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
                     charge.left = charge.ammount;
@@ -326,7 +326,7 @@
                     charge.estado = 1;
                     vm.toPay = vm.toPay - parseInt(charge.ammount);
                 })
-                vm.charges = data.sort(function(a, b) {
+                vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
                     return new Date(a.date) - new Date(b.date);
@@ -334,18 +334,18 @@
 
                 vm.savedCharges = vm.charges;
                 vm.page = pagingParams.page;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingTable").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableContent").fadeIn('slow');
                 }, 700)
 
 
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }
@@ -355,7 +355,8 @@
             }
 
         }
-        vm.defineBalanceClass = function(balance) {
+
+        vm.defineBalanceClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -365,7 +366,7 @@
                 }
             }
         }
-        vm.getCategory = function(type) {
+        vm.getCategory = function (type) {
             switch (type) {
                 case "1":
                     return "MANTENIMIENTO"
@@ -378,7 +379,7 @@
                     break;
             }
         }
-        vm.defineBalanceTotalClass = function(balance) {
+        vm.defineBalanceTotalClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -391,7 +392,7 @@
             }
         }
 
-        vm.formatearNumero = function(nStr) {
+        vm.formatearNumero = function (nStr) {
             var x = nStr.split('.');
             var x1 = x[0];
             var x2 = x.length > 1 ? ',' + x[1] : '';
@@ -401,10 +402,10 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function(house) {
+        vm.changeHouse = function (house) {
             House.get({
                 id: house.id
-            }, function(result) {
+            }, function (result) {
                 clear();
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
@@ -435,7 +436,7 @@
 
         function loadBancos() {
             Banco.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
@@ -449,7 +450,7 @@
         }
 
 
-        vm.createPayment = function() {
+        vm.createPayment = function () {
             if (vm.charges.length == 0) {
                 adelantoCondomino();
             } else {
@@ -475,7 +476,7 @@
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         CommonMethods.waitingMessage();
                         vm.payment.charges = vm.filterCharges(vm.charges);
@@ -496,11 +497,11 @@
                                     modalMessage: "Obteniendo comprobante de pago"
                                 })
 
-                                setTimeout(function() {
+                                setTimeout(function () {
                                     bootbox.hideAll();
                                     toastr["success"]("Se ha capturado el ingreso correctamente.")
                                     vm.printReceipt = false;
-                                    increaseFolioNumber(function(result) {
+                                    increaseFolioNumber(function (result) {
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
                                         vm.folioNumber = result.folioNumber;
@@ -518,7 +519,7 @@
                             } else {
                                 bootbox.hideAll();
                                 toastr["success"]("Se ha capturado el ingreso correctamente.")
-                                increaseFolioNumber(function(result) {
+                                increaseFolioNumber(function (result) {
                                     vm.admingConfig = result;
                                     vm.folioSerie = result.folioSerie;
                                     vm.folioNumber = result.folioNumber;
@@ -531,7 +532,6 @@
                                     }
                                 })
                             }
-
 
 
                         }
@@ -567,7 +567,7 @@
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         registrarAdelantoCondomino()
                     }
@@ -579,7 +579,7 @@
             vm.payment = {
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "1",
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas'
             };
         }
@@ -604,12 +604,13 @@
                         type: 'pdf',
                         modalMessage: "Obteniendo comprobante de pago"
                     })
-                    setTimeout(function() {
+                    setTimeout(function () {
                         bootbox.hideAll();
                         clear();
                         toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
                         vm.printReceipt = false;
-                        increaseFolioNumber(function() {});
+                        increaseFolioNumber(function () {
+                        });
                         increaseMaintBalance();
                         loadAll();
                         loadAdminConfig();
@@ -620,7 +621,8 @@
                     bootbox.hideAll();
                     clear();
                     toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
-                    increaseFolioNumber(function() {});
+                    increaseFolioNumber(function () {
+                    });
                     increaseMaintBalance();
                     loadAll();
                     loadAdminConfig();
@@ -640,12 +642,12 @@
         function increaseMaintBalance() {
             House.get({
                 id: $localStorage.houseSelected.id
-            }, function(result) {
+            }, function (result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
                 $rootScope.houseSelected.balance.maintenance = parseInt($rootScope.houseSelected.balance.maintenance) + parseInt(vm.toPay);
-                Balance.update($rootScope.houseSelected.balance, function() {
+                Balance.update($rootScope.houseSelected.balance, function () {
                     bootbox.hideAll();
                     loadAll();
                 })
@@ -654,9 +656,9 @@
             })
         }
 
-        vm.isAnyChargeSelected = function() {
+        vm.isAnyChargeSelected = function () {
             var count = 0;
-            angular.forEach(vm.charges, function(charge, i) {
+            angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
                     count++
                 }
@@ -664,17 +666,17 @@
             return (count > 0)
         }
 
-        vm.filterCharges = function(){
-        var selectedCharges = []
-         angular.forEach(vm.charges, function(charge, i) {
-                        if (charge.isIncluded == true) {
-                            selectedCharges.push(charge)
-                        }
-                    })
-                    return selectedCharges;
+        vm.filterCharges = function () {
+            var selectedCharges = []
+            angular.forEach(vm.charges, function (charge, i) {
+                if (charge.isIncluded == true) {
+                    selectedCharges.push(charge)
+                }
+            })
+            return selectedCharges;
         }
 
-        vm.back = function() {
+        vm.back = function () {
             window.history.back();
         }
     }

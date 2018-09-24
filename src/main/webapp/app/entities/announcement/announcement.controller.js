@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementController', AnnouncementController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', '$scope'];
+    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, $scope) {
+    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'announcements';
@@ -23,9 +23,9 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
-        setTimeout(function () {
+        // setTimeout(function () {
             loadAll();
-        }, 1000);
+        // }, 1000);
 
 
         function onSaveSuccess() {
@@ -142,7 +142,7 @@
         function loadAll() {
             vm.showingNews = true;
             Announcement.queryAsAdmin({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()
@@ -155,7 +155,7 @@
             vm.announcements = [];
             vm.showingNews = false;
             Announcement.querySketches({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort()

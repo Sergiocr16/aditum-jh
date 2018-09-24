@@ -1,15 +1,15 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('EgressCategoryController', EgressCategoryController);
 
-    EgressCategoryController.$inject = ['EgressCategory', '$rootScope'];
+    EgressCategoryController.$inject = ['EgressCategory', '$rootScope', 'globalCompany'];
 
-    function EgressCategoryController(EgressCategory, $rootScope) {
+    function EgressCategoryController(EgressCategory, $rootScope, globalCompany) {
 
-      $rootScope.active = "egressCategories";
+        $rootScope.active = "egressCategories";
         var vm = this;
         vm.groups = [{
             id: 1,
@@ -24,7 +24,7 @@
         vm.egressCategories = [];
         vm.repitedCategories = 0;
 
-        vm.validate = function(egressCategory, type) {
+        vm.validate = function (egressCategory, type) {
             if (type == 1) {
                 if (egressCategory.group == "" || egressCategory.group == null || egressCategory.group == undefined) {
 
@@ -47,32 +47,32 @@
 
         }
 
-        vm.addEgressCategory = function() {
+        vm.addEgressCategory = function () {
             var egressCategory = {
                 id: null,
                 group: null,
                 category: null,
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }
             vm.egressCategories.push(egressCategory);
         }
 
 
-        vm.saveCategory = function(egressCategory, type,index) {
+        vm.saveCategory = function (egressCategory, type, index) {
             if (egressCategory.groupIsEmpty == false && egressCategory.categoryIsEmpty == false) {
                 EgressCategory.query({
-                    companyId: $rootScope.companyId
-                }).$promise.then(function(result) {
+                    companyId: globalCompany.getId()
+                }).$promise.then(function (result) {
                     vm.repitedCategories = 0;
-                    angular.forEach(result, function(category, key) {
+                    angular.forEach(result, function (category, key) {
                         if (egressCategory.group == category.group && egressCategory.category == category.category && category.id != egressCategory.id) {
-                        if(result[index]!=undefined){
+                            if (result[index] != undefined) {
 
                                 egressCategory.category = result[index].category;
                                 egressCategory.group = result[index].group;
-                          }else{
-                           egressCategory.category = "";
-                          }
+                            } else {
+                                egressCategory.category = "";
+                            }
                             vm.repitedCategories++;
                         }
 
@@ -82,13 +82,13 @@
                     } else {
                         if (egressCategory.id !== null) {
                             if (egressCategory.categoryIsEmpty == false) {
-                                EgressCategory.update(egressCategory, function(result) {
+                                EgressCategory.update(egressCategory, function (result) {
                                     toastr["success"]("Guardado.")
                                 })
                             }
 
                         } else {
-                            EgressCategory.save(egressCategory, function(result) {
+                            EgressCategory.save(egressCategory, function (result) {
                                 toastr["success"]("Guardado.")
                             })
 
@@ -102,7 +102,7 @@
             }
         };
 
-        vm.confirmDeleteCategory = function(index, egressCategory) {
+        vm.confirmDeleteCategory = function (index, egressCategory) {
             bootbox.confirm({
                 message: "¿Está seguro que desea eliminar esta categoría de gastos " + "?",
                 buttons: {
@@ -115,7 +115,7 @@
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         toastr["success"]("Eliminado.")
                         vm.deleteCategory(index, egressCategory)
@@ -125,12 +125,12 @@
 
         };
 
-        vm.deleteCategory = function(index, egressCategory) {
+        vm.deleteCategory = function (index, egressCategory) {
             if (egressCategory.id !== null) {
                 EgressCategory.delete({
                         id: egressCategory.id
                     },
-                    function() {
+                    function () {
                         loadAll();
                     });
             } else {
@@ -138,28 +138,28 @@
             }
         }
 
-        setTimeout(function() {
+        setTimeout(function () {
             loadAll()
         }, 1000)
 
         function loadAll() {
 
             EgressCategory.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }).$promise.then(onSuccessEgressCategories);
 
             function onSuccessEgressCategories(data, headers) {
                 vm.searchQuery = null;
-                angular.forEach(data, function(value, key) {
+                angular.forEach(data, function (value, key) {
                     value.groupIsEmpty = false
                     value.categoryIsEmpty = false;
                 })
 
                 vm.egressCategories = data;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }
