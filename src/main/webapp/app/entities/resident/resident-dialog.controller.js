@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary'];
+    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary','PadronElectoral'];
 
-    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary) {
+    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary,PadronElectoral) {
         $rootScope.active = "residents";
         var vm = this;
         var fileImage = null;
@@ -17,6 +17,7 @@
         if (entity.image_url == undefined) {
             entity.image_url = null;
         }
+        vm.resident.type = 9;
         vm.required = 1;
         vm.validEmail = function (email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -118,6 +119,84 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
 
+        function haswhiteCedula(s){
+            return /\s/g.test(s);
+        }
+        vm.findInPadron = function(resident){
+
+            if(resident.identificationnumber!=undefined || resident.identificationnumber != ""){
+                if(hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.type=="9" && hasLetter(resident.identificationnumber)){
+                    resident.validIdentification = 0;
+                }else{
+                    resident.validIdentification = 1;
+                }
+
+                if(resident.type=="9" && resident.identificationnumber != undefined){
+                    if(resident.identificationnumber.trim().length==9){
+                        PadronElectoral.find(resident.identificationnumber,function(person){
+                            setTimeout(function(){
+                                $scope.$apply(function(){
+                                    var nombre = person.nombre.split(",");
+                                    resident.name = nombre[0];
+                                    resident.lastname = nombre[1];
+                                    resident.secondlastname = nombre[2];
+                                    resident.found = 1;
+                                })
+                            },100)
+                        },function(){
+
+                        })
+
+
+                    }else{
+                        setTimeout(function(){
+                            $scope.$apply(function(){
+                                resident.found = 0;
+                            })
+                        },100)
+                    }
+                }else{
+                    resident.found = 0;
+                }
+            }
+        };
+        function hasLetter(s){
+            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        function hasCaracterEspecial(s){
+            var caracteres = [,",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i)==val){
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
         function save() {
             if (vm.validate()) {
                 vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);

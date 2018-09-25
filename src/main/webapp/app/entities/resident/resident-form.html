@@ -91,28 +91,41 @@
                             </h3>
 
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+                        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+
                             <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.name" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label  class="font-15">Nombre</label>
+                                <select class="form-control gray-font" name="type" ng-model="vm.resident.type" ng-required='vm.required==1'>
+                                    <option value="9">Costarricense</option>
+                                    <option value="20">Extranjero</option>
+                                </select>
+                                <label class="font-15" >Nacionalidad</label>
                             </div>
                             <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.lastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label  class="font-15">Primer Apellido</label>
-                            </div>
-                            <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label class="font-15">Segundo Apellido</label>
-                            </div>
-                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control gray-font numbers" required style='text-transform:uppercase'>
+                                <input  ng-class="{redBorder: vm.resident.validIdentification == 0}" maxlength="{{vm.resident.type}}" ng-model="vm.resident.identificationnumber" ng-change="vm.findInPadron(vm.resident)" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
                                 <label  class="font-15">Número de cédula</label>
                                 <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
                             </div>
+
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.name" type="text" ng-disabled="vm.resident.found==1" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label  class="font-15">Nombre</label>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.lastname" type="text" ng-disabled="vm.resident.found==1"  class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label  class="font-15">Primer Apellido</label>
+                            </div>
+                            <div has-authority="ROLE_MANAGER"  class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.secondlastname"  ng-disabled="vm.resident.found==1" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label class="font-15">Segundo Apellido</label>
+                            </div>
+
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
-
+                            <div has-authority="ROLE_USER"  class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.secondlastname"  ng-disabled="vm.resident.found==1" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label class="font-15">Segundo Apellido</label>
+                            </div>
                             <div class="form-group form-md-line-input">
                                 <input ng-focus="expression==1" ng-model="vm.resident.phonenumber" type="text" placeholder="" maxlength="20" class="form-control numbers gray-font">
                                 <label class="font-15">Número celular</label>
@@ -130,11 +143,7 @@
                                 <label class="font-15 ">Contacto principal de la filial</label >
                             </div>
 
-                            <div has-authority="ROLE_USER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
-                                <label  class="font-15">Número de cédula</label>
-                                <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
-                            </div>
+
 
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
                             <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'"  ng-required='vm.required==1'>

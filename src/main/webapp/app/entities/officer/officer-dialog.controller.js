@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company','SaveImageCloudinary'];
+    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company','SaveImageCloudinary','PadronElectoral'];
 
-    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary) {
+    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary,PadronElectoral) {
         var vm = this;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -88,7 +88,84 @@
                  }
             }
         }
+        function haswhiteCedula(s){
+            return /\s/g.test(s);
+        }
+        vm.findInPadron = function(officer){
 
+            if(officer.identificationnumber!=undefined || officer.identificationnumber != ""){
+                if(hasCaracterEspecial(officer.identificationnumber) || haswhiteCedula(officer.identificationnumber) || officer.type=="9" && hasLetter(officer.identificationnumber)){
+                    officer.validIdentification = 0;
+                }else{
+                    officer.validIdentification = 1;
+                }
+
+                if(officer.type=="9" && officer.identificationnumber != undefined){
+                    if(officer.identificationnumber.trim().length==9){
+                        PadronElectoral.find(officer.identificationnumber,function(person){
+                            setTimeout(function(){
+                                $scope.$apply(function(){
+                                    var nombre = person.nombre.split(",");
+                                    officer.name = nombre[0];
+                                    officer.lastname = nombre[1];
+                                    officer.secondlastname = nombre[2];
+                                    officer.found = 1;
+                                })
+                            },100)
+                        },function(){
+
+                        })
+
+
+                    }else{
+                        setTimeout(function(){
+                            $scope.$apply(function(){
+                                officer.found = 0;
+                            })
+                        },100)
+                    }
+                }else{
+                    officer.found = 0;
+                }
+            }
+        };
+        function hasLetter(s){
+            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        function hasCaracterEspecial(s){
+            var caracteres = [,",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i)==val){
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
         function onSaveError () {
             vm.isSaving = false;
         }

@@ -175,7 +175,7 @@
                                             <span class="font-13 bold control-label" >Cuota por reservación </span>
                                         </div>
                                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
-                                            <span ng-if="vm.commonarea.chargeRequired==1">₡ {{vm.commonarea.reservationCharge}}</span>
+                                            <span ng-if="vm.commonarea.chargeRequired==1">₡ {{vm.formatearNumero(vm.commonarea.reservationCharge+"")}}</span>
                                             <span ng-if="vm.commonarea.chargeRequired!==1">No requiere </span>
                                             <!--<div class="input-group form-group">-->
                                                 <!--<span class="input-group-addon">₡</span>-->
@@ -194,7 +194,7 @@
                                             <span  style="z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Dinero que se devuelve al condómino una vez que el área comùn se utilizó.<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
                                         </div>
                                         <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 form-group">
-                                            <span>₡ {{vm.commonarea.devolutionAmmount}}</span>
+                                            <span>₡ {{vm.formatearNumero(vm.commonarea.devolutionAmmount+"")}}</span>
                                             <!--<div class="input-group form-group">-->
                                                 <!--<span class="input-group-addon">₡</span>-->
                                                 <!--<input  ng-class="{redBorder: vm.commonarea.devolutionAmmountValida==false}" type="text" class="form-control numbers" name="devolutionAmmount" ng-change="vm.validateDevolutionAmmount(vm.commonarea)" id="field_devolutionAmmount" placeholder="0.00"-->
