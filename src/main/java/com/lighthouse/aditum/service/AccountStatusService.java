@@ -52,7 +52,7 @@ public class AccountStatusService {
     }
     private void setAccountStatusItem(Page<PaymentDTO> payments,Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO){
         for (int i = 0; i <charges.getContent().size() ; i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Integer.parseInt(charges.getContent().get(i).getAmmount()) ,0);
+            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Double.parseDouble(charges.getContent().get(i).getAmmount()) ,0);
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i <payments.getContent().size() ; i++) {
@@ -66,13 +66,13 @@ public class AccountStatusService {
         for (int i = 0; i <accountStatusDTO.getListaAccountStatusItems().size() ; i++) {
 
             if(accountStatusDTO.getListaAccountStatusItems().get(i).getAbono()>0){
-                int saldo = accountStatusDTO.getSaldo() + accountStatusDTO.getListaAccountStatusItems().get(i).getAbono();
+                double saldo = accountStatusDTO.getSaldo() + accountStatusDTO.getListaAccountStatusItems().get(i).getAbono();
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
                 accountStatusDTO.setTotalAbono(accountStatusDTO.getListaAccountStatusItems().get(i).getAbono());
                 accountStatusDTO.setSaldo(saldo);
 
             }else if(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal()>0){
-                int saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
+                double saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
                 accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
                 accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
                 accountStatusDTO.setTotalTotal(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());

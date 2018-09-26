@@ -199,6 +199,9 @@
                                                         Cargo
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
+                                                        Recargo
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
                                                         Restante
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;" class="text-center">
@@ -217,13 +220,14 @@
                                                     <td class="text-center">{{charge.date | date}}</td>
                                                     <td>{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
                                                     <td>₡ {{charge.ammount | currency : "" : 0}}</td>
+                                                    <td>₡ {{charge.subcharge | currency : "" : 0}}</td>
                                                     <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
                                                     <td ng-show="charge.isIncluded ==false">₡ -</td>
                                                     <td ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
                                                     <td ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
                                                     <td id="{{charge.id}}" class="infoCharge" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
-                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
-                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.total) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#F05232;height:{{(charge.left/charge.total) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
                                                     </td>
                                                 </tr>
                                                 <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">

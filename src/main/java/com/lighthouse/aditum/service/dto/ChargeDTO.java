@@ -41,7 +41,7 @@ public class ChargeDTO implements Serializable {
 
     private String left;
 
-    private int total;
+    private double total;
 
     private Long houseId;
 
@@ -56,7 +56,26 @@ public class ChargeDTO implements Serializable {
         this.total = total;
 
     }
-    public ChargeDTO(String ammount, ZonedDateTime date,Long companyId,Long id,Long houseId) {
+
+    public ChargeDTO(Long id, @NotNull Integer type, @NotNull ZonedDateTime date, @NotNull String concept, @NotNull String ammount, @NotNull Integer state, @NotNull Integer deleted, ZonedDateTime paymentDate, String subcharge, String paymentAmmount, String left, double total, Long houseId, Long paymentId, Long companyId) {
+        this.id = id;
+        this.type = type;
+        this.date = date;
+        this.concept = concept;
+        this.ammount = ammount;
+        this.state = state;
+        this.deleted = deleted;
+        this.paymentDate = paymentDate;
+        this.subcharge = subcharge;
+        this.paymentAmmount = paymentAmmount;
+        this.left = left;
+        this.total = total;
+        this.houseId = houseId;
+        this.paymentId = paymentId;
+        this.companyId = companyId;
+    }
+
+    public ChargeDTO(String ammount, ZonedDateTime date, Long companyId, Long id, Long houseId) {
         this.concept = "Pagos anticipados";
         this.ammount = ammount;
         this.date = date;
@@ -201,11 +220,11 @@ public class ChargeDTO implements Serializable {
             "}";
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 

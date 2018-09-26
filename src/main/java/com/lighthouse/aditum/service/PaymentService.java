@@ -68,35 +68,36 @@ public class PaymentService {
         payment = paymentRepository.save(payment);
         return paymentMapper.toDto(payment);
     }
+
     public PaymentDTO save(CreatePaymentDTO paymentDTO) {
         log.debug("Request to save Payment : {}", paymentDTO);
         Payment payment = paymentMapper.toEntity(createPaymentDTOtoPaymentDTO(paymentDTO));
-        if(payment.getTransaction().equals("2")){
+        if (payment.getTransaction().equals("2")) {
             payment.setAmmountLeft(paymentDTO.getAmmount());
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
         payment = paymentRepository.save(payment);
-        bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(),paymentDTO.getAmmount());
+        bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
         List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
         for (int i = 0; i < paymentCharges.size(); i++) {
-            this.payCharge(paymentCharges.get(i),payment);
+            this.payCharge(paymentCharges.get(i), payment);
         }
         PaymentDTO paymentDTo = paymentMapper.toDto(payment);
         paymentDTo.setCharges(paymentCharges);
         paymentDTo.setEmailTo(paymentDTO.getEmailTo());
-        if(paymentDTo.getEmailTo().size()>0) {
+        if (paymentDTo.getEmailTo().size() > 0) {
             this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
         }
         return paymentMapper.toDto(payment);
     }
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,int companyId) {
+    public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, int companyId) {
         log.debug("Request to get all Payments in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -111,9 +112,9 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public IncomeReportDTO findIncomeReportByCompanyAndDatesBetween(Pageable pageable, String initialTime, String finalTime, int companyId, String houseId, String paymentMethod, String category, String account) {
         log.debug("Request to get all Payments in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -123,55 +124,58 @@ public class PaymentService {
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
-        incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO.getContent(),houseId,paymentMethod,category,account));
-        incomeReport.setTotalMaintenance(this.getTotalAmmoutPerTypeOfPayment(incomeReport,1)+"");
-        incomeReport.setTotalExtraordinary(this.getTotalAmmoutPerTypeOfPayment(incomeReport,2)+"");
-        incomeReport.setTotalCommonArea(this.getTotalAmmoutPerTypeOfPayment(incomeReport,3)+"");
-        incomeReport.setTotal(Integer.parseInt(incomeReport.getTotalCommonArea())+Integer.parseInt(incomeReport.getTotalMaintenance())+Integer.parseInt(incomeReport.getTotalExtraordinary())+"");
-        incomeReport.defineFilter(houseId,paymentMethod,category,account);
+        incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO.getContent(), houseId, paymentMethod, category, account));
+        incomeReport.setTotalMaintenance(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1) + "");
+        incomeReport.setTotalExtraordinary(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2) + "");
+        incomeReport.setTotalCommonArea(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3) + "");
+        incomeReport.setTotal(Integer.parseInt(incomeReport.getTotalCommonArea()) + Integer.parseInt(incomeReport.getTotalMaintenance()) + Integer.parseInt(incomeReport.getTotalExtraordinary()) + "");
+        incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
 
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable,String initialTime,String finalTime,int companyId,String accountId) {
+    public Page<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, String initialTime, String finalTime, int companyId, String accountId) {
         log.debug("Request to get all Payments by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<Payment> result = paymentRepository.findByDatesBetweenAndCompanyAndAccount(pageable,zd_initialTime,zd_finalTime,companyId,accountId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Payment> result = paymentRepository.findByDatesBetweenAndCompanyAndAccount(pageable, zd_initialTime, zd_finalTime, companyId, accountId);
 //        Collections.reverse(result);
         return result.map(payment -> paymentMapper.toDto(payment));
     }
+
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(String initialTime,String finalTime,int companyId,String accountId) {
+    public List<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(String initialTime, String finalTime, int companyId, String accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        return paymentRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime,zd_finalTime,companyId,accountId).stream()
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return paymentRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime, zd_finalTime, companyId, accountId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findAdelantosByDatesBetweenAndCompany(String initialTime,String finalTime,int companyId) {
+    public List<PaymentDTO> findAdelantosByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime,zd_finalTime,companyId,"2").stream()
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "2").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Transactional(readOnly = true)
     public List<PaymentDTO> findAdelantosByHouse(Long houseId) {
-        return paymentRepository.findAdelantosByHouse(houseId,"2").stream()
+        return paymentRepository.findAdelantosByHouse(houseId, "2").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
     /**
-     *  Get all the payments.
+     * Get all the payments.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findAll(Pageable pageable) {
@@ -181,11 +185,11 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable,Long houseId,String initialTime,String finalTime) {
+    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable, Long houseId, String initialTime, String finalTime) {
         log.debug("Request to get all Payments");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable,zd_initialTime,zd_finalTime,houseId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable, zd_initialTime, zd_finalTime, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -198,10 +202,10 @@ public class PaymentService {
 
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable,Long houseId,String initialTime) {
+    public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, String initialTime) {
         log.debug("Request to get all Payments");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable,zd_initialTime,houseId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable, zd_initialTime, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -213,9 +217,9 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByHouse(Pageable pageable,Long houseId) {
+    public Page<PaymentDTO> findByHouse(Pageable pageable, Long houseId) {
         log.debug("Request to get all Payments");
-        Page<Payment> payments = paymentRepository.findByHouseId(pageable,houseId);
+        Page<Payment> payments = paymentRepository.findByHouseId(pageable, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -228,10 +232,10 @@ public class PaymentService {
     }
 
     /**
-     *  Get one payment by id.
+     * Get one payment by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public PaymentDTO findOne(Long id) {
@@ -241,207 +245,227 @@ public class PaymentService {
     }
 
     /**
-     *  Delete the  payment by id.
+     * Delete the  payment by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Payment : {}", id);
         paymentRepository.delete(id);
     }
 
-    public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO){
-       PaymentDTO paymentDTO = new PaymentDTO();
-       paymentDTO.setAccount(cPaymentDTO.getAccount());
-       paymentDTO.setAmmount(cPaymentDTO.getAmmount());
-       paymentDTO.setComments(cPaymentDTO.getComments());
-       paymentDTO.setCompanyId(cPaymentDTO.getCompanyId());
-       paymentDTO.setConcept(cPaymentDTO.getConcept());
-       paymentDTO.setDate(cPaymentDTO.getDate());
-       paymentDTO.setHouseId(cPaymentDTO.getHouseId());
-       paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
-       paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
-       paymentDTO.setTransaction(cPaymentDTO.getTransaction());
-       return paymentDTO;
+    public PaymentDTO createPaymentDTOtoPaymentDTO(CreatePaymentDTO cPaymentDTO) {
+        PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setAccount(cPaymentDTO.getAccount());
+        paymentDTO.setAmmount(cPaymentDTO.getAmmount());
+        paymentDTO.setComments(cPaymentDTO.getComments());
+        paymentDTO.setCompanyId(cPaymentDTO.getCompanyId());
+        paymentDTO.setConcept(cPaymentDTO.getConcept());
+        paymentDTO.setDate(cPaymentDTO.getDate());
+        paymentDTO.setHouseId(cPaymentDTO.getHouseId());
+        paymentDTO.setPaymentMethod(cPaymentDTO.getPaymentMethod());
+        paymentDTO.setReceiptNumber(cPaymentDTO.getReceiptNumber());
+        paymentDTO.setTransaction(cPaymentDTO.getTransaction());
+        return paymentDTO;
     }
 
-    private List<ChargeDTO> filterCharges(CreatePaymentDTO payment){
+    private List<ChargeDTO> filterCharges(CreatePaymentDTO payment) {
         List<ChargeDTO> listaCargos = payment.getCharges();
         List<ChargeDTO> cargosFiltrados = new ArrayList<>();
         for (int i = 0; i < listaCargos.size(); i++) {
-            if(Integer.parseInt(listaCargos.get(i).getPaymentAmmount())!=0){
+            if (Integer.parseInt(listaCargos.get(i).getPaymentAmmount()) != 0) {
                 cargosFiltrados.add(listaCargos.get(i));
             }
         }
         return cargosFiltrados;
     }
-    public PaymentDTO findPaymentInAdvance(Long houseId){
-        List<Payment> payments = paymentRepository.findPaymentsInAdvance(null,"2","0",houseId).getContent();
+
+    public PaymentDTO findPaymentInAdvance(Long houseId) {
+        List<Payment> payments = paymentRepository.findPaymentsInAdvance(null, "2", "0", houseId).getContent();
         Payment paymentToUse = null;
-        if(payments.size()>0) {
+        if (payments.size() > 0) {
             paymentToUse = payments.get(0);
             for (int i = 0; i < payments.size(); i++) {
                 Payment payment = payments.get(i);
-                if (payment.getDate().isBefore(paymentToUse.getDate())){
+                if (payment.getDate().isBefore(paymentToUse.getDate())) {
                     paymentToUse = payment;
                 }
             }
         }
 
-        if(paymentToUse!=null) {
+        if (paymentToUse != null) {
             PaymentDTO paymentDTO = paymentMapper.toDto(paymentToUse);
             paymentDTO.setAmmountLeft(paymentToUse.getAmmountLeft());
             return paymentDTO;
-        }else {
+        } else {
             return null;
         }
     }
 
-    private void payCharge(ChargeDTO charge,Payment payment){
-        if(Integer.parseInt(charge.getLeft())>0){
-            ChargeDTO newCharge = charge;
-            newCharge.setAmmount(charge.getLeft());
-            chargeService.pay(charge,payment);
+    private ChargeDTO newCharge(ChargeDTO chargeDTO) {
+        return new ChargeDTO(null, chargeDTO.getType(), chargeDTO.getDate(), chargeDTO.getConcept(),
+            chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
+            chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
+            chargeDTO.getPaymentAmmount(), chargeDTO.getLeft(), chargeDTO.getTotal(),
+            chargeDTO.getHouseId(), chargeDTO.getPaymentId(), chargeDTO.getCompanyId());
+
+    }
+
+    private void payCharge(ChargeDTO charge, Payment payment) {
+        if (Integer.parseInt(charge.getLeft()) > 0) {
+            ChargeDTO newCharge = newCharge(charge);
+            if (Double.parseDouble(newCharge.getPaymentAmmount()) <= Double.parseDouble(newCharge.getSubcharge())) {
+                newCharge.setSubcharge(Double.parseDouble(newCharge.getSubcharge()) - Double.parseDouble(newCharge.getPaymentAmmount()) + "");
+                charge.setSubcharge(newCharge.getPaymentAmmount());
+                charge.setAmmount("0");
+            } else {
+                double left = Double.parseDouble(newCharge.getPaymentAmmount()) - Double.parseDouble(newCharge.getSubcharge());
+                newCharge.setAmmount(charge.getLeft());
+                newCharge.setSubcharge("0");
+                charge.setAmmount( left + "");
+            }
+            chargeService.pay(charge, payment);
             chargeService.create(newCharge);
-        }else{
-            chargeService.pay(charge,payment);
+        } else {
+            chargeService.pay(charge, payment);
         }
     }
 
 
-    public File obtainFileToPrint(Long paymentId){
+    public File obtainFileToPrint(Long paymentId) {
         PaymentDTO paymentDTO = this.findOne(paymentId);
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
             chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
         });
-        if(paymentDTO.getCharges().size()==0){
+        if (paymentDTO.getCharges().size() == 0) {
             paymentDTO.setCharges(new ArrayList<>());
         }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
-        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null, paymentDTO.getHouseId());
         List<ResidentDTO> emailTo = new ArrayList<>();
         for (int i = 0; i < residents.getContent().size(); i++) {
-            if (residents.getContent().get(i).getPrincipalContact()==1){
+            if (residents.getContent().get(i).getPrincipalContact() == 1) {
                 emailTo.add(residents.getContent().get(i));
             }
         }
 
         paymentDTO.setEmailTo(emailTo);
         boolean cancelingFromPayment = false;
-        if(paymentDTO.getTransaction().equals("2")&& paymentDTO.getCharges().size()>0){
+        if (paymentDTO.getTransaction().equals("2") && paymentDTO.getCharges().size() > 0) {
             cancelingFromPayment = true;
         }
-        return paymentEmailSenderService.obtainFileToPrint(paymentDTO,cancelingFromPayment);
+        return paymentEmailSenderService.obtainFileToPrint(paymentDTO, cancelingFromPayment);
     }
 
-    public File obtainIncomeReportToPrint(Pageable pageable,int companyId,String initial_time,String final_time,String houseId,String paymentMethod,String category,String account){
-         IncomeReportDTO income = this.findIncomeReportByCompanyAndDatesBetween(pageable,initial_time,final_time,companyId,houseId,paymentMethod,category,account);
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((final_time+"[America/Regina]").replace("00:00:00","23:59:59"));
-        return paymentEmailSenderService.obtainIncomeReportToPrint(income,Long.valueOf(companyId+""),zd_initialTime,zd_finalTime);
+    public File obtainIncomeReportToPrint(Pageable pageable, int companyId, String initial_time, String final_time, String houseId, String paymentMethod, String category, String account) {
+        IncomeReportDTO income = this.findIncomeReportByCompanyAndDatesBetween(pageable, initial_time, final_time, companyId, houseId, paymentMethod, category, account);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((final_time + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return paymentEmailSenderService.obtainIncomeReportToPrint(income, Long.valueOf(companyId + ""), zd_initialTime, zd_finalTime);
     }
+
     @Async
-    public void sendPaymentEmail(Long paymentId){
+    public void sendPaymentEmail(Long paymentId) {
         PaymentDTO paymentDTO = this.findOne(paymentId);
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
             chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
         });
-        if(paymentDTO.getCharges().size()==0){
+        if (paymentDTO.getCharges().size() == 0) {
             paymentDTO.setCharges(new ArrayList<>());
         }
         paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
         paymentDTO.setAmmountLeft("0");
-        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null,paymentDTO.getHouseId());
+        Page<ResidentDTO> residents = residentService.findEnabledByHouseId(null, paymentDTO.getHouseId());
         List<ResidentDTO> emailTo = new ArrayList<>();
         for (int i = 0; i < residents.getContent().size(); i++) {
-            if (residents.getContent().get(i).getPrincipalContact()==1){
+            if (residents.getContent().get(i).getPrincipalContact() == 1) {
                 emailTo.add(residents.getContent().get(i));
             }
         }
 
         paymentDTO.setEmailTo(emailTo);
-        paymentEmailSenderService.sendPaymentEmail(paymentDTO,false);
+        paymentEmailSenderService.sendPaymentEmail(paymentDTO, false);
     }
 
 
-    private String findCategoriesInPayment(PaymentDTO payment){
+    private String findCategoriesInPayment(PaymentDTO payment) {
         String categoriesFinalString = "";
         List<Integer> categories = new ArrayList<>();
         List<ChargeDTO> cuotas = payment.getCharges();
         cuotas.forEach(chargeDTO -> {
-            if(!categories.contains(chargeDTO.getType())) {
+            if (!categories.contains(chargeDTO.getType())) {
                 categories.add(chargeDTO.getType());
             }
         });
         for (int i = 0; i < categories.size(); i++) {
-            switch (categories.get(i)){
+            switch (categories.get(i)) {
                 case 1:
-                    categoriesFinalString += "Mantenimiento" ;
-                    if(i!=categories.size()-1){
-                        categoriesFinalString += " / " ;
+                    categoriesFinalString += "Mantenimiento";
+                    if (i != categories.size() - 1) {
+                        categoriesFinalString += " / ";
                     }
                     break;
                 case 2:
-                    categoriesFinalString += "Extraordinaria" ;
-                    if(i!=categories.size()-1){
+                    categoriesFinalString += "Extraordinaria";
+                    if (i != categories.size() - 1) {
                         categoriesFinalString += " / ";
                     }
                     break;
                 case 3:
-                    categoriesFinalString += "Áreas Comunes" ;
-                    if(i!=categories.size()-1){
-                        categoriesFinalString += " / " ;
+                    categoriesFinalString += "Áreas Comunes";
+                    if (i != categories.size() - 1) {
+                        categoriesFinalString += " / ";
                     }
                     break;
             }
         }
-        if(payment.getCharges().size()==0){
+        if (payment.getCharges().size() == 0) {
             return "Adelanto de condómino";
         }
         return categoriesFinalString;
     }
 
 
-    private int getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type){
+    private int getTotalAmmoutPerTypeOfPayment(IncomeReportDTO incomeReport, int type) {
         int total = 0;
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
-            if (payment.getTransaction().equals("2") && type ==1) {
-                total+= Integer.parseInt(payment.getAmmount());
+            if (payment.getTransaction().equals("2") && type == 1) {
+                total += Integer.parseInt(payment.getAmmount());
             } else {
-            for (int j = 0; j < payment.getCharges().size(); j++) {
-                ChargeDTO charge = payment.getCharges().get(j);
-                if (charge.getType() == type) {
-                    total += Integer.parseInt(charge.getAmmount());
+                for (int j = 0; j < payment.getCharges().size(); j++) {
+                    ChargeDTO charge = payment.getCharges().get(j);
+                    if (charge.getType() == type) {
+                        total += Integer.parseInt(charge.getAmmount());
+                    }
                 }
             }
-        }
         }
         return total;
     }
 
-    private List<PaymentDTO> filterPaymentsForIncome(List<PaymentDTO> payments, String houseId,String paymentMethod,String category, String account){
+    private List<PaymentDTO> filterPaymentsForIncome(List<PaymentDTO> payments, String houseId, String paymentMethod, String category, String account) {
         List<PaymentDTO> filteredPayments = new ArrayList<>();
-        for (int i = 0; i < payments.size(); i++){
+        for (int i = 0; i < payments.size(); i++) {
             PaymentDTO p = payments.get(i);
             int pConditions = 0;
-            if(account.equals("empty") || p.getAccount().equals(account)){
+            if (account.equals("empty") || p.getAccount().equals(account)) {
                 pConditions++;
             }
-            if(paymentMethod.equals("empty") || p.getPaymentMethod().equals(paymentMethod)){
+            if (paymentMethod.equals("empty") || p.getPaymentMethod().equals(paymentMethod)) {
                 pConditions++;
             }
-            if(category.equals("empty")|| p.getCategories().contains(category)){
+            if (category.equals("empty") || p.getCategories().contains(category)) {
                 pConditions++;
             }
 
-            if(houseId.equals("empty") || Long.valueOf(houseId).equals(p.getHouseId())){
+            if (houseId.equals("empty") || Long.valueOf(houseId).equals(p.getHouseId())) {
                 pConditions++;
             }
-            if(pConditions==4){
+            if (pConditions == 4) {
                 filteredPayments.add(p);
             }
         }

@@ -5,11 +5,11 @@ import java.util.List;
 public class AccountStatusDTO {
 
     private int saldoInicial;
-    private int saldo;
-    private int totalCharge;
-    private int totalRecharge;
+    private double saldo;
+    private double totalCharge;
+    private double totalRecharge;
     private int totalAbono;
-    private int totalTotal;
+    private double totalTotal;
     private List<AccountStatusItemDTO> listaAccountStatusItems;
 
     public int getSaldoInicial() {
@@ -28,23 +28,23 @@ public class AccountStatusDTO {
         this.listaAccountStatusItems = listaAccountStatusItems;
     }
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(int saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    public int getTotalCharge() {
+    public double getTotalCharge() {
         return totalCharge;
     }
 
-    public void setTotalCharge(int totalCharge) {
+    public void setTotalCharge(double totalCharge) {
         this.totalCharge = this.totalCharge + totalCharge;
     }
 
-    public int getTotalRecharge() {
+    public double getTotalRecharge() {
         return totalRecharge;
     }
 
@@ -52,11 +52,11 @@ public class AccountStatusDTO {
         this.totalRecharge = this.totalRecharge + totalRecharge;
     }
 
-    public int getTotalTotal() {
+    public double getTotalTotal() {
         return totalTotal;
     }
 
-    public void setTotalTotal(int totalTotal) {
+    public void setTotalTotal(double totalTotal) {
         this.totalTotal =  this.totalTotal + totalTotal;
     }
 

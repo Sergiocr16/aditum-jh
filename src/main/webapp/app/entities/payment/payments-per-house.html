@@ -164,7 +164,12 @@
                                     {{chargeIn.date | date}}
                                  <span style="color:gray;font-size:10px;display:block" class="text-center">Fecha de cobro</span>
                                 </td>
-                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
+                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.ammount | currency : "" : 0}}
+                                    <span style="color:gray;font-size:10px;display:block" class="text-center">Cargo</span></td>
+                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.subcharge | currency : "" : 0}}
+                                    <span style="color:gray;font-size:10px;display:block" class="text-center">Recargo</span></td>
+                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.total | currency : "" : 0}}
+                                    <span style="color:gray;font-size:10px;display:block" class="text-center">Total</span></td>
                             </tr>
                             </tbody>
                         </table>
