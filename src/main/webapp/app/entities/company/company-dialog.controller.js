@@ -77,11 +77,13 @@
 
                    Banco.save(banco);
             }
+
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
             var adminConfig = {
                 squareMetersPrice: 0,
                 companyId: result.id,
+                incomeFolio:true,
                 folioSerie: "A",
                 folioNumber: 1,
                 hasSubcharges: true,
@@ -89,8 +91,14 @@
                 daysToSendEmailBeforeBeDefaulter: 5,
                 subchargeAmmount: 0,
                 subchargePercentage: 5,
-                usingSubchargePercentage: true
-
+                usingSubchargePercentage: true,
+                bookCommonArea: true,
+                incomeStatement:  true,
+                monthlyIncomeStatement:true,
+                egressReport:true,
+                egressFolio:true,
+                egressFolioSerie:'E',
+                egressFolioNumber:1
             };
             AdministrationConfiguration.save(adminConfig);
         }

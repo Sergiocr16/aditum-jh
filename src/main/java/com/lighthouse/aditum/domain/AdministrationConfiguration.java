@@ -48,6 +48,30 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "using_subcharge_percentage")
     private Boolean usingSubchargePercentage;
 
+    @Column(name = "book_common_area")
+    private Boolean bookCommonArea;
+
+    @Column(name = "income_statement")
+    private Boolean incomeStatement;
+
+    @Column(name = "monthly_income_statement")
+    private Boolean monthlyIncomeStatement;
+
+    @Column(name = "egress_report")
+    private Boolean egressReport;
+
+    @Column(name = "income_folio")
+    private Boolean incomeFolio;
+
+    @Column(name = "egress_folio")
+    private Boolean egressFolio;
+
+    @Column(name = "egress_folio_serie")
+    private String egressFolioSerie;
+
+    @Column(name = "egress_folio_number")
+    private String egressFolioNumber;
+
     @ManyToOne
     private Company company;
 
@@ -177,6 +201,110 @@ public class AdministrationConfiguration implements Serializable {
         this.usingSubchargePercentage = usingSubchargePercentage;
     }
 
+    public Boolean isBookCommonArea() {
+        return bookCommonArea;
+    }
+
+    public AdministrationConfiguration bookCommonArea(Boolean bookCommonArea) {
+        this.bookCommonArea = bookCommonArea;
+        return this;
+    }
+
+    public void setBookCommonArea(Boolean bookCommonArea) {
+        this.bookCommonArea = bookCommonArea;
+    }
+
+    public Boolean isIncomeStatement() {
+        return incomeStatement;
+    }
+
+    public AdministrationConfiguration incomeStatement(Boolean incomeStatement) {
+        this.incomeStatement = incomeStatement;
+        return this;
+    }
+
+    public void setIncomeStatement(Boolean incomeStatement) {
+        this.incomeStatement = incomeStatement;
+    }
+
+    public Boolean isMonthlyIncomeStatement() {
+        return monthlyIncomeStatement;
+    }
+
+    public AdministrationConfiguration monthlyIncomeStatement(Boolean monthlyIncomeStatement) {
+        this.monthlyIncomeStatement = monthlyIncomeStatement;
+        return this;
+    }
+
+    public void setMonthlyIncomeStatement(Boolean monthlyIncomeStatement) {
+        this.monthlyIncomeStatement = monthlyIncomeStatement;
+    }
+
+    public Boolean isEgressReport() {
+        return egressReport;
+    }
+
+    public AdministrationConfiguration egressReport(Boolean egressReport) {
+        this.egressReport = egressReport;
+        return this;
+    }
+
+    public void setEgressReport(Boolean egressReport) {
+        this.egressReport = egressReport;
+    }
+
+    public Boolean isIncomeFolio() {
+        return incomeFolio;
+    }
+
+    public AdministrationConfiguration incomeFolio(Boolean incomeFolio) {
+        this.incomeFolio = incomeFolio;
+        return this;
+    }
+
+    public void setIncomeFolio(Boolean incomeFolio) {
+        this.incomeFolio = incomeFolio;
+    }
+
+    public Boolean isEgressFolio() {
+        return egressFolio;
+    }
+
+    public AdministrationConfiguration egressFolio(Boolean egressFolio) {
+        this.egressFolio = egressFolio;
+        return this;
+    }
+
+    public void setEgressFolio(Boolean egressFolio) {
+        this.egressFolio = egressFolio;
+    }
+
+    public String getEgressFolioSerie() {
+        return egressFolioSerie;
+    }
+
+    public AdministrationConfiguration egressFolioSerie(String egressFolioSerie) {
+        this.egressFolioSerie = egressFolioSerie;
+        return this;
+    }
+
+    public void setEgressFolioSerie(String egressFolioSerie) {
+        this.egressFolioSerie = egressFolioSerie;
+    }
+
+    public String getEgressFolioNumber() {
+        return egressFolioNumber;
+    }
+
+    public AdministrationConfiguration egressFolioNumber(String egressFolioNumber) {
+        this.egressFolioNumber = egressFolioNumber;
+        return this;
+    }
+
+    public void setEgressFolioNumber(String egressFolioNumber) {
+        this.egressFolioNumber = egressFolioNumber;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -224,6 +352,14 @@ public class AdministrationConfiguration implements Serializable {
             ", subchargeAmmount=" + getSubchargeAmmount() +
             ", daysToSendEmailBeforeBeDefaulter=" + getDaysToSendEmailBeforeBeDefaulter() +
             ", usingSubchargePercentage='" + isUsingSubchargePercentage() + "'" +
+            ", bookCommonArea='" + isBookCommonArea() + "'" +
+            ", incomeStatement='" + isIncomeStatement() + "'" +
+            ", monthlyIncomeStatement='" + isMonthlyIncomeStatement() + "'" +
+            ", egressReport='" + isEgressReport() + "'" +
+            ", incomeFolio='" + isIncomeFolio() + "'" +
+            ", egressFolio='" + isEgressFolio() + "'" +
+            ", egressFolioSerie='" + getEgressFolioSerie() + "'" +
+            ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
             "}";
     }
 }

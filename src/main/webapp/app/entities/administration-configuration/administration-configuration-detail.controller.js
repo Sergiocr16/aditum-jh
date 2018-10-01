@@ -13,7 +13,17 @@
         vm.administrationConfiguration = entity;
         vm.previousState = previousState.name;
         vm.save = save;
+        vm.data = {
+            cb1: true,
+            cb4: true,
+            cb5: false
+        };
 
+        vm.message = 'false';
+
+        vm.onChange = function(cbState) {
+            vm.message = cbState;
+        };
         var unsubscribe = $rootScope.$on('aditumApp:administrationConfigurationUpdate', function(event, result) {
             vm.administrationConfiguration = result;
         });
