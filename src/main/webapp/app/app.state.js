@@ -4,7 +4,10 @@
     angular
         .module('aditumApp')
         .config(stateConfig);
-
+    angular
+        .module('aditumApp').config(['$qProvider', function ($qProvider) {
+        $qProvider.errorOnUnhandledRejections(false);
+    }]);
     stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider) {
