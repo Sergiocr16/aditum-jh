@@ -11,9 +11,11 @@ import com.lighthouse.aditum.domain.AdministrationConfiguration;
 import com.lighthouse.aditum.domain.BalanceByAccount;
 import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.service.dto.AdministrationConfigurationDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.mapper.BalanceByAccountMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,7 @@ public class ScheduledTasks {
 
     //Cada inicio de mes
     @Scheduled(cron = "0 0 12 1 1/1 ?")
+    @Async
     public void registrarMensualBalancePorBanco() {
         List<Banco> bancos = bancoService.findAllCompanies(null);
         bancos.forEach(banco -> {
@@ -52,14 +55,18 @@ public class ScheduledTasks {
         log.debug("Registrando Balance Mensual");
     }
 
-    //    Cada 10 segundos prueba
-//    @Scheduled(cron = "*/10 * * * * *")
-    @Scheduled(cron = "0 */6 * * * *")
+    //    Cada 30 segundos prueba
+//    @Scheduled(cron = "*/30 * * * * *")
+//    Todos los dias a las 12 am
+    @Scheduled(cron = "0 0 0 1/1 * ?")
+    @Async
     public void registrarRecargosEnCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
+
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             if (administrationConfigurationDTO.isHasSubcharges()) {
-                this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).forEach(houseDTO -> {
+                List<HouseDTO> houseDTOS =  this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
+                houseDTOS.forEach(houseDTO -> {
                     this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
                 });
 

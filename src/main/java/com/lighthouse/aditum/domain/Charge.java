@@ -51,6 +51,9 @@ public class Charge implements Serializable {
     @Column(name = "subcharge")
     private String subcharge;
 
+    @Column(name = "payed_subcharge")
+    private Boolean payedSubcharge;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -174,6 +177,19 @@ public class Charge implements Serializable {
         this.subcharge = subcharge;
     }
 
+    public Boolean isPayedSubcharge() {
+        return payedSubcharge;
+    }
+
+    public Charge payedSubcharge(Boolean payedSubcharge) {
+        this.payedSubcharge = payedSubcharge;
+        return this;
+    }
+
+    public void setPayedSubcharge(Boolean payedSubcharge) {
+        this.payedSubcharge = payedSubcharge;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -246,6 +262,7 @@ public class Charge implements Serializable {
             ", deleted=" + getDeleted() +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", subcharge='" + getSubcharge() + "'" +
+            ", payedSubcharge='" + isPayedSubcharge() + "'" +
             "}";
     }
 }

@@ -23,6 +23,7 @@
             "deleted": "Deleted",
             "paymentDate": "Payment Date",
             "subcharge": "Subcharge",
+            "payedSubcharge": "Payed Subcharge",
             "house": "House",
             "payment": "Payment",
             "company": "Company"

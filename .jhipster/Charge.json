@@ -73,6 +73,10 @@
         {
             "fieldName": "subcharge",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "payedSubcharge",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180324000506",

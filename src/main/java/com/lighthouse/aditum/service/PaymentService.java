@@ -312,7 +312,7 @@ public class PaymentService {
     }
 
     private void payCharge(ChargeDTO charge, Payment payment) {
-        if (Integer.parseInt(charge.getLeft()) > 0) {
+        if (Double.parseDouble(charge.getLeft()) > 0) {
             ChargeDTO newCharge = newCharge(charge);
             if (Double.parseDouble(newCharge.getPaymentAmmount()) <= Double.parseDouble(newCharge.getSubcharge())) {
                 newCharge.setSubcharge(Double.parseDouble(newCharge.getSubcharge()) - Double.parseDouble(newCharge.getPaymentAmmount()) + "");
@@ -325,6 +325,7 @@ public class PaymentService {
                 charge.setAmmount( left + "");
             }
             chargeService.pay(charge, payment);
+            newCharge.setPayedSubcharge(true);
             chargeService.create(newCharge);
         } else {
             chargeService.pay(charge, payment);
@@ -336,7 +337,7 @@ public class PaymentService {
         PaymentDTO paymentDTO = this.findOne(paymentId);
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
-            chargeDTO.setPaymentAmmount(chargeDTO.getAmmount());
+            chargeDTO.setPaymentAmmount(chargeDTO.getTotal()+"");
         });
         if (paymentDTO.getCharges().size() == 0) {
             paymentDTO.setCharges(new ArrayList<>());

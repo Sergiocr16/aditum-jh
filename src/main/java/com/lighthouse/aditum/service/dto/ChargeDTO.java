@@ -49,6 +49,11 @@ public class ChargeDTO implements Serializable {
 
     private Long companyId;
 
+    private String formatedDate;
+
+
+    private boolean payedSubcharge;
+
     public ChargeDTO() {
     }
     public ChargeDTO(String concept,int total ) {
@@ -243,4 +248,37 @@ public class ChargeDTO implements Serializable {
     public void setLeft(String left) {
         this.left = left;
     }
+
+    public boolean isPayedSubcharge() {
+        return payedSubcharge;
+    }
+
+    public void setPayedSubcharge(boolean payedSubcharge) {
+        this.payedSubcharge = payedSubcharge;
+    }
+
+    public String getFormatedDate() {
+        return formatedDate;
+    }
+
+    public void setFormatedDate(String formatedDate) {
+        this.formatedDate = formatedDate;
+    }
+
+    public String getFormatedType() {
+        String formattedType = "";
+        switch (this.getType()) {
+            case 1:
+                formattedType =  "MANTENIMIENTO";
+            break;
+            case 2:
+                formattedType = "EXTRAORDINARIA";
+            break;
+            case 3:
+                formattedType = "ÁREAS COMUNES";
+            break;
+        }
+        return formattedType;
+    }
+
 }
