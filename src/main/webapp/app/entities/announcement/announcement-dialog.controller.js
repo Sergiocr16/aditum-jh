@@ -28,6 +28,23 @@
             $("#form").fadeIn('slow');
         }, 900);
 
+
+        function defineImageSize(str){
+            var res;
+            var n1 = str.search('style="width: 25%;"');
+            var n2 = str.search('style="width: 50%;"');
+            var n3 = str.search('style="width: 100%;"');
+            if(n1!=-1) {
+                res = str.replace("<img", '<img width="25%"');
+            }
+            if(n2!=-1) {
+                res = str.replace("<img", '<img width="50%"');
+            }
+            if(n3!=-1) {
+                res = str.replace("<img", '<img width="100%"');
+            }
+            return res;
+        }
         function save() {
             vm.isSaving = true;
 
@@ -49,6 +66,8 @@
                         vm.announcement.publishingDate = moment(new Date()).format();
                         vm.announcement.status = 2;
                         vm.announcement.companyId = $rootScope.companyId;
+                        var str = vm.announcement.description;
+                        vm.announcement.description = defineImageSize(str);
                         if (vm.announcement.id !== null) {
                             Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
                         } else {

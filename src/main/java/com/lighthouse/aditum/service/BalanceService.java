@@ -40,7 +40,7 @@ public class BalanceService {
         log.debug("Request to save Balance : {}", balanceDTO);
         Balance balance = balanceMapper.toEntity(balanceDTO);
         balance.setHouse(balanceMapper.houseFromId(balanceDTO.getHouseId()));
-        balance = balanceRepository.save(balance);
+//        balance = balanceRepository.save(balance);
         return balanceMapper.toDto(balance);
     }
 

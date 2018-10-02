@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDialogController', EgressDialogController);
 
-    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany'];
+    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany', 'AdministrationConfiguration'];
 
-    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany) {
+    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany, AdministrationConfiguration) {
         var vm = this;
         $rootScope.active = "newEgress";
 
@@ -26,25 +26,44 @@
         $(function () {
 
         });
-
-
-        setTimeout(function () {
-            Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
-
-            function onSuccessProveedores(data, headers) {
-                vm.proveedores = data;
-
-                Banco.query({companyId: globalCompany.getId()}).$promise.then(onSuccessBancos);
-
-                function onSuccessBancos(data, headers) {
-                    vm.bancos = data;
-
-                    EgressCategory.query({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
+        function loadAdminConfig() {
+            AdministrationConfiguration.get({
+                companyId: globalCompany.getId()
+            }).$promise.then(function (result) {
+                vm.admingConfig = result;
+                if (result.egressFolio == true) {
+                    vm.egressFolioSerie = result.egressFolioSerie;
+                    vm.egressFolioNumber = result.egressFolioNumber;
+                    vm.egress.folio = vm.egressFolioSerie + "-" +  vm.egressFolioNumber;
                 }
+            })
+        }
 
+        loadAdminConfig();
+        function increaseFolioNumber(success) {
+            vm.admingConfig.egressFolioNumber = parseInt(vm.egressFolioNumber) + 1;
+            vm.admingConfig.egressFolioSerie = vm.egressFolioSerie;
+            console.log(vm.admingConfig)
+            AdministrationConfiguration.update(vm.admingConfig, success);
+        }
+        // setTimeout(function () {
 
+        Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+        function onSuccessProveedores(data, headers) {
+            vm.proveedores = data;
+
+            Banco.query({companyId: globalCompany.getId()}).$promise.then(onSuccessBancos);
+
+            function onSuccessBancos(data, headers) {
+                vm.bancos = data;
+
+                EgressCategory.query({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
             }
-        }, 700)
+
+
+        }
+
+        // }, 700)
 
 
         function onSuccessEgressCategories(data, headers) {
@@ -215,14 +234,29 @@
             $state.go('egress');
             toastr["success"]("Se reportó el pago correctamente");
             vm.isSaving = false;
+
         }
 
         function onSaveSuccess(result) {
-            bootbox.hideAll();
-            $scope.$emit('aditumApp:egressUpdate', result);
-            $state.go('egress');
-            toastr["success"]("Se registró el gasto correctamente");
-            vm.isSaving = false;
+            if (vm.admingConfig.egressFolio == true) {
+                increaseFolioNumber(function (admin) {
+                    vm.admingConfig = admin;
+                    vm.egressfolioSerie = admin.egressfolioSerie;
+                    vm.egressfolioSerie = admin.egressfolioSerie;
+                    bootbox.hideAll();
+                    $scope.$emit('aditumApp:egressUpdate', result);
+                    $state.go('egress');
+                    toastr["success"]("Se registró el gasto correctamente");
+                    vm.isSaving = false;
+                })
+            }else{
+                bootbox.hideAll();
+                $scope.$emit('aditumApp:egressUpdate', result);
+                $state.go('egress');
+                toastr["success"]("Se registró el gasto correctamente");
+                vm.isSaving = false;
+            }
+
         }
 
         function onSaveError() {

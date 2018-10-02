@@ -130,6 +130,7 @@
                         Announcement.delete({id: announcement.id},
                             function () {
                                 toastr["success"]("Se ha elminado la noticia correctamente.")
+                                vm.announcements =[];
                                 loadAll();
                             });
                     }

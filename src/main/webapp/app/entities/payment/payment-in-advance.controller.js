@@ -171,8 +171,8 @@
             AdministrationConfiguration.get({
                 companyId: globalCompany.getId()
             }).$promise.then(function (result) {
-                if (result.folioSerie != null) {
-                    vm.admingConfig = result;
+                vm.admingConfig = result;
+                if (result.incomeFolio == true) {
                     vm.folioSerie = result.folioSerie;
                     vm.folioNumber = result.folioNumber;
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;

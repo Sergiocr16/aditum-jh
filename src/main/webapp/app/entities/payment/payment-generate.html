@@ -108,7 +108,7 @@
                                                     <span class="font-13 bold">Número de recibo *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" required>
+                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" required ng-disabled="vm.admingConfig.incomeFolio == true">
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -156,13 +156,14 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
+
                                                 <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
                                                     <span class="font-13 bold control-label ">Cantidad * </span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                     <div class="input-group form-group">
                                                         <span class="input-group-addon">₡</span>
-                                                        <input ng-class="{redBorder: vm.payment.valida==false}" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.payment.ammount" ng-change="vm.calculatePayments(vm.payment)" required />
+                                                        <input ng-class="{redBorder: vm.payment.valida==false}" format="number" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.payment.ammount" ng-change="vm.calculatePayments(vm.payment)" required />
                                                     </div>
                                                 </div>
                                             </div>

@@ -26,7 +26,9 @@
             'angular-popover',
             'ngPopover',
             'summernote',
-            'ngMaterial', 'ngMessages'
+            'ngMaterial',
+            'ngMessages',
+            'ngSanitize'
         ])
         .run(run);
 
