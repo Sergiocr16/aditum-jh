@@ -22,7 +22,7 @@
 		exports["pdfjs-dist/build/pdf.combined"] = factory();
 	else
 		root["pdfjs-dist/build/pdf.combined"] = root.pdfjsDistBuildPdfCombined = factory();
-})(this, function() {
+})(typeof self !== 'undefined' ? self : this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -85,7 +85,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__w_pdfjs_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __w_pdfjs_require__(__w_pdfjs_require__.s = 70);
+/******/ 	return __w_pdfjs_require__(__w_pdfjs_require__.s = 91);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -102,9 +102,9 @@ exports.unreachable = exports.warn = exports.utf8StringToString = exports.string
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-__w_pdfjs_require__(71);
+__w_pdfjs_require__(92);
 
-var _streams_polyfill = __w_pdfjs_require__(96);
+var _streams_polyfill = __w_pdfjs_require__(132);
 
 var FONT_IDENTITY_MATRIX = [0.001, 0, 0, 0.001, 0, 0];
 var NativeImageDecoding = {
@@ -1481,6 +1481,16 @@ exports.unreachable = unreachable;
 "use strict";
 
 
+var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
+if (typeof __g == 'number') __g = global;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1713,15 +1723,28 @@ exports.isRefsEqual = isRefsEqual;
 exports.isStream = isStream;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var store = __w_pdfjs_require__(49)('wks');
-var uid = __w_pdfjs_require__(13);
-var _Symbol = __w_pdfjs_require__(4).Symbol;
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+module.exports = function (it) {
+  return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object' ? it !== null : typeof it === 'function';
+};
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var store = __w_pdfjs_require__(57)('wks');
+var uid = __w_pdfjs_require__(18);
+var _Symbol = __w_pdfjs_require__(1).Symbol;
 var USE_SYMBOL = typeof _Symbol == 'function';
 var $exports = module.exports = function (name) {
   return store[name] || (store[name] = USE_SYMBOL && _Symbol[name] || (USE_SYMBOL ? _Symbol : uid)('Symbol.' + name));
@@ -1729,7 +1752,7 @@ var $exports = module.exports = function (name) {
 $exports.store = store;
 
 /***/ }),
-/* 3 */
+/* 5 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -1738,17 +1761,15 @@ $exports.store = store;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.LZWStream = exports.StringStream = exports.StreamsSequenceStream = exports.Stream = exports.RunLengthStream = exports.PredictorStream = exports.NullStream = exports.JpxStream = exports.JpegStream = exports.Jbig2Stream = exports.FlateStream = exports.DecodeStream = exports.DecryptStream = exports.CCITTFaxStream = exports.AsciiHexStream = exports.Ascii85Stream = undefined;
+exports.LZWStream = exports.StringStream = exports.StreamsSequenceStream = exports.Stream = exports.RunLengthStream = exports.PredictorStream = exports.NullStream = exports.JpxStream = exports.JpegStream = exports.FlateStream = exports.DecodeStream = exports.DecryptStream = exports.AsciiHexStream = exports.Ascii85Stream = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _jbig = __w_pdfjs_require__(106);
+var _jpg = __w_pdfjs_require__(143);
 
-var _jpg = __w_pdfjs_require__(107);
-
-var _jpx = __w_pdfjs_require__(60);
+var _jpx = __w_pdfjs_require__(80);
 
 var Stream = function StreamClosure() {
   function Stream(arrayBuffer, start, length, dict) {
@@ -1830,11 +1851,7 @@ var Stream = function StreamClosure() {
 }();
 var StringStream = function StringStreamClosure() {
   function StringStream(str) {
-    var length = str.length;
-    var bytes = new Uint8Array(length);
-    for (var n = 0; n < length; ++n) {
-      bytes[n] = str.charCodeAt(n);
-    }
+    var bytes = (0, _util.stringToBytes)(str);
     Stream.call(this, bytes);
   }
   StringStream.prototype = Stream.prototype;
@@ -2534,54 +2551,6 @@ var JpxStream = function JpxStreamClosure() {
   };
   return JpxStream;
 }();
-var Jbig2Stream = function Jbig2StreamClosure() {
-  function Jbig2Stream(stream, maybeLength, dict, params) {
-    this.stream = stream;
-    this.maybeLength = maybeLength;
-    this.dict = dict;
-    this.params = params;
-    DecodeStream.call(this, maybeLength);
-  }
-  Jbig2Stream.prototype = Object.create(DecodeStream.prototype);
-  Object.defineProperty(Jbig2Stream.prototype, 'bytes', {
-    get: function Jbig2Stream_bytes() {
-      return (0, _util.shadow)(this, 'bytes', this.stream.getBytes(this.maybeLength));
-    },
-    configurable: true
-  });
-  Jbig2Stream.prototype.ensureBuffer = function Jbig2Stream_ensureBuffer(req) {
-    if (this.bufferLength) {
-      return;
-    }
-    var jbig2Image = new _jbig.Jbig2Image();
-    var chunks = [];
-    if ((0, _primitives.isDict)(this.params)) {
-      var globalsStream = this.params.get('JBIG2Globals');
-      if ((0, _primitives.isStream)(globalsStream)) {
-        var globals = globalsStream.getBytes();
-        chunks.push({
-          data: globals,
-          start: 0,
-          end: globals.length
-        });
-      }
-    }
-    chunks.push({
-      data: this.bytes,
-      start: 0,
-      end: this.bytes.length
-    });
-    var data = jbig2Image.parseChunks(chunks);
-    var dataLength = data.length;
-    for (var i = 0; i < dataLength; i++) {
-      data[i] ^= 0xFF;
-    }
-    this.buffer = data;
-    this.bufferLength = dataLength;
-    this.eof = true;
-  };
-  return Jbig2Stream;
-}();
 var DecryptStream = function DecryptStreamClosure() {
   function DecryptStream(str, maybeLength, decrypt) {
     this.str = str;
@@ -2773,529 +2742,6 @@ var RunLengthStream = function RunLengthStreamClosure() {
   };
   return RunLengthStream;
 }();
-var CCITTFaxStream = function CCITTFaxStreamClosure() {
-  var ccittEOL = -2;
-  var ccittEOF = -1;
-  var twoDimPass = 0;
-  var twoDimHoriz = 1;
-  var twoDimVert0 = 2;
-  var twoDimVertR1 = 3;
-  var twoDimVertL1 = 4;
-  var twoDimVertR2 = 5;
-  var twoDimVertL2 = 6;
-  var twoDimVertR3 = 7;
-  var twoDimVertL3 = 8;
-  var twoDimTable = [[-1, -1], [-1, -1], [7, twoDimVertL3], [7, twoDimVertR3], [6, twoDimVertL2], [6, twoDimVertL2], [6, twoDimVertR2], [6, twoDimVertR2], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0]];
-  var whiteTable1 = [[-1, -1], [12, ccittEOL], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [11, 1792], [11, 1792], [12, 1984], [12, 2048], [12, 2112], [12, 2176], [12, 2240], [12, 2304], [11, 1856], [11, 1856], [11, 1920], [11, 1920], [12, 2368], [12, 2432], [12, 2496], [12, 2560]];
-  var whiteTable2 = [[-1, -1], [-1, -1], [-1, -1], [-1, -1], [8, 29], [8, 29], [8, 30], [8, 30], [8, 45], [8, 45], [8, 46], [8, 46], [7, 22], [7, 22], [7, 22], [7, 22], [7, 23], [7, 23], [7, 23], [7, 23], [8, 47], [8, 47], [8, 48], [8, 48], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [7, 20], [7, 20], [7, 20], [7, 20], [8, 33], [8, 33], [8, 34], [8, 34], [8, 35], [8, 35], [8, 36], [8, 36], [8, 37], [8, 37], [8, 38], [8, 38], [7, 19], [7, 19], [7, 19], [7, 19], [8, 31], [8, 31], [8, 32], [8, 32], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [8, 53], [8, 53], [8, 54], [8, 54], [7, 26], [7, 26], [7, 26], [7, 26], [8, 39], [8, 39], [8, 40], [8, 40], [8, 41], [8, 41], [8, 42], [8, 42], [8, 43], [8, 43], [8, 44], [8, 44], [7, 21], [7, 21], [7, 21], [7, 21], [7, 28], [7, 28], [7, 28], [7, 28], [8, 61], [8, 61], [8, 62], [8, 62], [8, 63], [8, 63], [8, 0], [8, 0], [8, 320], [8, 320], [8, 384], [8, 384], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [7, 27], [7, 27], [7, 27], [7, 27], [8, 59], [8, 59], [8, 60], [8, 60], [9, 1472], [9, 1536], [9, 1600], [9, 1728], [7, 18], [7, 18], [7, 18], [7, 18], [7, 24], [7, 24], [7, 24], [7, 24], [8, 49], [8, 49], [8, 50], [8, 50], [8, 51], [8, 51], [8, 52], [8, 52], [7, 25], [7, 25], [7, 25], [7, 25], [8, 55], [8, 55], [8, 56], [8, 56], [8, 57], [8, 57], [8, 58], [8, 58], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [8, 448], [8, 448], [8, 512], [8, 512], [9, 704], [9, 768], [8, 640], [8, 640], [8, 576], [8, 576], [9, 832], [9, 896], [9, 960], [9, 1024], [9, 1088], [9, 1152], [9, 1216], [9, 1280], [9, 1344], [9, 1408], [7, 256], [7, 256], [7, 256], [7, 256], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7]];
-  var blackTable1 = [[-1, -1], [-1, -1], [12, ccittEOL], [12, ccittEOL], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [11, 1792], [11, 1792], [11, 1792], [11, 1792], [12, 1984], [12, 1984], [12, 2048], [12, 2048], [12, 2112], [12, 2112], [12, 2176], [12, 2176], [12, 2240], [12, 2240], [12, 2304], [12, 2304], [11, 1856], [11, 1856], [11, 1856], [11, 1856], [11, 1920], [11, 1920], [11, 1920], [11, 1920], [12, 2368], [12, 2368], [12, 2432], [12, 2432], [12, 2496], [12, 2496], [12, 2560], [12, 2560], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [12, 52], [12, 52], [13, 640], [13, 704], [13, 768], [13, 832], [12, 55], [12, 55], [12, 56], [12, 56], [13, 1280], [13, 1344], [13, 1408], [13, 1472], [12, 59], [12, 59], [12, 60], [12, 60], [13, 1536], [13, 1600], [11, 24], [11, 24], [11, 24], [11, 24], [11, 25], [11, 25], [11, 25], [11, 25], [13, 1664], [13, 1728], [12, 320], [12, 320], [12, 384], [12, 384], [12, 448], [12, 448], [13, 512], [13, 576], [12, 53], [12, 53], [12, 54], [12, 54], [13, 896], [13, 960], [13, 1024], [13, 1088], [13, 1152], [13, 1216], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64]];
-  var blackTable2 = [[8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [11, 23], [11, 23], [12, 50], [12, 51], [12, 44], [12, 45], [12, 46], [12, 47], [12, 57], [12, 58], [12, 61], [12, 256], [10, 16], [10, 16], [10, 16], [10, 16], [10, 17], [10, 17], [10, 17], [10, 17], [12, 48], [12, 49], [12, 62], [12, 63], [12, 30], [12, 31], [12, 32], [12, 33], [12, 40], [12, 41], [11, 22], [11, 22], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [12, 128], [12, 192], [12, 26], [12, 27], [12, 28], [12, 29], [11, 19], [11, 19], [11, 20], [11, 20], [12, 34], [12, 35], [12, 36], [12, 37], [12, 38], [12, 39], [11, 21], [11, 21], [12, 42], [12, 43], [10, 0], [10, 0], [10, 0], [10, 0], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12]];
-  var blackTable3 = [[-1, -1], [-1, -1], [-1, -1], [-1, -1], [6, 9], [6, 8], [5, 7], [5, 7], [4, 6], [4, 6], [4, 6], [4, 6], [4, 5], [4, 5], [4, 5], [4, 5], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2]];
-  function CCITTFaxStream(str, maybeLength, params) {
-    this.str = str;
-    this.dict = str.dict;
-    if (!(0, _primitives.isDict)(params)) {
-      params = _primitives.Dict.empty;
-    }
-    this.encoding = params.get('K') || 0;
-    this.eoline = params.get('EndOfLine') || false;
-    this.byteAlign = params.get('EncodedByteAlign') || false;
-    this.columns = params.get('Columns') || 1728;
-    this.rows = params.get('Rows') || 0;
-    var eoblock = params.get('EndOfBlock');
-    if (eoblock === null || eoblock === undefined) {
-      eoblock = true;
-    }
-    this.eoblock = eoblock;
-    this.black = params.get('BlackIs1') || false;
-    this.codingLine = new Uint32Array(this.columns + 1);
-    this.refLine = new Uint32Array(this.columns + 2);
-    this.codingLine[0] = this.columns;
-    this.codingPos = 0;
-    this.row = 0;
-    this.nextLine2D = this.encoding < 0;
-    this.inputBits = 0;
-    this.inputBuf = 0;
-    this.outputBits = 0;
-    this.rowsDone = false;
-    var code1;
-    while ((code1 = this.lookBits(12)) === 0) {
-      this.eatBits(1);
-    }
-    if (code1 === 1) {
-      this.eatBits(12);
-    }
-    if (this.encoding > 0) {
-      this.nextLine2D = !this.lookBits(1);
-      this.eatBits(1);
-    }
-    DecodeStream.call(this, maybeLength);
-  }
-  CCITTFaxStream.prototype = Object.create(DecodeStream.prototype);
-  CCITTFaxStream.prototype.readBlock = function CCITTFaxStream_readBlock() {
-    while (!this.eof) {
-      var c = this.lookChar();
-      this.ensureBuffer(this.bufferLength + 1);
-      this.buffer[this.bufferLength++] = c;
-    }
-  };
-  CCITTFaxStream.prototype.addPixels = function ccittFaxStreamAddPixels(a1, blackPixels) {
-    var codingLine = this.codingLine;
-    var codingPos = this.codingPos;
-    if (a1 > codingLine[codingPos]) {
-      if (a1 > this.columns) {
-        (0, _util.info)('row is wrong length');
-        this.err = true;
-        a1 = this.columns;
-      }
-      if (codingPos & 1 ^ blackPixels) {
-        ++codingPos;
-      }
-      codingLine[codingPos] = a1;
-    }
-    this.codingPos = codingPos;
-  };
-  CCITTFaxStream.prototype.addPixelsNeg = function ccittFaxStreamAddPixelsNeg(a1, blackPixels) {
-    var codingLine = this.codingLine;
-    var codingPos = this.codingPos;
-    if (a1 > codingLine[codingPos]) {
-      if (a1 > this.columns) {
-        (0, _util.info)('row is wrong length');
-        this.err = true;
-        a1 = this.columns;
-      }
-      if (codingPos & 1 ^ blackPixels) {
-        ++codingPos;
-      }
-      codingLine[codingPos] = a1;
-    } else if (a1 < codingLine[codingPos]) {
-      if (a1 < 0) {
-        (0, _util.info)('invalid code');
-        this.err = true;
-        a1 = 0;
-      }
-      while (codingPos > 0 && a1 < codingLine[codingPos - 1]) {
-        --codingPos;
-      }
-      codingLine[codingPos] = a1;
-    }
-    this.codingPos = codingPos;
-  };
-  CCITTFaxStream.prototype.lookChar = function CCITTFaxStream_lookChar() {
-    var refLine = this.refLine;
-    var codingLine = this.codingLine;
-    var columns = this.columns;
-    var refPos, blackPixels, bits, i;
-    if (this.outputBits === 0) {
-      if (this.rowsDone) {
-        this.eof = true;
-      }
-      if (this.eof) {
-        return null;
-      }
-      this.err = false;
-      var code1, code2, code3;
-      if (this.nextLine2D) {
-        for (i = 0; codingLine[i] < columns; ++i) {
-          refLine[i] = codingLine[i];
-        }
-        refLine[i++] = columns;
-        refLine[i] = columns;
-        codingLine[0] = 0;
-        this.codingPos = 0;
-        refPos = 0;
-        blackPixels = 0;
-        while (codingLine[this.codingPos] < columns) {
-          code1 = this.getTwoDimCode();
-          switch (code1) {
-            case twoDimPass:
-              this.addPixels(refLine[refPos + 1], blackPixels);
-              if (refLine[refPos + 1] < columns) {
-                refPos += 2;
-              }
-              break;
-            case twoDimHoriz:
-              code1 = code2 = 0;
-              if (blackPixels) {
-                do {
-                  code1 += code3 = this.getBlackCode();
-                } while (code3 >= 64);
-                do {
-                  code2 += code3 = this.getWhiteCode();
-                } while (code3 >= 64);
-              } else {
-                do {
-                  code1 += code3 = this.getWhiteCode();
-                } while (code3 >= 64);
-                do {
-                  code2 += code3 = this.getBlackCode();
-                } while (code3 >= 64);
-              }
-              this.addPixels(codingLine[this.codingPos] + code1, blackPixels);
-              if (codingLine[this.codingPos] < columns) {
-                this.addPixels(codingLine[this.codingPos] + code2, blackPixels ^ 1);
-              }
-              while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                refPos += 2;
-              }
-              break;
-            case twoDimVertR3:
-              this.addPixels(refLine[refPos] + 3, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                ++refPos;
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVertR2:
-              this.addPixels(refLine[refPos] + 2, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                ++refPos;
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVertR1:
-              this.addPixels(refLine[refPos] + 1, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                ++refPos;
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVert0:
-              this.addPixels(refLine[refPos], blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                ++refPos;
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVertL3:
-              this.addPixelsNeg(refLine[refPos] - 3, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                if (refPos > 0) {
-                  --refPos;
-                } else {
-                  ++refPos;
-                }
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVertL2:
-              this.addPixelsNeg(refLine[refPos] - 2, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                if (refPos > 0) {
-                  --refPos;
-                } else {
-                  ++refPos;
-                }
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case twoDimVertL1:
-              this.addPixelsNeg(refLine[refPos] - 1, blackPixels);
-              blackPixels ^= 1;
-              if (codingLine[this.codingPos] < columns) {
-                if (refPos > 0) {
-                  --refPos;
-                } else {
-                  ++refPos;
-                }
-                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
-                  refPos += 2;
-                }
-              }
-              break;
-            case ccittEOF:
-              this.addPixels(columns, 0);
-              this.eof = true;
-              break;
-            default:
-              (0, _util.info)('bad 2d code');
-              this.addPixels(columns, 0);
-              this.err = true;
-          }
-        }
-      } else {
-        codingLine[0] = 0;
-        this.codingPos = 0;
-        blackPixels = 0;
-        while (codingLine[this.codingPos] < columns) {
-          code1 = 0;
-          if (blackPixels) {
-            do {
-              code1 += code3 = this.getBlackCode();
-            } while (code3 >= 64);
-          } else {
-            do {
-              code1 += code3 = this.getWhiteCode();
-            } while (code3 >= 64);
-          }
-          this.addPixels(codingLine[this.codingPos] + code1, blackPixels);
-          blackPixels ^= 1;
-        }
-      }
-      var gotEOL = false;
-      if (this.byteAlign) {
-        this.inputBits &= ~7;
-      }
-      if (!this.eoblock && this.row === this.rows - 1) {
-        this.rowsDone = true;
-      } else {
-        code1 = this.lookBits(12);
-        if (this.eoline) {
-          while (code1 !== ccittEOF && code1 !== 1) {
-            this.eatBits(1);
-            code1 = this.lookBits(12);
-          }
-        } else {
-          while (code1 === 0) {
-            this.eatBits(1);
-            code1 = this.lookBits(12);
-          }
-        }
-        if (code1 === 1) {
-          this.eatBits(12);
-          gotEOL = true;
-        } else if (code1 === ccittEOF) {
-          this.eof = true;
-        }
-      }
-      if (!this.eof && this.encoding > 0 && !this.rowsDone) {
-        this.nextLine2D = !this.lookBits(1);
-        this.eatBits(1);
-      }
-      if (this.eoblock && gotEOL && this.byteAlign) {
-        code1 = this.lookBits(12);
-        if (code1 === 1) {
-          this.eatBits(12);
-          if (this.encoding > 0) {
-            this.lookBits(1);
-            this.eatBits(1);
-          }
-          if (this.encoding >= 0) {
-            for (i = 0; i < 4; ++i) {
-              code1 = this.lookBits(12);
-              if (code1 !== 1) {
-                (0, _util.info)('bad rtc code: ' + code1);
-              }
-              this.eatBits(12);
-              if (this.encoding > 0) {
-                this.lookBits(1);
-                this.eatBits(1);
-              }
-            }
-          }
-          this.eof = true;
-        }
-      } else if (this.err && this.eoline) {
-        while (true) {
-          code1 = this.lookBits(13);
-          if (code1 === ccittEOF) {
-            this.eof = true;
-            return null;
-          }
-          if (code1 >> 1 === 1) {
-            break;
-          }
-          this.eatBits(1);
-        }
-        this.eatBits(12);
-        if (this.encoding > 0) {
-          this.eatBits(1);
-          this.nextLine2D = !(code1 & 1);
-        }
-      }
-      if (codingLine[0] > 0) {
-        this.outputBits = codingLine[this.codingPos = 0];
-      } else {
-        this.outputBits = codingLine[this.codingPos = 1];
-      }
-      this.row++;
-    }
-    var c;
-    if (this.outputBits >= 8) {
-      c = this.codingPos & 1 ? 0 : 0xFF;
-      this.outputBits -= 8;
-      if (this.outputBits === 0 && codingLine[this.codingPos] < columns) {
-        this.codingPos++;
-        this.outputBits = codingLine[this.codingPos] - codingLine[this.codingPos - 1];
-      }
-    } else {
-      bits = 8;
-      c = 0;
-      do {
-        if (this.outputBits > bits) {
-          c <<= bits;
-          if (!(this.codingPos & 1)) {
-            c |= 0xFF >> 8 - bits;
-          }
-          this.outputBits -= bits;
-          bits = 0;
-        } else {
-          c <<= this.outputBits;
-          if (!(this.codingPos & 1)) {
-            c |= 0xFF >> 8 - this.outputBits;
-          }
-          bits -= this.outputBits;
-          this.outputBits = 0;
-          if (codingLine[this.codingPos] < columns) {
-            this.codingPos++;
-            this.outputBits = codingLine[this.codingPos] - codingLine[this.codingPos - 1];
-          } else if (bits > 0) {
-            c <<= bits;
-            bits = 0;
-          }
-        }
-      } while (bits);
-    }
-    if (this.black) {
-      c ^= 0xFF;
-    }
-    return c;
-  };
-  CCITTFaxStream.prototype.findTableCode = function ccittFaxStreamFindTableCode(start, end, table, limit) {
-    var limitValue = limit || 0;
-    for (var i = start; i <= end; ++i) {
-      var code = this.lookBits(i);
-      if (code === ccittEOF) {
-        return [true, 1, false];
-      }
-      if (i < end) {
-        code <<= end - i;
-      }
-      if (!limitValue || code >= limitValue) {
-        var p = table[code - limitValue];
-        if (p[0] === i) {
-          this.eatBits(i);
-          return [true, p[1], true];
-        }
-      }
-    }
-    return [false, 0, false];
-  };
-  CCITTFaxStream.prototype.getTwoDimCode = function ccittFaxStreamGetTwoDimCode() {
-    var code = 0;
-    var p;
-    if (this.eoblock) {
-      code = this.lookBits(7);
-      p = twoDimTable[code];
-      if (p && p[0] > 0) {
-        this.eatBits(p[0]);
-        return p[1];
-      }
-    } else {
-      var result = this.findTableCode(1, 7, twoDimTable);
-      if (result[0] && result[2]) {
-        return result[1];
-      }
-    }
-    (0, _util.info)('Bad two dim code');
-    return ccittEOF;
-  };
-  CCITTFaxStream.prototype.getWhiteCode = function ccittFaxStreamGetWhiteCode() {
-    var code = 0;
-    var p;
-    if (this.eoblock) {
-      code = this.lookBits(12);
-      if (code === ccittEOF) {
-        return 1;
-      }
-      if (code >> 5 === 0) {
-        p = whiteTable1[code];
-      } else {
-        p = whiteTable2[code >> 3];
-      }
-      if (p[0] > 0) {
-        this.eatBits(p[0]);
-        return p[1];
-      }
-    } else {
-      var result = this.findTableCode(1, 9, whiteTable2);
-      if (result[0]) {
-        return result[1];
-      }
-      result = this.findTableCode(11, 12, whiteTable1);
-      if (result[0]) {
-        return result[1];
-      }
-    }
-    (0, _util.info)('bad white code');
-    this.eatBits(1);
-    return 1;
-  };
-  CCITTFaxStream.prototype.getBlackCode = function ccittFaxStreamGetBlackCode() {
-    var code, p;
-    if (this.eoblock) {
-      code = this.lookBits(13);
-      if (code === ccittEOF) {
-        return 1;
-      }
-      if (code >> 7 === 0) {
-        p = blackTable1[code];
-      } else if (code >> 9 === 0 && code >> 7 !== 0) {
-        p = blackTable2[(code >> 1) - 64];
-      } else {
-        p = blackTable3[code >> 7];
-      }
-      if (p[0] > 0) {
-        this.eatBits(p[0]);
-        return p[1];
-      }
-    } else {
-      var result = this.findTableCode(2, 6, blackTable3);
-      if (result[0]) {
-        return result[1];
-      }
-      result = this.findTableCode(7, 12, blackTable2, 64);
-      if (result[0]) {
-        return result[1];
-      }
-      result = this.findTableCode(10, 13, blackTable1);
-      if (result[0]) {
-        return result[1];
-      }
-    }
-    (0, _util.info)('bad black code');
-    this.eatBits(1);
-    return 1;
-  };
-  CCITTFaxStream.prototype.lookBits = function CCITTFaxStream_lookBits(n) {
-    var c;
-    while (this.inputBits < n) {
-      if ((c = this.str.getByte()) === -1) {
-        if (this.inputBits === 0) {
-          return ccittEOF;
-        }
-        return this.inputBuf << n - this.inputBits & 0xFFFF >> 16 - n;
-      }
-      this.inputBuf = this.inputBuf << 8 | c;
-      this.inputBits += 8;
-    }
-    return this.inputBuf >> this.inputBits - n & 0xFFFF >> 16 - n;
-  };
-  CCITTFaxStream.prototype.eatBits = function CCITTFaxStream_eatBits(n) {
-    if ((this.inputBits -= n) < 0) {
-      this.inputBits = 0;
-    }
-  };
-  return CCITTFaxStream;
-}();
 var LZWStream = function LZWStreamClosure() {
   function LZWStream(str, maybeLength, earlyChange) {
     this.str = str;
@@ -3421,11 +2867,9 @@ var NullStream = function NullStreamClosure() {
 }();
 exports.Ascii85Stream = Ascii85Stream;
 exports.AsciiHexStream = AsciiHexStream;
-exports.CCITTFaxStream = CCITTFaxStream;
 exports.DecryptStream = DecryptStream;
 exports.DecodeStream = DecodeStream;
 exports.FlateStream = FlateStream;
-exports.Jbig2Stream = Jbig2Stream;
 exports.JpegStream = JpegStream;
 exports.JpxStream = JpxStream;
 exports.NullStream = NullStream;
@@ -3437,45 +2881,14 @@ exports.StringStream = StringStream;
 exports.LZWStream = LZWStream;
 
 /***/ }),
-/* 4 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var global = module.exports = typeof window != 'undefined' && window.Math == Math ? window : typeof self != 'undefined' && self.Math == Math ? self : Function('return this')();
-if (typeof __g == 'number') __g = global;
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = !__w_pdfjs_require__(19)(function () {
-  return Object.defineProperty({}, 'a', {
-    get: function get() {
-      return 7;
-    }
-  }).a != 7;
-});
-
-/***/ }),
 /* 6 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var dP = __w_pdfjs_require__(10);
-var createDesc = __w_pdfjs_require__(22);
-module.exports = __w_pdfjs_require__(5) ? function (object, key, value) {
-  return dP.f(object, key, createDesc(1, value));
-} : function (object, key, value) {
-  object[key] = value;
-  return object;
-};
+var core = module.exports = { version: '2.5.7' };
+if (typeof __e == 'number') __e = core;
 
 /***/ }),
 /* 7 */
@@ -3484,16 +2897,233 @@ module.exports = __w_pdfjs_require__(5) ? function (object, key, value) {
 "use strict";
 
 
+var global = __w_pdfjs_require__(1);
+var core = __w_pdfjs_require__(6);
+var hide = __w_pdfjs_require__(8);
+var redefine = __w_pdfjs_require__(16);
+var ctx = __w_pdfjs_require__(13);
+var PROTOTYPE = 'prototype';
+var $export = function $export(type, name, source) {
+  var IS_FORCED = type & $export.F;
+  var IS_GLOBAL = type & $export.G;
+  var IS_STATIC = type & $export.S;
+  var IS_PROTO = type & $export.P;
+  var IS_BIND = type & $export.B;
+  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE];
+  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
+  var expProto = exports[PROTOTYPE] || (exports[PROTOTYPE] = {});
+  var key, own, out, exp;
+  if (IS_GLOBAL) source = name;
+  for (key in source) {
+    own = !IS_FORCED && target && target[key] !== undefined;
+    out = (own ? target : source)[key];
+    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
+    if (target) redefine(target, key, out, type & $export.U);
+    if (exports[key] != out) hide(exports, key, exp);
+    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
+  }
+};
+global.core = core;
+$export.F = 1;
+$export.G = 2;
+$export.S = 4;
+$export.P = 8;
+$export.B = 16;
+$export.W = 32;
+$export.U = 64;
+$export.R = 128;
+module.exports = $export;
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var dP = __w_pdfjs_require__(15);
+var createDesc = __w_pdfjs_require__(31);
+module.exports = __w_pdfjs_require__(10) ? function (object, key, value) {
+  return dP.f(object, key, createDesc(1, value));
+} : function (object, key, value) {
+  object[key] = value;
+  return object;
+};
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var isObject = __w_pdfjs_require__(3);
+module.exports = function (it) {
+  if (!isObject(it)) throw TypeError(it + ' is not an object!');
+  return it;
+};
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = !__w_pdfjs_require__(11)(function () {
+  return Object.defineProperty({}, 'a', {
+    get: function get() {
+      return 7;
+    }
+  }).a != 7;
+});
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var aFunction = __w_pdfjs_require__(24);
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1:
+      return function (a) {
+        return fn.call(that, a);
+      };
+    case 2:
+      return function (a, b) {
+        return fn.call(that, a, b);
+      };
+    case 3:
+      return function (a, b, c) {
+        return fn.call(that, a, b, c);
+      };
+  }
+  return function () {
+    return fn.apply(that, arguments);
+  };
+};
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var toInteger = __w_pdfjs_require__(19);
+var min = Math.min;
+module.exports = function (it) {
+  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0;
+};
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var anObject = __w_pdfjs_require__(9);
+var IE8_DOM_DEFINE = __w_pdfjs_require__(51);
+var toPrimitive = __w_pdfjs_require__(38);
+var dP = Object.defineProperty;
+exports.f = __w_pdfjs_require__(10) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
+  anObject(O);
+  P = toPrimitive(P, true);
+  anObject(Attributes);
+  if (IE8_DOM_DEFINE) try {
+    return dP(O, P, Attributes);
+  } catch (e) {}
+  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
+  if ('value' in Attributes) O[P] = Attributes.value;
+  return O;
+};
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var global = __w_pdfjs_require__(1);
+var hide = __w_pdfjs_require__(8);
+var has = __w_pdfjs_require__(12);
+var SRC = __w_pdfjs_require__(18)('src');
+var TO_STRING = 'toString';
+var $toString = Function[TO_STRING];
+var TPL = ('' + $toString).split(TO_STRING);
+__w_pdfjs_require__(6).inspectSource = function (it) {
+  return $toString.call(it);
+};
+(module.exports = function (O, key, val, safe) {
+  var isFunction = typeof val == 'function';
+  if (isFunction) has(val, 'name') || hide(val, 'name', key);
+  if (O[key] === val) return;
+  if (isFunction) has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
+  if (O === global) {
+    O[key] = val;
+  } else if (!safe) {
+    delete O[key];
+    hide(O, key, val);
+  } else if (O[key]) {
+    O[key] = val;
+  } else {
+    hide(O, key, val);
+  }
+})(Function.prototype, TO_STRING, function toString() {
+  return typeof this == 'function' && this[SRC] || $toString.call(this);
+});
+
+/***/ }),
+/* 17 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.SimpleXMLParser = exports.DOMSVGFactory = exports.DOMCMapReaderFactory = exports.DOMCanvasFactory = exports.DEFAULT_LINK_REL = exports.getDefaultSetting = exports.LinkTarget = exports.getFilenameFromUrl = exports.isValidUrl = exports.isExternalLinkTargetSet = exports.addLinkAttributes = exports.RenderingCancelledException = exports.CustomStyle = undefined;
+exports.DOMSVGFactory = exports.DOMCMapReaderFactory = exports.DOMCanvasFactory = exports.DEFAULT_LINK_REL = exports.getDefaultSetting = exports.LinkTarget = exports.getFilenameFromUrl = exports.isValidUrl = exports.isExternalLinkTargetSet = exports.addLinkAttributes = exports.RenderingCancelledException = exports.CustomStyle = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _util = __w_pdfjs_require__(0);
 
-var _global_scope = __w_pdfjs_require__(11);
+var _global_scope = __w_pdfjs_require__(22);
 
 var _global_scope2 = _interopRequireDefault(_global_scope);
 
@@ -3640,136 +3270,6 @@ var DOMSVGFactory = function () {
   }]);
 
   return DOMSVGFactory;
-}();
-
-var SimpleDOMNode = function () {
-  function SimpleDOMNode(nodeName, nodeValue) {
-    _classCallCheck(this, SimpleDOMNode);
-
-    this.nodeName = nodeName;
-    this.nodeValue = nodeValue;
-    Object.defineProperty(this, 'parentNode', {
-      value: null,
-      writable: true
-    });
-  }
-
-  _createClass(SimpleDOMNode, [{
-    key: 'hasChildNodes',
-    value: function hasChildNodes() {
-      return this.childNodes && this.childNodes.length > 0;
-    }
-  }, {
-    key: 'firstChild',
-    get: function get() {
-      return this.childNodes[0];
-    }
-  }, {
-    key: 'nextSibling',
-    get: function get() {
-      var index = this.parentNode.childNodes.indexOf(this);
-      return this.parentNode.childNodes[index + 1];
-    }
-  }, {
-    key: 'textContent',
-    get: function get() {
-      if (!this.childNodes) {
-        return this.nodeValue || '';
-      }
-      return this.childNodes.map(function (child) {
-        return child.textContent;
-      }).join('');
-    }
-  }]);
-
-  return SimpleDOMNode;
-}();
-
-var SimpleXMLParser = function () {
-  function SimpleXMLParser() {
-    _classCallCheck(this, SimpleXMLParser);
-  }
-
-  _createClass(SimpleXMLParser, [{
-    key: 'parseFromString',
-    value: function parseFromString(data) {
-      var _this2 = this;
-
-      var nodes = [];
-      data = data.replace(/<\?[\s\S]*?\?>|<!--[\s\S]*?-->/g, '').trim();
-      data = data.replace(/<!DOCTYPE[^>\[]+(\[[^\]]+)?[^>]+>/g, '').trim();
-      data = data.replace(/>([^<][\s\S]*?)</g, function (all, text) {
-        var length = nodes.length;
-        var node = new SimpleDOMNode('#text', _this2._decodeXML(text));
-        nodes.push(node);
-        if (node.textContent.trim().length === 0) {
-          return '><';
-        }
-        return '>' + length + ',<';
-      });
-      data = data.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, function (all, text) {
-        var length = nodes.length;
-        var node = new SimpleDOMNode('#text', text);
-        nodes.push(node);
-        return length + ',';
-      });
-      var regex = /<([\w\:]+)((?:[\s\w:=]|'[^']*'|"[^"]*")*)(?:\/>|>([\d,]*)<\/[^>]+>)/g;
-      var lastLength = void 0;
-      do {
-        lastLength = nodes.length;
-        data = data.replace(regex, function (all, name, attrs, data) {
-          var length = nodes.length;
-          var node = new SimpleDOMNode(name);
-          var children = [];
-          if (data) {
-            data = data.split(',');
-            data.pop();
-            data.forEach(function (child) {
-              var childNode = nodes[+child];
-              childNode.parentNode = node;
-              children.push(childNode);
-            });
-          }
-          node.childNodes = children;
-          nodes.push(node);
-          return length + ',';
-        });
-      } while (lastLength < nodes.length);
-      return { documentElement: nodes.pop() };
-    }
-  }, {
-    key: '_decodeXML',
-    value: function _decodeXML(text) {
-      if (text.indexOf('&') < 0) {
-        return text;
-      }
-      return text.replace(/&(#(x[0-9a-f]+|\d+)|\w+);/gi, function (all, entityName, number) {
-        if (number) {
-          if (number[0] === 'x') {
-            number = parseInt(number.substring(1), 16);
-          } else {
-            number = +number;
-          }
-          return String.fromCharCode(number);
-        }
-        switch (entityName) {
-          case 'amp':
-            return '&';
-          case 'lt':
-            return '<';
-          case 'gt':
-            return '>';
-          case 'quot':
-            return '\"';
-          case 'apos':
-            return '\'';
-        }
-        return '&' + entityName + ';';
-      });
-    }
-  }]);
-
-  return SimpleXMLParser;
 }();
 
 var CustomStyle = function CustomStyleClosure() {
@@ -3933,80 +3433,9 @@ exports.DEFAULT_LINK_REL = DEFAULT_LINK_REL;
 exports.DOMCanvasFactory = DOMCanvasFactory;
 exports.DOMCMapReaderFactory = DOMCMapReaderFactory;
 exports.DOMSVGFactory = DOMSVGFactory;
-exports.SimpleXMLParser = SimpleXMLParser;
 
 /***/ }),
-/* 8 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-/***/ }),
-/* 9 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var toInteger = __w_pdfjs_require__(14);
-var min = Math.min;
-module.exports = function (it) {
-  return it > 0 ? min(toInteger(it), 0x1fffffffffffff) : 0;
-};
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var anObject = __w_pdfjs_require__(21);
-var IE8_DOM_DEFINE = __w_pdfjs_require__(37);
-var toPrimitive = __w_pdfjs_require__(27);
-var dP = Object.defineProperty;
-exports.f = __w_pdfjs_require__(5) ? Object.defineProperty : function defineProperty(O, P, Attributes) {
-  anObject(O);
-  P = toPrimitive(P, true);
-  anObject(Attributes);
-  if (IE8_DOM_DEFINE) try {
-    return dP(O, P, Attributes);
-  } catch (e) {}
-  if ('get' in Attributes || 'set' in Attributes) throw TypeError('Accessors not supported!');
-  if ('value' in Attributes) O[P] = Attributes.value;
-  return O;
-};
-
-/***/ }),
-/* 11 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = typeof window !== 'undefined' && window.Math === Math ? window : typeof global !== 'undefined' && global.Math === Math ? global : typeof self !== 'undefined' && self.Math === Math ? self : {};
-
-/***/ }),
-/* 12 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-module.exports = function (it) {
-  return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) === 'object' ? it !== null : typeof it === 'function';
-};
-
-/***/ }),
-/* 13 */
+/* 18 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -4019,7 +3448,7 @@ module.exports = function (key) {
 };
 
 /***/ }),
-/* 14 */
+/* 19 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -4032,19 +3461,19 @@ module.exports = function (it) {
 };
 
 /***/ }),
-/* 15 */
+/* 20 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var defined = __w_pdfjs_require__(47);
+var defined = __w_pdfjs_require__(40);
 module.exports = function (it) {
   return Object(defined(it));
 };
 
 /***/ }),
-/* 16 */
+/* 21 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -4053,7 +3482,94 @@ module.exports = function (it) {
 module.exports = {};
 
 /***/ }),
-/* 17 */
+/* 22 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = typeof window !== 'undefined' && window.Math === Math ? window : typeof global !== 'undefined' && global.Math === Math ? global : typeof self !== 'undefined' && self.Math === Math ? self : {};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = false;
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = function (it) {
+  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
+  return it;
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var redefine = __w_pdfjs_require__(16);
+module.exports = function (target, src, safe) {
+  for (var key in src) {
+    redefine(target, key, src[key], safe);
+  }return target;
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = function (it, Constructor, name, forbiddenField) {
+  if (!(it instanceof Constructor) || forbiddenField !== undefined && forbiddenField in it) {
+    throw TypeError(name + ': incorrect invocation!');
+  }
+  return it;
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var toString = {}.toString;
+module.exports = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var def = __w_pdfjs_require__(15).f;
+var has = __w_pdfjs_require__(12);
+var TAG = __w_pdfjs_require__(4)('toStringTag');
+module.exports = function (it, tag, stat) {
+  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, {
+    configurable: true,
+    value: tag
+  });
+};
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -4066,7 +3582,7 @@ exports.ColorSpace = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
 var ColorSpace = function ColorSpaceClosure() {
   function resizeRgbImage(src, bpc, w1, h1, w2, h2, alpha01, dest) {
@@ -4179,9 +3695,9 @@ var ColorSpace = function ColorSpaceClosure() {
   };
   ColorSpace.parse = function (cs, xref, res, pdfFunctionFactory) {
     var IR = ColorSpace.parseToIR(cs, xref, res, pdfFunctionFactory);
-    return ColorSpace.fromIR(IR, pdfFunctionFactory);
+    return ColorSpace.fromIR(IR);
   };
-  ColorSpace.fromIR = function (IR, pdfFunctionFactory) {
+  ColorSpace.fromIR = function (IR) {
     var name = Array.isArray(IR) ? IR[0] : IR;
     var whitePoint, blackPoint, gamma;
     switch (name) {
@@ -4205,19 +3721,19 @@ var ColorSpace = function ColorSpaceClosure() {
       case 'PatternCS':
         var basePatternCS = IR[1];
         if (basePatternCS) {
-          basePatternCS = ColorSpace.fromIR(basePatternCS, pdfFunctionFactory);
+          basePatternCS = ColorSpace.fromIR(basePatternCS);
         }
         return new PatternCS(basePatternCS);
       case 'IndexedCS':
         var baseIndexedCS = IR[1];
         var hiVal = IR[2];
         var lookup = IR[3];
-        return new IndexedCS(ColorSpace.fromIR(baseIndexedCS, pdfFunctionFactory), hiVal, lookup);
+        return new IndexedCS(ColorSpace.fromIR(baseIndexedCS), hiVal, lookup);
       case 'AlternateCS':
         var numComps = IR[1];
         var alt = IR[2];
-        var tintFnIR = IR[3];
-        return new AlternateCS(numComps, ColorSpace.fromIR(alt, pdfFunctionFactory), pdfFunctionFactory.createFromIR(tintFnIR));
+        var tintFn = IR[3];
+        return new AlternateCS(numComps, ColorSpace.fromIR(alt), tintFn);
       case 'LabCS':
         whitePoint = IR[1];
         blackPoint = IR[2];
@@ -4322,8 +3838,8 @@ var ColorSpace = function ColorSpaceClosure() {
           var name = xref.fetchIfRef(cs[1]);
           numComps = Array.isArray(name) ? name.length : 1;
           alt = ColorSpace.parseToIR(cs[2], xref, res, pdfFunctionFactory);
-          var tintFnIR = pdfFunctionFactory.createIR(xref.fetchIfRef(cs[3]));
-          return ['AlternateCS', numComps, alt, tintFnIR];
+          var tintFn = pdfFunctionFactory.create(xref.fetchIfRef(cs[3]));
+          return ['AlternateCS', numComps, alt, tintFn];
         case 'Lab':
           params = xref.fetchIfRef(cs[1]);
           whitePoint = params.getArray('WhitePoint');
@@ -4976,7 +4492,7 @@ var LabCS = function LabCSClosure() {
 exports.ColorSpace = ColorSpace;
 
 /***/ }),
-/* 18 */
+/* 30 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -5021,45 +4537,7 @@ exports.ExpertEncoding = ExpertEncoding;
 exports.getEncoding = getEncoding;
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var core = module.exports = { version: '2.5.1' };
-if (typeof __e == 'number') __e = core;
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var isObject = __w_pdfjs_require__(12);
-module.exports = function (it) {
-  if (!isObject(it)) throw TypeError(it + ' is not an object!');
-  return it;
-};
-
-/***/ }),
-/* 22 */
+/* 31 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -5075,26 +4553,26 @@ module.exports = function (bitmap, value) {
 };
 
 /***/ }),
-/* 23 */
+/* 32 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var IObject = __w_pdfjs_require__(46);
-var defined = __w_pdfjs_require__(47);
+var IObject = __w_pdfjs_require__(39);
+var defined = __w_pdfjs_require__(40);
 module.exports = function (it) {
   return IObject(defined(it));
 };
 
 /***/ }),
-/* 24 */
+/* 33 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var toInteger = __w_pdfjs_require__(14);
+var toInteger = __w_pdfjs_require__(19);
 var max = Math.max;
 var min = Math.min;
 module.exports = function (index, length) {
@@ -5103,7 +4581,63 @@ module.exports = function (index, length) {
 };
 
 /***/ }),
-/* 25 */
+/* 34 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var cof = __w_pdfjs_require__(27);
+var TAG = __w_pdfjs_require__(4)('toStringTag');
+var ARG = cof(function () {
+  return arguments;
+}()) == 'Arguments';
+var tryGet = function tryGet(it, key) {
+  try {
+    return it[key];
+  } catch (e) {}
+};
+module.exports = function (it) {
+  var O, T, B;
+  return it === undefined ? 'Undefined' : it === null ? 'Null' : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T : ARG ? cof(O) : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var ctx = __w_pdfjs_require__(13);
+var call = __w_pdfjs_require__(114);
+var isArrayIter = __w_pdfjs_require__(59);
+var anObject = __w_pdfjs_require__(9);
+var toLength = __w_pdfjs_require__(14);
+var getIterFn = __w_pdfjs_require__(63);
+var BREAK = {};
+var RETURN = {};
+var _exports = module.exports = function (iterable, entries, fn, that, ITERATOR) {
+  var iterFn = ITERATOR ? function () {
+    return iterable;
+  } : getIterFn(iterable);
+  var f = ctx(fn, that, entries ? 2 : 1);
+  var index = 0;
+  var length, step, iterator, result;
+  if (typeof iterFn != 'function') throw TypeError(iterable + ' is not iterable!');
+  if (isArrayIter(iterFn)) for (length = toLength(iterable.length); length > index; index++) {
+    result = entries ? f(anObject(step = iterable[index])[0], step[1]) : f(iterable[index]);
+    if (result === BREAK || result === RETURN) return result;
+  } else for (iterator = iterFn.call(iterable); !(step = iterator.next()).done;) {
+    result = call(iterator, f, step.value, entries);
+    if (result === BREAK || result === RETURN) return result;
+  }
+};
+_exports.BREAK = BREAK;
+_exports.RETURN = RETURN;
+
+/***/ }),
+/* 36 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -5114,11 +4648,15 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Parser = exports.Linearization = exports.Lexer = undefined;
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
+
+var _ccitt_stream = __w_pdfjs_require__(144);
+
+var _jbig2_stream = __w_pdfjs_require__(146);
 
 var MAX_LENGTH_TO_CACHE = 1000;
 var Parser = function ParserClosure() {
@@ -5616,7 +5154,7 @@ var Parser = function ParserClosure() {
         }
         if (name === 'CCITTFaxDecode' || name === 'CCF') {
           xrefStreamStats[_util.StreamType.CCF] = true;
-          return new _stream.CCITTFaxStream(stream, maybeLength, params);
+          return new _ccitt_stream.CCITTFaxStream(stream, maybeLength, params);
         }
         if (name === 'RunLengthDecode' || name === 'RL') {
           xrefStreamStats[_util.StreamType.RL] = true;
@@ -5624,7 +5162,7 @@ var Parser = function ParserClosure() {
         }
         if (name === 'JBIG2Decode') {
           xrefStreamStats[_util.StreamType.JBIG] = true;
-          return new _stream.Jbig2Stream(stream, maybeLength, stream.dict, params);
+          return new _jbig2_stream.Jbig2Stream(stream, maybeLength, stream.dict, params);
         }
         (0, _util.warn)('filter "' + name + '" not supported yet');
         return stream;
@@ -6070,22 +5608,27 @@ exports.Linearization = Linearization;
 exports.Parser = Parser;
 
 /***/ }),
-/* 26 */
+/* 37 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-module.exports = false;
+var isObject = __w_pdfjs_require__(3);
+var document = __w_pdfjs_require__(1).document;
+var is = isObject(document) && isObject(document.createElement);
+module.exports = function (it) {
+  return is ? document.createElement(it) : {};
+};
 
 /***/ }),
-/* 27 */
+/* 38 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var isObject = __w_pdfjs_require__(12);
+var isObject = __w_pdfjs_require__(3);
 module.exports = function (it, S) {
   if (!isObject(it)) return it;
   var fn, val;
@@ -6096,98 +5639,44 @@ module.exports = function (it, S) {
 };
 
 /***/ }),
-/* 28 */
+/* 39 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var global = __w_pdfjs_require__(4);
-var hide = __w_pdfjs_require__(6);
-var has = __w_pdfjs_require__(8);
-var SRC = __w_pdfjs_require__(13)('src');
-var TO_STRING = 'toString';
-var $toString = Function[TO_STRING];
-var TPL = ('' + $toString).split(TO_STRING);
-__w_pdfjs_require__(20).inspectSource = function (it) {
-  return $toString.call(it);
-};
-(module.exports = function (O, key, val, safe) {
-  var isFunction = typeof val == 'function';
-  if (isFunction) has(val, 'name') || hide(val, 'name', key);
-  if (O[key] === val) return;
-  if (isFunction) has(val, SRC) || hide(val, SRC, O[key] ? '' + O[key] : TPL.join(String(key)));
-  if (O === global) {
-    O[key] = val;
-  } else if (!safe) {
-    delete O[key];
-    hide(O, key, val);
-  } else if (O[key]) {
-    O[key] = val;
-  } else {
-    hide(O, key, val);
-  }
-})(Function.prototype, TO_STRING, function toString() {
-  return typeof this == 'function' && this[SRC] || $toString.call(this);
-});
-
-/***/ }),
-/* 29 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var aFunction = __w_pdfjs_require__(39);
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1:
-      return function (a) {
-        return fn.call(that, a);
-      };
-    case 2:
-      return function (a, b) {
-        return fn.call(that, a, b);
-      };
-    case 3:
-      return function (a, b, c) {
-        return fn.call(that, a, b, c);
-      };
-  }
-  return function () {
-    return fn.apply(that, arguments);
-  };
+var cof = __w_pdfjs_require__(27);
+module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+  return cof(it) == 'String' ? it.split('') : Object(it);
 };
 
 /***/ }),
-/* 30 */
+/* 40 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var toString = {}.toString;
 module.exports = function (it) {
-  return toString.call(it).slice(8, -1);
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
 };
 
 /***/ }),
-/* 31 */
+/* 41 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var shared = __w_pdfjs_require__(49)('keys');
-var uid = __w_pdfjs_require__(13);
+var shared = __w_pdfjs_require__(57)('keys');
+var uid = __w_pdfjs_require__(18);
 module.exports = function (key) {
   return shared[key] || (shared[key] = uid(key));
 };
 
 /***/ }),
-/* 32 */
+/* 42 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -6196,4563 +5685,4735 @@ module.exports = function (key) {
 module.exports = 'constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf'.split(',');
 
 /***/ }),
-/* 33 */
+/* 43 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var def = __w_pdfjs_require__(10).f;
-var has = __w_pdfjs_require__(8);
-var TAG = __w_pdfjs_require__(2)('toStringTag');
-module.exports = function (it, tag, stat) {
-  if (it && !has(it = stat ? it : it.prototype, TAG)) def(it, TAG, {
-    configurable: true,
-    value: tag
-  });
+var $keys = __w_pdfjs_require__(55);
+var enumBugKeys = __w_pdfjs_require__(42);
+module.exports = Object.keys || function keys(O) {
+  return $keys(O, enumBugKeys);
 };
 
 /***/ }),
-/* 34 */
+/* 44 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
+var ctx = __w_pdfjs_require__(13);
+var IObject = __w_pdfjs_require__(39);
+var toObject = __w_pdfjs_require__(20);
+var toLength = __w_pdfjs_require__(14);
+var asc = __w_pdfjs_require__(98);
+module.exports = function (TYPE, $create) {
+  var IS_MAP = TYPE == 1;
+  var IS_FILTER = TYPE == 2;
+  var IS_SOME = TYPE == 3;
+  var IS_EVERY = TYPE == 4;
+  var IS_FIND_INDEX = TYPE == 6;
+  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
+  var create = $create || asc;
+  return function ($this, callbackfn, that) {
+    var O = toObject($this);
+    var self = IObject(O);
+    var f = ctx(callbackfn, that, 3);
+    var length = toLength(self.length);
+    var index = 0;
+    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
+    var val, res;
+    for (; length > index; index++) {
+      if (NO_HOLES || index in self) {
+        val = self[index];
+        res = f(val, index, O);
+        if (TYPE) {
+          if (IS_MAP) result[index] = res;else if (res) switch (TYPE) {
+            case 3:
+              return true;
+            case 5:
+              return val;
+            case 6:
+              return index;
+            case 2:
+              result.push(val);
+          } else if (IS_EVERY) return false;
+        }
+      }
+    }return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
+  };
+};
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var anObject = __w_pdfjs_require__(9);
+var aFunction = __w_pdfjs_require__(24);
+var SPECIES = __w_pdfjs_require__(4)('species');
+module.exports = function (O, D) {
+  var C = anObject(O).constructor;
+  var S;
+  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
+};
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var ITERATOR = __w_pdfjs_require__(4)('iterator');
+var SAFE_CLOSING = false;
+try {
+  var riter = [7][ITERATOR]();
+  riter['return'] = function () {
+    SAFE_CLOSING = true;
+  };
+  Array.from(riter, function () {
+    throw 2;
+  });
+} catch (e) {}
+module.exports = function (exec, skipClosing) {
+  if (!skipClosing && !SAFE_CLOSING) return false;
+  var safe = false;
+  try {
+    var arr = [7];
+    var iter = arr[ITERATOR]();
+    iter.next = function () {
+      return { done: safe = true };
+    };
+    arr[ITERATOR] = function () {
+      return iter;
+    };
+    exec(arr);
+  } catch (e) {}
+  return safe;
+};
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var aFunction = __w_pdfjs_require__(24);
+function PromiseCapability(C) {
+  var resolve, reject;
+  this.promise = new C(function ($$resolve, $$reject) {
+    if (resolve !== undefined || reject !== undefined) throw TypeError('Bad Promise constructor');
+    resolve = $$resolve;
+    reject = $$reject;
+  });
+  this.resolve = aFunction(resolve);
+  this.reject = aFunction(reject);
+}
+module.exports.f = function (C) {
+  return new PromiseCapability(C);
+};
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var META = __w_pdfjs_require__(18)('meta');
+var isObject = __w_pdfjs_require__(3);
+var has = __w_pdfjs_require__(12);
+var setDesc = __w_pdfjs_require__(15).f;
+var id = 0;
+var isExtensible = Object.isExtensible || function () {
+  return true;
+};
+var FREEZE = !__w_pdfjs_require__(11)(function () {
+  return isExtensible(Object.preventExtensions({}));
+});
+var setMeta = function setMeta(it) {
+  setDesc(it, META, {
+    value: {
+      i: 'O' + ++id,
+      w: {}
+    }
+  });
+};
+var fastKey = function fastKey(it, create) {
+  if (!isObject(it)) return (typeof it === 'undefined' ? 'undefined' : _typeof(it)) == 'symbol' ? it : (typeof it == 'string' ? 'S' : 'P') + it;
+  if (!has(it, META)) {
+    if (!isExtensible(it)) return 'F';
+    if (!create) return 'E';
+    setMeta(it);
+  }
+  return it[META].i;
+};
+var getWeak = function getWeak(it, create) {
+  if (!has(it, META)) {
+    if (!isExtensible(it)) return true;
+    if (!create) return false;
+    setMeta(it);
+  }
+  return it[META].w;
+};
+var onFreeze = function onFreeze(it) {
+  if (FREEZE && meta.NEED && isExtensible(it) && !has(it, META)) setMeta(it);
+  return it;
+};
+var meta = module.exports = {
+  KEY: META,
+  NEED: false,
+  fastKey: fastKey,
+  getWeak: getWeak,
+  onFreeze: onFreeze
+};
+
+/***/ }),
+/* 49 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
 var getLookupTableFactory = __w_pdfjs_require__(0).getLookupTableFactory;
 var getGlyphsUnicode = getLookupTableFactory(function (t) {
-  t['A'] = 0x0041;
-  t['AE'] = 0x00C6;
-  t['AEacute'] = 0x01FC;
-  t['AEmacron'] = 0x01E2;
-  t['AEsmall'] = 0xF7E6;
-  t['Aacute'] = 0x00C1;
-  t['Aacutesmall'] = 0xF7E1;
-  t['Abreve'] = 0x0102;
-  t['Abreveacute'] = 0x1EAE;
-  t['Abrevecyrillic'] = 0x04D0;
-  t['Abrevedotbelow'] = 0x1EB6;
-  t['Abrevegrave'] = 0x1EB0;
-  t['Abrevehookabove'] = 0x1EB2;
-  t['Abrevetilde'] = 0x1EB4;
-  t['Acaron'] = 0x01CD;
-  t['Acircle'] = 0x24B6;
-  t['Acircumflex'] = 0x00C2;
-  t['Acircumflexacute'] = 0x1EA4;
-  t['Acircumflexdotbelow'] = 0x1EAC;
-  t['Acircumflexgrave'] = 0x1EA6;
-  t['Acircumflexhookabove'] = 0x1EA8;
-  t['Acircumflexsmall'] = 0xF7E2;
-  t['Acircumflextilde'] = 0x1EAA;
-  t['Acute'] = 0xF6C9;
-  t['Acutesmall'] = 0xF7B4;
-  t['Acyrillic'] = 0x0410;
-  t['Adblgrave'] = 0x0200;
-  t['Adieresis'] = 0x00C4;
-  t['Adieresiscyrillic'] = 0x04D2;
-  t['Adieresismacron'] = 0x01DE;
-  t['Adieresissmall'] = 0xF7E4;
-  t['Adotbelow'] = 0x1EA0;
-  t['Adotmacron'] = 0x01E0;
-  t['Agrave'] = 0x00C0;
-  t['Agravesmall'] = 0xF7E0;
-  t['Ahookabove'] = 0x1EA2;
-  t['Aiecyrillic'] = 0x04D4;
-  t['Ainvertedbreve'] = 0x0202;
-  t['Alpha'] = 0x0391;
-  t['Alphatonos'] = 0x0386;
-  t['Amacron'] = 0x0100;
-  t['Amonospace'] = 0xFF21;
-  t['Aogonek'] = 0x0104;
-  t['Aring'] = 0x00C5;
-  t['Aringacute'] = 0x01FA;
-  t['Aringbelow'] = 0x1E00;
-  t['Aringsmall'] = 0xF7E5;
-  t['Asmall'] = 0xF761;
-  t['Atilde'] = 0x00C3;
-  t['Atildesmall'] = 0xF7E3;
-  t['Aybarmenian'] = 0x0531;
-  t['B'] = 0x0042;
-  t['Bcircle'] = 0x24B7;
-  t['Bdotaccent'] = 0x1E02;
-  t['Bdotbelow'] = 0x1E04;
-  t['Becyrillic'] = 0x0411;
-  t['Benarmenian'] = 0x0532;
-  t['Beta'] = 0x0392;
-  t['Bhook'] = 0x0181;
-  t['Blinebelow'] = 0x1E06;
-  t['Bmonospace'] = 0xFF22;
-  t['Brevesmall'] = 0xF6F4;
-  t['Bsmall'] = 0xF762;
-  t['Btopbar'] = 0x0182;
-  t['C'] = 0x0043;
-  t['Caarmenian'] = 0x053E;
-  t['Cacute'] = 0x0106;
-  t['Caron'] = 0xF6CA;
-  t['Caronsmall'] = 0xF6F5;
-  t['Ccaron'] = 0x010C;
-  t['Ccedilla'] = 0x00C7;
-  t['Ccedillaacute'] = 0x1E08;
-  t['Ccedillasmall'] = 0xF7E7;
-  t['Ccircle'] = 0x24B8;
-  t['Ccircumflex'] = 0x0108;
-  t['Cdot'] = 0x010A;
-  t['Cdotaccent'] = 0x010A;
-  t['Cedillasmall'] = 0xF7B8;
-  t['Chaarmenian'] = 0x0549;
-  t['Cheabkhasiancyrillic'] = 0x04BC;
-  t['Checyrillic'] = 0x0427;
-  t['Chedescenderabkhasiancyrillic'] = 0x04BE;
-  t['Chedescendercyrillic'] = 0x04B6;
-  t['Chedieresiscyrillic'] = 0x04F4;
-  t['Cheharmenian'] = 0x0543;
-  t['Chekhakassiancyrillic'] = 0x04CB;
-  t['Cheverticalstrokecyrillic'] = 0x04B8;
-  t['Chi'] = 0x03A7;
-  t['Chook'] = 0x0187;
-  t['Circumflexsmall'] = 0xF6F6;
-  t['Cmonospace'] = 0xFF23;
-  t['Coarmenian'] = 0x0551;
-  t['Csmall'] = 0xF763;
-  t['D'] = 0x0044;
-  t['DZ'] = 0x01F1;
-  t['DZcaron'] = 0x01C4;
-  t['Daarmenian'] = 0x0534;
-  t['Dafrican'] = 0x0189;
-  t['Dcaron'] = 0x010E;
-  t['Dcedilla'] = 0x1E10;
-  t['Dcircle'] = 0x24B9;
-  t['Dcircumflexbelow'] = 0x1E12;
-  t['Dcroat'] = 0x0110;
-  t['Ddotaccent'] = 0x1E0A;
-  t['Ddotbelow'] = 0x1E0C;
-  t['Decyrillic'] = 0x0414;
-  t['Deicoptic'] = 0x03EE;
-  t['Delta'] = 0x2206;
-  t['Deltagreek'] = 0x0394;
-  t['Dhook'] = 0x018A;
-  t['Dieresis'] = 0xF6CB;
-  t['DieresisAcute'] = 0xF6CC;
-  t['DieresisGrave'] = 0xF6CD;
-  t['Dieresissmall'] = 0xF7A8;
-  t['Digammagreek'] = 0x03DC;
-  t['Djecyrillic'] = 0x0402;
-  t['Dlinebelow'] = 0x1E0E;
-  t['Dmonospace'] = 0xFF24;
-  t['Dotaccentsmall'] = 0xF6F7;
-  t['Dslash'] = 0x0110;
-  t['Dsmall'] = 0xF764;
-  t['Dtopbar'] = 0x018B;
-  t['Dz'] = 0x01F2;
-  t['Dzcaron'] = 0x01C5;
-  t['Dzeabkhasiancyrillic'] = 0x04E0;
-  t['Dzecyrillic'] = 0x0405;
-  t['Dzhecyrillic'] = 0x040F;
-  t['E'] = 0x0045;
-  t['Eacute'] = 0x00C9;
-  t['Eacutesmall'] = 0xF7E9;
-  t['Ebreve'] = 0x0114;
-  t['Ecaron'] = 0x011A;
-  t['Ecedillabreve'] = 0x1E1C;
-  t['Echarmenian'] = 0x0535;
-  t['Ecircle'] = 0x24BA;
-  t['Ecircumflex'] = 0x00CA;
-  t['Ecircumflexacute'] = 0x1EBE;
-  t['Ecircumflexbelow'] = 0x1E18;
-  t['Ecircumflexdotbelow'] = 0x1EC6;
-  t['Ecircumflexgrave'] = 0x1EC0;
-  t['Ecircumflexhookabove'] = 0x1EC2;
-  t['Ecircumflexsmall'] = 0xF7EA;
-  t['Ecircumflextilde'] = 0x1EC4;
-  t['Ecyrillic'] = 0x0404;
-  t['Edblgrave'] = 0x0204;
-  t['Edieresis'] = 0x00CB;
-  t['Edieresissmall'] = 0xF7EB;
-  t['Edot'] = 0x0116;
-  t['Edotaccent'] = 0x0116;
-  t['Edotbelow'] = 0x1EB8;
-  t['Efcyrillic'] = 0x0424;
-  t['Egrave'] = 0x00C8;
-  t['Egravesmall'] = 0xF7E8;
-  t['Eharmenian'] = 0x0537;
-  t['Ehookabove'] = 0x1EBA;
-  t['Eightroman'] = 0x2167;
-  t['Einvertedbreve'] = 0x0206;
-  t['Eiotifiedcyrillic'] = 0x0464;
-  t['Elcyrillic'] = 0x041B;
-  t['Elevenroman'] = 0x216A;
-  t['Emacron'] = 0x0112;
-  t['Emacronacute'] = 0x1E16;
-  t['Emacrongrave'] = 0x1E14;
-  t['Emcyrillic'] = 0x041C;
-  t['Emonospace'] = 0xFF25;
-  t['Encyrillic'] = 0x041D;
-  t['Endescendercyrillic'] = 0x04A2;
-  t['Eng'] = 0x014A;
-  t['Enghecyrillic'] = 0x04A4;
-  t['Enhookcyrillic'] = 0x04C7;
-  t['Eogonek'] = 0x0118;
-  t['Eopen'] = 0x0190;
-  t['Epsilon'] = 0x0395;
-  t['Epsilontonos'] = 0x0388;
-  t['Ercyrillic'] = 0x0420;
-  t['Ereversed'] = 0x018E;
-  t['Ereversedcyrillic'] = 0x042D;
-  t['Escyrillic'] = 0x0421;
-  t['Esdescendercyrillic'] = 0x04AA;
-  t['Esh'] = 0x01A9;
-  t['Esmall'] = 0xF765;
-  t['Eta'] = 0x0397;
-  t['Etarmenian'] = 0x0538;
-  t['Etatonos'] = 0x0389;
-  t['Eth'] = 0x00D0;
-  t['Ethsmall'] = 0xF7F0;
-  t['Etilde'] = 0x1EBC;
-  t['Etildebelow'] = 0x1E1A;
-  t['Euro'] = 0x20AC;
-  t['Ezh'] = 0x01B7;
-  t['Ezhcaron'] = 0x01EE;
-  t['Ezhreversed'] = 0x01B8;
-  t['F'] = 0x0046;
-  t['Fcircle'] = 0x24BB;
-  t['Fdotaccent'] = 0x1E1E;
-  t['Feharmenian'] = 0x0556;
-  t['Feicoptic'] = 0x03E4;
-  t['Fhook'] = 0x0191;
-  t['Fitacyrillic'] = 0x0472;
-  t['Fiveroman'] = 0x2164;
-  t['Fmonospace'] = 0xFF26;
-  t['Fourroman'] = 0x2163;
-  t['Fsmall'] = 0xF766;
-  t['G'] = 0x0047;
-  t['GBsquare'] = 0x3387;
-  t['Gacute'] = 0x01F4;
-  t['Gamma'] = 0x0393;
-  t['Gammaafrican'] = 0x0194;
-  t['Gangiacoptic'] = 0x03EA;
-  t['Gbreve'] = 0x011E;
-  t['Gcaron'] = 0x01E6;
-  t['Gcedilla'] = 0x0122;
-  t['Gcircle'] = 0x24BC;
-  t['Gcircumflex'] = 0x011C;
-  t['Gcommaaccent'] = 0x0122;
-  t['Gdot'] = 0x0120;
-  t['Gdotaccent'] = 0x0120;
-  t['Gecyrillic'] = 0x0413;
-  t['Ghadarmenian'] = 0x0542;
-  t['Ghemiddlehookcyrillic'] = 0x0494;
-  t['Ghestrokecyrillic'] = 0x0492;
-  t['Gheupturncyrillic'] = 0x0490;
-  t['Ghook'] = 0x0193;
-  t['Gimarmenian'] = 0x0533;
-  t['Gjecyrillic'] = 0x0403;
-  t['Gmacron'] = 0x1E20;
-  t['Gmonospace'] = 0xFF27;
-  t['Grave'] = 0xF6CE;
-  t['Gravesmall'] = 0xF760;
-  t['Gsmall'] = 0xF767;
-  t['Gsmallhook'] = 0x029B;
-  t['Gstroke'] = 0x01E4;
-  t['H'] = 0x0048;
-  t['H18533'] = 0x25CF;
-  t['H18543'] = 0x25AA;
-  t['H18551'] = 0x25AB;
-  t['H22073'] = 0x25A1;
-  t['HPsquare'] = 0x33CB;
-  t['Haabkhasiancyrillic'] = 0x04A8;
-  t['Hadescendercyrillic'] = 0x04B2;
-  t['Hardsigncyrillic'] = 0x042A;
-  t['Hbar'] = 0x0126;
-  t['Hbrevebelow'] = 0x1E2A;
-  t['Hcedilla'] = 0x1E28;
-  t['Hcircle'] = 0x24BD;
-  t['Hcircumflex'] = 0x0124;
-  t['Hdieresis'] = 0x1E26;
-  t['Hdotaccent'] = 0x1E22;
-  t['Hdotbelow'] = 0x1E24;
-  t['Hmonospace'] = 0xFF28;
-  t['Hoarmenian'] = 0x0540;
-  t['Horicoptic'] = 0x03E8;
-  t['Hsmall'] = 0xF768;
-  t['Hungarumlaut'] = 0xF6CF;
-  t['Hungarumlautsmall'] = 0xF6F8;
-  t['Hzsquare'] = 0x3390;
-  t['I'] = 0x0049;
-  t['IAcyrillic'] = 0x042F;
-  t['IJ'] = 0x0132;
-  t['IUcyrillic'] = 0x042E;
-  t['Iacute'] = 0x00CD;
-  t['Iacutesmall'] = 0xF7ED;
-  t['Ibreve'] = 0x012C;
-  t['Icaron'] = 0x01CF;
-  t['Icircle'] = 0x24BE;
-  t['Icircumflex'] = 0x00CE;
-  t['Icircumflexsmall'] = 0xF7EE;
-  t['Icyrillic'] = 0x0406;
-  t['Idblgrave'] = 0x0208;
-  t['Idieresis'] = 0x00CF;
-  t['Idieresisacute'] = 0x1E2E;
-  t['Idieresiscyrillic'] = 0x04E4;
-  t['Idieresissmall'] = 0xF7EF;
-  t['Idot'] = 0x0130;
-  t['Idotaccent'] = 0x0130;
-  t['Idotbelow'] = 0x1ECA;
-  t['Iebrevecyrillic'] = 0x04D6;
-  t['Iecyrillic'] = 0x0415;
-  t['Ifraktur'] = 0x2111;
-  t['Igrave'] = 0x00CC;
-  t['Igravesmall'] = 0xF7EC;
-  t['Ihookabove'] = 0x1EC8;
-  t['Iicyrillic'] = 0x0418;
-  t['Iinvertedbreve'] = 0x020A;
-  t['Iishortcyrillic'] = 0x0419;
-  t['Imacron'] = 0x012A;
-  t['Imacroncyrillic'] = 0x04E2;
-  t['Imonospace'] = 0xFF29;
-  t['Iniarmenian'] = 0x053B;
-  t['Iocyrillic'] = 0x0401;
-  t['Iogonek'] = 0x012E;
-  t['Iota'] = 0x0399;
-  t['Iotaafrican'] = 0x0196;
-  t['Iotadieresis'] = 0x03AA;
-  t['Iotatonos'] = 0x038A;
-  t['Ismall'] = 0xF769;
-  t['Istroke'] = 0x0197;
-  t['Itilde'] = 0x0128;
-  t['Itildebelow'] = 0x1E2C;
-  t['Izhitsacyrillic'] = 0x0474;
-  t['Izhitsadblgravecyrillic'] = 0x0476;
-  t['J'] = 0x004A;
-  t['Jaarmenian'] = 0x0541;
-  t['Jcircle'] = 0x24BF;
-  t['Jcircumflex'] = 0x0134;
-  t['Jecyrillic'] = 0x0408;
-  t['Jheharmenian'] = 0x054B;
-  t['Jmonospace'] = 0xFF2A;
-  t['Jsmall'] = 0xF76A;
-  t['K'] = 0x004B;
-  t['KBsquare'] = 0x3385;
-  t['KKsquare'] = 0x33CD;
-  t['Kabashkircyrillic'] = 0x04A0;
-  t['Kacute'] = 0x1E30;
-  t['Kacyrillic'] = 0x041A;
-  t['Kadescendercyrillic'] = 0x049A;
-  t['Kahookcyrillic'] = 0x04C3;
-  t['Kappa'] = 0x039A;
-  t['Kastrokecyrillic'] = 0x049E;
-  t['Kaverticalstrokecyrillic'] = 0x049C;
-  t['Kcaron'] = 0x01E8;
-  t['Kcedilla'] = 0x0136;
-  t['Kcircle'] = 0x24C0;
-  t['Kcommaaccent'] = 0x0136;
-  t['Kdotbelow'] = 0x1E32;
-  t['Keharmenian'] = 0x0554;
-  t['Kenarmenian'] = 0x053F;
-  t['Khacyrillic'] = 0x0425;
-  t['Kheicoptic'] = 0x03E6;
-  t['Khook'] = 0x0198;
-  t['Kjecyrillic'] = 0x040C;
-  t['Klinebelow'] = 0x1E34;
-  t['Kmonospace'] = 0xFF2B;
-  t['Koppacyrillic'] = 0x0480;
-  t['Koppagreek'] = 0x03DE;
-  t['Ksicyrillic'] = 0x046E;
-  t['Ksmall'] = 0xF76B;
-  t['L'] = 0x004C;
-  t['LJ'] = 0x01C7;
-  t['LL'] = 0xF6BF;
-  t['Lacute'] = 0x0139;
-  t['Lambda'] = 0x039B;
-  t['Lcaron'] = 0x013D;
-  t['Lcedilla'] = 0x013B;
-  t['Lcircle'] = 0x24C1;
-  t['Lcircumflexbelow'] = 0x1E3C;
-  t['Lcommaaccent'] = 0x013B;
-  t['Ldot'] = 0x013F;
-  t['Ldotaccent'] = 0x013F;
-  t['Ldotbelow'] = 0x1E36;
-  t['Ldotbelowmacron'] = 0x1E38;
-  t['Liwnarmenian'] = 0x053C;
-  t['Lj'] = 0x01C8;
-  t['Ljecyrillic'] = 0x0409;
-  t['Llinebelow'] = 0x1E3A;
-  t['Lmonospace'] = 0xFF2C;
-  t['Lslash'] = 0x0141;
-  t['Lslashsmall'] = 0xF6F9;
-  t['Lsmall'] = 0xF76C;
-  t['M'] = 0x004D;
-  t['MBsquare'] = 0x3386;
-  t['Macron'] = 0xF6D0;
-  t['Macronsmall'] = 0xF7AF;
-  t['Macute'] = 0x1E3E;
-  t['Mcircle'] = 0x24C2;
-  t['Mdotaccent'] = 0x1E40;
-  t['Mdotbelow'] = 0x1E42;
-  t['Menarmenian'] = 0x0544;
-  t['Mmonospace'] = 0xFF2D;
-  t['Msmall'] = 0xF76D;
-  t['Mturned'] = 0x019C;
-  t['Mu'] = 0x039C;
-  t['N'] = 0x004E;
-  t['NJ'] = 0x01CA;
-  t['Nacute'] = 0x0143;
-  t['Ncaron'] = 0x0147;
-  t['Ncedilla'] = 0x0145;
-  t['Ncircle'] = 0x24C3;
-  t['Ncircumflexbelow'] = 0x1E4A;
-  t['Ncommaaccent'] = 0x0145;
-  t['Ndotaccent'] = 0x1E44;
-  t['Ndotbelow'] = 0x1E46;
-  t['Nhookleft'] = 0x019D;
-  t['Nineroman'] = 0x2168;
-  t['Nj'] = 0x01CB;
-  t['Njecyrillic'] = 0x040A;
-  t['Nlinebelow'] = 0x1E48;
-  t['Nmonospace'] = 0xFF2E;
-  t['Nowarmenian'] = 0x0546;
-  t['Nsmall'] = 0xF76E;
-  t['Ntilde'] = 0x00D1;
-  t['Ntildesmall'] = 0xF7F1;
-  t['Nu'] = 0x039D;
-  t['O'] = 0x004F;
-  t['OE'] = 0x0152;
-  t['OEsmall'] = 0xF6FA;
-  t['Oacute'] = 0x00D3;
-  t['Oacutesmall'] = 0xF7F3;
-  t['Obarredcyrillic'] = 0x04E8;
-  t['Obarreddieresiscyrillic'] = 0x04EA;
-  t['Obreve'] = 0x014E;
-  t['Ocaron'] = 0x01D1;
-  t['Ocenteredtilde'] = 0x019F;
-  t['Ocircle'] = 0x24C4;
-  t['Ocircumflex'] = 0x00D4;
-  t['Ocircumflexacute'] = 0x1ED0;
-  t['Ocircumflexdotbelow'] = 0x1ED8;
-  t['Ocircumflexgrave'] = 0x1ED2;
-  t['Ocircumflexhookabove'] = 0x1ED4;
-  t['Ocircumflexsmall'] = 0xF7F4;
-  t['Ocircumflextilde'] = 0x1ED6;
-  t['Ocyrillic'] = 0x041E;
-  t['Odblacute'] = 0x0150;
-  t['Odblgrave'] = 0x020C;
-  t['Odieresis'] = 0x00D6;
-  t['Odieresiscyrillic'] = 0x04E6;
-  t['Odieresissmall'] = 0xF7F6;
-  t['Odotbelow'] = 0x1ECC;
-  t['Ogoneksmall'] = 0xF6FB;
-  t['Ograve'] = 0x00D2;
-  t['Ogravesmall'] = 0xF7F2;
-  t['Oharmenian'] = 0x0555;
-  t['Ohm'] = 0x2126;
-  t['Ohookabove'] = 0x1ECE;
-  t['Ohorn'] = 0x01A0;
-  t['Ohornacute'] = 0x1EDA;
-  t['Ohorndotbelow'] = 0x1EE2;
-  t['Ohorngrave'] = 0x1EDC;
-  t['Ohornhookabove'] = 0x1EDE;
-  t['Ohorntilde'] = 0x1EE0;
-  t['Ohungarumlaut'] = 0x0150;
-  t['Oi'] = 0x01A2;
-  t['Oinvertedbreve'] = 0x020E;
-  t['Omacron'] = 0x014C;
-  t['Omacronacute'] = 0x1E52;
-  t['Omacrongrave'] = 0x1E50;
-  t['Omega'] = 0x2126;
-  t['Omegacyrillic'] = 0x0460;
-  t['Omegagreek'] = 0x03A9;
-  t['Omegaroundcyrillic'] = 0x047A;
-  t['Omegatitlocyrillic'] = 0x047C;
-  t['Omegatonos'] = 0x038F;
-  t['Omicron'] = 0x039F;
-  t['Omicrontonos'] = 0x038C;
-  t['Omonospace'] = 0xFF2F;
-  t['Oneroman'] = 0x2160;
-  t['Oogonek'] = 0x01EA;
-  t['Oogonekmacron'] = 0x01EC;
-  t['Oopen'] = 0x0186;
-  t['Oslash'] = 0x00D8;
-  t['Oslashacute'] = 0x01FE;
-  t['Oslashsmall'] = 0xF7F8;
-  t['Osmall'] = 0xF76F;
-  t['Ostrokeacute'] = 0x01FE;
-  t['Otcyrillic'] = 0x047E;
-  t['Otilde'] = 0x00D5;
-  t['Otildeacute'] = 0x1E4C;
-  t['Otildedieresis'] = 0x1E4E;
-  t['Otildesmall'] = 0xF7F5;
-  t['P'] = 0x0050;
-  t['Pacute'] = 0x1E54;
-  t['Pcircle'] = 0x24C5;
-  t['Pdotaccent'] = 0x1E56;
-  t['Pecyrillic'] = 0x041F;
-  t['Peharmenian'] = 0x054A;
-  t['Pemiddlehookcyrillic'] = 0x04A6;
-  t['Phi'] = 0x03A6;
-  t['Phook'] = 0x01A4;
-  t['Pi'] = 0x03A0;
-  t['Piwrarmenian'] = 0x0553;
-  t['Pmonospace'] = 0xFF30;
-  t['Psi'] = 0x03A8;
-  t['Psicyrillic'] = 0x0470;
-  t['Psmall'] = 0xF770;
-  t['Q'] = 0x0051;
-  t['Qcircle'] = 0x24C6;
-  t['Qmonospace'] = 0xFF31;
-  t['Qsmall'] = 0xF771;
-  t['R'] = 0x0052;
-  t['Raarmenian'] = 0x054C;
-  t['Racute'] = 0x0154;
-  t['Rcaron'] = 0x0158;
-  t['Rcedilla'] = 0x0156;
-  t['Rcircle'] = 0x24C7;
-  t['Rcommaaccent'] = 0x0156;
-  t['Rdblgrave'] = 0x0210;
-  t['Rdotaccent'] = 0x1E58;
-  t['Rdotbelow'] = 0x1E5A;
-  t['Rdotbelowmacron'] = 0x1E5C;
-  t['Reharmenian'] = 0x0550;
-  t['Rfraktur'] = 0x211C;
-  t['Rho'] = 0x03A1;
-  t['Ringsmall'] = 0xF6FC;
-  t['Rinvertedbreve'] = 0x0212;
-  t['Rlinebelow'] = 0x1E5E;
-  t['Rmonospace'] = 0xFF32;
-  t['Rsmall'] = 0xF772;
-  t['Rsmallinverted'] = 0x0281;
-  t['Rsmallinvertedsuperior'] = 0x02B6;
-  t['S'] = 0x0053;
-  t['SF010000'] = 0x250C;
-  t['SF020000'] = 0x2514;
-  t['SF030000'] = 0x2510;
-  t['SF040000'] = 0x2518;
-  t['SF050000'] = 0x253C;
-  t['SF060000'] = 0x252C;
-  t['SF070000'] = 0x2534;
-  t['SF080000'] = 0x251C;
-  t['SF090000'] = 0x2524;
-  t['SF100000'] = 0x2500;
-  t['SF110000'] = 0x2502;
-  t['SF190000'] = 0x2561;
-  t['SF200000'] = 0x2562;
-  t['SF210000'] = 0x2556;
-  t['SF220000'] = 0x2555;
-  t['SF230000'] = 0x2563;
-  t['SF240000'] = 0x2551;
-  t['SF250000'] = 0x2557;
-  t['SF260000'] = 0x255D;
-  t['SF270000'] = 0x255C;
-  t['SF280000'] = 0x255B;
-  t['SF360000'] = 0x255E;
-  t['SF370000'] = 0x255F;
-  t['SF380000'] = 0x255A;
-  t['SF390000'] = 0x2554;
-  t['SF400000'] = 0x2569;
-  t['SF410000'] = 0x2566;
-  t['SF420000'] = 0x2560;
-  t['SF430000'] = 0x2550;
-  t['SF440000'] = 0x256C;
-  t['SF450000'] = 0x2567;
-  t['SF460000'] = 0x2568;
-  t['SF470000'] = 0x2564;
-  t['SF480000'] = 0x2565;
-  t['SF490000'] = 0x2559;
-  t['SF500000'] = 0x2558;
-  t['SF510000'] = 0x2552;
-  t['SF520000'] = 0x2553;
-  t['SF530000'] = 0x256B;
-  t['SF540000'] = 0x256A;
-  t['Sacute'] = 0x015A;
-  t['Sacutedotaccent'] = 0x1E64;
-  t['Sampigreek'] = 0x03E0;
-  t['Scaron'] = 0x0160;
-  t['Scarondotaccent'] = 0x1E66;
-  t['Scaronsmall'] = 0xF6FD;
-  t['Scedilla'] = 0x015E;
-  t['Schwa'] = 0x018F;
-  t['Schwacyrillic'] = 0x04D8;
-  t['Schwadieresiscyrillic'] = 0x04DA;
-  t['Scircle'] = 0x24C8;
-  t['Scircumflex'] = 0x015C;
-  t['Scommaaccent'] = 0x0218;
-  t['Sdotaccent'] = 0x1E60;
-  t['Sdotbelow'] = 0x1E62;
-  t['Sdotbelowdotaccent'] = 0x1E68;
-  t['Seharmenian'] = 0x054D;
-  t['Sevenroman'] = 0x2166;
-  t['Shaarmenian'] = 0x0547;
-  t['Shacyrillic'] = 0x0428;
-  t['Shchacyrillic'] = 0x0429;
-  t['Sheicoptic'] = 0x03E2;
-  t['Shhacyrillic'] = 0x04BA;
-  t['Shimacoptic'] = 0x03EC;
-  t['Sigma'] = 0x03A3;
-  t['Sixroman'] = 0x2165;
-  t['Smonospace'] = 0xFF33;
-  t['Softsigncyrillic'] = 0x042C;
-  t['Ssmall'] = 0xF773;
-  t['Stigmagreek'] = 0x03DA;
-  t['T'] = 0x0054;
-  t['Tau'] = 0x03A4;
-  t['Tbar'] = 0x0166;
-  t['Tcaron'] = 0x0164;
-  t['Tcedilla'] = 0x0162;
-  t['Tcircle'] = 0x24C9;
-  t['Tcircumflexbelow'] = 0x1E70;
-  t['Tcommaaccent'] = 0x0162;
-  t['Tdotaccent'] = 0x1E6A;
-  t['Tdotbelow'] = 0x1E6C;
-  t['Tecyrillic'] = 0x0422;
-  t['Tedescendercyrillic'] = 0x04AC;
-  t['Tenroman'] = 0x2169;
-  t['Tetsecyrillic'] = 0x04B4;
-  t['Theta'] = 0x0398;
-  t['Thook'] = 0x01AC;
-  t['Thorn'] = 0x00DE;
-  t['Thornsmall'] = 0xF7FE;
-  t['Threeroman'] = 0x2162;
-  t['Tildesmall'] = 0xF6FE;
-  t['Tiwnarmenian'] = 0x054F;
-  t['Tlinebelow'] = 0x1E6E;
-  t['Tmonospace'] = 0xFF34;
-  t['Toarmenian'] = 0x0539;
-  t['Tonefive'] = 0x01BC;
-  t['Tonesix'] = 0x0184;
-  t['Tonetwo'] = 0x01A7;
-  t['Tretroflexhook'] = 0x01AE;
-  t['Tsecyrillic'] = 0x0426;
-  t['Tshecyrillic'] = 0x040B;
-  t['Tsmall'] = 0xF774;
-  t['Twelveroman'] = 0x216B;
-  t['Tworoman'] = 0x2161;
-  t['U'] = 0x0055;
-  t['Uacute'] = 0x00DA;
-  t['Uacutesmall'] = 0xF7FA;
-  t['Ubreve'] = 0x016C;
-  t['Ucaron'] = 0x01D3;
-  t['Ucircle'] = 0x24CA;
-  t['Ucircumflex'] = 0x00DB;
-  t['Ucircumflexbelow'] = 0x1E76;
-  t['Ucircumflexsmall'] = 0xF7FB;
-  t['Ucyrillic'] = 0x0423;
-  t['Udblacute'] = 0x0170;
-  t['Udblgrave'] = 0x0214;
-  t['Udieresis'] = 0x00DC;
-  t['Udieresisacute'] = 0x01D7;
-  t['Udieresisbelow'] = 0x1E72;
-  t['Udieresiscaron'] = 0x01D9;
-  t['Udieresiscyrillic'] = 0x04F0;
-  t['Udieresisgrave'] = 0x01DB;
-  t['Udieresismacron'] = 0x01D5;
-  t['Udieresissmall'] = 0xF7FC;
-  t['Udotbelow'] = 0x1EE4;
-  t['Ugrave'] = 0x00D9;
-  t['Ugravesmall'] = 0xF7F9;
-  t['Uhookabove'] = 0x1EE6;
-  t['Uhorn'] = 0x01AF;
-  t['Uhornacute'] = 0x1EE8;
-  t['Uhorndotbelow'] = 0x1EF0;
-  t['Uhorngrave'] = 0x1EEA;
-  t['Uhornhookabove'] = 0x1EEC;
-  t['Uhorntilde'] = 0x1EEE;
-  t['Uhungarumlaut'] = 0x0170;
-  t['Uhungarumlautcyrillic'] = 0x04F2;
-  t['Uinvertedbreve'] = 0x0216;
-  t['Ukcyrillic'] = 0x0478;
-  t['Umacron'] = 0x016A;
-  t['Umacroncyrillic'] = 0x04EE;
-  t['Umacrondieresis'] = 0x1E7A;
-  t['Umonospace'] = 0xFF35;
-  t['Uogonek'] = 0x0172;
-  t['Upsilon'] = 0x03A5;
-  t['Upsilon1'] = 0x03D2;
-  t['Upsilonacutehooksymbolgreek'] = 0x03D3;
-  t['Upsilonafrican'] = 0x01B1;
-  t['Upsilondieresis'] = 0x03AB;
-  t['Upsilondieresishooksymbolgreek'] = 0x03D4;
-  t['Upsilonhooksymbol'] = 0x03D2;
-  t['Upsilontonos'] = 0x038E;
-  t['Uring'] = 0x016E;
-  t['Ushortcyrillic'] = 0x040E;
-  t['Usmall'] = 0xF775;
-  t['Ustraightcyrillic'] = 0x04AE;
-  t['Ustraightstrokecyrillic'] = 0x04B0;
-  t['Utilde'] = 0x0168;
-  t['Utildeacute'] = 0x1E78;
-  t['Utildebelow'] = 0x1E74;
-  t['V'] = 0x0056;
-  t['Vcircle'] = 0x24CB;
-  t['Vdotbelow'] = 0x1E7E;
-  t['Vecyrillic'] = 0x0412;
-  t['Vewarmenian'] = 0x054E;
-  t['Vhook'] = 0x01B2;
-  t['Vmonospace'] = 0xFF36;
-  t['Voarmenian'] = 0x0548;
-  t['Vsmall'] = 0xF776;
-  t['Vtilde'] = 0x1E7C;
-  t['W'] = 0x0057;
-  t['Wacute'] = 0x1E82;
-  t['Wcircle'] = 0x24CC;
-  t['Wcircumflex'] = 0x0174;
-  t['Wdieresis'] = 0x1E84;
-  t['Wdotaccent'] = 0x1E86;
-  t['Wdotbelow'] = 0x1E88;
-  t['Wgrave'] = 0x1E80;
-  t['Wmonospace'] = 0xFF37;
-  t['Wsmall'] = 0xF777;
-  t['X'] = 0x0058;
-  t['Xcircle'] = 0x24CD;
-  t['Xdieresis'] = 0x1E8C;
-  t['Xdotaccent'] = 0x1E8A;
-  t['Xeharmenian'] = 0x053D;
-  t['Xi'] = 0x039E;
-  t['Xmonospace'] = 0xFF38;
-  t['Xsmall'] = 0xF778;
-  t['Y'] = 0x0059;
-  t['Yacute'] = 0x00DD;
-  t['Yacutesmall'] = 0xF7FD;
-  t['Yatcyrillic'] = 0x0462;
-  t['Ycircle'] = 0x24CE;
-  t['Ycircumflex'] = 0x0176;
-  t['Ydieresis'] = 0x0178;
-  t['Ydieresissmall'] = 0xF7FF;
-  t['Ydotaccent'] = 0x1E8E;
-  t['Ydotbelow'] = 0x1EF4;
-  t['Yericyrillic'] = 0x042B;
-  t['Yerudieresiscyrillic'] = 0x04F8;
-  t['Ygrave'] = 0x1EF2;
-  t['Yhook'] = 0x01B3;
-  t['Yhookabove'] = 0x1EF6;
-  t['Yiarmenian'] = 0x0545;
-  t['Yicyrillic'] = 0x0407;
-  t['Yiwnarmenian'] = 0x0552;
-  t['Ymonospace'] = 0xFF39;
-  t['Ysmall'] = 0xF779;
-  t['Ytilde'] = 0x1EF8;
-  t['Yusbigcyrillic'] = 0x046A;
-  t['Yusbigiotifiedcyrillic'] = 0x046C;
-  t['Yuslittlecyrillic'] = 0x0466;
-  t['Yuslittleiotifiedcyrillic'] = 0x0468;
-  t['Z'] = 0x005A;
-  t['Zaarmenian'] = 0x0536;
-  t['Zacute'] = 0x0179;
-  t['Zcaron'] = 0x017D;
-  t['Zcaronsmall'] = 0xF6FF;
-  t['Zcircle'] = 0x24CF;
-  t['Zcircumflex'] = 0x1E90;
-  t['Zdot'] = 0x017B;
-  t['Zdotaccent'] = 0x017B;
-  t['Zdotbelow'] = 0x1E92;
-  t['Zecyrillic'] = 0x0417;
-  t['Zedescendercyrillic'] = 0x0498;
-  t['Zedieresiscyrillic'] = 0x04DE;
-  t['Zeta'] = 0x0396;
-  t['Zhearmenian'] = 0x053A;
-  t['Zhebrevecyrillic'] = 0x04C1;
-  t['Zhecyrillic'] = 0x0416;
-  t['Zhedescendercyrillic'] = 0x0496;
-  t['Zhedieresiscyrillic'] = 0x04DC;
-  t['Zlinebelow'] = 0x1E94;
-  t['Zmonospace'] = 0xFF3A;
-  t['Zsmall'] = 0xF77A;
-  t['Zstroke'] = 0x01B5;
-  t['a'] = 0x0061;
-  t['aabengali'] = 0x0986;
-  t['aacute'] = 0x00E1;
-  t['aadeva'] = 0x0906;
-  t['aagujarati'] = 0x0A86;
-  t['aagurmukhi'] = 0x0A06;
-  t['aamatragurmukhi'] = 0x0A3E;
-  t['aarusquare'] = 0x3303;
-  t['aavowelsignbengali'] = 0x09BE;
-  t['aavowelsigndeva'] = 0x093E;
-  t['aavowelsigngujarati'] = 0x0ABE;
-  t['abbreviationmarkarmenian'] = 0x055F;
-  t['abbreviationsigndeva'] = 0x0970;
-  t['abengali'] = 0x0985;
-  t['abopomofo'] = 0x311A;
-  t['abreve'] = 0x0103;
-  t['abreveacute'] = 0x1EAF;
-  t['abrevecyrillic'] = 0x04D1;
-  t['abrevedotbelow'] = 0x1EB7;
-  t['abrevegrave'] = 0x1EB1;
-  t['abrevehookabove'] = 0x1EB3;
-  t['abrevetilde'] = 0x1EB5;
-  t['acaron'] = 0x01CE;
-  t['acircle'] = 0x24D0;
-  t['acircumflex'] = 0x00E2;
-  t['acircumflexacute'] = 0x1EA5;
-  t['acircumflexdotbelow'] = 0x1EAD;
-  t['acircumflexgrave'] = 0x1EA7;
-  t['acircumflexhookabove'] = 0x1EA9;
-  t['acircumflextilde'] = 0x1EAB;
-  t['acute'] = 0x00B4;
-  t['acutebelowcmb'] = 0x0317;
-  t['acutecmb'] = 0x0301;
-  t['acutecomb'] = 0x0301;
-  t['acutedeva'] = 0x0954;
-  t['acutelowmod'] = 0x02CF;
-  t['acutetonecmb'] = 0x0341;
-  t['acyrillic'] = 0x0430;
-  t['adblgrave'] = 0x0201;
-  t['addakgurmukhi'] = 0x0A71;
-  t['adeva'] = 0x0905;
-  t['adieresis'] = 0x00E4;
-  t['adieresiscyrillic'] = 0x04D3;
-  t['adieresismacron'] = 0x01DF;
-  t['adotbelow'] = 0x1EA1;
-  t['adotmacron'] = 0x01E1;
-  t['ae'] = 0x00E6;
-  t['aeacute'] = 0x01FD;
-  t['aekorean'] = 0x3150;
-  t['aemacron'] = 0x01E3;
-  t['afii00208'] = 0x2015;
-  t['afii08941'] = 0x20A4;
-  t['afii10017'] = 0x0410;
-  t['afii10018'] = 0x0411;
-  t['afii10019'] = 0x0412;
-  t['afii10020'] = 0x0413;
-  t['afii10021'] = 0x0414;
-  t['afii10022'] = 0x0415;
-  t['afii10023'] = 0x0401;
-  t['afii10024'] = 0x0416;
-  t['afii10025'] = 0x0417;
-  t['afii10026'] = 0x0418;
-  t['afii10027'] = 0x0419;
-  t['afii10028'] = 0x041A;
-  t['afii10029'] = 0x041B;
-  t['afii10030'] = 0x041C;
-  t['afii10031'] = 0x041D;
-  t['afii10032'] = 0x041E;
-  t['afii10033'] = 0x041F;
-  t['afii10034'] = 0x0420;
-  t['afii10035'] = 0x0421;
-  t['afii10036'] = 0x0422;
-  t['afii10037'] = 0x0423;
-  t['afii10038'] = 0x0424;
-  t['afii10039'] = 0x0425;
-  t['afii10040'] = 0x0426;
-  t['afii10041'] = 0x0427;
-  t['afii10042'] = 0x0428;
-  t['afii10043'] = 0x0429;
-  t['afii10044'] = 0x042A;
-  t['afii10045'] = 0x042B;
-  t['afii10046'] = 0x042C;
-  t['afii10047'] = 0x042D;
-  t['afii10048'] = 0x042E;
-  t['afii10049'] = 0x042F;
-  t['afii10050'] = 0x0490;
-  t['afii10051'] = 0x0402;
-  t['afii10052'] = 0x0403;
-  t['afii10053'] = 0x0404;
-  t['afii10054'] = 0x0405;
-  t['afii10055'] = 0x0406;
-  t['afii10056'] = 0x0407;
-  t['afii10057'] = 0x0408;
-  t['afii10058'] = 0x0409;
-  t['afii10059'] = 0x040A;
-  t['afii10060'] = 0x040B;
-  t['afii10061'] = 0x040C;
-  t['afii10062'] = 0x040E;
-  t['afii10063'] = 0xF6C4;
-  t['afii10064'] = 0xF6C5;
-  t['afii10065'] = 0x0430;
-  t['afii10066'] = 0x0431;
-  t['afii10067'] = 0x0432;
-  t['afii10068'] = 0x0433;
-  t['afii10069'] = 0x0434;
-  t['afii10070'] = 0x0435;
-  t['afii10071'] = 0x0451;
-  t['afii10072'] = 0x0436;
-  t['afii10073'] = 0x0437;
-  t['afii10074'] = 0x0438;
-  t['afii10075'] = 0x0439;
-  t['afii10076'] = 0x043A;
-  t['afii10077'] = 0x043B;
-  t['afii10078'] = 0x043C;
-  t['afii10079'] = 0x043D;
-  t['afii10080'] = 0x043E;
-  t['afii10081'] = 0x043F;
-  t['afii10082'] = 0x0440;
-  t['afii10083'] = 0x0441;
-  t['afii10084'] = 0x0442;
-  t['afii10085'] = 0x0443;
-  t['afii10086'] = 0x0444;
-  t['afii10087'] = 0x0445;
-  t['afii10088'] = 0x0446;
-  t['afii10089'] = 0x0447;
-  t['afii10090'] = 0x0448;
-  t['afii10091'] = 0x0449;
-  t['afii10092'] = 0x044A;
-  t['afii10093'] = 0x044B;
-  t['afii10094'] = 0x044C;
-  t['afii10095'] = 0x044D;
-  t['afii10096'] = 0x044E;
-  t['afii10097'] = 0x044F;
-  t['afii10098'] = 0x0491;
-  t['afii10099'] = 0x0452;
-  t['afii10100'] = 0x0453;
-  t['afii10101'] = 0x0454;
-  t['afii10102'] = 0x0455;
-  t['afii10103'] = 0x0456;
-  t['afii10104'] = 0x0457;
-  t['afii10105'] = 0x0458;
-  t['afii10106'] = 0x0459;
-  t['afii10107'] = 0x045A;
-  t['afii10108'] = 0x045B;
-  t['afii10109'] = 0x045C;
-  t['afii10110'] = 0x045E;
-  t['afii10145'] = 0x040F;
-  t['afii10146'] = 0x0462;
-  t['afii10147'] = 0x0472;
-  t['afii10148'] = 0x0474;
-  t['afii10192'] = 0xF6C6;
-  t['afii10193'] = 0x045F;
-  t['afii10194'] = 0x0463;
-  t['afii10195'] = 0x0473;
-  t['afii10196'] = 0x0475;
-  t['afii10831'] = 0xF6C7;
-  t['afii10832'] = 0xF6C8;
-  t['afii10846'] = 0x04D9;
-  t['afii299'] = 0x200E;
-  t['afii300'] = 0x200F;
-  t['afii301'] = 0x200D;
-  t['afii57381'] = 0x066A;
-  t['afii57388'] = 0x060C;
-  t['afii57392'] = 0x0660;
-  t['afii57393'] = 0x0661;
-  t['afii57394'] = 0x0662;
-  t['afii57395'] = 0x0663;
-  t['afii57396'] = 0x0664;
-  t['afii57397'] = 0x0665;
-  t['afii57398'] = 0x0666;
-  t['afii57399'] = 0x0667;
-  t['afii57400'] = 0x0668;
-  t['afii57401'] = 0x0669;
-  t['afii57403'] = 0x061B;
-  t['afii57407'] = 0x061F;
-  t['afii57409'] = 0x0621;
-  t['afii57410'] = 0x0622;
-  t['afii57411'] = 0x0623;
-  t['afii57412'] = 0x0624;
-  t['afii57413'] = 0x0625;
-  t['afii57414'] = 0x0626;
-  t['afii57415'] = 0x0627;
-  t['afii57416'] = 0x0628;
-  t['afii57417'] = 0x0629;
-  t['afii57418'] = 0x062A;
-  t['afii57419'] = 0x062B;
-  t['afii57420'] = 0x062C;
-  t['afii57421'] = 0x062D;
-  t['afii57422'] = 0x062E;
-  t['afii57423'] = 0x062F;
-  t['afii57424'] = 0x0630;
-  t['afii57425'] = 0x0631;
-  t['afii57426'] = 0x0632;
-  t['afii57427'] = 0x0633;
-  t['afii57428'] = 0x0634;
-  t['afii57429'] = 0x0635;
-  t['afii57430'] = 0x0636;
-  t['afii57431'] = 0x0637;
-  t['afii57432'] = 0x0638;
-  t['afii57433'] = 0x0639;
-  t['afii57434'] = 0x063A;
-  t['afii57440'] = 0x0640;
-  t['afii57441'] = 0x0641;
-  t['afii57442'] = 0x0642;
-  t['afii57443'] = 0x0643;
-  t['afii57444'] = 0x0644;
-  t['afii57445'] = 0x0645;
-  t['afii57446'] = 0x0646;
-  t['afii57448'] = 0x0648;
-  t['afii57449'] = 0x0649;
-  t['afii57450'] = 0x064A;
-  t['afii57451'] = 0x064B;
-  t['afii57452'] = 0x064C;
-  t['afii57453'] = 0x064D;
-  t['afii57454'] = 0x064E;
-  t['afii57455'] = 0x064F;
-  t['afii57456'] = 0x0650;
-  t['afii57457'] = 0x0651;
-  t['afii57458'] = 0x0652;
-  t['afii57470'] = 0x0647;
-  t['afii57505'] = 0x06A4;
-  t['afii57506'] = 0x067E;
-  t['afii57507'] = 0x0686;
-  t['afii57508'] = 0x0698;
-  t['afii57509'] = 0x06AF;
-  t['afii57511'] = 0x0679;
-  t['afii57512'] = 0x0688;
-  t['afii57513'] = 0x0691;
-  t['afii57514'] = 0x06BA;
-  t['afii57519'] = 0x06D2;
-  t['afii57534'] = 0x06D5;
-  t['afii57636'] = 0x20AA;
-  t['afii57645'] = 0x05BE;
-  t['afii57658'] = 0x05C3;
-  t['afii57664'] = 0x05D0;
-  t['afii57665'] = 0x05D1;
-  t['afii57666'] = 0x05D2;
-  t['afii57667'] = 0x05D3;
-  t['afii57668'] = 0x05D4;
-  t['afii57669'] = 0x05D5;
-  t['afii57670'] = 0x05D6;
-  t['afii57671'] = 0x05D7;
-  t['afii57672'] = 0x05D8;
-  t['afii57673'] = 0x05D9;
-  t['afii57674'] = 0x05DA;
-  t['afii57675'] = 0x05DB;
-  t['afii57676'] = 0x05DC;
-  t['afii57677'] = 0x05DD;
-  t['afii57678'] = 0x05DE;
-  t['afii57679'] = 0x05DF;
-  t['afii57680'] = 0x05E0;
-  t['afii57681'] = 0x05E1;
-  t['afii57682'] = 0x05E2;
-  t['afii57683'] = 0x05E3;
-  t['afii57684'] = 0x05E4;
-  t['afii57685'] = 0x05E5;
-  t['afii57686'] = 0x05E6;
-  t['afii57687'] = 0x05E7;
-  t['afii57688'] = 0x05E8;
-  t['afii57689'] = 0x05E9;
-  t['afii57690'] = 0x05EA;
-  t['afii57694'] = 0xFB2A;
-  t['afii57695'] = 0xFB2B;
-  t['afii57700'] = 0xFB4B;
-  t['afii57705'] = 0xFB1F;
-  t['afii57716'] = 0x05F0;
-  t['afii57717'] = 0x05F1;
-  t['afii57718'] = 0x05F2;
-  t['afii57723'] = 0xFB35;
-  t['afii57793'] = 0x05B4;
-  t['afii57794'] = 0x05B5;
-  t['afii57795'] = 0x05B6;
-  t['afii57796'] = 0x05BB;
-  t['afii57797'] = 0x05B8;
-  t['afii57798'] = 0x05B7;
-  t['afii57799'] = 0x05B0;
-  t['afii57800'] = 0x05B2;
-  t['afii57801'] = 0x05B1;
-  t['afii57802'] = 0x05B3;
-  t['afii57803'] = 0x05C2;
-  t['afii57804'] = 0x05C1;
-  t['afii57806'] = 0x05B9;
-  t['afii57807'] = 0x05BC;
-  t['afii57839'] = 0x05BD;
-  t['afii57841'] = 0x05BF;
-  t['afii57842'] = 0x05C0;
-  t['afii57929'] = 0x02BC;
-  t['afii61248'] = 0x2105;
-  t['afii61289'] = 0x2113;
-  t['afii61352'] = 0x2116;
-  t['afii61573'] = 0x202C;
-  t['afii61574'] = 0x202D;
-  t['afii61575'] = 0x202E;
-  t['afii61664'] = 0x200C;
-  t['afii63167'] = 0x066D;
-  t['afii64937'] = 0x02BD;
-  t['agrave'] = 0x00E0;
-  t['agujarati'] = 0x0A85;
-  t['agurmukhi'] = 0x0A05;
-  t['ahiragana'] = 0x3042;
-  t['ahookabove'] = 0x1EA3;
-  t['aibengali'] = 0x0990;
-  t['aibopomofo'] = 0x311E;
-  t['aideva'] = 0x0910;
-  t['aiecyrillic'] = 0x04D5;
-  t['aigujarati'] = 0x0A90;
-  t['aigurmukhi'] = 0x0A10;
-  t['aimatragurmukhi'] = 0x0A48;
-  t['ainarabic'] = 0x0639;
-  t['ainfinalarabic'] = 0xFECA;
-  t['aininitialarabic'] = 0xFECB;
-  t['ainmedialarabic'] = 0xFECC;
-  t['ainvertedbreve'] = 0x0203;
-  t['aivowelsignbengali'] = 0x09C8;
-  t['aivowelsigndeva'] = 0x0948;
-  t['aivowelsigngujarati'] = 0x0AC8;
-  t['akatakana'] = 0x30A2;
-  t['akatakanahalfwidth'] = 0xFF71;
-  t['akorean'] = 0x314F;
-  t['alef'] = 0x05D0;
-  t['alefarabic'] = 0x0627;
-  t['alefdageshhebrew'] = 0xFB30;
-  t['aleffinalarabic'] = 0xFE8E;
-  t['alefhamzaabovearabic'] = 0x0623;
-  t['alefhamzaabovefinalarabic'] = 0xFE84;
-  t['alefhamzabelowarabic'] = 0x0625;
-  t['alefhamzabelowfinalarabic'] = 0xFE88;
-  t['alefhebrew'] = 0x05D0;
-  t['aleflamedhebrew'] = 0xFB4F;
-  t['alefmaddaabovearabic'] = 0x0622;
-  t['alefmaddaabovefinalarabic'] = 0xFE82;
-  t['alefmaksuraarabic'] = 0x0649;
-  t['alefmaksurafinalarabic'] = 0xFEF0;
-  t['alefmaksurainitialarabic'] = 0xFEF3;
-  t['alefmaksuramedialarabic'] = 0xFEF4;
-  t['alefpatahhebrew'] = 0xFB2E;
-  t['alefqamatshebrew'] = 0xFB2F;
-  t['aleph'] = 0x2135;
-  t['allequal'] = 0x224C;
-  t['alpha'] = 0x03B1;
-  t['alphatonos'] = 0x03AC;
-  t['amacron'] = 0x0101;
-  t['amonospace'] = 0xFF41;
-  t['ampersand'] = 0x0026;
-  t['ampersandmonospace'] = 0xFF06;
-  t['ampersandsmall'] = 0xF726;
-  t['amsquare'] = 0x33C2;
-  t['anbopomofo'] = 0x3122;
-  t['angbopomofo'] = 0x3124;
-  t['angbracketleft'] = 0x3008;
-  t['angbracketright'] = 0x3009;
-  t['angkhankhuthai'] = 0x0E5A;
-  t['angle'] = 0x2220;
-  t['anglebracketleft'] = 0x3008;
-  t['anglebracketleftvertical'] = 0xFE3F;
-  t['anglebracketright'] = 0x3009;
-  t['anglebracketrightvertical'] = 0xFE40;
-  t['angleleft'] = 0x2329;
-  t['angleright'] = 0x232A;
-  t['angstrom'] = 0x212B;
-  t['anoteleia'] = 0x0387;
-  t['anudattadeva'] = 0x0952;
-  t['anusvarabengali'] = 0x0982;
-  t['anusvaradeva'] = 0x0902;
-  t['anusvaragujarati'] = 0x0A82;
-  t['aogonek'] = 0x0105;
-  t['apaatosquare'] = 0x3300;
-  t['aparen'] = 0x249C;
-  t['apostrophearmenian'] = 0x055A;
-  t['apostrophemod'] = 0x02BC;
-  t['apple'] = 0xF8FF;
-  t['approaches'] = 0x2250;
-  t['approxequal'] = 0x2248;
-  t['approxequalorimage'] = 0x2252;
-  t['approximatelyequal'] = 0x2245;
-  t['araeaekorean'] = 0x318E;
-  t['araeakorean'] = 0x318D;
-  t['arc'] = 0x2312;
-  t['arighthalfring'] = 0x1E9A;
-  t['aring'] = 0x00E5;
-  t['aringacute'] = 0x01FB;
-  t['aringbelow'] = 0x1E01;
-  t['arrowboth'] = 0x2194;
-  t['arrowdashdown'] = 0x21E3;
-  t['arrowdashleft'] = 0x21E0;
-  t['arrowdashright'] = 0x21E2;
-  t['arrowdashup'] = 0x21E1;
-  t['arrowdblboth'] = 0x21D4;
-  t['arrowdbldown'] = 0x21D3;
-  t['arrowdblleft'] = 0x21D0;
-  t['arrowdblright'] = 0x21D2;
-  t['arrowdblup'] = 0x21D1;
-  t['arrowdown'] = 0x2193;
-  t['arrowdownleft'] = 0x2199;
-  t['arrowdownright'] = 0x2198;
-  t['arrowdownwhite'] = 0x21E9;
-  t['arrowheaddownmod'] = 0x02C5;
-  t['arrowheadleftmod'] = 0x02C2;
-  t['arrowheadrightmod'] = 0x02C3;
-  t['arrowheadupmod'] = 0x02C4;
-  t['arrowhorizex'] = 0xF8E7;
-  t['arrowleft'] = 0x2190;
-  t['arrowleftdbl'] = 0x21D0;
-  t['arrowleftdblstroke'] = 0x21CD;
-  t['arrowleftoverright'] = 0x21C6;
-  t['arrowleftwhite'] = 0x21E6;
-  t['arrowright'] = 0x2192;
-  t['arrowrightdblstroke'] = 0x21CF;
-  t['arrowrightheavy'] = 0x279E;
-  t['arrowrightoverleft'] = 0x21C4;
-  t['arrowrightwhite'] = 0x21E8;
-  t['arrowtableft'] = 0x21E4;
-  t['arrowtabright'] = 0x21E5;
-  t['arrowup'] = 0x2191;
-  t['arrowupdn'] = 0x2195;
-  t['arrowupdnbse'] = 0x21A8;
-  t['arrowupdownbase'] = 0x21A8;
-  t['arrowupleft'] = 0x2196;
-  t['arrowupleftofdown'] = 0x21C5;
-  t['arrowupright'] = 0x2197;
-  t['arrowupwhite'] = 0x21E7;
-  t['arrowvertex'] = 0xF8E6;
-  t['asciicircum'] = 0x005E;
-  t['asciicircummonospace'] = 0xFF3E;
-  t['asciitilde'] = 0x007E;
-  t['asciitildemonospace'] = 0xFF5E;
-  t['ascript'] = 0x0251;
-  t['ascriptturned'] = 0x0252;
-  t['asmallhiragana'] = 0x3041;
-  t['asmallkatakana'] = 0x30A1;
-  t['asmallkatakanahalfwidth'] = 0xFF67;
-  t['asterisk'] = 0x002A;
-  t['asteriskaltonearabic'] = 0x066D;
-  t['asteriskarabic'] = 0x066D;
-  t['asteriskmath'] = 0x2217;
-  t['asteriskmonospace'] = 0xFF0A;
-  t['asterisksmall'] = 0xFE61;
-  t['asterism'] = 0x2042;
-  t['asuperior'] = 0xF6E9;
-  t['asymptoticallyequal'] = 0x2243;
-  t['at'] = 0x0040;
-  t['atilde'] = 0x00E3;
-  t['atmonospace'] = 0xFF20;
-  t['atsmall'] = 0xFE6B;
-  t['aturned'] = 0x0250;
-  t['aubengali'] = 0x0994;
-  t['aubopomofo'] = 0x3120;
-  t['audeva'] = 0x0914;
-  t['augujarati'] = 0x0A94;
-  t['augurmukhi'] = 0x0A14;
-  t['aulengthmarkbengali'] = 0x09D7;
-  t['aumatragurmukhi'] = 0x0A4C;
-  t['auvowelsignbengali'] = 0x09CC;
-  t['auvowelsigndeva'] = 0x094C;
-  t['auvowelsigngujarati'] = 0x0ACC;
-  t['avagrahadeva'] = 0x093D;
-  t['aybarmenian'] = 0x0561;
-  t['ayin'] = 0x05E2;
-  t['ayinaltonehebrew'] = 0xFB20;
-  t['ayinhebrew'] = 0x05E2;
-  t['b'] = 0x0062;
-  t['babengali'] = 0x09AC;
-  t['backslash'] = 0x005C;
-  t['backslashmonospace'] = 0xFF3C;
-  t['badeva'] = 0x092C;
-  t['bagujarati'] = 0x0AAC;
-  t['bagurmukhi'] = 0x0A2C;
-  t['bahiragana'] = 0x3070;
-  t['bahtthai'] = 0x0E3F;
-  t['bakatakana'] = 0x30D0;
-  t['bar'] = 0x007C;
-  t['barmonospace'] = 0xFF5C;
-  t['bbopomofo'] = 0x3105;
-  t['bcircle'] = 0x24D1;
-  t['bdotaccent'] = 0x1E03;
-  t['bdotbelow'] = 0x1E05;
-  t['beamedsixteenthnotes'] = 0x266C;
-  t['because'] = 0x2235;
-  t['becyrillic'] = 0x0431;
-  t['beharabic'] = 0x0628;
-  t['behfinalarabic'] = 0xFE90;
-  t['behinitialarabic'] = 0xFE91;
-  t['behiragana'] = 0x3079;
-  t['behmedialarabic'] = 0xFE92;
-  t['behmeeminitialarabic'] = 0xFC9F;
-  t['behmeemisolatedarabic'] = 0xFC08;
-  t['behnoonfinalarabic'] = 0xFC6D;
-  t['bekatakana'] = 0x30D9;
-  t['benarmenian'] = 0x0562;
-  t['bet'] = 0x05D1;
-  t['beta'] = 0x03B2;
-  t['betasymbolgreek'] = 0x03D0;
-  t['betdagesh'] = 0xFB31;
-  t['betdageshhebrew'] = 0xFB31;
-  t['bethebrew'] = 0x05D1;
-  t['betrafehebrew'] = 0xFB4C;
-  t['bhabengali'] = 0x09AD;
-  t['bhadeva'] = 0x092D;
-  t['bhagujarati'] = 0x0AAD;
-  t['bhagurmukhi'] = 0x0A2D;
-  t['bhook'] = 0x0253;
-  t['bihiragana'] = 0x3073;
-  t['bikatakana'] = 0x30D3;
-  t['bilabialclick'] = 0x0298;
-  t['bindigurmukhi'] = 0x0A02;
-  t['birusquare'] = 0x3331;
-  t['blackcircle'] = 0x25CF;
-  t['blackdiamond'] = 0x25C6;
-  t['blackdownpointingtriangle'] = 0x25BC;
-  t['blackleftpointingpointer'] = 0x25C4;
-  t['blackleftpointingtriangle'] = 0x25C0;
-  t['blacklenticularbracketleft'] = 0x3010;
-  t['blacklenticularbracketleftvertical'] = 0xFE3B;
-  t['blacklenticularbracketright'] = 0x3011;
-  t['blacklenticularbracketrightvertical'] = 0xFE3C;
-  t['blacklowerlefttriangle'] = 0x25E3;
-  t['blacklowerrighttriangle'] = 0x25E2;
-  t['blackrectangle'] = 0x25AC;
-  t['blackrightpointingpointer'] = 0x25BA;
-  t['blackrightpointingtriangle'] = 0x25B6;
-  t['blacksmallsquare'] = 0x25AA;
-  t['blacksmilingface'] = 0x263B;
-  t['blacksquare'] = 0x25A0;
-  t['blackstar'] = 0x2605;
-  t['blackupperlefttriangle'] = 0x25E4;
-  t['blackupperrighttriangle'] = 0x25E5;
-  t['blackuppointingsmalltriangle'] = 0x25B4;
-  t['blackuppointingtriangle'] = 0x25B2;
-  t['blank'] = 0x2423;
-  t['blinebelow'] = 0x1E07;
-  t['block'] = 0x2588;
-  t['bmonospace'] = 0xFF42;
-  t['bobaimaithai'] = 0x0E1A;
-  t['bohiragana'] = 0x307C;
-  t['bokatakana'] = 0x30DC;
-  t['bparen'] = 0x249D;
-  t['bqsquare'] = 0x33C3;
-  t['braceex'] = 0xF8F4;
-  t['braceleft'] = 0x007B;
-  t['braceleftbt'] = 0xF8F3;
-  t['braceleftmid'] = 0xF8F2;
-  t['braceleftmonospace'] = 0xFF5B;
-  t['braceleftsmall'] = 0xFE5B;
-  t['bracelefttp'] = 0xF8F1;
-  t['braceleftvertical'] = 0xFE37;
-  t['braceright'] = 0x007D;
-  t['bracerightbt'] = 0xF8FE;
-  t['bracerightmid'] = 0xF8FD;
-  t['bracerightmonospace'] = 0xFF5D;
-  t['bracerightsmall'] = 0xFE5C;
-  t['bracerighttp'] = 0xF8FC;
-  t['bracerightvertical'] = 0xFE38;
-  t['bracketleft'] = 0x005B;
-  t['bracketleftbt'] = 0xF8F0;
-  t['bracketleftex'] = 0xF8EF;
-  t['bracketleftmonospace'] = 0xFF3B;
-  t['bracketlefttp'] = 0xF8EE;
-  t['bracketright'] = 0x005D;
-  t['bracketrightbt'] = 0xF8FB;
-  t['bracketrightex'] = 0xF8FA;
-  t['bracketrightmonospace'] = 0xFF3D;
-  t['bracketrighttp'] = 0xF8F9;
-  t['breve'] = 0x02D8;
-  t['brevebelowcmb'] = 0x032E;
-  t['brevecmb'] = 0x0306;
-  t['breveinvertedbelowcmb'] = 0x032F;
-  t['breveinvertedcmb'] = 0x0311;
-  t['breveinverteddoublecmb'] = 0x0361;
-  t['bridgebelowcmb'] = 0x032A;
-  t['bridgeinvertedbelowcmb'] = 0x033A;
-  t['brokenbar'] = 0x00A6;
-  t['bstroke'] = 0x0180;
-  t['bsuperior'] = 0xF6EA;
-  t['btopbar'] = 0x0183;
-  t['buhiragana'] = 0x3076;
-  t['bukatakana'] = 0x30D6;
-  t['bullet'] = 0x2022;
-  t['bulletinverse'] = 0x25D8;
-  t['bulletoperator'] = 0x2219;
-  t['bullseye'] = 0x25CE;
-  t['c'] = 0x0063;
-  t['caarmenian'] = 0x056E;
-  t['cabengali'] = 0x099A;
-  t['cacute'] = 0x0107;
-  t['cadeva'] = 0x091A;
-  t['cagujarati'] = 0x0A9A;
-  t['cagurmukhi'] = 0x0A1A;
-  t['calsquare'] = 0x3388;
-  t['candrabindubengali'] = 0x0981;
-  t['candrabinducmb'] = 0x0310;
-  t['candrabindudeva'] = 0x0901;
-  t['candrabindugujarati'] = 0x0A81;
-  t['capslock'] = 0x21EA;
-  t['careof'] = 0x2105;
-  t['caron'] = 0x02C7;
-  t['caronbelowcmb'] = 0x032C;
-  t['caroncmb'] = 0x030C;
-  t['carriagereturn'] = 0x21B5;
-  t['cbopomofo'] = 0x3118;
-  t['ccaron'] = 0x010D;
-  t['ccedilla'] = 0x00E7;
-  t['ccedillaacute'] = 0x1E09;
-  t['ccircle'] = 0x24D2;
-  t['ccircumflex'] = 0x0109;
-  t['ccurl'] = 0x0255;
-  t['cdot'] = 0x010B;
-  t['cdotaccent'] = 0x010B;
-  t['cdsquare'] = 0x33C5;
-  t['cedilla'] = 0x00B8;
-  t['cedillacmb'] = 0x0327;
-  t['cent'] = 0x00A2;
-  t['centigrade'] = 0x2103;
-  t['centinferior'] = 0xF6DF;
-  t['centmonospace'] = 0xFFE0;
-  t['centoldstyle'] = 0xF7A2;
-  t['centsuperior'] = 0xF6E0;
-  t['chaarmenian'] = 0x0579;
-  t['chabengali'] = 0x099B;
-  t['chadeva'] = 0x091B;
-  t['chagujarati'] = 0x0A9B;
-  t['chagurmukhi'] = 0x0A1B;
-  t['chbopomofo'] = 0x3114;
-  t['cheabkhasiancyrillic'] = 0x04BD;
-  t['checkmark'] = 0x2713;
-  t['checyrillic'] = 0x0447;
-  t['chedescenderabkhasiancyrillic'] = 0x04BF;
-  t['chedescendercyrillic'] = 0x04B7;
-  t['chedieresiscyrillic'] = 0x04F5;
-  t['cheharmenian'] = 0x0573;
-  t['chekhakassiancyrillic'] = 0x04CC;
-  t['cheverticalstrokecyrillic'] = 0x04B9;
-  t['chi'] = 0x03C7;
-  t['chieuchacirclekorean'] = 0x3277;
-  t['chieuchaparenkorean'] = 0x3217;
-  t['chieuchcirclekorean'] = 0x3269;
-  t['chieuchkorean'] = 0x314A;
-  t['chieuchparenkorean'] = 0x3209;
-  t['chochangthai'] = 0x0E0A;
-  t['chochanthai'] = 0x0E08;
-  t['chochingthai'] = 0x0E09;
-  t['chochoethai'] = 0x0E0C;
-  t['chook'] = 0x0188;
-  t['cieucacirclekorean'] = 0x3276;
-  t['cieucaparenkorean'] = 0x3216;
-  t['cieuccirclekorean'] = 0x3268;
-  t['cieuckorean'] = 0x3148;
-  t['cieucparenkorean'] = 0x3208;
-  t['cieucuparenkorean'] = 0x321C;
-  t['circle'] = 0x25CB;
-  t['circlecopyrt'] = 0x00A9;
-  t['circlemultiply'] = 0x2297;
-  t['circleot'] = 0x2299;
-  t['circleplus'] = 0x2295;
-  t['circlepostalmark'] = 0x3036;
-  t['circlewithlefthalfblack'] = 0x25D0;
-  t['circlewithrighthalfblack'] = 0x25D1;
-  t['circumflex'] = 0x02C6;
-  t['circumflexbelowcmb'] = 0x032D;
-  t['circumflexcmb'] = 0x0302;
-  t['clear'] = 0x2327;
-  t['clickalveolar'] = 0x01C2;
-  t['clickdental'] = 0x01C0;
-  t['clicklateral'] = 0x01C1;
-  t['clickretroflex'] = 0x01C3;
-  t['club'] = 0x2663;
-  t['clubsuitblack'] = 0x2663;
-  t['clubsuitwhite'] = 0x2667;
-  t['cmcubedsquare'] = 0x33A4;
-  t['cmonospace'] = 0xFF43;
-  t['cmsquaredsquare'] = 0x33A0;
-  t['coarmenian'] = 0x0581;
-  t['colon'] = 0x003A;
-  t['colonmonetary'] = 0x20A1;
-  t['colonmonospace'] = 0xFF1A;
-  t['colonsign'] = 0x20A1;
-  t['colonsmall'] = 0xFE55;
-  t['colontriangularhalfmod'] = 0x02D1;
-  t['colontriangularmod'] = 0x02D0;
-  t['comma'] = 0x002C;
-  t['commaabovecmb'] = 0x0313;
-  t['commaaboverightcmb'] = 0x0315;
-  t['commaaccent'] = 0xF6C3;
-  t['commaarabic'] = 0x060C;
-  t['commaarmenian'] = 0x055D;
-  t['commainferior'] = 0xF6E1;
-  t['commamonospace'] = 0xFF0C;
-  t['commareversedabovecmb'] = 0x0314;
-  t['commareversedmod'] = 0x02BD;
-  t['commasmall'] = 0xFE50;
-  t['commasuperior'] = 0xF6E2;
-  t['commaturnedabovecmb'] = 0x0312;
-  t['commaturnedmod'] = 0x02BB;
-  t['compass'] = 0x263C;
-  t['congruent'] = 0x2245;
-  t['contourintegral'] = 0x222E;
-  t['control'] = 0x2303;
-  t['controlACK'] = 0x0006;
-  t['controlBEL'] = 0x0007;
-  t['controlBS'] = 0x0008;
-  t['controlCAN'] = 0x0018;
-  t['controlCR'] = 0x000D;
-  t['controlDC1'] = 0x0011;
-  t['controlDC2'] = 0x0012;
-  t['controlDC3'] = 0x0013;
-  t['controlDC4'] = 0x0014;
-  t['controlDEL'] = 0x007F;
-  t['controlDLE'] = 0x0010;
-  t['controlEM'] = 0x0019;
-  t['controlENQ'] = 0x0005;
-  t['controlEOT'] = 0x0004;
-  t['controlESC'] = 0x001B;
-  t['controlETB'] = 0x0017;
-  t['controlETX'] = 0x0003;
-  t['controlFF'] = 0x000C;
-  t['controlFS'] = 0x001C;
-  t['controlGS'] = 0x001D;
-  t['controlHT'] = 0x0009;
-  t['controlLF'] = 0x000A;
-  t['controlNAK'] = 0x0015;
-  t['controlNULL'] = 0x0000;
-  t['controlRS'] = 0x001E;
-  t['controlSI'] = 0x000F;
-  t['controlSO'] = 0x000E;
-  t['controlSOT'] = 0x0002;
-  t['controlSTX'] = 0x0001;
-  t['controlSUB'] = 0x001A;
-  t['controlSYN'] = 0x0016;
-  t['controlUS'] = 0x001F;
-  t['controlVT'] = 0x000B;
-  t['copyright'] = 0x00A9;
-  t['copyrightsans'] = 0xF8E9;
-  t['copyrightserif'] = 0xF6D9;
-  t['cornerbracketleft'] = 0x300C;
-  t['cornerbracketlefthalfwidth'] = 0xFF62;
-  t['cornerbracketleftvertical'] = 0xFE41;
-  t['cornerbracketright'] = 0x300D;
-  t['cornerbracketrighthalfwidth'] = 0xFF63;
-  t['cornerbracketrightvertical'] = 0xFE42;
-  t['corporationsquare'] = 0x337F;
-  t['cosquare'] = 0x33C7;
-  t['coverkgsquare'] = 0x33C6;
-  t['cparen'] = 0x249E;
-  t['cruzeiro'] = 0x20A2;
-  t['cstretched'] = 0x0297;
-  t['curlyand'] = 0x22CF;
-  t['curlyor'] = 0x22CE;
-  t['currency'] = 0x00A4;
-  t['cyrBreve'] = 0xF6D1;
-  t['cyrFlex'] = 0xF6D2;
-  t['cyrbreve'] = 0xF6D4;
-  t['cyrflex'] = 0xF6D5;
-  t['d'] = 0x0064;
-  t['daarmenian'] = 0x0564;
-  t['dabengali'] = 0x09A6;
-  t['dadarabic'] = 0x0636;
-  t['dadeva'] = 0x0926;
-  t['dadfinalarabic'] = 0xFEBE;
-  t['dadinitialarabic'] = 0xFEBF;
-  t['dadmedialarabic'] = 0xFEC0;
-  t['dagesh'] = 0x05BC;
-  t['dageshhebrew'] = 0x05BC;
-  t['dagger'] = 0x2020;
-  t['daggerdbl'] = 0x2021;
-  t['dagujarati'] = 0x0AA6;
-  t['dagurmukhi'] = 0x0A26;
-  t['dahiragana'] = 0x3060;
-  t['dakatakana'] = 0x30C0;
-  t['dalarabic'] = 0x062F;
-  t['dalet'] = 0x05D3;
-  t['daletdagesh'] = 0xFB33;
-  t['daletdageshhebrew'] = 0xFB33;
-  t['dalethebrew'] = 0x05D3;
-  t['dalfinalarabic'] = 0xFEAA;
-  t['dammaarabic'] = 0x064F;
-  t['dammalowarabic'] = 0x064F;
-  t['dammatanaltonearabic'] = 0x064C;
-  t['dammatanarabic'] = 0x064C;
-  t['danda'] = 0x0964;
-  t['dargahebrew'] = 0x05A7;
-  t['dargalefthebrew'] = 0x05A7;
-  t['dasiapneumatacyrilliccmb'] = 0x0485;
-  t['dblGrave'] = 0xF6D3;
-  t['dblanglebracketleft'] = 0x300A;
-  t['dblanglebracketleftvertical'] = 0xFE3D;
-  t['dblanglebracketright'] = 0x300B;
-  t['dblanglebracketrightvertical'] = 0xFE3E;
-  t['dblarchinvertedbelowcmb'] = 0x032B;
-  t['dblarrowleft'] = 0x21D4;
-  t['dblarrowright'] = 0x21D2;
-  t['dbldanda'] = 0x0965;
-  t['dblgrave'] = 0xF6D6;
-  t['dblgravecmb'] = 0x030F;
-  t['dblintegral'] = 0x222C;
-  t['dbllowline'] = 0x2017;
-  t['dbllowlinecmb'] = 0x0333;
-  t['dbloverlinecmb'] = 0x033F;
-  t['dblprimemod'] = 0x02BA;
-  t['dblverticalbar'] = 0x2016;
-  t['dblverticallineabovecmb'] = 0x030E;
-  t['dbopomofo'] = 0x3109;
-  t['dbsquare'] = 0x33C8;
-  t['dcaron'] = 0x010F;
-  t['dcedilla'] = 0x1E11;
-  t['dcircle'] = 0x24D3;
-  t['dcircumflexbelow'] = 0x1E13;
-  t['dcroat'] = 0x0111;
-  t['ddabengali'] = 0x09A1;
-  t['ddadeva'] = 0x0921;
-  t['ddagujarati'] = 0x0AA1;
-  t['ddagurmukhi'] = 0x0A21;
-  t['ddalarabic'] = 0x0688;
-  t['ddalfinalarabic'] = 0xFB89;
-  t['dddhadeva'] = 0x095C;
-  t['ddhabengali'] = 0x09A2;
-  t['ddhadeva'] = 0x0922;
-  t['ddhagujarati'] = 0x0AA2;
-  t['ddhagurmukhi'] = 0x0A22;
-  t['ddotaccent'] = 0x1E0B;
-  t['ddotbelow'] = 0x1E0D;
-  t['decimalseparatorarabic'] = 0x066B;
-  t['decimalseparatorpersian'] = 0x066B;
-  t['decyrillic'] = 0x0434;
-  t['degree'] = 0x00B0;
-  t['dehihebrew'] = 0x05AD;
-  t['dehiragana'] = 0x3067;
-  t['deicoptic'] = 0x03EF;
-  t['dekatakana'] = 0x30C7;
-  t['deleteleft'] = 0x232B;
-  t['deleteright'] = 0x2326;
-  t['delta'] = 0x03B4;
-  t['deltaturned'] = 0x018D;
-  t['denominatorminusonenumeratorbengali'] = 0x09F8;
-  t['dezh'] = 0x02A4;
-  t['dhabengali'] = 0x09A7;
-  t['dhadeva'] = 0x0927;
-  t['dhagujarati'] = 0x0AA7;
-  t['dhagurmukhi'] = 0x0A27;
-  t['dhook'] = 0x0257;
-  t['dialytikatonos'] = 0x0385;
-  t['dialytikatonoscmb'] = 0x0344;
-  t['diamond'] = 0x2666;
-  t['diamondsuitwhite'] = 0x2662;
-  t['dieresis'] = 0x00A8;
-  t['dieresisacute'] = 0xF6D7;
-  t['dieresisbelowcmb'] = 0x0324;
-  t['dieresiscmb'] = 0x0308;
-  t['dieresisgrave'] = 0xF6D8;
-  t['dieresistonos'] = 0x0385;
-  t['dihiragana'] = 0x3062;
-  t['dikatakana'] = 0x30C2;
-  t['dittomark'] = 0x3003;
-  t['divide'] = 0x00F7;
-  t['divides'] = 0x2223;
-  t['divisionslash'] = 0x2215;
-  t['djecyrillic'] = 0x0452;
-  t['dkshade'] = 0x2593;
-  t['dlinebelow'] = 0x1E0F;
-  t['dlsquare'] = 0x3397;
-  t['dmacron'] = 0x0111;
-  t['dmonospace'] = 0xFF44;
-  t['dnblock'] = 0x2584;
-  t['dochadathai'] = 0x0E0E;
-  t['dodekthai'] = 0x0E14;
-  t['dohiragana'] = 0x3069;
-  t['dokatakana'] = 0x30C9;
-  t['dollar'] = 0x0024;
-  t['dollarinferior'] = 0xF6E3;
-  t['dollarmonospace'] = 0xFF04;
-  t['dollaroldstyle'] = 0xF724;
-  t['dollarsmall'] = 0xFE69;
-  t['dollarsuperior'] = 0xF6E4;
-  t['dong'] = 0x20AB;
-  t['dorusquare'] = 0x3326;
-  t['dotaccent'] = 0x02D9;
-  t['dotaccentcmb'] = 0x0307;
-  t['dotbelowcmb'] = 0x0323;
-  t['dotbelowcomb'] = 0x0323;
-  t['dotkatakana'] = 0x30FB;
-  t['dotlessi'] = 0x0131;
-  t['dotlessj'] = 0xF6BE;
-  t['dotlessjstrokehook'] = 0x0284;
-  t['dotmath'] = 0x22C5;
-  t['dottedcircle'] = 0x25CC;
-  t['doubleyodpatah'] = 0xFB1F;
-  t['doubleyodpatahhebrew'] = 0xFB1F;
-  t['downtackbelowcmb'] = 0x031E;
-  t['downtackmod'] = 0x02D5;
-  t['dparen'] = 0x249F;
-  t['dsuperior'] = 0xF6EB;
-  t['dtail'] = 0x0256;
-  t['dtopbar'] = 0x018C;
-  t['duhiragana'] = 0x3065;
-  t['dukatakana'] = 0x30C5;
-  t['dz'] = 0x01F3;
-  t['dzaltone'] = 0x02A3;
-  t['dzcaron'] = 0x01C6;
-  t['dzcurl'] = 0x02A5;
-  t['dzeabkhasiancyrillic'] = 0x04E1;
-  t['dzecyrillic'] = 0x0455;
-  t['dzhecyrillic'] = 0x045F;
-  t['e'] = 0x0065;
-  t['eacute'] = 0x00E9;
-  t['earth'] = 0x2641;
-  t['ebengali'] = 0x098F;
-  t['ebopomofo'] = 0x311C;
-  t['ebreve'] = 0x0115;
-  t['ecandradeva'] = 0x090D;
-  t['ecandragujarati'] = 0x0A8D;
-  t['ecandravowelsigndeva'] = 0x0945;
-  t['ecandravowelsigngujarati'] = 0x0AC5;
-  t['ecaron'] = 0x011B;
-  t['ecedillabreve'] = 0x1E1D;
-  t['echarmenian'] = 0x0565;
-  t['echyiwnarmenian'] = 0x0587;
-  t['ecircle'] = 0x24D4;
-  t['ecircumflex'] = 0x00EA;
-  t['ecircumflexacute'] = 0x1EBF;
-  t['ecircumflexbelow'] = 0x1E19;
-  t['ecircumflexdotbelow'] = 0x1EC7;
-  t['ecircumflexgrave'] = 0x1EC1;
-  t['ecircumflexhookabove'] = 0x1EC3;
-  t['ecircumflextilde'] = 0x1EC5;
-  t['ecyrillic'] = 0x0454;
-  t['edblgrave'] = 0x0205;
-  t['edeva'] = 0x090F;
-  t['edieresis'] = 0x00EB;
-  t['edot'] = 0x0117;
-  t['edotaccent'] = 0x0117;
-  t['edotbelow'] = 0x1EB9;
-  t['eegurmukhi'] = 0x0A0F;
-  t['eematragurmukhi'] = 0x0A47;
-  t['efcyrillic'] = 0x0444;
-  t['egrave'] = 0x00E8;
-  t['egujarati'] = 0x0A8F;
-  t['eharmenian'] = 0x0567;
-  t['ehbopomofo'] = 0x311D;
-  t['ehiragana'] = 0x3048;
-  t['ehookabove'] = 0x1EBB;
-  t['eibopomofo'] = 0x311F;
-  t['eight'] = 0x0038;
-  t['eightarabic'] = 0x0668;
-  t['eightbengali'] = 0x09EE;
-  t['eightcircle'] = 0x2467;
-  t['eightcircleinversesansserif'] = 0x2791;
-  t['eightdeva'] = 0x096E;
-  t['eighteencircle'] = 0x2471;
-  t['eighteenparen'] = 0x2485;
-  t['eighteenperiod'] = 0x2499;
-  t['eightgujarati'] = 0x0AEE;
-  t['eightgurmukhi'] = 0x0A6E;
-  t['eighthackarabic'] = 0x0668;
-  t['eighthangzhou'] = 0x3028;
-  t['eighthnotebeamed'] = 0x266B;
-  t['eightideographicparen'] = 0x3227;
-  t['eightinferior'] = 0x2088;
-  t['eightmonospace'] = 0xFF18;
-  t['eightoldstyle'] = 0xF738;
-  t['eightparen'] = 0x247B;
-  t['eightperiod'] = 0x248F;
-  t['eightpersian'] = 0x06F8;
-  t['eightroman'] = 0x2177;
-  t['eightsuperior'] = 0x2078;
-  t['eightthai'] = 0x0E58;
-  t['einvertedbreve'] = 0x0207;
-  t['eiotifiedcyrillic'] = 0x0465;
-  t['ekatakana'] = 0x30A8;
-  t['ekatakanahalfwidth'] = 0xFF74;
-  t['ekonkargurmukhi'] = 0x0A74;
-  t['ekorean'] = 0x3154;
-  t['elcyrillic'] = 0x043B;
-  t['element'] = 0x2208;
-  t['elevencircle'] = 0x246A;
-  t['elevenparen'] = 0x247E;
-  t['elevenperiod'] = 0x2492;
-  t['elevenroman'] = 0x217A;
-  t['ellipsis'] = 0x2026;
-  t['ellipsisvertical'] = 0x22EE;
-  t['emacron'] = 0x0113;
-  t['emacronacute'] = 0x1E17;
-  t['emacrongrave'] = 0x1E15;
-  t['emcyrillic'] = 0x043C;
-  t['emdash'] = 0x2014;
-  t['emdashvertical'] = 0xFE31;
-  t['emonospace'] = 0xFF45;
-  t['emphasismarkarmenian'] = 0x055B;
-  t['emptyset'] = 0x2205;
-  t['enbopomofo'] = 0x3123;
-  t['encyrillic'] = 0x043D;
-  t['endash'] = 0x2013;
-  t['endashvertical'] = 0xFE32;
-  t['endescendercyrillic'] = 0x04A3;
-  t['eng'] = 0x014B;
-  t['engbopomofo'] = 0x3125;
-  t['enghecyrillic'] = 0x04A5;
-  t['enhookcyrillic'] = 0x04C8;
-  t['enspace'] = 0x2002;
-  t['eogonek'] = 0x0119;
-  t['eokorean'] = 0x3153;
-  t['eopen'] = 0x025B;
-  t['eopenclosed'] = 0x029A;
-  t['eopenreversed'] = 0x025C;
-  t['eopenreversedclosed'] = 0x025E;
-  t['eopenreversedhook'] = 0x025D;
-  t['eparen'] = 0x24A0;
-  t['epsilon'] = 0x03B5;
-  t['epsilontonos'] = 0x03AD;
-  t['equal'] = 0x003D;
-  t['equalmonospace'] = 0xFF1D;
-  t['equalsmall'] = 0xFE66;
-  t['equalsuperior'] = 0x207C;
-  t['equivalence'] = 0x2261;
-  t['erbopomofo'] = 0x3126;
-  t['ercyrillic'] = 0x0440;
-  t['ereversed'] = 0x0258;
-  t['ereversedcyrillic'] = 0x044D;
-  t['escyrillic'] = 0x0441;
-  t['esdescendercyrillic'] = 0x04AB;
-  t['esh'] = 0x0283;
-  t['eshcurl'] = 0x0286;
-  t['eshortdeva'] = 0x090E;
-  t['eshortvowelsigndeva'] = 0x0946;
-  t['eshreversedloop'] = 0x01AA;
-  t['eshsquatreversed'] = 0x0285;
-  t['esmallhiragana'] = 0x3047;
-  t['esmallkatakana'] = 0x30A7;
-  t['esmallkatakanahalfwidth'] = 0xFF6A;
-  t['estimated'] = 0x212E;
-  t['esuperior'] = 0xF6EC;
-  t['eta'] = 0x03B7;
-  t['etarmenian'] = 0x0568;
-  t['etatonos'] = 0x03AE;
-  t['eth'] = 0x00F0;
-  t['etilde'] = 0x1EBD;
-  t['etildebelow'] = 0x1E1B;
-  t['etnahtafoukhhebrew'] = 0x0591;
-  t['etnahtafoukhlefthebrew'] = 0x0591;
-  t['etnahtahebrew'] = 0x0591;
-  t['etnahtalefthebrew'] = 0x0591;
-  t['eturned'] = 0x01DD;
-  t['eukorean'] = 0x3161;
-  t['euro'] = 0x20AC;
-  t['evowelsignbengali'] = 0x09C7;
-  t['evowelsigndeva'] = 0x0947;
-  t['evowelsigngujarati'] = 0x0AC7;
-  t['exclam'] = 0x0021;
-  t['exclamarmenian'] = 0x055C;
-  t['exclamdbl'] = 0x203C;
-  t['exclamdown'] = 0x00A1;
-  t['exclamdownsmall'] = 0xF7A1;
-  t['exclammonospace'] = 0xFF01;
-  t['exclamsmall'] = 0xF721;
-  t['existential'] = 0x2203;
-  t['ezh'] = 0x0292;
-  t['ezhcaron'] = 0x01EF;
-  t['ezhcurl'] = 0x0293;
-  t['ezhreversed'] = 0x01B9;
-  t['ezhtail'] = 0x01BA;
-  t['f'] = 0x0066;
-  t['fadeva'] = 0x095E;
-  t['fagurmukhi'] = 0x0A5E;
-  t['fahrenheit'] = 0x2109;
-  t['fathaarabic'] = 0x064E;
-  t['fathalowarabic'] = 0x064E;
-  t['fathatanarabic'] = 0x064B;
-  t['fbopomofo'] = 0x3108;
-  t['fcircle'] = 0x24D5;
-  t['fdotaccent'] = 0x1E1F;
-  t['feharabic'] = 0x0641;
-  t['feharmenian'] = 0x0586;
-  t['fehfinalarabic'] = 0xFED2;
-  t['fehinitialarabic'] = 0xFED3;
-  t['fehmedialarabic'] = 0xFED4;
-  t['feicoptic'] = 0x03E5;
-  t['female'] = 0x2640;
-  t['ff'] = 0xFB00;
-  t['ffi'] = 0xFB03;
-  t['ffl'] = 0xFB04;
-  t['fi'] = 0xFB01;
-  t['fifteencircle'] = 0x246E;
-  t['fifteenparen'] = 0x2482;
-  t['fifteenperiod'] = 0x2496;
-  t['figuredash'] = 0x2012;
-  t['filledbox'] = 0x25A0;
-  t['filledrect'] = 0x25AC;
-  t['finalkaf'] = 0x05DA;
-  t['finalkafdagesh'] = 0xFB3A;
-  t['finalkafdageshhebrew'] = 0xFB3A;
-  t['finalkafhebrew'] = 0x05DA;
-  t['finalmem'] = 0x05DD;
-  t['finalmemhebrew'] = 0x05DD;
-  t['finalnun'] = 0x05DF;
-  t['finalnunhebrew'] = 0x05DF;
-  t['finalpe'] = 0x05E3;
-  t['finalpehebrew'] = 0x05E3;
-  t['finaltsadi'] = 0x05E5;
-  t['finaltsadihebrew'] = 0x05E5;
-  t['firsttonechinese'] = 0x02C9;
-  t['fisheye'] = 0x25C9;
-  t['fitacyrillic'] = 0x0473;
-  t['five'] = 0x0035;
-  t['fivearabic'] = 0x0665;
-  t['fivebengali'] = 0x09EB;
-  t['fivecircle'] = 0x2464;
-  t['fivecircleinversesansserif'] = 0x278E;
-  t['fivedeva'] = 0x096B;
-  t['fiveeighths'] = 0x215D;
-  t['fivegujarati'] = 0x0AEB;
-  t['fivegurmukhi'] = 0x0A6B;
-  t['fivehackarabic'] = 0x0665;
-  t['fivehangzhou'] = 0x3025;
-  t['fiveideographicparen'] = 0x3224;
-  t['fiveinferior'] = 0x2085;
-  t['fivemonospace'] = 0xFF15;
-  t['fiveoldstyle'] = 0xF735;
-  t['fiveparen'] = 0x2478;
-  t['fiveperiod'] = 0x248C;
-  t['fivepersian'] = 0x06F5;
-  t['fiveroman'] = 0x2174;
-  t['fivesuperior'] = 0x2075;
-  t['fivethai'] = 0x0E55;
-  t['fl'] = 0xFB02;
-  t['florin'] = 0x0192;
-  t['fmonospace'] = 0xFF46;
-  t['fmsquare'] = 0x3399;
-  t['fofanthai'] = 0x0E1F;
-  t['fofathai'] = 0x0E1D;
-  t['fongmanthai'] = 0x0E4F;
-  t['forall'] = 0x2200;
-  t['four'] = 0x0034;
-  t['fourarabic'] = 0x0664;
-  t['fourbengali'] = 0x09EA;
-  t['fourcircle'] = 0x2463;
-  t['fourcircleinversesansserif'] = 0x278D;
-  t['fourdeva'] = 0x096A;
-  t['fourgujarati'] = 0x0AEA;
-  t['fourgurmukhi'] = 0x0A6A;
-  t['fourhackarabic'] = 0x0664;
-  t['fourhangzhou'] = 0x3024;
-  t['fourideographicparen'] = 0x3223;
-  t['fourinferior'] = 0x2084;
-  t['fourmonospace'] = 0xFF14;
-  t['fournumeratorbengali'] = 0x09F7;
-  t['fouroldstyle'] = 0xF734;
-  t['fourparen'] = 0x2477;
-  t['fourperiod'] = 0x248B;
-  t['fourpersian'] = 0x06F4;
-  t['fourroman'] = 0x2173;
-  t['foursuperior'] = 0x2074;
-  t['fourteencircle'] = 0x246D;
-  t['fourteenparen'] = 0x2481;
-  t['fourteenperiod'] = 0x2495;
-  t['fourthai'] = 0x0E54;
-  t['fourthtonechinese'] = 0x02CB;
-  t['fparen'] = 0x24A1;
-  t['fraction'] = 0x2044;
-  t['franc'] = 0x20A3;
-  t['g'] = 0x0067;
-  t['gabengali'] = 0x0997;
-  t['gacute'] = 0x01F5;
-  t['gadeva'] = 0x0917;
-  t['gafarabic'] = 0x06AF;
-  t['gaffinalarabic'] = 0xFB93;
-  t['gafinitialarabic'] = 0xFB94;
-  t['gafmedialarabic'] = 0xFB95;
-  t['gagujarati'] = 0x0A97;
-  t['gagurmukhi'] = 0x0A17;
-  t['gahiragana'] = 0x304C;
-  t['gakatakana'] = 0x30AC;
-  t['gamma'] = 0x03B3;
-  t['gammalatinsmall'] = 0x0263;
-  t['gammasuperior'] = 0x02E0;
-  t['gangiacoptic'] = 0x03EB;
-  t['gbopomofo'] = 0x310D;
-  t['gbreve'] = 0x011F;
-  t['gcaron'] = 0x01E7;
-  t['gcedilla'] = 0x0123;
-  t['gcircle'] = 0x24D6;
-  t['gcircumflex'] = 0x011D;
-  t['gcommaaccent'] = 0x0123;
-  t['gdot'] = 0x0121;
-  t['gdotaccent'] = 0x0121;
-  t['gecyrillic'] = 0x0433;
-  t['gehiragana'] = 0x3052;
-  t['gekatakana'] = 0x30B2;
-  t['geometricallyequal'] = 0x2251;
-  t['gereshaccenthebrew'] = 0x059C;
-  t['gereshhebrew'] = 0x05F3;
-  t['gereshmuqdamhebrew'] = 0x059D;
-  t['germandbls'] = 0x00DF;
-  t['gershayimaccenthebrew'] = 0x059E;
-  t['gershayimhebrew'] = 0x05F4;
-  t['getamark'] = 0x3013;
-  t['ghabengali'] = 0x0998;
-  t['ghadarmenian'] = 0x0572;
-  t['ghadeva'] = 0x0918;
-  t['ghagujarati'] = 0x0A98;
-  t['ghagurmukhi'] = 0x0A18;
-  t['ghainarabic'] = 0x063A;
-  t['ghainfinalarabic'] = 0xFECE;
-  t['ghaininitialarabic'] = 0xFECF;
-  t['ghainmedialarabic'] = 0xFED0;
-  t['ghemiddlehookcyrillic'] = 0x0495;
-  t['ghestrokecyrillic'] = 0x0493;
-  t['gheupturncyrillic'] = 0x0491;
-  t['ghhadeva'] = 0x095A;
-  t['ghhagurmukhi'] = 0x0A5A;
-  t['ghook'] = 0x0260;
-  t['ghzsquare'] = 0x3393;
-  t['gihiragana'] = 0x304E;
-  t['gikatakana'] = 0x30AE;
-  t['gimarmenian'] = 0x0563;
-  t['gimel'] = 0x05D2;
-  t['gimeldagesh'] = 0xFB32;
-  t['gimeldageshhebrew'] = 0xFB32;
-  t['gimelhebrew'] = 0x05D2;
-  t['gjecyrillic'] = 0x0453;
-  t['glottalinvertedstroke'] = 0x01BE;
-  t['glottalstop'] = 0x0294;
-  t['glottalstopinverted'] = 0x0296;
-  t['glottalstopmod'] = 0x02C0;
-  t['glottalstopreversed'] = 0x0295;
-  t['glottalstopreversedmod'] = 0x02C1;
-  t['glottalstopreversedsuperior'] = 0x02E4;
-  t['glottalstopstroke'] = 0x02A1;
-  t['glottalstopstrokereversed'] = 0x02A2;
-  t['gmacron'] = 0x1E21;
-  t['gmonospace'] = 0xFF47;
-  t['gohiragana'] = 0x3054;
-  t['gokatakana'] = 0x30B4;
-  t['gparen'] = 0x24A2;
-  t['gpasquare'] = 0x33AC;
-  t['gradient'] = 0x2207;
-  t['grave'] = 0x0060;
-  t['gravebelowcmb'] = 0x0316;
-  t['gravecmb'] = 0x0300;
-  t['gravecomb'] = 0x0300;
-  t['gravedeva'] = 0x0953;
-  t['gravelowmod'] = 0x02CE;
-  t['gravemonospace'] = 0xFF40;
-  t['gravetonecmb'] = 0x0340;
-  t['greater'] = 0x003E;
-  t['greaterequal'] = 0x2265;
-  t['greaterequalorless'] = 0x22DB;
-  t['greatermonospace'] = 0xFF1E;
-  t['greaterorequivalent'] = 0x2273;
-  t['greaterorless'] = 0x2277;
-  t['greateroverequal'] = 0x2267;
-  t['greatersmall'] = 0xFE65;
-  t['gscript'] = 0x0261;
-  t['gstroke'] = 0x01E5;
-  t['guhiragana'] = 0x3050;
-  t['guillemotleft'] = 0x00AB;
-  t['guillemotright'] = 0x00BB;
-  t['guilsinglleft'] = 0x2039;
-  t['guilsinglright'] = 0x203A;
-  t['gukatakana'] = 0x30B0;
-  t['guramusquare'] = 0x3318;
-  t['gysquare'] = 0x33C9;
-  t['h'] = 0x0068;
-  t['haabkhasiancyrillic'] = 0x04A9;
-  t['haaltonearabic'] = 0x06C1;
-  t['habengali'] = 0x09B9;
-  t['hadescendercyrillic'] = 0x04B3;
-  t['hadeva'] = 0x0939;
-  t['hagujarati'] = 0x0AB9;
-  t['hagurmukhi'] = 0x0A39;
-  t['haharabic'] = 0x062D;
-  t['hahfinalarabic'] = 0xFEA2;
-  t['hahinitialarabic'] = 0xFEA3;
-  t['hahiragana'] = 0x306F;
-  t['hahmedialarabic'] = 0xFEA4;
-  t['haitusquare'] = 0x332A;
-  t['hakatakana'] = 0x30CF;
-  t['hakatakanahalfwidth'] = 0xFF8A;
-  t['halantgurmukhi'] = 0x0A4D;
-  t['hamzaarabic'] = 0x0621;
-  t['hamzalowarabic'] = 0x0621;
-  t['hangulfiller'] = 0x3164;
-  t['hardsigncyrillic'] = 0x044A;
-  t['harpoonleftbarbup'] = 0x21BC;
-  t['harpoonrightbarbup'] = 0x21C0;
-  t['hasquare'] = 0x33CA;
-  t['hatafpatah'] = 0x05B2;
-  t['hatafpatah16'] = 0x05B2;
-  t['hatafpatah23'] = 0x05B2;
-  t['hatafpatah2f'] = 0x05B2;
-  t['hatafpatahhebrew'] = 0x05B2;
-  t['hatafpatahnarrowhebrew'] = 0x05B2;
-  t['hatafpatahquarterhebrew'] = 0x05B2;
-  t['hatafpatahwidehebrew'] = 0x05B2;
-  t['hatafqamats'] = 0x05B3;
-  t['hatafqamats1b'] = 0x05B3;
-  t['hatafqamats28'] = 0x05B3;
-  t['hatafqamats34'] = 0x05B3;
-  t['hatafqamatshebrew'] = 0x05B3;
-  t['hatafqamatsnarrowhebrew'] = 0x05B3;
-  t['hatafqamatsquarterhebrew'] = 0x05B3;
-  t['hatafqamatswidehebrew'] = 0x05B3;
-  t['hatafsegol'] = 0x05B1;
-  t['hatafsegol17'] = 0x05B1;
-  t['hatafsegol24'] = 0x05B1;
-  t['hatafsegol30'] = 0x05B1;
-  t['hatafsegolhebrew'] = 0x05B1;
-  t['hatafsegolnarrowhebrew'] = 0x05B1;
-  t['hatafsegolquarterhebrew'] = 0x05B1;
-  t['hatafsegolwidehebrew'] = 0x05B1;
-  t['hbar'] = 0x0127;
-  t['hbopomofo'] = 0x310F;
-  t['hbrevebelow'] = 0x1E2B;
-  t['hcedilla'] = 0x1E29;
-  t['hcircle'] = 0x24D7;
-  t['hcircumflex'] = 0x0125;
-  t['hdieresis'] = 0x1E27;
-  t['hdotaccent'] = 0x1E23;
-  t['hdotbelow'] = 0x1E25;
-  t['he'] = 0x05D4;
-  t['heart'] = 0x2665;
-  t['heartsuitblack'] = 0x2665;
-  t['heartsuitwhite'] = 0x2661;
-  t['hedagesh'] = 0xFB34;
-  t['hedageshhebrew'] = 0xFB34;
-  t['hehaltonearabic'] = 0x06C1;
-  t['heharabic'] = 0x0647;
-  t['hehebrew'] = 0x05D4;
-  t['hehfinalaltonearabic'] = 0xFBA7;
-  t['hehfinalalttwoarabic'] = 0xFEEA;
-  t['hehfinalarabic'] = 0xFEEA;
-  t['hehhamzaabovefinalarabic'] = 0xFBA5;
-  t['hehhamzaaboveisolatedarabic'] = 0xFBA4;
-  t['hehinitialaltonearabic'] = 0xFBA8;
-  t['hehinitialarabic'] = 0xFEEB;
-  t['hehiragana'] = 0x3078;
-  t['hehmedialaltonearabic'] = 0xFBA9;
-  t['hehmedialarabic'] = 0xFEEC;
-  t['heiseierasquare'] = 0x337B;
-  t['hekatakana'] = 0x30D8;
-  t['hekatakanahalfwidth'] = 0xFF8D;
-  t['hekutaarusquare'] = 0x3336;
-  t['henghook'] = 0x0267;
-  t['herutusquare'] = 0x3339;
-  t['het'] = 0x05D7;
-  t['hethebrew'] = 0x05D7;
-  t['hhook'] = 0x0266;
-  t['hhooksuperior'] = 0x02B1;
-  t['hieuhacirclekorean'] = 0x327B;
-  t['hieuhaparenkorean'] = 0x321B;
-  t['hieuhcirclekorean'] = 0x326D;
-  t['hieuhkorean'] = 0x314E;
-  t['hieuhparenkorean'] = 0x320D;
-  t['hihiragana'] = 0x3072;
-  t['hikatakana'] = 0x30D2;
-  t['hikatakanahalfwidth'] = 0xFF8B;
-  t['hiriq'] = 0x05B4;
-  t['hiriq14'] = 0x05B4;
-  t['hiriq21'] = 0x05B4;
-  t['hiriq2d'] = 0x05B4;
-  t['hiriqhebrew'] = 0x05B4;
-  t['hiriqnarrowhebrew'] = 0x05B4;
-  t['hiriqquarterhebrew'] = 0x05B4;
-  t['hiriqwidehebrew'] = 0x05B4;
-  t['hlinebelow'] = 0x1E96;
-  t['hmonospace'] = 0xFF48;
-  t['hoarmenian'] = 0x0570;
-  t['hohipthai'] = 0x0E2B;
-  t['hohiragana'] = 0x307B;
-  t['hokatakana'] = 0x30DB;
-  t['hokatakanahalfwidth'] = 0xFF8E;
-  t['holam'] = 0x05B9;
-  t['holam19'] = 0x05B9;
-  t['holam26'] = 0x05B9;
-  t['holam32'] = 0x05B9;
-  t['holamhebrew'] = 0x05B9;
-  t['holamnarrowhebrew'] = 0x05B9;
-  t['holamquarterhebrew'] = 0x05B9;
-  t['holamwidehebrew'] = 0x05B9;
-  t['honokhukthai'] = 0x0E2E;
-  t['hookabovecomb'] = 0x0309;
-  t['hookcmb'] = 0x0309;
-  t['hookpalatalizedbelowcmb'] = 0x0321;
-  t['hookretroflexbelowcmb'] = 0x0322;
-  t['hoonsquare'] = 0x3342;
-  t['horicoptic'] = 0x03E9;
-  t['horizontalbar'] = 0x2015;
-  t['horncmb'] = 0x031B;
-  t['hotsprings'] = 0x2668;
-  t['house'] = 0x2302;
-  t['hparen'] = 0x24A3;
-  t['hsuperior'] = 0x02B0;
-  t['hturned'] = 0x0265;
-  t['huhiragana'] = 0x3075;
-  t['huiitosquare'] = 0x3333;
-  t['hukatakana'] = 0x30D5;
-  t['hukatakanahalfwidth'] = 0xFF8C;
-  t['hungarumlaut'] = 0x02DD;
-  t['hungarumlautcmb'] = 0x030B;
-  t['hv'] = 0x0195;
-  t['hyphen'] = 0x002D;
-  t['hypheninferior'] = 0xF6E5;
-  t['hyphenmonospace'] = 0xFF0D;
-  t['hyphensmall'] = 0xFE63;
-  t['hyphensuperior'] = 0xF6E6;
-  t['hyphentwo'] = 0x2010;
-  t['i'] = 0x0069;
-  t['iacute'] = 0x00ED;
-  t['iacyrillic'] = 0x044F;
-  t['ibengali'] = 0x0987;
-  t['ibopomofo'] = 0x3127;
-  t['ibreve'] = 0x012D;
-  t['icaron'] = 0x01D0;
-  t['icircle'] = 0x24D8;
-  t['icircumflex'] = 0x00EE;
-  t['icyrillic'] = 0x0456;
-  t['idblgrave'] = 0x0209;
-  t['ideographearthcircle'] = 0x328F;
-  t['ideographfirecircle'] = 0x328B;
-  t['ideographicallianceparen'] = 0x323F;
-  t['ideographiccallparen'] = 0x323A;
-  t['ideographiccentrecircle'] = 0x32A5;
-  t['ideographicclose'] = 0x3006;
-  t['ideographiccomma'] = 0x3001;
-  t['ideographiccommaleft'] = 0xFF64;
-  t['ideographiccongratulationparen'] = 0x3237;
-  t['ideographiccorrectcircle'] = 0x32A3;
-  t['ideographicearthparen'] = 0x322F;
-  t['ideographicenterpriseparen'] = 0x323D;
-  t['ideographicexcellentcircle'] = 0x329D;
-  t['ideographicfestivalparen'] = 0x3240;
-  t['ideographicfinancialcircle'] = 0x3296;
-  t['ideographicfinancialparen'] = 0x3236;
-  t['ideographicfireparen'] = 0x322B;
-  t['ideographichaveparen'] = 0x3232;
-  t['ideographichighcircle'] = 0x32A4;
-  t['ideographiciterationmark'] = 0x3005;
-  t['ideographiclaborcircle'] = 0x3298;
-  t['ideographiclaborparen'] = 0x3238;
-  t['ideographicleftcircle'] = 0x32A7;
-  t['ideographiclowcircle'] = 0x32A6;
-  t['ideographicmedicinecircle'] = 0x32A9;
-  t['ideographicmetalparen'] = 0x322E;
-  t['ideographicmoonparen'] = 0x322A;
-  t['ideographicnameparen'] = 0x3234;
-  t['ideographicperiod'] = 0x3002;
-  t['ideographicprintcircle'] = 0x329E;
-  t['ideographicreachparen'] = 0x3243;
-  t['ideographicrepresentparen'] = 0x3239;
-  t['ideographicresourceparen'] = 0x323E;
-  t['ideographicrightcircle'] = 0x32A8;
-  t['ideographicsecretcircle'] = 0x3299;
-  t['ideographicselfparen'] = 0x3242;
-  t['ideographicsocietyparen'] = 0x3233;
-  t['ideographicspace'] = 0x3000;
-  t['ideographicspecialparen'] = 0x3235;
-  t['ideographicstockparen'] = 0x3231;
-  t['ideographicstudyparen'] = 0x323B;
-  t['ideographicsunparen'] = 0x3230;
-  t['ideographicsuperviseparen'] = 0x323C;
-  t['ideographicwaterparen'] = 0x322C;
-  t['ideographicwoodparen'] = 0x322D;
-  t['ideographiczero'] = 0x3007;
-  t['ideographmetalcircle'] = 0x328E;
-  t['ideographmooncircle'] = 0x328A;
-  t['ideographnamecircle'] = 0x3294;
-  t['ideographsuncircle'] = 0x3290;
-  t['ideographwatercircle'] = 0x328C;
-  t['ideographwoodcircle'] = 0x328D;
-  t['ideva'] = 0x0907;
-  t['idieresis'] = 0x00EF;
-  t['idieresisacute'] = 0x1E2F;
-  t['idieresiscyrillic'] = 0x04E5;
-  t['idotbelow'] = 0x1ECB;
-  t['iebrevecyrillic'] = 0x04D7;
-  t['iecyrillic'] = 0x0435;
-  t['ieungacirclekorean'] = 0x3275;
-  t['ieungaparenkorean'] = 0x3215;
-  t['ieungcirclekorean'] = 0x3267;
-  t['ieungkorean'] = 0x3147;
-  t['ieungparenkorean'] = 0x3207;
-  t['igrave'] = 0x00EC;
-  t['igujarati'] = 0x0A87;
-  t['igurmukhi'] = 0x0A07;
-  t['ihiragana'] = 0x3044;
-  t['ihookabove'] = 0x1EC9;
-  t['iibengali'] = 0x0988;
-  t['iicyrillic'] = 0x0438;
-  t['iideva'] = 0x0908;
-  t['iigujarati'] = 0x0A88;
-  t['iigurmukhi'] = 0x0A08;
-  t['iimatragurmukhi'] = 0x0A40;
-  t['iinvertedbreve'] = 0x020B;
-  t['iishortcyrillic'] = 0x0439;
-  t['iivowelsignbengali'] = 0x09C0;
-  t['iivowelsigndeva'] = 0x0940;
-  t['iivowelsigngujarati'] = 0x0AC0;
-  t['ij'] = 0x0133;
-  t['ikatakana'] = 0x30A4;
-  t['ikatakanahalfwidth'] = 0xFF72;
-  t['ikorean'] = 0x3163;
-  t['ilde'] = 0x02DC;
-  t['iluyhebrew'] = 0x05AC;
-  t['imacron'] = 0x012B;
-  t['imacroncyrillic'] = 0x04E3;
-  t['imageorapproximatelyequal'] = 0x2253;
-  t['imatragurmukhi'] = 0x0A3F;
-  t['imonospace'] = 0xFF49;
-  t['increment'] = 0x2206;
-  t['infinity'] = 0x221E;
-  t['iniarmenian'] = 0x056B;
-  t['integral'] = 0x222B;
-  t['integralbottom'] = 0x2321;
-  t['integralbt'] = 0x2321;
-  t['integralex'] = 0xF8F5;
-  t['integraltop'] = 0x2320;
-  t['integraltp'] = 0x2320;
-  t['intersection'] = 0x2229;
-  t['intisquare'] = 0x3305;
-  t['invbullet'] = 0x25D8;
-  t['invcircle'] = 0x25D9;
-  t['invsmileface'] = 0x263B;
-  t['iocyrillic'] = 0x0451;
-  t['iogonek'] = 0x012F;
-  t['iota'] = 0x03B9;
-  t['iotadieresis'] = 0x03CA;
-  t['iotadieresistonos'] = 0x0390;
-  t['iotalatin'] = 0x0269;
-  t['iotatonos'] = 0x03AF;
-  t['iparen'] = 0x24A4;
-  t['irigurmukhi'] = 0x0A72;
-  t['ismallhiragana'] = 0x3043;
-  t['ismallkatakana'] = 0x30A3;
-  t['ismallkatakanahalfwidth'] = 0xFF68;
-  t['issharbengali'] = 0x09FA;
-  t['istroke'] = 0x0268;
-  t['isuperior'] = 0xF6ED;
-  t['iterationhiragana'] = 0x309D;
-  t['iterationkatakana'] = 0x30FD;
-  t['itilde'] = 0x0129;
-  t['itildebelow'] = 0x1E2D;
-  t['iubopomofo'] = 0x3129;
-  t['iucyrillic'] = 0x044E;
-  t['ivowelsignbengali'] = 0x09BF;
-  t['ivowelsigndeva'] = 0x093F;
-  t['ivowelsigngujarati'] = 0x0ABF;
-  t['izhitsacyrillic'] = 0x0475;
-  t['izhitsadblgravecyrillic'] = 0x0477;
-  t['j'] = 0x006A;
-  t['jaarmenian'] = 0x0571;
-  t['jabengali'] = 0x099C;
-  t['jadeva'] = 0x091C;
-  t['jagujarati'] = 0x0A9C;
-  t['jagurmukhi'] = 0x0A1C;
-  t['jbopomofo'] = 0x3110;
-  t['jcaron'] = 0x01F0;
-  t['jcircle'] = 0x24D9;
-  t['jcircumflex'] = 0x0135;
-  t['jcrossedtail'] = 0x029D;
-  t['jdotlessstroke'] = 0x025F;
-  t['jecyrillic'] = 0x0458;
-  t['jeemarabic'] = 0x062C;
-  t['jeemfinalarabic'] = 0xFE9E;
-  t['jeeminitialarabic'] = 0xFE9F;
-  t['jeemmedialarabic'] = 0xFEA0;
-  t['jeharabic'] = 0x0698;
-  t['jehfinalarabic'] = 0xFB8B;
-  t['jhabengali'] = 0x099D;
-  t['jhadeva'] = 0x091D;
-  t['jhagujarati'] = 0x0A9D;
-  t['jhagurmukhi'] = 0x0A1D;
-  t['jheharmenian'] = 0x057B;
-  t['jis'] = 0x3004;
-  t['jmonospace'] = 0xFF4A;
-  t['jparen'] = 0x24A5;
-  t['jsuperior'] = 0x02B2;
-  t['k'] = 0x006B;
-  t['kabashkircyrillic'] = 0x04A1;
-  t['kabengali'] = 0x0995;
-  t['kacute'] = 0x1E31;
-  t['kacyrillic'] = 0x043A;
-  t['kadescendercyrillic'] = 0x049B;
-  t['kadeva'] = 0x0915;
-  t['kaf'] = 0x05DB;
-  t['kafarabic'] = 0x0643;
-  t['kafdagesh'] = 0xFB3B;
-  t['kafdageshhebrew'] = 0xFB3B;
-  t['kaffinalarabic'] = 0xFEDA;
-  t['kafhebrew'] = 0x05DB;
-  t['kafinitialarabic'] = 0xFEDB;
-  t['kafmedialarabic'] = 0xFEDC;
-  t['kafrafehebrew'] = 0xFB4D;
-  t['kagujarati'] = 0x0A95;
-  t['kagurmukhi'] = 0x0A15;
-  t['kahiragana'] = 0x304B;
-  t['kahookcyrillic'] = 0x04C4;
-  t['kakatakana'] = 0x30AB;
-  t['kakatakanahalfwidth'] = 0xFF76;
-  t['kappa'] = 0x03BA;
-  t['kappasymbolgreek'] = 0x03F0;
-  t['kapyeounmieumkorean'] = 0x3171;
-  t['kapyeounphieuphkorean'] = 0x3184;
-  t['kapyeounpieupkorean'] = 0x3178;
-  t['kapyeounssangpieupkorean'] = 0x3179;
-  t['karoriisquare'] = 0x330D;
-  t['kashidaautoarabic'] = 0x0640;
-  t['kashidaautonosidebearingarabic'] = 0x0640;
-  t['kasmallkatakana'] = 0x30F5;
-  t['kasquare'] = 0x3384;
-  t['kasraarabic'] = 0x0650;
-  t['kasratanarabic'] = 0x064D;
-  t['kastrokecyrillic'] = 0x049F;
-  t['katahiraprolongmarkhalfwidth'] = 0xFF70;
-  t['kaverticalstrokecyrillic'] = 0x049D;
-  t['kbopomofo'] = 0x310E;
-  t['kcalsquare'] = 0x3389;
-  t['kcaron'] = 0x01E9;
-  t['kcedilla'] = 0x0137;
-  t['kcircle'] = 0x24DA;
-  t['kcommaaccent'] = 0x0137;
-  t['kdotbelow'] = 0x1E33;
-  t['keharmenian'] = 0x0584;
-  t['kehiragana'] = 0x3051;
-  t['kekatakana'] = 0x30B1;
-  t['kekatakanahalfwidth'] = 0xFF79;
-  t['kenarmenian'] = 0x056F;
-  t['kesmallkatakana'] = 0x30F6;
-  t['kgreenlandic'] = 0x0138;
-  t['khabengali'] = 0x0996;
-  t['khacyrillic'] = 0x0445;
-  t['khadeva'] = 0x0916;
-  t['khagujarati'] = 0x0A96;
-  t['khagurmukhi'] = 0x0A16;
-  t['khaharabic'] = 0x062E;
-  t['khahfinalarabic'] = 0xFEA6;
-  t['khahinitialarabic'] = 0xFEA7;
-  t['khahmedialarabic'] = 0xFEA8;
-  t['kheicoptic'] = 0x03E7;
-  t['khhadeva'] = 0x0959;
-  t['khhagurmukhi'] = 0x0A59;
-  t['khieukhacirclekorean'] = 0x3278;
-  t['khieukhaparenkorean'] = 0x3218;
-  t['khieukhcirclekorean'] = 0x326A;
-  t['khieukhkorean'] = 0x314B;
-  t['khieukhparenkorean'] = 0x320A;
-  t['khokhaithai'] = 0x0E02;
-  t['khokhonthai'] = 0x0E05;
-  t['khokhuatthai'] = 0x0E03;
-  t['khokhwaithai'] = 0x0E04;
-  t['khomutthai'] = 0x0E5B;
-  t['khook'] = 0x0199;
-  t['khorakhangthai'] = 0x0E06;
-  t['khzsquare'] = 0x3391;
-  t['kihiragana'] = 0x304D;
-  t['kikatakana'] = 0x30AD;
-  t['kikatakanahalfwidth'] = 0xFF77;
-  t['kiroguramusquare'] = 0x3315;
-  t['kiromeetorusquare'] = 0x3316;
-  t['kirosquare'] = 0x3314;
-  t['kiyeokacirclekorean'] = 0x326E;
-  t['kiyeokaparenkorean'] = 0x320E;
-  t['kiyeokcirclekorean'] = 0x3260;
-  t['kiyeokkorean'] = 0x3131;
-  t['kiyeokparenkorean'] = 0x3200;
-  t['kiyeoksioskorean'] = 0x3133;
-  t['kjecyrillic'] = 0x045C;
-  t['klinebelow'] = 0x1E35;
-  t['klsquare'] = 0x3398;
-  t['kmcubedsquare'] = 0x33A6;
-  t['kmonospace'] = 0xFF4B;
-  t['kmsquaredsquare'] = 0x33A2;
-  t['kohiragana'] = 0x3053;
-  t['kohmsquare'] = 0x33C0;
-  t['kokaithai'] = 0x0E01;
-  t['kokatakana'] = 0x30B3;
-  t['kokatakanahalfwidth'] = 0xFF7A;
-  t['kooposquare'] = 0x331E;
-  t['koppacyrillic'] = 0x0481;
-  t['koreanstandardsymbol'] = 0x327F;
-  t['koroniscmb'] = 0x0343;
-  t['kparen'] = 0x24A6;
-  t['kpasquare'] = 0x33AA;
-  t['ksicyrillic'] = 0x046F;
-  t['ktsquare'] = 0x33CF;
-  t['kturned'] = 0x029E;
-  t['kuhiragana'] = 0x304F;
-  t['kukatakana'] = 0x30AF;
-  t['kukatakanahalfwidth'] = 0xFF78;
-  t['kvsquare'] = 0x33B8;
-  t['kwsquare'] = 0x33BE;
-  t['l'] = 0x006C;
-  t['labengali'] = 0x09B2;
-  t['lacute'] = 0x013A;
-  t['ladeva'] = 0x0932;
-  t['lagujarati'] = 0x0AB2;
-  t['lagurmukhi'] = 0x0A32;
-  t['lakkhangyaothai'] = 0x0E45;
-  t['lamaleffinalarabic'] = 0xFEFC;
-  t['lamalefhamzaabovefinalarabic'] = 0xFEF8;
-  t['lamalefhamzaaboveisolatedarabic'] = 0xFEF7;
-  t['lamalefhamzabelowfinalarabic'] = 0xFEFA;
-  t['lamalefhamzabelowisolatedarabic'] = 0xFEF9;
-  t['lamalefisolatedarabic'] = 0xFEFB;
-  t['lamalefmaddaabovefinalarabic'] = 0xFEF6;
-  t['lamalefmaddaaboveisolatedarabic'] = 0xFEF5;
-  t['lamarabic'] = 0x0644;
-  t['lambda'] = 0x03BB;
-  t['lambdastroke'] = 0x019B;
-  t['lamed'] = 0x05DC;
-  t['lameddagesh'] = 0xFB3C;
-  t['lameddageshhebrew'] = 0xFB3C;
-  t['lamedhebrew'] = 0x05DC;
-  t['lamfinalarabic'] = 0xFEDE;
-  t['lamhahinitialarabic'] = 0xFCCA;
-  t['laminitialarabic'] = 0xFEDF;
-  t['lamjeeminitialarabic'] = 0xFCC9;
-  t['lamkhahinitialarabic'] = 0xFCCB;
-  t['lamlamhehisolatedarabic'] = 0xFDF2;
-  t['lammedialarabic'] = 0xFEE0;
-  t['lammeemhahinitialarabic'] = 0xFD88;
-  t['lammeeminitialarabic'] = 0xFCCC;
-  t['largecircle'] = 0x25EF;
-  t['lbar'] = 0x019A;
-  t['lbelt'] = 0x026C;
-  t['lbopomofo'] = 0x310C;
-  t['lcaron'] = 0x013E;
-  t['lcedilla'] = 0x013C;
-  t['lcircle'] = 0x24DB;
-  t['lcircumflexbelow'] = 0x1E3D;
-  t['lcommaaccent'] = 0x013C;
-  t['ldot'] = 0x0140;
-  t['ldotaccent'] = 0x0140;
-  t['ldotbelow'] = 0x1E37;
-  t['ldotbelowmacron'] = 0x1E39;
-  t['leftangleabovecmb'] = 0x031A;
-  t['lefttackbelowcmb'] = 0x0318;
-  t['less'] = 0x003C;
-  t['lessequal'] = 0x2264;
-  t['lessequalorgreater'] = 0x22DA;
-  t['lessmonospace'] = 0xFF1C;
-  t['lessorequivalent'] = 0x2272;
-  t['lessorgreater'] = 0x2276;
-  t['lessoverequal'] = 0x2266;
-  t['lesssmall'] = 0xFE64;
-  t['lezh'] = 0x026E;
-  t['lfblock'] = 0x258C;
-  t['lhookretroflex'] = 0x026D;
-  t['lira'] = 0x20A4;
-  t['liwnarmenian'] = 0x056C;
-  t['lj'] = 0x01C9;
-  t['ljecyrillic'] = 0x0459;
-  t['ll'] = 0xF6C0;
-  t['lladeva'] = 0x0933;
-  t['llagujarati'] = 0x0AB3;
-  t['llinebelow'] = 0x1E3B;
-  t['llladeva'] = 0x0934;
-  t['llvocalicbengali'] = 0x09E1;
-  t['llvocalicdeva'] = 0x0961;
-  t['llvocalicvowelsignbengali'] = 0x09E3;
-  t['llvocalicvowelsigndeva'] = 0x0963;
-  t['lmiddletilde'] = 0x026B;
-  t['lmonospace'] = 0xFF4C;
-  t['lmsquare'] = 0x33D0;
-  t['lochulathai'] = 0x0E2C;
-  t['logicaland'] = 0x2227;
-  t['logicalnot'] = 0x00AC;
-  t['logicalnotreversed'] = 0x2310;
-  t['logicalor'] = 0x2228;
-  t['lolingthai'] = 0x0E25;
-  t['longs'] = 0x017F;
-  t['lowlinecenterline'] = 0xFE4E;
-  t['lowlinecmb'] = 0x0332;
-  t['lowlinedashed'] = 0xFE4D;
-  t['lozenge'] = 0x25CA;
-  t['lparen'] = 0x24A7;
-  t['lslash'] = 0x0142;
-  t['lsquare'] = 0x2113;
-  t['lsuperior'] = 0xF6EE;
-  t['ltshade'] = 0x2591;
-  t['luthai'] = 0x0E26;
-  t['lvocalicbengali'] = 0x098C;
-  t['lvocalicdeva'] = 0x090C;
-  t['lvocalicvowelsignbengali'] = 0x09E2;
-  t['lvocalicvowelsigndeva'] = 0x0962;
-  t['lxsquare'] = 0x33D3;
-  t['m'] = 0x006D;
-  t['mabengali'] = 0x09AE;
-  t['macron'] = 0x00AF;
-  t['macronbelowcmb'] = 0x0331;
-  t['macroncmb'] = 0x0304;
-  t['macronlowmod'] = 0x02CD;
-  t['macronmonospace'] = 0xFFE3;
-  t['macute'] = 0x1E3F;
-  t['madeva'] = 0x092E;
-  t['magujarati'] = 0x0AAE;
-  t['magurmukhi'] = 0x0A2E;
-  t['mahapakhhebrew'] = 0x05A4;
-  t['mahapakhlefthebrew'] = 0x05A4;
-  t['mahiragana'] = 0x307E;
-  t['maichattawalowleftthai'] = 0xF895;
-  t['maichattawalowrightthai'] = 0xF894;
-  t['maichattawathai'] = 0x0E4B;
-  t['maichattawaupperleftthai'] = 0xF893;
-  t['maieklowleftthai'] = 0xF88C;
-  t['maieklowrightthai'] = 0xF88B;
-  t['maiekthai'] = 0x0E48;
-  t['maiekupperleftthai'] = 0xF88A;
-  t['maihanakatleftthai'] = 0xF884;
-  t['maihanakatthai'] = 0x0E31;
-  t['maitaikhuleftthai'] = 0xF889;
-  t['maitaikhuthai'] = 0x0E47;
-  t['maitholowleftthai'] = 0xF88F;
-  t['maitholowrightthai'] = 0xF88E;
-  t['maithothai'] = 0x0E49;
-  t['maithoupperleftthai'] = 0xF88D;
-  t['maitrilowleftthai'] = 0xF892;
-  t['maitrilowrightthai'] = 0xF891;
-  t['maitrithai'] = 0x0E4A;
-  t['maitriupperleftthai'] = 0xF890;
-  t['maiyamokthai'] = 0x0E46;
-  t['makatakana'] = 0x30DE;
-  t['makatakanahalfwidth'] = 0xFF8F;
-  t['male'] = 0x2642;
-  t['mansyonsquare'] = 0x3347;
-  t['maqafhebrew'] = 0x05BE;
-  t['mars'] = 0x2642;
-  t['masoracirclehebrew'] = 0x05AF;
-  t['masquare'] = 0x3383;
-  t['mbopomofo'] = 0x3107;
-  t['mbsquare'] = 0x33D4;
-  t['mcircle'] = 0x24DC;
-  t['mcubedsquare'] = 0x33A5;
-  t['mdotaccent'] = 0x1E41;
-  t['mdotbelow'] = 0x1E43;
-  t['meemarabic'] = 0x0645;
-  t['meemfinalarabic'] = 0xFEE2;
-  t['meeminitialarabic'] = 0xFEE3;
-  t['meemmedialarabic'] = 0xFEE4;
-  t['meemmeeminitialarabic'] = 0xFCD1;
-  t['meemmeemisolatedarabic'] = 0xFC48;
-  t['meetorusquare'] = 0x334D;
-  t['mehiragana'] = 0x3081;
-  t['meizierasquare'] = 0x337E;
-  t['mekatakana'] = 0x30E1;
-  t['mekatakanahalfwidth'] = 0xFF92;
-  t['mem'] = 0x05DE;
-  t['memdagesh'] = 0xFB3E;
-  t['memdageshhebrew'] = 0xFB3E;
-  t['memhebrew'] = 0x05DE;
-  t['menarmenian'] = 0x0574;
-  t['merkhahebrew'] = 0x05A5;
-  t['merkhakefulahebrew'] = 0x05A6;
-  t['merkhakefulalefthebrew'] = 0x05A6;
-  t['merkhalefthebrew'] = 0x05A5;
-  t['mhook'] = 0x0271;
-  t['mhzsquare'] = 0x3392;
-  t['middledotkatakanahalfwidth'] = 0xFF65;
-  t['middot'] = 0x00B7;
-  t['mieumacirclekorean'] = 0x3272;
-  t['mieumaparenkorean'] = 0x3212;
-  t['mieumcirclekorean'] = 0x3264;
-  t['mieumkorean'] = 0x3141;
-  t['mieumpansioskorean'] = 0x3170;
-  t['mieumparenkorean'] = 0x3204;
-  t['mieumpieupkorean'] = 0x316E;
-  t['mieumsioskorean'] = 0x316F;
-  t['mihiragana'] = 0x307F;
-  t['mikatakana'] = 0x30DF;
-  t['mikatakanahalfwidth'] = 0xFF90;
-  t['minus'] = 0x2212;
-  t['minusbelowcmb'] = 0x0320;
-  t['minuscircle'] = 0x2296;
-  t['minusmod'] = 0x02D7;
-  t['minusplus'] = 0x2213;
-  t['minute'] = 0x2032;
-  t['miribaarusquare'] = 0x334A;
-  t['mirisquare'] = 0x3349;
-  t['mlonglegturned'] = 0x0270;
-  t['mlsquare'] = 0x3396;
-  t['mmcubedsquare'] = 0x33A3;
-  t['mmonospace'] = 0xFF4D;
-  t['mmsquaredsquare'] = 0x339F;
-  t['mohiragana'] = 0x3082;
-  t['mohmsquare'] = 0x33C1;
-  t['mokatakana'] = 0x30E2;
-  t['mokatakanahalfwidth'] = 0xFF93;
-  t['molsquare'] = 0x33D6;
-  t['momathai'] = 0x0E21;
-  t['moverssquare'] = 0x33A7;
-  t['moverssquaredsquare'] = 0x33A8;
-  t['mparen'] = 0x24A8;
-  t['mpasquare'] = 0x33AB;
-  t['mssquare'] = 0x33B3;
-  t['msuperior'] = 0xF6EF;
-  t['mturned'] = 0x026F;
-  t['mu'] = 0x00B5;
-  t['mu1'] = 0x00B5;
-  t['muasquare'] = 0x3382;
-  t['muchgreater'] = 0x226B;
-  t['muchless'] = 0x226A;
-  t['mufsquare'] = 0x338C;
-  t['mugreek'] = 0x03BC;
-  t['mugsquare'] = 0x338D;
-  t['muhiragana'] = 0x3080;
-  t['mukatakana'] = 0x30E0;
-  t['mukatakanahalfwidth'] = 0xFF91;
-  t['mulsquare'] = 0x3395;
-  t['multiply'] = 0x00D7;
-  t['mumsquare'] = 0x339B;
-  t['munahhebrew'] = 0x05A3;
-  t['munahlefthebrew'] = 0x05A3;
-  t['musicalnote'] = 0x266A;
-  t['musicalnotedbl'] = 0x266B;
-  t['musicflatsign'] = 0x266D;
-  t['musicsharpsign'] = 0x266F;
-  t['mussquare'] = 0x33B2;
-  t['muvsquare'] = 0x33B6;
-  t['muwsquare'] = 0x33BC;
-  t['mvmegasquare'] = 0x33B9;
-  t['mvsquare'] = 0x33B7;
-  t['mwmegasquare'] = 0x33BF;
-  t['mwsquare'] = 0x33BD;
-  t['n'] = 0x006E;
-  t['nabengali'] = 0x09A8;
-  t['nabla'] = 0x2207;
-  t['nacute'] = 0x0144;
-  t['nadeva'] = 0x0928;
-  t['nagujarati'] = 0x0AA8;
-  t['nagurmukhi'] = 0x0A28;
-  t['nahiragana'] = 0x306A;
-  t['nakatakana'] = 0x30CA;
-  t['nakatakanahalfwidth'] = 0xFF85;
-  t['napostrophe'] = 0x0149;
-  t['nasquare'] = 0x3381;
-  t['nbopomofo'] = 0x310B;
-  t['nbspace'] = 0x00A0;
-  t['ncaron'] = 0x0148;
-  t['ncedilla'] = 0x0146;
-  t['ncircle'] = 0x24DD;
-  t['ncircumflexbelow'] = 0x1E4B;
-  t['ncommaaccent'] = 0x0146;
-  t['ndotaccent'] = 0x1E45;
-  t['ndotbelow'] = 0x1E47;
-  t['nehiragana'] = 0x306D;
-  t['nekatakana'] = 0x30CD;
-  t['nekatakanahalfwidth'] = 0xFF88;
-  t['newsheqelsign'] = 0x20AA;
-  t['nfsquare'] = 0x338B;
-  t['ngabengali'] = 0x0999;
-  t['ngadeva'] = 0x0919;
-  t['ngagujarati'] = 0x0A99;
-  t['ngagurmukhi'] = 0x0A19;
-  t['ngonguthai'] = 0x0E07;
-  t['nhiragana'] = 0x3093;
-  t['nhookleft'] = 0x0272;
-  t['nhookretroflex'] = 0x0273;
-  t['nieunacirclekorean'] = 0x326F;
-  t['nieunaparenkorean'] = 0x320F;
-  t['nieuncieuckorean'] = 0x3135;
-  t['nieuncirclekorean'] = 0x3261;
-  t['nieunhieuhkorean'] = 0x3136;
-  t['nieunkorean'] = 0x3134;
-  t['nieunpansioskorean'] = 0x3168;
-  t['nieunparenkorean'] = 0x3201;
-  t['nieunsioskorean'] = 0x3167;
-  t['nieuntikeutkorean'] = 0x3166;
-  t['nihiragana'] = 0x306B;
-  t['nikatakana'] = 0x30CB;
-  t['nikatakanahalfwidth'] = 0xFF86;
-  t['nikhahitleftthai'] = 0xF899;
-  t['nikhahitthai'] = 0x0E4D;
-  t['nine'] = 0x0039;
-  t['ninearabic'] = 0x0669;
-  t['ninebengali'] = 0x09EF;
-  t['ninecircle'] = 0x2468;
-  t['ninecircleinversesansserif'] = 0x2792;
-  t['ninedeva'] = 0x096F;
-  t['ninegujarati'] = 0x0AEF;
-  t['ninegurmukhi'] = 0x0A6F;
-  t['ninehackarabic'] = 0x0669;
-  t['ninehangzhou'] = 0x3029;
-  t['nineideographicparen'] = 0x3228;
-  t['nineinferior'] = 0x2089;
-  t['ninemonospace'] = 0xFF19;
-  t['nineoldstyle'] = 0xF739;
-  t['nineparen'] = 0x247C;
-  t['nineperiod'] = 0x2490;
-  t['ninepersian'] = 0x06F9;
-  t['nineroman'] = 0x2178;
-  t['ninesuperior'] = 0x2079;
-  t['nineteencircle'] = 0x2472;
-  t['nineteenparen'] = 0x2486;
-  t['nineteenperiod'] = 0x249A;
-  t['ninethai'] = 0x0E59;
-  t['nj'] = 0x01CC;
-  t['njecyrillic'] = 0x045A;
-  t['nkatakana'] = 0x30F3;
-  t['nkatakanahalfwidth'] = 0xFF9D;
-  t['nlegrightlong'] = 0x019E;
-  t['nlinebelow'] = 0x1E49;
-  t['nmonospace'] = 0xFF4E;
-  t['nmsquare'] = 0x339A;
-  t['nnabengali'] = 0x09A3;
-  t['nnadeva'] = 0x0923;
-  t['nnagujarati'] = 0x0AA3;
-  t['nnagurmukhi'] = 0x0A23;
-  t['nnnadeva'] = 0x0929;
-  t['nohiragana'] = 0x306E;
-  t['nokatakana'] = 0x30CE;
-  t['nokatakanahalfwidth'] = 0xFF89;
-  t['nonbreakingspace'] = 0x00A0;
-  t['nonenthai'] = 0x0E13;
-  t['nonuthai'] = 0x0E19;
-  t['noonarabic'] = 0x0646;
-  t['noonfinalarabic'] = 0xFEE6;
-  t['noonghunnaarabic'] = 0x06BA;
-  t['noonghunnafinalarabic'] = 0xFB9F;
-  t['nooninitialarabic'] = 0xFEE7;
-  t['noonjeeminitialarabic'] = 0xFCD2;
-  t['noonjeemisolatedarabic'] = 0xFC4B;
-  t['noonmedialarabic'] = 0xFEE8;
-  t['noonmeeminitialarabic'] = 0xFCD5;
-  t['noonmeemisolatedarabic'] = 0xFC4E;
-  t['noonnoonfinalarabic'] = 0xFC8D;
-  t['notcontains'] = 0x220C;
-  t['notelement'] = 0x2209;
-  t['notelementof'] = 0x2209;
-  t['notequal'] = 0x2260;
-  t['notgreater'] = 0x226F;
-  t['notgreaternorequal'] = 0x2271;
-  t['notgreaternorless'] = 0x2279;
-  t['notidentical'] = 0x2262;
-  t['notless'] = 0x226E;
-  t['notlessnorequal'] = 0x2270;
-  t['notparallel'] = 0x2226;
-  t['notprecedes'] = 0x2280;
-  t['notsubset'] = 0x2284;
-  t['notsucceeds'] = 0x2281;
-  t['notsuperset'] = 0x2285;
-  t['nowarmenian'] = 0x0576;
-  t['nparen'] = 0x24A9;
-  t['nssquare'] = 0x33B1;
-  t['nsuperior'] = 0x207F;
-  t['ntilde'] = 0x00F1;
-  t['nu'] = 0x03BD;
-  t['nuhiragana'] = 0x306C;
-  t['nukatakana'] = 0x30CC;
-  t['nukatakanahalfwidth'] = 0xFF87;
-  t['nuktabengali'] = 0x09BC;
-  t['nuktadeva'] = 0x093C;
-  t['nuktagujarati'] = 0x0ABC;
-  t['nuktagurmukhi'] = 0x0A3C;
-  t['numbersign'] = 0x0023;
-  t['numbersignmonospace'] = 0xFF03;
-  t['numbersignsmall'] = 0xFE5F;
-  t['numeralsigngreek'] = 0x0374;
-  t['numeralsignlowergreek'] = 0x0375;
-  t['numero'] = 0x2116;
-  t['nun'] = 0x05E0;
-  t['nundagesh'] = 0xFB40;
-  t['nundageshhebrew'] = 0xFB40;
-  t['nunhebrew'] = 0x05E0;
-  t['nvsquare'] = 0x33B5;
-  t['nwsquare'] = 0x33BB;
-  t['nyabengali'] = 0x099E;
-  t['nyadeva'] = 0x091E;
-  t['nyagujarati'] = 0x0A9E;
-  t['nyagurmukhi'] = 0x0A1E;
-  t['o'] = 0x006F;
-  t['oacute'] = 0x00F3;
-  t['oangthai'] = 0x0E2D;
-  t['obarred'] = 0x0275;
-  t['obarredcyrillic'] = 0x04E9;
-  t['obarreddieresiscyrillic'] = 0x04EB;
-  t['obengali'] = 0x0993;
-  t['obopomofo'] = 0x311B;
-  t['obreve'] = 0x014F;
-  t['ocandradeva'] = 0x0911;
-  t['ocandragujarati'] = 0x0A91;
-  t['ocandravowelsigndeva'] = 0x0949;
-  t['ocandravowelsigngujarati'] = 0x0AC9;
-  t['ocaron'] = 0x01D2;
-  t['ocircle'] = 0x24DE;
-  t['ocircumflex'] = 0x00F4;
-  t['ocircumflexacute'] = 0x1ED1;
-  t['ocircumflexdotbelow'] = 0x1ED9;
-  t['ocircumflexgrave'] = 0x1ED3;
-  t['ocircumflexhookabove'] = 0x1ED5;
-  t['ocircumflextilde'] = 0x1ED7;
-  t['ocyrillic'] = 0x043E;
-  t['odblacute'] = 0x0151;
-  t['odblgrave'] = 0x020D;
-  t['odeva'] = 0x0913;
-  t['odieresis'] = 0x00F6;
-  t['odieresiscyrillic'] = 0x04E7;
-  t['odotbelow'] = 0x1ECD;
-  t['oe'] = 0x0153;
-  t['oekorean'] = 0x315A;
-  t['ogonek'] = 0x02DB;
-  t['ogonekcmb'] = 0x0328;
-  t['ograve'] = 0x00F2;
-  t['ogujarati'] = 0x0A93;
-  t['oharmenian'] = 0x0585;
-  t['ohiragana'] = 0x304A;
-  t['ohookabove'] = 0x1ECF;
-  t['ohorn'] = 0x01A1;
-  t['ohornacute'] = 0x1EDB;
-  t['ohorndotbelow'] = 0x1EE3;
-  t['ohorngrave'] = 0x1EDD;
-  t['ohornhookabove'] = 0x1EDF;
-  t['ohorntilde'] = 0x1EE1;
-  t['ohungarumlaut'] = 0x0151;
-  t['oi'] = 0x01A3;
-  t['oinvertedbreve'] = 0x020F;
-  t['okatakana'] = 0x30AA;
-  t['okatakanahalfwidth'] = 0xFF75;
-  t['okorean'] = 0x3157;
-  t['olehebrew'] = 0x05AB;
-  t['omacron'] = 0x014D;
-  t['omacronacute'] = 0x1E53;
-  t['omacrongrave'] = 0x1E51;
-  t['omdeva'] = 0x0950;
-  t['omega'] = 0x03C9;
-  t['omega1'] = 0x03D6;
-  t['omegacyrillic'] = 0x0461;
-  t['omegalatinclosed'] = 0x0277;
-  t['omegaroundcyrillic'] = 0x047B;
-  t['omegatitlocyrillic'] = 0x047D;
-  t['omegatonos'] = 0x03CE;
-  t['omgujarati'] = 0x0AD0;
-  t['omicron'] = 0x03BF;
-  t['omicrontonos'] = 0x03CC;
-  t['omonospace'] = 0xFF4F;
-  t['one'] = 0x0031;
-  t['onearabic'] = 0x0661;
-  t['onebengali'] = 0x09E7;
-  t['onecircle'] = 0x2460;
-  t['onecircleinversesansserif'] = 0x278A;
-  t['onedeva'] = 0x0967;
-  t['onedotenleader'] = 0x2024;
-  t['oneeighth'] = 0x215B;
-  t['onefitted'] = 0xF6DC;
-  t['onegujarati'] = 0x0AE7;
-  t['onegurmukhi'] = 0x0A67;
-  t['onehackarabic'] = 0x0661;
-  t['onehalf'] = 0x00BD;
-  t['onehangzhou'] = 0x3021;
-  t['oneideographicparen'] = 0x3220;
-  t['oneinferior'] = 0x2081;
-  t['onemonospace'] = 0xFF11;
-  t['onenumeratorbengali'] = 0x09F4;
-  t['oneoldstyle'] = 0xF731;
-  t['oneparen'] = 0x2474;
-  t['oneperiod'] = 0x2488;
-  t['onepersian'] = 0x06F1;
-  t['onequarter'] = 0x00BC;
-  t['oneroman'] = 0x2170;
-  t['onesuperior'] = 0x00B9;
-  t['onethai'] = 0x0E51;
-  t['onethird'] = 0x2153;
-  t['oogonek'] = 0x01EB;
-  t['oogonekmacron'] = 0x01ED;
-  t['oogurmukhi'] = 0x0A13;
-  t['oomatragurmukhi'] = 0x0A4B;
-  t['oopen'] = 0x0254;
-  t['oparen'] = 0x24AA;
-  t['openbullet'] = 0x25E6;
-  t['option'] = 0x2325;
-  t['ordfeminine'] = 0x00AA;
-  t['ordmasculine'] = 0x00BA;
-  t['orthogonal'] = 0x221F;
-  t['oshortdeva'] = 0x0912;
-  t['oshortvowelsigndeva'] = 0x094A;
-  t['oslash'] = 0x00F8;
-  t['oslashacute'] = 0x01FF;
-  t['osmallhiragana'] = 0x3049;
-  t['osmallkatakana'] = 0x30A9;
-  t['osmallkatakanahalfwidth'] = 0xFF6B;
-  t['ostrokeacute'] = 0x01FF;
-  t['osuperior'] = 0xF6F0;
-  t['otcyrillic'] = 0x047F;
-  t['otilde'] = 0x00F5;
-  t['otildeacute'] = 0x1E4D;
-  t['otildedieresis'] = 0x1E4F;
-  t['oubopomofo'] = 0x3121;
-  t['overline'] = 0x203E;
-  t['overlinecenterline'] = 0xFE4A;
-  t['overlinecmb'] = 0x0305;
-  t['overlinedashed'] = 0xFE49;
-  t['overlinedblwavy'] = 0xFE4C;
-  t['overlinewavy'] = 0xFE4B;
-  t['overscore'] = 0x00AF;
-  t['ovowelsignbengali'] = 0x09CB;
-  t['ovowelsigndeva'] = 0x094B;
-  t['ovowelsigngujarati'] = 0x0ACB;
-  t['p'] = 0x0070;
-  t['paampssquare'] = 0x3380;
-  t['paasentosquare'] = 0x332B;
-  t['pabengali'] = 0x09AA;
-  t['pacute'] = 0x1E55;
-  t['padeva'] = 0x092A;
-  t['pagedown'] = 0x21DF;
-  t['pageup'] = 0x21DE;
-  t['pagujarati'] = 0x0AAA;
-  t['pagurmukhi'] = 0x0A2A;
-  t['pahiragana'] = 0x3071;
-  t['paiyannoithai'] = 0x0E2F;
-  t['pakatakana'] = 0x30D1;
-  t['palatalizationcyrilliccmb'] = 0x0484;
-  t['palochkacyrillic'] = 0x04C0;
-  t['pansioskorean'] = 0x317F;
-  t['paragraph'] = 0x00B6;
-  t['parallel'] = 0x2225;
-  t['parenleft'] = 0x0028;
-  t['parenleftaltonearabic'] = 0xFD3E;
-  t['parenleftbt'] = 0xF8ED;
-  t['parenleftex'] = 0xF8EC;
-  t['parenleftinferior'] = 0x208D;
-  t['parenleftmonospace'] = 0xFF08;
-  t['parenleftsmall'] = 0xFE59;
-  t['parenleftsuperior'] = 0x207D;
-  t['parenlefttp'] = 0xF8EB;
-  t['parenleftvertical'] = 0xFE35;
-  t['parenright'] = 0x0029;
-  t['parenrightaltonearabic'] = 0xFD3F;
-  t['parenrightbt'] = 0xF8F8;
-  t['parenrightex'] = 0xF8F7;
-  t['parenrightinferior'] = 0x208E;
-  t['parenrightmonospace'] = 0xFF09;
-  t['parenrightsmall'] = 0xFE5A;
-  t['parenrightsuperior'] = 0x207E;
-  t['parenrighttp'] = 0xF8F6;
-  t['parenrightvertical'] = 0xFE36;
-  t['partialdiff'] = 0x2202;
-  t['paseqhebrew'] = 0x05C0;
-  t['pashtahebrew'] = 0x0599;
-  t['pasquare'] = 0x33A9;
-  t['patah'] = 0x05B7;
-  t['patah11'] = 0x05B7;
-  t['patah1d'] = 0x05B7;
-  t['patah2a'] = 0x05B7;
-  t['patahhebrew'] = 0x05B7;
-  t['patahnarrowhebrew'] = 0x05B7;
-  t['patahquarterhebrew'] = 0x05B7;
-  t['patahwidehebrew'] = 0x05B7;
-  t['pazerhebrew'] = 0x05A1;
-  t['pbopomofo'] = 0x3106;
-  t['pcircle'] = 0x24DF;
-  t['pdotaccent'] = 0x1E57;
-  t['pe'] = 0x05E4;
-  t['pecyrillic'] = 0x043F;
-  t['pedagesh'] = 0xFB44;
-  t['pedageshhebrew'] = 0xFB44;
-  t['peezisquare'] = 0x333B;
-  t['pefinaldageshhebrew'] = 0xFB43;
-  t['peharabic'] = 0x067E;
-  t['peharmenian'] = 0x057A;
-  t['pehebrew'] = 0x05E4;
-  t['pehfinalarabic'] = 0xFB57;
-  t['pehinitialarabic'] = 0xFB58;
-  t['pehiragana'] = 0x307A;
-  t['pehmedialarabic'] = 0xFB59;
-  t['pekatakana'] = 0x30DA;
-  t['pemiddlehookcyrillic'] = 0x04A7;
-  t['perafehebrew'] = 0xFB4E;
-  t['percent'] = 0x0025;
-  t['percentarabic'] = 0x066A;
-  t['percentmonospace'] = 0xFF05;
-  t['percentsmall'] = 0xFE6A;
-  t['period'] = 0x002E;
-  t['periodarmenian'] = 0x0589;
-  t['periodcentered'] = 0x00B7;
-  t['periodhalfwidth'] = 0xFF61;
-  t['periodinferior'] = 0xF6E7;
-  t['periodmonospace'] = 0xFF0E;
-  t['periodsmall'] = 0xFE52;
-  t['periodsuperior'] = 0xF6E8;
-  t['perispomenigreekcmb'] = 0x0342;
-  t['perpendicular'] = 0x22A5;
-  t['perthousand'] = 0x2030;
-  t['peseta'] = 0x20A7;
-  t['pfsquare'] = 0x338A;
-  t['phabengali'] = 0x09AB;
-  t['phadeva'] = 0x092B;
-  t['phagujarati'] = 0x0AAB;
-  t['phagurmukhi'] = 0x0A2B;
-  t['phi'] = 0x03C6;
-  t['phi1'] = 0x03D5;
-  t['phieuphacirclekorean'] = 0x327A;
-  t['phieuphaparenkorean'] = 0x321A;
-  t['phieuphcirclekorean'] = 0x326C;
-  t['phieuphkorean'] = 0x314D;
-  t['phieuphparenkorean'] = 0x320C;
-  t['philatin'] = 0x0278;
-  t['phinthuthai'] = 0x0E3A;
-  t['phisymbolgreek'] = 0x03D5;
-  t['phook'] = 0x01A5;
-  t['phophanthai'] = 0x0E1E;
-  t['phophungthai'] = 0x0E1C;
-  t['phosamphaothai'] = 0x0E20;
-  t['pi'] = 0x03C0;
-  t['pieupacirclekorean'] = 0x3273;
-  t['pieupaparenkorean'] = 0x3213;
-  t['pieupcieuckorean'] = 0x3176;
-  t['pieupcirclekorean'] = 0x3265;
-  t['pieupkiyeokkorean'] = 0x3172;
-  t['pieupkorean'] = 0x3142;
-  t['pieupparenkorean'] = 0x3205;
-  t['pieupsioskiyeokkorean'] = 0x3174;
-  t['pieupsioskorean'] = 0x3144;
-  t['pieupsiostikeutkorean'] = 0x3175;
-  t['pieupthieuthkorean'] = 0x3177;
-  t['pieuptikeutkorean'] = 0x3173;
-  t['pihiragana'] = 0x3074;
-  t['pikatakana'] = 0x30D4;
-  t['pisymbolgreek'] = 0x03D6;
-  t['piwrarmenian'] = 0x0583;
-  t['plus'] = 0x002B;
-  t['plusbelowcmb'] = 0x031F;
-  t['pluscircle'] = 0x2295;
-  t['plusminus'] = 0x00B1;
-  t['plusmod'] = 0x02D6;
-  t['plusmonospace'] = 0xFF0B;
-  t['plussmall'] = 0xFE62;
-  t['plussuperior'] = 0x207A;
-  t['pmonospace'] = 0xFF50;
-  t['pmsquare'] = 0x33D8;
-  t['pohiragana'] = 0x307D;
-  t['pointingindexdownwhite'] = 0x261F;
-  t['pointingindexleftwhite'] = 0x261C;
-  t['pointingindexrightwhite'] = 0x261E;
-  t['pointingindexupwhite'] = 0x261D;
-  t['pokatakana'] = 0x30DD;
-  t['poplathai'] = 0x0E1B;
-  t['postalmark'] = 0x3012;
-  t['postalmarkface'] = 0x3020;
-  t['pparen'] = 0x24AB;
-  t['precedes'] = 0x227A;
-  t['prescription'] = 0x211E;
-  t['primemod'] = 0x02B9;
-  t['primereversed'] = 0x2035;
-  t['product'] = 0x220F;
-  t['projective'] = 0x2305;
-  t['prolongedkana'] = 0x30FC;
-  t['propellor'] = 0x2318;
-  t['propersubset'] = 0x2282;
-  t['propersuperset'] = 0x2283;
-  t['proportion'] = 0x2237;
-  t['proportional'] = 0x221D;
-  t['psi'] = 0x03C8;
-  t['psicyrillic'] = 0x0471;
-  t['psilipneumatacyrilliccmb'] = 0x0486;
-  t['pssquare'] = 0x33B0;
-  t['puhiragana'] = 0x3077;
-  t['pukatakana'] = 0x30D7;
-  t['pvsquare'] = 0x33B4;
-  t['pwsquare'] = 0x33BA;
-  t['q'] = 0x0071;
-  t['qadeva'] = 0x0958;
-  t['qadmahebrew'] = 0x05A8;
-  t['qafarabic'] = 0x0642;
-  t['qaffinalarabic'] = 0xFED6;
-  t['qafinitialarabic'] = 0xFED7;
-  t['qafmedialarabic'] = 0xFED8;
-  t['qamats'] = 0x05B8;
-  t['qamats10'] = 0x05B8;
-  t['qamats1a'] = 0x05B8;
-  t['qamats1c'] = 0x05B8;
-  t['qamats27'] = 0x05B8;
-  t['qamats29'] = 0x05B8;
-  t['qamats33'] = 0x05B8;
-  t['qamatsde'] = 0x05B8;
-  t['qamatshebrew'] = 0x05B8;
-  t['qamatsnarrowhebrew'] = 0x05B8;
-  t['qamatsqatanhebrew'] = 0x05B8;
-  t['qamatsqatannarrowhebrew'] = 0x05B8;
-  t['qamatsqatanquarterhebrew'] = 0x05B8;
-  t['qamatsqatanwidehebrew'] = 0x05B8;
-  t['qamatsquarterhebrew'] = 0x05B8;
-  t['qamatswidehebrew'] = 0x05B8;
-  t['qarneyparahebrew'] = 0x059F;
-  t['qbopomofo'] = 0x3111;
-  t['qcircle'] = 0x24E0;
-  t['qhook'] = 0x02A0;
-  t['qmonospace'] = 0xFF51;
-  t['qof'] = 0x05E7;
-  t['qofdagesh'] = 0xFB47;
-  t['qofdageshhebrew'] = 0xFB47;
-  t['qofhebrew'] = 0x05E7;
-  t['qparen'] = 0x24AC;
-  t['quarternote'] = 0x2669;
-  t['qubuts'] = 0x05BB;
-  t['qubuts18'] = 0x05BB;
-  t['qubuts25'] = 0x05BB;
-  t['qubuts31'] = 0x05BB;
-  t['qubutshebrew'] = 0x05BB;
-  t['qubutsnarrowhebrew'] = 0x05BB;
-  t['qubutsquarterhebrew'] = 0x05BB;
-  t['qubutswidehebrew'] = 0x05BB;
-  t['question'] = 0x003F;
-  t['questionarabic'] = 0x061F;
-  t['questionarmenian'] = 0x055E;
-  t['questiondown'] = 0x00BF;
-  t['questiondownsmall'] = 0xF7BF;
-  t['questiongreek'] = 0x037E;
-  t['questionmonospace'] = 0xFF1F;
-  t['questionsmall'] = 0xF73F;
-  t['quotedbl'] = 0x0022;
-  t['quotedblbase'] = 0x201E;
-  t['quotedblleft'] = 0x201C;
-  t['quotedblmonospace'] = 0xFF02;
-  t['quotedblprime'] = 0x301E;
-  t['quotedblprimereversed'] = 0x301D;
-  t['quotedblright'] = 0x201D;
-  t['quoteleft'] = 0x2018;
-  t['quoteleftreversed'] = 0x201B;
-  t['quotereversed'] = 0x201B;
-  t['quoteright'] = 0x2019;
-  t['quoterightn'] = 0x0149;
-  t['quotesinglbase'] = 0x201A;
-  t['quotesingle'] = 0x0027;
-  t['quotesinglemonospace'] = 0xFF07;
-  t['r'] = 0x0072;
-  t['raarmenian'] = 0x057C;
-  t['rabengali'] = 0x09B0;
-  t['racute'] = 0x0155;
-  t['radeva'] = 0x0930;
-  t['radical'] = 0x221A;
-  t['radicalex'] = 0xF8E5;
-  t['radoverssquare'] = 0x33AE;
-  t['radoverssquaredsquare'] = 0x33AF;
-  t['radsquare'] = 0x33AD;
-  t['rafe'] = 0x05BF;
-  t['rafehebrew'] = 0x05BF;
-  t['ragujarati'] = 0x0AB0;
-  t['ragurmukhi'] = 0x0A30;
-  t['rahiragana'] = 0x3089;
-  t['rakatakana'] = 0x30E9;
-  t['rakatakanahalfwidth'] = 0xFF97;
-  t['ralowerdiagonalbengali'] = 0x09F1;
-  t['ramiddlediagonalbengali'] = 0x09F0;
-  t['ramshorn'] = 0x0264;
-  t['ratio'] = 0x2236;
-  t['rbopomofo'] = 0x3116;
-  t['rcaron'] = 0x0159;
-  t['rcedilla'] = 0x0157;
-  t['rcircle'] = 0x24E1;
-  t['rcommaaccent'] = 0x0157;
-  t['rdblgrave'] = 0x0211;
-  t['rdotaccent'] = 0x1E59;
-  t['rdotbelow'] = 0x1E5B;
-  t['rdotbelowmacron'] = 0x1E5D;
-  t['referencemark'] = 0x203B;
-  t['reflexsubset'] = 0x2286;
-  t['reflexsuperset'] = 0x2287;
-  t['registered'] = 0x00AE;
-  t['registersans'] = 0xF8E8;
-  t['registerserif'] = 0xF6DA;
-  t['reharabic'] = 0x0631;
-  t['reharmenian'] = 0x0580;
-  t['rehfinalarabic'] = 0xFEAE;
-  t['rehiragana'] = 0x308C;
-  t['rekatakana'] = 0x30EC;
-  t['rekatakanahalfwidth'] = 0xFF9A;
-  t['resh'] = 0x05E8;
-  t['reshdageshhebrew'] = 0xFB48;
-  t['reshhebrew'] = 0x05E8;
-  t['reversedtilde'] = 0x223D;
-  t['reviahebrew'] = 0x0597;
-  t['reviamugrashhebrew'] = 0x0597;
-  t['revlogicalnot'] = 0x2310;
-  t['rfishhook'] = 0x027E;
-  t['rfishhookreversed'] = 0x027F;
-  t['rhabengali'] = 0x09DD;
-  t['rhadeva'] = 0x095D;
-  t['rho'] = 0x03C1;
-  t['rhook'] = 0x027D;
-  t['rhookturned'] = 0x027B;
-  t['rhookturnedsuperior'] = 0x02B5;
-  t['rhosymbolgreek'] = 0x03F1;
-  t['rhotichookmod'] = 0x02DE;
-  t['rieulacirclekorean'] = 0x3271;
-  t['rieulaparenkorean'] = 0x3211;
-  t['rieulcirclekorean'] = 0x3263;
-  t['rieulhieuhkorean'] = 0x3140;
-  t['rieulkiyeokkorean'] = 0x313A;
-  t['rieulkiyeoksioskorean'] = 0x3169;
-  t['rieulkorean'] = 0x3139;
-  t['rieulmieumkorean'] = 0x313B;
-  t['rieulpansioskorean'] = 0x316C;
-  t['rieulparenkorean'] = 0x3203;
-  t['rieulphieuphkorean'] = 0x313F;
-  t['rieulpieupkorean'] = 0x313C;
-  t['rieulpieupsioskorean'] = 0x316B;
-  t['rieulsioskorean'] = 0x313D;
-  t['rieulthieuthkorean'] = 0x313E;
-  t['rieultikeutkorean'] = 0x316A;
-  t['rieulyeorinhieuhkorean'] = 0x316D;
-  t['rightangle'] = 0x221F;
-  t['righttackbelowcmb'] = 0x0319;
-  t['righttriangle'] = 0x22BF;
-  t['rihiragana'] = 0x308A;
-  t['rikatakana'] = 0x30EA;
-  t['rikatakanahalfwidth'] = 0xFF98;
-  t['ring'] = 0x02DA;
-  t['ringbelowcmb'] = 0x0325;
-  t['ringcmb'] = 0x030A;
-  t['ringhalfleft'] = 0x02BF;
-  t['ringhalfleftarmenian'] = 0x0559;
-  t['ringhalfleftbelowcmb'] = 0x031C;
-  t['ringhalfleftcentered'] = 0x02D3;
-  t['ringhalfright'] = 0x02BE;
-  t['ringhalfrightbelowcmb'] = 0x0339;
-  t['ringhalfrightcentered'] = 0x02D2;
-  t['rinvertedbreve'] = 0x0213;
-  t['rittorusquare'] = 0x3351;
-  t['rlinebelow'] = 0x1E5F;
-  t['rlongleg'] = 0x027C;
-  t['rlonglegturned'] = 0x027A;
-  t['rmonospace'] = 0xFF52;
-  t['rohiragana'] = 0x308D;
-  t['rokatakana'] = 0x30ED;
-  t['rokatakanahalfwidth'] = 0xFF9B;
-  t['roruathai'] = 0x0E23;
-  t['rparen'] = 0x24AD;
-  t['rrabengali'] = 0x09DC;
-  t['rradeva'] = 0x0931;
-  t['rragurmukhi'] = 0x0A5C;
-  t['rreharabic'] = 0x0691;
-  t['rrehfinalarabic'] = 0xFB8D;
-  t['rrvocalicbengali'] = 0x09E0;
-  t['rrvocalicdeva'] = 0x0960;
-  t['rrvocalicgujarati'] = 0x0AE0;
-  t['rrvocalicvowelsignbengali'] = 0x09C4;
-  t['rrvocalicvowelsigndeva'] = 0x0944;
-  t['rrvocalicvowelsigngujarati'] = 0x0AC4;
-  t['rsuperior'] = 0xF6F1;
-  t['rtblock'] = 0x2590;
-  t['rturned'] = 0x0279;
-  t['rturnedsuperior'] = 0x02B4;
-  t['ruhiragana'] = 0x308B;
-  t['rukatakana'] = 0x30EB;
-  t['rukatakanahalfwidth'] = 0xFF99;
-  t['rupeemarkbengali'] = 0x09F2;
-  t['rupeesignbengali'] = 0x09F3;
-  t['rupiah'] = 0xF6DD;
-  t['ruthai'] = 0x0E24;
-  t['rvocalicbengali'] = 0x098B;
-  t['rvocalicdeva'] = 0x090B;
-  t['rvocalicgujarati'] = 0x0A8B;
-  t['rvocalicvowelsignbengali'] = 0x09C3;
-  t['rvocalicvowelsigndeva'] = 0x0943;
-  t['rvocalicvowelsigngujarati'] = 0x0AC3;
-  t['s'] = 0x0073;
-  t['sabengali'] = 0x09B8;
-  t['sacute'] = 0x015B;
-  t['sacutedotaccent'] = 0x1E65;
-  t['sadarabic'] = 0x0635;
-  t['sadeva'] = 0x0938;
-  t['sadfinalarabic'] = 0xFEBA;
-  t['sadinitialarabic'] = 0xFEBB;
-  t['sadmedialarabic'] = 0xFEBC;
-  t['sagujarati'] = 0x0AB8;
-  t['sagurmukhi'] = 0x0A38;
-  t['sahiragana'] = 0x3055;
-  t['sakatakana'] = 0x30B5;
-  t['sakatakanahalfwidth'] = 0xFF7B;
-  t['sallallahoualayhewasallamarabic'] = 0xFDFA;
-  t['samekh'] = 0x05E1;
-  t['samekhdagesh'] = 0xFB41;
-  t['samekhdageshhebrew'] = 0xFB41;
-  t['samekhhebrew'] = 0x05E1;
-  t['saraaathai'] = 0x0E32;
-  t['saraaethai'] = 0x0E41;
-  t['saraaimaimalaithai'] = 0x0E44;
-  t['saraaimaimuanthai'] = 0x0E43;
-  t['saraamthai'] = 0x0E33;
-  t['saraathai'] = 0x0E30;
-  t['saraethai'] = 0x0E40;
-  t['saraiileftthai'] = 0xF886;
-  t['saraiithai'] = 0x0E35;
-  t['saraileftthai'] = 0xF885;
-  t['saraithai'] = 0x0E34;
-  t['saraothai'] = 0x0E42;
-  t['saraueeleftthai'] = 0xF888;
-  t['saraueethai'] = 0x0E37;
-  t['saraueleftthai'] = 0xF887;
-  t['sarauethai'] = 0x0E36;
-  t['sarauthai'] = 0x0E38;
-  t['sarauuthai'] = 0x0E39;
-  t['sbopomofo'] = 0x3119;
-  t['scaron'] = 0x0161;
-  t['scarondotaccent'] = 0x1E67;
-  t['scedilla'] = 0x015F;
-  t['schwa'] = 0x0259;
-  t['schwacyrillic'] = 0x04D9;
-  t['schwadieresiscyrillic'] = 0x04DB;
-  t['schwahook'] = 0x025A;
-  t['scircle'] = 0x24E2;
-  t['scircumflex'] = 0x015D;
-  t['scommaaccent'] = 0x0219;
-  t['sdotaccent'] = 0x1E61;
-  t['sdotbelow'] = 0x1E63;
-  t['sdotbelowdotaccent'] = 0x1E69;
-  t['seagullbelowcmb'] = 0x033C;
-  t['second'] = 0x2033;
-  t['secondtonechinese'] = 0x02CA;
-  t['section'] = 0x00A7;
-  t['seenarabic'] = 0x0633;
-  t['seenfinalarabic'] = 0xFEB2;
-  t['seeninitialarabic'] = 0xFEB3;
-  t['seenmedialarabic'] = 0xFEB4;
-  t['segol'] = 0x05B6;
-  t['segol13'] = 0x05B6;
-  t['segol1f'] = 0x05B6;
-  t['segol2c'] = 0x05B6;
-  t['segolhebrew'] = 0x05B6;
-  t['segolnarrowhebrew'] = 0x05B6;
-  t['segolquarterhebrew'] = 0x05B6;
-  t['segoltahebrew'] = 0x0592;
-  t['segolwidehebrew'] = 0x05B6;
-  t['seharmenian'] = 0x057D;
-  t['sehiragana'] = 0x305B;
-  t['sekatakana'] = 0x30BB;
-  t['sekatakanahalfwidth'] = 0xFF7E;
-  t['semicolon'] = 0x003B;
-  t['semicolonarabic'] = 0x061B;
-  t['semicolonmonospace'] = 0xFF1B;
-  t['semicolonsmall'] = 0xFE54;
-  t['semivoicedmarkkana'] = 0x309C;
-  t['semivoicedmarkkanahalfwidth'] = 0xFF9F;
-  t['sentisquare'] = 0x3322;
-  t['sentosquare'] = 0x3323;
-  t['seven'] = 0x0037;
-  t['sevenarabic'] = 0x0667;
-  t['sevenbengali'] = 0x09ED;
-  t['sevencircle'] = 0x2466;
-  t['sevencircleinversesansserif'] = 0x2790;
-  t['sevendeva'] = 0x096D;
-  t['seveneighths'] = 0x215E;
-  t['sevengujarati'] = 0x0AED;
-  t['sevengurmukhi'] = 0x0A6D;
-  t['sevenhackarabic'] = 0x0667;
-  t['sevenhangzhou'] = 0x3027;
-  t['sevenideographicparen'] = 0x3226;
-  t['seveninferior'] = 0x2087;
-  t['sevenmonospace'] = 0xFF17;
-  t['sevenoldstyle'] = 0xF737;
-  t['sevenparen'] = 0x247A;
-  t['sevenperiod'] = 0x248E;
-  t['sevenpersian'] = 0x06F7;
-  t['sevenroman'] = 0x2176;
-  t['sevensuperior'] = 0x2077;
-  t['seventeencircle'] = 0x2470;
-  t['seventeenparen'] = 0x2484;
-  t['seventeenperiod'] = 0x2498;
-  t['seventhai'] = 0x0E57;
-  t['sfthyphen'] = 0x00AD;
-  t['shaarmenian'] = 0x0577;
-  t['shabengali'] = 0x09B6;
-  t['shacyrillic'] = 0x0448;
-  t['shaddaarabic'] = 0x0651;
-  t['shaddadammaarabic'] = 0xFC61;
-  t['shaddadammatanarabic'] = 0xFC5E;
-  t['shaddafathaarabic'] = 0xFC60;
-  t['shaddakasraarabic'] = 0xFC62;
-  t['shaddakasratanarabic'] = 0xFC5F;
-  t['shade'] = 0x2592;
-  t['shadedark'] = 0x2593;
-  t['shadelight'] = 0x2591;
-  t['shademedium'] = 0x2592;
-  t['shadeva'] = 0x0936;
-  t['shagujarati'] = 0x0AB6;
-  t['shagurmukhi'] = 0x0A36;
-  t['shalshelethebrew'] = 0x0593;
-  t['shbopomofo'] = 0x3115;
-  t['shchacyrillic'] = 0x0449;
-  t['sheenarabic'] = 0x0634;
-  t['sheenfinalarabic'] = 0xFEB6;
-  t['sheeninitialarabic'] = 0xFEB7;
-  t['sheenmedialarabic'] = 0xFEB8;
-  t['sheicoptic'] = 0x03E3;
-  t['sheqel'] = 0x20AA;
-  t['sheqelhebrew'] = 0x20AA;
-  t['sheva'] = 0x05B0;
-  t['sheva115'] = 0x05B0;
-  t['sheva15'] = 0x05B0;
-  t['sheva22'] = 0x05B0;
-  t['sheva2e'] = 0x05B0;
-  t['shevahebrew'] = 0x05B0;
-  t['shevanarrowhebrew'] = 0x05B0;
-  t['shevaquarterhebrew'] = 0x05B0;
-  t['shevawidehebrew'] = 0x05B0;
-  t['shhacyrillic'] = 0x04BB;
-  t['shimacoptic'] = 0x03ED;
-  t['shin'] = 0x05E9;
-  t['shindagesh'] = 0xFB49;
-  t['shindageshhebrew'] = 0xFB49;
-  t['shindageshshindot'] = 0xFB2C;
-  t['shindageshshindothebrew'] = 0xFB2C;
-  t['shindageshsindot'] = 0xFB2D;
-  t['shindageshsindothebrew'] = 0xFB2D;
-  t['shindothebrew'] = 0x05C1;
-  t['shinhebrew'] = 0x05E9;
-  t['shinshindot'] = 0xFB2A;
-  t['shinshindothebrew'] = 0xFB2A;
-  t['shinsindot'] = 0xFB2B;
-  t['shinsindothebrew'] = 0xFB2B;
-  t['shook'] = 0x0282;
-  t['sigma'] = 0x03C3;
-  t['sigma1'] = 0x03C2;
-  t['sigmafinal'] = 0x03C2;
-  t['sigmalunatesymbolgreek'] = 0x03F2;
-  t['sihiragana'] = 0x3057;
-  t['sikatakana'] = 0x30B7;
-  t['sikatakanahalfwidth'] = 0xFF7C;
-  t['siluqhebrew'] = 0x05BD;
-  t['siluqlefthebrew'] = 0x05BD;
-  t['similar'] = 0x223C;
-  t['sindothebrew'] = 0x05C2;
-  t['siosacirclekorean'] = 0x3274;
-  t['siosaparenkorean'] = 0x3214;
-  t['sioscieuckorean'] = 0x317E;
-  t['sioscirclekorean'] = 0x3266;
-  t['sioskiyeokkorean'] = 0x317A;
-  t['sioskorean'] = 0x3145;
-  t['siosnieunkorean'] = 0x317B;
-  t['siosparenkorean'] = 0x3206;
-  t['siospieupkorean'] = 0x317D;
-  t['siostikeutkorean'] = 0x317C;
-  t['six'] = 0x0036;
-  t['sixarabic'] = 0x0666;
-  t['sixbengali'] = 0x09EC;
-  t['sixcircle'] = 0x2465;
-  t['sixcircleinversesansserif'] = 0x278F;
-  t['sixdeva'] = 0x096C;
-  t['sixgujarati'] = 0x0AEC;
-  t['sixgurmukhi'] = 0x0A6C;
-  t['sixhackarabic'] = 0x0666;
-  t['sixhangzhou'] = 0x3026;
-  t['sixideographicparen'] = 0x3225;
-  t['sixinferior'] = 0x2086;
-  t['sixmonospace'] = 0xFF16;
-  t['sixoldstyle'] = 0xF736;
-  t['sixparen'] = 0x2479;
-  t['sixperiod'] = 0x248D;
-  t['sixpersian'] = 0x06F6;
-  t['sixroman'] = 0x2175;
-  t['sixsuperior'] = 0x2076;
-  t['sixteencircle'] = 0x246F;
-  t['sixteencurrencydenominatorbengali'] = 0x09F9;
-  t['sixteenparen'] = 0x2483;
-  t['sixteenperiod'] = 0x2497;
-  t['sixthai'] = 0x0E56;
-  t['slash'] = 0x002F;
-  t['slashmonospace'] = 0xFF0F;
-  t['slong'] = 0x017F;
-  t['slongdotaccent'] = 0x1E9B;
-  t['smileface'] = 0x263A;
-  t['smonospace'] = 0xFF53;
-  t['sofpasuqhebrew'] = 0x05C3;
-  t['softhyphen'] = 0x00AD;
-  t['softsigncyrillic'] = 0x044C;
-  t['sohiragana'] = 0x305D;
-  t['sokatakana'] = 0x30BD;
-  t['sokatakanahalfwidth'] = 0xFF7F;
-  t['soliduslongoverlaycmb'] = 0x0338;
-  t['solidusshortoverlaycmb'] = 0x0337;
-  t['sorusithai'] = 0x0E29;
-  t['sosalathai'] = 0x0E28;
-  t['sosothai'] = 0x0E0B;
-  t['sosuathai'] = 0x0E2A;
-  t['space'] = 0x0020;
-  t['spacehackarabic'] = 0x0020;
-  t['spade'] = 0x2660;
-  t['spadesuitblack'] = 0x2660;
-  t['spadesuitwhite'] = 0x2664;
-  t['sparen'] = 0x24AE;
-  t['squarebelowcmb'] = 0x033B;
-  t['squarecc'] = 0x33C4;
-  t['squarecm'] = 0x339D;
-  t['squarediagonalcrosshatchfill'] = 0x25A9;
-  t['squarehorizontalfill'] = 0x25A4;
-  t['squarekg'] = 0x338F;
-  t['squarekm'] = 0x339E;
-  t['squarekmcapital'] = 0x33CE;
-  t['squareln'] = 0x33D1;
-  t['squarelog'] = 0x33D2;
-  t['squaremg'] = 0x338E;
-  t['squaremil'] = 0x33D5;
-  t['squaremm'] = 0x339C;
-  t['squaremsquared'] = 0x33A1;
-  t['squareorthogonalcrosshatchfill'] = 0x25A6;
-  t['squareupperlefttolowerrightfill'] = 0x25A7;
-  t['squareupperrighttolowerleftfill'] = 0x25A8;
-  t['squareverticalfill'] = 0x25A5;
-  t['squarewhitewithsmallblack'] = 0x25A3;
-  t['srsquare'] = 0x33DB;
-  t['ssabengali'] = 0x09B7;
-  t['ssadeva'] = 0x0937;
-  t['ssagujarati'] = 0x0AB7;
-  t['ssangcieuckorean'] = 0x3149;
-  t['ssanghieuhkorean'] = 0x3185;
-  t['ssangieungkorean'] = 0x3180;
-  t['ssangkiyeokkorean'] = 0x3132;
-  t['ssangnieunkorean'] = 0x3165;
-  t['ssangpieupkorean'] = 0x3143;
-  t['ssangsioskorean'] = 0x3146;
-  t['ssangtikeutkorean'] = 0x3138;
-  t['ssuperior'] = 0xF6F2;
-  t['sterling'] = 0x00A3;
-  t['sterlingmonospace'] = 0xFFE1;
-  t['strokelongoverlaycmb'] = 0x0336;
-  t['strokeshortoverlaycmb'] = 0x0335;
-  t['subset'] = 0x2282;
-  t['subsetnotequal'] = 0x228A;
-  t['subsetorequal'] = 0x2286;
-  t['succeeds'] = 0x227B;
-  t['suchthat'] = 0x220B;
-  t['suhiragana'] = 0x3059;
-  t['sukatakana'] = 0x30B9;
-  t['sukatakanahalfwidth'] = 0xFF7D;
-  t['sukunarabic'] = 0x0652;
-  t['summation'] = 0x2211;
-  t['sun'] = 0x263C;
-  t['superset'] = 0x2283;
-  t['supersetnotequal'] = 0x228B;
-  t['supersetorequal'] = 0x2287;
-  t['svsquare'] = 0x33DC;
-  t['syouwaerasquare'] = 0x337C;
-  t['t'] = 0x0074;
-  t['tabengali'] = 0x09A4;
-  t['tackdown'] = 0x22A4;
-  t['tackleft'] = 0x22A3;
-  t['tadeva'] = 0x0924;
-  t['tagujarati'] = 0x0AA4;
-  t['tagurmukhi'] = 0x0A24;
-  t['taharabic'] = 0x0637;
-  t['tahfinalarabic'] = 0xFEC2;
-  t['tahinitialarabic'] = 0xFEC3;
-  t['tahiragana'] = 0x305F;
-  t['tahmedialarabic'] = 0xFEC4;
-  t['taisyouerasquare'] = 0x337D;
-  t['takatakana'] = 0x30BF;
-  t['takatakanahalfwidth'] = 0xFF80;
-  t['tatweelarabic'] = 0x0640;
-  t['tau'] = 0x03C4;
-  t['tav'] = 0x05EA;
-  t['tavdages'] = 0xFB4A;
-  t['tavdagesh'] = 0xFB4A;
-  t['tavdageshhebrew'] = 0xFB4A;
-  t['tavhebrew'] = 0x05EA;
-  t['tbar'] = 0x0167;
-  t['tbopomofo'] = 0x310A;
-  t['tcaron'] = 0x0165;
-  t['tccurl'] = 0x02A8;
-  t['tcedilla'] = 0x0163;
-  t['tcheharabic'] = 0x0686;
-  t['tchehfinalarabic'] = 0xFB7B;
-  t['tchehinitialarabic'] = 0xFB7C;
-  t['tchehmedialarabic'] = 0xFB7D;
-  t['tcircle'] = 0x24E3;
-  t['tcircumflexbelow'] = 0x1E71;
-  t['tcommaaccent'] = 0x0163;
-  t['tdieresis'] = 0x1E97;
-  t['tdotaccent'] = 0x1E6B;
-  t['tdotbelow'] = 0x1E6D;
-  t['tecyrillic'] = 0x0442;
-  t['tedescendercyrillic'] = 0x04AD;
-  t['teharabic'] = 0x062A;
-  t['tehfinalarabic'] = 0xFE96;
-  t['tehhahinitialarabic'] = 0xFCA2;
-  t['tehhahisolatedarabic'] = 0xFC0C;
-  t['tehinitialarabic'] = 0xFE97;
-  t['tehiragana'] = 0x3066;
-  t['tehjeeminitialarabic'] = 0xFCA1;
-  t['tehjeemisolatedarabic'] = 0xFC0B;
-  t['tehmarbutaarabic'] = 0x0629;
-  t['tehmarbutafinalarabic'] = 0xFE94;
-  t['tehmedialarabic'] = 0xFE98;
-  t['tehmeeminitialarabic'] = 0xFCA4;
-  t['tehmeemisolatedarabic'] = 0xFC0E;
-  t['tehnoonfinalarabic'] = 0xFC73;
-  t['tekatakana'] = 0x30C6;
-  t['tekatakanahalfwidth'] = 0xFF83;
-  t['telephone'] = 0x2121;
-  t['telephoneblack'] = 0x260E;
-  t['telishagedolahebrew'] = 0x05A0;
-  t['telishaqetanahebrew'] = 0x05A9;
-  t['tencircle'] = 0x2469;
-  t['tenideographicparen'] = 0x3229;
-  t['tenparen'] = 0x247D;
-  t['tenperiod'] = 0x2491;
-  t['tenroman'] = 0x2179;
-  t['tesh'] = 0x02A7;
-  t['tet'] = 0x05D8;
-  t['tetdagesh'] = 0xFB38;
-  t['tetdageshhebrew'] = 0xFB38;
-  t['tethebrew'] = 0x05D8;
-  t['tetsecyrillic'] = 0x04B5;
-  t['tevirhebrew'] = 0x059B;
-  t['tevirlefthebrew'] = 0x059B;
-  t['thabengali'] = 0x09A5;
-  t['thadeva'] = 0x0925;
-  t['thagujarati'] = 0x0AA5;
-  t['thagurmukhi'] = 0x0A25;
-  t['thalarabic'] = 0x0630;
-  t['thalfinalarabic'] = 0xFEAC;
-  t['thanthakhatlowleftthai'] = 0xF898;
-  t['thanthakhatlowrightthai'] = 0xF897;
-  t['thanthakhatthai'] = 0x0E4C;
-  t['thanthakhatupperleftthai'] = 0xF896;
-  t['theharabic'] = 0x062B;
-  t['thehfinalarabic'] = 0xFE9A;
-  t['thehinitialarabic'] = 0xFE9B;
-  t['thehmedialarabic'] = 0xFE9C;
-  t['thereexists'] = 0x2203;
-  t['therefore'] = 0x2234;
-  t['theta'] = 0x03B8;
-  t['theta1'] = 0x03D1;
-  t['thetasymbolgreek'] = 0x03D1;
-  t['thieuthacirclekorean'] = 0x3279;
-  t['thieuthaparenkorean'] = 0x3219;
-  t['thieuthcirclekorean'] = 0x326B;
-  t['thieuthkorean'] = 0x314C;
-  t['thieuthparenkorean'] = 0x320B;
-  t['thirteencircle'] = 0x246C;
-  t['thirteenparen'] = 0x2480;
-  t['thirteenperiod'] = 0x2494;
-  t['thonangmonthothai'] = 0x0E11;
-  t['thook'] = 0x01AD;
-  t['thophuthaothai'] = 0x0E12;
-  t['thorn'] = 0x00FE;
-  t['thothahanthai'] = 0x0E17;
-  t['thothanthai'] = 0x0E10;
-  t['thothongthai'] = 0x0E18;
-  t['thothungthai'] = 0x0E16;
-  t['thousandcyrillic'] = 0x0482;
-  t['thousandsseparatorarabic'] = 0x066C;
-  t['thousandsseparatorpersian'] = 0x066C;
-  t['three'] = 0x0033;
-  t['threearabic'] = 0x0663;
-  t['threebengali'] = 0x09E9;
-  t['threecircle'] = 0x2462;
-  t['threecircleinversesansserif'] = 0x278C;
-  t['threedeva'] = 0x0969;
-  t['threeeighths'] = 0x215C;
-  t['threegujarati'] = 0x0AE9;
-  t['threegurmukhi'] = 0x0A69;
-  t['threehackarabic'] = 0x0663;
-  t['threehangzhou'] = 0x3023;
-  t['threeideographicparen'] = 0x3222;
-  t['threeinferior'] = 0x2083;
-  t['threemonospace'] = 0xFF13;
-  t['threenumeratorbengali'] = 0x09F6;
-  t['threeoldstyle'] = 0xF733;
-  t['threeparen'] = 0x2476;
-  t['threeperiod'] = 0x248A;
-  t['threepersian'] = 0x06F3;
-  t['threequarters'] = 0x00BE;
-  t['threequartersemdash'] = 0xF6DE;
-  t['threeroman'] = 0x2172;
-  t['threesuperior'] = 0x00B3;
-  t['threethai'] = 0x0E53;
-  t['thzsquare'] = 0x3394;
-  t['tihiragana'] = 0x3061;
-  t['tikatakana'] = 0x30C1;
-  t['tikatakanahalfwidth'] = 0xFF81;
-  t['tikeutacirclekorean'] = 0x3270;
-  t['tikeutaparenkorean'] = 0x3210;
-  t['tikeutcirclekorean'] = 0x3262;
-  t['tikeutkorean'] = 0x3137;
-  t['tikeutparenkorean'] = 0x3202;
-  t['tilde'] = 0x02DC;
-  t['tildebelowcmb'] = 0x0330;
-  t['tildecmb'] = 0x0303;
-  t['tildecomb'] = 0x0303;
-  t['tildedoublecmb'] = 0x0360;
-  t['tildeoperator'] = 0x223C;
-  t['tildeoverlaycmb'] = 0x0334;
-  t['tildeverticalcmb'] = 0x033E;
-  t['timescircle'] = 0x2297;
-  t['tipehahebrew'] = 0x0596;
-  t['tipehalefthebrew'] = 0x0596;
-  t['tippigurmukhi'] = 0x0A70;
-  t['titlocyrilliccmb'] = 0x0483;
-  t['tiwnarmenian'] = 0x057F;
-  t['tlinebelow'] = 0x1E6F;
-  t['tmonospace'] = 0xFF54;
-  t['toarmenian'] = 0x0569;
-  t['tohiragana'] = 0x3068;
-  t['tokatakana'] = 0x30C8;
-  t['tokatakanahalfwidth'] = 0xFF84;
-  t['tonebarextrahighmod'] = 0x02E5;
-  t['tonebarextralowmod'] = 0x02E9;
-  t['tonebarhighmod'] = 0x02E6;
-  t['tonebarlowmod'] = 0x02E8;
-  t['tonebarmidmod'] = 0x02E7;
-  t['tonefive'] = 0x01BD;
-  t['tonesix'] = 0x0185;
-  t['tonetwo'] = 0x01A8;
-  t['tonos'] = 0x0384;
-  t['tonsquare'] = 0x3327;
-  t['topatakthai'] = 0x0E0F;
-  t['tortoiseshellbracketleft'] = 0x3014;
-  t['tortoiseshellbracketleftsmall'] = 0xFE5D;
-  t['tortoiseshellbracketleftvertical'] = 0xFE39;
-  t['tortoiseshellbracketright'] = 0x3015;
-  t['tortoiseshellbracketrightsmall'] = 0xFE5E;
-  t['tortoiseshellbracketrightvertical'] = 0xFE3A;
-  t['totaothai'] = 0x0E15;
-  t['tpalatalhook'] = 0x01AB;
-  t['tparen'] = 0x24AF;
-  t['trademark'] = 0x2122;
-  t['trademarksans'] = 0xF8EA;
-  t['trademarkserif'] = 0xF6DB;
-  t['tretroflexhook'] = 0x0288;
-  t['triagdn'] = 0x25BC;
-  t['triaglf'] = 0x25C4;
-  t['triagrt'] = 0x25BA;
-  t['triagup'] = 0x25B2;
-  t['ts'] = 0x02A6;
-  t['tsadi'] = 0x05E6;
-  t['tsadidagesh'] = 0xFB46;
-  t['tsadidageshhebrew'] = 0xFB46;
-  t['tsadihebrew'] = 0x05E6;
-  t['tsecyrillic'] = 0x0446;
-  t['tsere'] = 0x05B5;
-  t['tsere12'] = 0x05B5;
-  t['tsere1e'] = 0x05B5;
-  t['tsere2b'] = 0x05B5;
-  t['tserehebrew'] = 0x05B5;
-  t['tserenarrowhebrew'] = 0x05B5;
-  t['tserequarterhebrew'] = 0x05B5;
-  t['tserewidehebrew'] = 0x05B5;
-  t['tshecyrillic'] = 0x045B;
-  t['tsuperior'] = 0xF6F3;
-  t['ttabengali'] = 0x099F;
-  t['ttadeva'] = 0x091F;
-  t['ttagujarati'] = 0x0A9F;
-  t['ttagurmukhi'] = 0x0A1F;
-  t['tteharabic'] = 0x0679;
-  t['ttehfinalarabic'] = 0xFB67;
-  t['ttehinitialarabic'] = 0xFB68;
-  t['ttehmedialarabic'] = 0xFB69;
-  t['tthabengali'] = 0x09A0;
-  t['tthadeva'] = 0x0920;
-  t['tthagujarati'] = 0x0AA0;
-  t['tthagurmukhi'] = 0x0A20;
-  t['tturned'] = 0x0287;
-  t['tuhiragana'] = 0x3064;
-  t['tukatakana'] = 0x30C4;
-  t['tukatakanahalfwidth'] = 0xFF82;
-  t['tusmallhiragana'] = 0x3063;
-  t['tusmallkatakana'] = 0x30C3;
-  t['tusmallkatakanahalfwidth'] = 0xFF6F;
-  t['twelvecircle'] = 0x246B;
-  t['twelveparen'] = 0x247F;
-  t['twelveperiod'] = 0x2493;
-  t['twelveroman'] = 0x217B;
-  t['twentycircle'] = 0x2473;
-  t['twentyhangzhou'] = 0x5344;
-  t['twentyparen'] = 0x2487;
-  t['twentyperiod'] = 0x249B;
-  t['two'] = 0x0032;
-  t['twoarabic'] = 0x0662;
-  t['twobengali'] = 0x09E8;
-  t['twocircle'] = 0x2461;
-  t['twocircleinversesansserif'] = 0x278B;
-  t['twodeva'] = 0x0968;
-  t['twodotenleader'] = 0x2025;
-  t['twodotleader'] = 0x2025;
-  t['twodotleadervertical'] = 0xFE30;
-  t['twogujarati'] = 0x0AE8;
-  t['twogurmukhi'] = 0x0A68;
-  t['twohackarabic'] = 0x0662;
-  t['twohangzhou'] = 0x3022;
-  t['twoideographicparen'] = 0x3221;
-  t['twoinferior'] = 0x2082;
-  t['twomonospace'] = 0xFF12;
-  t['twonumeratorbengali'] = 0x09F5;
-  t['twooldstyle'] = 0xF732;
-  t['twoparen'] = 0x2475;
-  t['twoperiod'] = 0x2489;
-  t['twopersian'] = 0x06F2;
-  t['tworoman'] = 0x2171;
-  t['twostroke'] = 0x01BB;
-  t['twosuperior'] = 0x00B2;
-  t['twothai'] = 0x0E52;
-  t['twothirds'] = 0x2154;
-  t['u'] = 0x0075;
-  t['uacute'] = 0x00FA;
-  t['ubar'] = 0x0289;
-  t['ubengali'] = 0x0989;
-  t['ubopomofo'] = 0x3128;
-  t['ubreve'] = 0x016D;
-  t['ucaron'] = 0x01D4;
-  t['ucircle'] = 0x24E4;
-  t['ucircumflex'] = 0x00FB;
-  t['ucircumflexbelow'] = 0x1E77;
-  t['ucyrillic'] = 0x0443;
-  t['udattadeva'] = 0x0951;
-  t['udblacute'] = 0x0171;
-  t['udblgrave'] = 0x0215;
-  t['udeva'] = 0x0909;
-  t['udieresis'] = 0x00FC;
-  t['udieresisacute'] = 0x01D8;
-  t['udieresisbelow'] = 0x1E73;
-  t['udieresiscaron'] = 0x01DA;
-  t['udieresiscyrillic'] = 0x04F1;
-  t['udieresisgrave'] = 0x01DC;
-  t['udieresismacron'] = 0x01D6;
-  t['udotbelow'] = 0x1EE5;
-  t['ugrave'] = 0x00F9;
-  t['ugujarati'] = 0x0A89;
-  t['ugurmukhi'] = 0x0A09;
-  t['uhiragana'] = 0x3046;
-  t['uhookabove'] = 0x1EE7;
-  t['uhorn'] = 0x01B0;
-  t['uhornacute'] = 0x1EE9;
-  t['uhorndotbelow'] = 0x1EF1;
-  t['uhorngrave'] = 0x1EEB;
-  t['uhornhookabove'] = 0x1EED;
-  t['uhorntilde'] = 0x1EEF;
-  t['uhungarumlaut'] = 0x0171;
-  t['uhungarumlautcyrillic'] = 0x04F3;
-  t['uinvertedbreve'] = 0x0217;
-  t['ukatakana'] = 0x30A6;
-  t['ukatakanahalfwidth'] = 0xFF73;
-  t['ukcyrillic'] = 0x0479;
-  t['ukorean'] = 0x315C;
-  t['umacron'] = 0x016B;
-  t['umacroncyrillic'] = 0x04EF;
-  t['umacrondieresis'] = 0x1E7B;
-  t['umatragurmukhi'] = 0x0A41;
-  t['umonospace'] = 0xFF55;
-  t['underscore'] = 0x005F;
-  t['underscoredbl'] = 0x2017;
-  t['underscoremonospace'] = 0xFF3F;
-  t['underscorevertical'] = 0xFE33;
-  t['underscorewavy'] = 0xFE4F;
-  t['union'] = 0x222A;
-  t['universal'] = 0x2200;
-  t['uogonek'] = 0x0173;
-  t['uparen'] = 0x24B0;
-  t['upblock'] = 0x2580;
-  t['upperdothebrew'] = 0x05C4;
-  t['upsilon'] = 0x03C5;
-  t['upsilondieresis'] = 0x03CB;
-  t['upsilondieresistonos'] = 0x03B0;
-  t['upsilonlatin'] = 0x028A;
-  t['upsilontonos'] = 0x03CD;
-  t['uptackbelowcmb'] = 0x031D;
-  t['uptackmod'] = 0x02D4;
-  t['uragurmukhi'] = 0x0A73;
-  t['uring'] = 0x016F;
-  t['ushortcyrillic'] = 0x045E;
-  t['usmallhiragana'] = 0x3045;
-  t['usmallkatakana'] = 0x30A5;
-  t['usmallkatakanahalfwidth'] = 0xFF69;
-  t['ustraightcyrillic'] = 0x04AF;
-  t['ustraightstrokecyrillic'] = 0x04B1;
-  t['utilde'] = 0x0169;
-  t['utildeacute'] = 0x1E79;
-  t['utildebelow'] = 0x1E75;
-  t['uubengali'] = 0x098A;
-  t['uudeva'] = 0x090A;
-  t['uugujarati'] = 0x0A8A;
-  t['uugurmukhi'] = 0x0A0A;
-  t['uumatragurmukhi'] = 0x0A42;
-  t['uuvowelsignbengali'] = 0x09C2;
-  t['uuvowelsigndeva'] = 0x0942;
-  t['uuvowelsigngujarati'] = 0x0AC2;
-  t['uvowelsignbengali'] = 0x09C1;
-  t['uvowelsigndeva'] = 0x0941;
-  t['uvowelsigngujarati'] = 0x0AC1;
-  t['v'] = 0x0076;
-  t['vadeva'] = 0x0935;
-  t['vagujarati'] = 0x0AB5;
-  t['vagurmukhi'] = 0x0A35;
-  t['vakatakana'] = 0x30F7;
-  t['vav'] = 0x05D5;
-  t['vavdagesh'] = 0xFB35;
-  t['vavdagesh65'] = 0xFB35;
-  t['vavdageshhebrew'] = 0xFB35;
-  t['vavhebrew'] = 0x05D5;
-  t['vavholam'] = 0xFB4B;
-  t['vavholamhebrew'] = 0xFB4B;
-  t['vavvavhebrew'] = 0x05F0;
-  t['vavyodhebrew'] = 0x05F1;
-  t['vcircle'] = 0x24E5;
-  t['vdotbelow'] = 0x1E7F;
-  t['vecyrillic'] = 0x0432;
-  t['veharabic'] = 0x06A4;
-  t['vehfinalarabic'] = 0xFB6B;
-  t['vehinitialarabic'] = 0xFB6C;
-  t['vehmedialarabic'] = 0xFB6D;
-  t['vekatakana'] = 0x30F9;
-  t['venus'] = 0x2640;
-  t['verticalbar'] = 0x007C;
-  t['verticallineabovecmb'] = 0x030D;
-  t['verticallinebelowcmb'] = 0x0329;
-  t['verticallinelowmod'] = 0x02CC;
-  t['verticallinemod'] = 0x02C8;
-  t['vewarmenian'] = 0x057E;
-  t['vhook'] = 0x028B;
-  t['vikatakana'] = 0x30F8;
-  t['viramabengali'] = 0x09CD;
-  t['viramadeva'] = 0x094D;
-  t['viramagujarati'] = 0x0ACD;
-  t['visargabengali'] = 0x0983;
-  t['visargadeva'] = 0x0903;
-  t['visargagujarati'] = 0x0A83;
-  t['vmonospace'] = 0xFF56;
-  t['voarmenian'] = 0x0578;
-  t['voicediterationhiragana'] = 0x309E;
-  t['voicediterationkatakana'] = 0x30FE;
-  t['voicedmarkkana'] = 0x309B;
-  t['voicedmarkkanahalfwidth'] = 0xFF9E;
-  t['vokatakana'] = 0x30FA;
-  t['vparen'] = 0x24B1;
-  t['vtilde'] = 0x1E7D;
-  t['vturned'] = 0x028C;
-  t['vuhiragana'] = 0x3094;
-  t['vukatakana'] = 0x30F4;
-  t['w'] = 0x0077;
-  t['wacute'] = 0x1E83;
-  t['waekorean'] = 0x3159;
-  t['wahiragana'] = 0x308F;
-  t['wakatakana'] = 0x30EF;
-  t['wakatakanahalfwidth'] = 0xFF9C;
-  t['wakorean'] = 0x3158;
-  t['wasmallhiragana'] = 0x308E;
-  t['wasmallkatakana'] = 0x30EE;
-  t['wattosquare'] = 0x3357;
-  t['wavedash'] = 0x301C;
-  t['wavyunderscorevertical'] = 0xFE34;
-  t['wawarabic'] = 0x0648;
-  t['wawfinalarabic'] = 0xFEEE;
-  t['wawhamzaabovearabic'] = 0x0624;
-  t['wawhamzaabovefinalarabic'] = 0xFE86;
-  t['wbsquare'] = 0x33DD;
-  t['wcircle'] = 0x24E6;
-  t['wcircumflex'] = 0x0175;
-  t['wdieresis'] = 0x1E85;
-  t['wdotaccent'] = 0x1E87;
-  t['wdotbelow'] = 0x1E89;
-  t['wehiragana'] = 0x3091;
-  t['weierstrass'] = 0x2118;
-  t['wekatakana'] = 0x30F1;
-  t['wekorean'] = 0x315E;
-  t['weokorean'] = 0x315D;
-  t['wgrave'] = 0x1E81;
-  t['whitebullet'] = 0x25E6;
-  t['whitecircle'] = 0x25CB;
-  t['whitecircleinverse'] = 0x25D9;
-  t['whitecornerbracketleft'] = 0x300E;
-  t['whitecornerbracketleftvertical'] = 0xFE43;
-  t['whitecornerbracketright'] = 0x300F;
-  t['whitecornerbracketrightvertical'] = 0xFE44;
-  t['whitediamond'] = 0x25C7;
-  t['whitediamondcontainingblacksmalldiamond'] = 0x25C8;
-  t['whitedownpointingsmalltriangle'] = 0x25BF;
-  t['whitedownpointingtriangle'] = 0x25BD;
-  t['whiteleftpointingsmalltriangle'] = 0x25C3;
-  t['whiteleftpointingtriangle'] = 0x25C1;
-  t['whitelenticularbracketleft'] = 0x3016;
-  t['whitelenticularbracketright'] = 0x3017;
-  t['whiterightpointingsmalltriangle'] = 0x25B9;
-  t['whiterightpointingtriangle'] = 0x25B7;
-  t['whitesmallsquare'] = 0x25AB;
-  t['whitesmilingface'] = 0x263A;
-  t['whitesquare'] = 0x25A1;
-  t['whitestar'] = 0x2606;
-  t['whitetelephone'] = 0x260F;
-  t['whitetortoiseshellbracketleft'] = 0x3018;
-  t['whitetortoiseshellbracketright'] = 0x3019;
-  t['whiteuppointingsmalltriangle'] = 0x25B5;
-  t['whiteuppointingtriangle'] = 0x25B3;
-  t['wihiragana'] = 0x3090;
-  t['wikatakana'] = 0x30F0;
-  t['wikorean'] = 0x315F;
-  t['wmonospace'] = 0xFF57;
-  t['wohiragana'] = 0x3092;
-  t['wokatakana'] = 0x30F2;
-  t['wokatakanahalfwidth'] = 0xFF66;
-  t['won'] = 0x20A9;
-  t['wonmonospace'] = 0xFFE6;
-  t['wowaenthai'] = 0x0E27;
-  t['wparen'] = 0x24B2;
-  t['wring'] = 0x1E98;
-  t['wsuperior'] = 0x02B7;
-  t['wturned'] = 0x028D;
-  t['wynn'] = 0x01BF;
-  t['x'] = 0x0078;
-  t['xabovecmb'] = 0x033D;
-  t['xbopomofo'] = 0x3112;
-  t['xcircle'] = 0x24E7;
-  t['xdieresis'] = 0x1E8D;
-  t['xdotaccent'] = 0x1E8B;
-  t['xeharmenian'] = 0x056D;
-  t['xi'] = 0x03BE;
-  t['xmonospace'] = 0xFF58;
-  t['xparen'] = 0x24B3;
-  t['xsuperior'] = 0x02E3;
-  t['y'] = 0x0079;
-  t['yaadosquare'] = 0x334E;
-  t['yabengali'] = 0x09AF;
-  t['yacute'] = 0x00FD;
-  t['yadeva'] = 0x092F;
-  t['yaekorean'] = 0x3152;
-  t['yagujarati'] = 0x0AAF;
-  t['yagurmukhi'] = 0x0A2F;
-  t['yahiragana'] = 0x3084;
-  t['yakatakana'] = 0x30E4;
-  t['yakatakanahalfwidth'] = 0xFF94;
-  t['yakorean'] = 0x3151;
-  t['yamakkanthai'] = 0x0E4E;
-  t['yasmallhiragana'] = 0x3083;
-  t['yasmallkatakana'] = 0x30E3;
-  t['yasmallkatakanahalfwidth'] = 0xFF6C;
-  t['yatcyrillic'] = 0x0463;
-  t['ycircle'] = 0x24E8;
-  t['ycircumflex'] = 0x0177;
-  t['ydieresis'] = 0x00FF;
-  t['ydotaccent'] = 0x1E8F;
-  t['ydotbelow'] = 0x1EF5;
-  t['yeharabic'] = 0x064A;
-  t['yehbarreearabic'] = 0x06D2;
-  t['yehbarreefinalarabic'] = 0xFBAF;
-  t['yehfinalarabic'] = 0xFEF2;
-  t['yehhamzaabovearabic'] = 0x0626;
-  t['yehhamzaabovefinalarabic'] = 0xFE8A;
-  t['yehhamzaaboveinitialarabic'] = 0xFE8B;
-  t['yehhamzaabovemedialarabic'] = 0xFE8C;
-  t['yehinitialarabic'] = 0xFEF3;
-  t['yehmedialarabic'] = 0xFEF4;
-  t['yehmeeminitialarabic'] = 0xFCDD;
-  t['yehmeemisolatedarabic'] = 0xFC58;
-  t['yehnoonfinalarabic'] = 0xFC94;
-  t['yehthreedotsbelowarabic'] = 0x06D1;
-  t['yekorean'] = 0x3156;
-  t['yen'] = 0x00A5;
-  t['yenmonospace'] = 0xFFE5;
-  t['yeokorean'] = 0x3155;
-  t['yeorinhieuhkorean'] = 0x3186;
-  t['yerahbenyomohebrew'] = 0x05AA;
-  t['yerahbenyomolefthebrew'] = 0x05AA;
-  t['yericyrillic'] = 0x044B;
-  t['yerudieresiscyrillic'] = 0x04F9;
-  t['yesieungkorean'] = 0x3181;
-  t['yesieungpansioskorean'] = 0x3183;
-  t['yesieungsioskorean'] = 0x3182;
-  t['yetivhebrew'] = 0x059A;
-  t['ygrave'] = 0x1EF3;
-  t['yhook'] = 0x01B4;
-  t['yhookabove'] = 0x1EF7;
-  t['yiarmenian'] = 0x0575;
-  t['yicyrillic'] = 0x0457;
-  t['yikorean'] = 0x3162;
-  t['yinyang'] = 0x262F;
-  t['yiwnarmenian'] = 0x0582;
-  t['ymonospace'] = 0xFF59;
-  t['yod'] = 0x05D9;
-  t['yoddagesh'] = 0xFB39;
-  t['yoddageshhebrew'] = 0xFB39;
-  t['yodhebrew'] = 0x05D9;
-  t['yodyodhebrew'] = 0x05F2;
-  t['yodyodpatahhebrew'] = 0xFB1F;
-  t['yohiragana'] = 0x3088;
-  t['yoikorean'] = 0x3189;
-  t['yokatakana'] = 0x30E8;
-  t['yokatakanahalfwidth'] = 0xFF96;
-  t['yokorean'] = 0x315B;
-  t['yosmallhiragana'] = 0x3087;
-  t['yosmallkatakana'] = 0x30E7;
-  t['yosmallkatakanahalfwidth'] = 0xFF6E;
-  t['yotgreek'] = 0x03F3;
-  t['yoyaekorean'] = 0x3188;
-  t['yoyakorean'] = 0x3187;
-  t['yoyakthai'] = 0x0E22;
-  t['yoyingthai'] = 0x0E0D;
-  t['yparen'] = 0x24B4;
-  t['ypogegrammeni'] = 0x037A;
-  t['ypogegrammenigreekcmb'] = 0x0345;
-  t['yr'] = 0x01A6;
-  t['yring'] = 0x1E99;
-  t['ysuperior'] = 0x02B8;
-  t['ytilde'] = 0x1EF9;
-  t['yturned'] = 0x028E;
-  t['yuhiragana'] = 0x3086;
-  t['yuikorean'] = 0x318C;
-  t['yukatakana'] = 0x30E6;
-  t['yukatakanahalfwidth'] = 0xFF95;
-  t['yukorean'] = 0x3160;
-  t['yusbigcyrillic'] = 0x046B;
-  t['yusbigiotifiedcyrillic'] = 0x046D;
-  t['yuslittlecyrillic'] = 0x0467;
-  t['yuslittleiotifiedcyrillic'] = 0x0469;
-  t['yusmallhiragana'] = 0x3085;
-  t['yusmallkatakana'] = 0x30E5;
-  t['yusmallkatakanahalfwidth'] = 0xFF6D;
-  t['yuyekorean'] = 0x318B;
-  t['yuyeokorean'] = 0x318A;
-  t['yyabengali'] = 0x09DF;
-  t['yyadeva'] = 0x095F;
-  t['z'] = 0x007A;
-  t['zaarmenian'] = 0x0566;
-  t['zacute'] = 0x017A;
-  t['zadeva'] = 0x095B;
-  t['zagurmukhi'] = 0x0A5B;
-  t['zaharabic'] = 0x0638;
-  t['zahfinalarabic'] = 0xFEC6;
-  t['zahinitialarabic'] = 0xFEC7;
-  t['zahiragana'] = 0x3056;
-  t['zahmedialarabic'] = 0xFEC8;
-  t['zainarabic'] = 0x0632;
-  t['zainfinalarabic'] = 0xFEB0;
-  t['zakatakana'] = 0x30B6;
-  t['zaqefgadolhebrew'] = 0x0595;
-  t['zaqefqatanhebrew'] = 0x0594;
-  t['zarqahebrew'] = 0x0598;
-  t['zayin'] = 0x05D6;
-  t['zayindagesh'] = 0xFB36;
-  t['zayindageshhebrew'] = 0xFB36;
-  t['zayinhebrew'] = 0x05D6;
-  t['zbopomofo'] = 0x3117;
-  t['zcaron'] = 0x017E;
-  t['zcircle'] = 0x24E9;
-  t['zcircumflex'] = 0x1E91;
-  t['zcurl'] = 0x0291;
-  t['zdot'] = 0x017C;
-  t['zdotaccent'] = 0x017C;
-  t['zdotbelow'] = 0x1E93;
-  t['zecyrillic'] = 0x0437;
-  t['zedescendercyrillic'] = 0x0499;
-  t['zedieresiscyrillic'] = 0x04DF;
-  t['zehiragana'] = 0x305C;
-  t['zekatakana'] = 0x30BC;
-  t['zero'] = 0x0030;
-  t['zeroarabic'] = 0x0660;
-  t['zerobengali'] = 0x09E6;
-  t['zerodeva'] = 0x0966;
-  t['zerogujarati'] = 0x0AE6;
-  t['zerogurmukhi'] = 0x0A66;
-  t['zerohackarabic'] = 0x0660;
-  t['zeroinferior'] = 0x2080;
-  t['zeromonospace'] = 0xFF10;
-  t['zerooldstyle'] = 0xF730;
-  t['zeropersian'] = 0x06F0;
-  t['zerosuperior'] = 0x2070;
-  t['zerothai'] = 0x0E50;
-  t['zerowidthjoiner'] = 0xFEFF;
-  t['zerowidthnonjoiner'] = 0x200C;
-  t['zerowidthspace'] = 0x200B;
-  t['zeta'] = 0x03B6;
-  t['zhbopomofo'] = 0x3113;
-  t['zhearmenian'] = 0x056A;
-  t['zhebrevecyrillic'] = 0x04C2;
-  t['zhecyrillic'] = 0x0436;
-  t['zhedescendercyrillic'] = 0x0497;
-  t['zhedieresiscyrillic'] = 0x04DD;
-  t['zihiragana'] = 0x3058;
-  t['zikatakana'] = 0x30B8;
-  t['zinorhebrew'] = 0x05AE;
-  t['zlinebelow'] = 0x1E95;
-  t['zmonospace'] = 0xFF5A;
-  t['zohiragana'] = 0x305E;
-  t['zokatakana'] = 0x30BE;
-  t['zparen'] = 0x24B5;
-  t['zretroflexhook'] = 0x0290;
-  t['zstroke'] = 0x01B6;
-  t['zuhiragana'] = 0x305A;
-  t['zukatakana'] = 0x30BA;
-  t['.notdef'] = 0x0000;
-  t['angbracketleftbig'] = 0x2329;
-  t['angbracketleftBig'] = 0x2329;
-  t['angbracketleftbigg'] = 0x2329;
-  t['angbracketleftBigg'] = 0x2329;
-  t['angbracketrightBig'] = 0x232A;
-  t['angbracketrightbig'] = 0x232A;
-  t['angbracketrightBigg'] = 0x232A;
-  t['angbracketrightbigg'] = 0x232A;
-  t['arrowhookleft'] = 0x21AA;
-  t['arrowhookright'] = 0x21A9;
-  t['arrowlefttophalf'] = 0x21BC;
-  t['arrowleftbothalf'] = 0x21BD;
-  t['arrownortheast'] = 0x2197;
-  t['arrownorthwest'] = 0x2196;
-  t['arrowrighttophalf'] = 0x21C0;
-  t['arrowrightbothalf'] = 0x21C1;
-  t['arrowsoutheast'] = 0x2198;
-  t['arrowsouthwest'] = 0x2199;
-  t['backslashbig'] = 0x2216;
-  t['backslashBig'] = 0x2216;
-  t['backslashBigg'] = 0x2216;
-  t['backslashbigg'] = 0x2216;
-  t['bardbl'] = 0x2016;
-  t['bracehtipdownleft'] = 0xFE37;
-  t['bracehtipdownright'] = 0xFE37;
-  t['bracehtipupleft'] = 0xFE38;
-  t['bracehtipupright'] = 0xFE38;
-  t['braceleftBig'] = 0x007B;
-  t['braceleftbig'] = 0x007B;
-  t['braceleftbigg'] = 0x007B;
-  t['braceleftBigg'] = 0x007B;
-  t['bracerightBig'] = 0x007D;
-  t['bracerightbig'] = 0x007D;
-  t['bracerightbigg'] = 0x007D;
-  t['bracerightBigg'] = 0x007D;
-  t['bracketleftbig'] = 0x005B;
-  t['bracketleftBig'] = 0x005B;
-  t['bracketleftbigg'] = 0x005B;
-  t['bracketleftBigg'] = 0x005B;
-  t['bracketrightBig'] = 0x005D;
-  t['bracketrightbig'] = 0x005D;
-  t['bracketrightbigg'] = 0x005D;
-  t['bracketrightBigg'] = 0x005D;
-  t['ceilingleftbig'] = 0x2308;
-  t['ceilingleftBig'] = 0x2308;
-  t['ceilingleftBigg'] = 0x2308;
-  t['ceilingleftbigg'] = 0x2308;
-  t['ceilingrightbig'] = 0x2309;
-  t['ceilingrightBig'] = 0x2309;
-  t['ceilingrightbigg'] = 0x2309;
-  t['ceilingrightBigg'] = 0x2309;
-  t['circledotdisplay'] = 0x2299;
-  t['circledottext'] = 0x2299;
-  t['circlemultiplydisplay'] = 0x2297;
-  t['circlemultiplytext'] = 0x2297;
-  t['circleplusdisplay'] = 0x2295;
-  t['circleplustext'] = 0x2295;
-  t['contintegraldisplay'] = 0x222E;
-  t['contintegraltext'] = 0x222E;
-  t['coproductdisplay'] = 0x2210;
-  t['coproducttext'] = 0x2210;
-  t['floorleftBig'] = 0x230A;
-  t['floorleftbig'] = 0x230A;
-  t['floorleftbigg'] = 0x230A;
-  t['floorleftBigg'] = 0x230A;
-  t['floorrightbig'] = 0x230B;
-  t['floorrightBig'] = 0x230B;
-  t['floorrightBigg'] = 0x230B;
-  t['floorrightbigg'] = 0x230B;
-  t['hatwide'] = 0x0302;
-  t['hatwider'] = 0x0302;
-  t['hatwidest'] = 0x0302;
-  t['intercal'] = 0x1D40;
-  t['integraldisplay'] = 0x222B;
-  t['integraltext'] = 0x222B;
-  t['intersectiondisplay'] = 0x22C2;
-  t['intersectiontext'] = 0x22C2;
-  t['logicalanddisplay'] = 0x2227;
-  t['logicalandtext'] = 0x2227;
-  t['logicalordisplay'] = 0x2228;
-  t['logicalortext'] = 0x2228;
-  t['parenleftBig'] = 0x0028;
-  t['parenleftbig'] = 0x0028;
-  t['parenleftBigg'] = 0x0028;
-  t['parenleftbigg'] = 0x0028;
-  t['parenrightBig'] = 0x0029;
-  t['parenrightbig'] = 0x0029;
-  t['parenrightBigg'] = 0x0029;
-  t['parenrightbigg'] = 0x0029;
-  t['prime'] = 0x2032;
-  t['productdisplay'] = 0x220F;
-  t['producttext'] = 0x220F;
-  t['radicalbig'] = 0x221A;
-  t['radicalBig'] = 0x221A;
-  t['radicalBigg'] = 0x221A;
-  t['radicalbigg'] = 0x221A;
-  t['radicalbt'] = 0x221A;
-  t['radicaltp'] = 0x221A;
-  t['radicalvertex'] = 0x221A;
-  t['slashbig'] = 0x002F;
-  t['slashBig'] = 0x002F;
-  t['slashBigg'] = 0x002F;
-  t['slashbigg'] = 0x002F;
-  t['summationdisplay'] = 0x2211;
-  t['summationtext'] = 0x2211;
-  t['tildewide'] = 0x02DC;
-  t['tildewider'] = 0x02DC;
-  t['tildewidest'] = 0x02DC;
-  t['uniondisplay'] = 0x22C3;
-  t['unionmultidisplay'] = 0x228E;
-  t['unionmultitext'] = 0x228E;
-  t['unionsqdisplay'] = 0x2294;
-  t['unionsqtext'] = 0x2294;
-  t['uniontext'] = 0x22C3;
-  t['vextenddouble'] = 0x2225;
-  t['vextendsingle'] = 0x2223;
+ t['A'] = 0x0041;
+ t['AE'] = 0x00C6;
+ t['AEacute'] = 0x01FC;
+ t['AEmacron'] = 0x01E2;
+ t['AEsmall'] = 0xF7E6;
+ t['Aacute'] = 0x00C1;
+ t['Aacutesmall'] = 0xF7E1;
+ t['Abreve'] = 0x0102;
+ t['Abreveacute'] = 0x1EAE;
+ t['Abrevecyrillic'] = 0x04D0;
+ t['Abrevedotbelow'] = 0x1EB6;
+ t['Abrevegrave'] = 0x1EB0;
+ t['Abrevehookabove'] = 0x1EB2;
+ t['Abrevetilde'] = 0x1EB4;
+ t['Acaron'] = 0x01CD;
+ t['Acircle'] = 0x24B6;
+ t['Acircumflex'] = 0x00C2;
+ t['Acircumflexacute'] = 0x1EA4;
+ t['Acircumflexdotbelow'] = 0x1EAC;
+ t['Acircumflexgrave'] = 0x1EA6;
+ t['Acircumflexhookabove'] = 0x1EA8;
+ t['Acircumflexsmall'] = 0xF7E2;
+ t['Acircumflextilde'] = 0x1EAA;
+ t['Acute'] = 0xF6C9;
+ t['Acutesmall'] = 0xF7B4;
+ t['Acyrillic'] = 0x0410;
+ t['Adblgrave'] = 0x0200;
+ t['Adieresis'] = 0x00C4;
+ t['Adieresiscyrillic'] = 0x04D2;
+ t['Adieresismacron'] = 0x01DE;
+ t['Adieresissmall'] = 0xF7E4;
+ t['Adotbelow'] = 0x1EA0;
+ t['Adotmacron'] = 0x01E0;
+ t['Agrave'] = 0x00C0;
+ t['Agravesmall'] = 0xF7E0;
+ t['Ahookabove'] = 0x1EA2;
+ t['Aiecyrillic'] = 0x04D4;
+ t['Ainvertedbreve'] = 0x0202;
+ t['Alpha'] = 0x0391;
+ t['Alphatonos'] = 0x0386;
+ t['Amacron'] = 0x0100;
+ t['Amonospace'] = 0xFF21;
+ t['Aogonek'] = 0x0104;
+ t['Aring'] = 0x00C5;
+ t['Aringacute'] = 0x01FA;
+ t['Aringbelow'] = 0x1E00;
+ t['Aringsmall'] = 0xF7E5;
+ t['Asmall'] = 0xF761;
+ t['Atilde'] = 0x00C3;
+ t['Atildesmall'] = 0xF7E3;
+ t['Aybarmenian'] = 0x0531;
+ t['B'] = 0x0042;
+ t['Bcircle'] = 0x24B7;
+ t['Bdotaccent'] = 0x1E02;
+ t['Bdotbelow'] = 0x1E04;
+ t['Becyrillic'] = 0x0411;
+ t['Benarmenian'] = 0x0532;
+ t['Beta'] = 0x0392;
+ t['Bhook'] = 0x0181;
+ t['Blinebelow'] = 0x1E06;
+ t['Bmonospace'] = 0xFF22;
+ t['Brevesmall'] = 0xF6F4;
+ t['Bsmall'] = 0xF762;
+ t['Btopbar'] = 0x0182;
+ t['C'] = 0x0043;
+ t['Caarmenian'] = 0x053E;
+ t['Cacute'] = 0x0106;
+ t['Caron'] = 0xF6CA;
+ t['Caronsmall'] = 0xF6F5;
+ t['Ccaron'] = 0x010C;
+ t['Ccedilla'] = 0x00C7;
+ t['Ccedillaacute'] = 0x1E08;
+ t['Ccedillasmall'] = 0xF7E7;
+ t['Ccircle'] = 0x24B8;
+ t['Ccircumflex'] = 0x0108;
+ t['Cdot'] = 0x010A;
+ t['Cdotaccent'] = 0x010A;
+ t['Cedillasmall'] = 0xF7B8;
+ t['Chaarmenian'] = 0x0549;
+ t['Cheabkhasiancyrillic'] = 0x04BC;
+ t['Checyrillic'] = 0x0427;
+ t['Chedescenderabkhasiancyrillic'] = 0x04BE;
+ t['Chedescendercyrillic'] = 0x04B6;
+ t['Chedieresiscyrillic'] = 0x04F4;
+ t['Cheharmenian'] = 0x0543;
+ t['Chekhakassiancyrillic'] = 0x04CB;
+ t['Cheverticalstrokecyrillic'] = 0x04B8;
+ t['Chi'] = 0x03A7;
+ t['Chook'] = 0x0187;
+ t['Circumflexsmall'] = 0xF6F6;
+ t['Cmonospace'] = 0xFF23;
+ t['Coarmenian'] = 0x0551;
+ t['Csmall'] = 0xF763;
+ t['D'] = 0x0044;
+ t['DZ'] = 0x01F1;
+ t['DZcaron'] = 0x01C4;
+ t['Daarmenian'] = 0x0534;
+ t['Dafrican'] = 0x0189;
+ t['Dcaron'] = 0x010E;
+ t['Dcedilla'] = 0x1E10;
+ t['Dcircle'] = 0x24B9;
+ t['Dcircumflexbelow'] = 0x1E12;
+ t['Dcroat'] = 0x0110;
+ t['Ddotaccent'] = 0x1E0A;
+ t['Ddotbelow'] = 0x1E0C;
+ t['Decyrillic'] = 0x0414;
+ t['Deicoptic'] = 0x03EE;
+ t['Delta'] = 0x2206;
+ t['Deltagreek'] = 0x0394;
+ t['Dhook'] = 0x018A;
+ t['Dieresis'] = 0xF6CB;
+ t['DieresisAcute'] = 0xF6CC;
+ t['DieresisGrave'] = 0xF6CD;
+ t['Dieresissmall'] = 0xF7A8;
+ t['Digammagreek'] = 0x03DC;
+ t['Djecyrillic'] = 0x0402;
+ t['Dlinebelow'] = 0x1E0E;
+ t['Dmonospace'] = 0xFF24;
+ t['Dotaccentsmall'] = 0xF6F7;
+ t['Dslash'] = 0x0110;
+ t['Dsmall'] = 0xF764;
+ t['Dtopbar'] = 0x018B;
+ t['Dz'] = 0x01F2;
+ t['Dzcaron'] = 0x01C5;
+ t['Dzeabkhasiancyrillic'] = 0x04E0;
+ t['Dzecyrillic'] = 0x0405;
+ t['Dzhecyrillic'] = 0x040F;
+ t['E'] = 0x0045;
+ t['Eacute'] = 0x00C9;
+ t['Eacutesmall'] = 0xF7E9;
+ t['Ebreve'] = 0x0114;
+ t['Ecaron'] = 0x011A;
+ t['Ecedillabreve'] = 0x1E1C;
+ t['Echarmenian'] = 0x0535;
+ t['Ecircle'] = 0x24BA;
+ t['Ecircumflex'] = 0x00CA;
+ t['Ecircumflexacute'] = 0x1EBE;
+ t['Ecircumflexbelow'] = 0x1E18;
+ t['Ecircumflexdotbelow'] = 0x1EC6;
+ t['Ecircumflexgrave'] = 0x1EC0;
+ t['Ecircumflexhookabove'] = 0x1EC2;
+ t['Ecircumflexsmall'] = 0xF7EA;
+ t['Ecircumflextilde'] = 0x1EC4;
+ t['Ecyrillic'] = 0x0404;
+ t['Edblgrave'] = 0x0204;
+ t['Edieresis'] = 0x00CB;
+ t['Edieresissmall'] = 0xF7EB;
+ t['Edot'] = 0x0116;
+ t['Edotaccent'] = 0x0116;
+ t['Edotbelow'] = 0x1EB8;
+ t['Efcyrillic'] = 0x0424;
+ t['Egrave'] = 0x00C8;
+ t['Egravesmall'] = 0xF7E8;
+ t['Eharmenian'] = 0x0537;
+ t['Ehookabove'] = 0x1EBA;
+ t['Eightroman'] = 0x2167;
+ t['Einvertedbreve'] = 0x0206;
+ t['Eiotifiedcyrillic'] = 0x0464;
+ t['Elcyrillic'] = 0x041B;
+ t['Elevenroman'] = 0x216A;
+ t['Emacron'] = 0x0112;
+ t['Emacronacute'] = 0x1E16;
+ t['Emacrongrave'] = 0x1E14;
+ t['Emcyrillic'] = 0x041C;
+ t['Emonospace'] = 0xFF25;
+ t['Encyrillic'] = 0x041D;
+ t['Endescendercyrillic'] = 0x04A2;
+ t['Eng'] = 0x014A;
+ t['Enghecyrillic'] = 0x04A4;
+ t['Enhookcyrillic'] = 0x04C7;
+ t['Eogonek'] = 0x0118;
+ t['Eopen'] = 0x0190;
+ t['Epsilon'] = 0x0395;
+ t['Epsilontonos'] = 0x0388;
+ t['Ercyrillic'] = 0x0420;
+ t['Ereversed'] = 0x018E;
+ t['Ereversedcyrillic'] = 0x042D;
+ t['Escyrillic'] = 0x0421;
+ t['Esdescendercyrillic'] = 0x04AA;
+ t['Esh'] = 0x01A9;
+ t['Esmall'] = 0xF765;
+ t['Eta'] = 0x0397;
+ t['Etarmenian'] = 0x0538;
+ t['Etatonos'] = 0x0389;
+ t['Eth'] = 0x00D0;
+ t['Ethsmall'] = 0xF7F0;
+ t['Etilde'] = 0x1EBC;
+ t['Etildebelow'] = 0x1E1A;
+ t['Euro'] = 0x20AC;
+ t['Ezh'] = 0x01B7;
+ t['Ezhcaron'] = 0x01EE;
+ t['Ezhreversed'] = 0x01B8;
+ t['F'] = 0x0046;
+ t['Fcircle'] = 0x24BB;
+ t['Fdotaccent'] = 0x1E1E;
+ t['Feharmenian'] = 0x0556;
+ t['Feicoptic'] = 0x03E4;
+ t['Fhook'] = 0x0191;
+ t['Fitacyrillic'] = 0x0472;
+ t['Fiveroman'] = 0x2164;
+ t['Fmonospace'] = 0xFF26;
+ t['Fourroman'] = 0x2163;
+ t['Fsmall'] = 0xF766;
+ t['G'] = 0x0047;
+ t['GBsquare'] = 0x3387;
+ t['Gacute'] = 0x01F4;
+ t['Gamma'] = 0x0393;
+ t['Gammaafrican'] = 0x0194;
+ t['Gangiacoptic'] = 0x03EA;
+ t['Gbreve'] = 0x011E;
+ t['Gcaron'] = 0x01E6;
+ t['Gcedilla'] = 0x0122;
+ t['Gcircle'] = 0x24BC;
+ t['Gcircumflex'] = 0x011C;
+ t['Gcommaaccent'] = 0x0122;
+ t['Gdot'] = 0x0120;
+ t['Gdotaccent'] = 0x0120;
+ t['Gecyrillic'] = 0x0413;
+ t['Ghadarmenian'] = 0x0542;
+ t['Ghemiddlehookcyrillic'] = 0x0494;
+ t['Ghestrokecyrillic'] = 0x0492;
+ t['Gheupturncyrillic'] = 0x0490;
+ t['Ghook'] = 0x0193;
+ t['Gimarmenian'] = 0x0533;
+ t['Gjecyrillic'] = 0x0403;
+ t['Gmacron'] = 0x1E20;
+ t['Gmonospace'] = 0xFF27;
+ t['Grave'] = 0xF6CE;
+ t['Gravesmall'] = 0xF760;
+ t['Gsmall'] = 0xF767;
+ t['Gsmallhook'] = 0x029B;
+ t['Gstroke'] = 0x01E4;
+ t['H'] = 0x0048;
+ t['H18533'] = 0x25CF;
+ t['H18543'] = 0x25AA;
+ t['H18551'] = 0x25AB;
+ t['H22073'] = 0x25A1;
+ t['HPsquare'] = 0x33CB;
+ t['Haabkhasiancyrillic'] = 0x04A8;
+ t['Hadescendercyrillic'] = 0x04B2;
+ t['Hardsigncyrillic'] = 0x042A;
+ t['Hbar'] = 0x0126;
+ t['Hbrevebelow'] = 0x1E2A;
+ t['Hcedilla'] = 0x1E28;
+ t['Hcircle'] = 0x24BD;
+ t['Hcircumflex'] = 0x0124;
+ t['Hdieresis'] = 0x1E26;
+ t['Hdotaccent'] = 0x1E22;
+ t['Hdotbelow'] = 0x1E24;
+ t['Hmonospace'] = 0xFF28;
+ t['Hoarmenian'] = 0x0540;
+ t['Horicoptic'] = 0x03E8;
+ t['Hsmall'] = 0xF768;
+ t['Hungarumlaut'] = 0xF6CF;
+ t['Hungarumlautsmall'] = 0xF6F8;
+ t['Hzsquare'] = 0x3390;
+ t['I'] = 0x0049;
+ t['IAcyrillic'] = 0x042F;
+ t['IJ'] = 0x0132;
+ t['IUcyrillic'] = 0x042E;
+ t['Iacute'] = 0x00CD;
+ t['Iacutesmall'] = 0xF7ED;
+ t['Ibreve'] = 0x012C;
+ t['Icaron'] = 0x01CF;
+ t['Icircle'] = 0x24BE;
+ t['Icircumflex'] = 0x00CE;
+ t['Icircumflexsmall'] = 0xF7EE;
+ t['Icyrillic'] = 0x0406;
+ t['Idblgrave'] = 0x0208;
+ t['Idieresis'] = 0x00CF;
+ t['Idieresisacute'] = 0x1E2E;
+ t['Idieresiscyrillic'] = 0x04E4;
+ t['Idieresissmall'] = 0xF7EF;
+ t['Idot'] = 0x0130;
+ t['Idotaccent'] = 0x0130;
+ t['Idotbelow'] = 0x1ECA;
+ t['Iebrevecyrillic'] = 0x04D6;
+ t['Iecyrillic'] = 0x0415;
+ t['Ifraktur'] = 0x2111;
+ t['Igrave'] = 0x00CC;
+ t['Igravesmall'] = 0xF7EC;
+ t['Ihookabove'] = 0x1EC8;
+ t['Iicyrillic'] = 0x0418;
+ t['Iinvertedbreve'] = 0x020A;
+ t['Iishortcyrillic'] = 0x0419;
+ t['Imacron'] = 0x012A;
+ t['Imacroncyrillic'] = 0x04E2;
+ t['Imonospace'] = 0xFF29;
+ t['Iniarmenian'] = 0x053B;
+ t['Iocyrillic'] = 0x0401;
+ t['Iogonek'] = 0x012E;
+ t['Iota'] = 0x0399;
+ t['Iotaafrican'] = 0x0196;
+ t['Iotadieresis'] = 0x03AA;
+ t['Iotatonos'] = 0x038A;
+ t['Ismall'] = 0xF769;
+ t['Istroke'] = 0x0197;
+ t['Itilde'] = 0x0128;
+ t['Itildebelow'] = 0x1E2C;
+ t['Izhitsacyrillic'] = 0x0474;
+ t['Izhitsadblgravecyrillic'] = 0x0476;
+ t['J'] = 0x004A;
+ t['Jaarmenian'] = 0x0541;
+ t['Jcircle'] = 0x24BF;
+ t['Jcircumflex'] = 0x0134;
+ t['Jecyrillic'] = 0x0408;
+ t['Jheharmenian'] = 0x054B;
+ t['Jmonospace'] = 0xFF2A;
+ t['Jsmall'] = 0xF76A;
+ t['K'] = 0x004B;
+ t['KBsquare'] = 0x3385;
+ t['KKsquare'] = 0x33CD;
+ t['Kabashkircyrillic'] = 0x04A0;
+ t['Kacute'] = 0x1E30;
+ t['Kacyrillic'] = 0x041A;
+ t['Kadescendercyrillic'] = 0x049A;
+ t['Kahookcyrillic'] = 0x04C3;
+ t['Kappa'] = 0x039A;
+ t['Kastrokecyrillic'] = 0x049E;
+ t['Kaverticalstrokecyrillic'] = 0x049C;
+ t['Kcaron'] = 0x01E8;
+ t['Kcedilla'] = 0x0136;
+ t['Kcircle'] = 0x24C0;
+ t['Kcommaaccent'] = 0x0136;
+ t['Kdotbelow'] = 0x1E32;
+ t['Keharmenian'] = 0x0554;
+ t['Kenarmenian'] = 0x053F;
+ t['Khacyrillic'] = 0x0425;
+ t['Kheicoptic'] = 0x03E6;
+ t['Khook'] = 0x0198;
+ t['Kjecyrillic'] = 0x040C;
+ t['Klinebelow'] = 0x1E34;
+ t['Kmonospace'] = 0xFF2B;
+ t['Koppacyrillic'] = 0x0480;
+ t['Koppagreek'] = 0x03DE;
+ t['Ksicyrillic'] = 0x046E;
+ t['Ksmall'] = 0xF76B;
+ t['L'] = 0x004C;
+ t['LJ'] = 0x01C7;
+ t['LL'] = 0xF6BF;
+ t['Lacute'] = 0x0139;
+ t['Lambda'] = 0x039B;
+ t['Lcaron'] = 0x013D;
+ t['Lcedilla'] = 0x013B;
+ t['Lcircle'] = 0x24C1;
+ t['Lcircumflexbelow'] = 0x1E3C;
+ t['Lcommaaccent'] = 0x013B;
+ t['Ldot'] = 0x013F;
+ t['Ldotaccent'] = 0x013F;
+ t['Ldotbelow'] = 0x1E36;
+ t['Ldotbelowmacron'] = 0x1E38;
+ t['Liwnarmenian'] = 0x053C;
+ t['Lj'] = 0x01C8;
+ t['Ljecyrillic'] = 0x0409;
+ t['Llinebelow'] = 0x1E3A;
+ t['Lmonospace'] = 0xFF2C;
+ t['Lslash'] = 0x0141;
+ t['Lslashsmall'] = 0xF6F9;
+ t['Lsmall'] = 0xF76C;
+ t['M'] = 0x004D;
+ t['MBsquare'] = 0x3386;
+ t['Macron'] = 0xF6D0;
+ t['Macronsmall'] = 0xF7AF;
+ t['Macute'] = 0x1E3E;
+ t['Mcircle'] = 0x24C2;
+ t['Mdotaccent'] = 0x1E40;
+ t['Mdotbelow'] = 0x1E42;
+ t['Menarmenian'] = 0x0544;
+ t['Mmonospace'] = 0xFF2D;
+ t['Msmall'] = 0xF76D;
+ t['Mturned'] = 0x019C;
+ t['Mu'] = 0x039C;
+ t['N'] = 0x004E;
+ t['NJ'] = 0x01CA;
+ t['Nacute'] = 0x0143;
+ t['Ncaron'] = 0x0147;
+ t['Ncedilla'] = 0x0145;
+ t['Ncircle'] = 0x24C3;
+ t['Ncircumflexbelow'] = 0x1E4A;
+ t['Ncommaaccent'] = 0x0145;
+ t['Ndotaccent'] = 0x1E44;
+ t['Ndotbelow'] = 0x1E46;
+ t['Nhookleft'] = 0x019D;
+ t['Nineroman'] = 0x2168;
+ t['Nj'] = 0x01CB;
+ t['Njecyrillic'] = 0x040A;
+ t['Nlinebelow'] = 0x1E48;
+ t['Nmonospace'] = 0xFF2E;
+ t['Nowarmenian'] = 0x0546;
+ t['Nsmall'] = 0xF76E;
+ t['Ntilde'] = 0x00D1;
+ t['Ntildesmall'] = 0xF7F1;
+ t['Nu'] = 0x039D;
+ t['O'] = 0x004F;
+ t['OE'] = 0x0152;
+ t['OEsmall'] = 0xF6FA;
+ t['Oacute'] = 0x00D3;
+ t['Oacutesmall'] = 0xF7F3;
+ t['Obarredcyrillic'] = 0x04E8;
+ t['Obarreddieresiscyrillic'] = 0x04EA;
+ t['Obreve'] = 0x014E;
+ t['Ocaron'] = 0x01D1;
+ t['Ocenteredtilde'] = 0x019F;
+ t['Ocircle'] = 0x24C4;
+ t['Ocircumflex'] = 0x00D4;
+ t['Ocircumflexacute'] = 0x1ED0;
+ t['Ocircumflexdotbelow'] = 0x1ED8;
+ t['Ocircumflexgrave'] = 0x1ED2;
+ t['Ocircumflexhookabove'] = 0x1ED4;
+ t['Ocircumflexsmall'] = 0xF7F4;
+ t['Ocircumflextilde'] = 0x1ED6;
+ t['Ocyrillic'] = 0x041E;
+ t['Odblacute'] = 0x0150;
+ t['Odblgrave'] = 0x020C;
+ t['Odieresis'] = 0x00D6;
+ t['Odieresiscyrillic'] = 0x04E6;
+ t['Odieresissmall'] = 0xF7F6;
+ t['Odotbelow'] = 0x1ECC;
+ t['Ogoneksmall'] = 0xF6FB;
+ t['Ograve'] = 0x00D2;
+ t['Ogravesmall'] = 0xF7F2;
+ t['Oharmenian'] = 0x0555;
+ t['Ohm'] = 0x2126;
+ t['Ohookabove'] = 0x1ECE;
+ t['Ohorn'] = 0x01A0;
+ t['Ohornacute'] = 0x1EDA;
+ t['Ohorndotbelow'] = 0x1EE2;
+ t['Ohorngrave'] = 0x1EDC;
+ t['Ohornhookabove'] = 0x1EDE;
+ t['Ohorntilde'] = 0x1EE0;
+ t['Ohungarumlaut'] = 0x0150;
+ t['Oi'] = 0x01A2;
+ t['Oinvertedbreve'] = 0x020E;
+ t['Omacron'] = 0x014C;
+ t['Omacronacute'] = 0x1E52;
+ t['Omacrongrave'] = 0x1E50;
+ t['Omega'] = 0x2126;
+ t['Omegacyrillic'] = 0x0460;
+ t['Omegagreek'] = 0x03A9;
+ t['Omegaroundcyrillic'] = 0x047A;
+ t['Omegatitlocyrillic'] = 0x047C;
+ t['Omegatonos'] = 0x038F;
+ t['Omicron'] = 0x039F;
+ t['Omicrontonos'] = 0x038C;
+ t['Omonospace'] = 0xFF2F;
+ t['Oneroman'] = 0x2160;
+ t['Oogonek'] = 0x01EA;
+ t['Oogonekmacron'] = 0x01EC;
+ t['Oopen'] = 0x0186;
+ t['Oslash'] = 0x00D8;
+ t['Oslashacute'] = 0x01FE;
+ t['Oslashsmall'] = 0xF7F8;
+ t['Osmall'] = 0xF76F;
+ t['Ostrokeacute'] = 0x01FE;
+ t['Otcyrillic'] = 0x047E;
+ t['Otilde'] = 0x00D5;
+ t['Otildeacute'] = 0x1E4C;
+ t['Otildedieresis'] = 0x1E4E;
+ t['Otildesmall'] = 0xF7F5;
+ t['P'] = 0x0050;
+ t['Pacute'] = 0x1E54;
+ t['Pcircle'] = 0x24C5;
+ t['Pdotaccent'] = 0x1E56;
+ t['Pecyrillic'] = 0x041F;
+ t['Peharmenian'] = 0x054A;
+ t['Pemiddlehookcyrillic'] = 0x04A6;
+ t['Phi'] = 0x03A6;
+ t['Phook'] = 0x01A4;
+ t['Pi'] = 0x03A0;
+ t['Piwrarmenian'] = 0x0553;
+ t['Pmonospace'] = 0xFF30;
+ t['Psi'] = 0x03A8;
+ t['Psicyrillic'] = 0x0470;
+ t['Psmall'] = 0xF770;
+ t['Q'] = 0x0051;
+ t['Qcircle'] = 0x24C6;
+ t['Qmonospace'] = 0xFF31;
+ t['Qsmall'] = 0xF771;
+ t['R'] = 0x0052;
+ t['Raarmenian'] = 0x054C;
+ t['Racute'] = 0x0154;
+ t['Rcaron'] = 0x0158;
+ t['Rcedilla'] = 0x0156;
+ t['Rcircle'] = 0x24C7;
+ t['Rcommaaccent'] = 0x0156;
+ t['Rdblgrave'] = 0x0210;
+ t['Rdotaccent'] = 0x1E58;
+ t['Rdotbelow'] = 0x1E5A;
+ t['Rdotbelowmacron'] = 0x1E5C;
+ t['Reharmenian'] = 0x0550;
+ t['Rfraktur'] = 0x211C;
+ t['Rho'] = 0x03A1;
+ t['Ringsmall'] = 0xF6FC;
+ t['Rinvertedbreve'] = 0x0212;
+ t['Rlinebelow'] = 0x1E5E;
+ t['Rmonospace'] = 0xFF32;
+ t['Rsmall'] = 0xF772;
+ t['Rsmallinverted'] = 0x0281;
+ t['Rsmallinvertedsuperior'] = 0x02B6;
+ t['S'] = 0x0053;
+ t['SF010000'] = 0x250C;
+ t['SF020000'] = 0x2514;
+ t['SF030000'] = 0x2510;
+ t['SF040000'] = 0x2518;
+ t['SF050000'] = 0x253C;
+ t['SF060000'] = 0x252C;
+ t['SF070000'] = 0x2534;
+ t['SF080000'] = 0x251C;
+ t['SF090000'] = 0x2524;
+ t['SF100000'] = 0x2500;
+ t['SF110000'] = 0x2502;
+ t['SF190000'] = 0x2561;
+ t['SF200000'] = 0x2562;
+ t['SF210000'] = 0x2556;
+ t['SF220000'] = 0x2555;
+ t['SF230000'] = 0x2563;
+ t['SF240000'] = 0x2551;
+ t['SF250000'] = 0x2557;
+ t['SF260000'] = 0x255D;
+ t['SF270000'] = 0x255C;
+ t['SF280000'] = 0x255B;
+ t['SF360000'] = 0x255E;
+ t['SF370000'] = 0x255F;
+ t['SF380000'] = 0x255A;
+ t['SF390000'] = 0x2554;
+ t['SF400000'] = 0x2569;
+ t['SF410000'] = 0x2566;
+ t['SF420000'] = 0x2560;
+ t['SF430000'] = 0x2550;
+ t['SF440000'] = 0x256C;
+ t['SF450000'] = 0x2567;
+ t['SF460000'] = 0x2568;
+ t['SF470000'] = 0x2564;
+ t['SF480000'] = 0x2565;
+ t['SF490000'] = 0x2559;
+ t['SF500000'] = 0x2558;
+ t['SF510000'] = 0x2552;
+ t['SF520000'] = 0x2553;
+ t['SF530000'] = 0x256B;
+ t['SF540000'] = 0x256A;
+ t['Sacute'] = 0x015A;
+ t['Sacutedotaccent'] = 0x1E64;
+ t['Sampigreek'] = 0x03E0;
+ t['Scaron'] = 0x0160;
+ t['Scarondotaccent'] = 0x1E66;
+ t['Scaronsmall'] = 0xF6FD;
+ t['Scedilla'] = 0x015E;
+ t['Schwa'] = 0x018F;
+ t['Schwacyrillic'] = 0x04D8;
+ t['Schwadieresiscyrillic'] = 0x04DA;
+ t['Scircle'] = 0x24C8;
+ t['Scircumflex'] = 0x015C;
+ t['Scommaaccent'] = 0x0218;
+ t['Sdotaccent'] = 0x1E60;
+ t['Sdotbelow'] = 0x1E62;
+ t['Sdotbelowdotaccent'] = 0x1E68;
+ t['Seharmenian'] = 0x054D;
+ t['Sevenroman'] = 0x2166;
+ t['Shaarmenian'] = 0x0547;
+ t['Shacyrillic'] = 0x0428;
+ t['Shchacyrillic'] = 0x0429;
+ t['Sheicoptic'] = 0x03E2;
+ t['Shhacyrillic'] = 0x04BA;
+ t['Shimacoptic'] = 0x03EC;
+ t['Sigma'] = 0x03A3;
+ t['Sixroman'] = 0x2165;
+ t['Smonospace'] = 0xFF33;
+ t['Softsigncyrillic'] = 0x042C;
+ t['Ssmall'] = 0xF773;
+ t['Stigmagreek'] = 0x03DA;
+ t['T'] = 0x0054;
+ t['Tau'] = 0x03A4;
+ t['Tbar'] = 0x0166;
+ t['Tcaron'] = 0x0164;
+ t['Tcedilla'] = 0x0162;
+ t['Tcircle'] = 0x24C9;
+ t['Tcircumflexbelow'] = 0x1E70;
+ t['Tcommaaccent'] = 0x0162;
+ t['Tdotaccent'] = 0x1E6A;
+ t['Tdotbelow'] = 0x1E6C;
+ t['Tecyrillic'] = 0x0422;
+ t['Tedescendercyrillic'] = 0x04AC;
+ t['Tenroman'] = 0x2169;
+ t['Tetsecyrillic'] = 0x04B4;
+ t['Theta'] = 0x0398;
+ t['Thook'] = 0x01AC;
+ t['Thorn'] = 0x00DE;
+ t['Thornsmall'] = 0xF7FE;
+ t['Threeroman'] = 0x2162;
+ t['Tildesmall'] = 0xF6FE;
+ t['Tiwnarmenian'] = 0x054F;
+ t['Tlinebelow'] = 0x1E6E;
+ t['Tmonospace'] = 0xFF34;
+ t['Toarmenian'] = 0x0539;
+ t['Tonefive'] = 0x01BC;
+ t['Tonesix'] = 0x0184;
+ t['Tonetwo'] = 0x01A7;
+ t['Tretroflexhook'] = 0x01AE;
+ t['Tsecyrillic'] = 0x0426;
+ t['Tshecyrillic'] = 0x040B;
+ t['Tsmall'] = 0xF774;
+ t['Twelveroman'] = 0x216B;
+ t['Tworoman'] = 0x2161;
+ t['U'] = 0x0055;
+ t['Uacute'] = 0x00DA;
+ t['Uacutesmall'] = 0xF7FA;
+ t['Ubreve'] = 0x016C;
+ t['Ucaron'] = 0x01D3;
+ t['Ucircle'] = 0x24CA;
+ t['Ucircumflex'] = 0x00DB;
+ t['Ucircumflexbelow'] = 0x1E76;
+ t['Ucircumflexsmall'] = 0xF7FB;
+ t['Ucyrillic'] = 0x0423;
+ t['Udblacute'] = 0x0170;
+ t['Udblgrave'] = 0x0214;
+ t['Udieresis'] = 0x00DC;
+ t['Udieresisacute'] = 0x01D7;
+ t['Udieresisbelow'] = 0x1E72;
+ t['Udieresiscaron'] = 0x01D9;
+ t['Udieresiscyrillic'] = 0x04F0;
+ t['Udieresisgrave'] = 0x01DB;
+ t['Udieresismacron'] = 0x01D5;
+ t['Udieresissmall'] = 0xF7FC;
+ t['Udotbelow'] = 0x1EE4;
+ t['Ugrave'] = 0x00D9;
+ t['Ugravesmall'] = 0xF7F9;
+ t['Uhookabove'] = 0x1EE6;
+ t['Uhorn'] = 0x01AF;
+ t['Uhornacute'] = 0x1EE8;
+ t['Uhorndotbelow'] = 0x1EF0;
+ t['Uhorngrave'] = 0x1EEA;
+ t['Uhornhookabove'] = 0x1EEC;
+ t['Uhorntilde'] = 0x1EEE;
+ t['Uhungarumlaut'] = 0x0170;
+ t['Uhungarumlautcyrillic'] = 0x04F2;
+ t['Uinvertedbreve'] = 0x0216;
+ t['Ukcyrillic'] = 0x0478;
+ t['Umacron'] = 0x016A;
+ t['Umacroncyrillic'] = 0x04EE;
+ t['Umacrondieresis'] = 0x1E7A;
+ t['Umonospace'] = 0xFF35;
+ t['Uogonek'] = 0x0172;
+ t['Upsilon'] = 0x03A5;
+ t['Upsilon1'] = 0x03D2;
+ t['Upsilonacutehooksymbolgreek'] = 0x03D3;
+ t['Upsilonafrican'] = 0x01B1;
+ t['Upsilondieresis'] = 0x03AB;
+ t['Upsilondieresishooksymbolgreek'] = 0x03D4;
+ t['Upsilonhooksymbol'] = 0x03D2;
+ t['Upsilontonos'] = 0x038E;
+ t['Uring'] = 0x016E;
+ t['Ushortcyrillic'] = 0x040E;
+ t['Usmall'] = 0xF775;
+ t['Ustraightcyrillic'] = 0x04AE;
+ t['Ustraightstrokecyrillic'] = 0x04B0;
+ t['Utilde'] = 0x0168;
+ t['Utildeacute'] = 0x1E78;
+ t['Utildebelow'] = 0x1E74;
+ t['V'] = 0x0056;
+ t['Vcircle'] = 0x24CB;
+ t['Vdotbelow'] = 0x1E7E;
+ t['Vecyrillic'] = 0x0412;
+ t['Vewarmenian'] = 0x054E;
+ t['Vhook'] = 0x01B2;
+ t['Vmonospace'] = 0xFF36;
+ t['Voarmenian'] = 0x0548;
+ t['Vsmall'] = 0xF776;
+ t['Vtilde'] = 0x1E7C;
+ t['W'] = 0x0057;
+ t['Wacute'] = 0x1E82;
+ t['Wcircle'] = 0x24CC;
+ t['Wcircumflex'] = 0x0174;
+ t['Wdieresis'] = 0x1E84;
+ t['Wdotaccent'] = 0x1E86;
+ t['Wdotbelow'] = 0x1E88;
+ t['Wgrave'] = 0x1E80;
+ t['Wmonospace'] = 0xFF37;
+ t['Wsmall'] = 0xF777;
+ t['X'] = 0x0058;
+ t['Xcircle'] = 0x24CD;
+ t['Xdieresis'] = 0x1E8C;
+ t['Xdotaccent'] = 0x1E8A;
+ t['Xeharmenian'] = 0x053D;
+ t['Xi'] = 0x039E;
+ t['Xmonospace'] = 0xFF38;
+ t['Xsmall'] = 0xF778;
+ t['Y'] = 0x0059;
+ t['Yacute'] = 0x00DD;
+ t['Yacutesmall'] = 0xF7FD;
+ t['Yatcyrillic'] = 0x0462;
+ t['Ycircle'] = 0x24CE;
+ t['Ycircumflex'] = 0x0176;
+ t['Ydieresis'] = 0x0178;
+ t['Ydieresissmall'] = 0xF7FF;
+ t['Ydotaccent'] = 0x1E8E;
+ t['Ydotbelow'] = 0x1EF4;
+ t['Yericyrillic'] = 0x042B;
+ t['Yerudieresiscyrillic'] = 0x04F8;
+ t['Ygrave'] = 0x1EF2;
+ t['Yhook'] = 0x01B3;
+ t['Yhookabove'] = 0x1EF6;
+ t['Yiarmenian'] = 0x0545;
+ t['Yicyrillic'] = 0x0407;
+ t['Yiwnarmenian'] = 0x0552;
+ t['Ymonospace'] = 0xFF39;
+ t['Ysmall'] = 0xF779;
+ t['Ytilde'] = 0x1EF8;
+ t['Yusbigcyrillic'] = 0x046A;
+ t['Yusbigiotifiedcyrillic'] = 0x046C;
+ t['Yuslittlecyrillic'] = 0x0466;
+ t['Yuslittleiotifiedcyrillic'] = 0x0468;
+ t['Z'] = 0x005A;
+ t['Zaarmenian'] = 0x0536;
+ t['Zacute'] = 0x0179;
+ t['Zcaron'] = 0x017D;
+ t['Zcaronsmall'] = 0xF6FF;
+ t['Zcircle'] = 0x24CF;
+ t['Zcircumflex'] = 0x1E90;
+ t['Zdot'] = 0x017B;
+ t['Zdotaccent'] = 0x017B;
+ t['Zdotbelow'] = 0x1E92;
+ t['Zecyrillic'] = 0x0417;
+ t['Zedescendercyrillic'] = 0x0498;
+ t['Zedieresiscyrillic'] = 0x04DE;
+ t['Zeta'] = 0x0396;
+ t['Zhearmenian'] = 0x053A;
+ t['Zhebrevecyrillic'] = 0x04C1;
+ t['Zhecyrillic'] = 0x0416;
+ t['Zhedescendercyrillic'] = 0x0496;
+ t['Zhedieresiscyrillic'] = 0x04DC;
+ t['Zlinebelow'] = 0x1E94;
+ t['Zmonospace'] = 0xFF3A;
+ t['Zsmall'] = 0xF77A;
+ t['Zstroke'] = 0x01B5;
+ t['a'] = 0x0061;
+ t['aabengali'] = 0x0986;
+ t['aacute'] = 0x00E1;
+ t['aadeva'] = 0x0906;
+ t['aagujarati'] = 0x0A86;
+ t['aagurmukhi'] = 0x0A06;
+ t['aamatragurmukhi'] = 0x0A3E;
+ t['aarusquare'] = 0x3303;
+ t['aavowelsignbengali'] = 0x09BE;
+ t['aavowelsigndeva'] = 0x093E;
+ t['aavowelsigngujarati'] = 0x0ABE;
+ t['abbreviationmarkarmenian'] = 0x055F;
+ t['abbreviationsigndeva'] = 0x0970;
+ t['abengali'] = 0x0985;
+ t['abopomofo'] = 0x311A;
+ t['abreve'] = 0x0103;
+ t['abreveacute'] = 0x1EAF;
+ t['abrevecyrillic'] = 0x04D1;
+ t['abrevedotbelow'] = 0x1EB7;
+ t['abrevegrave'] = 0x1EB1;
+ t['abrevehookabove'] = 0x1EB3;
+ t['abrevetilde'] = 0x1EB5;
+ t['acaron'] = 0x01CE;
+ t['acircle'] = 0x24D0;
+ t['acircumflex'] = 0x00E2;
+ t['acircumflexacute'] = 0x1EA5;
+ t['acircumflexdotbelow'] = 0x1EAD;
+ t['acircumflexgrave'] = 0x1EA7;
+ t['acircumflexhookabove'] = 0x1EA9;
+ t['acircumflextilde'] = 0x1EAB;
+ t['acute'] = 0x00B4;
+ t['acutebelowcmb'] = 0x0317;
+ t['acutecmb'] = 0x0301;
+ t['acutecomb'] = 0x0301;
+ t['acutedeva'] = 0x0954;
+ t['acutelowmod'] = 0x02CF;
+ t['acutetonecmb'] = 0x0341;
+ t['acyrillic'] = 0x0430;
+ t['adblgrave'] = 0x0201;
+ t['addakgurmukhi'] = 0x0A71;
+ t['adeva'] = 0x0905;
+ t['adieresis'] = 0x00E4;
+ t['adieresiscyrillic'] = 0x04D3;
+ t['adieresismacron'] = 0x01DF;
+ t['adotbelow'] = 0x1EA1;
+ t['adotmacron'] = 0x01E1;
+ t['ae'] = 0x00E6;
+ t['aeacute'] = 0x01FD;
+ t['aekorean'] = 0x3150;
+ t['aemacron'] = 0x01E3;
+ t['afii00208'] = 0x2015;
+ t['afii08941'] = 0x20A4;
+ t['afii10017'] = 0x0410;
+ t['afii10018'] = 0x0411;
+ t['afii10019'] = 0x0412;
+ t['afii10020'] = 0x0413;
+ t['afii10021'] = 0x0414;
+ t['afii10022'] = 0x0415;
+ t['afii10023'] = 0x0401;
+ t['afii10024'] = 0x0416;
+ t['afii10025'] = 0x0417;
+ t['afii10026'] = 0x0418;
+ t['afii10027'] = 0x0419;
+ t['afii10028'] = 0x041A;
+ t['afii10029'] = 0x041B;
+ t['afii10030'] = 0x041C;
+ t['afii10031'] = 0x041D;
+ t['afii10032'] = 0x041E;
+ t['afii10033'] = 0x041F;
+ t['afii10034'] = 0x0420;
+ t['afii10035'] = 0x0421;
+ t['afii10036'] = 0x0422;
+ t['afii10037'] = 0x0423;
+ t['afii10038'] = 0x0424;
+ t['afii10039'] = 0x0425;
+ t['afii10040'] = 0x0426;
+ t['afii10041'] = 0x0427;
+ t['afii10042'] = 0x0428;
+ t['afii10043'] = 0x0429;
+ t['afii10044'] = 0x042A;
+ t['afii10045'] = 0x042B;
+ t['afii10046'] = 0x042C;
+ t['afii10047'] = 0x042D;
+ t['afii10048'] = 0x042E;
+ t['afii10049'] = 0x042F;
+ t['afii10050'] = 0x0490;
+ t['afii10051'] = 0x0402;
+ t['afii10052'] = 0x0403;
+ t['afii10053'] = 0x0404;
+ t['afii10054'] = 0x0405;
+ t['afii10055'] = 0x0406;
+ t['afii10056'] = 0x0407;
+ t['afii10057'] = 0x0408;
+ t['afii10058'] = 0x0409;
+ t['afii10059'] = 0x040A;
+ t['afii10060'] = 0x040B;
+ t['afii10061'] = 0x040C;
+ t['afii10062'] = 0x040E;
+ t['afii10063'] = 0xF6C4;
+ t['afii10064'] = 0xF6C5;
+ t['afii10065'] = 0x0430;
+ t['afii10066'] = 0x0431;
+ t['afii10067'] = 0x0432;
+ t['afii10068'] = 0x0433;
+ t['afii10069'] = 0x0434;
+ t['afii10070'] = 0x0435;
+ t['afii10071'] = 0x0451;
+ t['afii10072'] = 0x0436;
+ t['afii10073'] = 0x0437;
+ t['afii10074'] = 0x0438;
+ t['afii10075'] = 0x0439;
+ t['afii10076'] = 0x043A;
+ t['afii10077'] = 0x043B;
+ t['afii10078'] = 0x043C;
+ t['afii10079'] = 0x043D;
+ t['afii10080'] = 0x043E;
+ t['afii10081'] = 0x043F;
+ t['afii10082'] = 0x0440;
+ t['afii10083'] = 0x0441;
+ t['afii10084'] = 0x0442;
+ t['afii10085'] = 0x0443;
+ t['afii10086'] = 0x0444;
+ t['afii10087'] = 0x0445;
+ t['afii10088'] = 0x0446;
+ t['afii10089'] = 0x0447;
+ t['afii10090'] = 0x0448;
+ t['afii10091'] = 0x0449;
+ t['afii10092'] = 0x044A;
+ t['afii10093'] = 0x044B;
+ t['afii10094'] = 0x044C;
+ t['afii10095'] = 0x044D;
+ t['afii10096'] = 0x044E;
+ t['afii10097'] = 0x044F;
+ t['afii10098'] = 0x0491;
+ t['afii10099'] = 0x0452;
+ t['afii10100'] = 0x0453;
+ t['afii10101'] = 0x0454;
+ t['afii10102'] = 0x0455;
+ t['afii10103'] = 0x0456;
+ t['afii10104'] = 0x0457;
+ t['afii10105'] = 0x0458;
+ t['afii10106'] = 0x0459;
+ t['afii10107'] = 0x045A;
+ t['afii10108'] = 0x045B;
+ t['afii10109'] = 0x045C;
+ t['afii10110'] = 0x045E;
+ t['afii10145'] = 0x040F;
+ t['afii10146'] = 0x0462;
+ t['afii10147'] = 0x0472;
+ t['afii10148'] = 0x0474;
+ t['afii10192'] = 0xF6C6;
+ t['afii10193'] = 0x045F;
+ t['afii10194'] = 0x0463;
+ t['afii10195'] = 0x0473;
+ t['afii10196'] = 0x0475;
+ t['afii10831'] = 0xF6C7;
+ t['afii10832'] = 0xF6C8;
+ t['afii10846'] = 0x04D9;
+ t['afii299'] = 0x200E;
+ t['afii300'] = 0x200F;
+ t['afii301'] = 0x200D;
+ t['afii57381'] = 0x066A;
+ t['afii57388'] = 0x060C;
+ t['afii57392'] = 0x0660;
+ t['afii57393'] = 0x0661;
+ t['afii57394'] = 0x0662;
+ t['afii57395'] = 0x0663;
+ t['afii57396'] = 0x0664;
+ t['afii57397'] = 0x0665;
+ t['afii57398'] = 0x0666;
+ t['afii57399'] = 0x0667;
+ t['afii57400'] = 0x0668;
+ t['afii57401'] = 0x0669;
+ t['afii57403'] = 0x061B;
+ t['afii57407'] = 0x061F;
+ t['afii57409'] = 0x0621;
+ t['afii57410'] = 0x0622;
+ t['afii57411'] = 0x0623;
+ t['afii57412'] = 0x0624;
+ t['afii57413'] = 0x0625;
+ t['afii57414'] = 0x0626;
+ t['afii57415'] = 0x0627;
+ t['afii57416'] = 0x0628;
+ t['afii57417'] = 0x0629;
+ t['afii57418'] = 0x062A;
+ t['afii57419'] = 0x062B;
+ t['afii57420'] = 0x062C;
+ t['afii57421'] = 0x062D;
+ t['afii57422'] = 0x062E;
+ t['afii57423'] = 0x062F;
+ t['afii57424'] = 0x0630;
+ t['afii57425'] = 0x0631;
+ t['afii57426'] = 0x0632;
+ t['afii57427'] = 0x0633;
+ t['afii57428'] = 0x0634;
+ t['afii57429'] = 0x0635;
+ t['afii57430'] = 0x0636;
+ t['afii57431'] = 0x0637;
+ t['afii57432'] = 0x0638;
+ t['afii57433'] = 0x0639;
+ t['afii57434'] = 0x063A;
+ t['afii57440'] = 0x0640;
+ t['afii57441'] = 0x0641;
+ t['afii57442'] = 0x0642;
+ t['afii57443'] = 0x0643;
+ t['afii57444'] = 0x0644;
+ t['afii57445'] = 0x0645;
+ t['afii57446'] = 0x0646;
+ t['afii57448'] = 0x0648;
+ t['afii57449'] = 0x0649;
+ t['afii57450'] = 0x064A;
+ t['afii57451'] = 0x064B;
+ t['afii57452'] = 0x064C;
+ t['afii57453'] = 0x064D;
+ t['afii57454'] = 0x064E;
+ t['afii57455'] = 0x064F;
+ t['afii57456'] = 0x0650;
+ t['afii57457'] = 0x0651;
+ t['afii57458'] = 0x0652;
+ t['afii57470'] = 0x0647;
+ t['afii57505'] = 0x06A4;
+ t['afii57506'] = 0x067E;
+ t['afii57507'] = 0x0686;
+ t['afii57508'] = 0x0698;
+ t['afii57509'] = 0x06AF;
+ t['afii57511'] = 0x0679;
+ t['afii57512'] = 0x0688;
+ t['afii57513'] = 0x0691;
+ t['afii57514'] = 0x06BA;
+ t['afii57519'] = 0x06D2;
+ t['afii57534'] = 0x06D5;
+ t['afii57636'] = 0x20AA;
+ t['afii57645'] = 0x05BE;
+ t['afii57658'] = 0x05C3;
+ t['afii57664'] = 0x05D0;
+ t['afii57665'] = 0x05D1;
+ t['afii57666'] = 0x05D2;
+ t['afii57667'] = 0x05D3;
+ t['afii57668'] = 0x05D4;
+ t['afii57669'] = 0x05D5;
+ t['afii57670'] = 0x05D6;
+ t['afii57671'] = 0x05D7;
+ t['afii57672'] = 0x05D8;
+ t['afii57673'] = 0x05D9;
+ t['afii57674'] = 0x05DA;
+ t['afii57675'] = 0x05DB;
+ t['afii57676'] = 0x05DC;
+ t['afii57677'] = 0x05DD;
+ t['afii57678'] = 0x05DE;
+ t['afii57679'] = 0x05DF;
+ t['afii57680'] = 0x05E0;
+ t['afii57681'] = 0x05E1;
+ t['afii57682'] = 0x05E2;
+ t['afii57683'] = 0x05E3;
+ t['afii57684'] = 0x05E4;
+ t['afii57685'] = 0x05E5;
+ t['afii57686'] = 0x05E6;
+ t['afii57687'] = 0x05E7;
+ t['afii57688'] = 0x05E8;
+ t['afii57689'] = 0x05E9;
+ t['afii57690'] = 0x05EA;
+ t['afii57694'] = 0xFB2A;
+ t['afii57695'] = 0xFB2B;
+ t['afii57700'] = 0xFB4B;
+ t['afii57705'] = 0xFB1F;
+ t['afii57716'] = 0x05F0;
+ t['afii57717'] = 0x05F1;
+ t['afii57718'] = 0x05F2;
+ t['afii57723'] = 0xFB35;
+ t['afii57793'] = 0x05B4;
+ t['afii57794'] = 0x05B5;
+ t['afii57795'] = 0x05B6;
+ t['afii57796'] = 0x05BB;
+ t['afii57797'] = 0x05B8;
+ t['afii57798'] = 0x05B7;
+ t['afii57799'] = 0x05B0;
+ t['afii57800'] = 0x05B2;
+ t['afii57801'] = 0x05B1;
+ t['afii57802'] = 0x05B3;
+ t['afii57803'] = 0x05C2;
+ t['afii57804'] = 0x05C1;
+ t['afii57806'] = 0x05B9;
+ t['afii57807'] = 0x05BC;
+ t['afii57839'] = 0x05BD;
+ t['afii57841'] = 0x05BF;
+ t['afii57842'] = 0x05C0;
+ t['afii57929'] = 0x02BC;
+ t['afii61248'] = 0x2105;
+ t['afii61289'] = 0x2113;
+ t['afii61352'] = 0x2116;
+ t['afii61573'] = 0x202C;
+ t['afii61574'] = 0x202D;
+ t['afii61575'] = 0x202E;
+ t['afii61664'] = 0x200C;
+ t['afii63167'] = 0x066D;
+ t['afii64937'] = 0x02BD;
+ t['agrave'] = 0x00E0;
+ t['agujarati'] = 0x0A85;
+ t['agurmukhi'] = 0x0A05;
+ t['ahiragana'] = 0x3042;
+ t['ahookabove'] = 0x1EA3;
+ t['aibengali'] = 0x0990;
+ t['aibopomofo'] = 0x311E;
+ t['aideva'] = 0x0910;
+ t['aiecyrillic'] = 0x04D5;
+ t['aigujarati'] = 0x0A90;
+ t['aigurmukhi'] = 0x0A10;
+ t['aimatragurmukhi'] = 0x0A48;
+ t['ainarabic'] = 0x0639;
+ t['ainfinalarabic'] = 0xFECA;
+ t['aininitialarabic'] = 0xFECB;
+ t['ainmedialarabic'] = 0xFECC;
+ t['ainvertedbreve'] = 0x0203;
+ t['aivowelsignbengali'] = 0x09C8;
+ t['aivowelsigndeva'] = 0x0948;
+ t['aivowelsigngujarati'] = 0x0AC8;
+ t['akatakana'] = 0x30A2;
+ t['akatakanahalfwidth'] = 0xFF71;
+ t['akorean'] = 0x314F;
+ t['alef'] = 0x05D0;
+ t['alefarabic'] = 0x0627;
+ t['alefdageshhebrew'] = 0xFB30;
+ t['aleffinalarabic'] = 0xFE8E;
+ t['alefhamzaabovearabic'] = 0x0623;
+ t['alefhamzaabovefinalarabic'] = 0xFE84;
+ t['alefhamzabelowarabic'] = 0x0625;
+ t['alefhamzabelowfinalarabic'] = 0xFE88;
+ t['alefhebrew'] = 0x05D0;
+ t['aleflamedhebrew'] = 0xFB4F;
+ t['alefmaddaabovearabic'] = 0x0622;
+ t['alefmaddaabovefinalarabic'] = 0xFE82;
+ t['alefmaksuraarabic'] = 0x0649;
+ t['alefmaksurafinalarabic'] = 0xFEF0;
+ t['alefmaksurainitialarabic'] = 0xFEF3;
+ t['alefmaksuramedialarabic'] = 0xFEF4;
+ t['alefpatahhebrew'] = 0xFB2E;
+ t['alefqamatshebrew'] = 0xFB2F;
+ t['aleph'] = 0x2135;
+ t['allequal'] = 0x224C;
+ t['alpha'] = 0x03B1;
+ t['alphatonos'] = 0x03AC;
+ t['amacron'] = 0x0101;
+ t['amonospace'] = 0xFF41;
+ t['ampersand'] = 0x0026;
+ t['ampersandmonospace'] = 0xFF06;
+ t['ampersandsmall'] = 0xF726;
+ t['amsquare'] = 0x33C2;
+ t['anbopomofo'] = 0x3122;
+ t['angbopomofo'] = 0x3124;
+ t['angbracketleft'] = 0x3008;
+ t['angbracketright'] = 0x3009;
+ t['angkhankhuthai'] = 0x0E5A;
+ t['angle'] = 0x2220;
+ t['anglebracketleft'] = 0x3008;
+ t['anglebracketleftvertical'] = 0xFE3F;
+ t['anglebracketright'] = 0x3009;
+ t['anglebracketrightvertical'] = 0xFE40;
+ t['angleleft'] = 0x2329;
+ t['angleright'] = 0x232A;
+ t['angstrom'] = 0x212B;
+ t['anoteleia'] = 0x0387;
+ t['anudattadeva'] = 0x0952;
+ t['anusvarabengali'] = 0x0982;
+ t['anusvaradeva'] = 0x0902;
+ t['anusvaragujarati'] = 0x0A82;
+ t['aogonek'] = 0x0105;
+ t['apaatosquare'] = 0x3300;
+ t['aparen'] = 0x249C;
+ t['apostrophearmenian'] = 0x055A;
+ t['apostrophemod'] = 0x02BC;
+ t['apple'] = 0xF8FF;
+ t['approaches'] = 0x2250;
+ t['approxequal'] = 0x2248;
+ t['approxequalorimage'] = 0x2252;
+ t['approximatelyequal'] = 0x2245;
+ t['araeaekorean'] = 0x318E;
+ t['araeakorean'] = 0x318D;
+ t['arc'] = 0x2312;
+ t['arighthalfring'] = 0x1E9A;
+ t['aring'] = 0x00E5;
+ t['aringacute'] = 0x01FB;
+ t['aringbelow'] = 0x1E01;
+ t['arrowboth'] = 0x2194;
+ t['arrowdashdown'] = 0x21E3;
+ t['arrowdashleft'] = 0x21E0;
+ t['arrowdashright'] = 0x21E2;
+ t['arrowdashup'] = 0x21E1;
+ t['arrowdblboth'] = 0x21D4;
+ t['arrowdbldown'] = 0x21D3;
+ t['arrowdblleft'] = 0x21D0;
+ t['arrowdblright'] = 0x21D2;
+ t['arrowdblup'] = 0x21D1;
+ t['arrowdown'] = 0x2193;
+ t['arrowdownleft'] = 0x2199;
+ t['arrowdownright'] = 0x2198;
+ t['arrowdownwhite'] = 0x21E9;
+ t['arrowheaddownmod'] = 0x02C5;
+ t['arrowheadleftmod'] = 0x02C2;
+ t['arrowheadrightmod'] = 0x02C3;
+ t['arrowheadupmod'] = 0x02C4;
+ t['arrowhorizex'] = 0xF8E7;
+ t['arrowleft'] = 0x2190;
+ t['arrowleftdbl'] = 0x21D0;
+ t['arrowleftdblstroke'] = 0x21CD;
+ t['arrowleftoverright'] = 0x21C6;
+ t['arrowleftwhite'] = 0x21E6;
+ t['arrowright'] = 0x2192;
+ t['arrowrightdblstroke'] = 0x21CF;
+ t['arrowrightheavy'] = 0x279E;
+ t['arrowrightoverleft'] = 0x21C4;
+ t['arrowrightwhite'] = 0x21E8;
+ t['arrowtableft'] = 0x21E4;
+ t['arrowtabright'] = 0x21E5;
+ t['arrowup'] = 0x2191;
+ t['arrowupdn'] = 0x2195;
+ t['arrowupdnbse'] = 0x21A8;
+ t['arrowupdownbase'] = 0x21A8;
+ t['arrowupleft'] = 0x2196;
+ t['arrowupleftofdown'] = 0x21C5;
+ t['arrowupright'] = 0x2197;
+ t['arrowupwhite'] = 0x21E7;
+ t['arrowvertex'] = 0xF8E6;
+ t['asciicircum'] = 0x005E;
+ t['asciicircummonospace'] = 0xFF3E;
+ t['asciitilde'] = 0x007E;
+ t['asciitildemonospace'] = 0xFF5E;
+ t['ascript'] = 0x0251;
+ t['ascriptturned'] = 0x0252;
+ t['asmallhiragana'] = 0x3041;
+ t['asmallkatakana'] = 0x30A1;
+ t['asmallkatakanahalfwidth'] = 0xFF67;
+ t['asterisk'] = 0x002A;
+ t['asteriskaltonearabic'] = 0x066D;
+ t['asteriskarabic'] = 0x066D;
+ t['asteriskmath'] = 0x2217;
+ t['asteriskmonospace'] = 0xFF0A;
+ t['asterisksmall'] = 0xFE61;
+ t['asterism'] = 0x2042;
+ t['asuperior'] = 0xF6E9;
+ t['asymptoticallyequal'] = 0x2243;
+ t['at'] = 0x0040;
+ t['atilde'] = 0x00E3;
+ t['atmonospace'] = 0xFF20;
+ t['atsmall'] = 0xFE6B;
+ t['aturned'] = 0x0250;
+ t['aubengali'] = 0x0994;
+ t['aubopomofo'] = 0x3120;
+ t['audeva'] = 0x0914;
+ t['augujarati'] = 0x0A94;
+ t['augurmukhi'] = 0x0A14;
+ t['aulengthmarkbengali'] = 0x09D7;
+ t['aumatragurmukhi'] = 0x0A4C;
+ t['auvowelsignbengali'] = 0x09CC;
+ t['auvowelsigndeva'] = 0x094C;
+ t['auvowelsigngujarati'] = 0x0ACC;
+ t['avagrahadeva'] = 0x093D;
+ t['aybarmenian'] = 0x0561;
+ t['ayin'] = 0x05E2;
+ t['ayinaltonehebrew'] = 0xFB20;
+ t['ayinhebrew'] = 0x05E2;
+ t['b'] = 0x0062;
+ t['babengali'] = 0x09AC;
+ t['backslash'] = 0x005C;
+ t['backslashmonospace'] = 0xFF3C;
+ t['badeva'] = 0x092C;
+ t['bagujarati'] = 0x0AAC;
+ t['bagurmukhi'] = 0x0A2C;
+ t['bahiragana'] = 0x3070;
+ t['bahtthai'] = 0x0E3F;
+ t['bakatakana'] = 0x30D0;
+ t['bar'] = 0x007C;
+ t['barmonospace'] = 0xFF5C;
+ t['bbopomofo'] = 0x3105;
+ t['bcircle'] = 0x24D1;
+ t['bdotaccent'] = 0x1E03;
+ t['bdotbelow'] = 0x1E05;
+ t['beamedsixteenthnotes'] = 0x266C;
+ t['because'] = 0x2235;
+ t['becyrillic'] = 0x0431;
+ t['beharabic'] = 0x0628;
+ t['behfinalarabic'] = 0xFE90;
+ t['behinitialarabic'] = 0xFE91;
+ t['behiragana'] = 0x3079;
+ t['behmedialarabic'] = 0xFE92;
+ t['behmeeminitialarabic'] = 0xFC9F;
+ t['behmeemisolatedarabic'] = 0xFC08;
+ t['behnoonfinalarabic'] = 0xFC6D;
+ t['bekatakana'] = 0x30D9;
+ t['benarmenian'] = 0x0562;
+ t['bet'] = 0x05D1;
+ t['beta'] = 0x03B2;
+ t['betasymbolgreek'] = 0x03D0;
+ t['betdagesh'] = 0xFB31;
+ t['betdageshhebrew'] = 0xFB31;
+ t['bethebrew'] = 0x05D1;
+ t['betrafehebrew'] = 0xFB4C;
+ t['bhabengali'] = 0x09AD;
+ t['bhadeva'] = 0x092D;
+ t['bhagujarati'] = 0x0AAD;
+ t['bhagurmukhi'] = 0x0A2D;
+ t['bhook'] = 0x0253;
+ t['bihiragana'] = 0x3073;
+ t['bikatakana'] = 0x30D3;
+ t['bilabialclick'] = 0x0298;
+ t['bindigurmukhi'] = 0x0A02;
+ t['birusquare'] = 0x3331;
+ t['blackcircle'] = 0x25CF;
+ t['blackdiamond'] = 0x25C6;
+ t['blackdownpointingtriangle'] = 0x25BC;
+ t['blackleftpointingpointer'] = 0x25C4;
+ t['blackleftpointingtriangle'] = 0x25C0;
+ t['blacklenticularbracketleft'] = 0x3010;
+ t['blacklenticularbracketleftvertical'] = 0xFE3B;
+ t['blacklenticularbracketright'] = 0x3011;
+ t['blacklenticularbracketrightvertical'] = 0xFE3C;
+ t['blacklowerlefttriangle'] = 0x25E3;
+ t['blacklowerrighttriangle'] = 0x25E2;
+ t['blackrectangle'] = 0x25AC;
+ t['blackrightpointingpointer'] = 0x25BA;
+ t['blackrightpointingtriangle'] = 0x25B6;
+ t['blacksmallsquare'] = 0x25AA;
+ t['blacksmilingface'] = 0x263B;
+ t['blacksquare'] = 0x25A0;
+ t['blackstar'] = 0x2605;
+ t['blackupperlefttriangle'] = 0x25E4;
+ t['blackupperrighttriangle'] = 0x25E5;
+ t['blackuppointingsmalltriangle'] = 0x25B4;
+ t['blackuppointingtriangle'] = 0x25B2;
+ t['blank'] = 0x2423;
+ t['blinebelow'] = 0x1E07;
+ t['block'] = 0x2588;
+ t['bmonospace'] = 0xFF42;
+ t['bobaimaithai'] = 0x0E1A;
+ t['bohiragana'] = 0x307C;
+ t['bokatakana'] = 0x30DC;
+ t['bparen'] = 0x249D;
+ t['bqsquare'] = 0x33C3;
+ t['braceex'] = 0xF8F4;
+ t['braceleft'] = 0x007B;
+ t['braceleftbt'] = 0xF8F3;
+ t['braceleftmid'] = 0xF8F2;
+ t['braceleftmonospace'] = 0xFF5B;
+ t['braceleftsmall'] = 0xFE5B;
+ t['bracelefttp'] = 0xF8F1;
+ t['braceleftvertical'] = 0xFE37;
+ t['braceright'] = 0x007D;
+ t['bracerightbt'] = 0xF8FE;
+ t['bracerightmid'] = 0xF8FD;
+ t['bracerightmonospace'] = 0xFF5D;
+ t['bracerightsmall'] = 0xFE5C;
+ t['bracerighttp'] = 0xF8FC;
+ t['bracerightvertical'] = 0xFE38;
+ t['bracketleft'] = 0x005B;
+ t['bracketleftbt'] = 0xF8F0;
+ t['bracketleftex'] = 0xF8EF;
+ t['bracketleftmonospace'] = 0xFF3B;
+ t['bracketlefttp'] = 0xF8EE;
+ t['bracketright'] = 0x005D;
+ t['bracketrightbt'] = 0xF8FB;
+ t['bracketrightex'] = 0xF8FA;
+ t['bracketrightmonospace'] = 0xFF3D;
+ t['bracketrighttp'] = 0xF8F9;
+ t['breve'] = 0x02D8;
+ t['brevebelowcmb'] = 0x032E;
+ t['brevecmb'] = 0x0306;
+ t['breveinvertedbelowcmb'] = 0x032F;
+ t['breveinvertedcmb'] = 0x0311;
+ t['breveinverteddoublecmb'] = 0x0361;
+ t['bridgebelowcmb'] = 0x032A;
+ t['bridgeinvertedbelowcmb'] = 0x033A;
+ t['brokenbar'] = 0x00A6;
+ t['bstroke'] = 0x0180;
+ t['bsuperior'] = 0xF6EA;
+ t['btopbar'] = 0x0183;
+ t['buhiragana'] = 0x3076;
+ t['bukatakana'] = 0x30D6;
+ t['bullet'] = 0x2022;
+ t['bulletinverse'] = 0x25D8;
+ t['bulletoperator'] = 0x2219;
+ t['bullseye'] = 0x25CE;
+ t['c'] = 0x0063;
+ t['caarmenian'] = 0x056E;
+ t['cabengali'] = 0x099A;
+ t['cacute'] = 0x0107;
+ t['cadeva'] = 0x091A;
+ t['cagujarati'] = 0x0A9A;
+ t['cagurmukhi'] = 0x0A1A;
+ t['calsquare'] = 0x3388;
+ t['candrabindubengali'] = 0x0981;
+ t['candrabinducmb'] = 0x0310;
+ t['candrabindudeva'] = 0x0901;
+ t['candrabindugujarati'] = 0x0A81;
+ t['capslock'] = 0x21EA;
+ t['careof'] = 0x2105;
+ t['caron'] = 0x02C7;
+ t['caronbelowcmb'] = 0x032C;
+ t['caroncmb'] = 0x030C;
+ t['carriagereturn'] = 0x21B5;
+ t['cbopomofo'] = 0x3118;
+ t['ccaron'] = 0x010D;
+ t['ccedilla'] = 0x00E7;
+ t['ccedillaacute'] = 0x1E09;
+ t['ccircle'] = 0x24D2;
+ t['ccircumflex'] = 0x0109;
+ t['ccurl'] = 0x0255;
+ t['cdot'] = 0x010B;
+ t['cdotaccent'] = 0x010B;
+ t['cdsquare'] = 0x33C5;
+ t['cedilla'] = 0x00B8;
+ t['cedillacmb'] = 0x0327;
+ t['cent'] = 0x00A2;
+ t['centigrade'] = 0x2103;
+ t['centinferior'] = 0xF6DF;
+ t['centmonospace'] = 0xFFE0;
+ t['centoldstyle'] = 0xF7A2;
+ t['centsuperior'] = 0xF6E0;
+ t['chaarmenian'] = 0x0579;
+ t['chabengali'] = 0x099B;
+ t['chadeva'] = 0x091B;
+ t['chagujarati'] = 0x0A9B;
+ t['chagurmukhi'] = 0x0A1B;
+ t['chbopomofo'] = 0x3114;
+ t['cheabkhasiancyrillic'] = 0x04BD;
+ t['checkmark'] = 0x2713;
+ t['checyrillic'] = 0x0447;
+ t['chedescenderabkhasiancyrillic'] = 0x04BF;
+ t['chedescendercyrillic'] = 0x04B7;
+ t['chedieresiscyrillic'] = 0x04F5;
+ t['cheharmenian'] = 0x0573;
+ t['chekhakassiancyrillic'] = 0x04CC;
+ t['cheverticalstrokecyrillic'] = 0x04B9;
+ t['chi'] = 0x03C7;
+ t['chieuchacirclekorean'] = 0x3277;
+ t['chieuchaparenkorean'] = 0x3217;
+ t['chieuchcirclekorean'] = 0x3269;
+ t['chieuchkorean'] = 0x314A;
+ t['chieuchparenkorean'] = 0x3209;
+ t['chochangthai'] = 0x0E0A;
+ t['chochanthai'] = 0x0E08;
+ t['chochingthai'] = 0x0E09;
+ t['chochoethai'] = 0x0E0C;
+ t['chook'] = 0x0188;
+ t['cieucacirclekorean'] = 0x3276;
+ t['cieucaparenkorean'] = 0x3216;
+ t['cieuccirclekorean'] = 0x3268;
+ t['cieuckorean'] = 0x3148;
+ t['cieucparenkorean'] = 0x3208;
+ t['cieucuparenkorean'] = 0x321C;
+ t['circle'] = 0x25CB;
+ t['circlecopyrt'] = 0x00A9;
+ t['circlemultiply'] = 0x2297;
+ t['circleot'] = 0x2299;
+ t['circleplus'] = 0x2295;
+ t['circlepostalmark'] = 0x3036;
+ t['circlewithlefthalfblack'] = 0x25D0;
+ t['circlewithrighthalfblack'] = 0x25D1;
+ t['circumflex'] = 0x02C6;
+ t['circumflexbelowcmb'] = 0x032D;
+ t['circumflexcmb'] = 0x0302;
+ t['clear'] = 0x2327;
+ t['clickalveolar'] = 0x01C2;
+ t['clickdental'] = 0x01C0;
+ t['clicklateral'] = 0x01C1;
+ t['clickretroflex'] = 0x01C3;
+ t['club'] = 0x2663;
+ t['clubsuitblack'] = 0x2663;
+ t['clubsuitwhite'] = 0x2667;
+ t['cmcubedsquare'] = 0x33A4;
+ t['cmonospace'] = 0xFF43;
+ t['cmsquaredsquare'] = 0x33A0;
+ t['coarmenian'] = 0x0581;
+ t['colon'] = 0x003A;
+ t['colonmonetary'] = 0x20A1;
+ t['colonmonospace'] = 0xFF1A;
+ t['colonsign'] = 0x20A1;
+ t['colonsmall'] = 0xFE55;
+ t['colontriangularhalfmod'] = 0x02D1;
+ t['colontriangularmod'] = 0x02D0;
+ t['comma'] = 0x002C;
+ t['commaabovecmb'] = 0x0313;
+ t['commaaboverightcmb'] = 0x0315;
+ t['commaaccent'] = 0xF6C3;
+ t['commaarabic'] = 0x060C;
+ t['commaarmenian'] = 0x055D;
+ t['commainferior'] = 0xF6E1;
+ t['commamonospace'] = 0xFF0C;
+ t['commareversedabovecmb'] = 0x0314;
+ t['commareversedmod'] = 0x02BD;
+ t['commasmall'] = 0xFE50;
+ t['commasuperior'] = 0xF6E2;
+ t['commaturnedabovecmb'] = 0x0312;
+ t['commaturnedmod'] = 0x02BB;
+ t['compass'] = 0x263C;
+ t['congruent'] = 0x2245;
+ t['contourintegral'] = 0x222E;
+ t['control'] = 0x2303;
+ t['controlACK'] = 0x0006;
+ t['controlBEL'] = 0x0007;
+ t['controlBS'] = 0x0008;
+ t['controlCAN'] = 0x0018;
+ t['controlCR'] = 0x000D;
+ t['controlDC1'] = 0x0011;
+ t['controlDC2'] = 0x0012;
+ t['controlDC3'] = 0x0013;
+ t['controlDC4'] = 0x0014;
+ t['controlDEL'] = 0x007F;
+ t['controlDLE'] = 0x0010;
+ t['controlEM'] = 0x0019;
+ t['controlENQ'] = 0x0005;
+ t['controlEOT'] = 0x0004;
+ t['controlESC'] = 0x001B;
+ t['controlETB'] = 0x0017;
+ t['controlETX'] = 0x0003;
+ t['controlFF'] = 0x000C;
+ t['controlFS'] = 0x001C;
+ t['controlGS'] = 0x001D;
+ t['controlHT'] = 0x0009;
+ t['controlLF'] = 0x000A;
+ t['controlNAK'] = 0x0015;
+ t['controlNULL'] = 0x0000;
+ t['controlRS'] = 0x001E;
+ t['controlSI'] = 0x000F;
+ t['controlSO'] = 0x000E;
+ t['controlSOT'] = 0x0002;
+ t['controlSTX'] = 0x0001;
+ t['controlSUB'] = 0x001A;
+ t['controlSYN'] = 0x0016;
+ t['controlUS'] = 0x001F;
+ t['controlVT'] = 0x000B;
+ t['copyright'] = 0x00A9;
+ t['copyrightsans'] = 0xF8E9;
+ t['copyrightserif'] = 0xF6D9;
+ t['cornerbracketleft'] = 0x300C;
+ t['cornerbracketlefthalfwidth'] = 0xFF62;
+ t['cornerbracketleftvertical'] = 0xFE41;
+ t['cornerbracketright'] = 0x300D;
+ t['cornerbracketrighthalfwidth'] = 0xFF63;
+ t['cornerbracketrightvertical'] = 0xFE42;
+ t['corporationsquare'] = 0x337F;
+ t['cosquare'] = 0x33C7;
+ t['coverkgsquare'] = 0x33C6;
+ t['cparen'] = 0x249E;
+ t['cruzeiro'] = 0x20A2;
+ t['cstretched'] = 0x0297;
+ t['curlyand'] = 0x22CF;
+ t['curlyor'] = 0x22CE;
+ t['currency'] = 0x00A4;
+ t['cyrBreve'] = 0xF6D1;
+ t['cyrFlex'] = 0xF6D2;
+ t['cyrbreve'] = 0xF6D4;
+ t['cyrflex'] = 0xF6D5;
+ t['d'] = 0x0064;
+ t['daarmenian'] = 0x0564;
+ t['dabengali'] = 0x09A6;
+ t['dadarabic'] = 0x0636;
+ t['dadeva'] = 0x0926;
+ t['dadfinalarabic'] = 0xFEBE;
+ t['dadinitialarabic'] = 0xFEBF;
+ t['dadmedialarabic'] = 0xFEC0;
+ t['dagesh'] = 0x05BC;
+ t['dageshhebrew'] = 0x05BC;
+ t['dagger'] = 0x2020;
+ t['daggerdbl'] = 0x2021;
+ t['dagujarati'] = 0x0AA6;
+ t['dagurmukhi'] = 0x0A26;
+ t['dahiragana'] = 0x3060;
+ t['dakatakana'] = 0x30C0;
+ t['dalarabic'] = 0x062F;
+ t['dalet'] = 0x05D3;
+ t['daletdagesh'] = 0xFB33;
+ t['daletdageshhebrew'] = 0xFB33;
+ t['dalethebrew'] = 0x05D3;
+ t['dalfinalarabic'] = 0xFEAA;
+ t['dammaarabic'] = 0x064F;
+ t['dammalowarabic'] = 0x064F;
+ t['dammatanaltonearabic'] = 0x064C;
+ t['dammatanarabic'] = 0x064C;
+ t['danda'] = 0x0964;
+ t['dargahebrew'] = 0x05A7;
+ t['dargalefthebrew'] = 0x05A7;
+ t['dasiapneumatacyrilliccmb'] = 0x0485;
+ t['dblGrave'] = 0xF6D3;
+ t['dblanglebracketleft'] = 0x300A;
+ t['dblanglebracketleftvertical'] = 0xFE3D;
+ t['dblanglebracketright'] = 0x300B;
+ t['dblanglebracketrightvertical'] = 0xFE3E;
+ t['dblarchinvertedbelowcmb'] = 0x032B;
+ t['dblarrowleft'] = 0x21D4;
+ t['dblarrowright'] = 0x21D2;
+ t['dbldanda'] = 0x0965;
+ t['dblgrave'] = 0xF6D6;
+ t['dblgravecmb'] = 0x030F;
+ t['dblintegral'] = 0x222C;
+ t['dbllowline'] = 0x2017;
+ t['dbllowlinecmb'] = 0x0333;
+ t['dbloverlinecmb'] = 0x033F;
+ t['dblprimemod'] = 0x02BA;
+ t['dblverticalbar'] = 0x2016;
+ t['dblverticallineabovecmb'] = 0x030E;
+ t['dbopomofo'] = 0x3109;
+ t['dbsquare'] = 0x33C8;
+ t['dcaron'] = 0x010F;
+ t['dcedilla'] = 0x1E11;
+ t['dcircle'] = 0x24D3;
+ t['dcircumflexbelow'] = 0x1E13;
+ t['dcroat'] = 0x0111;
+ t['ddabengali'] = 0x09A1;
+ t['ddadeva'] = 0x0921;
+ t['ddagujarati'] = 0x0AA1;
+ t['ddagurmukhi'] = 0x0A21;
+ t['ddalarabic'] = 0x0688;
+ t['ddalfinalarabic'] = 0xFB89;
+ t['dddhadeva'] = 0x095C;
+ t['ddhabengali'] = 0x09A2;
+ t['ddhadeva'] = 0x0922;
+ t['ddhagujarati'] = 0x0AA2;
+ t['ddhagurmukhi'] = 0x0A22;
+ t['ddotaccent'] = 0x1E0B;
+ t['ddotbelow'] = 0x1E0D;
+ t['decimalseparatorarabic'] = 0x066B;
+ t['decimalseparatorpersian'] = 0x066B;
+ t['decyrillic'] = 0x0434;
+ t['degree'] = 0x00B0;
+ t['dehihebrew'] = 0x05AD;
+ t['dehiragana'] = 0x3067;
+ t['deicoptic'] = 0x03EF;
+ t['dekatakana'] = 0x30C7;
+ t['deleteleft'] = 0x232B;
+ t['deleteright'] = 0x2326;
+ t['delta'] = 0x03B4;
+ t['deltaturned'] = 0x018D;
+ t['denominatorminusonenumeratorbengali'] = 0x09F8;
+ t['dezh'] = 0x02A4;
+ t['dhabengali'] = 0x09A7;
+ t['dhadeva'] = 0x0927;
+ t['dhagujarati'] = 0x0AA7;
+ t['dhagurmukhi'] = 0x0A27;
+ t['dhook'] = 0x0257;
+ t['dialytikatonos'] = 0x0385;
+ t['dialytikatonoscmb'] = 0x0344;
+ t['diamond'] = 0x2666;
+ t['diamondsuitwhite'] = 0x2662;
+ t['dieresis'] = 0x00A8;
+ t['dieresisacute'] = 0xF6D7;
+ t['dieresisbelowcmb'] = 0x0324;
+ t['dieresiscmb'] = 0x0308;
+ t['dieresisgrave'] = 0xF6D8;
+ t['dieresistonos'] = 0x0385;
+ t['dihiragana'] = 0x3062;
+ t['dikatakana'] = 0x30C2;
+ t['dittomark'] = 0x3003;
+ t['divide'] = 0x00F7;
+ t['divides'] = 0x2223;
+ t['divisionslash'] = 0x2215;
+ t['djecyrillic'] = 0x0452;
+ t['dkshade'] = 0x2593;
+ t['dlinebelow'] = 0x1E0F;
+ t['dlsquare'] = 0x3397;
+ t['dmacron'] = 0x0111;
+ t['dmonospace'] = 0xFF44;
+ t['dnblock'] = 0x2584;
+ t['dochadathai'] = 0x0E0E;
+ t['dodekthai'] = 0x0E14;
+ t['dohiragana'] = 0x3069;
+ t['dokatakana'] = 0x30C9;
+ t['dollar'] = 0x0024;
+ t['dollarinferior'] = 0xF6E3;
+ t['dollarmonospace'] = 0xFF04;
+ t['dollaroldstyle'] = 0xF724;
+ t['dollarsmall'] = 0xFE69;
+ t['dollarsuperior'] = 0xF6E4;
+ t['dong'] = 0x20AB;
+ t['dorusquare'] = 0x3326;
+ t['dotaccent'] = 0x02D9;
+ t['dotaccentcmb'] = 0x0307;
+ t['dotbelowcmb'] = 0x0323;
+ t['dotbelowcomb'] = 0x0323;
+ t['dotkatakana'] = 0x30FB;
+ t['dotlessi'] = 0x0131;
+ t['dotlessj'] = 0xF6BE;
+ t['dotlessjstrokehook'] = 0x0284;
+ t['dotmath'] = 0x22C5;
+ t['dottedcircle'] = 0x25CC;
+ t['doubleyodpatah'] = 0xFB1F;
+ t['doubleyodpatahhebrew'] = 0xFB1F;
+ t['downtackbelowcmb'] = 0x031E;
+ t['downtackmod'] = 0x02D5;
+ t['dparen'] = 0x249F;
+ t['dsuperior'] = 0xF6EB;
+ t['dtail'] = 0x0256;
+ t['dtopbar'] = 0x018C;
+ t['duhiragana'] = 0x3065;
+ t['dukatakana'] = 0x30C5;
+ t['dz'] = 0x01F3;
+ t['dzaltone'] = 0x02A3;
+ t['dzcaron'] = 0x01C6;
+ t['dzcurl'] = 0x02A5;
+ t['dzeabkhasiancyrillic'] = 0x04E1;
+ t['dzecyrillic'] = 0x0455;
+ t['dzhecyrillic'] = 0x045F;
+ t['e'] = 0x0065;
+ t['eacute'] = 0x00E9;
+ t['earth'] = 0x2641;
+ t['ebengali'] = 0x098F;
+ t['ebopomofo'] = 0x311C;
+ t['ebreve'] = 0x0115;
+ t['ecandradeva'] = 0x090D;
+ t['ecandragujarati'] = 0x0A8D;
+ t['ecandravowelsigndeva'] = 0x0945;
+ t['ecandravowelsigngujarati'] = 0x0AC5;
+ t['ecaron'] = 0x011B;
+ t['ecedillabreve'] = 0x1E1D;
+ t['echarmenian'] = 0x0565;
+ t['echyiwnarmenian'] = 0x0587;
+ t['ecircle'] = 0x24D4;
+ t['ecircumflex'] = 0x00EA;
+ t['ecircumflexacute'] = 0x1EBF;
+ t['ecircumflexbelow'] = 0x1E19;
+ t['ecircumflexdotbelow'] = 0x1EC7;
+ t['ecircumflexgrave'] = 0x1EC1;
+ t['ecircumflexhookabove'] = 0x1EC3;
+ t['ecircumflextilde'] = 0x1EC5;
+ t['ecyrillic'] = 0x0454;
+ t['edblgrave'] = 0x0205;
+ t['edeva'] = 0x090F;
+ t['edieresis'] = 0x00EB;
+ t['edot'] = 0x0117;
+ t['edotaccent'] = 0x0117;
+ t['edotbelow'] = 0x1EB9;
+ t['eegurmukhi'] = 0x0A0F;
+ t['eematragurmukhi'] = 0x0A47;
+ t['efcyrillic'] = 0x0444;
+ t['egrave'] = 0x00E8;
+ t['egujarati'] = 0x0A8F;
+ t['eharmenian'] = 0x0567;
+ t['ehbopomofo'] = 0x311D;
+ t['ehiragana'] = 0x3048;
+ t['ehookabove'] = 0x1EBB;
+ t['eibopomofo'] = 0x311F;
+ t['eight'] = 0x0038;
+ t['eightarabic'] = 0x0668;
+ t['eightbengali'] = 0x09EE;
+ t['eightcircle'] = 0x2467;
+ t['eightcircleinversesansserif'] = 0x2791;
+ t['eightdeva'] = 0x096E;
+ t['eighteencircle'] = 0x2471;
+ t['eighteenparen'] = 0x2485;
+ t['eighteenperiod'] = 0x2499;
+ t['eightgujarati'] = 0x0AEE;
+ t['eightgurmukhi'] = 0x0A6E;
+ t['eighthackarabic'] = 0x0668;
+ t['eighthangzhou'] = 0x3028;
+ t['eighthnotebeamed'] = 0x266B;
+ t['eightideographicparen'] = 0x3227;
+ t['eightinferior'] = 0x2088;
+ t['eightmonospace'] = 0xFF18;
+ t['eightoldstyle'] = 0xF738;
+ t['eightparen'] = 0x247B;
+ t['eightperiod'] = 0x248F;
+ t['eightpersian'] = 0x06F8;
+ t['eightroman'] = 0x2177;
+ t['eightsuperior'] = 0x2078;
+ t['eightthai'] = 0x0E58;
+ t['einvertedbreve'] = 0x0207;
+ t['eiotifiedcyrillic'] = 0x0465;
+ t['ekatakana'] = 0x30A8;
+ t['ekatakanahalfwidth'] = 0xFF74;
+ t['ekonkargurmukhi'] = 0x0A74;
+ t['ekorean'] = 0x3154;
+ t['elcyrillic'] = 0x043B;
+ t['element'] = 0x2208;
+ t['elevencircle'] = 0x246A;
+ t['elevenparen'] = 0x247E;
+ t['elevenperiod'] = 0x2492;
+ t['elevenroman'] = 0x217A;
+ t['ellipsis'] = 0x2026;
+ t['ellipsisvertical'] = 0x22EE;
+ t['emacron'] = 0x0113;
+ t['emacronacute'] = 0x1E17;
+ t['emacrongrave'] = 0x1E15;
+ t['emcyrillic'] = 0x043C;
+ t['emdash'] = 0x2014;
+ t['emdashvertical'] = 0xFE31;
+ t['emonospace'] = 0xFF45;
+ t['emphasismarkarmenian'] = 0x055B;
+ t['emptyset'] = 0x2205;
+ t['enbopomofo'] = 0x3123;
+ t['encyrillic'] = 0x043D;
+ t['endash'] = 0x2013;
+ t['endashvertical'] = 0xFE32;
+ t['endescendercyrillic'] = 0x04A3;
+ t['eng'] = 0x014B;
+ t['engbopomofo'] = 0x3125;
+ t['enghecyrillic'] = 0x04A5;
+ t['enhookcyrillic'] = 0x04C8;
+ t['enspace'] = 0x2002;
+ t['eogonek'] = 0x0119;
+ t['eokorean'] = 0x3153;
+ t['eopen'] = 0x025B;
+ t['eopenclosed'] = 0x029A;
+ t['eopenreversed'] = 0x025C;
+ t['eopenreversedclosed'] = 0x025E;
+ t['eopenreversedhook'] = 0x025D;
+ t['eparen'] = 0x24A0;
+ t['epsilon'] = 0x03B5;
+ t['epsilontonos'] = 0x03AD;
+ t['equal'] = 0x003D;
+ t['equalmonospace'] = 0xFF1D;
+ t['equalsmall'] = 0xFE66;
+ t['equalsuperior'] = 0x207C;
+ t['equivalence'] = 0x2261;
+ t['erbopomofo'] = 0x3126;
+ t['ercyrillic'] = 0x0440;
+ t['ereversed'] = 0x0258;
+ t['ereversedcyrillic'] = 0x044D;
+ t['escyrillic'] = 0x0441;
+ t['esdescendercyrillic'] = 0x04AB;
+ t['esh'] = 0x0283;
+ t['eshcurl'] = 0x0286;
+ t['eshortdeva'] = 0x090E;
+ t['eshortvowelsigndeva'] = 0x0946;
+ t['eshreversedloop'] = 0x01AA;
+ t['eshsquatreversed'] = 0x0285;
+ t['esmallhiragana'] = 0x3047;
+ t['esmallkatakana'] = 0x30A7;
+ t['esmallkatakanahalfwidth'] = 0xFF6A;
+ t['estimated'] = 0x212E;
+ t['esuperior'] = 0xF6EC;
+ t['eta'] = 0x03B7;
+ t['etarmenian'] = 0x0568;
+ t['etatonos'] = 0x03AE;
+ t['eth'] = 0x00F0;
+ t['etilde'] = 0x1EBD;
+ t['etildebelow'] = 0x1E1B;
+ t['etnahtafoukhhebrew'] = 0x0591;
+ t['etnahtafoukhlefthebrew'] = 0x0591;
+ t['etnahtahebrew'] = 0x0591;
+ t['etnahtalefthebrew'] = 0x0591;
+ t['eturned'] = 0x01DD;
+ t['eukorean'] = 0x3161;
+ t['euro'] = 0x20AC;
+ t['evowelsignbengali'] = 0x09C7;
+ t['evowelsigndeva'] = 0x0947;
+ t['evowelsigngujarati'] = 0x0AC7;
+ t['exclam'] = 0x0021;
+ t['exclamarmenian'] = 0x055C;
+ t['exclamdbl'] = 0x203C;
+ t['exclamdown'] = 0x00A1;
+ t['exclamdownsmall'] = 0xF7A1;
+ t['exclammonospace'] = 0xFF01;
+ t['exclamsmall'] = 0xF721;
+ t['existential'] = 0x2203;
+ t['ezh'] = 0x0292;
+ t['ezhcaron'] = 0x01EF;
+ t['ezhcurl'] = 0x0293;
+ t['ezhreversed'] = 0x01B9;
+ t['ezhtail'] = 0x01BA;
+ t['f'] = 0x0066;
+ t['fadeva'] = 0x095E;
+ t['fagurmukhi'] = 0x0A5E;
+ t['fahrenheit'] = 0x2109;
+ t['fathaarabic'] = 0x064E;
+ t['fathalowarabic'] = 0x064E;
+ t['fathatanarabic'] = 0x064B;
+ t['fbopomofo'] = 0x3108;
+ t['fcircle'] = 0x24D5;
+ t['fdotaccent'] = 0x1E1F;
+ t['feharabic'] = 0x0641;
+ t['feharmenian'] = 0x0586;
+ t['fehfinalarabic'] = 0xFED2;
+ t['fehinitialarabic'] = 0xFED3;
+ t['fehmedialarabic'] = 0xFED4;
+ t['feicoptic'] = 0x03E5;
+ t['female'] = 0x2640;
+ t['ff'] = 0xFB00;
+ t['ffi'] = 0xFB03;
+ t['ffl'] = 0xFB04;
+ t['fi'] = 0xFB01;
+ t['fifteencircle'] = 0x246E;
+ t['fifteenparen'] = 0x2482;
+ t['fifteenperiod'] = 0x2496;
+ t['figuredash'] = 0x2012;
+ t['filledbox'] = 0x25A0;
+ t['filledrect'] = 0x25AC;
+ t['finalkaf'] = 0x05DA;
+ t['finalkafdagesh'] = 0xFB3A;
+ t['finalkafdageshhebrew'] = 0xFB3A;
+ t['finalkafhebrew'] = 0x05DA;
+ t['finalmem'] = 0x05DD;
+ t['finalmemhebrew'] = 0x05DD;
+ t['finalnun'] = 0x05DF;
+ t['finalnunhebrew'] = 0x05DF;
+ t['finalpe'] = 0x05E3;
+ t['finalpehebrew'] = 0x05E3;
+ t['finaltsadi'] = 0x05E5;
+ t['finaltsadihebrew'] = 0x05E5;
+ t['firsttonechinese'] = 0x02C9;
+ t['fisheye'] = 0x25C9;
+ t['fitacyrillic'] = 0x0473;
+ t['five'] = 0x0035;
+ t['fivearabic'] = 0x0665;
+ t['fivebengali'] = 0x09EB;
+ t['fivecircle'] = 0x2464;
+ t['fivecircleinversesansserif'] = 0x278E;
+ t['fivedeva'] = 0x096B;
+ t['fiveeighths'] = 0x215D;
+ t['fivegujarati'] = 0x0AEB;
+ t['fivegurmukhi'] = 0x0A6B;
+ t['fivehackarabic'] = 0x0665;
+ t['fivehangzhou'] = 0x3025;
+ t['fiveideographicparen'] = 0x3224;
+ t['fiveinferior'] = 0x2085;
+ t['fivemonospace'] = 0xFF15;
+ t['fiveoldstyle'] = 0xF735;
+ t['fiveparen'] = 0x2478;
+ t['fiveperiod'] = 0x248C;
+ t['fivepersian'] = 0x06F5;
+ t['fiveroman'] = 0x2174;
+ t['fivesuperior'] = 0x2075;
+ t['fivethai'] = 0x0E55;
+ t['fl'] = 0xFB02;
+ t['florin'] = 0x0192;
+ t['fmonospace'] = 0xFF46;
+ t['fmsquare'] = 0x3399;
+ t['fofanthai'] = 0x0E1F;
+ t['fofathai'] = 0x0E1D;
+ t['fongmanthai'] = 0x0E4F;
+ t['forall'] = 0x2200;
+ t['four'] = 0x0034;
+ t['fourarabic'] = 0x0664;
+ t['fourbengali'] = 0x09EA;
+ t['fourcircle'] = 0x2463;
+ t['fourcircleinversesansserif'] = 0x278D;
+ t['fourdeva'] = 0x096A;
+ t['fourgujarati'] = 0x0AEA;
+ t['fourgurmukhi'] = 0x0A6A;
+ t['fourhackarabic'] = 0x0664;
+ t['fourhangzhou'] = 0x3024;
+ t['fourideographicparen'] = 0x3223;
+ t['fourinferior'] = 0x2084;
+ t['fourmonospace'] = 0xFF14;
+ t['fournumeratorbengali'] = 0x09F7;
+ t['fouroldstyle'] = 0xF734;
+ t['fourparen'] = 0x2477;
+ t['fourperiod'] = 0x248B;
+ t['fourpersian'] = 0x06F4;
+ t['fourroman'] = 0x2173;
+ t['foursuperior'] = 0x2074;
+ t['fourteencircle'] = 0x246D;
+ t['fourteenparen'] = 0x2481;
+ t['fourteenperiod'] = 0x2495;
+ t['fourthai'] = 0x0E54;
+ t['fourthtonechinese'] = 0x02CB;
+ t['fparen'] = 0x24A1;
+ t['fraction'] = 0x2044;
+ t['franc'] = 0x20A3;
+ t['g'] = 0x0067;
+ t['gabengali'] = 0x0997;
+ t['gacute'] = 0x01F5;
+ t['gadeva'] = 0x0917;
+ t['gafarabic'] = 0x06AF;
+ t['gaffinalarabic'] = 0xFB93;
+ t['gafinitialarabic'] = 0xFB94;
+ t['gafmedialarabic'] = 0xFB95;
+ t['gagujarati'] = 0x0A97;
+ t['gagurmukhi'] = 0x0A17;
+ t['gahiragana'] = 0x304C;
+ t['gakatakana'] = 0x30AC;
+ t['gamma'] = 0x03B3;
+ t['gammalatinsmall'] = 0x0263;
+ t['gammasuperior'] = 0x02E0;
+ t['gangiacoptic'] = 0x03EB;
+ t['gbopomofo'] = 0x310D;
+ t['gbreve'] = 0x011F;
+ t['gcaron'] = 0x01E7;
+ t['gcedilla'] = 0x0123;
+ t['gcircle'] = 0x24D6;
+ t['gcircumflex'] = 0x011D;
+ t['gcommaaccent'] = 0x0123;
+ t['gdot'] = 0x0121;
+ t['gdotaccent'] = 0x0121;
+ t['gecyrillic'] = 0x0433;
+ t['gehiragana'] = 0x3052;
+ t['gekatakana'] = 0x30B2;
+ t['geometricallyequal'] = 0x2251;
+ t['gereshaccenthebrew'] = 0x059C;
+ t['gereshhebrew'] = 0x05F3;
+ t['gereshmuqdamhebrew'] = 0x059D;
+ t['germandbls'] = 0x00DF;
+ t['gershayimaccenthebrew'] = 0x059E;
+ t['gershayimhebrew'] = 0x05F4;
+ t['getamark'] = 0x3013;
+ t['ghabengali'] = 0x0998;
+ t['ghadarmenian'] = 0x0572;
+ t['ghadeva'] = 0x0918;
+ t['ghagujarati'] = 0x0A98;
+ t['ghagurmukhi'] = 0x0A18;
+ t['ghainarabic'] = 0x063A;
+ t['ghainfinalarabic'] = 0xFECE;
+ t['ghaininitialarabic'] = 0xFECF;
+ t['ghainmedialarabic'] = 0xFED0;
+ t['ghemiddlehookcyrillic'] = 0x0495;
+ t['ghestrokecyrillic'] = 0x0493;
+ t['gheupturncyrillic'] = 0x0491;
+ t['ghhadeva'] = 0x095A;
+ t['ghhagurmukhi'] = 0x0A5A;
+ t['ghook'] = 0x0260;
+ t['ghzsquare'] = 0x3393;
+ t['gihiragana'] = 0x304E;
+ t['gikatakana'] = 0x30AE;
+ t['gimarmenian'] = 0x0563;
+ t['gimel'] = 0x05D2;
+ t['gimeldagesh'] = 0xFB32;
+ t['gimeldageshhebrew'] = 0xFB32;
+ t['gimelhebrew'] = 0x05D2;
+ t['gjecyrillic'] = 0x0453;
+ t['glottalinvertedstroke'] = 0x01BE;
+ t['glottalstop'] = 0x0294;
+ t['glottalstopinverted'] = 0x0296;
+ t['glottalstopmod'] = 0x02C0;
+ t['glottalstopreversed'] = 0x0295;
+ t['glottalstopreversedmod'] = 0x02C1;
+ t['glottalstopreversedsuperior'] = 0x02E4;
+ t['glottalstopstroke'] = 0x02A1;
+ t['glottalstopstrokereversed'] = 0x02A2;
+ t['gmacron'] = 0x1E21;
+ t['gmonospace'] = 0xFF47;
+ t['gohiragana'] = 0x3054;
+ t['gokatakana'] = 0x30B4;
+ t['gparen'] = 0x24A2;
+ t['gpasquare'] = 0x33AC;
+ t['gradient'] = 0x2207;
+ t['grave'] = 0x0060;
+ t['gravebelowcmb'] = 0x0316;
+ t['gravecmb'] = 0x0300;
+ t['gravecomb'] = 0x0300;
+ t['gravedeva'] = 0x0953;
+ t['gravelowmod'] = 0x02CE;
+ t['gravemonospace'] = 0xFF40;
+ t['gravetonecmb'] = 0x0340;
+ t['greater'] = 0x003E;
+ t['greaterequal'] = 0x2265;
+ t['greaterequalorless'] = 0x22DB;
+ t['greatermonospace'] = 0xFF1E;
+ t['greaterorequivalent'] = 0x2273;
+ t['greaterorless'] = 0x2277;
+ t['greateroverequal'] = 0x2267;
+ t['greatersmall'] = 0xFE65;
+ t['gscript'] = 0x0261;
+ t['gstroke'] = 0x01E5;
+ t['guhiragana'] = 0x3050;
+ t['guillemotleft'] = 0x00AB;
+ t['guillemotright'] = 0x00BB;
+ t['guilsinglleft'] = 0x2039;
+ t['guilsinglright'] = 0x203A;
+ t['gukatakana'] = 0x30B0;
+ t['guramusquare'] = 0x3318;
+ t['gysquare'] = 0x33C9;
+ t['h'] = 0x0068;
+ t['haabkhasiancyrillic'] = 0x04A9;
+ t['haaltonearabic'] = 0x06C1;
+ t['habengali'] = 0x09B9;
+ t['hadescendercyrillic'] = 0x04B3;
+ t['hadeva'] = 0x0939;
+ t['hagujarati'] = 0x0AB9;
+ t['hagurmukhi'] = 0x0A39;
+ t['haharabic'] = 0x062D;
+ t['hahfinalarabic'] = 0xFEA2;
+ t['hahinitialarabic'] = 0xFEA3;
+ t['hahiragana'] = 0x306F;
+ t['hahmedialarabic'] = 0xFEA4;
+ t['haitusquare'] = 0x332A;
+ t['hakatakana'] = 0x30CF;
+ t['hakatakanahalfwidth'] = 0xFF8A;
+ t['halantgurmukhi'] = 0x0A4D;
+ t['hamzaarabic'] = 0x0621;
+ t['hamzalowarabic'] = 0x0621;
+ t['hangulfiller'] = 0x3164;
+ t['hardsigncyrillic'] = 0x044A;
+ t['harpoonleftbarbup'] = 0x21BC;
+ t['harpoonrightbarbup'] = 0x21C0;
+ t['hasquare'] = 0x33CA;
+ t['hatafpatah'] = 0x05B2;
+ t['hatafpatah16'] = 0x05B2;
+ t['hatafpatah23'] = 0x05B2;
+ t['hatafpatah2f'] = 0x05B2;
+ t['hatafpatahhebrew'] = 0x05B2;
+ t['hatafpatahnarrowhebrew'] = 0x05B2;
+ t['hatafpatahquarterhebrew'] = 0x05B2;
+ t['hatafpatahwidehebrew'] = 0x05B2;
+ t['hatafqamats'] = 0x05B3;
+ t['hatafqamats1b'] = 0x05B3;
+ t['hatafqamats28'] = 0x05B3;
+ t['hatafqamats34'] = 0x05B3;
+ t['hatafqamatshebrew'] = 0x05B3;
+ t['hatafqamatsnarrowhebrew'] = 0x05B3;
+ t['hatafqamatsquarterhebrew'] = 0x05B3;
+ t['hatafqamatswidehebrew'] = 0x05B3;
+ t['hatafsegol'] = 0x05B1;
+ t['hatafsegol17'] = 0x05B1;
+ t['hatafsegol24'] = 0x05B1;
+ t['hatafsegol30'] = 0x05B1;
+ t['hatafsegolhebrew'] = 0x05B1;
+ t['hatafsegolnarrowhebrew'] = 0x05B1;
+ t['hatafsegolquarterhebrew'] = 0x05B1;
+ t['hatafsegolwidehebrew'] = 0x05B1;
+ t['hbar'] = 0x0127;
+ t['hbopomofo'] = 0x310F;
+ t['hbrevebelow'] = 0x1E2B;
+ t['hcedilla'] = 0x1E29;
+ t['hcircle'] = 0x24D7;
+ t['hcircumflex'] = 0x0125;
+ t['hdieresis'] = 0x1E27;
+ t['hdotaccent'] = 0x1E23;
+ t['hdotbelow'] = 0x1E25;
+ t['he'] = 0x05D4;
+ t['heart'] = 0x2665;
+ t['heartsuitblack'] = 0x2665;
+ t['heartsuitwhite'] = 0x2661;
+ t['hedagesh'] = 0xFB34;
+ t['hedageshhebrew'] = 0xFB34;
+ t['hehaltonearabic'] = 0x06C1;
+ t['heharabic'] = 0x0647;
+ t['hehebrew'] = 0x05D4;
+ t['hehfinalaltonearabic'] = 0xFBA7;
+ t['hehfinalalttwoarabic'] = 0xFEEA;
+ t['hehfinalarabic'] = 0xFEEA;
+ t['hehhamzaabovefinalarabic'] = 0xFBA5;
+ t['hehhamzaaboveisolatedarabic'] = 0xFBA4;
+ t['hehinitialaltonearabic'] = 0xFBA8;
+ t['hehinitialarabic'] = 0xFEEB;
+ t['hehiragana'] = 0x3078;
+ t['hehmedialaltonearabic'] = 0xFBA9;
+ t['hehmedialarabic'] = 0xFEEC;
+ t['heiseierasquare'] = 0x337B;
+ t['hekatakana'] = 0x30D8;
+ t['hekatakanahalfwidth'] = 0xFF8D;
+ t['hekutaarusquare'] = 0x3336;
+ t['henghook'] = 0x0267;
+ t['herutusquare'] = 0x3339;
+ t['het'] = 0x05D7;
+ t['hethebrew'] = 0x05D7;
+ t['hhook'] = 0x0266;
+ t['hhooksuperior'] = 0x02B1;
+ t['hieuhacirclekorean'] = 0x327B;
+ t['hieuhaparenkorean'] = 0x321B;
+ t['hieuhcirclekorean'] = 0x326D;
+ t['hieuhkorean'] = 0x314E;
+ t['hieuhparenkorean'] = 0x320D;
+ t['hihiragana'] = 0x3072;
+ t['hikatakana'] = 0x30D2;
+ t['hikatakanahalfwidth'] = 0xFF8B;
+ t['hiriq'] = 0x05B4;
+ t['hiriq14'] = 0x05B4;
+ t['hiriq21'] = 0x05B4;
+ t['hiriq2d'] = 0x05B4;
+ t['hiriqhebrew'] = 0x05B4;
+ t['hiriqnarrowhebrew'] = 0x05B4;
+ t['hiriqquarterhebrew'] = 0x05B4;
+ t['hiriqwidehebrew'] = 0x05B4;
+ t['hlinebelow'] = 0x1E96;
+ t['hmonospace'] = 0xFF48;
+ t['hoarmenian'] = 0x0570;
+ t['hohipthai'] = 0x0E2B;
+ t['hohiragana'] = 0x307B;
+ t['hokatakana'] = 0x30DB;
+ t['hokatakanahalfwidth'] = 0xFF8E;
+ t['holam'] = 0x05B9;
+ t['holam19'] = 0x05B9;
+ t['holam26'] = 0x05B9;
+ t['holam32'] = 0x05B9;
+ t['holamhebrew'] = 0x05B9;
+ t['holamnarrowhebrew'] = 0x05B9;
+ t['holamquarterhebrew'] = 0x05B9;
+ t['holamwidehebrew'] = 0x05B9;
+ t['honokhukthai'] = 0x0E2E;
+ t['hookabovecomb'] = 0x0309;
+ t['hookcmb'] = 0x0309;
+ t['hookpalatalizedbelowcmb'] = 0x0321;
+ t['hookretroflexbelowcmb'] = 0x0322;
+ t['hoonsquare'] = 0x3342;
+ t['horicoptic'] = 0x03E9;
+ t['horizontalbar'] = 0x2015;
+ t['horncmb'] = 0x031B;
+ t['hotsprings'] = 0x2668;
+ t['house'] = 0x2302;
+ t['hparen'] = 0x24A3;
+ t['hsuperior'] = 0x02B0;
+ t['hturned'] = 0x0265;
+ t['huhiragana'] = 0x3075;
+ t['huiitosquare'] = 0x3333;
+ t['hukatakana'] = 0x30D5;
+ t['hukatakanahalfwidth'] = 0xFF8C;
+ t['hungarumlaut'] = 0x02DD;
+ t['hungarumlautcmb'] = 0x030B;
+ t['hv'] = 0x0195;
+ t['hyphen'] = 0x002D;
+ t['hypheninferior'] = 0xF6E5;
+ t['hyphenmonospace'] = 0xFF0D;
+ t['hyphensmall'] = 0xFE63;
+ t['hyphensuperior'] = 0xF6E6;
+ t['hyphentwo'] = 0x2010;
+ t['i'] = 0x0069;
+ t['iacute'] = 0x00ED;
+ t['iacyrillic'] = 0x044F;
+ t['ibengali'] = 0x0987;
+ t['ibopomofo'] = 0x3127;
+ t['ibreve'] = 0x012D;
+ t['icaron'] = 0x01D0;
+ t['icircle'] = 0x24D8;
+ t['icircumflex'] = 0x00EE;
+ t['icyrillic'] = 0x0456;
+ t['idblgrave'] = 0x0209;
+ t['ideographearthcircle'] = 0x328F;
+ t['ideographfirecircle'] = 0x328B;
+ t['ideographicallianceparen'] = 0x323F;
+ t['ideographiccallparen'] = 0x323A;
+ t['ideographiccentrecircle'] = 0x32A5;
+ t['ideographicclose'] = 0x3006;
+ t['ideographiccomma'] = 0x3001;
+ t['ideographiccommaleft'] = 0xFF64;
+ t['ideographiccongratulationparen'] = 0x3237;
+ t['ideographiccorrectcircle'] = 0x32A3;
+ t['ideographicearthparen'] = 0x322F;
+ t['ideographicenterpriseparen'] = 0x323D;
+ t['ideographicexcellentcircle'] = 0x329D;
+ t['ideographicfestivalparen'] = 0x3240;
+ t['ideographicfinancialcircle'] = 0x3296;
+ t['ideographicfinancialparen'] = 0x3236;
+ t['ideographicfireparen'] = 0x322B;
+ t['ideographichaveparen'] = 0x3232;
+ t['ideographichighcircle'] = 0x32A4;
+ t['ideographiciterationmark'] = 0x3005;
+ t['ideographiclaborcircle'] = 0x3298;
+ t['ideographiclaborparen'] = 0x3238;
+ t['ideographicleftcircle'] = 0x32A7;
+ t['ideographiclowcircle'] = 0x32A6;
+ t['ideographicmedicinecircle'] = 0x32A9;
+ t['ideographicmetalparen'] = 0x322E;
+ t['ideographicmoonparen'] = 0x322A;
+ t['ideographicnameparen'] = 0x3234;
+ t['ideographicperiod'] = 0x3002;
+ t['ideographicprintcircle'] = 0x329E;
+ t['ideographicreachparen'] = 0x3243;
+ t['ideographicrepresentparen'] = 0x3239;
+ t['ideographicresourceparen'] = 0x323E;
+ t['ideographicrightcircle'] = 0x32A8;
+ t['ideographicsecretcircle'] = 0x3299;
+ t['ideographicselfparen'] = 0x3242;
+ t['ideographicsocietyparen'] = 0x3233;
+ t['ideographicspace'] = 0x3000;
+ t['ideographicspecialparen'] = 0x3235;
+ t['ideographicstockparen'] = 0x3231;
+ t['ideographicstudyparen'] = 0x323B;
+ t['ideographicsunparen'] = 0x3230;
+ t['ideographicsuperviseparen'] = 0x323C;
+ t['ideographicwaterparen'] = 0x322C;
+ t['ideographicwoodparen'] = 0x322D;
+ t['ideographiczero'] = 0x3007;
+ t['ideographmetalcircle'] = 0x328E;
+ t['ideographmooncircle'] = 0x328A;
+ t['ideographnamecircle'] = 0x3294;
+ t['ideographsuncircle'] = 0x3290;
+ t['ideographwatercircle'] = 0x328C;
+ t['ideographwoodcircle'] = 0x328D;
+ t['ideva'] = 0x0907;
+ t['idieresis'] = 0x00EF;
+ t['idieresisacute'] = 0x1E2F;
+ t['idieresiscyrillic'] = 0x04E5;
+ t['idotbelow'] = 0x1ECB;
+ t['iebrevecyrillic'] = 0x04D7;
+ t['iecyrillic'] = 0x0435;
+ t['ieungacirclekorean'] = 0x3275;
+ t['ieungaparenkorean'] = 0x3215;
+ t['ieungcirclekorean'] = 0x3267;
+ t['ieungkorean'] = 0x3147;
+ t['ieungparenkorean'] = 0x3207;
+ t['igrave'] = 0x00EC;
+ t['igujarati'] = 0x0A87;
+ t['igurmukhi'] = 0x0A07;
+ t['ihiragana'] = 0x3044;
+ t['ihookabove'] = 0x1EC9;
+ t['iibengali'] = 0x0988;
+ t['iicyrillic'] = 0x0438;
+ t['iideva'] = 0x0908;
+ t['iigujarati'] = 0x0A88;
+ t['iigurmukhi'] = 0x0A08;
+ t['iimatragurmukhi'] = 0x0A40;
+ t['iinvertedbreve'] = 0x020B;
+ t['iishortcyrillic'] = 0x0439;
+ t['iivowelsignbengali'] = 0x09C0;
+ t['iivowelsigndeva'] = 0x0940;
+ t['iivowelsigngujarati'] = 0x0AC0;
+ t['ij'] = 0x0133;
+ t['ikatakana'] = 0x30A4;
+ t['ikatakanahalfwidth'] = 0xFF72;
+ t['ikorean'] = 0x3163;
+ t['ilde'] = 0x02DC;
+ t['iluyhebrew'] = 0x05AC;
+ t['imacron'] = 0x012B;
+ t['imacroncyrillic'] = 0x04E3;
+ t['imageorapproximatelyequal'] = 0x2253;
+ t['imatragurmukhi'] = 0x0A3F;
+ t['imonospace'] = 0xFF49;
+ t['increment'] = 0x2206;
+ t['infinity'] = 0x221E;
+ t['iniarmenian'] = 0x056B;
+ t['integral'] = 0x222B;
+ t['integralbottom'] = 0x2321;
+ t['integralbt'] = 0x2321;
+ t['integralex'] = 0xF8F5;
+ t['integraltop'] = 0x2320;
+ t['integraltp'] = 0x2320;
+ t['intersection'] = 0x2229;
+ t['intisquare'] = 0x3305;
+ t['invbullet'] = 0x25D8;
+ t['invcircle'] = 0x25D9;
+ t['invsmileface'] = 0x263B;
+ t['iocyrillic'] = 0x0451;
+ t['iogonek'] = 0x012F;
+ t['iota'] = 0x03B9;
+ t['iotadieresis'] = 0x03CA;
+ t['iotadieresistonos'] = 0x0390;
+ t['iotalatin'] = 0x0269;
+ t['iotatonos'] = 0x03AF;
+ t['iparen'] = 0x24A4;
+ t['irigurmukhi'] = 0x0A72;
+ t['ismallhiragana'] = 0x3043;
+ t['ismallkatakana'] = 0x30A3;
+ t['ismallkatakanahalfwidth'] = 0xFF68;
+ t['issharbengali'] = 0x09FA;
+ t['istroke'] = 0x0268;
+ t['isuperior'] = 0xF6ED;
+ t['iterationhiragana'] = 0x309D;
+ t['iterationkatakana'] = 0x30FD;
+ t['itilde'] = 0x0129;
+ t['itildebelow'] = 0x1E2D;
+ t['iubopomofo'] = 0x3129;
+ t['iucyrillic'] = 0x044E;
+ t['ivowelsignbengali'] = 0x09BF;
+ t['ivowelsigndeva'] = 0x093F;
+ t['ivowelsigngujarati'] = 0x0ABF;
+ t['izhitsacyrillic'] = 0x0475;
+ t['izhitsadblgravecyrillic'] = 0x0477;
+ t['j'] = 0x006A;
+ t['jaarmenian'] = 0x0571;
+ t['jabengali'] = 0x099C;
+ t['jadeva'] = 0x091C;
+ t['jagujarati'] = 0x0A9C;
+ t['jagurmukhi'] = 0x0A1C;
+ t['jbopomofo'] = 0x3110;
+ t['jcaron'] = 0x01F0;
+ t['jcircle'] = 0x24D9;
+ t['jcircumflex'] = 0x0135;
+ t['jcrossedtail'] = 0x029D;
+ t['jdotlessstroke'] = 0x025F;
+ t['jecyrillic'] = 0x0458;
+ t['jeemarabic'] = 0x062C;
+ t['jeemfinalarabic'] = 0xFE9E;
+ t['jeeminitialarabic'] = 0xFE9F;
+ t['jeemmedialarabic'] = 0xFEA0;
+ t['jeharabic'] = 0x0698;
+ t['jehfinalarabic'] = 0xFB8B;
+ t['jhabengali'] = 0x099D;
+ t['jhadeva'] = 0x091D;
+ t['jhagujarati'] = 0x0A9D;
+ t['jhagurmukhi'] = 0x0A1D;
+ t['jheharmenian'] = 0x057B;
+ t['jis'] = 0x3004;
+ t['jmonospace'] = 0xFF4A;
+ t['jparen'] = 0x24A5;
+ t['jsuperior'] = 0x02B2;
+ t['k'] = 0x006B;
+ t['kabashkircyrillic'] = 0x04A1;
+ t['kabengali'] = 0x0995;
+ t['kacute'] = 0x1E31;
+ t['kacyrillic'] = 0x043A;
+ t['kadescendercyrillic'] = 0x049B;
+ t['kadeva'] = 0x0915;
+ t['kaf'] = 0x05DB;
+ t['kafarabic'] = 0x0643;
+ t['kafdagesh'] = 0xFB3B;
+ t['kafdageshhebrew'] = 0xFB3B;
+ t['kaffinalarabic'] = 0xFEDA;
+ t['kafhebrew'] = 0x05DB;
+ t['kafinitialarabic'] = 0xFEDB;
+ t['kafmedialarabic'] = 0xFEDC;
+ t['kafrafehebrew'] = 0xFB4D;
+ t['kagujarati'] = 0x0A95;
+ t['kagurmukhi'] = 0x0A15;
+ t['kahiragana'] = 0x304B;
+ t['kahookcyrillic'] = 0x04C4;
+ t['kakatakana'] = 0x30AB;
+ t['kakatakanahalfwidth'] = 0xFF76;
+ t['kappa'] = 0x03BA;
+ t['kappasymbolgreek'] = 0x03F0;
+ t['kapyeounmieumkorean'] = 0x3171;
+ t['kapyeounphieuphkorean'] = 0x3184;
+ t['kapyeounpieupkorean'] = 0x3178;
+ t['kapyeounssangpieupkorean'] = 0x3179;
+ t['karoriisquare'] = 0x330D;
+ t['kashidaautoarabic'] = 0x0640;
+ t['kashidaautonosidebearingarabic'] = 0x0640;
+ t['kasmallkatakana'] = 0x30F5;
+ t['kasquare'] = 0x3384;
+ t['kasraarabic'] = 0x0650;
+ t['kasratanarabic'] = 0x064D;
+ t['kastrokecyrillic'] = 0x049F;
+ t['katahiraprolongmarkhalfwidth'] = 0xFF70;
+ t['kaverticalstrokecyrillic'] = 0x049D;
+ t['kbopomofo'] = 0x310E;
+ t['kcalsquare'] = 0x3389;
+ t['kcaron'] = 0x01E9;
+ t['kcedilla'] = 0x0137;
+ t['kcircle'] = 0x24DA;
+ t['kcommaaccent'] = 0x0137;
+ t['kdotbelow'] = 0x1E33;
+ t['keharmenian'] = 0x0584;
+ t['kehiragana'] = 0x3051;
+ t['kekatakana'] = 0x30B1;
+ t['kekatakanahalfwidth'] = 0xFF79;
+ t['kenarmenian'] = 0x056F;
+ t['kesmallkatakana'] = 0x30F6;
+ t['kgreenlandic'] = 0x0138;
+ t['khabengali'] = 0x0996;
+ t['khacyrillic'] = 0x0445;
+ t['khadeva'] = 0x0916;
+ t['khagujarati'] = 0x0A96;
+ t['khagurmukhi'] = 0x0A16;
+ t['khaharabic'] = 0x062E;
+ t['khahfinalarabic'] = 0xFEA6;
+ t['khahinitialarabic'] = 0xFEA7;
+ t['khahmedialarabic'] = 0xFEA8;
+ t['kheicoptic'] = 0x03E7;
+ t['khhadeva'] = 0x0959;
+ t['khhagurmukhi'] = 0x0A59;
+ t['khieukhacirclekorean'] = 0x3278;
+ t['khieukhaparenkorean'] = 0x3218;
+ t['khieukhcirclekorean'] = 0x326A;
+ t['khieukhkorean'] = 0x314B;
+ t['khieukhparenkorean'] = 0x320A;
+ t['khokhaithai'] = 0x0E02;
+ t['khokhonthai'] = 0x0E05;
+ t['khokhuatthai'] = 0x0E03;
+ t['khokhwaithai'] = 0x0E04;
+ t['khomutthai'] = 0x0E5B;
+ t['khook'] = 0x0199;
+ t['khorakhangthai'] = 0x0E06;
+ t['khzsquare'] = 0x3391;
+ t['kihiragana'] = 0x304D;
+ t['kikatakana'] = 0x30AD;
+ t['kikatakanahalfwidth'] = 0xFF77;
+ t['kiroguramusquare'] = 0x3315;
+ t['kiromeetorusquare'] = 0x3316;
+ t['kirosquare'] = 0x3314;
+ t['kiyeokacirclekorean'] = 0x326E;
+ t['kiyeokaparenkorean'] = 0x320E;
+ t['kiyeokcirclekorean'] = 0x3260;
+ t['kiyeokkorean'] = 0x3131;
+ t['kiyeokparenkorean'] = 0x3200;
+ t['kiyeoksioskorean'] = 0x3133;
+ t['kjecyrillic'] = 0x045C;
+ t['klinebelow'] = 0x1E35;
+ t['klsquare'] = 0x3398;
+ t['kmcubedsquare'] = 0x33A6;
+ t['kmonospace'] = 0xFF4B;
+ t['kmsquaredsquare'] = 0x33A2;
+ t['kohiragana'] = 0x3053;
+ t['kohmsquare'] = 0x33C0;
+ t['kokaithai'] = 0x0E01;
+ t['kokatakana'] = 0x30B3;
+ t['kokatakanahalfwidth'] = 0xFF7A;
+ t['kooposquare'] = 0x331E;
+ t['koppacyrillic'] = 0x0481;
+ t['koreanstandardsymbol'] = 0x327F;
+ t['koroniscmb'] = 0x0343;
+ t['kparen'] = 0x24A6;
+ t['kpasquare'] = 0x33AA;
+ t['ksicyrillic'] = 0x046F;
+ t['ktsquare'] = 0x33CF;
+ t['kturned'] = 0x029E;
+ t['kuhiragana'] = 0x304F;
+ t['kukatakana'] = 0x30AF;
+ t['kukatakanahalfwidth'] = 0xFF78;
+ t['kvsquare'] = 0x33B8;
+ t['kwsquare'] = 0x33BE;
+ t['l'] = 0x006C;
+ t['labengali'] = 0x09B2;
+ t['lacute'] = 0x013A;
+ t['ladeva'] = 0x0932;
+ t['lagujarati'] = 0x0AB2;
+ t['lagurmukhi'] = 0x0A32;
+ t['lakkhangyaothai'] = 0x0E45;
+ t['lamaleffinalarabic'] = 0xFEFC;
+ t['lamalefhamzaabovefinalarabic'] = 0xFEF8;
+ t['lamalefhamzaaboveisolatedarabic'] = 0xFEF7;
+ t['lamalefhamzabelowfinalarabic'] = 0xFEFA;
+ t['lamalefhamzabelowisolatedarabic'] = 0xFEF9;
+ t['lamalefisolatedarabic'] = 0xFEFB;
+ t['lamalefmaddaabovefinalarabic'] = 0xFEF6;
+ t['lamalefmaddaaboveisolatedarabic'] = 0xFEF5;
+ t['lamarabic'] = 0x0644;
+ t['lambda'] = 0x03BB;
+ t['lambdastroke'] = 0x019B;
+ t['lamed'] = 0x05DC;
+ t['lameddagesh'] = 0xFB3C;
+ t['lameddageshhebrew'] = 0xFB3C;
+ t['lamedhebrew'] = 0x05DC;
+ t['lamfinalarabic'] = 0xFEDE;
+ t['lamhahinitialarabic'] = 0xFCCA;
+ t['laminitialarabic'] = 0xFEDF;
+ t['lamjeeminitialarabic'] = 0xFCC9;
+ t['lamkhahinitialarabic'] = 0xFCCB;
+ t['lamlamhehisolatedarabic'] = 0xFDF2;
+ t['lammedialarabic'] = 0xFEE0;
+ t['lammeemhahinitialarabic'] = 0xFD88;
+ t['lammeeminitialarabic'] = 0xFCCC;
+ t['largecircle'] = 0x25EF;
+ t['lbar'] = 0x019A;
+ t['lbelt'] = 0x026C;
+ t['lbopomofo'] = 0x310C;
+ t['lcaron'] = 0x013E;
+ t['lcedilla'] = 0x013C;
+ t['lcircle'] = 0x24DB;
+ t['lcircumflexbelow'] = 0x1E3D;
+ t['lcommaaccent'] = 0x013C;
+ t['ldot'] = 0x0140;
+ t['ldotaccent'] = 0x0140;
+ t['ldotbelow'] = 0x1E37;
+ t['ldotbelowmacron'] = 0x1E39;
+ t['leftangleabovecmb'] = 0x031A;
+ t['lefttackbelowcmb'] = 0x0318;
+ t['less'] = 0x003C;
+ t['lessequal'] = 0x2264;
+ t['lessequalorgreater'] = 0x22DA;
+ t['lessmonospace'] = 0xFF1C;
+ t['lessorequivalent'] = 0x2272;
+ t['lessorgreater'] = 0x2276;
+ t['lessoverequal'] = 0x2266;
+ t['lesssmall'] = 0xFE64;
+ t['lezh'] = 0x026E;
+ t['lfblock'] = 0x258C;
+ t['lhookretroflex'] = 0x026D;
+ t['lira'] = 0x20A4;
+ t['liwnarmenian'] = 0x056C;
+ t['lj'] = 0x01C9;
+ t['ljecyrillic'] = 0x0459;
+ t['ll'] = 0xF6C0;
+ t['lladeva'] = 0x0933;
+ t['llagujarati'] = 0x0AB3;
+ t['llinebelow'] = 0x1E3B;
+ t['llladeva'] = 0x0934;
+ t['llvocalicbengali'] = 0x09E1;
+ t['llvocalicdeva'] = 0x0961;
+ t['llvocalicvowelsignbengali'] = 0x09E3;
+ t['llvocalicvowelsigndeva'] = 0x0963;
+ t['lmiddletilde'] = 0x026B;
+ t['lmonospace'] = 0xFF4C;
+ t['lmsquare'] = 0x33D0;
+ t['lochulathai'] = 0x0E2C;
+ t['logicaland'] = 0x2227;
+ t['logicalnot'] = 0x00AC;
+ t['logicalnotreversed'] = 0x2310;
+ t['logicalor'] = 0x2228;
+ t['lolingthai'] = 0x0E25;
+ t['longs'] = 0x017F;
+ t['lowlinecenterline'] = 0xFE4E;
+ t['lowlinecmb'] = 0x0332;
+ t['lowlinedashed'] = 0xFE4D;
+ t['lozenge'] = 0x25CA;
+ t['lparen'] = 0x24A7;
+ t['lslash'] = 0x0142;
+ t['lsquare'] = 0x2113;
+ t['lsuperior'] = 0xF6EE;
+ t['ltshade'] = 0x2591;
+ t['luthai'] = 0x0E26;
+ t['lvocalicbengali'] = 0x098C;
+ t['lvocalicdeva'] = 0x090C;
+ t['lvocalicvowelsignbengali'] = 0x09E2;
+ t['lvocalicvowelsigndeva'] = 0x0962;
+ t['lxsquare'] = 0x33D3;
+ t['m'] = 0x006D;
+ t['mabengali'] = 0x09AE;
+ t['macron'] = 0x00AF;
+ t['macronbelowcmb'] = 0x0331;
+ t['macroncmb'] = 0x0304;
+ t['macronlowmod'] = 0x02CD;
+ t['macronmonospace'] = 0xFFE3;
+ t['macute'] = 0x1E3F;
+ t['madeva'] = 0x092E;
+ t['magujarati'] = 0x0AAE;
+ t['magurmukhi'] = 0x0A2E;
+ t['mahapakhhebrew'] = 0x05A4;
+ t['mahapakhlefthebrew'] = 0x05A4;
+ t['mahiragana'] = 0x307E;
+ t['maichattawalowleftthai'] = 0xF895;
+ t['maichattawalowrightthai'] = 0xF894;
+ t['maichattawathai'] = 0x0E4B;
+ t['maichattawaupperleftthai'] = 0xF893;
+ t['maieklowleftthai'] = 0xF88C;
+ t['maieklowrightthai'] = 0xF88B;
+ t['maiekthai'] = 0x0E48;
+ t['maiekupperleftthai'] = 0xF88A;
+ t['maihanakatleftthai'] = 0xF884;
+ t['maihanakatthai'] = 0x0E31;
+ t['maitaikhuleftthai'] = 0xF889;
+ t['maitaikhuthai'] = 0x0E47;
+ t['maitholowleftthai'] = 0xF88F;
+ t['maitholowrightthai'] = 0xF88E;
+ t['maithothai'] = 0x0E49;
+ t['maithoupperleftthai'] = 0xF88D;
+ t['maitrilowleftthai'] = 0xF892;
+ t['maitrilowrightthai'] = 0xF891;
+ t['maitrithai'] = 0x0E4A;
+ t['maitriupperleftthai'] = 0xF890;
+ t['maiyamokthai'] = 0x0E46;
+ t['makatakana'] = 0x30DE;
+ t['makatakanahalfwidth'] = 0xFF8F;
+ t['male'] = 0x2642;
+ t['mansyonsquare'] = 0x3347;
+ t['maqafhebrew'] = 0x05BE;
+ t['mars'] = 0x2642;
+ t['masoracirclehebrew'] = 0x05AF;
+ t['masquare'] = 0x3383;
+ t['mbopomofo'] = 0x3107;
+ t['mbsquare'] = 0x33D4;
+ t['mcircle'] = 0x24DC;
+ t['mcubedsquare'] = 0x33A5;
+ t['mdotaccent'] = 0x1E41;
+ t['mdotbelow'] = 0x1E43;
+ t['meemarabic'] = 0x0645;
+ t['meemfinalarabic'] = 0xFEE2;
+ t['meeminitialarabic'] = 0xFEE3;
+ t['meemmedialarabic'] = 0xFEE4;
+ t['meemmeeminitialarabic'] = 0xFCD1;
+ t['meemmeemisolatedarabic'] = 0xFC48;
+ t['meetorusquare'] = 0x334D;
+ t['mehiragana'] = 0x3081;
+ t['meizierasquare'] = 0x337E;
+ t['mekatakana'] = 0x30E1;
+ t['mekatakanahalfwidth'] = 0xFF92;
+ t['mem'] = 0x05DE;
+ t['memdagesh'] = 0xFB3E;
+ t['memdageshhebrew'] = 0xFB3E;
+ t['memhebrew'] = 0x05DE;
+ t['menarmenian'] = 0x0574;
+ t['merkhahebrew'] = 0x05A5;
+ t['merkhakefulahebrew'] = 0x05A6;
+ t['merkhakefulalefthebrew'] = 0x05A6;
+ t['merkhalefthebrew'] = 0x05A5;
+ t['mhook'] = 0x0271;
+ t['mhzsquare'] = 0x3392;
+ t['middledotkatakanahalfwidth'] = 0xFF65;
+ t['middot'] = 0x00B7;
+ t['mieumacirclekorean'] = 0x3272;
+ t['mieumaparenkorean'] = 0x3212;
+ t['mieumcirclekorean'] = 0x3264;
+ t['mieumkorean'] = 0x3141;
+ t['mieumpansioskorean'] = 0x3170;
+ t['mieumparenkorean'] = 0x3204;
+ t['mieumpieupkorean'] = 0x316E;
+ t['mieumsioskorean'] = 0x316F;
+ t['mihiragana'] = 0x307F;
+ t['mikatakana'] = 0x30DF;
+ t['mikatakanahalfwidth'] = 0xFF90;
+ t['minus'] = 0x2212;
+ t['minusbelowcmb'] = 0x0320;
+ t['minuscircle'] = 0x2296;
+ t['minusmod'] = 0x02D7;
+ t['minusplus'] = 0x2213;
+ t['minute'] = 0x2032;
+ t['miribaarusquare'] = 0x334A;
+ t['mirisquare'] = 0x3349;
+ t['mlonglegturned'] = 0x0270;
+ t['mlsquare'] = 0x3396;
+ t['mmcubedsquare'] = 0x33A3;
+ t['mmonospace'] = 0xFF4D;
+ t['mmsquaredsquare'] = 0x339F;
+ t['mohiragana'] = 0x3082;
+ t['mohmsquare'] = 0x33C1;
+ t['mokatakana'] = 0x30E2;
+ t['mokatakanahalfwidth'] = 0xFF93;
+ t['molsquare'] = 0x33D6;
+ t['momathai'] = 0x0E21;
+ t['moverssquare'] = 0x33A7;
+ t['moverssquaredsquare'] = 0x33A8;
+ t['mparen'] = 0x24A8;
+ t['mpasquare'] = 0x33AB;
+ t['mssquare'] = 0x33B3;
+ t['msuperior'] = 0xF6EF;
+ t['mturned'] = 0x026F;
+ t['mu'] = 0x00B5;
+ t['mu1'] = 0x00B5;
+ t['muasquare'] = 0x3382;
+ t['muchgreater'] = 0x226B;
+ t['muchless'] = 0x226A;
+ t['mufsquare'] = 0x338C;
+ t['mugreek'] = 0x03BC;
+ t['mugsquare'] = 0x338D;
+ t['muhiragana'] = 0x3080;
+ t['mukatakana'] = 0x30E0;
+ t['mukatakanahalfwidth'] = 0xFF91;
+ t['mulsquare'] = 0x3395;
+ t['multiply'] = 0x00D7;
+ t['mumsquare'] = 0x339B;
+ t['munahhebrew'] = 0x05A3;
+ t['munahlefthebrew'] = 0x05A3;
+ t['musicalnote'] = 0x266A;
+ t['musicalnotedbl'] = 0x266B;
+ t['musicflatsign'] = 0x266D;
+ t['musicsharpsign'] = 0x266F;
+ t['mussquare'] = 0x33B2;
+ t['muvsquare'] = 0x33B6;
+ t['muwsquare'] = 0x33BC;
+ t['mvmegasquare'] = 0x33B9;
+ t['mvsquare'] = 0x33B7;
+ t['mwmegasquare'] = 0x33BF;
+ t['mwsquare'] = 0x33BD;
+ t['n'] = 0x006E;
+ t['nabengali'] = 0x09A8;
+ t['nabla'] = 0x2207;
+ t['nacute'] = 0x0144;
+ t['nadeva'] = 0x0928;
+ t['nagujarati'] = 0x0AA8;
+ t['nagurmukhi'] = 0x0A28;
+ t['nahiragana'] = 0x306A;
+ t['nakatakana'] = 0x30CA;
+ t['nakatakanahalfwidth'] = 0xFF85;
+ t['napostrophe'] = 0x0149;
+ t['nasquare'] = 0x3381;
+ t['nbopomofo'] = 0x310B;
+ t['nbspace'] = 0x00A0;
+ t['ncaron'] = 0x0148;
+ t['ncedilla'] = 0x0146;
+ t['ncircle'] = 0x24DD;
+ t['ncircumflexbelow'] = 0x1E4B;
+ t['ncommaaccent'] = 0x0146;
+ t['ndotaccent'] = 0x1E45;
+ t['ndotbelow'] = 0x1E47;
+ t['nehiragana'] = 0x306D;
+ t['nekatakana'] = 0x30CD;
+ t['nekatakanahalfwidth'] = 0xFF88;
+ t['newsheqelsign'] = 0x20AA;
+ t['nfsquare'] = 0x338B;
+ t['ngabengali'] = 0x0999;
+ t['ngadeva'] = 0x0919;
+ t['ngagujarati'] = 0x0A99;
+ t['ngagurmukhi'] = 0x0A19;
+ t['ngonguthai'] = 0x0E07;
+ t['nhiragana'] = 0x3093;
+ t['nhookleft'] = 0x0272;
+ t['nhookretroflex'] = 0x0273;
+ t['nieunacirclekorean'] = 0x326F;
+ t['nieunaparenkorean'] = 0x320F;
+ t['nieuncieuckorean'] = 0x3135;
+ t['nieuncirclekorean'] = 0x3261;
+ t['nieunhieuhkorean'] = 0x3136;
+ t['nieunkorean'] = 0x3134;
+ t['nieunpansioskorean'] = 0x3168;
+ t['nieunparenkorean'] = 0x3201;
+ t['nieunsioskorean'] = 0x3167;
+ t['nieuntikeutkorean'] = 0x3166;
+ t['nihiragana'] = 0x306B;
+ t['nikatakana'] = 0x30CB;
+ t['nikatakanahalfwidth'] = 0xFF86;
+ t['nikhahitleftthai'] = 0xF899;
+ t['nikhahitthai'] = 0x0E4D;
+ t['nine'] = 0x0039;
+ t['ninearabic'] = 0x0669;
+ t['ninebengali'] = 0x09EF;
+ t['ninecircle'] = 0x2468;
+ t['ninecircleinversesansserif'] = 0x2792;
+ t['ninedeva'] = 0x096F;
+ t['ninegujarati'] = 0x0AEF;
+ t['ninegurmukhi'] = 0x0A6F;
+ t['ninehackarabic'] = 0x0669;
+ t['ninehangzhou'] = 0x3029;
+ t['nineideographicparen'] = 0x3228;
+ t['nineinferior'] = 0x2089;
+ t['ninemonospace'] = 0xFF19;
+ t['nineoldstyle'] = 0xF739;
+ t['nineparen'] = 0x247C;
+ t['nineperiod'] = 0x2490;
+ t['ninepersian'] = 0x06F9;
+ t['nineroman'] = 0x2178;
+ t['ninesuperior'] = 0x2079;
+ t['nineteencircle'] = 0x2472;
+ t['nineteenparen'] = 0x2486;
+ t['nineteenperiod'] = 0x249A;
+ t['ninethai'] = 0x0E59;
+ t['nj'] = 0x01CC;
+ t['njecyrillic'] = 0x045A;
+ t['nkatakana'] = 0x30F3;
+ t['nkatakanahalfwidth'] = 0xFF9D;
+ t['nlegrightlong'] = 0x019E;
+ t['nlinebelow'] = 0x1E49;
+ t['nmonospace'] = 0xFF4E;
+ t['nmsquare'] = 0x339A;
+ t['nnabengali'] = 0x09A3;
+ t['nnadeva'] = 0x0923;
+ t['nnagujarati'] = 0x0AA3;
+ t['nnagurmukhi'] = 0x0A23;
+ t['nnnadeva'] = 0x0929;
+ t['nohiragana'] = 0x306E;
+ t['nokatakana'] = 0x30CE;
+ t['nokatakanahalfwidth'] = 0xFF89;
+ t['nonbreakingspace'] = 0x00A0;
+ t['nonenthai'] = 0x0E13;
+ t['nonuthai'] = 0x0E19;
+ t['noonarabic'] = 0x0646;
+ t['noonfinalarabic'] = 0xFEE6;
+ t['noonghunnaarabic'] = 0x06BA;
+ t['noonghunnafinalarabic'] = 0xFB9F;
+ t['nooninitialarabic'] = 0xFEE7;
+ t['noonjeeminitialarabic'] = 0xFCD2;
+ t['noonjeemisolatedarabic'] = 0xFC4B;
+ t['noonmedialarabic'] = 0xFEE8;
+ t['noonmeeminitialarabic'] = 0xFCD5;
+ t['noonmeemisolatedarabic'] = 0xFC4E;
+ t['noonnoonfinalarabic'] = 0xFC8D;
+ t['notcontains'] = 0x220C;
+ t['notelement'] = 0x2209;
+ t['notelementof'] = 0x2209;
+ t['notequal'] = 0x2260;
+ t['notgreater'] = 0x226F;
+ t['notgreaternorequal'] = 0x2271;
+ t['notgreaternorless'] = 0x2279;
+ t['notidentical'] = 0x2262;
+ t['notless'] = 0x226E;
+ t['notlessnorequal'] = 0x2270;
+ t['notparallel'] = 0x2226;
+ t['notprecedes'] = 0x2280;
+ t['notsubset'] = 0x2284;
+ t['notsucceeds'] = 0x2281;
+ t['notsuperset'] = 0x2285;
+ t['nowarmenian'] = 0x0576;
+ t['nparen'] = 0x24A9;
+ t['nssquare'] = 0x33B1;
+ t['nsuperior'] = 0x207F;
+ t['ntilde'] = 0x00F1;
+ t['nu'] = 0x03BD;
+ t['nuhiragana'] = 0x306C;
+ t['nukatakana'] = 0x30CC;
+ t['nukatakanahalfwidth'] = 0xFF87;
+ t['nuktabengali'] = 0x09BC;
+ t['nuktadeva'] = 0x093C;
+ t['nuktagujarati'] = 0x0ABC;
+ t['nuktagurmukhi'] = 0x0A3C;
+ t['numbersign'] = 0x0023;
+ t['numbersignmonospace'] = 0xFF03;
+ t['numbersignsmall'] = 0xFE5F;
+ t['numeralsigngreek'] = 0x0374;
+ t['numeralsignlowergreek'] = 0x0375;
+ t['numero'] = 0x2116;
+ t['nun'] = 0x05E0;
+ t['nundagesh'] = 0xFB40;
+ t['nundageshhebrew'] = 0xFB40;
+ t['nunhebrew'] = 0x05E0;
+ t['nvsquare'] = 0x33B5;
+ t['nwsquare'] = 0x33BB;
+ t['nyabengali'] = 0x099E;
+ t['nyadeva'] = 0x091E;
+ t['nyagujarati'] = 0x0A9E;
+ t['nyagurmukhi'] = 0x0A1E;
+ t['o'] = 0x006F;
+ t['oacute'] = 0x00F3;
+ t['oangthai'] = 0x0E2D;
+ t['obarred'] = 0x0275;
+ t['obarredcyrillic'] = 0x04E9;
+ t['obarreddieresiscyrillic'] = 0x04EB;
+ t['obengali'] = 0x0993;
+ t['obopomofo'] = 0x311B;
+ t['obreve'] = 0x014F;
+ t['ocandradeva'] = 0x0911;
+ t['ocandragujarati'] = 0x0A91;
+ t['ocandravowelsigndeva'] = 0x0949;
+ t['ocandravowelsigngujarati'] = 0x0AC9;
+ t['ocaron'] = 0x01D2;
+ t['ocircle'] = 0x24DE;
+ t['ocircumflex'] = 0x00F4;
+ t['ocircumflexacute'] = 0x1ED1;
+ t['ocircumflexdotbelow'] = 0x1ED9;
+ t['ocircumflexgrave'] = 0x1ED3;
+ t['ocircumflexhookabove'] = 0x1ED5;
+ t['ocircumflextilde'] = 0x1ED7;
+ t['ocyrillic'] = 0x043E;
+ t['odblacute'] = 0x0151;
+ t['odblgrave'] = 0x020D;
+ t['odeva'] = 0x0913;
+ t['odieresis'] = 0x00F6;
+ t['odieresiscyrillic'] = 0x04E7;
+ t['odotbelow'] = 0x1ECD;
+ t['oe'] = 0x0153;
+ t['oekorean'] = 0x315A;
+ t['ogonek'] = 0x02DB;
+ t['ogonekcmb'] = 0x0328;
+ t['ograve'] = 0x00F2;
+ t['ogujarati'] = 0x0A93;
+ t['oharmenian'] = 0x0585;
+ t['ohiragana'] = 0x304A;
+ t['ohookabove'] = 0x1ECF;
+ t['ohorn'] = 0x01A1;
+ t['ohornacute'] = 0x1EDB;
+ t['ohorndotbelow'] = 0x1EE3;
+ t['ohorngrave'] = 0x1EDD;
+ t['ohornhookabove'] = 0x1EDF;
+ t['ohorntilde'] = 0x1EE1;
+ t['ohungarumlaut'] = 0x0151;
+ t['oi'] = 0x01A3;
+ t['oinvertedbreve'] = 0x020F;
+ t['okatakana'] = 0x30AA;
+ t['okatakanahalfwidth'] = 0xFF75;
+ t['okorean'] = 0x3157;
+ t['olehebrew'] = 0x05AB;
+ t['omacron'] = 0x014D;
+ t['omacronacute'] = 0x1E53;
+ t['omacrongrave'] = 0x1E51;
+ t['omdeva'] = 0x0950;
+ t['omega'] = 0x03C9;
+ t['omega1'] = 0x03D6;
+ t['omegacyrillic'] = 0x0461;
+ t['omegalatinclosed'] = 0x0277;
+ t['omegaroundcyrillic'] = 0x047B;
+ t['omegatitlocyrillic'] = 0x047D;
+ t['omegatonos'] = 0x03CE;
+ t['omgujarati'] = 0x0AD0;
+ t['omicron'] = 0x03BF;
+ t['omicrontonos'] = 0x03CC;
+ t['omonospace'] = 0xFF4F;
+ t['one'] = 0x0031;
+ t['onearabic'] = 0x0661;
+ t['onebengali'] = 0x09E7;
+ t['onecircle'] = 0x2460;
+ t['onecircleinversesansserif'] = 0x278A;
+ t['onedeva'] = 0x0967;
+ t['onedotenleader'] = 0x2024;
+ t['oneeighth'] = 0x215B;
+ t['onefitted'] = 0xF6DC;
+ t['onegujarati'] = 0x0AE7;
+ t['onegurmukhi'] = 0x0A67;
+ t['onehackarabic'] = 0x0661;
+ t['onehalf'] = 0x00BD;
+ t['onehangzhou'] = 0x3021;
+ t['oneideographicparen'] = 0x3220;
+ t['oneinferior'] = 0x2081;
+ t['onemonospace'] = 0xFF11;
+ t['onenumeratorbengali'] = 0x09F4;
+ t['oneoldstyle'] = 0xF731;
+ t['oneparen'] = 0x2474;
+ t['oneperiod'] = 0x2488;
+ t['onepersian'] = 0x06F1;
+ t['onequarter'] = 0x00BC;
+ t['oneroman'] = 0x2170;
+ t['onesuperior'] = 0x00B9;
+ t['onethai'] = 0x0E51;
+ t['onethird'] = 0x2153;
+ t['oogonek'] = 0x01EB;
+ t['oogonekmacron'] = 0x01ED;
+ t['oogurmukhi'] = 0x0A13;
+ t['oomatragurmukhi'] = 0x0A4B;
+ t['oopen'] = 0x0254;
+ t['oparen'] = 0x24AA;
+ t['openbullet'] = 0x25E6;
+ t['option'] = 0x2325;
+ t['ordfeminine'] = 0x00AA;
+ t['ordmasculine'] = 0x00BA;
+ t['orthogonal'] = 0x221F;
+ t['oshortdeva'] = 0x0912;
+ t['oshortvowelsigndeva'] = 0x094A;
+ t['oslash'] = 0x00F8;
+ t['oslashacute'] = 0x01FF;
+ t['osmallhiragana'] = 0x3049;
+ t['osmallkatakana'] = 0x30A9;
+ t['osmallkatakanahalfwidth'] = 0xFF6B;
+ t['ostrokeacute'] = 0x01FF;
+ t['osuperior'] = 0xF6F0;
+ t['otcyrillic'] = 0x047F;
+ t['otilde'] = 0x00F5;
+ t['otildeacute'] = 0x1E4D;
+ t['otildedieresis'] = 0x1E4F;
+ t['oubopomofo'] = 0x3121;
+ t['overline'] = 0x203E;
+ t['overlinecenterline'] = 0xFE4A;
+ t['overlinecmb'] = 0x0305;
+ t['overlinedashed'] = 0xFE49;
+ t['overlinedblwavy'] = 0xFE4C;
+ t['overlinewavy'] = 0xFE4B;
+ t['overscore'] = 0x00AF;
+ t['ovowelsignbengali'] = 0x09CB;
+ t['ovowelsigndeva'] = 0x094B;
+ t['ovowelsigngujarati'] = 0x0ACB;
+ t['p'] = 0x0070;
+ t['paampssquare'] = 0x3380;
+ t['paasentosquare'] = 0x332B;
+ t['pabengali'] = 0x09AA;
+ t['pacute'] = 0x1E55;
+ t['padeva'] = 0x092A;
+ t['pagedown'] = 0x21DF;
+ t['pageup'] = 0x21DE;
+ t['pagujarati'] = 0x0AAA;
+ t['pagurmukhi'] = 0x0A2A;
+ t['pahiragana'] = 0x3071;
+ t['paiyannoithai'] = 0x0E2F;
+ t['pakatakana'] = 0x30D1;
+ t['palatalizationcyrilliccmb'] = 0x0484;
+ t['palochkacyrillic'] = 0x04C0;
+ t['pansioskorean'] = 0x317F;
+ t['paragraph'] = 0x00B6;
+ t['parallel'] = 0x2225;
+ t['parenleft'] = 0x0028;
+ t['parenleftaltonearabic'] = 0xFD3E;
+ t['parenleftbt'] = 0xF8ED;
+ t['parenleftex'] = 0xF8EC;
+ t['parenleftinferior'] = 0x208D;
+ t['parenleftmonospace'] = 0xFF08;
+ t['parenleftsmall'] = 0xFE59;
+ t['parenleftsuperior'] = 0x207D;
+ t['parenlefttp'] = 0xF8EB;
+ t['parenleftvertical'] = 0xFE35;
+ t['parenright'] = 0x0029;
+ t['parenrightaltonearabic'] = 0xFD3F;
+ t['parenrightbt'] = 0xF8F8;
+ t['parenrightex'] = 0xF8F7;
+ t['parenrightinferior'] = 0x208E;
+ t['parenrightmonospace'] = 0xFF09;
+ t['parenrightsmall'] = 0xFE5A;
+ t['parenrightsuperior'] = 0x207E;
+ t['parenrighttp'] = 0xF8F6;
+ t['parenrightvertical'] = 0xFE36;
+ t['partialdiff'] = 0x2202;
+ t['paseqhebrew'] = 0x05C0;
+ t['pashtahebrew'] = 0x0599;
+ t['pasquare'] = 0x33A9;
+ t['patah'] = 0x05B7;
+ t['patah11'] = 0x05B7;
+ t['patah1d'] = 0x05B7;
+ t['patah2a'] = 0x05B7;
+ t['patahhebrew'] = 0x05B7;
+ t['patahnarrowhebrew'] = 0x05B7;
+ t['patahquarterhebrew'] = 0x05B7;
+ t['patahwidehebrew'] = 0x05B7;
+ t['pazerhebrew'] = 0x05A1;
+ t['pbopomofo'] = 0x3106;
+ t['pcircle'] = 0x24DF;
+ t['pdotaccent'] = 0x1E57;
+ t['pe'] = 0x05E4;
+ t['pecyrillic'] = 0x043F;
+ t['pedagesh'] = 0xFB44;
+ t['pedageshhebrew'] = 0xFB44;
+ t['peezisquare'] = 0x333B;
+ t['pefinaldageshhebrew'] = 0xFB43;
+ t['peharabic'] = 0x067E;
+ t['peharmenian'] = 0x057A;
+ t['pehebrew'] = 0x05E4;
+ t['pehfinalarabic'] = 0xFB57;
+ t['pehinitialarabic'] = 0xFB58;
+ t['pehiragana'] = 0x307A;
+ t['pehmedialarabic'] = 0xFB59;
+ t['pekatakana'] = 0x30DA;
+ t['pemiddlehookcyrillic'] = 0x04A7;
+ t['perafehebrew'] = 0xFB4E;
+ t['percent'] = 0x0025;
+ t['percentarabic'] = 0x066A;
+ t['percentmonospace'] = 0xFF05;
+ t['percentsmall'] = 0xFE6A;
+ t['period'] = 0x002E;
+ t['periodarmenian'] = 0x0589;
+ t['periodcentered'] = 0x00B7;
+ t['periodhalfwidth'] = 0xFF61;
+ t['periodinferior'] = 0xF6E7;
+ t['periodmonospace'] = 0xFF0E;
+ t['periodsmall'] = 0xFE52;
+ t['periodsuperior'] = 0xF6E8;
+ t['perispomenigreekcmb'] = 0x0342;
+ t['perpendicular'] = 0x22A5;
+ t['perthousand'] = 0x2030;
+ t['peseta'] = 0x20A7;
+ t['pfsquare'] = 0x338A;
+ t['phabengali'] = 0x09AB;
+ t['phadeva'] = 0x092B;
+ t['phagujarati'] = 0x0AAB;
+ t['phagurmukhi'] = 0x0A2B;
+ t['phi'] = 0x03C6;
+ t['phi1'] = 0x03D5;
+ t['phieuphacirclekorean'] = 0x327A;
+ t['phieuphaparenkorean'] = 0x321A;
+ t['phieuphcirclekorean'] = 0x326C;
+ t['phieuphkorean'] = 0x314D;
+ t['phieuphparenkorean'] = 0x320C;
+ t['philatin'] = 0x0278;
+ t['phinthuthai'] = 0x0E3A;
+ t['phisymbolgreek'] = 0x03D5;
+ t['phook'] = 0x01A5;
+ t['phophanthai'] = 0x0E1E;
+ t['phophungthai'] = 0x0E1C;
+ t['phosamphaothai'] = 0x0E20;
+ t['pi'] = 0x03C0;
+ t['pieupacirclekorean'] = 0x3273;
+ t['pieupaparenkorean'] = 0x3213;
+ t['pieupcieuckorean'] = 0x3176;
+ t['pieupcirclekorean'] = 0x3265;
+ t['pieupkiyeokkorean'] = 0x3172;
+ t['pieupkorean'] = 0x3142;
+ t['pieupparenkorean'] = 0x3205;
+ t['pieupsioskiyeokkorean'] = 0x3174;
+ t['pieupsioskorean'] = 0x3144;
+ t['pieupsiostikeutkorean'] = 0x3175;
+ t['pieupthieuthkorean'] = 0x3177;
+ t['pieuptikeutkorean'] = 0x3173;
+ t['pihiragana'] = 0x3074;
+ t['pikatakana'] = 0x30D4;
+ t['pisymbolgreek'] = 0x03D6;
+ t['piwrarmenian'] = 0x0583;
+ t['plus'] = 0x002B;
+ t['plusbelowcmb'] = 0x031F;
+ t['pluscircle'] = 0x2295;
+ t['plusminus'] = 0x00B1;
+ t['plusmod'] = 0x02D6;
+ t['plusmonospace'] = 0xFF0B;
+ t['plussmall'] = 0xFE62;
+ t['plussuperior'] = 0x207A;
+ t['pmonospace'] = 0xFF50;
+ t['pmsquare'] = 0x33D8;
+ t['pohiragana'] = 0x307D;
+ t['pointingindexdownwhite'] = 0x261F;
+ t['pointingindexleftwhite'] = 0x261C;
+ t['pointingindexrightwhite'] = 0x261E;
+ t['pointingindexupwhite'] = 0x261D;
+ t['pokatakana'] = 0x30DD;
+ t['poplathai'] = 0x0E1B;
+ t['postalmark'] = 0x3012;
+ t['postalmarkface'] = 0x3020;
+ t['pparen'] = 0x24AB;
+ t['precedes'] = 0x227A;
+ t['prescription'] = 0x211E;
+ t['primemod'] = 0x02B9;
+ t['primereversed'] = 0x2035;
+ t['product'] = 0x220F;
+ t['projective'] = 0x2305;
+ t['prolongedkana'] = 0x30FC;
+ t['propellor'] = 0x2318;
+ t['propersubset'] = 0x2282;
+ t['propersuperset'] = 0x2283;
+ t['proportion'] = 0x2237;
+ t['proportional'] = 0x221D;
+ t['psi'] = 0x03C8;
+ t['psicyrillic'] = 0x0471;
+ t['psilipneumatacyrilliccmb'] = 0x0486;
+ t['pssquare'] = 0x33B0;
+ t['puhiragana'] = 0x3077;
+ t['pukatakana'] = 0x30D7;
+ t['pvsquare'] = 0x33B4;
+ t['pwsquare'] = 0x33BA;
+ t['q'] = 0x0071;
+ t['qadeva'] = 0x0958;
+ t['qadmahebrew'] = 0x05A8;
+ t['qafarabic'] = 0x0642;
+ t['qaffinalarabic'] = 0xFED6;
+ t['qafinitialarabic'] = 0xFED7;
+ t['qafmedialarabic'] = 0xFED8;
+ t['qamats'] = 0x05B8;
+ t['qamats10'] = 0x05B8;
+ t['qamats1a'] = 0x05B8;
+ t['qamats1c'] = 0x05B8;
+ t['qamats27'] = 0x05B8;
+ t['qamats29'] = 0x05B8;
+ t['qamats33'] = 0x05B8;
+ t['qamatsde'] = 0x05B8;
+ t['qamatshebrew'] = 0x05B8;
+ t['qamatsnarrowhebrew'] = 0x05B8;
+ t['qamatsqatanhebrew'] = 0x05B8;
+ t['qamatsqatannarrowhebrew'] = 0x05B8;
+ t['qamatsqatanquarterhebrew'] = 0x05B8;
+ t['qamatsqatanwidehebrew'] = 0x05B8;
+ t['qamatsquarterhebrew'] = 0x05B8;
+ t['qamatswidehebrew'] = 0x05B8;
+ t['qarneyparahebrew'] = 0x059F;
+ t['qbopomofo'] = 0x3111;
+ t['qcircle'] = 0x24E0;
+ t['qhook'] = 0x02A0;
+ t['qmonospace'] = 0xFF51;
+ t['qof'] = 0x05E7;
+ t['qofdagesh'] = 0xFB47;
+ t['qofdageshhebrew'] = 0xFB47;
+ t['qofhebrew'] = 0x05E7;
+ t['qparen'] = 0x24AC;
+ t['quarternote'] = 0x2669;
+ t['qubuts'] = 0x05BB;
+ t['qubuts18'] = 0x05BB;
+ t['qubuts25'] = 0x05BB;
+ t['qubuts31'] = 0x05BB;
+ t['qubutshebrew'] = 0x05BB;
+ t['qubutsnarrowhebrew'] = 0x05BB;
+ t['qubutsquarterhebrew'] = 0x05BB;
+ t['qubutswidehebrew'] = 0x05BB;
+ t['question'] = 0x003F;
+ t['questionarabic'] = 0x061F;
+ t['questionarmenian'] = 0x055E;
+ t['questiondown'] = 0x00BF;
+ t['questiondownsmall'] = 0xF7BF;
+ t['questiongreek'] = 0x037E;
+ t['questionmonospace'] = 0xFF1F;
+ t['questionsmall'] = 0xF73F;
+ t['quotedbl'] = 0x0022;
+ t['quotedblbase'] = 0x201E;
+ t['quotedblleft'] = 0x201C;
+ t['quotedblmonospace'] = 0xFF02;
+ t['quotedblprime'] = 0x301E;
+ t['quotedblprimereversed'] = 0x301D;
+ t['quotedblright'] = 0x201D;
+ t['quoteleft'] = 0x2018;
+ t['quoteleftreversed'] = 0x201B;
+ t['quotereversed'] = 0x201B;
+ t['quoteright'] = 0x2019;
+ t['quoterightn'] = 0x0149;
+ t['quotesinglbase'] = 0x201A;
+ t['quotesingle'] = 0x0027;
+ t['quotesinglemonospace'] = 0xFF07;
+ t['r'] = 0x0072;
+ t['raarmenian'] = 0x057C;
+ t['rabengali'] = 0x09B0;
+ t['racute'] = 0x0155;
+ t['radeva'] = 0x0930;
+ t['radical'] = 0x221A;
+ t['radicalex'] = 0xF8E5;
+ t['radoverssquare'] = 0x33AE;
+ t['radoverssquaredsquare'] = 0x33AF;
+ t['radsquare'] = 0x33AD;
+ t['rafe'] = 0x05BF;
+ t['rafehebrew'] = 0x05BF;
+ t['ragujarati'] = 0x0AB0;
+ t['ragurmukhi'] = 0x0A30;
+ t['rahiragana'] = 0x3089;
+ t['rakatakana'] = 0x30E9;
+ t['rakatakanahalfwidth'] = 0xFF97;
+ t['ralowerdiagonalbengali'] = 0x09F1;
+ t['ramiddlediagonalbengali'] = 0x09F0;
+ t['ramshorn'] = 0x0264;
+ t['ratio'] = 0x2236;
+ t['rbopomofo'] = 0x3116;
+ t['rcaron'] = 0x0159;
+ t['rcedilla'] = 0x0157;
+ t['rcircle'] = 0x24E1;
+ t['rcommaaccent'] = 0x0157;
+ t['rdblgrave'] = 0x0211;
+ t['rdotaccent'] = 0x1E59;
+ t['rdotbelow'] = 0x1E5B;
+ t['rdotbelowmacron'] = 0x1E5D;
+ t['referencemark'] = 0x203B;
+ t['reflexsubset'] = 0x2286;
+ t['reflexsuperset'] = 0x2287;
+ t['registered'] = 0x00AE;
+ t['registersans'] = 0xF8E8;
+ t['registerserif'] = 0xF6DA;
+ t['reharabic'] = 0x0631;
+ t['reharmenian'] = 0x0580;
+ t['rehfinalarabic'] = 0xFEAE;
+ t['rehiragana'] = 0x308C;
+ t['rekatakana'] = 0x30EC;
+ t['rekatakanahalfwidth'] = 0xFF9A;
+ t['resh'] = 0x05E8;
+ t['reshdageshhebrew'] = 0xFB48;
+ t['reshhebrew'] = 0x05E8;
+ t['reversedtilde'] = 0x223D;
+ t['reviahebrew'] = 0x0597;
+ t['reviamugrashhebrew'] = 0x0597;
+ t['revlogicalnot'] = 0x2310;
+ t['rfishhook'] = 0x027E;
+ t['rfishhookreversed'] = 0x027F;
+ t['rhabengali'] = 0x09DD;
+ t['rhadeva'] = 0x095D;
+ t['rho'] = 0x03C1;
+ t['rhook'] = 0x027D;
+ t['rhookturned'] = 0x027B;
+ t['rhookturnedsuperior'] = 0x02B5;
+ t['rhosymbolgreek'] = 0x03F1;
+ t['rhotichookmod'] = 0x02DE;
+ t['rieulacirclekorean'] = 0x3271;
+ t['rieulaparenkorean'] = 0x3211;
+ t['rieulcirclekorean'] = 0x3263;
+ t['rieulhieuhkorean'] = 0x3140;
+ t['rieulkiyeokkorean'] = 0x313A;
+ t['rieulkiyeoksioskorean'] = 0x3169;
+ t['rieulkorean'] = 0x3139;
+ t['rieulmieumkorean'] = 0x313B;
+ t['rieulpansioskorean'] = 0x316C;
+ t['rieulparenkorean'] = 0x3203;
+ t['rieulphieuphkorean'] = 0x313F;
+ t['rieulpieupkorean'] = 0x313C;
+ t['rieulpieupsioskorean'] = 0x316B;
+ t['rieulsioskorean'] = 0x313D;
+ t['rieulthieuthkorean'] = 0x313E;
+ t['rieultikeutkorean'] = 0x316A;
+ t['rieulyeorinhieuhkorean'] = 0x316D;
+ t['rightangle'] = 0x221F;
+ t['righttackbelowcmb'] = 0x0319;
+ t['righttriangle'] = 0x22BF;
+ t['rihiragana'] = 0x308A;
+ t['rikatakana'] = 0x30EA;
+ t['rikatakanahalfwidth'] = 0xFF98;
+ t['ring'] = 0x02DA;
+ t['ringbelowcmb'] = 0x0325;
+ t['ringcmb'] = 0x030A;
+ t['ringhalfleft'] = 0x02BF;
+ t['ringhalfleftarmenian'] = 0x0559;
+ t['ringhalfleftbelowcmb'] = 0x031C;
+ t['ringhalfleftcentered'] = 0x02D3;
+ t['ringhalfright'] = 0x02BE;
+ t['ringhalfrightbelowcmb'] = 0x0339;
+ t['ringhalfrightcentered'] = 0x02D2;
+ t['rinvertedbreve'] = 0x0213;
+ t['rittorusquare'] = 0x3351;
+ t['rlinebelow'] = 0x1E5F;
+ t['rlongleg'] = 0x027C;
+ t['rlonglegturned'] = 0x027A;
+ t['rmonospace'] = 0xFF52;
+ t['rohiragana'] = 0x308D;
+ t['rokatakana'] = 0x30ED;
+ t['rokatakanahalfwidth'] = 0xFF9B;
+ t['roruathai'] = 0x0E23;
+ t['rparen'] = 0x24AD;
+ t['rrabengali'] = 0x09DC;
+ t['rradeva'] = 0x0931;
+ t['rragurmukhi'] = 0x0A5C;
+ t['rreharabic'] = 0x0691;
+ t['rrehfinalarabic'] = 0xFB8D;
+ t['rrvocalicbengali'] = 0x09E0;
+ t['rrvocalicdeva'] = 0x0960;
+ t['rrvocalicgujarati'] = 0x0AE0;
+ t['rrvocalicvowelsignbengali'] = 0x09C4;
+ t['rrvocalicvowelsigndeva'] = 0x0944;
+ t['rrvocalicvowelsigngujarati'] = 0x0AC4;
+ t['rsuperior'] = 0xF6F1;
+ t['rtblock'] = 0x2590;
+ t['rturned'] = 0x0279;
+ t['rturnedsuperior'] = 0x02B4;
+ t['ruhiragana'] = 0x308B;
+ t['rukatakana'] = 0x30EB;
+ t['rukatakanahalfwidth'] = 0xFF99;
+ t['rupeemarkbengali'] = 0x09F2;
+ t['rupeesignbengali'] = 0x09F3;
+ t['rupiah'] = 0xF6DD;
+ t['ruthai'] = 0x0E24;
+ t['rvocalicbengali'] = 0x098B;
+ t['rvocalicdeva'] = 0x090B;
+ t['rvocalicgujarati'] = 0x0A8B;
+ t['rvocalicvowelsignbengali'] = 0x09C3;
+ t['rvocalicvowelsigndeva'] = 0x0943;
+ t['rvocalicvowelsigngujarati'] = 0x0AC3;
+ t['s'] = 0x0073;
+ t['sabengali'] = 0x09B8;
+ t['sacute'] = 0x015B;
+ t['sacutedotaccent'] = 0x1E65;
+ t['sadarabic'] = 0x0635;
+ t['sadeva'] = 0x0938;
+ t['sadfinalarabic'] = 0xFEBA;
+ t['sadinitialarabic'] = 0xFEBB;
+ t['sadmedialarabic'] = 0xFEBC;
+ t['sagujarati'] = 0x0AB8;
+ t['sagurmukhi'] = 0x0A38;
+ t['sahiragana'] = 0x3055;
+ t['sakatakana'] = 0x30B5;
+ t['sakatakanahalfwidth'] = 0xFF7B;
+ t['sallallahoualayhewasallamarabic'] = 0xFDFA;
+ t['samekh'] = 0x05E1;
+ t['samekhdagesh'] = 0xFB41;
+ t['samekhdageshhebrew'] = 0xFB41;
+ t['samekhhebrew'] = 0x05E1;
+ t['saraaathai'] = 0x0E32;
+ t['saraaethai'] = 0x0E41;
+ t['saraaimaimalaithai'] = 0x0E44;
+ t['saraaimaimuanthai'] = 0x0E43;
+ t['saraamthai'] = 0x0E33;
+ t['saraathai'] = 0x0E30;
+ t['saraethai'] = 0x0E40;
+ t['saraiileftthai'] = 0xF886;
+ t['saraiithai'] = 0x0E35;
+ t['saraileftthai'] = 0xF885;
+ t['saraithai'] = 0x0E34;
+ t['saraothai'] = 0x0E42;
+ t['saraueeleftthai'] = 0xF888;
+ t['saraueethai'] = 0x0E37;
+ t['saraueleftthai'] = 0xF887;
+ t['sarauethai'] = 0x0E36;
+ t['sarauthai'] = 0x0E38;
+ t['sarauuthai'] = 0x0E39;
+ t['sbopomofo'] = 0x3119;
+ t['scaron'] = 0x0161;
+ t['scarondotaccent'] = 0x1E67;
+ t['scedilla'] = 0x015F;
+ t['schwa'] = 0x0259;
+ t['schwacyrillic'] = 0x04D9;
+ t['schwadieresiscyrillic'] = 0x04DB;
+ t['schwahook'] = 0x025A;
+ t['scircle'] = 0x24E2;
+ t['scircumflex'] = 0x015D;
+ t['scommaaccent'] = 0x0219;
+ t['sdotaccent'] = 0x1E61;
+ t['sdotbelow'] = 0x1E63;
+ t['sdotbelowdotaccent'] = 0x1E69;
+ t['seagullbelowcmb'] = 0x033C;
+ t['second'] = 0x2033;
+ t['secondtonechinese'] = 0x02CA;
+ t['section'] = 0x00A7;
+ t['seenarabic'] = 0x0633;
+ t['seenfinalarabic'] = 0xFEB2;
+ t['seeninitialarabic'] = 0xFEB3;
+ t['seenmedialarabic'] = 0xFEB4;
+ t['segol'] = 0x05B6;
+ t['segol13'] = 0x05B6;
+ t['segol1f'] = 0x05B6;
+ t['segol2c'] = 0x05B6;
+ t['segolhebrew'] = 0x05B6;
+ t['segolnarrowhebrew'] = 0x05B6;
+ t['segolquarterhebrew'] = 0x05B6;
+ t['segoltahebrew'] = 0x0592;
+ t['segolwidehebrew'] = 0x05B6;
+ t['seharmenian'] = 0x057D;
+ t['sehiragana'] = 0x305B;
+ t['sekatakana'] = 0x30BB;
+ t['sekatakanahalfwidth'] = 0xFF7E;
+ t['semicolon'] = 0x003B;
+ t['semicolonarabic'] = 0x061B;
+ t['semicolonmonospace'] = 0xFF1B;
+ t['semicolonsmall'] = 0xFE54;
+ t['semivoicedmarkkana'] = 0x309C;
+ t['semivoicedmarkkanahalfwidth'] = 0xFF9F;
+ t['sentisquare'] = 0x3322;
+ t['sentosquare'] = 0x3323;
+ t['seven'] = 0x0037;
+ t['sevenarabic'] = 0x0667;
+ t['sevenbengali'] = 0x09ED;
+ t['sevencircle'] = 0x2466;
+ t['sevencircleinversesansserif'] = 0x2790;
+ t['sevendeva'] = 0x096D;
+ t['seveneighths'] = 0x215E;
+ t['sevengujarati'] = 0x0AED;
+ t['sevengurmukhi'] = 0x0A6D;
+ t['sevenhackarabic'] = 0x0667;
+ t['sevenhangzhou'] = 0x3027;
+ t['sevenideographicparen'] = 0x3226;
+ t['seveninferior'] = 0x2087;
+ t['sevenmonospace'] = 0xFF17;
+ t['sevenoldstyle'] = 0xF737;
+ t['sevenparen'] = 0x247A;
+ t['sevenperiod'] = 0x248E;
+ t['sevenpersian'] = 0x06F7;
+ t['sevenroman'] = 0x2176;
+ t['sevensuperior'] = 0x2077;
+ t['seventeencircle'] = 0x2470;
+ t['seventeenparen'] = 0x2484;
+ t['seventeenperiod'] = 0x2498;
+ t['seventhai'] = 0x0E57;
+ t['sfthyphen'] = 0x00AD;
+ t['shaarmenian'] = 0x0577;
+ t['shabengali'] = 0x09B6;
+ t['shacyrillic'] = 0x0448;
+ t['shaddaarabic'] = 0x0651;
+ t['shaddadammaarabic'] = 0xFC61;
+ t['shaddadammatanarabic'] = 0xFC5E;
+ t['shaddafathaarabic'] = 0xFC60;
+ t['shaddakasraarabic'] = 0xFC62;
+ t['shaddakasratanarabic'] = 0xFC5F;
+ t['shade'] = 0x2592;
+ t['shadedark'] = 0x2593;
+ t['shadelight'] = 0x2591;
+ t['shademedium'] = 0x2592;
+ t['shadeva'] = 0x0936;
+ t['shagujarati'] = 0x0AB6;
+ t['shagurmukhi'] = 0x0A36;
+ t['shalshelethebrew'] = 0x0593;
+ t['shbopomofo'] = 0x3115;
+ t['shchacyrillic'] = 0x0449;
+ t['sheenarabic'] = 0x0634;
+ t['sheenfinalarabic'] = 0xFEB6;
+ t['sheeninitialarabic'] = 0xFEB7;
+ t['sheenmedialarabic'] = 0xFEB8;
+ t['sheicoptic'] = 0x03E3;
+ t['sheqel'] = 0x20AA;
+ t['sheqelhebrew'] = 0x20AA;
+ t['sheva'] = 0x05B0;
+ t['sheva115'] = 0x05B0;
+ t['sheva15'] = 0x05B0;
+ t['sheva22'] = 0x05B0;
+ t['sheva2e'] = 0x05B0;
+ t['shevahebrew'] = 0x05B0;
+ t['shevanarrowhebrew'] = 0x05B0;
+ t['shevaquarterhebrew'] = 0x05B0;
+ t['shevawidehebrew'] = 0x05B0;
+ t['shhacyrillic'] = 0x04BB;
+ t['shimacoptic'] = 0x03ED;
+ t['shin'] = 0x05E9;
+ t['shindagesh'] = 0xFB49;
+ t['shindageshhebrew'] = 0xFB49;
+ t['shindageshshindot'] = 0xFB2C;
+ t['shindageshshindothebrew'] = 0xFB2C;
+ t['shindageshsindot'] = 0xFB2D;
+ t['shindageshsindothebrew'] = 0xFB2D;
+ t['shindothebrew'] = 0x05C1;
+ t['shinhebrew'] = 0x05E9;
+ t['shinshindot'] = 0xFB2A;
+ t['shinshindothebrew'] = 0xFB2A;
+ t['shinsindot'] = 0xFB2B;
+ t['shinsindothebrew'] = 0xFB2B;
+ t['shook'] = 0x0282;
+ t['sigma'] = 0x03C3;
+ t['sigma1'] = 0x03C2;
+ t['sigmafinal'] = 0x03C2;
+ t['sigmalunatesymbolgreek'] = 0x03F2;
+ t['sihiragana'] = 0x3057;
+ t['sikatakana'] = 0x30B7;
+ t['sikatakanahalfwidth'] = 0xFF7C;
+ t['siluqhebrew'] = 0x05BD;
+ t['siluqlefthebrew'] = 0x05BD;
+ t['similar'] = 0x223C;
+ t['sindothebrew'] = 0x05C2;
+ t['siosacirclekorean'] = 0x3274;
+ t['siosaparenkorean'] = 0x3214;
+ t['sioscieuckorean'] = 0x317E;
+ t['sioscirclekorean'] = 0x3266;
+ t['sioskiyeokkorean'] = 0x317A;
+ t['sioskorean'] = 0x3145;
+ t['siosnieunkorean'] = 0x317B;
+ t['siosparenkorean'] = 0x3206;
+ t['siospieupkorean'] = 0x317D;
+ t['siostikeutkorean'] = 0x317C;
+ t['six'] = 0x0036;
+ t['sixarabic'] = 0x0666;
+ t['sixbengali'] = 0x09EC;
+ t['sixcircle'] = 0x2465;
+ t['sixcircleinversesansserif'] = 0x278F;
+ t['sixdeva'] = 0x096C;
+ t['sixgujarati'] = 0x0AEC;
+ t['sixgurmukhi'] = 0x0A6C;
+ t['sixhackarabic'] = 0x0666;
+ t['sixhangzhou'] = 0x3026;
+ t['sixideographicparen'] = 0x3225;
+ t['sixinferior'] = 0x2086;
+ t['sixmonospace'] = 0xFF16;
+ t['sixoldstyle'] = 0xF736;
+ t['sixparen'] = 0x2479;
+ t['sixperiod'] = 0x248D;
+ t['sixpersian'] = 0x06F6;
+ t['sixroman'] = 0x2175;
+ t['sixsuperior'] = 0x2076;
+ t['sixteencircle'] = 0x246F;
+ t['sixteencurrencydenominatorbengali'] = 0x09F9;
+ t['sixteenparen'] = 0x2483;
+ t['sixteenperiod'] = 0x2497;
+ t['sixthai'] = 0x0E56;
+ t['slash'] = 0x002F;
+ t['slashmonospace'] = 0xFF0F;
+ t['slong'] = 0x017F;
+ t['slongdotaccent'] = 0x1E9B;
+ t['smileface'] = 0x263A;
+ t['smonospace'] = 0xFF53;
+ t['sofpasuqhebrew'] = 0x05C3;
+ t['softhyphen'] = 0x00AD;
+ t['softsigncyrillic'] = 0x044C;
+ t['sohiragana'] = 0x305D;
+ t['sokatakana'] = 0x30BD;
+ t['sokatakanahalfwidth'] = 0xFF7F;
+ t['soliduslongoverlaycmb'] = 0x0338;
+ t['solidusshortoverlaycmb'] = 0x0337;
+ t['sorusithai'] = 0x0E29;
+ t['sosalathai'] = 0x0E28;
+ t['sosothai'] = 0x0E0B;
+ t['sosuathai'] = 0x0E2A;
+ t['space'] = 0x0020;
+ t['spacehackarabic'] = 0x0020;
+ t['spade'] = 0x2660;
+ t['spadesuitblack'] = 0x2660;
+ t['spadesuitwhite'] = 0x2664;
+ t['sparen'] = 0x24AE;
+ t['squarebelowcmb'] = 0x033B;
+ t['squarecc'] = 0x33C4;
+ t['squarecm'] = 0x339D;
+ t['squarediagonalcrosshatchfill'] = 0x25A9;
+ t['squarehorizontalfill'] = 0x25A4;
+ t['squarekg'] = 0x338F;
+ t['squarekm'] = 0x339E;
+ t['squarekmcapital'] = 0x33CE;
+ t['squareln'] = 0x33D1;
+ t['squarelog'] = 0x33D2;
+ t['squaremg'] = 0x338E;
+ t['squaremil'] = 0x33D5;
+ t['squaremm'] = 0x339C;
+ t['squaremsquared'] = 0x33A1;
+ t['squareorthogonalcrosshatchfill'] = 0x25A6;
+ t['squareupperlefttolowerrightfill'] = 0x25A7;
+ t['squareupperrighttolowerleftfill'] = 0x25A8;
+ t['squareverticalfill'] = 0x25A5;
+ t['squarewhitewithsmallblack'] = 0x25A3;
+ t['srsquare'] = 0x33DB;
+ t['ssabengali'] = 0x09B7;
+ t['ssadeva'] = 0x0937;
+ t['ssagujarati'] = 0x0AB7;
+ t['ssangcieuckorean'] = 0x3149;
+ t['ssanghieuhkorean'] = 0x3185;
+ t['ssangieungkorean'] = 0x3180;
+ t['ssangkiyeokkorean'] = 0x3132;
+ t['ssangnieunkorean'] = 0x3165;
+ t['ssangpieupkorean'] = 0x3143;
+ t['ssangsioskorean'] = 0x3146;
+ t['ssangtikeutkorean'] = 0x3138;
+ t['ssuperior'] = 0xF6F2;
+ t['sterling'] = 0x00A3;
+ t['sterlingmonospace'] = 0xFFE1;
+ t['strokelongoverlaycmb'] = 0x0336;
+ t['strokeshortoverlaycmb'] = 0x0335;
+ t['subset'] = 0x2282;
+ t['subsetnotequal'] = 0x228A;
+ t['subsetorequal'] = 0x2286;
+ t['succeeds'] = 0x227B;
+ t['suchthat'] = 0x220B;
+ t['suhiragana'] = 0x3059;
+ t['sukatakana'] = 0x30B9;
+ t['sukatakanahalfwidth'] = 0xFF7D;
+ t['sukunarabic'] = 0x0652;
+ t['summation'] = 0x2211;
+ t['sun'] = 0x263C;
+ t['superset'] = 0x2283;
+ t['supersetnotequal'] = 0x228B;
+ t['supersetorequal'] = 0x2287;
+ t['svsquare'] = 0x33DC;
+ t['syouwaerasquare'] = 0x337C;
+ t['t'] = 0x0074;
+ t['tabengali'] = 0x09A4;
+ t['tackdown'] = 0x22A4;
+ t['tackleft'] = 0x22A3;
+ t['tadeva'] = 0x0924;
+ t['tagujarati'] = 0x0AA4;
+ t['tagurmukhi'] = 0x0A24;
+ t['taharabic'] = 0x0637;
+ t['tahfinalarabic'] = 0xFEC2;
+ t['tahinitialarabic'] = 0xFEC3;
+ t['tahiragana'] = 0x305F;
+ t['tahmedialarabic'] = 0xFEC4;
+ t['taisyouerasquare'] = 0x337D;
+ t['takatakana'] = 0x30BF;
+ t['takatakanahalfwidth'] = 0xFF80;
+ t['tatweelarabic'] = 0x0640;
+ t['tau'] = 0x03C4;
+ t['tav'] = 0x05EA;
+ t['tavdages'] = 0xFB4A;
+ t['tavdagesh'] = 0xFB4A;
+ t['tavdageshhebrew'] = 0xFB4A;
+ t['tavhebrew'] = 0x05EA;
+ t['tbar'] = 0x0167;
+ t['tbopomofo'] = 0x310A;
+ t['tcaron'] = 0x0165;
+ t['tccurl'] = 0x02A8;
+ t['tcedilla'] = 0x0163;
+ t['tcheharabic'] = 0x0686;
+ t['tchehfinalarabic'] = 0xFB7B;
+ t['tchehinitialarabic'] = 0xFB7C;
+ t['tchehmedialarabic'] = 0xFB7D;
+ t['tcircle'] = 0x24E3;
+ t['tcircumflexbelow'] = 0x1E71;
+ t['tcommaaccent'] = 0x0163;
+ t['tdieresis'] = 0x1E97;
+ t['tdotaccent'] = 0x1E6B;
+ t['tdotbelow'] = 0x1E6D;
+ t['tecyrillic'] = 0x0442;
+ t['tedescendercyrillic'] = 0x04AD;
+ t['teharabic'] = 0x062A;
+ t['tehfinalarabic'] = 0xFE96;
+ t['tehhahinitialarabic'] = 0xFCA2;
+ t['tehhahisolatedarabic'] = 0xFC0C;
+ t['tehinitialarabic'] = 0xFE97;
+ t['tehiragana'] = 0x3066;
+ t['tehjeeminitialarabic'] = 0xFCA1;
+ t['tehjeemisolatedarabic'] = 0xFC0B;
+ t['tehmarbutaarabic'] = 0x0629;
+ t['tehmarbutafinalarabic'] = 0xFE94;
+ t['tehmedialarabic'] = 0xFE98;
+ t['tehmeeminitialarabic'] = 0xFCA4;
+ t['tehmeemisolatedarabic'] = 0xFC0E;
+ t['tehnoonfinalarabic'] = 0xFC73;
+ t['tekatakana'] = 0x30C6;
+ t['tekatakanahalfwidth'] = 0xFF83;
+ t['telephone'] = 0x2121;
+ t['telephoneblack'] = 0x260E;
+ t['telishagedolahebrew'] = 0x05A0;
+ t['telishaqetanahebrew'] = 0x05A9;
+ t['tencircle'] = 0x2469;
+ t['tenideographicparen'] = 0x3229;
+ t['tenparen'] = 0x247D;
+ t['tenperiod'] = 0x2491;
+ t['tenroman'] = 0x2179;
+ t['tesh'] = 0x02A7;
+ t['tet'] = 0x05D8;
+ t['tetdagesh'] = 0xFB38;
+ t['tetdageshhebrew'] = 0xFB38;
+ t['tethebrew'] = 0x05D8;
+ t['tetsecyrillic'] = 0x04B5;
+ t['tevirhebrew'] = 0x059B;
+ t['tevirlefthebrew'] = 0x059B;
+ t['thabengali'] = 0x09A5;
+ t['thadeva'] = 0x0925;
+ t['thagujarati'] = 0x0AA5;
+ t['thagurmukhi'] = 0x0A25;
+ t['thalarabic'] = 0x0630;
+ t['thalfinalarabic'] = 0xFEAC;
+ t['thanthakhatlowleftthai'] = 0xF898;
+ t['thanthakhatlowrightthai'] = 0xF897;
+ t['thanthakhatthai'] = 0x0E4C;
+ t['thanthakhatupperleftthai'] = 0xF896;
+ t['theharabic'] = 0x062B;
+ t['thehfinalarabic'] = 0xFE9A;
+ t['thehinitialarabic'] = 0xFE9B;
+ t['thehmedialarabic'] = 0xFE9C;
+ t['thereexists'] = 0x2203;
+ t['therefore'] = 0x2234;
+ t['theta'] = 0x03B8;
+ t['theta1'] = 0x03D1;
+ t['thetasymbolgreek'] = 0x03D1;
+ t['thieuthacirclekorean'] = 0x3279;
+ t['thieuthaparenkorean'] = 0x3219;
+ t['thieuthcirclekorean'] = 0x326B;
+ t['thieuthkorean'] = 0x314C;
+ t['thieuthparenkorean'] = 0x320B;
+ t['thirteencircle'] = 0x246C;
+ t['thirteenparen'] = 0x2480;
+ t['thirteenperiod'] = 0x2494;
+ t['thonangmonthothai'] = 0x0E11;
+ t['thook'] = 0x01AD;
+ t['thophuthaothai'] = 0x0E12;
+ t['thorn'] = 0x00FE;
+ t['thothahanthai'] = 0x0E17;
+ t['thothanthai'] = 0x0E10;
+ t['thothongthai'] = 0x0E18;
+ t['thothungthai'] = 0x0E16;
+ t['thousandcyrillic'] = 0x0482;
+ t['thousandsseparatorarabic'] = 0x066C;
+ t['thousandsseparatorpersian'] = 0x066C;
+ t['three'] = 0x0033;
+ t['threearabic'] = 0x0663;
+ t['threebengali'] = 0x09E9;
+ t['threecircle'] = 0x2462;
+ t['threecircleinversesansserif'] = 0x278C;
+ t['threedeva'] = 0x0969;
+ t['threeeighths'] = 0x215C;
+ t['threegujarati'] = 0x0AE9;
+ t['threegurmukhi'] = 0x0A69;
+ t['threehackarabic'] = 0x0663;
+ t['threehangzhou'] = 0x3023;
+ t['threeideographicparen'] = 0x3222;
+ t['threeinferior'] = 0x2083;
+ t['threemonospace'] = 0xFF13;
+ t['threenumeratorbengali'] = 0x09F6;
+ t['threeoldstyle'] = 0xF733;
+ t['threeparen'] = 0x2476;
+ t['threeperiod'] = 0x248A;
+ t['threepersian'] = 0x06F3;
+ t['threequarters'] = 0x00BE;
+ t['threequartersemdash'] = 0xF6DE;
+ t['threeroman'] = 0x2172;
+ t['threesuperior'] = 0x00B3;
+ t['threethai'] = 0x0E53;
+ t['thzsquare'] = 0x3394;
+ t['tihiragana'] = 0x3061;
+ t['tikatakana'] = 0x30C1;
+ t['tikatakanahalfwidth'] = 0xFF81;
+ t['tikeutacirclekorean'] = 0x3270;
+ t['tikeutaparenkorean'] = 0x3210;
+ t['tikeutcirclekorean'] = 0x3262;
+ t['tikeutkorean'] = 0x3137;
+ t['tikeutparenkorean'] = 0x3202;
+ t['tilde'] = 0x02DC;
+ t['tildebelowcmb'] = 0x0330;
+ t['tildecmb'] = 0x0303;
+ t['tildecomb'] = 0x0303;
+ t['tildedoublecmb'] = 0x0360;
+ t['tildeoperator'] = 0x223C;
+ t['tildeoverlaycmb'] = 0x0334;
+ t['tildeverticalcmb'] = 0x033E;
+ t['timescircle'] = 0x2297;
+ t['tipehahebrew'] = 0x0596;
+ t['tipehalefthebrew'] = 0x0596;
+ t['tippigurmukhi'] = 0x0A70;
+ t['titlocyrilliccmb'] = 0x0483;
+ t['tiwnarmenian'] = 0x057F;
+ t['tlinebelow'] = 0x1E6F;
+ t['tmonospace'] = 0xFF54;
+ t['toarmenian'] = 0x0569;
+ t['tohiragana'] = 0x3068;
+ t['tokatakana'] = 0x30C8;
+ t['tokatakanahalfwidth'] = 0xFF84;
+ t['tonebarextrahighmod'] = 0x02E5;
+ t['tonebarextralowmod'] = 0x02E9;
+ t['tonebarhighmod'] = 0x02E6;
+ t['tonebarlowmod'] = 0x02E8;
+ t['tonebarmidmod'] = 0x02E7;
+ t['tonefive'] = 0x01BD;
+ t['tonesix'] = 0x0185;
+ t['tonetwo'] = 0x01A8;
+ t['tonos'] = 0x0384;
+ t['tonsquare'] = 0x3327;
+ t['topatakthai'] = 0x0E0F;
+ t['tortoiseshellbracketleft'] = 0x3014;
+ t['tortoiseshellbracketleftsmall'] = 0xFE5D;
+ t['tortoiseshellbracketleftvertical'] = 0xFE39;
+ t['tortoiseshellbracketright'] = 0x3015;
+ t['tortoiseshellbracketrightsmall'] = 0xFE5E;
+ t['tortoiseshellbracketrightvertical'] = 0xFE3A;
+ t['totaothai'] = 0x0E15;
+ t['tpalatalhook'] = 0x01AB;
+ t['tparen'] = 0x24AF;
+ t['trademark'] = 0x2122;
+ t['trademarksans'] = 0xF8EA;
+ t['trademarkserif'] = 0xF6DB;
+ t['tretroflexhook'] = 0x0288;
+ t['triagdn'] = 0x25BC;
+ t['triaglf'] = 0x25C4;
+ t['triagrt'] = 0x25BA;
+ t['triagup'] = 0x25B2;
+ t['ts'] = 0x02A6;
+ t['tsadi'] = 0x05E6;
+ t['tsadidagesh'] = 0xFB46;
+ t['tsadidageshhebrew'] = 0xFB46;
+ t['tsadihebrew'] = 0x05E6;
+ t['tsecyrillic'] = 0x0446;
+ t['tsere'] = 0x05B5;
+ t['tsere12'] = 0x05B5;
+ t['tsere1e'] = 0x05B5;
+ t['tsere2b'] = 0x05B5;
+ t['tserehebrew'] = 0x05B5;
+ t['tserenarrowhebrew'] = 0x05B5;
+ t['tserequarterhebrew'] = 0x05B5;
+ t['tserewidehebrew'] = 0x05B5;
+ t['tshecyrillic'] = 0x045B;
+ t['tsuperior'] = 0xF6F3;
+ t['ttabengali'] = 0x099F;
+ t['ttadeva'] = 0x091F;
+ t['ttagujarati'] = 0x0A9F;
+ t['ttagurmukhi'] = 0x0A1F;
+ t['tteharabic'] = 0x0679;
+ t['ttehfinalarabic'] = 0xFB67;
+ t['ttehinitialarabic'] = 0xFB68;
+ t['ttehmedialarabic'] = 0xFB69;
+ t['tthabengali'] = 0x09A0;
+ t['tthadeva'] = 0x0920;
+ t['tthagujarati'] = 0x0AA0;
+ t['tthagurmukhi'] = 0x0A20;
+ t['tturned'] = 0x0287;
+ t['tuhiragana'] = 0x3064;
+ t['tukatakana'] = 0x30C4;
+ t['tukatakanahalfwidth'] = 0xFF82;
+ t['tusmallhiragana'] = 0x3063;
+ t['tusmallkatakana'] = 0x30C3;
+ t['tusmallkatakanahalfwidth'] = 0xFF6F;
+ t['twelvecircle'] = 0x246B;
+ t['twelveparen'] = 0x247F;
+ t['twelveperiod'] = 0x2493;
+ t['twelveroman'] = 0x217B;
+ t['twentycircle'] = 0x2473;
+ t['twentyhangzhou'] = 0x5344;
+ t['twentyparen'] = 0x2487;
+ t['twentyperiod'] = 0x249B;
+ t['two'] = 0x0032;
+ t['twoarabic'] = 0x0662;
+ t['twobengali'] = 0x09E8;
+ t['twocircle'] = 0x2461;
+ t['twocircleinversesansserif'] = 0x278B;
+ t['twodeva'] = 0x0968;
+ t['twodotenleader'] = 0x2025;
+ t['twodotleader'] = 0x2025;
+ t['twodotleadervertical'] = 0xFE30;
+ t['twogujarati'] = 0x0AE8;
+ t['twogurmukhi'] = 0x0A68;
+ t['twohackarabic'] = 0x0662;
+ t['twohangzhou'] = 0x3022;
+ t['twoideographicparen'] = 0x3221;
+ t['twoinferior'] = 0x2082;
+ t['twomonospace'] = 0xFF12;
+ t['twonumeratorbengali'] = 0x09F5;
+ t['twooldstyle'] = 0xF732;
+ t['twoparen'] = 0x2475;
+ t['twoperiod'] = 0x2489;
+ t['twopersian'] = 0x06F2;
+ t['tworoman'] = 0x2171;
+ t['twostroke'] = 0x01BB;
+ t['twosuperior'] = 0x00B2;
+ t['twothai'] = 0x0E52;
+ t['twothirds'] = 0x2154;
+ t['u'] = 0x0075;
+ t['uacute'] = 0x00FA;
+ t['ubar'] = 0x0289;
+ t['ubengali'] = 0x0989;
+ t['ubopomofo'] = 0x3128;
+ t['ubreve'] = 0x016D;
+ t['ucaron'] = 0x01D4;
+ t['ucircle'] = 0x24E4;
+ t['ucircumflex'] = 0x00FB;
+ t['ucircumflexbelow'] = 0x1E77;
+ t['ucyrillic'] = 0x0443;
+ t['udattadeva'] = 0x0951;
+ t['udblacute'] = 0x0171;
+ t['udblgrave'] = 0x0215;
+ t['udeva'] = 0x0909;
+ t['udieresis'] = 0x00FC;
+ t['udieresisacute'] = 0x01D8;
+ t['udieresisbelow'] = 0x1E73;
+ t['udieresiscaron'] = 0x01DA;
+ t['udieresiscyrillic'] = 0x04F1;
+ t['udieresisgrave'] = 0x01DC;
+ t['udieresismacron'] = 0x01D6;
+ t['udotbelow'] = 0x1EE5;
+ t['ugrave'] = 0x00F9;
+ t['ugujarati'] = 0x0A89;
+ t['ugurmukhi'] = 0x0A09;
+ t['uhiragana'] = 0x3046;
+ t['uhookabove'] = 0x1EE7;
+ t['uhorn'] = 0x01B0;
+ t['uhornacute'] = 0x1EE9;
+ t['uhorndotbelow'] = 0x1EF1;
+ t['uhorngrave'] = 0x1EEB;
+ t['uhornhookabove'] = 0x1EED;
+ t['uhorntilde'] = 0x1EEF;
+ t['uhungarumlaut'] = 0x0171;
+ t['uhungarumlautcyrillic'] = 0x04F3;
+ t['uinvertedbreve'] = 0x0217;
+ t['ukatakana'] = 0x30A6;
+ t['ukatakanahalfwidth'] = 0xFF73;
+ t['ukcyrillic'] = 0x0479;
+ t['ukorean'] = 0x315C;
+ t['umacron'] = 0x016B;
+ t['umacroncyrillic'] = 0x04EF;
+ t['umacrondieresis'] = 0x1E7B;
+ t['umatragurmukhi'] = 0x0A41;
+ t['umonospace'] = 0xFF55;
+ t['underscore'] = 0x005F;
+ t['underscoredbl'] = 0x2017;
+ t['underscoremonospace'] = 0xFF3F;
+ t['underscorevertical'] = 0xFE33;
+ t['underscorewavy'] = 0xFE4F;
+ t['union'] = 0x222A;
+ t['universal'] = 0x2200;
+ t['uogonek'] = 0x0173;
+ t['uparen'] = 0x24B0;
+ t['upblock'] = 0x2580;
+ t['upperdothebrew'] = 0x05C4;
+ t['upsilon'] = 0x03C5;
+ t['upsilondieresis'] = 0x03CB;
+ t['upsilondieresistonos'] = 0x03B0;
+ t['upsilonlatin'] = 0x028A;
+ t['upsilontonos'] = 0x03CD;
+ t['uptackbelowcmb'] = 0x031D;
+ t['uptackmod'] = 0x02D4;
+ t['uragurmukhi'] = 0x0A73;
+ t['uring'] = 0x016F;
+ t['ushortcyrillic'] = 0x045E;
+ t['usmallhiragana'] = 0x3045;
+ t['usmallkatakana'] = 0x30A5;
+ t['usmallkatakanahalfwidth'] = 0xFF69;
+ t['ustraightcyrillic'] = 0x04AF;
+ t['ustraightstrokecyrillic'] = 0x04B1;
+ t['utilde'] = 0x0169;
+ t['utildeacute'] = 0x1E79;
+ t['utildebelow'] = 0x1E75;
+ t['uubengali'] = 0x098A;
+ t['uudeva'] = 0x090A;
+ t['uugujarati'] = 0x0A8A;
+ t['uugurmukhi'] = 0x0A0A;
+ t['uumatragurmukhi'] = 0x0A42;
+ t['uuvowelsignbengali'] = 0x09C2;
+ t['uuvowelsigndeva'] = 0x0942;
+ t['uuvowelsigngujarati'] = 0x0AC2;
+ t['uvowelsignbengali'] = 0x09C1;
+ t['uvowelsigndeva'] = 0x0941;
+ t['uvowelsigngujarati'] = 0x0AC1;
+ t['v'] = 0x0076;
+ t['vadeva'] = 0x0935;
+ t['vagujarati'] = 0x0AB5;
+ t['vagurmukhi'] = 0x0A35;
+ t['vakatakana'] = 0x30F7;
+ t['vav'] = 0x05D5;
+ t['vavdagesh'] = 0xFB35;
+ t['vavdagesh65'] = 0xFB35;
+ t['vavdageshhebrew'] = 0xFB35;
+ t['vavhebrew'] = 0x05D5;
+ t['vavholam'] = 0xFB4B;
+ t['vavholamhebrew'] = 0xFB4B;
+ t['vavvavhebrew'] = 0x05F0;
+ t['vavyodhebrew'] = 0x05F1;
+ t['vcircle'] = 0x24E5;
+ t['vdotbelow'] = 0x1E7F;
+ t['vecyrillic'] = 0x0432;
+ t['veharabic'] = 0x06A4;
+ t['vehfinalarabic'] = 0xFB6B;
+ t['vehinitialarabic'] = 0xFB6C;
+ t['vehmedialarabic'] = 0xFB6D;
+ t['vekatakana'] = 0x30F9;
+ t['venus'] = 0x2640;
+ t['verticalbar'] = 0x007C;
+ t['verticallineabovecmb'] = 0x030D;
+ t['verticallinebelowcmb'] = 0x0329;
+ t['verticallinelowmod'] = 0x02CC;
+ t['verticallinemod'] = 0x02C8;
+ t['vewarmenian'] = 0x057E;
+ t['vhook'] = 0x028B;
+ t['vikatakana'] = 0x30F8;
+ t['viramabengali'] = 0x09CD;
+ t['viramadeva'] = 0x094D;
+ t['viramagujarati'] = 0x0ACD;
+ t['visargabengali'] = 0x0983;
+ t['visargadeva'] = 0x0903;
+ t['visargagujarati'] = 0x0A83;
+ t['vmonospace'] = 0xFF56;
+ t['voarmenian'] = 0x0578;
+ t['voicediterationhiragana'] = 0x309E;
+ t['voicediterationkatakana'] = 0x30FE;
+ t['voicedmarkkana'] = 0x309B;
+ t['voicedmarkkanahalfwidth'] = 0xFF9E;
+ t['vokatakana'] = 0x30FA;
+ t['vparen'] = 0x24B1;
+ t['vtilde'] = 0x1E7D;
+ t['vturned'] = 0x028C;
+ t['vuhiragana'] = 0x3094;
+ t['vukatakana'] = 0x30F4;
+ t['w'] = 0x0077;
+ t['wacute'] = 0x1E83;
+ t['waekorean'] = 0x3159;
+ t['wahiragana'] = 0x308F;
+ t['wakatakana'] = 0x30EF;
+ t['wakatakanahalfwidth'] = 0xFF9C;
+ t['wakorean'] = 0x3158;
+ t['wasmallhiragana'] = 0x308E;
+ t['wasmallkatakana'] = 0x30EE;
+ t['wattosquare'] = 0x3357;
+ t['wavedash'] = 0x301C;
+ t['wavyunderscorevertical'] = 0xFE34;
+ t['wawarabic'] = 0x0648;
+ t['wawfinalarabic'] = 0xFEEE;
+ t['wawhamzaabovearabic'] = 0x0624;
+ t['wawhamzaabovefinalarabic'] = 0xFE86;
+ t['wbsquare'] = 0x33DD;
+ t['wcircle'] = 0x24E6;
+ t['wcircumflex'] = 0x0175;
+ t['wdieresis'] = 0x1E85;
+ t['wdotaccent'] = 0x1E87;
+ t['wdotbelow'] = 0x1E89;
+ t['wehiragana'] = 0x3091;
+ t['weierstrass'] = 0x2118;
+ t['wekatakana'] = 0x30F1;
+ t['wekorean'] = 0x315E;
+ t['weokorean'] = 0x315D;
+ t['wgrave'] = 0x1E81;
+ t['whitebullet'] = 0x25E6;
+ t['whitecircle'] = 0x25CB;
+ t['whitecircleinverse'] = 0x25D9;
+ t['whitecornerbracketleft'] = 0x300E;
+ t['whitecornerbracketleftvertical'] = 0xFE43;
+ t['whitecornerbracketright'] = 0x300F;
+ t['whitecornerbracketrightvertical'] = 0xFE44;
+ t['whitediamond'] = 0x25C7;
+ t['whitediamondcontainingblacksmalldiamond'] = 0x25C8;
+ t['whitedownpointingsmalltriangle'] = 0x25BF;
+ t['whitedownpointingtriangle'] = 0x25BD;
+ t['whiteleftpointingsmalltriangle'] = 0x25C3;
+ t['whiteleftpointingtriangle'] = 0x25C1;
+ t['whitelenticularbracketleft'] = 0x3016;
+ t['whitelenticularbracketright'] = 0x3017;
+ t['whiterightpointingsmalltriangle'] = 0x25B9;
+ t['whiterightpointingtriangle'] = 0x25B7;
+ t['whitesmallsquare'] = 0x25AB;
+ t['whitesmilingface'] = 0x263A;
+ t['whitesquare'] = 0x25A1;
+ t['whitestar'] = 0x2606;
+ t['whitetelephone'] = 0x260F;
+ t['whitetortoiseshellbracketleft'] = 0x3018;
+ t['whitetortoiseshellbracketright'] = 0x3019;
+ t['whiteuppointingsmalltriangle'] = 0x25B5;
+ t['whiteuppointingtriangle'] = 0x25B3;
+ t['wihiragana'] = 0x3090;
+ t['wikatakana'] = 0x30F0;
+ t['wikorean'] = 0x315F;
+ t['wmonospace'] = 0xFF57;
+ t['wohiragana'] = 0x3092;
+ t['wokatakana'] = 0x30F2;
+ t['wokatakanahalfwidth'] = 0xFF66;
+ t['won'] = 0x20A9;
+ t['wonmonospace'] = 0xFFE6;
+ t['wowaenthai'] = 0x0E27;
+ t['wparen'] = 0x24B2;
+ t['wring'] = 0x1E98;
+ t['wsuperior'] = 0x02B7;
+ t['wturned'] = 0x028D;
+ t['wynn'] = 0x01BF;
+ t['x'] = 0x0078;
+ t['xabovecmb'] = 0x033D;
+ t['xbopomofo'] = 0x3112;
+ t['xcircle'] = 0x24E7;
+ t['xdieresis'] = 0x1E8D;
+ t['xdotaccent'] = 0x1E8B;
+ t['xeharmenian'] = 0x056D;
+ t['xi'] = 0x03BE;
+ t['xmonospace'] = 0xFF58;
+ t['xparen'] = 0x24B3;
+ t['xsuperior'] = 0x02E3;
+ t['y'] = 0x0079;
+ t['yaadosquare'] = 0x334E;
+ t['yabengali'] = 0x09AF;
+ t['yacute'] = 0x00FD;
+ t['yadeva'] = 0x092F;
+ t['yaekorean'] = 0x3152;
+ t['yagujarati'] = 0x0AAF;
+ t['yagurmukhi'] = 0x0A2F;
+ t['yahiragana'] = 0x3084;
+ t['yakatakana'] = 0x30E4;
+ t['yakatakanahalfwidth'] = 0xFF94;
+ t['yakorean'] = 0x3151;
+ t['yamakkanthai'] = 0x0E4E;
+ t['yasmallhiragana'] = 0x3083;
+ t['yasmallkatakana'] = 0x30E3;
+ t['yasmallkatakanahalfwidth'] = 0xFF6C;
+ t['yatcyrillic'] = 0x0463;
+ t['ycircle'] = 0x24E8;
+ t['ycircumflex'] = 0x0177;
+ t['ydieresis'] = 0x00FF;
+ t['ydotaccent'] = 0x1E8F;
+ t['ydotbelow'] = 0x1EF5;
+ t['yeharabic'] = 0x064A;
+ t['yehbarreearabic'] = 0x06D2;
+ t['yehbarreefinalarabic'] = 0xFBAF;
+ t['yehfinalarabic'] = 0xFEF2;
+ t['yehhamzaabovearabic'] = 0x0626;
+ t['yehhamzaabovefinalarabic'] = 0xFE8A;
+ t['yehhamzaaboveinitialarabic'] = 0xFE8B;
+ t['yehhamzaabovemedialarabic'] = 0xFE8C;
+ t['yehinitialarabic'] = 0xFEF3;
+ t['yehmedialarabic'] = 0xFEF4;
+ t['yehmeeminitialarabic'] = 0xFCDD;
+ t['yehmeemisolatedarabic'] = 0xFC58;
+ t['yehnoonfinalarabic'] = 0xFC94;
+ t['yehthreedotsbelowarabic'] = 0x06D1;
+ t['yekorean'] = 0x3156;
+ t['yen'] = 0x00A5;
+ t['yenmonospace'] = 0xFFE5;
+ t['yeokorean'] = 0x3155;
+ t['yeorinhieuhkorean'] = 0x3186;
+ t['yerahbenyomohebrew'] = 0x05AA;
+ t['yerahbenyomolefthebrew'] = 0x05AA;
+ t['yericyrillic'] = 0x044B;
+ t['yerudieresiscyrillic'] = 0x04F9;
+ t['yesieungkorean'] = 0x3181;
+ t['yesieungpansioskorean'] = 0x3183;
+ t['yesieungsioskorean'] = 0x3182;
+ t['yetivhebrew'] = 0x059A;
+ t['ygrave'] = 0x1EF3;
+ t['yhook'] = 0x01B4;
+ t['yhookabove'] = 0x1EF7;
+ t['yiarmenian'] = 0x0575;
+ t['yicyrillic'] = 0x0457;
+ t['yikorean'] = 0x3162;
+ t['yinyang'] = 0x262F;
+ t['yiwnarmenian'] = 0x0582;
+ t['ymonospace'] = 0xFF59;
+ t['yod'] = 0x05D9;
+ t['yoddagesh'] = 0xFB39;
+ t['yoddageshhebrew'] = 0xFB39;
+ t['yodhebrew'] = 0x05D9;
+ t['yodyodhebrew'] = 0x05F2;
+ t['yodyodpatahhebrew'] = 0xFB1F;
+ t['yohiragana'] = 0x3088;
+ t['yoikorean'] = 0x3189;
+ t['yokatakana'] = 0x30E8;
+ t['yokatakanahalfwidth'] = 0xFF96;
+ t['yokorean'] = 0x315B;
+ t['yosmallhiragana'] = 0x3087;
+ t['yosmallkatakana'] = 0x30E7;
+ t['yosmallkatakanahalfwidth'] = 0xFF6E;
+ t['yotgreek'] = 0x03F3;
+ t['yoyaekorean'] = 0x3188;
+ t['yoyakorean'] = 0x3187;
+ t['yoyakthai'] = 0x0E22;
+ t['yoyingthai'] = 0x0E0D;
+ t['yparen'] = 0x24B4;
+ t['ypogegrammeni'] = 0x037A;
+ t['ypogegrammenigreekcmb'] = 0x0345;
+ t['yr'] = 0x01A6;
+ t['yring'] = 0x1E99;
+ t['ysuperior'] = 0x02B8;
+ t['ytilde'] = 0x1EF9;
+ t['yturned'] = 0x028E;
+ t['yuhiragana'] = 0x3086;
+ t['yuikorean'] = 0x318C;
+ t['yukatakana'] = 0x30E6;
+ t['yukatakanahalfwidth'] = 0xFF95;
+ t['yukorean'] = 0x3160;
+ t['yusbigcyrillic'] = 0x046B;
+ t['yusbigiotifiedcyrillic'] = 0x046D;
+ t['yuslittlecyrillic'] = 0x0467;
+ t['yuslittleiotifiedcyrillic'] = 0x0469;
+ t['yusmallhiragana'] = 0x3085;
+ t['yusmallkatakana'] = 0x30E5;
+ t['yusmallkatakanahalfwidth'] = 0xFF6D;
+ t['yuyekorean'] = 0x318B;
+ t['yuyeokorean'] = 0x318A;
+ t['yyabengali'] = 0x09DF;
+ t['yyadeva'] = 0x095F;
+ t['z'] = 0x007A;
+ t['zaarmenian'] = 0x0566;
+ t['zacute'] = 0x017A;
+ t['zadeva'] = 0x095B;
+ t['zagurmukhi'] = 0x0A5B;
+ t['zaharabic'] = 0x0638;
+ t['zahfinalarabic'] = 0xFEC6;
+ t['zahinitialarabic'] = 0xFEC7;
+ t['zahiragana'] = 0x3056;
+ t['zahmedialarabic'] = 0xFEC8;
+ t['zainarabic'] = 0x0632;
+ t['zainfinalarabic'] = 0xFEB0;
+ t['zakatakana'] = 0x30B6;
+ t['zaqefgadolhebrew'] = 0x0595;
+ t['zaqefqatanhebrew'] = 0x0594;
+ t['zarqahebrew'] = 0x0598;
+ t['zayin'] = 0x05D6;
+ t['zayindagesh'] = 0xFB36;
+ t['zayindageshhebrew'] = 0xFB36;
+ t['zayinhebrew'] = 0x05D6;
+ t['zbopomofo'] = 0x3117;
+ t['zcaron'] = 0x017E;
+ t['zcircle'] = 0x24E9;
+ t['zcircumflex'] = 0x1E91;
+ t['zcurl'] = 0x0291;
+ t['zdot'] = 0x017C;
+ t['zdotaccent'] = 0x017C;
+ t['zdotbelow'] = 0x1E93;
+ t['zecyrillic'] = 0x0437;
+ t['zedescendercyrillic'] = 0x0499;
+ t['zedieresiscyrillic'] = 0x04DF;
+ t['zehiragana'] = 0x305C;
+ t['zekatakana'] = 0x30BC;
+ t['zero'] = 0x0030;
+ t['zeroarabic'] = 0x0660;
+ t['zerobengali'] = 0x09E6;
+ t['zerodeva'] = 0x0966;
+ t['zerogujarati'] = 0x0AE6;
+ t['zerogurmukhi'] = 0x0A66;
+ t['zerohackarabic'] = 0x0660;
+ t['zeroinferior'] = 0x2080;
+ t['zeromonospace'] = 0xFF10;
+ t['zerooldstyle'] = 0xF730;
+ t['zeropersian'] = 0x06F0;
+ t['zerosuperior'] = 0x2070;
+ t['zerothai'] = 0x0E50;
+ t['zerowidthjoiner'] = 0xFEFF;
+ t['zerowidthnonjoiner'] = 0x200C;
+ t['zerowidthspace'] = 0x200B;
+ t['zeta'] = 0x03B6;
+ t['zhbopomofo'] = 0x3113;
+ t['zhearmenian'] = 0x056A;
+ t['zhebrevecyrillic'] = 0x04C2;
+ t['zhecyrillic'] = 0x0436;
+ t['zhedescendercyrillic'] = 0x0497;
+ t['zhedieresiscyrillic'] = 0x04DD;
+ t['zihiragana'] = 0x3058;
+ t['zikatakana'] = 0x30B8;
+ t['zinorhebrew'] = 0x05AE;
+ t['zlinebelow'] = 0x1E95;
+ t['zmonospace'] = 0xFF5A;
+ t['zohiragana'] = 0x305E;
+ t['zokatakana'] = 0x30BE;
+ t['zparen'] = 0x24B5;
+ t['zretroflexhook'] = 0x0290;
+ t['zstroke'] = 0x01B6;
+ t['zuhiragana'] = 0x305A;
+ t['zukatakana'] = 0x30BA;
+ t['.notdef'] = 0x0000;
+ t['angbracketleftbig'] = 0x2329;
+ t['angbracketleftBig'] = 0x2329;
+ t['angbracketleftbigg'] = 0x2329;
+ t['angbracketleftBigg'] = 0x2329;
+ t['angbracketrightBig'] = 0x232A;
+ t['angbracketrightbig'] = 0x232A;
+ t['angbracketrightBigg'] = 0x232A;
+ t['angbracketrightbigg'] = 0x232A;
+ t['arrowhookleft'] = 0x21AA;
+ t['arrowhookright'] = 0x21A9;
+ t['arrowlefttophalf'] = 0x21BC;
+ t['arrowleftbothalf'] = 0x21BD;
+ t['arrownortheast'] = 0x2197;
+ t['arrownorthwest'] = 0x2196;
+ t['arrowrighttophalf'] = 0x21C0;
+ t['arrowrightbothalf'] = 0x21C1;
+ t['arrowsoutheast'] = 0x2198;
+ t['arrowsouthwest'] = 0x2199;
+ t['backslashbig'] = 0x2216;
+ t['backslashBig'] = 0x2216;
+ t['backslashBigg'] = 0x2216;
+ t['backslashbigg'] = 0x2216;
+ t['bardbl'] = 0x2016;
+ t['bracehtipdownleft'] = 0xFE37;
+ t['bracehtipdownright'] = 0xFE37;
+ t['bracehtipupleft'] = 0xFE38;
+ t['bracehtipupright'] = 0xFE38;
+ t['braceleftBig'] = 0x007B;
+ t['braceleftbig'] = 0x007B;
+ t['braceleftbigg'] = 0x007B;
+ t['braceleftBigg'] = 0x007B;
+ t['bracerightBig'] = 0x007D;
+ t['bracerightbig'] = 0x007D;
+ t['bracerightbigg'] = 0x007D;
+ t['bracerightBigg'] = 0x007D;
+ t['bracketleftbig'] = 0x005B;
+ t['bracketleftBig'] = 0x005B;
+ t['bracketleftbigg'] = 0x005B;
+ t['bracketleftBigg'] = 0x005B;
+ t['bracketrightBig'] = 0x005D;
+ t['bracketrightbig'] = 0x005D;
+ t['bracketrightbigg'] = 0x005D;
+ t['bracketrightBigg'] = 0x005D;
+ t['ceilingleftbig'] = 0x2308;
+ t['ceilingleftBig'] = 0x2308;
+ t['ceilingleftBigg'] = 0x2308;
+ t['ceilingleftbigg'] = 0x2308;
+ t['ceilingrightbig'] = 0x2309;
+ t['ceilingrightBig'] = 0x2309;
+ t['ceilingrightbigg'] = 0x2309;
+ t['ceilingrightBigg'] = 0x2309;
+ t['circledotdisplay'] = 0x2299;
+ t['circledottext'] = 0x2299;
+ t['circlemultiplydisplay'] = 0x2297;
+ t['circlemultiplytext'] = 0x2297;
+ t['circleplusdisplay'] = 0x2295;
+ t['circleplustext'] = 0x2295;
+ t['contintegraldisplay'] = 0x222E;
+ t['contintegraltext'] = 0x222E;
+ t['coproductdisplay'] = 0x2210;
+ t['coproducttext'] = 0x2210;
+ t['floorleftBig'] = 0x230A;
+ t['floorleftbig'] = 0x230A;
+ t['floorleftbigg'] = 0x230A;
+ t['floorleftBigg'] = 0x230A;
+ t['floorrightbig'] = 0x230B;
+ t['floorrightBig'] = 0x230B;
+ t['floorrightBigg'] = 0x230B;
+ t['floorrightbigg'] = 0x230B;
+ t['hatwide'] = 0x0302;
+ t['hatwider'] = 0x0302;
+ t['hatwidest'] = 0x0302;
+ t['intercal'] = 0x1D40;
+ t['integraldisplay'] = 0x222B;
+ t['integraltext'] = 0x222B;
+ t['intersectiondisplay'] = 0x22C2;
+ t['intersectiontext'] = 0x22C2;
+ t['logicalanddisplay'] = 0x2227;
+ t['logicalandtext'] = 0x2227;
+ t['logicalordisplay'] = 0x2228;
+ t['logicalortext'] = 0x2228;
+ t['parenleftBig'] = 0x0028;
+ t['parenleftbig'] = 0x0028;
+ t['parenleftBigg'] = 0x0028;
+ t['parenleftbigg'] = 0x0028;
+ t['parenrightBig'] = 0x0029;
+ t['parenrightbig'] = 0x0029;
+ t['parenrightBigg'] = 0x0029;
+ t['parenrightbigg'] = 0x0029;
+ t['prime'] = 0x2032;
+ t['productdisplay'] = 0x220F;
+ t['producttext'] = 0x220F;
+ t['radicalbig'] = 0x221A;
+ t['radicalBig'] = 0x221A;
+ t['radicalBigg'] = 0x221A;
+ t['radicalbigg'] = 0x221A;
+ t['radicalbt'] = 0x221A;
+ t['radicaltp'] = 0x221A;
+ t['radicalvertex'] = 0x221A;
+ t['slashbig'] = 0x002F;
+ t['slashBig'] = 0x002F;
+ t['slashBigg'] = 0x002F;
+ t['slashbigg'] = 0x002F;
+ t['summationdisplay'] = 0x2211;
+ t['summationtext'] = 0x2211;
+ t['tildewide'] = 0x02DC;
+ t['tildewider'] = 0x02DC;
+ t['tildewidest'] = 0x02DC;
+ t['uniondisplay'] = 0x22C3;
+ t['unionmultidisplay'] = 0x228E;
+ t['unionmultitext'] = 0x228E;
+ t['unionsqdisplay'] = 0x2294;
+ t['unionsqtext'] = 0x2294;
+ t['uniontext'] = 0x22C3;
+ t['vextenddouble'] = 0x2225;
+ t['vextendsingle'] = 0x2223;
 });
 var getDingbatsGlyphsUnicode = getLookupTableFactory(function (t) {
-  t['space'] = 0x0020;
-  t['a1'] = 0x2701;
-  t['a2'] = 0x2702;
-  t['a202'] = 0x2703;
-  t['a3'] = 0x2704;
-  t['a4'] = 0x260E;
-  t['a5'] = 0x2706;
-  t['a119'] = 0x2707;
-  t['a118'] = 0x2708;
-  t['a117'] = 0x2709;
-  t['a11'] = 0x261B;
-  t['a12'] = 0x261E;
-  t['a13'] = 0x270C;
-  t['a14'] = 0x270D;
-  t['a15'] = 0x270E;
-  t['a16'] = 0x270F;
-  t['a105'] = 0x2710;
-  t['a17'] = 0x2711;
-  t['a18'] = 0x2712;
-  t['a19'] = 0x2713;
-  t['a20'] = 0x2714;
-  t['a21'] = 0x2715;
-  t['a22'] = 0x2716;
-  t['a23'] = 0x2717;
-  t['a24'] = 0x2718;
-  t['a25'] = 0x2719;
-  t['a26'] = 0x271A;
-  t['a27'] = 0x271B;
-  t['a28'] = 0x271C;
-  t['a6'] = 0x271D;
-  t['a7'] = 0x271E;
-  t['a8'] = 0x271F;
-  t['a9'] = 0x2720;
-  t['a10'] = 0x2721;
-  t['a29'] = 0x2722;
-  t['a30'] = 0x2723;
-  t['a31'] = 0x2724;
-  t['a32'] = 0x2725;
-  t['a33'] = 0x2726;
-  t['a34'] = 0x2727;
-  t['a35'] = 0x2605;
-  t['a36'] = 0x2729;
-  t['a37'] = 0x272A;
-  t['a38'] = 0x272B;
-  t['a39'] = 0x272C;
-  t['a40'] = 0x272D;
-  t['a41'] = 0x272E;
-  t['a42'] = 0x272F;
-  t['a43'] = 0x2730;
-  t['a44'] = 0x2731;
-  t['a45'] = 0x2732;
-  t['a46'] = 0x2733;
-  t['a47'] = 0x2734;
-  t['a48'] = 0x2735;
-  t['a49'] = 0x2736;
-  t['a50'] = 0x2737;
-  t['a51'] = 0x2738;
-  t['a52'] = 0x2739;
-  t['a53'] = 0x273A;
-  t['a54'] = 0x273B;
-  t['a55'] = 0x273C;
-  t['a56'] = 0x273D;
-  t['a57'] = 0x273E;
-  t['a58'] = 0x273F;
-  t['a59'] = 0x2740;
-  t['a60'] = 0x2741;
-  t['a61'] = 0x2742;
-  t['a62'] = 0x2743;
-  t['a63'] = 0x2744;
-  t['a64'] = 0x2745;
-  t['a65'] = 0x2746;
-  t['a66'] = 0x2747;
-  t['a67'] = 0x2748;
-  t['a68'] = 0x2749;
-  t['a69'] = 0x274A;
-  t['a70'] = 0x274B;
-  t['a71'] = 0x25CF;
-  t['a72'] = 0x274D;
-  t['a73'] = 0x25A0;
-  t['a74'] = 0x274F;
-  t['a203'] = 0x2750;
-  t['a75'] = 0x2751;
-  t['a204'] = 0x2752;
-  t['a76'] = 0x25B2;
-  t['a77'] = 0x25BC;
-  t['a78'] = 0x25C6;
-  t['a79'] = 0x2756;
-  t['a81'] = 0x25D7;
-  t['a82'] = 0x2758;
-  t['a83'] = 0x2759;
-  t['a84'] = 0x275A;
-  t['a97'] = 0x275B;
-  t['a98'] = 0x275C;
-  t['a99'] = 0x275D;
-  t['a100'] = 0x275E;
-  t['a101'] = 0x2761;
-  t['a102'] = 0x2762;
-  t['a103'] = 0x2763;
-  t['a104'] = 0x2764;
-  t['a106'] = 0x2765;
-  t['a107'] = 0x2766;
-  t['a108'] = 0x2767;
-  t['a112'] = 0x2663;
-  t['a111'] = 0x2666;
-  t['a110'] = 0x2665;
-  t['a109'] = 0x2660;
-  t['a120'] = 0x2460;
-  t['a121'] = 0x2461;
-  t['a122'] = 0x2462;
-  t['a123'] = 0x2463;
-  t['a124'] = 0x2464;
-  t['a125'] = 0x2465;
-  t['a126'] = 0x2466;
-  t['a127'] = 0x2467;
-  t['a128'] = 0x2468;
-  t['a129'] = 0x2469;
-  t['a130'] = 0x2776;
-  t['a131'] = 0x2777;
-  t['a132'] = 0x2778;
-  t['a133'] = 0x2779;
-  t['a134'] = 0x277A;
-  t['a135'] = 0x277B;
-  t['a136'] = 0x277C;
-  t['a137'] = 0x277D;
-  t['a138'] = 0x277E;
-  t['a139'] = 0x277F;
-  t['a140'] = 0x2780;
-  t['a141'] = 0x2781;
-  t['a142'] = 0x2782;
-  t['a143'] = 0x2783;
-  t['a144'] = 0x2784;
-  t['a145'] = 0x2785;
-  t['a146'] = 0x2786;
-  t['a147'] = 0x2787;
-  t['a148'] = 0x2788;
-  t['a149'] = 0x2789;
-  t['a150'] = 0x278A;
-  t['a151'] = 0x278B;
-  t['a152'] = 0x278C;
-  t['a153'] = 0x278D;
-  t['a154'] = 0x278E;
-  t['a155'] = 0x278F;
-  t['a156'] = 0x2790;
-  t['a157'] = 0x2791;
-  t['a158'] = 0x2792;
-  t['a159'] = 0x2793;
-  t['a160'] = 0x2794;
-  t['a161'] = 0x2192;
-  t['a163'] = 0x2194;
-  t['a164'] = 0x2195;
-  t['a196'] = 0x2798;
-  t['a165'] = 0x2799;
-  t['a192'] = 0x279A;
-  t['a166'] = 0x279B;
-  t['a167'] = 0x279C;
-  t['a168'] = 0x279D;
-  t['a169'] = 0x279E;
-  t['a170'] = 0x279F;
-  t['a171'] = 0x27A0;
-  t['a172'] = 0x27A1;
-  t['a173'] = 0x27A2;
-  t['a162'] = 0x27A3;
-  t['a174'] = 0x27A4;
-  t['a175'] = 0x27A5;
-  t['a176'] = 0x27A6;
-  t['a177'] = 0x27A7;
-  t['a178'] = 0x27A8;
-  t['a179'] = 0x27A9;
-  t['a193'] = 0x27AA;
-  t['a180'] = 0x27AB;
-  t['a199'] = 0x27AC;
-  t['a181'] = 0x27AD;
-  t['a200'] = 0x27AE;
-  t['a182'] = 0x27AF;
-  t['a201'] = 0x27B1;
-  t['a183'] = 0x27B2;
-  t['a184'] = 0x27B3;
-  t['a197'] = 0x27B4;
-  t['a185'] = 0x27B5;
-  t['a194'] = 0x27B6;
-  t['a198'] = 0x27B7;
-  t['a186'] = 0x27B8;
-  t['a195'] = 0x27B9;
-  t['a187'] = 0x27BA;
-  t['a188'] = 0x27BB;
-  t['a189'] = 0x27BC;
-  t['a190'] = 0x27BD;
-  t['a191'] = 0x27BE;
-  t['a89'] = 0x2768;
-  t['a90'] = 0x2769;
-  t['a93'] = 0x276A;
-  t['a94'] = 0x276B;
-  t['a91'] = 0x276C;
-  t['a92'] = 0x276D;
-  t['a205'] = 0x276E;
-  t['a85'] = 0x276F;
-  t['a206'] = 0x2770;
-  t['a86'] = 0x2771;
-  t['a87'] = 0x2772;
-  t['a88'] = 0x2773;
-  t['a95'] = 0x2774;
-  t['a96'] = 0x2775;
-  t['.notdef'] = 0x0000;
+ t['space'] = 0x0020;
+ t['a1'] = 0x2701;
+ t['a2'] = 0x2702;
+ t['a202'] = 0x2703;
+ t['a3'] = 0x2704;
+ t['a4'] = 0x260E;
+ t['a5'] = 0x2706;
+ t['a119'] = 0x2707;
+ t['a118'] = 0x2708;
+ t['a117'] = 0x2709;
+ t['a11'] = 0x261B;
+ t['a12'] = 0x261E;
+ t['a13'] = 0x270C;
+ t['a14'] = 0x270D;
+ t['a15'] = 0x270E;
+ t['a16'] = 0x270F;
+ t['a105'] = 0x2710;
+ t['a17'] = 0x2711;
+ t['a18'] = 0x2712;
+ t['a19'] = 0x2713;
+ t['a20'] = 0x2714;
+ t['a21'] = 0x2715;
+ t['a22'] = 0x2716;
+ t['a23'] = 0x2717;
+ t['a24'] = 0x2718;
+ t['a25'] = 0x2719;
+ t['a26'] = 0x271A;
+ t['a27'] = 0x271B;
+ t['a28'] = 0x271C;
+ t['a6'] = 0x271D;
+ t['a7'] = 0x271E;
+ t['a8'] = 0x271F;
+ t['a9'] = 0x2720;
+ t['a10'] = 0x2721;
+ t['a29'] = 0x2722;
+ t['a30'] = 0x2723;
+ t['a31'] = 0x2724;
+ t['a32'] = 0x2725;
+ t['a33'] = 0x2726;
+ t['a34'] = 0x2727;
+ t['a35'] = 0x2605;
+ t['a36'] = 0x2729;
+ t['a37'] = 0x272A;
+ t['a38'] = 0x272B;
+ t['a39'] = 0x272C;
+ t['a40'] = 0x272D;
+ t['a41'] = 0x272E;
+ t['a42'] = 0x272F;
+ t['a43'] = 0x2730;
+ t['a44'] = 0x2731;
+ t['a45'] = 0x2732;
+ t['a46'] = 0x2733;
+ t['a47'] = 0x2734;
+ t['a48'] = 0x2735;
+ t['a49'] = 0x2736;
+ t['a50'] = 0x2737;
+ t['a51'] = 0x2738;
+ t['a52'] = 0x2739;
+ t['a53'] = 0x273A;
+ t['a54'] = 0x273B;
+ t['a55'] = 0x273C;
+ t['a56'] = 0x273D;
+ t['a57'] = 0x273E;
+ t['a58'] = 0x273F;
+ t['a59'] = 0x2740;
+ t['a60'] = 0x2741;
+ t['a61'] = 0x2742;
+ t['a62'] = 0x2743;
+ t['a63'] = 0x2744;
+ t['a64'] = 0x2745;
+ t['a65'] = 0x2746;
+ t['a66'] = 0x2747;
+ t['a67'] = 0x2748;
+ t['a68'] = 0x2749;
+ t['a69'] = 0x274A;
+ t['a70'] = 0x274B;
+ t['a71'] = 0x25CF;
+ t['a72'] = 0x274D;
+ t['a73'] = 0x25A0;
+ t['a74'] = 0x274F;
+ t['a203'] = 0x2750;
+ t['a75'] = 0x2751;
+ t['a204'] = 0x2752;
+ t['a76'] = 0x25B2;
+ t['a77'] = 0x25BC;
+ t['a78'] = 0x25C6;
+ t['a79'] = 0x2756;
+ t['a81'] = 0x25D7;
+ t['a82'] = 0x2758;
+ t['a83'] = 0x2759;
+ t['a84'] = 0x275A;
+ t['a97'] = 0x275B;
+ t['a98'] = 0x275C;
+ t['a99'] = 0x275D;
+ t['a100'] = 0x275E;
+ t['a101'] = 0x2761;
+ t['a102'] = 0x2762;
+ t['a103'] = 0x2763;
+ t['a104'] = 0x2764;
+ t['a106'] = 0x2765;
+ t['a107'] = 0x2766;
+ t['a108'] = 0x2767;
+ t['a112'] = 0x2663;
+ t['a111'] = 0x2666;
+ t['a110'] = 0x2665;
+ t['a109'] = 0x2660;
+ t['a120'] = 0x2460;
+ t['a121'] = 0x2461;
+ t['a122'] = 0x2462;
+ t['a123'] = 0x2463;
+ t['a124'] = 0x2464;
+ t['a125'] = 0x2465;
+ t['a126'] = 0x2466;
+ t['a127'] = 0x2467;
+ t['a128'] = 0x2468;
+ t['a129'] = 0x2469;
+ t['a130'] = 0x2776;
+ t['a131'] = 0x2777;
+ t['a132'] = 0x2778;
+ t['a133'] = 0x2779;
+ t['a134'] = 0x277A;
+ t['a135'] = 0x277B;
+ t['a136'] = 0x277C;
+ t['a137'] = 0x277D;
+ t['a138'] = 0x277E;
+ t['a139'] = 0x277F;
+ t['a140'] = 0x2780;
+ t['a141'] = 0x2781;
+ t['a142'] = 0x2782;
+ t['a143'] = 0x2783;
+ t['a144'] = 0x2784;
+ t['a145'] = 0x2785;
+ t['a146'] = 0x2786;
+ t['a147'] = 0x2787;
+ t['a148'] = 0x2788;
+ t['a149'] = 0x2789;
+ t['a150'] = 0x278A;
+ t['a151'] = 0x278B;
+ t['a152'] = 0x278C;
+ t['a153'] = 0x278D;
+ t['a154'] = 0x278E;
+ t['a155'] = 0x278F;
+ t['a156'] = 0x2790;
+ t['a157'] = 0x2791;
+ t['a158'] = 0x2792;
+ t['a159'] = 0x2793;
+ t['a160'] = 0x2794;
+ t['a161'] = 0x2192;
+ t['a163'] = 0x2194;
+ t['a164'] = 0x2195;
+ t['a196'] = 0x2798;
+ t['a165'] = 0x2799;
+ t['a192'] = 0x279A;
+ t['a166'] = 0x279B;
+ t['a167'] = 0x279C;
+ t['a168'] = 0x279D;
+ t['a169'] = 0x279E;
+ t['a170'] = 0x279F;
+ t['a171'] = 0x27A0;
+ t['a172'] = 0x27A1;
+ t['a173'] = 0x27A2;
+ t['a162'] = 0x27A3;
+ t['a174'] = 0x27A4;
+ t['a175'] = 0x27A5;
+ t['a176'] = 0x27A6;
+ t['a177'] = 0x27A7;
+ t['a178'] = 0x27A8;
+ t['a179'] = 0x27A9;
+ t['a193'] = 0x27AA;
+ t['a180'] = 0x27AB;
+ t['a199'] = 0x27AC;
+ t['a181'] = 0x27AD;
+ t['a200'] = 0x27AE;
+ t['a182'] = 0x27AF;
+ t['a201'] = 0x27B1;
+ t['a183'] = 0x27B2;
+ t['a184'] = 0x27B3;
+ t['a197'] = 0x27B4;
+ t['a185'] = 0x27B5;
+ t['a194'] = 0x27B6;
+ t['a198'] = 0x27B7;
+ t['a186'] = 0x27B8;
+ t['a195'] = 0x27B9;
+ t['a187'] = 0x27BA;
+ t['a188'] = 0x27BB;
+ t['a189'] = 0x27BC;
+ t['a190'] = 0x27BD;
+ t['a191'] = 0x27BE;
+ t['a89'] = 0x2768;
+ t['a90'] = 0x2769;
+ t['a93'] = 0x276A;
+ t['a94'] = 0x276B;
+ t['a91'] = 0x276C;
+ t['a92'] = 0x276D;
+ t['a205'] = 0x276E;
+ t['a85'] = 0x276F;
+ t['a206'] = 0x2770;
+ t['a86'] = 0x2771;
+ t['a87'] = 0x2772;
+ t['a88'] = 0x2773;
+ t['a95'] = 0x2774;
+ t['a96'] = 0x2775;
+ t['.notdef'] = 0x0000;
 });
 exports.getGlyphsUnicode = getGlyphsUnicode;
 exports.getDingbatsGlyphsUnicode = getDingbatsGlyphsUnicode;
 
 /***/ }),
-/* 35 */
+/* 50 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -10811,58 +10472,14 @@ exports.validateRangeRequestCapabilities = validateRangeRequestCapabilities;
 exports.validateResponseStatus = validateResponseStatus;
 
 /***/ }),
-/* 36 */
+/* 51 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var global = __w_pdfjs_require__(4);
-var core = __w_pdfjs_require__(20);
-var hide = __w_pdfjs_require__(6);
-var redefine = __w_pdfjs_require__(28);
-var ctx = __w_pdfjs_require__(29);
-var PROTOTYPE = 'prototype';
-var $export = function $export(type, name, source) {
-  var IS_FORCED = type & $export.F;
-  var IS_GLOBAL = type & $export.G;
-  var IS_STATIC = type & $export.S;
-  var IS_PROTO = type & $export.P;
-  var IS_BIND = type & $export.B;
-  var target = IS_GLOBAL ? global : IS_STATIC ? global[name] || (global[name] = {}) : (global[name] || {})[PROTOTYPE];
-  var exports = IS_GLOBAL ? core : core[name] || (core[name] = {});
-  var expProto = exports[PROTOTYPE] || (exports[PROTOTYPE] = {});
-  var key, own, out, exp;
-  if (IS_GLOBAL) source = name;
-  for (key in source) {
-    own = !IS_FORCED && target && target[key] !== undefined;
-    out = (own ? target : source)[key];
-    exp = IS_BIND && own ? ctx(out, global) : IS_PROTO && typeof out == 'function' ? ctx(Function.call, out) : out;
-    if (target) redefine(target, key, out, type & $export.U);
-    if (exports[key] != out) hide(exports, key, exp);
-    if (IS_PROTO && expProto[key] != out) expProto[key] = out;
-  }
-};
-global.core = core;
-$export.F = 1;
-$export.G = 2;
-$export.S = 4;
-$export.P = 8;
-$export.B = 16;
-$export.W = 32;
-$export.U = 64;
-$export.R = 128;
-module.exports = $export;
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = !__w_pdfjs_require__(5) && !__w_pdfjs_require__(19)(function () {
-  return Object.defineProperty(__w_pdfjs_require__(38)('div'), 'a', {
+module.exports = !__w_pdfjs_require__(10) && !__w_pdfjs_require__(11)(function () {
+  return Object.defineProperty(__w_pdfjs_require__(37)('div'), 'a', {
     get: function get() {
       return 7;
     }
@@ -10870,41 +10487,15 @@ module.exports = !__w_pdfjs_require__(5) && !__w_pdfjs_require__(19)(function ()
 });
 
 /***/ }),
-/* 38 */
+/* 52 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var isObject = __w_pdfjs_require__(12);
-var document = __w_pdfjs_require__(4).document;
-var is = isObject(document) && isObject(document.createElement);
-module.exports = function (it) {
-  return is ? document.createElement(it) : {};
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = function (it) {
-  if (typeof it != 'function') throw TypeError(it + ' is not a function!');
-  return it;
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var global = __w_pdfjs_require__(4);
-var hide = __w_pdfjs_require__(6);
-var uid = __w_pdfjs_require__(13);
+var global = __w_pdfjs_require__(1);
+var hide = __w_pdfjs_require__(8);
+var uid = __w_pdfjs_require__(18);
 var TYPED = uid('typed_array');
 var VIEW = uid('view');
 var ABV = !!(global.ArrayBuffer && global.DataView);
@@ -10927,42 +10518,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 41 */
+/* 53 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var redefine = __w_pdfjs_require__(28);
-module.exports = function (target, src, safe) {
-  for (var key in src) {
-    redefine(target, key, src[key], safe);
-  }return target;
-};
-
-/***/ }),
-/* 42 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = function (it, Constructor, name, forbiddenField) {
-  if (!(it instanceof Constructor) || forbiddenField !== undefined && forbiddenField in it) {
-    throw TypeError(name + ': incorrect invocation!');
-  }
-  return it;
-};
-
-/***/ }),
-/* 43 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var toInteger = __w_pdfjs_require__(14);
-var toLength = __w_pdfjs_require__(9);
+var toInteger = __w_pdfjs_require__(19);
+var toLength = __w_pdfjs_require__(14);
 module.exports = function (it) {
   if (it === undefined) return 0;
   var number = toInteger(it);
@@ -10972,29 +10535,29 @@ module.exports = function (it) {
 };
 
 /***/ }),
-/* 44 */
+/* 54 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var $keys = __w_pdfjs_require__(45);
-var hiddenKeys = __w_pdfjs_require__(32).concat('length', 'prototype');
+var $keys = __w_pdfjs_require__(55);
+var hiddenKeys = __w_pdfjs_require__(42).concat('length', 'prototype');
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
   return $keys(O, hiddenKeys);
 };
 
 /***/ }),
-/* 45 */
+/* 55 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var has = __w_pdfjs_require__(8);
-var toIObject = __w_pdfjs_require__(23);
-var arrayIndexOf = __w_pdfjs_require__(48)(false);
-var IE_PROTO = __w_pdfjs_require__(31)('IE_PROTO');
+var has = __w_pdfjs_require__(12);
+var toIObject = __w_pdfjs_require__(32);
+var arrayIndexOf = __w_pdfjs_require__(56)(false);
+var IE_PROTO = __w_pdfjs_require__(41)('IE_PROTO');
 module.exports = function (object, names) {
   var O = toIObject(object);
   var i = 0;
@@ -11010,39 +10573,15 @@ module.exports = function (object, names) {
 };
 
 /***/ }),
-/* 46 */
+/* 56 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var cof = __w_pdfjs_require__(30);
-module.exports = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-module.exports = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var toIObject = __w_pdfjs_require__(23);
-var toLength = __w_pdfjs_require__(9);
-var toAbsoluteIndex = __w_pdfjs_require__(24);
+var toIObject = __w_pdfjs_require__(32);
+var toLength = __w_pdfjs_require__(14);
+var toAbsoluteIndex = __w_pdfjs_require__(33);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -11061,29 +10600,34 @@ module.exports = function (IS_INCLUDES) {
 };
 
 /***/ }),
-/* 49 */
+/* 57 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var global = __w_pdfjs_require__(4);
+var core = __w_pdfjs_require__(6);
+var global = __w_pdfjs_require__(1);
 var SHARED = '__core-js_shared__';
 var store = global[SHARED] || (global[SHARED] = {});
-module.exports = function (key) {
-  return store[key] || (store[key] = {});
-};
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: core.version,
+  mode: __w_pdfjs_require__(23) ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
 
 /***/ }),
-/* 50 */
+/* 58 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var toObject = __w_pdfjs_require__(15);
-var toAbsoluteIndex = __w_pdfjs_require__(24);
-var toLength = __w_pdfjs_require__(9);
+var toObject = __w_pdfjs_require__(20);
+var toAbsoluteIndex = __w_pdfjs_require__(33);
+var toLength = __w_pdfjs_require__(14);
 module.exports = function fill(value) {
   var O = toObject(this);
   var length = toLength(O.length);
@@ -11097,48 +10641,40 @@ module.exports = function fill(value) {
 };
 
 /***/ }),
-/* 51 */
+/* 59 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var cof = __w_pdfjs_require__(30);
-var TAG = __w_pdfjs_require__(2)('toStringTag');
-var ARG = cof(function () {
-  return arguments;
-}()) == 'Arguments';
-var tryGet = function tryGet(it, key) {
-  try {
-    return it[key];
-  } catch (e) {}
-};
+var Iterators = __w_pdfjs_require__(21);
+var ITERATOR = __w_pdfjs_require__(4)('iterator');
+var ArrayProto = Array.prototype;
 module.exports = function (it) {
-  var O, T, B;
-  return it === undefined ? 'Undefined' : it === null ? 'Null' : typeof (T = tryGet(O = Object(it), TAG)) == 'string' ? T : ARG ? cof(O) : (B = cof(O)) == 'Object' && typeof O.callee == 'function' ? 'Arguments' : B;
+  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
 };
 
 /***/ }),
-/* 52 */
+/* 60 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var anObject = __w_pdfjs_require__(21);
-var dPs = __w_pdfjs_require__(77);
-var enumBugKeys = __w_pdfjs_require__(32);
-var IE_PROTO = __w_pdfjs_require__(31)('IE_PROTO');
+var anObject = __w_pdfjs_require__(9);
+var dPs = __w_pdfjs_require__(97);
+var enumBugKeys = __w_pdfjs_require__(42);
+var IE_PROTO = __w_pdfjs_require__(41)('IE_PROTO');
 var Empty = function Empty() {};
 var PROTOTYPE = 'prototype';
 var _createDict = function createDict() {
-  var iframe = __w_pdfjs_require__(38)('iframe');
+  var iframe = __w_pdfjs_require__(37)('iframe');
   var i = enumBugKeys.length;
   var lt = '<';
   var gt = '>';
   var iframeDocument;
   iframe.style.display = 'none';
-  __w_pdfjs_require__(79).appendChild(iframe);
+  __w_pdfjs_require__(61).appendChild(iframe);
   iframe.src = 'javascript:';
   iframeDocument = iframe.contentWindow.document;
   iframeDocument.open();
@@ -11161,15 +10697,25 @@ module.exports = Object.create || function create(O, Properties) {
 };
 
 /***/ }),
-/* 53 */
+/* 61 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var has = __w_pdfjs_require__(8);
-var toObject = __w_pdfjs_require__(15);
-var IE_PROTO = __w_pdfjs_require__(31)('IE_PROTO');
+var document = __w_pdfjs_require__(1).document;
+module.exports = document && document.documentElement;
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var has = __w_pdfjs_require__(12);
+var toObject = __w_pdfjs_require__(20);
+var IE_PROTO = __w_pdfjs_require__(41)('IE_PROTO');
 var ObjectProto = Object.prototype;
 module.exports = Object.getPrototypeOf || function (O) {
   O = toObject(O);
@@ -11181,7 +10727,405 @@ module.exports = Object.getPrototypeOf || function (O) {
 };
 
 /***/ }),
-/* 54 */
+/* 63 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var classof = __w_pdfjs_require__(34);
+var ITERATOR = __w_pdfjs_require__(4)('iterator');
+var Iterators = __w_pdfjs_require__(21);
+module.exports = __w_pdfjs_require__(6).getIteratorMethod = function (it) {
+  if (it != undefined) return it[ITERATOR] || it['@@iterator'] || Iterators[classof(it)];
+};
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var addToUnscopables = __w_pdfjs_require__(101);
+var step = __w_pdfjs_require__(102);
+var Iterators = __w_pdfjs_require__(21);
+var toIObject = __w_pdfjs_require__(32);
+module.exports = __w_pdfjs_require__(65)(Array, 'Array', function (iterated, kind) {
+  this._t = toIObject(iterated);
+  this._i = 0;
+  this._k = kind;
+}, function () {
+  var O = this._t;
+  var kind = this._k;
+  var index = this._i++;
+  if (!O || index >= O.length) {
+    this._t = undefined;
+    return step(1);
+  }
+  if (kind == 'keys') return step(0, index);
+  if (kind == 'values') return step(0, O[index]);
+  return step(0, [index, O[index]]);
+}, 'values');
+Iterators.Arguments = Iterators.Array;
+addToUnscopables('keys');
+addToUnscopables('values');
+addToUnscopables('entries');
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var LIBRARY = __w_pdfjs_require__(23);
+var $export = __w_pdfjs_require__(7);
+var redefine = __w_pdfjs_require__(16);
+var hide = __w_pdfjs_require__(8);
+var Iterators = __w_pdfjs_require__(21);
+var $iterCreate = __w_pdfjs_require__(103);
+var setToStringTag = __w_pdfjs_require__(28);
+var getPrototypeOf = __w_pdfjs_require__(62);
+var ITERATOR = __w_pdfjs_require__(4)('iterator');
+var BUGGY = !([].keys && 'next' in [].keys());
+var FF_ITERATOR = '@@iterator';
+var KEYS = 'keys';
+var VALUES = 'values';
+var returnThis = function returnThis() {
+  return this;
+};
+module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
+  $iterCreate(Constructor, NAME, next);
+  var getMethod = function getMethod(kind) {
+    if (!BUGGY && kind in proto) return proto[kind];
+    switch (kind) {
+      case KEYS:
+        return function keys() {
+          return new Constructor(this, kind);
+        };
+      case VALUES:
+        return function values() {
+          return new Constructor(this, kind);
+        };
+    }
+    return function entries() {
+      return new Constructor(this, kind);
+    };
+  };
+  var TAG = NAME + ' Iterator';
+  var DEF_VALUES = DEFAULT == VALUES;
+  var VALUES_BUG = false;
+  var proto = Base.prototype;
+  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
+  var $default = $native || getMethod(DEFAULT);
+  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
+  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
+  var methods, key, IteratorPrototype;
+  if ($anyNative) {
+    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
+    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
+      setToStringTag(IteratorPrototype, TAG, true);
+      if (!LIBRARY && typeof IteratorPrototype[ITERATOR] != 'function') hide(IteratorPrototype, ITERATOR, returnThis);
+    }
+  }
+  if (DEF_VALUES && $native && $native.name !== VALUES) {
+    VALUES_BUG = true;
+    $default = function values() {
+      return $native.call(this);
+    };
+  }
+  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
+    hide(proto, ITERATOR, $default);
+  }
+  Iterators[NAME] = $default;
+  Iterators[TAG] = returnThis;
+  if (DEFAULT) {
+    methods = {
+      values: DEF_VALUES ? $default : getMethod(VALUES),
+      keys: IS_SET ? $default : getMethod(KEYS),
+      entries: $entries
+    };
+    if (FORCED) for (key in methods) {
+      if (!(key in proto)) redefine(proto, key, methods[key]);
+    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
+  }
+  return methods;
+};
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var global = __w_pdfjs_require__(1);
+var dP = __w_pdfjs_require__(15);
+var DESCRIPTORS = __w_pdfjs_require__(10);
+var SPECIES = __w_pdfjs_require__(4)('species');
+module.exports = function (KEY) {
+  var C = global[KEY];
+  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
+    configurable: true,
+    get: function get() {
+      return this;
+    }
+  });
+};
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var pIE = __w_pdfjs_require__(68);
+var createDesc = __w_pdfjs_require__(31);
+var toIObject = __w_pdfjs_require__(32);
+var toPrimitive = __w_pdfjs_require__(38);
+var has = __w_pdfjs_require__(12);
+var IE8_DOM_DEFINE = __w_pdfjs_require__(51);
+var gOPD = Object.getOwnPropertyDescriptor;
+exports.f = __w_pdfjs_require__(10) ? gOPD : function getOwnPropertyDescriptor(O, P) {
+  O = toIObject(O);
+  P = toPrimitive(P, true);
+  if (IE8_DOM_DEFINE) try {
+    return gOPD(O, P);
+  } catch (e) {}
+  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+};
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+exports.f = {}.propertyIsEnumerable;
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var classof = __w_pdfjs_require__(34);
+var test = {};
+test[__w_pdfjs_require__(4)('toStringTag')] = 'z';
+if (test + '' != '[object z]') {
+  __w_pdfjs_require__(16)(Object.prototype, 'toString', function toString() {
+    return '[object ' + classof(this) + ']';
+  }, true);
+}
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $iterators = __w_pdfjs_require__(64);
+var getKeys = __w_pdfjs_require__(43);
+var redefine = __w_pdfjs_require__(16);
+var global = __w_pdfjs_require__(1);
+var hide = __w_pdfjs_require__(8);
+var Iterators = __w_pdfjs_require__(21);
+var wks = __w_pdfjs_require__(4);
+var ITERATOR = wks('iterator');
+var TO_STRING_TAG = wks('toStringTag');
+var ArrayValues = Iterators.Array;
+var DOMIterables = {
+  CSSRuleList: true,
+  CSSStyleDeclaration: false,
+  CSSValueList: false,
+  ClientRectList: false,
+  DOMRectList: false,
+  DOMStringList: false,
+  DOMTokenList: true,
+  DataTransferItemList: false,
+  FileList: false,
+  HTMLAllCollection: false,
+  HTMLCollection: false,
+  HTMLFormElement: false,
+  HTMLSelectElement: false,
+  MediaList: true,
+  MimeTypeArray: false,
+  NamedNodeMap: false,
+  NodeList: true,
+  PaintRequestList: false,
+  Plugin: false,
+  PluginArray: false,
+  SVGLengthList: false,
+  SVGNumberList: false,
+  SVGPathSegList: false,
+  SVGPointList: false,
+  SVGStringList: false,
+  SVGTransformList: false,
+  SourceBufferList: false,
+  StyleSheetList: true,
+  TextTrackCueList: false,
+  TextTrackList: false,
+  TouchList: false
+};
+for (var collections = getKeys(DOMIterables), i = 0; i < collections.length; i++) {
+  var NAME = collections[i];
+  var explicit = DOMIterables[NAME];
+  var Collection = global[NAME];
+  var proto = Collection && Collection.prototype;
+  var key;
+  if (proto) {
+    if (!proto[ITERATOR]) hide(proto, ITERATOR, ArrayValues);
+    if (!proto[TO_STRING_TAG]) hide(proto, TO_STRING_TAG, NAME);
+    Iterators[NAME] = ArrayValues;
+    if (explicit) for (key in $iterators) {
+      if (!proto[key]) redefine(proto, key, $iterators[key], true);
+    }
+  }
+}
+
+/***/ }),
+/* 71 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var ctx = __w_pdfjs_require__(13);
+var invoke = __w_pdfjs_require__(115);
+var html = __w_pdfjs_require__(61);
+var cel = __w_pdfjs_require__(37);
+var global = __w_pdfjs_require__(1);
+var process = global.process;
+var setTask = global.setImmediate;
+var clearTask = global.clearImmediate;
+var MessageChannel = global.MessageChannel;
+var Dispatch = global.Dispatch;
+var counter = 0;
+var queue = {};
+var ONREADYSTATECHANGE = 'onreadystatechange';
+var defer, channel, port;
+var run = function run() {
+  var id = +this;
+  if (queue.hasOwnProperty(id)) {
+    var fn = queue[id];
+    delete queue[id];
+    fn();
+  }
+};
+var listener = function listener(event) {
+  run.call(event.data);
+};
+if (!setTask || !clearTask) {
+  setTask = function setImmediate(fn) {
+    var args = [];
+    var i = 1;
+    while (arguments.length > i) {
+      args.push(arguments[i++]);
+    }queue[++counter] = function () {
+      invoke(typeof fn == 'function' ? fn : Function(fn), args);
+    };
+    defer(counter);
+    return counter;
+  };
+  clearTask = function clearImmediate(id) {
+    delete queue[id];
+  };
+  if (__w_pdfjs_require__(27)(process) == 'process') {
+    defer = function defer(id) {
+      process.nextTick(ctx(run, id, 1));
+    };
+  } else if (Dispatch && Dispatch.now) {
+    defer = function defer(id) {
+      Dispatch.now(ctx(run, id, 1));
+    };
+  } else if (MessageChannel) {
+    channel = new MessageChannel();
+    port = channel.port2;
+    channel.port1.onmessage = listener;
+    defer = ctx(port.postMessage, port, 1);
+  } else if (global.addEventListener && typeof postMessage == 'function' && !global.importScripts) {
+    defer = function defer(id) {
+      global.postMessage(id + '', '*');
+    };
+    global.addEventListener('message', listener, false);
+  } else if (ONREADYSTATECHANGE in cel('script')) {
+    defer = function defer(id) {
+      html.appendChild(cel('script'))[ONREADYSTATECHANGE] = function () {
+        html.removeChild(this);
+        run.call(id);
+      };
+    };
+  } else {
+    defer = function defer(id) {
+      setTimeout(ctx(run, id, 1), 0);
+    };
+  }
+}
+module.exports = {
+  set: setTask,
+  clear: clearTask
+};
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = function (exec) {
+  try {
+    return {
+      e: false,
+      v: exec()
+    };
+  } catch (e) {
+    return {
+      e: true,
+      v: e
+    };
+  }
+};
+
+/***/ }),
+/* 73 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var anObject = __w_pdfjs_require__(9);
+var isObject = __w_pdfjs_require__(3);
+var newPromiseCapability = __w_pdfjs_require__(47);
+module.exports = function (C, x) {
+  anObject(C);
+  if (isObject(x) && x.constructor === C) return x;
+  var promiseCapability = newPromiseCapability.f(C);
+  var resolve = promiseCapability.resolve;
+  resolve(x);
+  return promiseCapability.promise;
+};
+
+/***/ }),
+/* 74 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var isObject = __w_pdfjs_require__(3);
+module.exports = function (it, TYPE) {
+  if (!isObject(it) || it._t !== TYPE) throw TypeError('Incompatible receiver, ' + TYPE + ' required!');
+  return it;
+};
+
+/***/ }),
+/* 75 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -11198,19 +11142,19 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _util = __w_pdfjs_require__(0);
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
-var _font_loader = __w_pdfjs_require__(99);
+var _font_loader = __w_pdfjs_require__(135);
 
-var _canvas = __w_pdfjs_require__(100);
+var _canvas = __w_pdfjs_require__(136);
 
-var _global_scope = __w_pdfjs_require__(11);
+var _global_scope = __w_pdfjs_require__(22);
 
 var _global_scope2 = _interopRequireDefault(_global_scope);
 
-var _metadata = __w_pdfjs_require__(56);
+var _metadata = __w_pdfjs_require__(77);
 
-var _transport_stream = __w_pdfjs_require__(102);
+var _transport_stream = __w_pdfjs_require__(139);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -11341,7 +11285,7 @@ function _fetchDocument(worker, source, pdfDataRangeTransport, docId) {
   if (worker.destroyed) {
     return Promise.reject(new Error('Worker was destroyed'));
   }
-  var apiVersion = '1.9.638';
+  var apiVersion = '1.10.100';
   source.disableAutoFetch = (0, _dom_utils.getDefaultSetting)('disableAutoFetch');
   source.disableStream = (0, _dom_utils.getDefaultSetting)('disableStream');
   source.chunkedViewerLoading = !!pdfDataRangeTransport;
@@ -11890,7 +11834,7 @@ var PDFWorker = function PDFWorkerClosure() {
       return fakeWorkerFilesLoadedCapability.promise;
     }
     fakeWorkerFilesLoadedCapability = (0, _util.createPromiseCapability)();
-    var pdfjsCoreWorker = __w_pdfjs_require__(103);
+    var pdfjsCoreWorker = __w_pdfjs_require__(140);
     WorkerMessageHandler = pdfjsCoreWorker.WorkerMessageHandler;
     fakeWorkerFilesLoadedCapability.resolve(WorkerMessageHandler);
     return fakeWorkerFilesLoadedCapability.promise;
@@ -12645,8 +12589,8 @@ var _UnsupportedManager = function UnsupportedManagerClosure() {
 }();
 var version, build;
 {
-  exports.version = version = '1.9.638';
-  exports.build = build = 'c8023772';
+  exports.version = version = '1.10.100';
+  exports.build = build = 'ea29ec83';
 }
 exports.getDocument = getDocument;
 exports.LoopbackPort = LoopbackPort;
@@ -12660,7 +12604,7 @@ exports.version = version;
 exports.build = build;
 
 /***/ }),
-/* 55 */
+/* 76 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -12671,7 +12615,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WebGLUtils = undefined;
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
 var _util = __w_pdfjs_require__(0);
 
@@ -13027,7 +12971,7 @@ var WebGLUtils = function WebGLUtilsClosure() {
 exports.WebGLUtils = WebGLUtils;
 
 /***/ }),
-/* 56 */
+/* 77 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -13042,7 +12986,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __w_pdfjs_require__(0);
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _xml_parser = __w_pdfjs_require__(138);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -13052,10 +12996,12 @@ var Metadata = function () {
 
     (0, _util.assert)(typeof data === 'string', 'Metadata: input is not a string');
     data = this._repair(data);
-    var parser = new _dom_utils.SimpleXMLParser();
-    data = parser.parseFromString(data);
+    var parser = new _xml_parser.SimpleXMLParser();
+    var xmlDocument = parser.parseFromString(data);
     this._metadata = Object.create(null);
-    this._parse(data);
+    if (xmlDocument) {
+      this._parse(xmlDocument);
+    }
   }
 
   _createClass(Metadata, [{
@@ -13079,8 +13025,8 @@ var Metadata = function () {
     }
   }, {
     key: '_parse',
-    value: function _parse(domDocument) {
-      var rdf = domDocument.documentElement;
+    value: function _parse(xmlDocument) {
+      var rdf = xmlDocument.documentElement;
       if (rdf.nodeName.toLowerCase() !== 'rdf:rdf') {
         rdf = rdf.firstChild;
         while (rdf && rdf.nodeName.toLowerCase() !== 'rdf:rdf') {
@@ -13135,7 +13081,7 @@ var Metadata = function () {
 exports.Metadata = Metadata;
 
 /***/ }),
-/* 57 */
+/* 78 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -13605,7 +13551,7 @@ exports.ChunkedStream = ChunkedStream;
 exports.ChunkedStreamManager = ChunkedStreamManager;
 
 /***/ }),
-/* 58 */
+/* 79 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -13622,15 +13568,15 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _parser = __w_pdfjs_require__(25);
+var _parser = __w_pdfjs_require__(36);
 
-var _chunked_stream = __w_pdfjs_require__(57);
+var _chunked_stream = __w_pdfjs_require__(78);
 
-var _crypto = __w_pdfjs_require__(61);
+var _crypto = __w_pdfjs_require__(82);
 
-var _colorspace = __w_pdfjs_require__(17);
+var _colorspace = __w_pdfjs_require__(29);
 
 var Catalog = function CatalogClosure() {
   function Catalog(pdfManager, xref, pageFactory) {
@@ -15124,347 +15070,7 @@ exports.XRef = XRef;
 exports.FileSpec = FileSpec;
 
 /***/ }),
-/* 59 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-var ArithmeticDecoder = function ArithmeticDecoderClosure() {
-  var QeTable = [{
-    qe: 0x5601,
-    nmps: 1,
-    nlps: 1,
-    switchFlag: 1
-  }, {
-    qe: 0x3401,
-    nmps: 2,
-    nlps: 6,
-    switchFlag: 0
-  }, {
-    qe: 0x1801,
-    nmps: 3,
-    nlps: 9,
-    switchFlag: 0
-  }, {
-    qe: 0x0AC1,
-    nmps: 4,
-    nlps: 12,
-    switchFlag: 0
-  }, {
-    qe: 0x0521,
-    nmps: 5,
-    nlps: 29,
-    switchFlag: 0
-  }, {
-    qe: 0x0221,
-    nmps: 38,
-    nlps: 33,
-    switchFlag: 0
-  }, {
-    qe: 0x5601,
-    nmps: 7,
-    nlps: 6,
-    switchFlag: 1
-  }, {
-    qe: 0x5401,
-    nmps: 8,
-    nlps: 14,
-    switchFlag: 0
-  }, {
-    qe: 0x4801,
-    nmps: 9,
-    nlps: 14,
-    switchFlag: 0
-  }, {
-    qe: 0x3801,
-    nmps: 10,
-    nlps: 14,
-    switchFlag: 0
-  }, {
-    qe: 0x3001,
-    nmps: 11,
-    nlps: 17,
-    switchFlag: 0
-  }, {
-    qe: 0x2401,
-    nmps: 12,
-    nlps: 18,
-    switchFlag: 0
-  }, {
-    qe: 0x1C01,
-    nmps: 13,
-    nlps: 20,
-    switchFlag: 0
-  }, {
-    qe: 0x1601,
-    nmps: 29,
-    nlps: 21,
-    switchFlag: 0
-  }, {
-    qe: 0x5601,
-    nmps: 15,
-    nlps: 14,
-    switchFlag: 1
-  }, {
-    qe: 0x5401,
-    nmps: 16,
-    nlps: 14,
-    switchFlag: 0
-  }, {
-    qe: 0x5101,
-    nmps: 17,
-    nlps: 15,
-    switchFlag: 0
-  }, {
-    qe: 0x4801,
-    nmps: 18,
-    nlps: 16,
-    switchFlag: 0
-  }, {
-    qe: 0x3801,
-    nmps: 19,
-    nlps: 17,
-    switchFlag: 0
-  }, {
-    qe: 0x3401,
-    nmps: 20,
-    nlps: 18,
-    switchFlag: 0
-  }, {
-    qe: 0x3001,
-    nmps: 21,
-    nlps: 19,
-    switchFlag: 0
-  }, {
-    qe: 0x2801,
-    nmps: 22,
-    nlps: 19,
-    switchFlag: 0
-  }, {
-    qe: 0x2401,
-    nmps: 23,
-    nlps: 20,
-    switchFlag: 0
-  }, {
-    qe: 0x2201,
-    nmps: 24,
-    nlps: 21,
-    switchFlag: 0
-  }, {
-    qe: 0x1C01,
-    nmps: 25,
-    nlps: 22,
-    switchFlag: 0
-  }, {
-    qe: 0x1801,
-    nmps: 26,
-    nlps: 23,
-    switchFlag: 0
-  }, {
-    qe: 0x1601,
-    nmps: 27,
-    nlps: 24,
-    switchFlag: 0
-  }, {
-    qe: 0x1401,
-    nmps: 28,
-    nlps: 25,
-    switchFlag: 0
-  }, {
-    qe: 0x1201,
-    nmps: 29,
-    nlps: 26,
-    switchFlag: 0
-  }, {
-    qe: 0x1101,
-    nmps: 30,
-    nlps: 27,
-    switchFlag: 0
-  }, {
-    qe: 0x0AC1,
-    nmps: 31,
-    nlps: 28,
-    switchFlag: 0
-  }, {
-    qe: 0x09C1,
-    nmps: 32,
-    nlps: 29,
-    switchFlag: 0
-  }, {
-    qe: 0x08A1,
-    nmps: 33,
-    nlps: 30,
-    switchFlag: 0
-  }, {
-    qe: 0x0521,
-    nmps: 34,
-    nlps: 31,
-    switchFlag: 0
-  }, {
-    qe: 0x0441,
-    nmps: 35,
-    nlps: 32,
-    switchFlag: 0
-  }, {
-    qe: 0x02A1,
-    nmps: 36,
-    nlps: 33,
-    switchFlag: 0
-  }, {
-    qe: 0x0221,
-    nmps: 37,
-    nlps: 34,
-    switchFlag: 0
-  }, {
-    qe: 0x0141,
-    nmps: 38,
-    nlps: 35,
-    switchFlag: 0
-  }, {
-    qe: 0x0111,
-    nmps: 39,
-    nlps: 36,
-    switchFlag: 0
-  }, {
-    qe: 0x0085,
-    nmps: 40,
-    nlps: 37,
-    switchFlag: 0
-  }, {
-    qe: 0x0049,
-    nmps: 41,
-    nlps: 38,
-    switchFlag: 0
-  }, {
-    qe: 0x0025,
-    nmps: 42,
-    nlps: 39,
-    switchFlag: 0
-  }, {
-    qe: 0x0015,
-    nmps: 43,
-    nlps: 40,
-    switchFlag: 0
-  }, {
-    qe: 0x0009,
-    nmps: 44,
-    nlps: 41,
-    switchFlag: 0
-  }, {
-    qe: 0x0005,
-    nmps: 45,
-    nlps: 42,
-    switchFlag: 0
-  }, {
-    qe: 0x0001,
-    nmps: 45,
-    nlps: 43,
-    switchFlag: 0
-  }, {
-    qe: 0x5601,
-    nmps: 46,
-    nlps: 46,
-    switchFlag: 0
-  }];
-  function ArithmeticDecoder(data, start, end) {
-    this.data = data;
-    this.bp = start;
-    this.dataEnd = end;
-    this.chigh = data[start];
-    this.clow = 0;
-    this.byteIn();
-    this.chigh = this.chigh << 7 & 0xFFFF | this.clow >> 9 & 0x7F;
-    this.clow = this.clow << 7 & 0xFFFF;
-    this.ct -= 7;
-    this.a = 0x8000;
-  }
-  ArithmeticDecoder.prototype = {
-    byteIn: function ArithmeticDecoder_byteIn() {
-      var data = this.data;
-      var bp = this.bp;
-      if (data[bp] === 0xFF) {
-        var b1 = data[bp + 1];
-        if (b1 > 0x8F) {
-          this.clow += 0xFF00;
-          this.ct = 8;
-        } else {
-          bp++;
-          this.clow += data[bp] << 9;
-          this.ct = 7;
-          this.bp = bp;
-        }
-      } else {
-        bp++;
-        this.clow += bp < this.dataEnd ? data[bp] << 8 : 0xFF00;
-        this.ct = 8;
-        this.bp = bp;
-      }
-      if (this.clow > 0xFFFF) {
-        this.chigh += this.clow >> 16;
-        this.clow &= 0xFFFF;
-      }
-    },
-    readBit: function ArithmeticDecoder_readBit(contexts, pos) {
-      var cx_index = contexts[pos] >> 1,
-          cx_mps = contexts[pos] & 1;
-      var qeTableIcx = QeTable[cx_index];
-      var qeIcx = qeTableIcx.qe;
-      var d;
-      var a = this.a - qeIcx;
-      if (this.chigh < qeIcx) {
-        if (a < qeIcx) {
-          a = qeIcx;
-          d = cx_mps;
-          cx_index = qeTableIcx.nmps;
-        } else {
-          a = qeIcx;
-          d = 1 ^ cx_mps;
-          if (qeTableIcx.switchFlag === 1) {
-            cx_mps = d;
-          }
-          cx_index = qeTableIcx.nlps;
-        }
-      } else {
-        this.chigh -= qeIcx;
-        if ((a & 0x8000) !== 0) {
-          this.a = a;
-          return cx_mps;
-        }
-        if (a < qeIcx) {
-          d = 1 ^ cx_mps;
-          if (qeTableIcx.switchFlag === 1) {
-            cx_mps = d;
-          }
-          cx_index = qeTableIcx.nlps;
-        } else {
-          d = cx_mps;
-          cx_index = qeTableIcx.nmps;
-        }
-      }
-      do {
-        if (this.ct === 0) {
-          this.byteIn();
-        }
-        a <<= 1;
-        this.chigh = this.chigh << 1 & 0xFFFF | this.clow >> 15 & 1;
-        this.clow = this.clow << 1 & 0xFFFF;
-        this.ct--;
-      } while ((a & 0x8000) === 0);
-      this.a = a;
-      contexts[pos] = cx_index << 1 | cx_mps;
-      return d;
-    }
-  };
-  return ArithmeticDecoder;
-}();
-exports.ArithmeticDecoder = ArithmeticDecoder;
-
-/***/ }),
-/* 60 */
+/* 80 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -15477,7 +15083,7 @@ exports.JpxImage = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _arithmetic_decoder = __w_pdfjs_require__(59);
+var _arithmetic_decoder = __w_pdfjs_require__(81);
 
 var JpxError = function JpxErrorClosure() {
   function JpxError(msg) {
@@ -17391,7 +16997,347 @@ var JpxImage = function JpxImageClosure() {
 exports.JpxImage = JpxImage;
 
 /***/ }),
-/* 61 */
+/* 81 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var ArithmeticDecoder = function ArithmeticDecoderClosure() {
+  var QeTable = [{
+    qe: 0x5601,
+    nmps: 1,
+    nlps: 1,
+    switchFlag: 1
+  }, {
+    qe: 0x3401,
+    nmps: 2,
+    nlps: 6,
+    switchFlag: 0
+  }, {
+    qe: 0x1801,
+    nmps: 3,
+    nlps: 9,
+    switchFlag: 0
+  }, {
+    qe: 0x0AC1,
+    nmps: 4,
+    nlps: 12,
+    switchFlag: 0
+  }, {
+    qe: 0x0521,
+    nmps: 5,
+    nlps: 29,
+    switchFlag: 0
+  }, {
+    qe: 0x0221,
+    nmps: 38,
+    nlps: 33,
+    switchFlag: 0
+  }, {
+    qe: 0x5601,
+    nmps: 7,
+    nlps: 6,
+    switchFlag: 1
+  }, {
+    qe: 0x5401,
+    nmps: 8,
+    nlps: 14,
+    switchFlag: 0
+  }, {
+    qe: 0x4801,
+    nmps: 9,
+    nlps: 14,
+    switchFlag: 0
+  }, {
+    qe: 0x3801,
+    nmps: 10,
+    nlps: 14,
+    switchFlag: 0
+  }, {
+    qe: 0x3001,
+    nmps: 11,
+    nlps: 17,
+    switchFlag: 0
+  }, {
+    qe: 0x2401,
+    nmps: 12,
+    nlps: 18,
+    switchFlag: 0
+  }, {
+    qe: 0x1C01,
+    nmps: 13,
+    nlps: 20,
+    switchFlag: 0
+  }, {
+    qe: 0x1601,
+    nmps: 29,
+    nlps: 21,
+    switchFlag: 0
+  }, {
+    qe: 0x5601,
+    nmps: 15,
+    nlps: 14,
+    switchFlag: 1
+  }, {
+    qe: 0x5401,
+    nmps: 16,
+    nlps: 14,
+    switchFlag: 0
+  }, {
+    qe: 0x5101,
+    nmps: 17,
+    nlps: 15,
+    switchFlag: 0
+  }, {
+    qe: 0x4801,
+    nmps: 18,
+    nlps: 16,
+    switchFlag: 0
+  }, {
+    qe: 0x3801,
+    nmps: 19,
+    nlps: 17,
+    switchFlag: 0
+  }, {
+    qe: 0x3401,
+    nmps: 20,
+    nlps: 18,
+    switchFlag: 0
+  }, {
+    qe: 0x3001,
+    nmps: 21,
+    nlps: 19,
+    switchFlag: 0
+  }, {
+    qe: 0x2801,
+    nmps: 22,
+    nlps: 19,
+    switchFlag: 0
+  }, {
+    qe: 0x2401,
+    nmps: 23,
+    nlps: 20,
+    switchFlag: 0
+  }, {
+    qe: 0x2201,
+    nmps: 24,
+    nlps: 21,
+    switchFlag: 0
+  }, {
+    qe: 0x1C01,
+    nmps: 25,
+    nlps: 22,
+    switchFlag: 0
+  }, {
+    qe: 0x1801,
+    nmps: 26,
+    nlps: 23,
+    switchFlag: 0
+  }, {
+    qe: 0x1601,
+    nmps: 27,
+    nlps: 24,
+    switchFlag: 0
+  }, {
+    qe: 0x1401,
+    nmps: 28,
+    nlps: 25,
+    switchFlag: 0
+  }, {
+    qe: 0x1201,
+    nmps: 29,
+    nlps: 26,
+    switchFlag: 0
+  }, {
+    qe: 0x1101,
+    nmps: 30,
+    nlps: 27,
+    switchFlag: 0
+  }, {
+    qe: 0x0AC1,
+    nmps: 31,
+    nlps: 28,
+    switchFlag: 0
+  }, {
+    qe: 0x09C1,
+    nmps: 32,
+    nlps: 29,
+    switchFlag: 0
+  }, {
+    qe: 0x08A1,
+    nmps: 33,
+    nlps: 30,
+    switchFlag: 0
+  }, {
+    qe: 0x0521,
+    nmps: 34,
+    nlps: 31,
+    switchFlag: 0
+  }, {
+    qe: 0x0441,
+    nmps: 35,
+    nlps: 32,
+    switchFlag: 0
+  }, {
+    qe: 0x02A1,
+    nmps: 36,
+    nlps: 33,
+    switchFlag: 0
+  }, {
+    qe: 0x0221,
+    nmps: 37,
+    nlps: 34,
+    switchFlag: 0
+  }, {
+    qe: 0x0141,
+    nmps: 38,
+    nlps: 35,
+    switchFlag: 0
+  }, {
+    qe: 0x0111,
+    nmps: 39,
+    nlps: 36,
+    switchFlag: 0
+  }, {
+    qe: 0x0085,
+    nmps: 40,
+    nlps: 37,
+    switchFlag: 0
+  }, {
+    qe: 0x0049,
+    nmps: 41,
+    nlps: 38,
+    switchFlag: 0
+  }, {
+    qe: 0x0025,
+    nmps: 42,
+    nlps: 39,
+    switchFlag: 0
+  }, {
+    qe: 0x0015,
+    nmps: 43,
+    nlps: 40,
+    switchFlag: 0
+  }, {
+    qe: 0x0009,
+    nmps: 44,
+    nlps: 41,
+    switchFlag: 0
+  }, {
+    qe: 0x0005,
+    nmps: 45,
+    nlps: 42,
+    switchFlag: 0
+  }, {
+    qe: 0x0001,
+    nmps: 45,
+    nlps: 43,
+    switchFlag: 0
+  }, {
+    qe: 0x5601,
+    nmps: 46,
+    nlps: 46,
+    switchFlag: 0
+  }];
+  function ArithmeticDecoder(data, start, end) {
+    this.data = data;
+    this.bp = start;
+    this.dataEnd = end;
+    this.chigh = data[start];
+    this.clow = 0;
+    this.byteIn();
+    this.chigh = this.chigh << 7 & 0xFFFF | this.clow >> 9 & 0x7F;
+    this.clow = this.clow << 7 & 0xFFFF;
+    this.ct -= 7;
+    this.a = 0x8000;
+  }
+  ArithmeticDecoder.prototype = {
+    byteIn: function ArithmeticDecoder_byteIn() {
+      var data = this.data;
+      var bp = this.bp;
+      if (data[bp] === 0xFF) {
+        var b1 = data[bp + 1];
+        if (b1 > 0x8F) {
+          this.clow += 0xFF00;
+          this.ct = 8;
+        } else {
+          bp++;
+          this.clow += data[bp] << 9;
+          this.ct = 7;
+          this.bp = bp;
+        }
+      } else {
+        bp++;
+        this.clow += bp < this.dataEnd ? data[bp] << 8 : 0xFF00;
+        this.ct = 8;
+        this.bp = bp;
+      }
+      if (this.clow > 0xFFFF) {
+        this.chigh += this.clow >> 16;
+        this.clow &= 0xFFFF;
+      }
+    },
+    readBit: function ArithmeticDecoder_readBit(contexts, pos) {
+      var cx_index = contexts[pos] >> 1,
+          cx_mps = contexts[pos] & 1;
+      var qeTableIcx = QeTable[cx_index];
+      var qeIcx = qeTableIcx.qe;
+      var d;
+      var a = this.a - qeIcx;
+      if (this.chigh < qeIcx) {
+        if (a < qeIcx) {
+          a = qeIcx;
+          d = cx_mps;
+          cx_index = qeTableIcx.nmps;
+        } else {
+          a = qeIcx;
+          d = 1 ^ cx_mps;
+          if (qeTableIcx.switchFlag === 1) {
+            cx_mps = d;
+          }
+          cx_index = qeTableIcx.nlps;
+        }
+      } else {
+        this.chigh -= qeIcx;
+        if ((a & 0x8000) !== 0) {
+          this.a = a;
+          return cx_mps;
+        }
+        if (a < qeIcx) {
+          d = 1 ^ cx_mps;
+          if (qeTableIcx.switchFlag === 1) {
+            cx_mps = d;
+          }
+          cx_index = qeTableIcx.nlps;
+        } else {
+          d = cx_mps;
+          cx_index = qeTableIcx.nmps;
+        }
+      }
+      do {
+        if (this.ct === 0) {
+          this.byteIn();
+        }
+        a <<= 1;
+        this.chigh = this.chigh << 1 & 0xFFFF | this.clow >> 15 & 1;
+        this.clow = this.clow << 1 & 0xFFFF;
+        this.ct--;
+      } while ((a & 0x8000) === 0);
+      this.a = a;
+      contexts[pos] = cx_index << 1 | cx_mps;
+      return d;
+    }
+  };
+  return ArithmeticDecoder;
+}();
+exports.ArithmeticDecoder = ArithmeticDecoder;
+
+/***/ }),
+/* 82 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -17404,9 +17350,9 @@ exports.calculateSHA512 = exports.calculateSHA384 = exports.calculateSHA256 = ex
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var ARCFourCipher = function ARCFourCipherClosure() {
   function ARCFourCipher(key) {
@@ -18984,7 +18930,7 @@ exports.calculateSHA384 = calculateSHA384;
 exports.calculateSHA512 = calculateSHA512;
 
 /***/ }),
-/* 62 */
+/* 83 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -18997,37 +18943,37 @@ exports.PartialEvaluator = exports.OperatorList = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _cmap = __w_pdfjs_require__(108);
+var _cmap = __w_pdfjs_require__(148);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _fonts = __w_pdfjs_require__(109);
+var _fonts = __w_pdfjs_require__(149);
 
-var _encodings = __w_pdfjs_require__(18);
+var _encodings = __w_pdfjs_require__(30);
 
-var _unicode = __w_pdfjs_require__(65);
+var _unicode = __w_pdfjs_require__(86);
 
-var _standard_fonts = __w_pdfjs_require__(64);
+var _standard_fonts = __w_pdfjs_require__(85);
 
-var _pattern = __w_pdfjs_require__(113);
+var _pattern = __w_pdfjs_require__(153);
 
-var _parser = __w_pdfjs_require__(25);
+var _parser = __w_pdfjs_require__(36);
 
-var _bidi = __w_pdfjs_require__(114);
+var _bidi = __w_pdfjs_require__(154);
 
-var _colorspace = __w_pdfjs_require__(17);
+var _colorspace = __w_pdfjs_require__(29);
 
-var _glyphlist = __w_pdfjs_require__(34);
+var _glyphlist = __w_pdfjs_require__(49);
 
-var _metrics = __w_pdfjs_require__(115);
+var _metrics = __w_pdfjs_require__(155);
 
-var _function = __w_pdfjs_require__(66);
+var _function = __w_pdfjs_require__(87);
 
-var _murmurhash = __w_pdfjs_require__(117);
+var _murmurhash = __w_pdfjs_require__(157);
 
-var _image = __w_pdfjs_require__(118);
+var _image = __w_pdfjs_require__(158);
 
 var PartialEvaluator = function PartialEvaluatorClosure() {
   var DefaultPartialEvaluatorOptions = {
@@ -22111,7 +22057,7 @@ exports.OperatorList = OperatorList;
 exports.PartialEvaluator = PartialEvaluator;
 
 /***/ }),
-/* 63 */
+/* 84 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -22124,9 +22070,9 @@ exports.CFFCompiler = exports.CFFPrivateDict = exports.CFFTopDict = exports.CFFC
 
 var _util = __w_pdfjs_require__(0);
 
-var _charsets = __w_pdfjs_require__(110);
+var _charsets = __w_pdfjs_require__(150);
 
-var _encodings = __w_pdfjs_require__(18);
+var _encodings = __w_pdfjs_require__(30);
 
 var MAX_SUBR_NESTING = 10;
 var CFFStandardStrings = ['.notdef', 'space', 'exclam', 'quotedbl', 'numbersign', 'dollar', 'percent', 'ampersand', 'quoteright', 'parenleft', 'parenright', 'asterisk', 'plus', 'comma', 'hyphen', 'period', 'slash', 'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'colon', 'semicolon', 'less', 'equal', 'greater', 'question', 'at', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'bracketleft', 'backslash', 'bracketright', 'asciicircum', 'underscore', 'quoteleft', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'braceleft', 'bar', 'braceright', 'asciitilde', 'exclamdown', 'cent', 'sterling', 'fraction', 'yen', 'florin', 'section', 'currency', 'quotesingle', 'quotedblleft', 'guillemotleft', 'guilsinglleft', 'guilsinglright', 'fi', 'fl', 'endash', 'dagger', 'daggerdbl', 'periodcentered', 'paragraph', 'bullet', 'quotesinglbase', 'quotedblbase', 'quotedblright', 'guillemotright', 'ellipsis', 'perthousand', 'questiondown', 'grave', 'acute', 'circumflex', 'tilde', 'macron', 'breve', 'dotaccent', 'dieresis', 'ring', 'cedilla', 'hungarumlaut', 'ogonek', 'caron', 'emdash', 'AE', 'ordfeminine', 'Lslash', 'Oslash', 'OE', 'ordmasculine', 'ae', 'dotlessi', 'lslash', 'oslash', 'oe', 'germandbls', 'onesuperior', 'logicalnot', 'mu', 'trademark', 'Eth', 'onehalf', 'plusminus', 'Thorn', 'onequarter', 'divide', 'brokenbar', 'degree', 'thorn', 'threequarters', 'twosuperior', 'registered', 'minus', 'eth', 'multiply', 'threesuperior', 'copyright', 'Aacute', 'Acircumflex', 'Adieresis', 'Agrave', 'Aring', 'Atilde', 'Ccedilla', 'Eacute', 'Ecircumflex', 'Edieresis', 'Egrave', 'Iacute', 'Icircumflex', 'Idieresis', 'Igrave', 'Ntilde', 'Oacute', 'Ocircumflex', 'Odieresis', 'Ograve', 'Otilde', 'Scaron', 'Uacute', 'Ucircumflex', 'Udieresis', 'Ugrave', 'Yacute', 'Ydieresis', 'Zcaron', 'aacute', 'acircumflex', 'adieresis', 'agrave', 'aring', 'atilde', 'ccedilla', 'eacute', 'ecircumflex', 'edieresis', 'egrave', 'iacute', 'icircumflex', 'idieresis', 'igrave', 'ntilde', 'oacute', 'ocircumflex', 'odieresis', 'ograve', 'otilde', 'scaron', 'uacute', 'ucircumflex', 'udieresis', 'ugrave', 'yacute', 'ydieresis', 'zcaron', 'exclamsmall', 'Hungarumlautsmall', 'dollaroldstyle', 'dollarsuperior', 'ampersandsmall', 'Acutesmall', 'parenleftsuperior', 'parenrightsuperior', 'twodotenleader', 'onedotenleader', 'zerooldstyle', 'oneoldstyle', 'twooldstyle', 'threeoldstyle', 'fouroldstyle', 'fiveoldstyle', 'sixoldstyle', 'sevenoldstyle', 'eightoldstyle', 'nineoldstyle', 'commasuperior', 'threequartersemdash', 'periodsuperior', 'questionsmall', 'asuperior', 'bsuperior', 'centsuperior', 'dsuperior', 'esuperior', 'isuperior', 'lsuperior', 'msuperior', 'nsuperior', 'osuperior', 'rsuperior', 'ssuperior', 'tsuperior', 'ff', 'ffi', 'ffl', 'parenleftinferior', 'parenrightinferior', 'Circumflexsmall', 'hyphensuperior', 'Gravesmall', 'Asmall', 'Bsmall', 'Csmall', 'Dsmall', 'Esmall', 'Fsmall', 'Gsmall', 'Hsmall', 'Ismall', 'Jsmall', 'Ksmall', 'Lsmall', 'Msmall', 'Nsmall', 'Osmall', 'Psmall', 'Qsmall', 'Rsmall', 'Ssmall', 'Tsmall', 'Usmall', 'Vsmall', 'Wsmall', 'Xsmall', 'Ysmall', 'Zsmall', 'colonmonetary', 'onefitted', 'rupiah', 'Tildesmall', 'exclamdownsmall', 'centoldstyle', 'Lslashsmall', 'Scaronsmall', 'Zcaronsmall', 'Dieresissmall', 'Brevesmall', 'Caronsmall', 'Dotaccentsmall', 'Macronsmall', 'figuredash', 'hypheninferior', 'Ogoneksmall', 'Ringsmall', 'Cedillasmall', 'questiondownsmall', 'oneeighth', 'threeeighths', 'fiveeighths', 'seveneighths', 'onethird', 'twothirds', 'zerosuperior', 'foursuperior', 'fivesuperior', 'sixsuperior', 'sevensuperior', 'eightsuperior', 'ninesuperior', 'zeroinferior', 'oneinferior', 'twoinferior', 'threeinferior', 'fourinferior', 'fiveinferior', 'sixinferior', 'seveninferior', 'eightinferior', 'nineinferior', 'centinferior', 'dollarinferior', 'periodinferior', 'commainferior', 'Agravesmall', 'Aacutesmall', 'Acircumflexsmall', 'Atildesmall', 'Adieresissmall', 'Aringsmall', 'AEsmall', 'Ccedillasmall', 'Egravesmall', 'Eacutesmall', 'Ecircumflexsmall', 'Edieresissmall', 'Igravesmall', 'Iacutesmall', 'Icircumflexsmall', 'Idieresissmall', 'Ethsmall', 'Ntildesmall', 'Ogravesmall', 'Oacutesmall', 'Ocircumflexsmall', 'Otildesmall', 'Odieresissmall', 'OEsmall', 'Oslashsmall', 'Ugravesmall', 'Uacutesmall', 'Ucircumflexsmall', 'Udieresissmall', 'Yacutesmall', 'Thornsmall', 'Ydieresissmall', '001.000', '001.001', '001.002', '001.003', 'Black', 'Bold', 'Book', 'Light', 'Medium', 'Regular', 'Roman', 'Semibold'];
@@ -22531,21 +22477,7 @@ var CFFParser = function CFFParserClosure() {
       var names = [];
       for (var i = 0, ii = index.count; i < ii; ++i) {
         var name = index.get(i);
-        var length = Math.min(name.length, 127);
-        var data = [];
-        for (var j = 0; j < length; ++j) {
-          var c = name[j];
-          if (j === 0 && c === 0) {
-            data[j] = c;
-            continue;
-          }
-          if (c < 33 || c > 126 || c === 91 || c === 93 || c === 40 || c === 41 || c === 123 || c === 125 || c === 60 || c === 62 || c === 47 || c === 37 || c === 35) {
-            data[j] = 95;
-            continue;
-          }
-          data[j] = c;
-        }
-        names.push((0, _util.bytesToString)(data));
+        names.push((0, _util.bytesToString)(name));
       }
       return names;
     },
@@ -23345,7 +23277,21 @@ var CFFCompiler = function CFFCompilerClosure() {
     compileNameIndex: function CFFCompiler_compileNameIndex(names) {
       var nameIndex = new CFFIndex();
       for (var i = 0, ii = names.length; i < ii; ++i) {
-        nameIndex.add((0, _util.stringToBytes)(names[i]));
+        var name = names[i];
+        var length = Math.min(name.length, 127);
+        var sanitizedName = new Array(length);
+        for (var j = 0; j < length; j++) {
+          var char = name[j];
+          if (char < '!' || char > '~' || char === '[' || char === ']' || char === '(' || char === ')' || char === '{' || char === '}' || char === '<' || char === '>' || char === '/' || char === '%') {
+            char = '_';
+          }
+          sanitizedName[j] = char;
+        }
+        sanitizedName = sanitizedName.join('');
+        if (sanitizedName === '') {
+          sanitizedName = 'Bad_Font_Name';
+        }
+        nameIndex.add((0, _util.stringToBytes)(sanitizedName));
       }
       return this.compileIndex(nameIndex);
     },
@@ -23539,7 +23485,7 @@ exports.CFFPrivateDict = CFFPrivateDict;
 exports.CFFCompiler = CFFCompiler;
 
 /***/ }),
-/* 64 */
+/* 85 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -24190,1853 +24136,1975 @@ exports.getGlyphMapForStandardFonts = getGlyphMapForStandardFonts;
 exports.getSupplementalGlyphMapForArialBlack = getSupplementalGlyphMapForArialBlack;
 
 /***/ }),
-/* 65 */
+/* 86 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
 
 var getLookupTableFactory = __w_pdfjs_require__(0).getLookupTableFactory;
 var getSpecialPUASymbols = getLookupTableFactory(function (t) {
-  t[63721] = 0x00A9;
-  t[63193] = 0x00A9;
-  t[63720] = 0x00AE;
-  t[63194] = 0x00AE;
-  t[63722] = 0x2122;
-  t[63195] = 0x2122;
-  t[63729] = 0x23A7;
-  t[63730] = 0x23A8;
-  t[63731] = 0x23A9;
-  t[63740] = 0x23AB;
-  t[63741] = 0x23AC;
-  t[63742] = 0x23AD;
-  t[63726] = 0x23A1;
-  t[63727] = 0x23A2;
-  t[63728] = 0x23A3;
-  t[63737] = 0x23A4;
-  t[63738] = 0x23A5;
-  t[63739] = 0x23A6;
-  t[63723] = 0x239B;
-  t[63724] = 0x239C;
-  t[63725] = 0x239D;
-  t[63734] = 0x239E;
-  t[63735] = 0x239F;
-  t[63736] = 0x23A0;
+ t[63721] = 0x00A9;
+ t[63193] = 0x00A9;
+ t[63720] = 0x00AE;
+ t[63194] = 0x00AE;
+ t[63722] = 0x2122;
+ t[63195] = 0x2122;
+ t[63729] = 0x23A7;
+ t[63730] = 0x23A8;
+ t[63731] = 0x23A9;
+ t[63740] = 0x23AB;
+ t[63741] = 0x23AC;
+ t[63742] = 0x23AD;
+ t[63726] = 0x23A1;
+ t[63727] = 0x23A2;
+ t[63728] = 0x23A3;
+ t[63737] = 0x23A4;
+ t[63738] = 0x23A5;
+ t[63739] = 0x23A6;
+ t[63723] = 0x239B;
+ t[63724] = 0x239C;
+ t[63725] = 0x239D;
+ t[63734] = 0x239E;
+ t[63735] = 0x239F;
+ t[63736] = 0x23A0;
 });
 function mapSpecialUnicodeValues(code) {
-  if (code >= 0xFFF0 && code <= 0xFFFF) {
-    return 0;
-  } else if (code >= 0xF600 && code <= 0xF8FF) {
-    return getSpecialPUASymbols()[code] || code;
-  }
-  return code;
+ if (code >= 0xFFF0 && code <= 0xFFFF) {
+  return 0;
+ } else if (code >= 0xF600 && code <= 0xF8FF) {
+  return getSpecialPUASymbols()[code] || code;
+ } else if (code === 0x00AD) {
+  return 0x002D;
+ }
+ return code;
 }
 function getUnicodeForGlyph(name, glyphsUnicodeMap) {
-  var unicode = glyphsUnicodeMap[name];
-  if (unicode !== undefined) {
-    return unicode;
-  }
-  if (!name) {
-    return -1;
-  }
-  if (name[0] === 'u') {
-    var nameLen = name.length,
-        hexStr;
-    if (nameLen === 7 && name[1] === 'n' && name[2] === 'i') {
-      hexStr = name.substr(3);
-    } else if (nameLen >= 5 && nameLen <= 7) {
-      hexStr = name.substr(1);
-    } else {
-      return -1;
-    }
-    if (hexStr === hexStr.toUpperCase()) {
-      unicode = parseInt(hexStr, 16);
-      if (unicode >= 0) {
-        return unicode;
-      }
-    }
-  }
+ var unicode = glyphsUnicodeMap[name];
+ if (unicode !== undefined) {
+  return unicode;
+ }
+ if (!name) {
   return -1;
+ }
+ if (name[0] === 'u') {
+  var nameLen = name.length, hexStr;
+  if (nameLen === 7 && name[1] === 'n' && name[2] === 'i') {
+   hexStr = name.substr(3);
+  } else if (nameLen >= 5 && nameLen <= 7) {
+   hexStr = name.substr(1);
+  } else {
+   return -1;
+  }
+  if (hexStr === hexStr.toUpperCase()) {
+   unicode = parseInt(hexStr, 16);
+   if (unicode >= 0) {
+    return unicode;
+   }
+  }
+ }
+ return -1;
 }
-var UnicodeRanges = [{
+var UnicodeRanges = [
+ {
   'begin': 0x0000,
   'end': 0x007F
-}, {
+ },
+ {
   'begin': 0x0080,
   'end': 0x00FF
-}, {
+ },
+ {
   'begin': 0x0100,
   'end': 0x017F
-}, {
+ },
+ {
   'begin': 0x0180,
   'end': 0x024F
-}, {
+ },
+ {
   'begin': 0x0250,
   'end': 0x02AF
-}, {
+ },
+ {
   'begin': 0x02B0,
   'end': 0x02FF
-}, {
+ },
+ {
   'begin': 0x0300,
   'end': 0x036F
-}, {
+ },
+ {
   'begin': 0x0370,
   'end': 0x03FF
-}, {
+ },
+ {
   'begin': 0x2C80,
   'end': 0x2CFF
-}, {
+ },
+ {
   'begin': 0x0400,
   'end': 0x04FF
-}, {
+ },
+ {
   'begin': 0x0530,
   'end': 0x058F
-}, {
+ },
+ {
   'begin': 0x0590,
   'end': 0x05FF
-}, {
+ },
+ {
   'begin': 0xA500,
   'end': 0xA63F
-}, {
+ },
+ {
   'begin': 0x0600,
   'end': 0x06FF
-}, {
+ },
+ {
   'begin': 0x07C0,
   'end': 0x07FF
-}, {
+ },
+ {
   'begin': 0x0900,
   'end': 0x097F
-}, {
+ },
+ {
   'begin': 0x0980,
   'end': 0x09FF
-}, {
+ },
+ {
   'begin': 0x0A00,
   'end': 0x0A7F
-}, {
+ },
+ {
   'begin': 0x0A80,
   'end': 0x0AFF
-}, {
+ },
+ {
   'begin': 0x0B00,
   'end': 0x0B7F
-}, {
+ },
+ {
   'begin': 0x0B80,
   'end': 0x0BFF
-}, {
+ },
+ {
   'begin': 0x0C00,
   'end': 0x0C7F
-}, {
+ },
+ {
   'begin': 0x0C80,
   'end': 0x0CFF
-}, {
+ },
+ {
   'begin': 0x0D00,
   'end': 0x0D7F
-}, {
+ },
+ {
   'begin': 0x0E00,
   'end': 0x0E7F
-}, {
+ },
+ {
   'begin': 0x0E80,
   'end': 0x0EFF
-}, {
+ },
+ {
   'begin': 0x10A0,
   'end': 0x10FF
-}, {
+ },
+ {
   'begin': 0x1B00,
   'end': 0x1B7F
-}, {
+ },
+ {
   'begin': 0x1100,
   'end': 0x11FF
-}, {
+ },
+ {
   'begin': 0x1E00,
   'end': 0x1EFF
-}, {
+ },
+ {
   'begin': 0x1F00,
   'end': 0x1FFF
-}, {
+ },
+ {
   'begin': 0x2000,
   'end': 0x206F
-}, {
+ },
+ {
   'begin': 0x2070,
   'end': 0x209F
-}, {
+ },
+ {
   'begin': 0x20A0,
   'end': 0x20CF
-}, {
+ },
+ {
   'begin': 0x20D0,
   'end': 0x20FF
-}, {
+ },
+ {
   'begin': 0x2100,
   'end': 0x214F
-}, {
+ },
+ {
   'begin': 0x2150,
   'end': 0x218F
-}, {
+ },
+ {
   'begin': 0x2190,
   'end': 0x21FF
-}, {
+ },
+ {
   'begin': 0x2200,
   'end': 0x22FF
-}, {
+ },
+ {
   'begin': 0x2300,
   'end': 0x23FF
-}, {
+ },
+ {
   'begin': 0x2400,
   'end': 0x243F
-}, {
+ },
+ {
   'begin': 0x2440,
   'end': 0x245F
-}, {
+ },
+ {
   'begin': 0x2460,
   'end': 0x24FF
-}, {
+ },
+ {
   'begin': 0x2500,
   'end': 0x257F
-}, {
+ },
+ {
   'begin': 0x2580,
   'end': 0x259F
-}, {
+ },
+ {
   'begin': 0x25A0,
   'end': 0x25FF
-}, {
+ },
+ {
   'begin': 0x2600,
   'end': 0x26FF
-}, {
+ },
+ {
   'begin': 0x2700,
   'end': 0x27BF
-}, {
+ },
+ {
   'begin': 0x3000,
   'end': 0x303F
-}, {
+ },
+ {
   'begin': 0x3040,
   'end': 0x309F
-}, {
+ },
+ {
   'begin': 0x30A0,
   'end': 0x30FF
-}, {
+ },
+ {
   'begin': 0x3100,
   'end': 0x312F
-}, {
+ },
+ {
   'begin': 0x3130,
   'end': 0x318F
-}, {
+ },
+ {
   'begin': 0xA840,
   'end': 0xA87F
-}, {
+ },
+ {
   'begin': 0x3200,
   'end': 0x32FF
-}, {
+ },
+ {
   'begin': 0x3300,
   'end': 0x33FF
-}, {
+ },
+ {
   'begin': 0xAC00,
   'end': 0xD7AF
-}, {
+ },
+ {
   'begin': 0xD800,
   'end': 0xDFFF
-}, {
+ },
+ {
   'begin': 0x10900,
   'end': 0x1091F
-}, {
+ },
+ {
   'begin': 0x4E00,
   'end': 0x9FFF
-}, {
+ },
+ {
   'begin': 0xE000,
   'end': 0xF8FF
-}, {
+ },
+ {
   'begin': 0x31C0,
   'end': 0x31EF
-}, {
+ },
+ {
   'begin': 0xFB00,
   'end': 0xFB4F
-}, {
+ },
+ {
   'begin': 0xFB50,
   'end': 0xFDFF
-}, {
+ },
+ {
   'begin': 0xFE20,
   'end': 0xFE2F
-}, {
+ },
+ {
   'begin': 0xFE10,
   'end': 0xFE1F
-}, {
+ },
+ {
   'begin': 0xFE50,
   'end': 0xFE6F
-}, {
+ },
+ {
   'begin': 0xFE70,
   'end': 0xFEFF
-}, {
+ },
+ {
   'begin': 0xFF00,
   'end': 0xFFEF
-}, {
+ },
+ {
   'begin': 0xFFF0,
   'end': 0xFFFF
-}, {
+ },
+ {
   'begin': 0x0F00,
   'end': 0x0FFF
-}, {
+ },
+ {
   'begin': 0x0700,
   'end': 0x074F
-}, {
+ },
+ {
   'begin': 0x0780,
   'end': 0x07BF
-}, {
+ },
+ {
   'begin': 0x0D80,
   'end': 0x0DFF
-}, {
+ },
+ {
   'begin': 0x1000,
   'end': 0x109F
-}, {
+ },
+ {
   'begin': 0x1200,
   'end': 0x137F
-}, {
+ },
+ {
   'begin': 0x13A0,
   'end': 0x13FF
-}, {
+ },
+ {
   'begin': 0x1400,
   'end': 0x167F
-}, {
+ },
+ {
   'begin': 0x1680,
   'end': 0x169F
-}, {
+ },
+ {
   'begin': 0x16A0,
   'end': 0x16FF
-}, {
+ },
+ {
   'begin': 0x1780,
   'end': 0x17FF
-}, {
+ },
+ {
   'begin': 0x1800,
   'end': 0x18AF
-}, {
+ },
+ {
   'begin': 0x2800,
   'end': 0x28FF
-}, {
+ },
+ {
   'begin': 0xA000,
   'end': 0xA48F
-}, {
+ },
+ {
   'begin': 0x1700,
   'end': 0x171F
-}, {
+ },
+ {
   'begin': 0x10300,
   'end': 0x1032F
-}, {
+ },
+ {
   'begin': 0x10330,
   'end': 0x1034F
-}, {
+ },
+ {
   'begin': 0x10400,
   'end': 0x1044F
-}, {
+ },
+ {
   'begin': 0x1D000,
   'end': 0x1D0FF
-}, {
+ },
+ {
   'begin': 0x1D400,
   'end': 0x1D7FF
-}, {
+ },
+ {
   'begin': 0xFF000,
   'end': 0xFFFFD
-}, {
+ },
+ {
   'begin': 0xFE00,
   'end': 0xFE0F
-}, {
+ },
+ {
   'begin': 0xE0000,
   'end': 0xE007F
-}, {
+ },
+ {
   'begin': 0x1900,
   'end': 0x194F
-}, {
+ },
+ {
   'begin': 0x1950,
   'end': 0x197F
-}, {
+ },
+ {
   'begin': 0x1980,
   'end': 0x19DF
-}, {
+ },
+ {
   'begin': 0x1A00,
   'end': 0x1A1F
-}, {
+ },
+ {
   'begin': 0x2C00,
   'end': 0x2C5F
-}, {
+ },
+ {
   'begin': 0x2D30,
   'end': 0x2D7F
-}, {
+ },
+ {
   'begin': 0x4DC0,
   'end': 0x4DFF
-}, {
+ },
+ {
   'begin': 0xA800,
   'end': 0xA82F
-}, {
+ },
+ {
   'begin': 0x10000,
   'end': 0x1007F
-}, {
+ },
+ {
   'begin': 0x10140,
   'end': 0x1018F
-}, {
+ },
+ {
   'begin': 0x10380,
   'end': 0x1039F
-}, {
+ },
+ {
   'begin': 0x103A0,
   'end': 0x103DF
-}, {
+ },
+ {
   'begin': 0x10450,
   'end': 0x1047F
-}, {
+ },
+ {
   'begin': 0x10480,
   'end': 0x104AF
-}, {
+ },
+ {
   'begin': 0x10800,
   'end': 0x1083F
-}, {
+ },
+ {
   'begin': 0x10A00,
   'end': 0x10A5F
-}, {
+ },
+ {
   'begin': 0x1D300,
   'end': 0x1D35F
-}, {
+ },
+ {
   'begin': 0x12000,
   'end': 0x123FF
-}, {
+ },
+ {
   'begin': 0x1D360,
   'end': 0x1D37F
-}, {
+ },
+ {
   'begin': 0x1B80,
   'end': 0x1BBF
-}, {
+ },
+ {
   'begin': 0x1C00,
   'end': 0x1C4F
-}, {
+ },
+ {
   'begin': 0x1C50,
   'end': 0x1C7F
-}, {
+ },
+ {
   'begin': 0xA880,
   'end': 0xA8DF
-}, {
+ },
+ {
   'begin': 0xA900,
   'end': 0xA92F
-}, {
+ },
+ {
   'begin': 0xA930,
   'end': 0xA95F
-}, {
+ },
+ {
   'begin': 0xAA00,
   'end': 0xAA5F
-}, {
+ },
+ {
   'begin': 0x10190,
   'end': 0x101CF
-}, {
+ },
+ {
   'begin': 0x101D0,
   'end': 0x101FF
-}, {
+ },
+ {
   'begin': 0x102A0,
   'end': 0x102DF
-}, {
+ },
+ {
   'begin': 0x1F030,
   'end': 0x1F09F
-}];
+ }
+];
 function getUnicodeRangeFor(value) {
-  for (var i = 0, ii = UnicodeRanges.length; i < ii; i++) {
-    var range = UnicodeRanges[i];
-    if (value >= range.begin && value < range.end) {
-      return i;
-    }
+ for (var i = 0, ii = UnicodeRanges.length; i < ii; i++) {
+  var range = UnicodeRanges[i];
+  if (value >= range.begin && value < range.end) {
+   return i;
   }
-  return -1;
+ }
+ return -1;
 }
 function isRTLRangeFor(value) {
-  var range = UnicodeRanges[13];
-  if (value >= range.begin && value < range.end) {
-    return true;
-  }
-  range = UnicodeRanges[11];
-  if (value >= range.begin && value < range.end) {
-    return true;
-  }
-  return false;
+ var range = UnicodeRanges[13];
+ if (value >= range.begin && value < range.end) {
+  return true;
+ }
+ range = UnicodeRanges[11];
+ if (value >= range.begin && value < range.end) {
+  return true;
+ }
+ return false;
 }
 var getNormalizedUnicodes = getLookupTableFactory(function (t) {
-  t['\xA8'] = ' \u0308';
-  t['\xAF'] = ' \u0304';
-  t['\xB4'] = ' \u0301';
-  t['\xB5'] = '\u03BC';
-  t['\xB8'] = ' \u0327';
-  t['\u0132'] = 'IJ';
-  t['\u0133'] = 'ij';
-  t['\u013F'] = 'L\xB7';
-  t['\u0140'] = 'l\xB7';
-  t['\u0149'] = '\u02BCn';
-  t['\u017F'] = 's';
-  t['\u01C4'] = 'D\u017D';
-  t['\u01C5'] = 'D\u017E';
-  t['\u01C6'] = 'd\u017E';
-  t['\u01C7'] = 'LJ';
-  t['\u01C8'] = 'Lj';
-  t['\u01C9'] = 'lj';
-  t['\u01CA'] = 'NJ';
-  t['\u01CB'] = 'Nj';
-  t['\u01CC'] = 'nj';
-  t['\u01F1'] = 'DZ';
-  t['\u01F2'] = 'Dz';
-  t['\u01F3'] = 'dz';
-  t['\u02D8'] = ' \u0306';
-  t['\u02D9'] = ' \u0307';
-  t['\u02DA'] = ' \u030A';
-  t['\u02DB'] = ' \u0328';
-  t['\u02DC'] = ' \u0303';
-  t['\u02DD'] = ' \u030B';
-  t['\u037A'] = ' \u0345';
-  t['\u0384'] = ' \u0301';
-  t['\u03D0'] = '\u03B2';
-  t['\u03D1'] = '\u03B8';
-  t['\u03D2'] = '\u03A5';
-  t['\u03D5'] = '\u03C6';
-  t['\u03D6'] = '\u03C0';
-  t['\u03F0'] = '\u03BA';
-  t['\u03F1'] = '\u03C1';
-  t['\u03F2'] = '\u03C2';
-  t['\u03F4'] = '\u0398';
-  t['\u03F5'] = '\u03B5';
-  t['\u03F9'] = '\u03A3';
-  t['\u0587'] = '\u0565\u0582';
-  t['\u0675'] = '\u0627\u0674';
-  t['\u0676'] = '\u0648\u0674';
-  t['\u0677'] = '\u06C7\u0674';
-  t['\u0678'] = '\u064A\u0674';
-  t['\u0E33'] = '\u0E4D\u0E32';
-  t['\u0EB3'] = '\u0ECD\u0EB2';
-  t['\u0EDC'] = '\u0EAB\u0E99';
-  t['\u0EDD'] = '\u0EAB\u0EA1';
-  t['\u0F77'] = '\u0FB2\u0F81';
-  t['\u0F79'] = '\u0FB3\u0F81';
-  t['\u1E9A'] = 'a\u02BE';
-  t['\u1FBD'] = ' \u0313';
-  t['\u1FBF'] = ' \u0313';
-  t['\u1FC0'] = ' \u0342';
-  t['\u1FFE'] = ' \u0314';
-  t['\u2002'] = ' ';
-  t['\u2003'] = ' ';
-  t['\u2004'] = ' ';
-  t['\u2005'] = ' ';
-  t['\u2006'] = ' ';
-  t['\u2008'] = ' ';
-  t['\u2009'] = ' ';
-  t['\u200A'] = ' ';
-  t['\u2017'] = ' \u0333';
-  t['\u2024'] = '.';
-  t['\u2025'] = '..';
-  t['\u2026'] = '...';
-  t['\u2033'] = '\u2032\u2032';
-  t['\u2034'] = '\u2032\u2032\u2032';
-  t['\u2036'] = '\u2035\u2035';
-  t['\u2037'] = '\u2035\u2035\u2035';
-  t['\u203C'] = '!!';
-  t['\u203E'] = ' \u0305';
-  t['\u2047'] = '??';
-  t['\u2048'] = '?!';
-  t['\u2049'] = '!?';
-  t['\u2057'] = '\u2032\u2032\u2032\u2032';
-  t['\u205F'] = ' ';
-  t['\u20A8'] = 'Rs';
-  t['\u2100'] = 'a/c';
-  t['\u2101'] = 'a/s';
-  t['\u2103'] = '\xB0C';
-  t['\u2105'] = 'c/o';
-  t['\u2106'] = 'c/u';
-  t['\u2107'] = '\u0190';
-  t['\u2109'] = '\xB0F';
-  t['\u2116'] = 'No';
-  t['\u2121'] = 'TEL';
-  t['\u2135'] = '\u05D0';
-  t['\u2136'] = '\u05D1';
-  t['\u2137'] = '\u05D2';
-  t['\u2138'] = '\u05D3';
-  t['\u213B'] = 'FAX';
-  t['\u2160'] = 'I';
-  t['\u2161'] = 'II';
-  t['\u2162'] = 'III';
-  t['\u2163'] = 'IV';
-  t['\u2164'] = 'V';
-  t['\u2165'] = 'VI';
-  t['\u2166'] = 'VII';
-  t['\u2167'] = 'VIII';
-  t['\u2168'] = 'IX';
-  t['\u2169'] = 'X';
-  t['\u216A'] = 'XI';
-  t['\u216B'] = 'XII';
-  t['\u216C'] = 'L';
-  t['\u216D'] = 'C';
-  t['\u216E'] = 'D';
-  t['\u216F'] = 'M';
-  t['\u2170'] = 'i';
-  t['\u2171'] = 'ii';
-  t['\u2172'] = 'iii';
-  t['\u2173'] = 'iv';
-  t['\u2174'] = 'v';
-  t['\u2175'] = 'vi';
-  t['\u2176'] = 'vii';
-  t['\u2177'] = 'viii';
-  t['\u2178'] = 'ix';
-  t['\u2179'] = 'x';
-  t['\u217A'] = 'xi';
-  t['\u217B'] = 'xii';
-  t['\u217C'] = 'l';
-  t['\u217D'] = 'c';
-  t['\u217E'] = 'd';
-  t['\u217F'] = 'm';
-  t['\u222C'] = '\u222B\u222B';
-  t['\u222D'] = '\u222B\u222B\u222B';
-  t['\u222F'] = '\u222E\u222E';
-  t['\u2230'] = '\u222E\u222E\u222E';
-  t['\u2474'] = '(1)';
-  t['\u2475'] = '(2)';
-  t['\u2476'] = '(3)';
-  t['\u2477'] = '(4)';
-  t['\u2478'] = '(5)';
-  t['\u2479'] = '(6)';
-  t['\u247A'] = '(7)';
-  t['\u247B'] = '(8)';
-  t['\u247C'] = '(9)';
-  t['\u247D'] = '(10)';
-  t['\u247E'] = '(11)';
-  t['\u247F'] = '(12)';
-  t['\u2480'] = '(13)';
-  t['\u2481'] = '(14)';
-  t['\u2482'] = '(15)';
-  t['\u2483'] = '(16)';
-  t['\u2484'] = '(17)';
-  t['\u2485'] = '(18)';
-  t['\u2486'] = '(19)';
-  t['\u2487'] = '(20)';
-  t['\u2488'] = '1.';
-  t['\u2489'] = '2.';
-  t['\u248A'] = '3.';
-  t['\u248B'] = '4.';
-  t['\u248C'] = '5.';
-  t['\u248D'] = '6.';
-  t['\u248E'] = '7.';
-  t['\u248F'] = '8.';
-  t['\u2490'] = '9.';
-  t['\u2491'] = '10.';
-  t['\u2492'] = '11.';
-  t['\u2493'] = '12.';
-  t['\u2494'] = '13.';
-  t['\u2495'] = '14.';
-  t['\u2496'] = '15.';
-  t['\u2497'] = '16.';
-  t['\u2498'] = '17.';
-  t['\u2499'] = '18.';
-  t['\u249A'] = '19.';
-  t['\u249B'] = '20.';
-  t['\u249C'] = '(a)';
-  t['\u249D'] = '(b)';
-  t['\u249E'] = '(c)';
-  t['\u249F'] = '(d)';
-  t['\u24A0'] = '(e)';
-  t['\u24A1'] = '(f)';
-  t['\u24A2'] = '(g)';
-  t['\u24A3'] = '(h)';
-  t['\u24A4'] = '(i)';
-  t['\u24A5'] = '(j)';
-  t['\u24A6'] = '(k)';
-  t['\u24A7'] = '(l)';
-  t['\u24A8'] = '(m)';
-  t['\u24A9'] = '(n)';
-  t['\u24AA'] = '(o)';
-  t['\u24AB'] = '(p)';
-  t['\u24AC'] = '(q)';
-  t['\u24AD'] = '(r)';
-  t['\u24AE'] = '(s)';
-  t['\u24AF'] = '(t)';
-  t['\u24B0'] = '(u)';
-  t['\u24B1'] = '(v)';
-  t['\u24B2'] = '(w)';
-  t['\u24B3'] = '(x)';
-  t['\u24B4'] = '(y)';
-  t['\u24B5'] = '(z)';
-  t['\u2A0C'] = '\u222B\u222B\u222B\u222B';
-  t['\u2A74'] = '::=';
-  t['\u2A75'] = '==';
-  t['\u2A76'] = '===';
-  t['\u2E9F'] = '\u6BCD';
-  t['\u2EF3'] = '\u9F9F';
-  t['\u2F00'] = '\u4E00';
-  t['\u2F01'] = '\u4E28';
-  t['\u2F02'] = '\u4E36';
-  t['\u2F03'] = '\u4E3F';
-  t['\u2F04'] = '\u4E59';
-  t['\u2F05'] = '\u4E85';
-  t['\u2F06'] = '\u4E8C';
-  t['\u2F07'] = '\u4EA0';
-  t['\u2F08'] = '\u4EBA';
-  t['\u2F09'] = '\u513F';
-  t['\u2F0A'] = '\u5165';
-  t['\u2F0B'] = '\u516B';
-  t['\u2F0C'] = '\u5182';
-  t['\u2F0D'] = '\u5196';
-  t['\u2F0E'] = '\u51AB';
-  t['\u2F0F'] = '\u51E0';
-  t['\u2F10'] = '\u51F5';
-  t['\u2F11'] = '\u5200';
-  t['\u2F12'] = '\u529B';
-  t['\u2F13'] = '\u52F9';
-  t['\u2F14'] = '\u5315';
-  t['\u2F15'] = '\u531A';
-  t['\u2F16'] = '\u5338';
-  t['\u2F17'] = '\u5341';
-  t['\u2F18'] = '\u535C';
-  t['\u2F19'] = '\u5369';
-  t['\u2F1A'] = '\u5382';
-  t['\u2F1B'] = '\u53B6';
-  t['\u2F1C'] = '\u53C8';
-  t['\u2F1D'] = '\u53E3';
-  t['\u2F1E'] = '\u56D7';
-  t['\u2F1F'] = '\u571F';
-  t['\u2F20'] = '\u58EB';
-  t['\u2F21'] = '\u5902';
-  t['\u2F22'] = '\u590A';
-  t['\u2F23'] = '\u5915';
-  t['\u2F24'] = '\u5927';
-  t['\u2F25'] = '\u5973';
-  t['\u2F26'] = '\u5B50';
-  t['\u2F27'] = '\u5B80';
-  t['\u2F28'] = '\u5BF8';
-  t['\u2F29'] = '\u5C0F';
-  t['\u2F2A'] = '\u5C22';
-  t['\u2F2B'] = '\u5C38';
-  t['\u2F2C'] = '\u5C6E';
-  t['\u2F2D'] = '\u5C71';
-  t['\u2F2E'] = '\u5DDB';
-  t['\u2F2F'] = '\u5DE5';
-  t['\u2F30'] = '\u5DF1';
-  t['\u2F31'] = '\u5DFE';
-  t['\u2F32'] = '\u5E72';
-  t['\u2F33'] = '\u5E7A';
-  t['\u2F34'] = '\u5E7F';
-  t['\u2F35'] = '\u5EF4';
-  t['\u2F36'] = '\u5EFE';
-  t['\u2F37'] = '\u5F0B';
-  t['\u2F38'] = '\u5F13';
-  t['\u2F39'] = '\u5F50';
-  t['\u2F3A'] = '\u5F61';
-  t['\u2F3B'] = '\u5F73';
-  t['\u2F3C'] = '\u5FC3';
-  t['\u2F3D'] = '\u6208';
-  t['\u2F3E'] = '\u6236';
-  t['\u2F3F'] = '\u624B';
-  t['\u2F40'] = '\u652F';
-  t['\u2F41'] = '\u6534';
-  t['\u2F42'] = '\u6587';
-  t['\u2F43'] = '\u6597';
-  t['\u2F44'] = '\u65A4';
-  t['\u2F45'] = '\u65B9';
-  t['\u2F46'] = '\u65E0';
-  t['\u2F47'] = '\u65E5';
-  t['\u2F48'] = '\u66F0';
-  t['\u2F49'] = '\u6708';
-  t['\u2F4A'] = '\u6728';
-  t['\u2F4B'] = '\u6B20';
-  t['\u2F4C'] = '\u6B62';
-  t['\u2F4D'] = '\u6B79';
-  t['\u2F4E'] = '\u6BB3';
-  t['\u2F4F'] = '\u6BCB';
-  t['\u2F50'] = '\u6BD4';
-  t['\u2F51'] = '\u6BDB';
-  t['\u2F52'] = '\u6C0F';
-  t['\u2F53'] = '\u6C14';
-  t['\u2F54'] = '\u6C34';
-  t['\u2F55'] = '\u706B';
-  t['\u2F56'] = '\u722A';
-  t['\u2F57'] = '\u7236';
-  t['\u2F58'] = '\u723B';
-  t['\u2F59'] = '\u723F';
-  t['\u2F5A'] = '\u7247';
-  t['\u2F5B'] = '\u7259';
-  t['\u2F5C'] = '\u725B';
-  t['\u2F5D'] = '\u72AC';
-  t['\u2F5E'] = '\u7384';
-  t['\u2F5F'] = '\u7389';
-  t['\u2F60'] = '\u74DC';
-  t['\u2F61'] = '\u74E6';
-  t['\u2F62'] = '\u7518';
-  t['\u2F63'] = '\u751F';
-  t['\u2F64'] = '\u7528';
-  t['\u2F65'] = '\u7530';
-  t['\u2F66'] = '\u758B';
-  t['\u2F67'] = '\u7592';
-  t['\u2F68'] = '\u7676';
-  t['\u2F69'] = '\u767D';
-  t['\u2F6A'] = '\u76AE';
-  t['\u2F6B'] = '\u76BF';
-  t['\u2F6C'] = '\u76EE';
-  t['\u2F6D'] = '\u77DB';
-  t['\u2F6E'] = '\u77E2';
-  t['\u2F6F'] = '\u77F3';
-  t['\u2F70'] = '\u793A';
-  t['\u2F71'] = '\u79B8';
-  t['\u2F72'] = '\u79BE';
-  t['\u2F73'] = '\u7A74';
-  t['\u2F74'] = '\u7ACB';
-  t['\u2F75'] = '\u7AF9';
-  t['\u2F76'] = '\u7C73';
-  t['\u2F77'] = '\u7CF8';
-  t['\u2F78'] = '\u7F36';
-  t['\u2F79'] = '\u7F51';
-  t['\u2F7A'] = '\u7F8A';
-  t['\u2F7B'] = '\u7FBD';
-  t['\u2F7C'] = '\u8001';
-  t['\u2F7D'] = '\u800C';
-  t['\u2F7E'] = '\u8012';
-  t['\u2F7F'] = '\u8033';
-  t['\u2F80'] = '\u807F';
-  t['\u2F81'] = '\u8089';
-  t['\u2F82'] = '\u81E3';
-  t['\u2F83'] = '\u81EA';
-  t['\u2F84'] = '\u81F3';
-  t['\u2F85'] = '\u81FC';
-  t['\u2F86'] = '\u820C';
-  t['\u2F87'] = '\u821B';
-  t['\u2F88'] = '\u821F';
-  t['\u2F89'] = '\u826E';
-  t['\u2F8A'] = '\u8272';
-  t['\u2F8B'] = '\u8278';
-  t['\u2F8C'] = '\u864D';
-  t['\u2F8D'] = '\u866B';
-  t['\u2F8E'] = '\u8840';
-  t['\u2F8F'] = '\u884C';
-  t['\u2F90'] = '\u8863';
-  t['\u2F91'] = '\u897E';
-  t['\u2F92'] = '\u898B';
-  t['\u2F93'] = '\u89D2';
-  t['\u2F94'] = '\u8A00';
-  t['\u2F95'] = '\u8C37';
-  t['\u2F96'] = '\u8C46';
-  t['\u2F97'] = '\u8C55';
-  t['\u2F98'] = '\u8C78';
-  t['\u2F99'] = '\u8C9D';
-  t['\u2F9A'] = '\u8D64';
-  t['\u2F9B'] = '\u8D70';
-  t['\u2F9C'] = '\u8DB3';
-  t['\u2F9D'] = '\u8EAB';
-  t['\u2F9E'] = '\u8ECA';
-  t['\u2F9F'] = '\u8F9B';
-  t['\u2FA0'] = '\u8FB0';
-  t['\u2FA1'] = '\u8FB5';
-  t['\u2FA2'] = '\u9091';
-  t['\u2FA3'] = '\u9149';
-  t['\u2FA4'] = '\u91C6';
-  t['\u2FA5'] = '\u91CC';
-  t['\u2FA6'] = '\u91D1';
-  t['\u2FA7'] = '\u9577';
-  t['\u2FA8'] = '\u9580';
-  t['\u2FA9'] = '\u961C';
-  t['\u2FAA'] = '\u96B6';
-  t['\u2FAB'] = '\u96B9';
-  t['\u2FAC'] = '\u96E8';
-  t['\u2FAD'] = '\u9751';
-  t['\u2FAE'] = '\u975E';
-  t['\u2FAF'] = '\u9762';
-  t['\u2FB0'] = '\u9769';
-  t['\u2FB1'] = '\u97CB';
-  t['\u2FB2'] = '\u97ED';
-  t['\u2FB3'] = '\u97F3';
-  t['\u2FB4'] = '\u9801';
-  t['\u2FB5'] = '\u98A8';
-  t['\u2FB6'] = '\u98DB';
-  t['\u2FB7'] = '\u98DF';
-  t['\u2FB8'] = '\u9996';
-  t['\u2FB9'] = '\u9999';
-  t['\u2FBA'] = '\u99AC';
-  t['\u2FBB'] = '\u9AA8';
-  t['\u2FBC'] = '\u9AD8';
-  t['\u2FBD'] = '\u9ADF';
-  t['\u2FBE'] = '\u9B25';
-  t['\u2FBF'] = '\u9B2F';
-  t['\u2FC0'] = '\u9B32';
-  t['\u2FC1'] = '\u9B3C';
-  t['\u2FC2'] = '\u9B5A';
-  t['\u2FC3'] = '\u9CE5';
-  t['\u2FC4'] = '\u9E75';
-  t['\u2FC5'] = '\u9E7F';
-  t['\u2FC6'] = '\u9EA5';
-  t['\u2FC7'] = '\u9EBB';
-  t['\u2FC8'] = '\u9EC3';
-  t['\u2FC9'] = '\u9ECD';
-  t['\u2FCA'] = '\u9ED1';
-  t['\u2FCB'] = '\u9EF9';
-  t['\u2FCC'] = '\u9EFD';
-  t['\u2FCD'] = '\u9F0E';
-  t['\u2FCE'] = '\u9F13';
-  t['\u2FCF'] = '\u9F20';
-  t['\u2FD0'] = '\u9F3B';
-  t['\u2FD1'] = '\u9F4A';
-  t['\u2FD2'] = '\u9F52';
-  t['\u2FD3'] = '\u9F8D';
-  t['\u2FD4'] = '\u9F9C';
-  t['\u2FD5'] = '\u9FA0';
-  t['\u3036'] = '\u3012';
-  t['\u3038'] = '\u5341';
-  t['\u3039'] = '\u5344';
-  t['\u303A'] = '\u5345';
-  t['\u309B'] = ' \u3099';
-  t['\u309C'] = ' \u309A';
-  t['\u3131'] = '\u1100';
-  t['\u3132'] = '\u1101';
-  t['\u3133'] = '\u11AA';
-  t['\u3134'] = '\u1102';
-  t['\u3135'] = '\u11AC';
-  t['\u3136'] = '\u11AD';
-  t['\u3137'] = '\u1103';
-  t['\u3138'] = '\u1104';
-  t['\u3139'] = '\u1105';
-  t['\u313A'] = '\u11B0';
-  t['\u313B'] = '\u11B1';
-  t['\u313C'] = '\u11B2';
-  t['\u313D'] = '\u11B3';
-  t['\u313E'] = '\u11B4';
-  t['\u313F'] = '\u11B5';
-  t['\u3140'] = '\u111A';
-  t['\u3141'] = '\u1106';
-  t['\u3142'] = '\u1107';
-  t['\u3143'] = '\u1108';
-  t['\u3144'] = '\u1121';
-  t['\u3145'] = '\u1109';
-  t['\u3146'] = '\u110A';
-  t['\u3147'] = '\u110B';
-  t['\u3148'] = '\u110C';
-  t['\u3149'] = '\u110D';
-  t['\u314A'] = '\u110E';
-  t['\u314B'] = '\u110F';
-  t['\u314C'] = '\u1110';
-  t['\u314D'] = '\u1111';
-  t['\u314E'] = '\u1112';
-  t['\u314F'] = '\u1161';
-  t['\u3150'] = '\u1162';
-  t['\u3151'] = '\u1163';
-  t['\u3152'] = '\u1164';
-  t['\u3153'] = '\u1165';
-  t['\u3154'] = '\u1166';
-  t['\u3155'] = '\u1167';
-  t['\u3156'] = '\u1168';
-  t['\u3157'] = '\u1169';
-  t['\u3158'] = '\u116A';
-  t['\u3159'] = '\u116B';
-  t['\u315A'] = '\u116C';
-  t['\u315B'] = '\u116D';
-  t['\u315C'] = '\u116E';
-  t['\u315D'] = '\u116F';
-  t['\u315E'] = '\u1170';
-  t['\u315F'] = '\u1171';
-  t['\u3160'] = '\u1172';
-  t['\u3161'] = '\u1173';
-  t['\u3162'] = '\u1174';
-  t['\u3163'] = '\u1175';
-  t['\u3164'] = '\u1160';
-  t['\u3165'] = '\u1114';
-  t['\u3166'] = '\u1115';
-  t['\u3167'] = '\u11C7';
-  t['\u3168'] = '\u11C8';
-  t['\u3169'] = '\u11CC';
-  t['\u316A'] = '\u11CE';
-  t['\u316B'] = '\u11D3';
-  t['\u316C'] = '\u11D7';
-  t['\u316D'] = '\u11D9';
-  t['\u316E'] = '\u111C';
-  t['\u316F'] = '\u11DD';
-  t['\u3170'] = '\u11DF';
-  t['\u3171'] = '\u111D';
-  t['\u3172'] = '\u111E';
-  t['\u3173'] = '\u1120';
-  t['\u3174'] = '\u1122';
-  t['\u3175'] = '\u1123';
-  t['\u3176'] = '\u1127';
-  t['\u3177'] = '\u1129';
-  t['\u3178'] = '\u112B';
-  t['\u3179'] = '\u112C';
-  t['\u317A'] = '\u112D';
-  t['\u317B'] = '\u112E';
-  t['\u317C'] = '\u112F';
-  t['\u317D'] = '\u1132';
-  t['\u317E'] = '\u1136';
-  t['\u317F'] = '\u1140';
-  t['\u3180'] = '\u1147';
-  t['\u3181'] = '\u114C';
-  t['\u3182'] = '\u11F1';
-  t['\u3183'] = '\u11F2';
-  t['\u3184'] = '\u1157';
-  t['\u3185'] = '\u1158';
-  t['\u3186'] = '\u1159';
-  t['\u3187'] = '\u1184';
-  t['\u3188'] = '\u1185';
-  t['\u3189'] = '\u1188';
-  t['\u318A'] = '\u1191';
-  t['\u318B'] = '\u1192';
-  t['\u318C'] = '\u1194';
-  t['\u318D'] = '\u119E';
-  t['\u318E'] = '\u11A1';
-  t['\u3200'] = '(\u1100)';
-  t['\u3201'] = '(\u1102)';
-  t['\u3202'] = '(\u1103)';
-  t['\u3203'] = '(\u1105)';
-  t['\u3204'] = '(\u1106)';
-  t['\u3205'] = '(\u1107)';
-  t['\u3206'] = '(\u1109)';
-  t['\u3207'] = '(\u110B)';
-  t['\u3208'] = '(\u110C)';
-  t['\u3209'] = '(\u110E)';
-  t['\u320A'] = '(\u110F)';
-  t['\u320B'] = '(\u1110)';
-  t['\u320C'] = '(\u1111)';
-  t['\u320D'] = '(\u1112)';
-  t['\u320E'] = '(\u1100\u1161)';
-  t['\u320F'] = '(\u1102\u1161)';
-  t['\u3210'] = '(\u1103\u1161)';
-  t['\u3211'] = '(\u1105\u1161)';
-  t['\u3212'] = '(\u1106\u1161)';
-  t['\u3213'] = '(\u1107\u1161)';
-  t['\u3214'] = '(\u1109\u1161)';
-  t['\u3215'] = '(\u110B\u1161)';
-  t['\u3216'] = '(\u110C\u1161)';
-  t['\u3217'] = '(\u110E\u1161)';
-  t['\u3218'] = '(\u110F\u1161)';
-  t['\u3219'] = '(\u1110\u1161)';
-  t['\u321A'] = '(\u1111\u1161)';
-  t['\u321B'] = '(\u1112\u1161)';
-  t['\u321C'] = '(\u110C\u116E)';
-  t['\u321D'] = '(\u110B\u1169\u110C\u1165\u11AB)';
-  t['\u321E'] = '(\u110B\u1169\u1112\u116E)';
-  t['\u3220'] = '(\u4E00)';
-  t['\u3221'] = '(\u4E8C)';
-  t['\u3222'] = '(\u4E09)';
-  t['\u3223'] = '(\u56DB)';
-  t['\u3224'] = '(\u4E94)';
-  t['\u3225'] = '(\u516D)';
-  t['\u3226'] = '(\u4E03)';
-  t['\u3227'] = '(\u516B)';
-  t['\u3228'] = '(\u4E5D)';
-  t['\u3229'] = '(\u5341)';
-  t['\u322A'] = '(\u6708)';
-  t['\u322B'] = '(\u706B)';
-  t['\u322C'] = '(\u6C34)';
-  t['\u322D'] = '(\u6728)';
-  t['\u322E'] = '(\u91D1)';
-  t['\u322F'] = '(\u571F)';
-  t['\u3230'] = '(\u65E5)';
-  t['\u3231'] = '(\u682A)';
-  t['\u3232'] = '(\u6709)';
-  t['\u3233'] = '(\u793E)';
-  t['\u3234'] = '(\u540D)';
-  t['\u3235'] = '(\u7279)';
-  t['\u3236'] = '(\u8CA1)';
-  t['\u3237'] = '(\u795D)';
-  t['\u3238'] = '(\u52B4)';
-  t['\u3239'] = '(\u4EE3)';
-  t['\u323A'] = '(\u547C)';
-  t['\u323B'] = '(\u5B66)';
-  t['\u323C'] = '(\u76E3)';
-  t['\u323D'] = '(\u4F01)';
-  t['\u323E'] = '(\u8CC7)';
-  t['\u323F'] = '(\u5354)';
-  t['\u3240'] = '(\u796D)';
-  t['\u3241'] = '(\u4F11)';
-  t['\u3242'] = '(\u81EA)';
-  t['\u3243'] = '(\u81F3)';
-  t['\u32C0'] = '1\u6708';
-  t['\u32C1'] = '2\u6708';
-  t['\u32C2'] = '3\u6708';
-  t['\u32C3'] = '4\u6708';
-  t['\u32C4'] = '5\u6708';
-  t['\u32C5'] = '6\u6708';
-  t['\u32C6'] = '7\u6708';
-  t['\u32C7'] = '8\u6708';
-  t['\u32C8'] = '9\u6708';
-  t['\u32C9'] = '10\u6708';
-  t['\u32CA'] = '11\u6708';
-  t['\u32CB'] = '12\u6708';
-  t['\u3358'] = '0\u70B9';
-  t['\u3359'] = '1\u70B9';
-  t['\u335A'] = '2\u70B9';
-  t['\u335B'] = '3\u70B9';
-  t['\u335C'] = '4\u70B9';
-  t['\u335D'] = '5\u70B9';
-  t['\u335E'] = '6\u70B9';
-  t['\u335F'] = '7\u70B9';
-  t['\u3360'] = '8\u70B9';
-  t['\u3361'] = '9\u70B9';
-  t['\u3362'] = '10\u70B9';
-  t['\u3363'] = '11\u70B9';
-  t['\u3364'] = '12\u70B9';
-  t['\u3365'] = '13\u70B9';
-  t['\u3366'] = '14\u70B9';
-  t['\u3367'] = '15\u70B9';
-  t['\u3368'] = '16\u70B9';
-  t['\u3369'] = '17\u70B9';
-  t['\u336A'] = '18\u70B9';
-  t['\u336B'] = '19\u70B9';
-  t['\u336C'] = '20\u70B9';
-  t['\u336D'] = '21\u70B9';
-  t['\u336E'] = '22\u70B9';
-  t['\u336F'] = '23\u70B9';
-  t['\u3370'] = '24\u70B9';
-  t['\u33E0'] = '1\u65E5';
-  t['\u33E1'] = '2\u65E5';
-  t['\u33E2'] = '3\u65E5';
-  t['\u33E3'] = '4\u65E5';
-  t['\u33E4'] = '5\u65E5';
-  t['\u33E5'] = '6\u65E5';
-  t['\u33E6'] = '7\u65E5';
-  t['\u33E7'] = '8\u65E5';
-  t['\u33E8'] = '9\u65E5';
-  t['\u33E9'] = '10\u65E5';
-  t['\u33EA'] = '11\u65E5';
-  t['\u33EB'] = '12\u65E5';
-  t['\u33EC'] = '13\u65E5';
-  t['\u33ED'] = '14\u65E5';
-  t['\u33EE'] = '15\u65E5';
-  t['\u33EF'] = '16\u65E5';
-  t['\u33F0'] = '17\u65E5';
-  t['\u33F1'] = '18\u65E5';
-  t['\u33F2'] = '19\u65E5';
-  t['\u33F3'] = '20\u65E5';
-  t['\u33F4'] = '21\u65E5';
-  t['\u33F5'] = '22\u65E5';
-  t['\u33F6'] = '23\u65E5';
-  t['\u33F7'] = '24\u65E5';
-  t['\u33F8'] = '25\u65E5';
-  t['\u33F9'] = '26\u65E5';
-  t['\u33FA'] = '27\u65E5';
-  t['\u33FB'] = '28\u65E5';
-  t['\u33FC'] = '29\u65E5';
-  t['\u33FD'] = '30\u65E5';
-  t['\u33FE'] = '31\u65E5';
-  t['\uFB00'] = 'ff';
-  t['\uFB01'] = 'fi';
-  t['\uFB02'] = 'fl';
-  t['\uFB03'] = 'ffi';
-  t['\uFB04'] = 'ffl';
-  t['\uFB05'] = '\u017Ft';
-  t['\uFB06'] = 'st';
-  t['\uFB13'] = '\u0574\u0576';
-  t['\uFB14'] = '\u0574\u0565';
-  t['\uFB15'] = '\u0574\u056B';
-  t['\uFB16'] = '\u057E\u0576';
-  t['\uFB17'] = '\u0574\u056D';
-  t['\uFB4F'] = '\u05D0\u05DC';
-  t['\uFB50'] = '\u0671';
-  t['\uFB51'] = '\u0671';
-  t['\uFB52'] = '\u067B';
-  t['\uFB53'] = '\u067B';
-  t['\uFB54'] = '\u067B';
-  t['\uFB55'] = '\u067B';
-  t['\uFB56'] = '\u067E';
-  t['\uFB57'] = '\u067E';
-  t['\uFB58'] = '\u067E';
-  t['\uFB59'] = '\u067E';
-  t['\uFB5A'] = '\u0680';
-  t['\uFB5B'] = '\u0680';
-  t['\uFB5C'] = '\u0680';
-  t['\uFB5D'] = '\u0680';
-  t['\uFB5E'] = '\u067A';
-  t['\uFB5F'] = '\u067A';
-  t['\uFB60'] = '\u067A';
-  t['\uFB61'] = '\u067A';
-  t['\uFB62'] = '\u067F';
-  t['\uFB63'] = '\u067F';
-  t['\uFB64'] = '\u067F';
-  t['\uFB65'] = '\u067F';
-  t['\uFB66'] = '\u0679';
-  t['\uFB67'] = '\u0679';
-  t['\uFB68'] = '\u0679';
-  t['\uFB69'] = '\u0679';
-  t['\uFB6A'] = '\u06A4';
-  t['\uFB6B'] = '\u06A4';
-  t['\uFB6C'] = '\u06A4';
-  t['\uFB6D'] = '\u06A4';
-  t['\uFB6E'] = '\u06A6';
-  t['\uFB6F'] = '\u06A6';
-  t['\uFB70'] = '\u06A6';
-  t['\uFB71'] = '\u06A6';
-  t['\uFB72'] = '\u0684';
-  t['\uFB73'] = '\u0684';
-  t['\uFB74'] = '\u0684';
-  t['\uFB75'] = '\u0684';
-  t['\uFB76'] = '\u0683';
-  t['\uFB77'] = '\u0683';
-  t['\uFB78'] = '\u0683';
-  t['\uFB79'] = '\u0683';
-  t['\uFB7A'] = '\u0686';
-  t['\uFB7B'] = '\u0686';
-  t['\uFB7C'] = '\u0686';
-  t['\uFB7D'] = '\u0686';
-  t['\uFB7E'] = '\u0687';
-  t['\uFB7F'] = '\u0687';
-  t['\uFB80'] = '\u0687';
-  t['\uFB81'] = '\u0687';
-  t['\uFB82'] = '\u068D';
-  t['\uFB83'] = '\u068D';
-  t['\uFB84'] = '\u068C';
-  t['\uFB85'] = '\u068C';
-  t['\uFB86'] = '\u068E';
-  t['\uFB87'] = '\u068E';
-  t['\uFB88'] = '\u0688';
-  t['\uFB89'] = '\u0688';
-  t['\uFB8A'] = '\u0698';
-  t['\uFB8B'] = '\u0698';
-  t['\uFB8C'] = '\u0691';
-  t['\uFB8D'] = '\u0691';
-  t['\uFB8E'] = '\u06A9';
-  t['\uFB8F'] = '\u06A9';
-  t['\uFB90'] = '\u06A9';
-  t['\uFB91'] = '\u06A9';
-  t['\uFB92'] = '\u06AF';
-  t['\uFB93'] = '\u06AF';
-  t['\uFB94'] = '\u06AF';
-  t['\uFB95'] = '\u06AF';
-  t['\uFB96'] = '\u06B3';
-  t['\uFB97'] = '\u06B3';
-  t['\uFB98'] = '\u06B3';
-  t['\uFB99'] = '\u06B3';
-  t['\uFB9A'] = '\u06B1';
-  t['\uFB9B'] = '\u06B1';
-  t['\uFB9C'] = '\u06B1';
-  t['\uFB9D'] = '\u06B1';
-  t['\uFB9E'] = '\u06BA';
-  t['\uFB9F'] = '\u06BA';
-  t['\uFBA0'] = '\u06BB';
-  t['\uFBA1'] = '\u06BB';
-  t['\uFBA2'] = '\u06BB';
-  t['\uFBA3'] = '\u06BB';
-  t['\uFBA4'] = '\u06C0';
-  t['\uFBA5'] = '\u06C0';
-  t['\uFBA6'] = '\u06C1';
-  t['\uFBA7'] = '\u06C1';
-  t['\uFBA8'] = '\u06C1';
-  t['\uFBA9'] = '\u06C1';
-  t['\uFBAA'] = '\u06BE';
-  t['\uFBAB'] = '\u06BE';
-  t['\uFBAC'] = '\u06BE';
-  t['\uFBAD'] = '\u06BE';
-  t['\uFBAE'] = '\u06D2';
-  t['\uFBAF'] = '\u06D2';
-  t['\uFBB0'] = '\u06D3';
-  t['\uFBB1'] = '\u06D3';
-  t['\uFBD3'] = '\u06AD';
-  t['\uFBD4'] = '\u06AD';
-  t['\uFBD5'] = '\u06AD';
-  t['\uFBD6'] = '\u06AD';
-  t['\uFBD7'] = '\u06C7';
-  t['\uFBD8'] = '\u06C7';
-  t['\uFBD9'] = '\u06C6';
-  t['\uFBDA'] = '\u06C6';
-  t['\uFBDB'] = '\u06C8';
-  t['\uFBDC'] = '\u06C8';
-  t['\uFBDD'] = '\u0677';
-  t['\uFBDE'] = '\u06CB';
-  t['\uFBDF'] = '\u06CB';
-  t['\uFBE0'] = '\u06C5';
-  t['\uFBE1'] = '\u06C5';
-  t['\uFBE2'] = '\u06C9';
-  t['\uFBE3'] = '\u06C9';
-  t['\uFBE4'] = '\u06D0';
-  t['\uFBE5'] = '\u06D0';
-  t['\uFBE6'] = '\u06D0';
-  t['\uFBE7'] = '\u06D0';
-  t['\uFBE8'] = '\u0649';
-  t['\uFBE9'] = '\u0649';
-  t['\uFBEA'] = '\u0626\u0627';
-  t['\uFBEB'] = '\u0626\u0627';
-  t['\uFBEC'] = '\u0626\u06D5';
-  t['\uFBED'] = '\u0626\u06D5';
-  t['\uFBEE'] = '\u0626\u0648';
-  t['\uFBEF'] = '\u0626\u0648';
-  t['\uFBF0'] = '\u0626\u06C7';
-  t['\uFBF1'] = '\u0626\u06C7';
-  t['\uFBF2'] = '\u0626\u06C6';
-  t['\uFBF3'] = '\u0626\u06C6';
-  t['\uFBF4'] = '\u0626\u06C8';
-  t['\uFBF5'] = '\u0626\u06C8';
-  t['\uFBF6'] = '\u0626\u06D0';
-  t['\uFBF7'] = '\u0626\u06D0';
-  t['\uFBF8'] = '\u0626\u06D0';
-  t['\uFBF9'] = '\u0626\u0649';
-  t['\uFBFA'] = '\u0626\u0649';
-  t['\uFBFB'] = '\u0626\u0649';
-  t['\uFBFC'] = '\u06CC';
-  t['\uFBFD'] = '\u06CC';
-  t['\uFBFE'] = '\u06CC';
-  t['\uFBFF'] = '\u06CC';
-  t['\uFC00'] = '\u0626\u062C';
-  t['\uFC01'] = '\u0626\u062D';
-  t['\uFC02'] = '\u0626\u0645';
-  t['\uFC03'] = '\u0626\u0649';
-  t['\uFC04'] = '\u0626\u064A';
-  t['\uFC05'] = '\u0628\u062C';
-  t['\uFC06'] = '\u0628\u062D';
-  t['\uFC07'] = '\u0628\u062E';
-  t['\uFC08'] = '\u0628\u0645';
-  t['\uFC09'] = '\u0628\u0649';
-  t['\uFC0A'] = '\u0628\u064A';
-  t['\uFC0B'] = '\u062A\u062C';
-  t['\uFC0C'] = '\u062A\u062D';
-  t['\uFC0D'] = '\u062A\u062E';
-  t['\uFC0E'] = '\u062A\u0645';
-  t['\uFC0F'] = '\u062A\u0649';
-  t['\uFC10'] = '\u062A\u064A';
-  t['\uFC11'] = '\u062B\u062C';
-  t['\uFC12'] = '\u062B\u0645';
-  t['\uFC13'] = '\u062B\u0649';
-  t['\uFC14'] = '\u062B\u064A';
-  t['\uFC15'] = '\u062C\u062D';
-  t['\uFC16'] = '\u062C\u0645';
-  t['\uFC17'] = '\u062D\u062C';
-  t['\uFC18'] = '\u062D\u0645';
-  t['\uFC19'] = '\u062E\u062C';
-  t['\uFC1A'] = '\u062E\u062D';
-  t['\uFC1B'] = '\u062E\u0645';
-  t['\uFC1C'] = '\u0633\u062C';
-  t['\uFC1D'] = '\u0633\u062D';
-  t['\uFC1E'] = '\u0633\u062E';
-  t['\uFC1F'] = '\u0633\u0645';
-  t['\uFC20'] = '\u0635\u062D';
-  t['\uFC21'] = '\u0635\u0645';
-  t['\uFC22'] = '\u0636\u062C';
-  t['\uFC23'] = '\u0636\u062D';
-  t['\uFC24'] = '\u0636\u062E';
-  t['\uFC25'] = '\u0636\u0645';
-  t['\uFC26'] = '\u0637\u062D';
-  t['\uFC27'] = '\u0637\u0645';
-  t['\uFC28'] = '\u0638\u0645';
-  t['\uFC29'] = '\u0639\u062C';
-  t['\uFC2A'] = '\u0639\u0645';
-  t['\uFC2B'] = '\u063A\u062C';
-  t['\uFC2C'] = '\u063A\u0645';
-  t['\uFC2D'] = '\u0641\u062C';
-  t['\uFC2E'] = '\u0641\u062D';
-  t['\uFC2F'] = '\u0641\u062E';
-  t['\uFC30'] = '\u0641\u0645';
-  t['\uFC31'] = '\u0641\u0649';
-  t['\uFC32'] = '\u0641\u064A';
-  t['\uFC33'] = '\u0642\u062D';
-  t['\uFC34'] = '\u0642\u0645';
-  t['\uFC35'] = '\u0642\u0649';
-  t['\uFC36'] = '\u0642\u064A';
-  t['\uFC37'] = '\u0643\u0627';
-  t['\uFC38'] = '\u0643\u062C';
-  t['\uFC39'] = '\u0643\u062D';
-  t['\uFC3A'] = '\u0643\u062E';
-  t['\uFC3B'] = '\u0643\u0644';
-  t['\uFC3C'] = '\u0643\u0645';
-  t['\uFC3D'] = '\u0643\u0649';
-  t['\uFC3E'] = '\u0643\u064A';
-  t['\uFC3F'] = '\u0644\u062C';
-  t['\uFC40'] = '\u0644\u062D';
-  t['\uFC41'] = '\u0644\u062E';
-  t['\uFC42'] = '\u0644\u0645';
-  t['\uFC43'] = '\u0644\u0649';
-  t['\uFC44'] = '\u0644\u064A';
-  t['\uFC45'] = '\u0645\u062C';
-  t['\uFC46'] = '\u0645\u062D';
-  t['\uFC47'] = '\u0645\u062E';
-  t['\uFC48'] = '\u0645\u0645';
-  t['\uFC49'] = '\u0645\u0649';
-  t['\uFC4A'] = '\u0645\u064A';
-  t['\uFC4B'] = '\u0646\u062C';
-  t['\uFC4C'] = '\u0646\u062D';
-  t['\uFC4D'] = '\u0646\u062E';
-  t['\uFC4E'] = '\u0646\u0645';
-  t['\uFC4F'] = '\u0646\u0649';
-  t['\uFC50'] = '\u0646\u064A';
-  t['\uFC51'] = '\u0647\u062C';
-  t['\uFC52'] = '\u0647\u0645';
-  t['\uFC53'] = '\u0647\u0649';
-  t['\uFC54'] = '\u0647\u064A';
-  t['\uFC55'] = '\u064A\u062C';
-  t['\uFC56'] = '\u064A\u062D';
-  t['\uFC57'] = '\u064A\u062E';
-  t['\uFC58'] = '\u064A\u0645';
-  t['\uFC59'] = '\u064A\u0649';
-  t['\uFC5A'] = '\u064A\u064A';
-  t['\uFC5B'] = '\u0630\u0670';
-  t['\uFC5C'] = '\u0631\u0670';
-  t['\uFC5D'] = '\u0649\u0670';
-  t['\uFC5E'] = ' \u064C\u0651';
-  t['\uFC5F'] = ' \u064D\u0651';
-  t['\uFC60'] = ' \u064E\u0651';
-  t['\uFC61'] = ' \u064F\u0651';
-  t['\uFC62'] = ' \u0650\u0651';
-  t['\uFC63'] = ' \u0651\u0670';
-  t['\uFC64'] = '\u0626\u0631';
-  t['\uFC65'] = '\u0626\u0632';
-  t['\uFC66'] = '\u0626\u0645';
-  t['\uFC67'] = '\u0626\u0646';
-  t['\uFC68'] = '\u0626\u0649';
-  t['\uFC69'] = '\u0626\u064A';
-  t['\uFC6A'] = '\u0628\u0631';
-  t['\uFC6B'] = '\u0628\u0632';
-  t['\uFC6C'] = '\u0628\u0645';
-  t['\uFC6D'] = '\u0628\u0646';
-  t['\uFC6E'] = '\u0628\u0649';
-  t['\uFC6F'] = '\u0628\u064A';
-  t['\uFC70'] = '\u062A\u0631';
-  t['\uFC71'] = '\u062A\u0632';
-  t['\uFC72'] = '\u062A\u0645';
-  t['\uFC73'] = '\u062A\u0646';
-  t['\uFC74'] = '\u062A\u0649';
-  t['\uFC75'] = '\u062A\u064A';
-  t['\uFC76'] = '\u062B\u0631';
-  t['\uFC77'] = '\u062B\u0632';
-  t['\uFC78'] = '\u062B\u0645';
-  t['\uFC79'] = '\u062B\u0646';
-  t['\uFC7A'] = '\u062B\u0649';
-  t['\uFC7B'] = '\u062B\u064A';
-  t['\uFC7C'] = '\u0641\u0649';
-  t['\uFC7D'] = '\u0641\u064A';
-  t['\uFC7E'] = '\u0642\u0649';
-  t['\uFC7F'] = '\u0642\u064A';
-  t['\uFC80'] = '\u0643\u0627';
-  t['\uFC81'] = '\u0643\u0644';
-  t['\uFC82'] = '\u0643\u0645';
-  t['\uFC83'] = '\u0643\u0649';
-  t['\uFC84'] = '\u0643\u064A';
-  t['\uFC85'] = '\u0644\u0645';
-  t['\uFC86'] = '\u0644\u0649';
-  t['\uFC87'] = '\u0644\u064A';
-  t['\uFC88'] = '\u0645\u0627';
-  t['\uFC89'] = '\u0645\u0645';
-  t['\uFC8A'] = '\u0646\u0631';
-  t['\uFC8B'] = '\u0646\u0632';
-  t['\uFC8C'] = '\u0646\u0645';
-  t['\uFC8D'] = '\u0646\u0646';
-  t['\uFC8E'] = '\u0646\u0649';
-  t['\uFC8F'] = '\u0646\u064A';
-  t['\uFC90'] = '\u0649\u0670';
-  t['\uFC91'] = '\u064A\u0631';
-  t['\uFC92'] = '\u064A\u0632';
-  t['\uFC93'] = '\u064A\u0645';
-  t['\uFC94'] = '\u064A\u0646';
-  t['\uFC95'] = '\u064A\u0649';
-  t['\uFC96'] = '\u064A\u064A';
-  t['\uFC97'] = '\u0626\u062C';
-  t['\uFC98'] = '\u0626\u062D';
-  t['\uFC99'] = '\u0626\u062E';
-  t['\uFC9A'] = '\u0626\u0645';
-  t['\uFC9B'] = '\u0626\u0647';
-  t['\uFC9C'] = '\u0628\u062C';
-  t['\uFC9D'] = '\u0628\u062D';
-  t['\uFC9E'] = '\u0628\u062E';
-  t['\uFC9F'] = '\u0628\u0645';
-  t['\uFCA0'] = '\u0628\u0647';
-  t['\uFCA1'] = '\u062A\u062C';
-  t['\uFCA2'] = '\u062A\u062D';
-  t['\uFCA3'] = '\u062A\u062E';
-  t['\uFCA4'] = '\u062A\u0645';
-  t['\uFCA5'] = '\u062A\u0647';
-  t['\uFCA6'] = '\u062B\u0645';
-  t['\uFCA7'] = '\u062C\u062D';
-  t['\uFCA8'] = '\u062C\u0645';
-  t['\uFCA9'] = '\u062D\u062C';
-  t['\uFCAA'] = '\u062D\u0645';
-  t['\uFCAB'] = '\u062E\u062C';
-  t['\uFCAC'] = '\u062E\u0645';
-  t['\uFCAD'] = '\u0633\u062C';
-  t['\uFCAE'] = '\u0633\u062D';
-  t['\uFCAF'] = '\u0633\u062E';
-  t['\uFCB0'] = '\u0633\u0645';
-  t['\uFCB1'] = '\u0635\u062D';
-  t['\uFCB2'] = '\u0635\u062E';
-  t['\uFCB3'] = '\u0635\u0645';
-  t['\uFCB4'] = '\u0636\u062C';
-  t['\uFCB5'] = '\u0636\u062D';
-  t['\uFCB6'] = '\u0636\u062E';
-  t['\uFCB7'] = '\u0636\u0645';
-  t['\uFCB8'] = '\u0637\u062D';
-  t['\uFCB9'] = '\u0638\u0645';
-  t['\uFCBA'] = '\u0639\u062C';
-  t['\uFCBB'] = '\u0639\u0645';
-  t['\uFCBC'] = '\u063A\u062C';
-  t['\uFCBD'] = '\u063A\u0645';
-  t['\uFCBE'] = '\u0641\u062C';
-  t['\uFCBF'] = '\u0641\u062D';
-  t['\uFCC0'] = '\u0641\u062E';
-  t['\uFCC1'] = '\u0641\u0645';
-  t['\uFCC2'] = '\u0642\u062D';
-  t['\uFCC3'] = '\u0642\u0645';
-  t['\uFCC4'] = '\u0643\u062C';
-  t['\uFCC5'] = '\u0643\u062D';
-  t['\uFCC6'] = '\u0643\u062E';
-  t['\uFCC7'] = '\u0643\u0644';
-  t['\uFCC8'] = '\u0643\u0645';
-  t['\uFCC9'] = '\u0644\u062C';
-  t['\uFCCA'] = '\u0644\u062D';
-  t['\uFCCB'] = '\u0644\u062E';
-  t['\uFCCC'] = '\u0644\u0645';
-  t['\uFCCD'] = '\u0644\u0647';
-  t['\uFCCE'] = '\u0645\u062C';
-  t['\uFCCF'] = '\u0645\u062D';
-  t['\uFCD0'] = '\u0645\u062E';
-  t['\uFCD1'] = '\u0645\u0645';
-  t['\uFCD2'] = '\u0646\u062C';
-  t['\uFCD3'] = '\u0646\u062D';
-  t['\uFCD4'] = '\u0646\u062E';
-  t['\uFCD5'] = '\u0646\u0645';
-  t['\uFCD6'] = '\u0646\u0647';
-  t['\uFCD7'] = '\u0647\u062C';
-  t['\uFCD8'] = '\u0647\u0645';
-  t['\uFCD9'] = '\u0647\u0670';
-  t['\uFCDA'] = '\u064A\u062C';
-  t['\uFCDB'] = '\u064A\u062D';
-  t['\uFCDC'] = '\u064A\u062E';
-  t['\uFCDD'] = '\u064A\u0645';
-  t['\uFCDE'] = '\u064A\u0647';
-  t['\uFCDF'] = '\u0626\u0645';
-  t['\uFCE0'] = '\u0626\u0647';
-  t['\uFCE1'] = '\u0628\u0645';
-  t['\uFCE2'] = '\u0628\u0647';
-  t['\uFCE3'] = '\u062A\u0645';
-  t['\uFCE4'] = '\u062A\u0647';
-  t['\uFCE5'] = '\u062B\u0645';
-  t['\uFCE6'] = '\u062B\u0647';
-  t['\uFCE7'] = '\u0633\u0645';
-  t['\uFCE8'] = '\u0633\u0647';
-  t['\uFCE9'] = '\u0634\u0645';
-  t['\uFCEA'] = '\u0634\u0647';
-  t['\uFCEB'] = '\u0643\u0644';
-  t['\uFCEC'] = '\u0643\u0645';
-  t['\uFCED'] = '\u0644\u0645';
-  t['\uFCEE'] = '\u0646\u0645';
-  t['\uFCEF'] = '\u0646\u0647';
-  t['\uFCF0'] = '\u064A\u0645';
-  t['\uFCF1'] = '\u064A\u0647';
-  t['\uFCF2'] = '\u0640\u064E\u0651';
-  t['\uFCF3'] = '\u0640\u064F\u0651';
-  t['\uFCF4'] = '\u0640\u0650\u0651';
-  t['\uFCF5'] = '\u0637\u0649';
-  t['\uFCF6'] = '\u0637\u064A';
-  t['\uFCF7'] = '\u0639\u0649';
-  t['\uFCF8'] = '\u0639\u064A';
-  t['\uFCF9'] = '\u063A\u0649';
-  t['\uFCFA'] = '\u063A\u064A';
-  t['\uFCFB'] = '\u0633\u0649';
-  t['\uFCFC'] = '\u0633\u064A';
-  t['\uFCFD'] = '\u0634\u0649';
-  t['\uFCFE'] = '\u0634\u064A';
-  t['\uFCFF'] = '\u062D\u0649';
-  t['\uFD00'] = '\u062D\u064A';
-  t['\uFD01'] = '\u062C\u0649';
-  t['\uFD02'] = '\u062C\u064A';
-  t['\uFD03'] = '\u062E\u0649';
-  t['\uFD04'] = '\u062E\u064A';
-  t['\uFD05'] = '\u0635\u0649';
-  t['\uFD06'] = '\u0635\u064A';
-  t['\uFD07'] = '\u0636\u0649';
-  t['\uFD08'] = '\u0636\u064A';
-  t['\uFD09'] = '\u0634\u062C';
-  t['\uFD0A'] = '\u0634\u062D';
-  t['\uFD0B'] = '\u0634\u062E';
-  t['\uFD0C'] = '\u0634\u0645';
-  t['\uFD0D'] = '\u0634\u0631';
-  t['\uFD0E'] = '\u0633\u0631';
-  t['\uFD0F'] = '\u0635\u0631';
-  t['\uFD10'] = '\u0636\u0631';
-  t['\uFD11'] = '\u0637\u0649';
-  t['\uFD12'] = '\u0637\u064A';
-  t['\uFD13'] = '\u0639\u0649';
-  t['\uFD14'] = '\u0639\u064A';
-  t['\uFD15'] = '\u063A\u0649';
-  t['\uFD16'] = '\u063A\u064A';
-  t['\uFD17'] = '\u0633\u0649';
-  t['\uFD18'] = '\u0633\u064A';
-  t['\uFD19'] = '\u0634\u0649';
-  t['\uFD1A'] = '\u0634\u064A';
-  t['\uFD1B'] = '\u062D\u0649';
-  t['\uFD1C'] = '\u062D\u064A';
-  t['\uFD1D'] = '\u062C\u0649';
-  t['\uFD1E'] = '\u062C\u064A';
-  t['\uFD1F'] = '\u062E\u0649';
-  t['\uFD20'] = '\u062E\u064A';
-  t['\uFD21'] = '\u0635\u0649';
-  t['\uFD22'] = '\u0635\u064A';
-  t['\uFD23'] = '\u0636\u0649';
-  t['\uFD24'] = '\u0636\u064A';
-  t['\uFD25'] = '\u0634\u062C';
-  t['\uFD26'] = '\u0634\u062D';
-  t['\uFD27'] = '\u0634\u062E';
-  t['\uFD28'] = '\u0634\u0645';
-  t['\uFD29'] = '\u0634\u0631';
-  t['\uFD2A'] = '\u0633\u0631';
-  t['\uFD2B'] = '\u0635\u0631';
-  t['\uFD2C'] = '\u0636\u0631';
-  t['\uFD2D'] = '\u0634\u062C';
-  t['\uFD2E'] = '\u0634\u062D';
-  t['\uFD2F'] = '\u0634\u062E';
-  t['\uFD30'] = '\u0634\u0645';
-  t['\uFD31'] = '\u0633\u0647';
-  t['\uFD32'] = '\u0634\u0647';
-  t['\uFD33'] = '\u0637\u0645';
-  t['\uFD34'] = '\u0633\u062C';
-  t['\uFD35'] = '\u0633\u062D';
-  t['\uFD36'] = '\u0633\u062E';
-  t['\uFD37'] = '\u0634\u062C';
-  t['\uFD38'] = '\u0634\u062D';
-  t['\uFD39'] = '\u0634\u062E';
-  t['\uFD3A'] = '\u0637\u0645';
-  t['\uFD3B'] = '\u0638\u0645';
-  t['\uFD3C'] = '\u0627\u064B';
-  t['\uFD3D'] = '\u0627\u064B';
-  t['\uFD50'] = '\u062A\u062C\u0645';
-  t['\uFD51'] = '\u062A\u062D\u062C';
-  t['\uFD52'] = '\u062A\u062D\u062C';
-  t['\uFD53'] = '\u062A\u062D\u0645';
-  t['\uFD54'] = '\u062A\u062E\u0645';
-  t['\uFD55'] = '\u062A\u0645\u062C';
-  t['\uFD56'] = '\u062A\u0645\u062D';
-  t['\uFD57'] = '\u062A\u0645\u062E';
-  t['\uFD58'] = '\u062C\u0645\u062D';
-  t['\uFD59'] = '\u062C\u0645\u062D';
-  t['\uFD5A'] = '\u062D\u0645\u064A';
-  t['\uFD5B'] = '\u062D\u0645\u0649';
-  t['\uFD5C'] = '\u0633\u062D\u062C';
-  t['\uFD5D'] = '\u0633\u062C\u062D';
-  t['\uFD5E'] = '\u0633\u062C\u0649';
-  t['\uFD5F'] = '\u0633\u0645\u062D';
-  t['\uFD60'] = '\u0633\u0645\u062D';
-  t['\uFD61'] = '\u0633\u0645\u062C';
-  t['\uFD62'] = '\u0633\u0645\u0645';
-  t['\uFD63'] = '\u0633\u0645\u0645';
-  t['\uFD64'] = '\u0635\u062D\u062D';
-  t['\uFD65'] = '\u0635\u062D\u062D';
-  t['\uFD66'] = '\u0635\u0645\u0645';
-  t['\uFD67'] = '\u0634\u062D\u0645';
-  t['\uFD68'] = '\u0634\u062D\u0645';
-  t['\uFD69'] = '\u0634\u062C\u064A';
-  t['\uFD6A'] = '\u0634\u0645\u062E';
-  t['\uFD6B'] = '\u0634\u0645\u062E';
-  t['\uFD6C'] = '\u0634\u0645\u0645';
-  t['\uFD6D'] = '\u0634\u0645\u0645';
-  t['\uFD6E'] = '\u0636\u062D\u0649';
-  t['\uFD6F'] = '\u0636\u062E\u0645';
-  t['\uFD70'] = '\u0636\u062E\u0645';
-  t['\uFD71'] = '\u0637\u0645\u062D';
-  t['\uFD72'] = '\u0637\u0645\u062D';
-  t['\uFD73'] = '\u0637\u0645\u0645';
-  t['\uFD74'] = '\u0637\u0645\u064A';
-  t['\uFD75'] = '\u0639\u062C\u0645';
-  t['\uFD76'] = '\u0639\u0645\u0645';
-  t['\uFD77'] = '\u0639\u0645\u0645';
-  t['\uFD78'] = '\u0639\u0645\u0649';
-  t['\uFD79'] = '\u063A\u0645\u0645';
-  t['\uFD7A'] = '\u063A\u0645\u064A';
-  t['\uFD7B'] = '\u063A\u0645\u0649';
-  t['\uFD7C'] = '\u0641\u062E\u0645';
-  t['\uFD7D'] = '\u0641\u062E\u0645';
-  t['\uFD7E'] = '\u0642\u0645\u062D';
-  t['\uFD7F'] = '\u0642\u0645\u0645';
-  t['\uFD80'] = '\u0644\u062D\u0645';
-  t['\uFD81'] = '\u0644\u062D\u064A';
-  t['\uFD82'] = '\u0644\u062D\u0649';
-  t['\uFD83'] = '\u0644\u062C\u062C';
-  t['\uFD84'] = '\u0644\u062C\u062C';
-  t['\uFD85'] = '\u0644\u062E\u0645';
-  t['\uFD86'] = '\u0644\u062E\u0645';
-  t['\uFD87'] = '\u0644\u0645\u062D';
-  t['\uFD88'] = '\u0644\u0645\u062D';
-  t['\uFD89'] = '\u0645\u062D\u062C';
-  t['\uFD8A'] = '\u0645\u062D\u0645';
-  t['\uFD8B'] = '\u0645\u062D\u064A';
-  t['\uFD8C'] = '\u0645\u062C\u062D';
-  t['\uFD8D'] = '\u0645\u062C\u0645';
-  t['\uFD8E'] = '\u0645\u062E\u062C';
-  t['\uFD8F'] = '\u0645\u062E\u0645';
-  t['\uFD92'] = '\u0645\u062C\u062E';
-  t['\uFD93'] = '\u0647\u0645\u062C';
-  t['\uFD94'] = '\u0647\u0645\u0645';
-  t['\uFD95'] = '\u0646\u062D\u0645';
-  t['\uFD96'] = '\u0646\u062D\u0649';
-  t['\uFD97'] = '\u0646\u062C\u0645';
-  t['\uFD98'] = '\u0646\u062C\u0645';
-  t['\uFD99'] = '\u0646\u062C\u0649';
-  t['\uFD9A'] = '\u0646\u0645\u064A';
-  t['\uFD9B'] = '\u0646\u0645\u0649';
-  t['\uFD9C'] = '\u064A\u0645\u0645';
-  t['\uFD9D'] = '\u064A\u0645\u0645';
-  t['\uFD9E'] = '\u0628\u062E\u064A';
-  t['\uFD9F'] = '\u062A\u062C\u064A';
-  t['\uFDA0'] = '\u062A\u062C\u0649';
-  t['\uFDA1'] = '\u062A\u062E\u064A';
-  t['\uFDA2'] = '\u062A\u062E\u0649';
-  t['\uFDA3'] = '\u062A\u0645\u064A';
-  t['\uFDA4'] = '\u062A\u0645\u0649';
-  t['\uFDA5'] = '\u062C\u0645\u064A';
-  t['\uFDA6'] = '\u062C\u062D\u0649';
-  t['\uFDA7'] = '\u062C\u0645\u0649';
-  t['\uFDA8'] = '\u0633\u062E\u0649';
-  t['\uFDA9'] = '\u0635\u062D\u064A';
-  t['\uFDAA'] = '\u0634\u062D\u064A';
-  t['\uFDAB'] = '\u0636\u062D\u064A';
-  t['\uFDAC'] = '\u0644\u062C\u064A';
-  t['\uFDAD'] = '\u0644\u0645\u064A';
-  t['\uFDAE'] = '\u064A\u062D\u064A';
-  t['\uFDAF'] = '\u064A\u062C\u064A';
-  t['\uFDB0'] = '\u064A\u0645\u064A';
-  t['\uFDB1'] = '\u0645\u0645\u064A';
-  t['\uFDB2'] = '\u0642\u0645\u064A';
-  t['\uFDB3'] = '\u0646\u062D\u064A';
-  t['\uFDB4'] = '\u0642\u0645\u062D';
-  t['\uFDB5'] = '\u0644\u062D\u0645';
-  t['\uFDB6'] = '\u0639\u0645\u064A';
-  t['\uFDB7'] = '\u0643\u0645\u064A';
-  t['\uFDB8'] = '\u0646\u062C\u062D';
-  t['\uFDB9'] = '\u0645\u062E\u064A';
-  t['\uFDBA'] = '\u0644\u062C\u0645';
-  t['\uFDBB'] = '\u0643\u0645\u0645';
-  t['\uFDBC'] = '\u0644\u062C\u0645';
-  t['\uFDBD'] = '\u0646\u062C\u062D';
-  t['\uFDBE'] = '\u062C\u062D\u064A';
-  t['\uFDBF'] = '\u062D\u062C\u064A';
-  t['\uFDC0'] = '\u0645\u062C\u064A';
-  t['\uFDC1'] = '\u0641\u0645\u064A';
-  t['\uFDC2'] = '\u0628\u062D\u064A';
-  t['\uFDC3'] = '\u0643\u0645\u0645';
-  t['\uFDC4'] = '\u0639\u062C\u0645';
-  t['\uFDC5'] = '\u0635\u0645\u0645';
-  t['\uFDC6'] = '\u0633\u062E\u064A';
-  t['\uFDC7'] = '\u0646\u062C\u064A';
-  t['\uFE49'] = '\u203E';
-  t['\uFE4A'] = '\u203E';
-  t['\uFE4B'] = '\u203E';
-  t['\uFE4C'] = '\u203E';
-  t['\uFE4D'] = '_';
-  t['\uFE4E'] = '_';
-  t['\uFE4F'] = '_';
-  t['\uFE80'] = '\u0621';
-  t['\uFE81'] = '\u0622';
-  t['\uFE82'] = '\u0622';
-  t['\uFE83'] = '\u0623';
-  t['\uFE84'] = '\u0623';
-  t['\uFE85'] = '\u0624';
-  t['\uFE86'] = '\u0624';
-  t['\uFE87'] = '\u0625';
-  t['\uFE88'] = '\u0625';
-  t['\uFE89'] = '\u0626';
-  t['\uFE8A'] = '\u0626';
-  t['\uFE8B'] = '\u0626';
-  t['\uFE8C'] = '\u0626';
-  t['\uFE8D'] = '\u0627';
-  t['\uFE8E'] = '\u0627';
-  t['\uFE8F'] = '\u0628';
-  t['\uFE90'] = '\u0628';
-  t['\uFE91'] = '\u0628';
-  t['\uFE92'] = '\u0628';
-  t['\uFE93'] = '\u0629';
-  t['\uFE94'] = '\u0629';
-  t['\uFE95'] = '\u062A';
-  t['\uFE96'] = '\u062A';
-  t['\uFE97'] = '\u062A';
-  t['\uFE98'] = '\u062A';
-  t['\uFE99'] = '\u062B';
-  t['\uFE9A'] = '\u062B';
-  t['\uFE9B'] = '\u062B';
-  t['\uFE9C'] = '\u062B';
-  t['\uFE9D'] = '\u062C';
-  t['\uFE9E'] = '\u062C';
-  t['\uFE9F'] = '\u062C';
-  t['\uFEA0'] = '\u062C';
-  t['\uFEA1'] = '\u062D';
-  t['\uFEA2'] = '\u062D';
-  t['\uFEA3'] = '\u062D';
-  t['\uFEA4'] = '\u062D';
-  t['\uFEA5'] = '\u062E';
-  t['\uFEA6'] = '\u062E';
-  t['\uFEA7'] = '\u062E';
-  t['\uFEA8'] = '\u062E';
-  t['\uFEA9'] = '\u062F';
-  t['\uFEAA'] = '\u062F';
-  t['\uFEAB'] = '\u0630';
-  t['\uFEAC'] = '\u0630';
-  t['\uFEAD'] = '\u0631';
-  t['\uFEAE'] = '\u0631';
-  t['\uFEAF'] = '\u0632';
-  t['\uFEB0'] = '\u0632';
-  t['\uFEB1'] = '\u0633';
-  t['\uFEB2'] = '\u0633';
-  t['\uFEB3'] = '\u0633';
-  t['\uFEB4'] = '\u0633';
-  t['\uFEB5'] = '\u0634';
-  t['\uFEB6'] = '\u0634';
-  t['\uFEB7'] = '\u0634';
-  t['\uFEB8'] = '\u0634';
-  t['\uFEB9'] = '\u0635';
-  t['\uFEBA'] = '\u0635';
-  t['\uFEBB'] = '\u0635';
-  t['\uFEBC'] = '\u0635';
-  t['\uFEBD'] = '\u0636';
-  t['\uFEBE'] = '\u0636';
-  t['\uFEBF'] = '\u0636';
-  t['\uFEC0'] = '\u0636';
-  t['\uFEC1'] = '\u0637';
-  t['\uFEC2'] = '\u0637';
-  t['\uFEC3'] = '\u0637';
-  t['\uFEC4'] = '\u0637';
-  t['\uFEC5'] = '\u0638';
-  t['\uFEC6'] = '\u0638';
-  t['\uFEC7'] = '\u0638';
-  t['\uFEC8'] = '\u0638';
-  t['\uFEC9'] = '\u0639';
-  t['\uFECA'] = '\u0639';
-  t['\uFECB'] = '\u0639';
-  t['\uFECC'] = '\u0639';
-  t['\uFECD'] = '\u063A';
-  t['\uFECE'] = '\u063A';
-  t['\uFECF'] = '\u063A';
-  t['\uFED0'] = '\u063A';
-  t['\uFED1'] = '\u0641';
-  t['\uFED2'] = '\u0641';
-  t['\uFED3'] = '\u0641';
-  t['\uFED4'] = '\u0641';
-  t['\uFED5'] = '\u0642';
-  t['\uFED6'] = '\u0642';
-  t['\uFED7'] = '\u0642';
-  t['\uFED8'] = '\u0642';
-  t['\uFED9'] = '\u0643';
-  t['\uFEDA'] = '\u0643';
-  t['\uFEDB'] = '\u0643';
-  t['\uFEDC'] = '\u0643';
-  t['\uFEDD'] = '\u0644';
-  t['\uFEDE'] = '\u0644';
-  t['\uFEDF'] = '\u0644';
-  t['\uFEE0'] = '\u0644';
-  t['\uFEE1'] = '\u0645';
-  t['\uFEE2'] = '\u0645';
-  t['\uFEE3'] = '\u0645';
-  t['\uFEE4'] = '\u0645';
-  t['\uFEE5'] = '\u0646';
-  t['\uFEE6'] = '\u0646';
-  t['\uFEE7'] = '\u0646';
-  t['\uFEE8'] = '\u0646';
-  t['\uFEE9'] = '\u0647';
-  t['\uFEEA'] = '\u0647';
-  t['\uFEEB'] = '\u0647';
-  t['\uFEEC'] = '\u0647';
-  t['\uFEED'] = '\u0648';
-  t['\uFEEE'] = '\u0648';
-  t['\uFEEF'] = '\u0649';
-  t['\uFEF0'] = '\u0649';
-  t['\uFEF1'] = '\u064A';
-  t['\uFEF2'] = '\u064A';
-  t['\uFEF3'] = '\u064A';
-  t['\uFEF4'] = '\u064A';
-  t['\uFEF5'] = '\u0644\u0622';
-  t['\uFEF6'] = '\u0644\u0622';
-  t['\uFEF7'] = '\u0644\u0623';
-  t['\uFEF8'] = '\u0644\u0623';
-  t['\uFEF9'] = '\u0644\u0625';
-  t['\uFEFA'] = '\u0644\u0625';
-  t['\uFEFB'] = '\u0644\u0627';
-  t['\uFEFC'] = '\u0644\u0627';
+ t['\u00A8'] = '\u0020\u0308';
+ t['\u00AF'] = '\u0020\u0304';
+ t['\u00B4'] = '\u0020\u0301';
+ t['\u00B5'] = '\u03BC';
+ t['\u00B8'] = '\u0020\u0327';
+ t['\u0132'] = '\u0049\u004A';
+ t['\u0133'] = '\u0069\u006A';
+ t['\u013F'] = '\u004C\u00B7';
+ t['\u0140'] = '\u006C\u00B7';
+ t['\u0149'] = '\u02BC\u006E';
+ t['\u017F'] = '\u0073';
+ t['\u01C4'] = '\u0044\u017D';
+ t['\u01C5'] = '\u0044\u017E';
+ t['\u01C6'] = '\u0064\u017E';
+ t['\u01C7'] = '\u004C\u004A';
+ t['\u01C8'] = '\u004C\u006A';
+ t['\u01C9'] = '\u006C\u006A';
+ t['\u01CA'] = '\u004E\u004A';
+ t['\u01CB'] = '\u004E\u006A';
+ t['\u01CC'] = '\u006E\u006A';
+ t['\u01F1'] = '\u0044\u005A';
+ t['\u01F2'] = '\u0044\u007A';
+ t['\u01F3'] = '\u0064\u007A';
+ t['\u02D8'] = '\u0020\u0306';
+ t['\u02D9'] = '\u0020\u0307';
+ t['\u02DA'] = '\u0020\u030A';
+ t['\u02DB'] = '\u0020\u0328';
+ t['\u02DC'] = '\u0020\u0303';
+ t['\u02DD'] = '\u0020\u030B';
+ t['\u037A'] = '\u0020\u0345';
+ t['\u0384'] = '\u0020\u0301';
+ t['\u03D0'] = '\u03B2';
+ t['\u03D1'] = '\u03B8';
+ t['\u03D2'] = '\u03A5';
+ t['\u03D5'] = '\u03C6';
+ t['\u03D6'] = '\u03C0';
+ t['\u03F0'] = '\u03BA';
+ t['\u03F1'] = '\u03C1';
+ t['\u03F2'] = '\u03C2';
+ t['\u03F4'] = '\u0398';
+ t['\u03F5'] = '\u03B5';
+ t['\u03F9'] = '\u03A3';
+ t['\u0587'] = '\u0565\u0582';
+ t['\u0675'] = '\u0627\u0674';
+ t['\u0676'] = '\u0648\u0674';
+ t['\u0677'] = '\u06C7\u0674';
+ t['\u0678'] = '\u064A\u0674';
+ t['\u0E33'] = '\u0E4D\u0E32';
+ t['\u0EB3'] = '\u0ECD\u0EB2';
+ t['\u0EDC'] = '\u0EAB\u0E99';
+ t['\u0EDD'] = '\u0EAB\u0EA1';
+ t['\u0F77'] = '\u0FB2\u0F81';
+ t['\u0F79'] = '\u0FB3\u0F81';
+ t['\u1E9A'] = '\u0061\u02BE';
+ t['\u1FBD'] = '\u0020\u0313';
+ t['\u1FBF'] = '\u0020\u0313';
+ t['\u1FC0'] = '\u0020\u0342';
+ t['\u1FFE'] = '\u0020\u0314';
+ t['\u2002'] = '\u0020';
+ t['\u2003'] = '\u0020';
+ t['\u2004'] = '\u0020';
+ t['\u2005'] = '\u0020';
+ t['\u2006'] = '\u0020';
+ t['\u2008'] = '\u0020';
+ t['\u2009'] = '\u0020';
+ t['\u200A'] = '\u0020';
+ t['\u2017'] = '\u0020\u0333';
+ t['\u2024'] = '\u002E';
+ t['\u2025'] = '\u002E\u002E';
+ t['\u2026'] = '\u002E\u002E\u002E';
+ t['\u2033'] = '\u2032\u2032';
+ t['\u2034'] = '\u2032\u2032\u2032';
+ t['\u2036'] = '\u2035\u2035';
+ t['\u2037'] = '\u2035\u2035\u2035';
+ t['\u203C'] = '\u0021\u0021';
+ t['\u203E'] = '\u0020\u0305';
+ t['\u2047'] = '\u003F\u003F';
+ t['\u2048'] = '\u003F\u0021';
+ t['\u2049'] = '\u0021\u003F';
+ t['\u2057'] = '\u2032\u2032\u2032\u2032';
+ t['\u205F'] = '\u0020';
+ t['\u20A8'] = '\u0052\u0073';
+ t['\u2100'] = '\u0061\u002F\u0063';
+ t['\u2101'] = '\u0061\u002F\u0073';
+ t['\u2103'] = '\u00B0\u0043';
+ t['\u2105'] = '\u0063\u002F\u006F';
+ t['\u2106'] = '\u0063\u002F\u0075';
+ t['\u2107'] = '\u0190';
+ t['\u2109'] = '\u00B0\u0046';
+ t['\u2116'] = '\u004E\u006F';
+ t['\u2121'] = '\u0054\u0045\u004C';
+ t['\u2135'] = '\u05D0';
+ t['\u2136'] = '\u05D1';
+ t['\u2137'] = '\u05D2';
+ t['\u2138'] = '\u05D3';
+ t['\u213B'] = '\u0046\u0041\u0058';
+ t['\u2160'] = '\u0049';
+ t['\u2161'] = '\u0049\u0049';
+ t['\u2162'] = '\u0049\u0049\u0049';
+ t['\u2163'] = '\u0049\u0056';
+ t['\u2164'] = '\u0056';
+ t['\u2165'] = '\u0056\u0049';
+ t['\u2166'] = '\u0056\u0049\u0049';
+ t['\u2167'] = '\u0056\u0049\u0049\u0049';
+ t['\u2168'] = '\u0049\u0058';
+ t['\u2169'] = '\u0058';
+ t['\u216A'] = '\u0058\u0049';
+ t['\u216B'] = '\u0058\u0049\u0049';
+ t['\u216C'] = '\u004C';
+ t['\u216D'] = '\u0043';
+ t['\u216E'] = '\u0044';
+ t['\u216F'] = '\u004D';
+ t['\u2170'] = '\u0069';
+ t['\u2171'] = '\u0069\u0069';
+ t['\u2172'] = '\u0069\u0069\u0069';
+ t['\u2173'] = '\u0069\u0076';
+ t['\u2174'] = '\u0076';
+ t['\u2175'] = '\u0076\u0069';
+ t['\u2176'] = '\u0076\u0069\u0069';
+ t['\u2177'] = '\u0076\u0069\u0069\u0069';
+ t['\u2178'] = '\u0069\u0078';
+ t['\u2179'] = '\u0078';
+ t['\u217A'] = '\u0078\u0069';
+ t['\u217B'] = '\u0078\u0069\u0069';
+ t['\u217C'] = '\u006C';
+ t['\u217D'] = '\u0063';
+ t['\u217E'] = '\u0064';
+ t['\u217F'] = '\u006D';
+ t['\u222C'] = '\u222B\u222B';
+ t['\u222D'] = '\u222B\u222B\u222B';
+ t['\u222F'] = '\u222E\u222E';
+ t['\u2230'] = '\u222E\u222E\u222E';
+ t['\u2474'] = '\u0028\u0031\u0029';
+ t['\u2475'] = '\u0028\u0032\u0029';
+ t['\u2476'] = '\u0028\u0033\u0029';
+ t['\u2477'] = '\u0028\u0034\u0029';
+ t['\u2478'] = '\u0028\u0035\u0029';
+ t['\u2479'] = '\u0028\u0036\u0029';
+ t['\u247A'] = '\u0028\u0037\u0029';
+ t['\u247B'] = '\u0028\u0038\u0029';
+ t['\u247C'] = '\u0028\u0039\u0029';
+ t['\u247D'] = '\u0028\u0031\u0030\u0029';
+ t['\u247E'] = '\u0028\u0031\u0031\u0029';
+ t['\u247F'] = '\u0028\u0031\u0032\u0029';
+ t['\u2480'] = '\u0028\u0031\u0033\u0029';
+ t['\u2481'] = '\u0028\u0031\u0034\u0029';
+ t['\u2482'] = '\u0028\u0031\u0035\u0029';
+ t['\u2483'] = '\u0028\u0031\u0036\u0029';
+ t['\u2484'] = '\u0028\u0031\u0037\u0029';
+ t['\u2485'] = '\u0028\u0031\u0038\u0029';
+ t['\u2486'] = '\u0028\u0031\u0039\u0029';
+ t['\u2487'] = '\u0028\u0032\u0030\u0029';
+ t['\u2488'] = '\u0031\u002E';
+ t['\u2489'] = '\u0032\u002E';
+ t['\u248A'] = '\u0033\u002E';
+ t['\u248B'] = '\u0034\u002E';
+ t['\u248C'] = '\u0035\u002E';
+ t['\u248D'] = '\u0036\u002E';
+ t['\u248E'] = '\u0037\u002E';
+ t['\u248F'] = '\u0038\u002E';
+ t['\u2490'] = '\u0039\u002E';
+ t['\u2491'] = '\u0031\u0030\u002E';
+ t['\u2492'] = '\u0031\u0031\u002E';
+ t['\u2493'] = '\u0031\u0032\u002E';
+ t['\u2494'] = '\u0031\u0033\u002E';
+ t['\u2495'] = '\u0031\u0034\u002E';
+ t['\u2496'] = '\u0031\u0035\u002E';
+ t['\u2497'] = '\u0031\u0036\u002E';
+ t['\u2498'] = '\u0031\u0037\u002E';
+ t['\u2499'] = '\u0031\u0038\u002E';
+ t['\u249A'] = '\u0031\u0039\u002E';
+ t['\u249B'] = '\u0032\u0030\u002E';
+ t['\u249C'] = '\u0028\u0061\u0029';
+ t['\u249D'] = '\u0028\u0062\u0029';
+ t['\u249E'] = '\u0028\u0063\u0029';
+ t['\u249F'] = '\u0028\u0064\u0029';
+ t['\u24A0'] = '\u0028\u0065\u0029';
+ t['\u24A1'] = '\u0028\u0066\u0029';
+ t['\u24A2'] = '\u0028\u0067\u0029';
+ t['\u24A3'] = '\u0028\u0068\u0029';
+ t['\u24A4'] = '\u0028\u0069\u0029';
+ t['\u24A5'] = '\u0028\u006A\u0029';
+ t['\u24A6'] = '\u0028\u006B\u0029';
+ t['\u24A7'] = '\u0028\u006C\u0029';
+ t['\u24A8'] = '\u0028\u006D\u0029';
+ t['\u24A9'] = '\u0028\u006E\u0029';
+ t['\u24AA'] = '\u0028\u006F\u0029';
+ t['\u24AB'] = '\u0028\u0070\u0029';
+ t['\u24AC'] = '\u0028\u0071\u0029';
+ t['\u24AD'] = '\u0028\u0072\u0029';
+ t['\u24AE'] = '\u0028\u0073\u0029';
+ t['\u24AF'] = '\u0028\u0074\u0029';
+ t['\u24B0'] = '\u0028\u0075\u0029';
+ t['\u24B1'] = '\u0028\u0076\u0029';
+ t['\u24B2'] = '\u0028\u0077\u0029';
+ t['\u24B3'] = '\u0028\u0078\u0029';
+ t['\u24B4'] = '\u0028\u0079\u0029';
+ t['\u24B5'] = '\u0028\u007A\u0029';
+ t['\u2A0C'] = '\u222B\u222B\u222B\u222B';
+ t['\u2A74'] = '\u003A\u003A\u003D';
+ t['\u2A75'] = '\u003D\u003D';
+ t['\u2A76'] = '\u003D\u003D\u003D';
+ t['\u2E9F'] = '\u6BCD';
+ t['\u2EF3'] = '\u9F9F';
+ t['\u2F00'] = '\u4E00';
+ t['\u2F01'] = '\u4E28';
+ t['\u2F02'] = '\u4E36';
+ t['\u2F03'] = '\u4E3F';
+ t['\u2F04'] = '\u4E59';
+ t['\u2F05'] = '\u4E85';
+ t['\u2F06'] = '\u4E8C';
+ t['\u2F07'] = '\u4EA0';
+ t['\u2F08'] = '\u4EBA';
+ t['\u2F09'] = '\u513F';
+ t['\u2F0A'] = '\u5165';
+ t['\u2F0B'] = '\u516B';
+ t['\u2F0C'] = '\u5182';
+ t['\u2F0D'] = '\u5196';
+ t['\u2F0E'] = '\u51AB';
+ t['\u2F0F'] = '\u51E0';
+ t['\u2F10'] = '\u51F5';
+ t['\u2F11'] = '\u5200';
+ t['\u2F12'] = '\u529B';
+ t['\u2F13'] = '\u52F9';
+ t['\u2F14'] = '\u5315';
+ t['\u2F15'] = '\u531A';
+ t['\u2F16'] = '\u5338';
+ t['\u2F17'] = '\u5341';
+ t['\u2F18'] = '\u535C';
+ t['\u2F19'] = '\u5369';
+ t['\u2F1A'] = '\u5382';
+ t['\u2F1B'] = '\u53B6';
+ t['\u2F1C'] = '\u53C8';
+ t['\u2F1D'] = '\u53E3';
+ t['\u2F1E'] = '\u56D7';
+ t['\u2F1F'] = '\u571F';
+ t['\u2F20'] = '\u58EB';
+ t['\u2F21'] = '\u5902';
+ t['\u2F22'] = '\u590A';
+ t['\u2F23'] = '\u5915';
+ t['\u2F24'] = '\u5927';
+ t['\u2F25'] = '\u5973';
+ t['\u2F26'] = '\u5B50';
+ t['\u2F27'] = '\u5B80';
+ t['\u2F28'] = '\u5BF8';
+ t['\u2F29'] = '\u5C0F';
+ t['\u2F2A'] = '\u5C22';
+ t['\u2F2B'] = '\u5C38';
+ t['\u2F2C'] = '\u5C6E';
+ t['\u2F2D'] = '\u5C71';
+ t['\u2F2E'] = '\u5DDB';
+ t['\u2F2F'] = '\u5DE5';
+ t['\u2F30'] = '\u5DF1';
+ t['\u2F31'] = '\u5DFE';
+ t['\u2F32'] = '\u5E72';
+ t['\u2F33'] = '\u5E7A';
+ t['\u2F34'] = '\u5E7F';
+ t['\u2F35'] = '\u5EF4';
+ t['\u2F36'] = '\u5EFE';
+ t['\u2F37'] = '\u5F0B';
+ t['\u2F38'] = '\u5F13';
+ t['\u2F39'] = '\u5F50';
+ t['\u2F3A'] = '\u5F61';
+ t['\u2F3B'] = '\u5F73';
+ t['\u2F3C'] = '\u5FC3';
+ t['\u2F3D'] = '\u6208';
+ t['\u2F3E'] = '\u6236';
+ t['\u2F3F'] = '\u624B';
+ t['\u2F40'] = '\u652F';
+ t['\u2F41'] = '\u6534';
+ t['\u2F42'] = '\u6587';
+ t['\u2F43'] = '\u6597';
+ t['\u2F44'] = '\u65A4';
+ t['\u2F45'] = '\u65B9';
+ t['\u2F46'] = '\u65E0';
+ t['\u2F47'] = '\u65E5';
+ t['\u2F48'] = '\u66F0';
+ t['\u2F49'] = '\u6708';
+ t['\u2F4A'] = '\u6728';
+ t['\u2F4B'] = '\u6B20';
+ t['\u2F4C'] = '\u6B62';
+ t['\u2F4D'] = '\u6B79';
+ t['\u2F4E'] = '\u6BB3';
+ t['\u2F4F'] = '\u6BCB';
+ t['\u2F50'] = '\u6BD4';
+ t['\u2F51'] = '\u6BDB';
+ t['\u2F52'] = '\u6C0F';
+ t['\u2F53'] = '\u6C14';
+ t['\u2F54'] = '\u6C34';
+ t['\u2F55'] = '\u706B';
+ t['\u2F56'] = '\u722A';
+ t['\u2F57'] = '\u7236';
+ t['\u2F58'] = '\u723B';
+ t['\u2F59'] = '\u723F';
+ t['\u2F5A'] = '\u7247';
+ t['\u2F5B'] = '\u7259';
+ t['\u2F5C'] = '\u725B';
+ t['\u2F5D'] = '\u72AC';
+ t['\u2F5E'] = '\u7384';
+ t['\u2F5F'] = '\u7389';
+ t['\u2F60'] = '\u74DC';
+ t['\u2F61'] = '\u74E6';
+ t['\u2F62'] = '\u7518';
+ t['\u2F63'] = '\u751F';
+ t['\u2F64'] = '\u7528';
+ t['\u2F65'] = '\u7530';
+ t['\u2F66'] = '\u758B';
+ t['\u2F67'] = '\u7592';
+ t['\u2F68'] = '\u7676';
+ t['\u2F69'] = '\u767D';
+ t['\u2F6A'] = '\u76AE';
+ t['\u2F6B'] = '\u76BF';
+ t['\u2F6C'] = '\u76EE';
+ t['\u2F6D'] = '\u77DB';
+ t['\u2F6E'] = '\u77E2';
+ t['\u2F6F'] = '\u77F3';
+ t['\u2F70'] = '\u793A';
+ t['\u2F71'] = '\u79B8';
+ t['\u2F72'] = '\u79BE';
+ t['\u2F73'] = '\u7A74';
+ t['\u2F74'] = '\u7ACB';
+ t['\u2F75'] = '\u7AF9';
+ t['\u2F76'] = '\u7C73';
+ t['\u2F77'] = '\u7CF8';
+ t['\u2F78'] = '\u7F36';
+ t['\u2F79'] = '\u7F51';
+ t['\u2F7A'] = '\u7F8A';
+ t['\u2F7B'] = '\u7FBD';
+ t['\u2F7C'] = '\u8001';
+ t['\u2F7D'] = '\u800C';
+ t['\u2F7E'] = '\u8012';
+ t['\u2F7F'] = '\u8033';
+ t['\u2F80'] = '\u807F';
+ t['\u2F81'] = '\u8089';
+ t['\u2F82'] = '\u81E3';
+ t['\u2F83'] = '\u81EA';
+ t['\u2F84'] = '\u81F3';
+ t['\u2F85'] = '\u81FC';
+ t['\u2F86'] = '\u820C';
+ t['\u2F87'] = '\u821B';
+ t['\u2F88'] = '\u821F';
+ t['\u2F89'] = '\u826E';
+ t['\u2F8A'] = '\u8272';
+ t['\u2F8B'] = '\u8278';
+ t['\u2F8C'] = '\u864D';
+ t['\u2F8D'] = '\u866B';
+ t['\u2F8E'] = '\u8840';
+ t['\u2F8F'] = '\u884C';
+ t['\u2F90'] = '\u8863';
+ t['\u2F91'] = '\u897E';
+ t['\u2F92'] = '\u898B';
+ t['\u2F93'] = '\u89D2';
+ t['\u2F94'] = '\u8A00';
+ t['\u2F95'] = '\u8C37';
+ t['\u2F96'] = '\u8C46';
+ t['\u2F97'] = '\u8C55';
+ t['\u2F98'] = '\u8C78';
+ t['\u2F99'] = '\u8C9D';
+ t['\u2F9A'] = '\u8D64';
+ t['\u2F9B'] = '\u8D70';
+ t['\u2F9C'] = '\u8DB3';
+ t['\u2F9D'] = '\u8EAB';
+ t['\u2F9E'] = '\u8ECA';
+ t['\u2F9F'] = '\u8F9B';
+ t['\u2FA0'] = '\u8FB0';
+ t['\u2FA1'] = '\u8FB5';
+ t['\u2FA2'] = '\u9091';
+ t['\u2FA3'] = '\u9149';
+ t['\u2FA4'] = '\u91C6';
+ t['\u2FA5'] = '\u91CC';
+ t['\u2FA6'] = '\u91D1';
+ t['\u2FA7'] = '\u9577';
+ t['\u2FA8'] = '\u9580';
+ t['\u2FA9'] = '\u961C';
+ t['\u2FAA'] = '\u96B6';
+ t['\u2FAB'] = '\u96B9';
+ t['\u2FAC'] = '\u96E8';
+ t['\u2FAD'] = '\u9751';
+ t['\u2FAE'] = '\u975E';
+ t['\u2FAF'] = '\u9762';
+ t['\u2FB0'] = '\u9769';
+ t['\u2FB1'] = '\u97CB';
+ t['\u2FB2'] = '\u97ED';
+ t['\u2FB3'] = '\u97F3';
+ t['\u2FB4'] = '\u9801';
+ t['\u2FB5'] = '\u98A8';
+ t['\u2FB6'] = '\u98DB';
+ t['\u2FB7'] = '\u98DF';
+ t['\u2FB8'] = '\u9996';
+ t['\u2FB9'] = '\u9999';
+ t['\u2FBA'] = '\u99AC';
+ t['\u2FBB'] = '\u9AA8';
+ t['\u2FBC'] = '\u9AD8';
+ t['\u2FBD'] = '\u9ADF';
+ t['\u2FBE'] = '\u9B25';
+ t['\u2FBF'] = '\u9B2F';
+ t['\u2FC0'] = '\u9B32';
+ t['\u2FC1'] = '\u9B3C';
+ t['\u2FC2'] = '\u9B5A';
+ t['\u2FC3'] = '\u9CE5';
+ t['\u2FC4'] = '\u9E75';
+ t['\u2FC5'] = '\u9E7F';
+ t['\u2FC6'] = '\u9EA5';
+ t['\u2FC7'] = '\u9EBB';
+ t['\u2FC8'] = '\u9EC3';
+ t['\u2FC9'] = '\u9ECD';
+ t['\u2FCA'] = '\u9ED1';
+ t['\u2FCB'] = '\u9EF9';
+ t['\u2FCC'] = '\u9EFD';
+ t['\u2FCD'] = '\u9F0E';
+ t['\u2FCE'] = '\u9F13';
+ t['\u2FCF'] = '\u9F20';
+ t['\u2FD0'] = '\u9F3B';
+ t['\u2FD1'] = '\u9F4A';
+ t['\u2FD2'] = '\u9F52';
+ t['\u2FD3'] = '\u9F8D';
+ t['\u2FD4'] = '\u9F9C';
+ t['\u2FD5'] = '\u9FA0';
+ t['\u3036'] = '\u3012';
+ t['\u3038'] = '\u5341';
+ t['\u3039'] = '\u5344';
+ t['\u303A'] = '\u5345';
+ t['\u309B'] = '\u0020\u3099';
+ t['\u309C'] = '\u0020\u309A';
+ t['\u3131'] = '\u1100';
+ t['\u3132'] = '\u1101';
+ t['\u3133'] = '\u11AA';
+ t['\u3134'] = '\u1102';
+ t['\u3135'] = '\u11AC';
+ t['\u3136'] = '\u11AD';
+ t['\u3137'] = '\u1103';
+ t['\u3138'] = '\u1104';
+ t['\u3139'] = '\u1105';
+ t['\u313A'] = '\u11B0';
+ t['\u313B'] = '\u11B1';
+ t['\u313C'] = '\u11B2';
+ t['\u313D'] = '\u11B3';
+ t['\u313E'] = '\u11B4';
+ t['\u313F'] = '\u11B5';
+ t['\u3140'] = '\u111A';
+ t['\u3141'] = '\u1106';
+ t['\u3142'] = '\u1107';
+ t['\u3143'] = '\u1108';
+ t['\u3144'] = '\u1121';
+ t['\u3145'] = '\u1109';
+ t['\u3146'] = '\u110A';
+ t['\u3147'] = '\u110B';
+ t['\u3148'] = '\u110C';
+ t['\u3149'] = '\u110D';
+ t['\u314A'] = '\u110E';
+ t['\u314B'] = '\u110F';
+ t['\u314C'] = '\u1110';
+ t['\u314D'] = '\u1111';
+ t['\u314E'] = '\u1112';
+ t['\u314F'] = '\u1161';
+ t['\u3150'] = '\u1162';
+ t['\u3151'] = '\u1163';
+ t['\u3152'] = '\u1164';
+ t['\u3153'] = '\u1165';
+ t['\u3154'] = '\u1166';
+ t['\u3155'] = '\u1167';
+ t['\u3156'] = '\u1168';
+ t['\u3157'] = '\u1169';
+ t['\u3158'] = '\u116A';
+ t['\u3159'] = '\u116B';
+ t['\u315A'] = '\u116C';
+ t['\u315B'] = '\u116D';
+ t['\u315C'] = '\u116E';
+ t['\u315D'] = '\u116F';
+ t['\u315E'] = '\u1170';
+ t['\u315F'] = '\u1171';
+ t['\u3160'] = '\u1172';
+ t['\u3161'] = '\u1173';
+ t['\u3162'] = '\u1174';
+ t['\u3163'] = '\u1175';
+ t['\u3164'] = '\u1160';
+ t['\u3165'] = '\u1114';
+ t['\u3166'] = '\u1115';
+ t['\u3167'] = '\u11C7';
+ t['\u3168'] = '\u11C8';
+ t['\u3169'] = '\u11CC';
+ t['\u316A'] = '\u11CE';
+ t['\u316B'] = '\u11D3';
+ t['\u316C'] = '\u11D7';
+ t['\u316D'] = '\u11D9';
+ t['\u316E'] = '\u111C';
+ t['\u316F'] = '\u11DD';
+ t['\u3170'] = '\u11DF';
+ t['\u3171'] = '\u111D';
+ t['\u3172'] = '\u111E';
+ t['\u3173'] = '\u1120';
+ t['\u3174'] = '\u1122';
+ t['\u3175'] = '\u1123';
+ t['\u3176'] = '\u1127';
+ t['\u3177'] = '\u1129';
+ t['\u3178'] = '\u112B';
+ t['\u3179'] = '\u112C';
+ t['\u317A'] = '\u112D';
+ t['\u317B'] = '\u112E';
+ t['\u317C'] = '\u112F';
+ t['\u317D'] = '\u1132';
+ t['\u317E'] = '\u1136';
+ t['\u317F'] = '\u1140';
+ t['\u3180'] = '\u1147';
+ t['\u3181'] = '\u114C';
+ t['\u3182'] = '\u11F1';
+ t['\u3183'] = '\u11F2';
+ t['\u3184'] = '\u1157';
+ t['\u3185'] = '\u1158';
+ t['\u3186'] = '\u1159';
+ t['\u3187'] = '\u1184';
+ t['\u3188'] = '\u1185';
+ t['\u3189'] = '\u1188';
+ t['\u318A'] = '\u1191';
+ t['\u318B'] = '\u1192';
+ t['\u318C'] = '\u1194';
+ t['\u318D'] = '\u119E';
+ t['\u318E'] = '\u11A1';
+ t['\u3200'] = '\u0028\u1100\u0029';
+ t['\u3201'] = '\u0028\u1102\u0029';
+ t['\u3202'] = '\u0028\u1103\u0029';
+ t['\u3203'] = '\u0028\u1105\u0029';
+ t['\u3204'] = '\u0028\u1106\u0029';
+ t['\u3205'] = '\u0028\u1107\u0029';
+ t['\u3206'] = '\u0028\u1109\u0029';
+ t['\u3207'] = '\u0028\u110B\u0029';
+ t['\u3208'] = '\u0028\u110C\u0029';
+ t['\u3209'] = '\u0028\u110E\u0029';
+ t['\u320A'] = '\u0028\u110F\u0029';
+ t['\u320B'] = '\u0028\u1110\u0029';
+ t['\u320C'] = '\u0028\u1111\u0029';
+ t['\u320D'] = '\u0028\u1112\u0029';
+ t['\u320E'] = '\u0028\u1100\u1161\u0029';
+ t['\u320F'] = '\u0028\u1102\u1161\u0029';
+ t['\u3210'] = '\u0028\u1103\u1161\u0029';
+ t['\u3211'] = '\u0028\u1105\u1161\u0029';
+ t['\u3212'] = '\u0028\u1106\u1161\u0029';
+ t['\u3213'] = '\u0028\u1107\u1161\u0029';
+ t['\u3214'] = '\u0028\u1109\u1161\u0029';
+ t['\u3215'] = '\u0028\u110B\u1161\u0029';
+ t['\u3216'] = '\u0028\u110C\u1161\u0029';
+ t['\u3217'] = '\u0028\u110E\u1161\u0029';
+ t['\u3218'] = '\u0028\u110F\u1161\u0029';
+ t['\u3219'] = '\u0028\u1110\u1161\u0029';
+ t['\u321A'] = '\u0028\u1111\u1161\u0029';
+ t['\u321B'] = '\u0028\u1112\u1161\u0029';
+ t['\u321C'] = '\u0028\u110C\u116E\u0029';
+ t['\u321D'] = '\u0028\u110B\u1169\u110C\u1165\u11AB\u0029';
+ t['\u321E'] = '\u0028\u110B\u1169\u1112\u116E\u0029';
+ t['\u3220'] = '\u0028\u4E00\u0029';
+ t['\u3221'] = '\u0028\u4E8C\u0029';
+ t['\u3222'] = '\u0028\u4E09\u0029';
+ t['\u3223'] = '\u0028\u56DB\u0029';
+ t['\u3224'] = '\u0028\u4E94\u0029';
+ t['\u3225'] = '\u0028\u516D\u0029';
+ t['\u3226'] = '\u0028\u4E03\u0029';
+ t['\u3227'] = '\u0028\u516B\u0029';
+ t['\u3228'] = '\u0028\u4E5D\u0029';
+ t['\u3229'] = '\u0028\u5341\u0029';
+ t['\u322A'] = '\u0028\u6708\u0029';
+ t['\u322B'] = '\u0028\u706B\u0029';
+ t['\u322C'] = '\u0028\u6C34\u0029';
+ t['\u322D'] = '\u0028\u6728\u0029';
+ t['\u322E'] = '\u0028\u91D1\u0029';
+ t['\u322F'] = '\u0028\u571F\u0029';
+ t['\u3230'] = '\u0028\u65E5\u0029';
+ t['\u3231'] = '\u0028\u682A\u0029';
+ t['\u3232'] = '\u0028\u6709\u0029';
+ t['\u3233'] = '\u0028\u793E\u0029';
+ t['\u3234'] = '\u0028\u540D\u0029';
+ t['\u3235'] = '\u0028\u7279\u0029';
+ t['\u3236'] = '\u0028\u8CA1\u0029';
+ t['\u3237'] = '\u0028\u795D\u0029';
+ t['\u3238'] = '\u0028\u52B4\u0029';
+ t['\u3239'] = '\u0028\u4EE3\u0029';
+ t['\u323A'] = '\u0028\u547C\u0029';
+ t['\u323B'] = '\u0028\u5B66\u0029';
+ t['\u323C'] = '\u0028\u76E3\u0029';
+ t['\u323D'] = '\u0028\u4F01\u0029';
+ t['\u323E'] = '\u0028\u8CC7\u0029';
+ t['\u323F'] = '\u0028\u5354\u0029';
+ t['\u3240'] = '\u0028\u796D\u0029';
+ t['\u3241'] = '\u0028\u4F11\u0029';
+ t['\u3242'] = '\u0028\u81EA\u0029';
+ t['\u3243'] = '\u0028\u81F3\u0029';
+ t['\u32C0'] = '\u0031\u6708';
+ t['\u32C1'] = '\u0032\u6708';
+ t['\u32C2'] = '\u0033\u6708';
+ t['\u32C3'] = '\u0034\u6708';
+ t['\u32C4'] = '\u0035\u6708';
+ t['\u32C5'] = '\u0036\u6708';
+ t['\u32C6'] = '\u0037\u6708';
+ t['\u32C7'] = '\u0038\u6708';
+ t['\u32C8'] = '\u0039\u6708';
+ t['\u32C9'] = '\u0031\u0030\u6708';
+ t['\u32CA'] = '\u0031\u0031\u6708';
+ t['\u32CB'] = '\u0031\u0032\u6708';
+ t['\u3358'] = '\u0030\u70B9';
+ t['\u3359'] = '\u0031\u70B9';
+ t['\u335A'] = '\u0032\u70B9';
+ t['\u335B'] = '\u0033\u70B9';
+ t['\u335C'] = '\u0034\u70B9';
+ t['\u335D'] = '\u0035\u70B9';
+ t['\u335E'] = '\u0036\u70B9';
+ t['\u335F'] = '\u0037\u70B9';
+ t['\u3360'] = '\u0038\u70B9';
+ t['\u3361'] = '\u0039\u70B9';
+ t['\u3362'] = '\u0031\u0030\u70B9';
+ t['\u3363'] = '\u0031\u0031\u70B9';
+ t['\u3364'] = '\u0031\u0032\u70B9';
+ t['\u3365'] = '\u0031\u0033\u70B9';
+ t['\u3366'] = '\u0031\u0034\u70B9';
+ t['\u3367'] = '\u0031\u0035\u70B9';
+ t['\u3368'] = '\u0031\u0036\u70B9';
+ t['\u3369'] = '\u0031\u0037\u70B9';
+ t['\u336A'] = '\u0031\u0038\u70B9';
+ t['\u336B'] = '\u0031\u0039\u70B9';
+ t['\u336C'] = '\u0032\u0030\u70B9';
+ t['\u336D'] = '\u0032\u0031\u70B9';
+ t['\u336E'] = '\u0032\u0032\u70B9';
+ t['\u336F'] = '\u0032\u0033\u70B9';
+ t['\u3370'] = '\u0032\u0034\u70B9';
+ t['\u33E0'] = '\u0031\u65E5';
+ t['\u33E1'] = '\u0032\u65E5';
+ t['\u33E2'] = '\u0033\u65E5';
+ t['\u33E3'] = '\u0034\u65E5';
+ t['\u33E4'] = '\u0035\u65E5';
+ t['\u33E5'] = '\u0036\u65E5';
+ t['\u33E6'] = '\u0037\u65E5';
+ t['\u33E7'] = '\u0038\u65E5';
+ t['\u33E8'] = '\u0039\u65E5';
+ t['\u33E9'] = '\u0031\u0030\u65E5';
+ t['\u33EA'] = '\u0031\u0031\u65E5';
+ t['\u33EB'] = '\u0031\u0032\u65E5';
+ t['\u33EC'] = '\u0031\u0033\u65E5';
+ t['\u33ED'] = '\u0031\u0034\u65E5';
+ t['\u33EE'] = '\u0031\u0035\u65E5';
+ t['\u33EF'] = '\u0031\u0036\u65E5';
+ t['\u33F0'] = '\u0031\u0037\u65E5';
+ t['\u33F1'] = '\u0031\u0038\u65E5';
+ t['\u33F2'] = '\u0031\u0039\u65E5';
+ t['\u33F3'] = '\u0032\u0030\u65E5';
+ t['\u33F4'] = '\u0032\u0031\u65E5';
+ t['\u33F5'] = '\u0032\u0032\u65E5';
+ t['\u33F6'] = '\u0032\u0033\u65E5';
+ t['\u33F7'] = '\u0032\u0034\u65E5';
+ t['\u33F8'] = '\u0032\u0035\u65E5';
+ t['\u33F9'] = '\u0032\u0036\u65E5';
+ t['\u33FA'] = '\u0032\u0037\u65E5';
+ t['\u33FB'] = '\u0032\u0038\u65E5';
+ t['\u33FC'] = '\u0032\u0039\u65E5';
+ t['\u33FD'] = '\u0033\u0030\u65E5';
+ t['\u33FE'] = '\u0033\u0031\u65E5';
+ t['\uFB00'] = '\u0066\u0066';
+ t['\uFB01'] = '\u0066\u0069';
+ t['\uFB02'] = '\u0066\u006C';
+ t['\uFB03'] = '\u0066\u0066\u0069';
+ t['\uFB04'] = '\u0066\u0066\u006C';
+ t['\uFB05'] = '\u017F\u0074';
+ t['\uFB06'] = '\u0073\u0074';
+ t['\uFB13'] = '\u0574\u0576';
+ t['\uFB14'] = '\u0574\u0565';
+ t['\uFB15'] = '\u0574\u056B';
+ t['\uFB16'] = '\u057E\u0576';
+ t['\uFB17'] = '\u0574\u056D';
+ t['\uFB4F'] = '\u05D0\u05DC';
+ t['\uFB50'] = '\u0671';
+ t['\uFB51'] = '\u0671';
+ t['\uFB52'] = '\u067B';
+ t['\uFB53'] = '\u067B';
+ t['\uFB54'] = '\u067B';
+ t['\uFB55'] = '\u067B';
+ t['\uFB56'] = '\u067E';
+ t['\uFB57'] = '\u067E';
+ t['\uFB58'] = '\u067E';
+ t['\uFB59'] = '\u067E';
+ t['\uFB5A'] = '\u0680';
+ t['\uFB5B'] = '\u0680';
+ t['\uFB5C'] = '\u0680';
+ t['\uFB5D'] = '\u0680';
+ t['\uFB5E'] = '\u067A';
+ t['\uFB5F'] = '\u067A';
+ t['\uFB60'] = '\u067A';
+ t['\uFB61'] = '\u067A';
+ t['\uFB62'] = '\u067F';
+ t['\uFB63'] = '\u067F';
+ t['\uFB64'] = '\u067F';
+ t['\uFB65'] = '\u067F';
+ t['\uFB66'] = '\u0679';
+ t['\uFB67'] = '\u0679';
+ t['\uFB68'] = '\u0679';
+ t['\uFB69'] = '\u0679';
+ t['\uFB6A'] = '\u06A4';
+ t['\uFB6B'] = '\u06A4';
+ t['\uFB6C'] = '\u06A4';
+ t['\uFB6D'] = '\u06A4';
+ t['\uFB6E'] = '\u06A6';
+ t['\uFB6F'] = '\u06A6';
+ t['\uFB70'] = '\u06A6';
+ t['\uFB71'] = '\u06A6';
+ t['\uFB72'] = '\u0684';
+ t['\uFB73'] = '\u0684';
+ t['\uFB74'] = '\u0684';
+ t['\uFB75'] = '\u0684';
+ t['\uFB76'] = '\u0683';
+ t['\uFB77'] = '\u0683';
+ t['\uFB78'] = '\u0683';
+ t['\uFB79'] = '\u0683';
+ t['\uFB7A'] = '\u0686';
+ t['\uFB7B'] = '\u0686';
+ t['\uFB7C'] = '\u0686';
+ t['\uFB7D'] = '\u0686';
+ t['\uFB7E'] = '\u0687';
+ t['\uFB7F'] = '\u0687';
+ t['\uFB80'] = '\u0687';
+ t['\uFB81'] = '\u0687';
+ t['\uFB82'] = '\u068D';
+ t['\uFB83'] = '\u068D';
+ t['\uFB84'] = '\u068C';
+ t['\uFB85'] = '\u068C';
+ t['\uFB86'] = '\u068E';
+ t['\uFB87'] = '\u068E';
+ t['\uFB88'] = '\u0688';
+ t['\uFB89'] = '\u0688';
+ t['\uFB8A'] = '\u0698';
+ t['\uFB8B'] = '\u0698';
+ t['\uFB8C'] = '\u0691';
+ t['\uFB8D'] = '\u0691';
+ t['\uFB8E'] = '\u06A9';
+ t['\uFB8F'] = '\u06A9';
+ t['\uFB90'] = '\u06A9';
+ t['\uFB91'] = '\u06A9';
+ t['\uFB92'] = '\u06AF';
+ t['\uFB93'] = '\u06AF';
+ t['\uFB94'] = '\u06AF';
+ t['\uFB95'] = '\u06AF';
+ t['\uFB96'] = '\u06B3';
+ t['\uFB97'] = '\u06B3';
+ t['\uFB98'] = '\u06B3';
+ t['\uFB99'] = '\u06B3';
+ t['\uFB9A'] = '\u06B1';
+ t['\uFB9B'] = '\u06B1';
+ t['\uFB9C'] = '\u06B1';
+ t['\uFB9D'] = '\u06B1';
+ t['\uFB9E'] = '\u06BA';
+ t['\uFB9F'] = '\u06BA';
+ t['\uFBA0'] = '\u06BB';
+ t['\uFBA1'] = '\u06BB';
+ t['\uFBA2'] = '\u06BB';
+ t['\uFBA3'] = '\u06BB';
+ t['\uFBA4'] = '\u06C0';
+ t['\uFBA5'] = '\u06C0';
+ t['\uFBA6'] = '\u06C1';
+ t['\uFBA7'] = '\u06C1';
+ t['\uFBA8'] = '\u06C1';
+ t['\uFBA9'] = '\u06C1';
+ t['\uFBAA'] = '\u06BE';
+ t['\uFBAB'] = '\u06BE';
+ t['\uFBAC'] = '\u06BE';
+ t['\uFBAD'] = '\u06BE';
+ t['\uFBAE'] = '\u06D2';
+ t['\uFBAF'] = '\u06D2';
+ t['\uFBB0'] = '\u06D3';
+ t['\uFBB1'] = '\u06D3';
+ t['\uFBD3'] = '\u06AD';
+ t['\uFBD4'] = '\u06AD';
+ t['\uFBD5'] = '\u06AD';
+ t['\uFBD6'] = '\u06AD';
+ t['\uFBD7'] = '\u06C7';
+ t['\uFBD8'] = '\u06C7';
+ t['\uFBD9'] = '\u06C6';
+ t['\uFBDA'] = '\u06C6';
+ t['\uFBDB'] = '\u06C8';
+ t['\uFBDC'] = '\u06C8';
+ t['\uFBDD'] = '\u0677';
+ t['\uFBDE'] = '\u06CB';
+ t['\uFBDF'] = '\u06CB';
+ t['\uFBE0'] = '\u06C5';
+ t['\uFBE1'] = '\u06C5';
+ t['\uFBE2'] = '\u06C9';
+ t['\uFBE3'] = '\u06C9';
+ t['\uFBE4'] = '\u06D0';
+ t['\uFBE5'] = '\u06D0';
+ t['\uFBE6'] = '\u06D0';
+ t['\uFBE7'] = '\u06D0';
+ t['\uFBE8'] = '\u0649';
+ t['\uFBE9'] = '\u0649';
+ t['\uFBEA'] = '\u0626\u0627';
+ t['\uFBEB'] = '\u0626\u0627';
+ t['\uFBEC'] = '\u0626\u06D5';
+ t['\uFBED'] = '\u0626\u06D5';
+ t['\uFBEE'] = '\u0626\u0648';
+ t['\uFBEF'] = '\u0626\u0648';
+ t['\uFBF0'] = '\u0626\u06C7';
+ t['\uFBF1'] = '\u0626\u06C7';
+ t['\uFBF2'] = '\u0626\u06C6';
+ t['\uFBF3'] = '\u0626\u06C6';
+ t['\uFBF4'] = '\u0626\u06C8';
+ t['\uFBF5'] = '\u0626\u06C8';
+ t['\uFBF6'] = '\u0626\u06D0';
+ t['\uFBF7'] = '\u0626\u06D0';
+ t['\uFBF8'] = '\u0626\u06D0';
+ t['\uFBF9'] = '\u0626\u0649';
+ t['\uFBFA'] = '\u0626\u0649';
+ t['\uFBFB'] = '\u0626\u0649';
+ t['\uFBFC'] = '\u06CC';
+ t['\uFBFD'] = '\u06CC';
+ t['\uFBFE'] = '\u06CC';
+ t['\uFBFF'] = '\u06CC';
+ t['\uFC00'] = '\u0626\u062C';
+ t['\uFC01'] = '\u0626\u062D';
+ t['\uFC02'] = '\u0626\u0645';
+ t['\uFC03'] = '\u0626\u0649';
+ t['\uFC04'] = '\u0626\u064A';
+ t['\uFC05'] = '\u0628\u062C';
+ t['\uFC06'] = '\u0628\u062D';
+ t['\uFC07'] = '\u0628\u062E';
+ t['\uFC08'] = '\u0628\u0645';
+ t['\uFC09'] = '\u0628\u0649';
+ t['\uFC0A'] = '\u0628\u064A';
+ t['\uFC0B'] = '\u062A\u062C';
+ t['\uFC0C'] = '\u062A\u062D';
+ t['\uFC0D'] = '\u062A\u062E';
+ t['\uFC0E'] = '\u062A\u0645';
+ t['\uFC0F'] = '\u062A\u0649';
+ t['\uFC10'] = '\u062A\u064A';
+ t['\uFC11'] = '\u062B\u062C';
+ t['\uFC12'] = '\u062B\u0645';
+ t['\uFC13'] = '\u062B\u0649';
+ t['\uFC14'] = '\u062B\u064A';
+ t['\uFC15'] = '\u062C\u062D';
+ t['\uFC16'] = '\u062C\u0645';
+ t['\uFC17'] = '\u062D\u062C';
+ t['\uFC18'] = '\u062D\u0645';
+ t['\uFC19'] = '\u062E\u062C';
+ t['\uFC1A'] = '\u062E\u062D';
+ t['\uFC1B'] = '\u062E\u0645';
+ t['\uFC1C'] = '\u0633\u062C';
+ t['\uFC1D'] = '\u0633\u062D';
+ t['\uFC1E'] = '\u0633\u062E';
+ t['\uFC1F'] = '\u0633\u0645';
+ t['\uFC20'] = '\u0635\u062D';
+ t['\uFC21'] = '\u0635\u0645';
+ t['\uFC22'] = '\u0636\u062C';
+ t['\uFC23'] = '\u0636\u062D';
+ t['\uFC24'] = '\u0636\u062E';
+ t['\uFC25'] = '\u0636\u0645';
+ t['\uFC26'] = '\u0637\u062D';
+ t['\uFC27'] = '\u0637\u0645';
+ t['\uFC28'] = '\u0638\u0645';
+ t['\uFC29'] = '\u0639\u062C';
+ t['\uFC2A'] = '\u0639\u0645';
+ t['\uFC2B'] = '\u063A\u062C';
+ t['\uFC2C'] = '\u063A\u0645';
+ t['\uFC2D'] = '\u0641\u062C';
+ t['\uFC2E'] = '\u0641\u062D';
+ t['\uFC2F'] = '\u0641\u062E';
+ t['\uFC30'] = '\u0641\u0645';
+ t['\uFC31'] = '\u0641\u0649';
+ t['\uFC32'] = '\u0641\u064A';
+ t['\uFC33'] = '\u0642\u062D';
+ t['\uFC34'] = '\u0642\u0645';
+ t['\uFC35'] = '\u0642\u0649';
+ t['\uFC36'] = '\u0642\u064A';
+ t['\uFC37'] = '\u0643\u0627';
+ t['\uFC38'] = '\u0643\u062C';
+ t['\uFC39'] = '\u0643\u062D';
+ t['\uFC3A'] = '\u0643\u062E';
+ t['\uFC3B'] = '\u0643\u0644';
+ t['\uFC3C'] = '\u0643\u0645';
+ t['\uFC3D'] = '\u0643\u0649';
+ t['\uFC3E'] = '\u0643\u064A';
+ t['\uFC3F'] = '\u0644\u062C';
+ t['\uFC40'] = '\u0644\u062D';
+ t['\uFC41'] = '\u0644\u062E';
+ t['\uFC42'] = '\u0644\u0645';
+ t['\uFC43'] = '\u0644\u0649';
+ t['\uFC44'] = '\u0644\u064A';
+ t['\uFC45'] = '\u0645\u062C';
+ t['\uFC46'] = '\u0645\u062D';
+ t['\uFC47'] = '\u0645\u062E';
+ t['\uFC48'] = '\u0645\u0645';
+ t['\uFC49'] = '\u0645\u0649';
+ t['\uFC4A'] = '\u0645\u064A';
+ t['\uFC4B'] = '\u0646\u062C';
+ t['\uFC4C'] = '\u0646\u062D';
+ t['\uFC4D'] = '\u0646\u062E';
+ t['\uFC4E'] = '\u0646\u0645';
+ t['\uFC4F'] = '\u0646\u0649';
+ t['\uFC50'] = '\u0646\u064A';
+ t['\uFC51'] = '\u0647\u062C';
+ t['\uFC52'] = '\u0647\u0645';
+ t['\uFC53'] = '\u0647\u0649';
+ t['\uFC54'] = '\u0647\u064A';
+ t['\uFC55'] = '\u064A\u062C';
+ t['\uFC56'] = '\u064A\u062D';
+ t['\uFC57'] = '\u064A\u062E';
+ t['\uFC58'] = '\u064A\u0645';
+ t['\uFC59'] = '\u064A\u0649';
+ t['\uFC5A'] = '\u064A\u064A';
+ t['\uFC5B'] = '\u0630\u0670';
+ t['\uFC5C'] = '\u0631\u0670';
+ t['\uFC5D'] = '\u0649\u0670';
+ t['\uFC5E'] = '\u0020\u064C\u0651';
+ t['\uFC5F'] = '\u0020\u064D\u0651';
+ t['\uFC60'] = '\u0020\u064E\u0651';
+ t['\uFC61'] = '\u0020\u064F\u0651';
+ t['\uFC62'] = '\u0020\u0650\u0651';
+ t['\uFC63'] = '\u0020\u0651\u0670';
+ t['\uFC64'] = '\u0626\u0631';
+ t['\uFC65'] = '\u0626\u0632';
+ t['\uFC66'] = '\u0626\u0645';
+ t['\uFC67'] = '\u0626\u0646';
+ t['\uFC68'] = '\u0626\u0649';
+ t['\uFC69'] = '\u0626\u064A';
+ t['\uFC6A'] = '\u0628\u0631';
+ t['\uFC6B'] = '\u0628\u0632';
+ t['\uFC6C'] = '\u0628\u0645';
+ t['\uFC6D'] = '\u0628\u0646';
+ t['\uFC6E'] = '\u0628\u0649';
+ t['\uFC6F'] = '\u0628\u064A';
+ t['\uFC70'] = '\u062A\u0631';
+ t['\uFC71'] = '\u062A\u0632';
+ t['\uFC72'] = '\u062A\u0645';
+ t['\uFC73'] = '\u062A\u0646';
+ t['\uFC74'] = '\u062A\u0649';
+ t['\uFC75'] = '\u062A\u064A';
+ t['\uFC76'] = '\u062B\u0631';
+ t['\uFC77'] = '\u062B\u0632';
+ t['\uFC78'] = '\u062B\u0645';
+ t['\uFC79'] = '\u062B\u0646';
+ t['\uFC7A'] = '\u062B\u0649';
+ t['\uFC7B'] = '\u062B\u064A';
+ t['\uFC7C'] = '\u0641\u0649';
+ t['\uFC7D'] = '\u0641\u064A';
+ t['\uFC7E'] = '\u0642\u0649';
+ t['\uFC7F'] = '\u0642\u064A';
+ t['\uFC80'] = '\u0643\u0627';
+ t['\uFC81'] = '\u0643\u0644';
+ t['\uFC82'] = '\u0643\u0645';
+ t['\uFC83'] = '\u0643\u0649';
+ t['\uFC84'] = '\u0643\u064A';
+ t['\uFC85'] = '\u0644\u0645';
+ t['\uFC86'] = '\u0644\u0649';
+ t['\uFC87'] = '\u0644\u064A';
+ t['\uFC88'] = '\u0645\u0627';
+ t['\uFC89'] = '\u0645\u0645';
+ t['\uFC8A'] = '\u0646\u0631';
+ t['\uFC8B'] = '\u0646\u0632';
+ t['\uFC8C'] = '\u0646\u0645';
+ t['\uFC8D'] = '\u0646\u0646';
+ t['\uFC8E'] = '\u0646\u0649';
+ t['\uFC8F'] = '\u0646\u064A';
+ t['\uFC90'] = '\u0649\u0670';
+ t['\uFC91'] = '\u064A\u0631';
+ t['\uFC92'] = '\u064A\u0632';
+ t['\uFC93'] = '\u064A\u0645';
+ t['\uFC94'] = '\u064A\u0646';
+ t['\uFC95'] = '\u064A\u0649';
+ t['\uFC96'] = '\u064A\u064A';
+ t['\uFC97'] = '\u0626\u062C';
+ t['\uFC98'] = '\u0626\u062D';
+ t['\uFC99'] = '\u0626\u062E';
+ t['\uFC9A'] = '\u0626\u0645';
+ t['\uFC9B'] = '\u0626\u0647';
+ t['\uFC9C'] = '\u0628\u062C';
+ t['\uFC9D'] = '\u0628\u062D';
+ t['\uFC9E'] = '\u0628\u062E';
+ t['\uFC9F'] = '\u0628\u0645';
+ t['\uFCA0'] = '\u0628\u0647';
+ t['\uFCA1'] = '\u062A\u062C';
+ t['\uFCA2'] = '\u062A\u062D';
+ t['\uFCA3'] = '\u062A\u062E';
+ t['\uFCA4'] = '\u062A\u0645';
+ t['\uFCA5'] = '\u062A\u0647';
+ t['\uFCA6'] = '\u062B\u0645';
+ t['\uFCA7'] = '\u062C\u062D';
+ t['\uFCA8'] = '\u062C\u0645';
+ t['\uFCA9'] = '\u062D\u062C';
+ t['\uFCAA'] = '\u062D\u0645';
+ t['\uFCAB'] = '\u062E\u062C';
+ t['\uFCAC'] = '\u062E\u0645';
+ t['\uFCAD'] = '\u0633\u062C';
+ t['\uFCAE'] = '\u0633\u062D';
+ t['\uFCAF'] = '\u0633\u062E';
+ t['\uFCB0'] = '\u0633\u0645';
+ t['\uFCB1'] = '\u0635\u062D';
+ t['\uFCB2'] = '\u0635\u062E';
+ t['\uFCB3'] = '\u0635\u0645';
+ t['\uFCB4'] = '\u0636\u062C';
+ t['\uFCB5'] = '\u0636\u062D';
+ t['\uFCB6'] = '\u0636\u062E';
+ t['\uFCB7'] = '\u0636\u0645';
+ t['\uFCB8'] = '\u0637\u062D';
+ t['\uFCB9'] = '\u0638\u0645';
+ t['\uFCBA'] = '\u0639\u062C';
+ t['\uFCBB'] = '\u0639\u0645';
+ t['\uFCBC'] = '\u063A\u062C';
+ t['\uFCBD'] = '\u063A\u0645';
+ t['\uFCBE'] = '\u0641\u062C';
+ t['\uFCBF'] = '\u0641\u062D';
+ t['\uFCC0'] = '\u0641\u062E';
+ t['\uFCC1'] = '\u0641\u0645';
+ t['\uFCC2'] = '\u0642\u062D';
+ t['\uFCC3'] = '\u0642\u0645';
+ t['\uFCC4'] = '\u0643\u062C';
+ t['\uFCC5'] = '\u0643\u062D';
+ t['\uFCC6'] = '\u0643\u062E';
+ t['\uFCC7'] = '\u0643\u0644';
+ t['\uFCC8'] = '\u0643\u0645';
+ t['\uFCC9'] = '\u0644\u062C';
+ t['\uFCCA'] = '\u0644\u062D';
+ t['\uFCCB'] = '\u0644\u062E';
+ t['\uFCCC'] = '\u0644\u0645';
+ t['\uFCCD'] = '\u0644\u0647';
+ t['\uFCCE'] = '\u0645\u062C';
+ t['\uFCCF'] = '\u0645\u062D';
+ t['\uFCD0'] = '\u0645\u062E';
+ t['\uFCD1'] = '\u0645\u0645';
+ t['\uFCD2'] = '\u0646\u062C';
+ t['\uFCD3'] = '\u0646\u062D';
+ t['\uFCD4'] = '\u0646\u062E';
+ t['\uFCD5'] = '\u0646\u0645';
+ t['\uFCD6'] = '\u0646\u0647';
+ t['\uFCD7'] = '\u0647\u062C';
+ t['\uFCD8'] = '\u0647\u0645';
+ t['\uFCD9'] = '\u0647\u0670';
+ t['\uFCDA'] = '\u064A\u062C';
+ t['\uFCDB'] = '\u064A\u062D';
+ t['\uFCDC'] = '\u064A\u062E';
+ t['\uFCDD'] = '\u064A\u0645';
+ t['\uFCDE'] = '\u064A\u0647';
+ t['\uFCDF'] = '\u0626\u0645';
+ t['\uFCE0'] = '\u0626\u0647';
+ t['\uFCE1'] = '\u0628\u0645';
+ t['\uFCE2'] = '\u0628\u0647';
+ t['\uFCE3'] = '\u062A\u0645';
+ t['\uFCE4'] = '\u062A\u0647';
+ t['\uFCE5'] = '\u062B\u0645';
+ t['\uFCE6'] = '\u062B\u0647';
+ t['\uFCE7'] = '\u0633\u0645';
+ t['\uFCE8'] = '\u0633\u0647';
+ t['\uFCE9'] = '\u0634\u0645';
+ t['\uFCEA'] = '\u0634\u0647';
+ t['\uFCEB'] = '\u0643\u0644';
+ t['\uFCEC'] = '\u0643\u0645';
+ t['\uFCED'] = '\u0644\u0645';
+ t['\uFCEE'] = '\u0646\u0645';
+ t['\uFCEF'] = '\u0646\u0647';
+ t['\uFCF0'] = '\u064A\u0645';
+ t['\uFCF1'] = '\u064A\u0647';
+ t['\uFCF2'] = '\u0640\u064E\u0651';
+ t['\uFCF3'] = '\u0640\u064F\u0651';
+ t['\uFCF4'] = '\u0640\u0650\u0651';
+ t['\uFCF5'] = '\u0637\u0649';
+ t['\uFCF6'] = '\u0637\u064A';
+ t['\uFCF7'] = '\u0639\u0649';
+ t['\uFCF8'] = '\u0639\u064A';
+ t['\uFCF9'] = '\u063A\u0649';
+ t['\uFCFA'] = '\u063A\u064A';
+ t['\uFCFB'] = '\u0633\u0649';
+ t['\uFCFC'] = '\u0633\u064A';
+ t['\uFCFD'] = '\u0634\u0649';
+ t['\uFCFE'] = '\u0634\u064A';
+ t['\uFCFF'] = '\u062D\u0649';
+ t['\uFD00'] = '\u062D\u064A';
+ t['\uFD01'] = '\u062C\u0649';
+ t['\uFD02'] = '\u062C\u064A';
+ t['\uFD03'] = '\u062E\u0649';
+ t['\uFD04'] = '\u062E\u064A';
+ t['\uFD05'] = '\u0635\u0649';
+ t['\uFD06'] = '\u0635\u064A';
+ t['\uFD07'] = '\u0636\u0649';
+ t['\uFD08'] = '\u0636\u064A';
+ t['\uFD09'] = '\u0634\u062C';
+ t['\uFD0A'] = '\u0634\u062D';
+ t['\uFD0B'] = '\u0634\u062E';
+ t['\uFD0C'] = '\u0634\u0645';
+ t['\uFD0D'] = '\u0634\u0631';
+ t['\uFD0E'] = '\u0633\u0631';
+ t['\uFD0F'] = '\u0635\u0631';
+ t['\uFD10'] = '\u0636\u0631';
+ t['\uFD11'] = '\u0637\u0649';
+ t['\uFD12'] = '\u0637\u064A';
+ t['\uFD13'] = '\u0639\u0649';
+ t['\uFD14'] = '\u0639\u064A';
+ t['\uFD15'] = '\u063A\u0649';
+ t['\uFD16'] = '\u063A\u064A';
+ t['\uFD17'] = '\u0633\u0649';
+ t['\uFD18'] = '\u0633\u064A';
+ t['\uFD19'] = '\u0634\u0649';
+ t['\uFD1A'] = '\u0634\u064A';
+ t['\uFD1B'] = '\u062D\u0649';
+ t['\uFD1C'] = '\u062D\u064A';
+ t['\uFD1D'] = '\u062C\u0649';
+ t['\uFD1E'] = '\u062C\u064A';
+ t['\uFD1F'] = '\u062E\u0649';
+ t['\uFD20'] = '\u062E\u064A';
+ t['\uFD21'] = '\u0635\u0649';
+ t['\uFD22'] = '\u0635\u064A';
+ t['\uFD23'] = '\u0636\u0649';
+ t['\uFD24'] = '\u0636\u064A';
+ t['\uFD25'] = '\u0634\u062C';
+ t['\uFD26'] = '\u0634\u062D';
+ t['\uFD27'] = '\u0634\u062E';
+ t['\uFD28'] = '\u0634\u0645';
+ t['\uFD29'] = '\u0634\u0631';
+ t['\uFD2A'] = '\u0633\u0631';
+ t['\uFD2B'] = '\u0635\u0631';
+ t['\uFD2C'] = '\u0636\u0631';
+ t['\uFD2D'] = '\u0634\u062C';
+ t['\uFD2E'] = '\u0634\u062D';
+ t['\uFD2F'] = '\u0634\u062E';
+ t['\uFD30'] = '\u0634\u0645';
+ t['\uFD31'] = '\u0633\u0647';
+ t['\uFD32'] = '\u0634\u0647';
+ t['\uFD33'] = '\u0637\u0645';
+ t['\uFD34'] = '\u0633\u062C';
+ t['\uFD35'] = '\u0633\u062D';
+ t['\uFD36'] = '\u0633\u062E';
+ t['\uFD37'] = '\u0634\u062C';
+ t['\uFD38'] = '\u0634\u062D';
+ t['\uFD39'] = '\u0634\u062E';
+ t['\uFD3A'] = '\u0637\u0645';
+ t['\uFD3B'] = '\u0638\u0645';
+ t['\uFD3C'] = '\u0627\u064B';
+ t['\uFD3D'] = '\u0627\u064B';
+ t['\uFD50'] = '\u062A\u062C\u0645';
+ t['\uFD51'] = '\u062A\u062D\u062C';
+ t['\uFD52'] = '\u062A\u062D\u062C';
+ t['\uFD53'] = '\u062A\u062D\u0645';
+ t['\uFD54'] = '\u062A\u062E\u0645';
+ t['\uFD55'] = '\u062A\u0645\u062C';
+ t['\uFD56'] = '\u062A\u0645\u062D';
+ t['\uFD57'] = '\u062A\u0645\u062E';
+ t['\uFD58'] = '\u062C\u0645\u062D';
+ t['\uFD59'] = '\u062C\u0645\u062D';
+ t['\uFD5A'] = '\u062D\u0645\u064A';
+ t['\uFD5B'] = '\u062D\u0645\u0649';
+ t['\uFD5C'] = '\u0633\u062D\u062C';
+ t['\uFD5D'] = '\u0633\u062C\u062D';
+ t['\uFD5E'] = '\u0633\u062C\u0649';
+ t['\uFD5F'] = '\u0633\u0645\u062D';
+ t['\uFD60'] = '\u0633\u0645\u062D';
+ t['\uFD61'] = '\u0633\u0645\u062C';
+ t['\uFD62'] = '\u0633\u0645\u0645';
+ t['\uFD63'] = '\u0633\u0645\u0645';
+ t['\uFD64'] = '\u0635\u062D\u062D';
+ t['\uFD65'] = '\u0635\u062D\u062D';
+ t['\uFD66'] = '\u0635\u0645\u0645';
+ t['\uFD67'] = '\u0634\u062D\u0645';
+ t['\uFD68'] = '\u0634\u062D\u0645';
+ t['\uFD69'] = '\u0634\u062C\u064A';
+ t['\uFD6A'] = '\u0634\u0645\u062E';
+ t['\uFD6B'] = '\u0634\u0645\u062E';
+ t['\uFD6C'] = '\u0634\u0645\u0645';
+ t['\uFD6D'] = '\u0634\u0645\u0645';
+ t['\uFD6E'] = '\u0636\u062D\u0649';
+ t['\uFD6F'] = '\u0636\u062E\u0645';
+ t['\uFD70'] = '\u0636\u062E\u0645';
+ t['\uFD71'] = '\u0637\u0645\u062D';
+ t['\uFD72'] = '\u0637\u0645\u062D';
+ t['\uFD73'] = '\u0637\u0645\u0645';
+ t['\uFD74'] = '\u0637\u0645\u064A';
+ t['\uFD75'] = '\u0639\u062C\u0645';
+ t['\uFD76'] = '\u0639\u0645\u0645';
+ t['\uFD77'] = '\u0639\u0645\u0645';
+ t['\uFD78'] = '\u0639\u0645\u0649';
+ t['\uFD79'] = '\u063A\u0645\u0645';
+ t['\uFD7A'] = '\u063A\u0645\u064A';
+ t['\uFD7B'] = '\u063A\u0645\u0649';
+ t['\uFD7C'] = '\u0641\u062E\u0645';
+ t['\uFD7D'] = '\u0641\u062E\u0645';
+ t['\uFD7E'] = '\u0642\u0645\u062D';
+ t['\uFD7F'] = '\u0642\u0645\u0645';
+ t['\uFD80'] = '\u0644\u062D\u0645';
+ t['\uFD81'] = '\u0644\u062D\u064A';
+ t['\uFD82'] = '\u0644\u062D\u0649';
+ t['\uFD83'] = '\u0644\u062C\u062C';
+ t['\uFD84'] = '\u0644\u062C\u062C';
+ t['\uFD85'] = '\u0644\u062E\u0645';
+ t['\uFD86'] = '\u0644\u062E\u0645';
+ t['\uFD87'] = '\u0644\u0645\u062D';
+ t['\uFD88'] = '\u0644\u0645\u062D';
+ t['\uFD89'] = '\u0645\u062D\u062C';
+ t['\uFD8A'] = '\u0645\u062D\u0645';
+ t['\uFD8B'] = '\u0645\u062D\u064A';
+ t['\uFD8C'] = '\u0645\u062C\u062D';
+ t['\uFD8D'] = '\u0645\u062C\u0645';
+ t['\uFD8E'] = '\u0645\u062E\u062C';
+ t['\uFD8F'] = '\u0645\u062E\u0645';
+ t['\uFD92'] = '\u0645\u062C\u062E';
+ t['\uFD93'] = '\u0647\u0645\u062C';
+ t['\uFD94'] = '\u0647\u0645\u0645';
+ t['\uFD95'] = '\u0646\u062D\u0645';
+ t['\uFD96'] = '\u0646\u062D\u0649';
+ t['\uFD97'] = '\u0646\u062C\u0645';
+ t['\uFD98'] = '\u0646\u062C\u0645';
+ t['\uFD99'] = '\u0646\u062C\u0649';
+ t['\uFD9A'] = '\u0646\u0645\u064A';
+ t['\uFD9B'] = '\u0646\u0645\u0649';
+ t['\uFD9C'] = '\u064A\u0645\u0645';
+ t['\uFD9D'] = '\u064A\u0645\u0645';
+ t['\uFD9E'] = '\u0628\u062E\u064A';
+ t['\uFD9F'] = '\u062A\u062C\u064A';
+ t['\uFDA0'] = '\u062A\u062C\u0649';
+ t['\uFDA1'] = '\u062A\u062E\u064A';
+ t['\uFDA2'] = '\u062A\u062E\u0649';
+ t['\uFDA3'] = '\u062A\u0645\u064A';
+ t['\uFDA4'] = '\u062A\u0645\u0649';
+ t['\uFDA5'] = '\u062C\u0645\u064A';
+ t['\uFDA6'] = '\u062C\u062D\u0649';
+ t['\uFDA7'] = '\u062C\u0645\u0649';
+ t['\uFDA8'] = '\u0633\u062E\u0649';
+ t['\uFDA9'] = '\u0635\u062D\u064A';
+ t['\uFDAA'] = '\u0634\u062D\u064A';
+ t['\uFDAB'] = '\u0636\u062D\u064A';
+ t['\uFDAC'] = '\u0644\u062C\u064A';
+ t['\uFDAD'] = '\u0644\u0645\u064A';
+ t['\uFDAE'] = '\u064A\u062D\u064A';
+ t['\uFDAF'] = '\u064A\u062C\u064A';
+ t['\uFDB0'] = '\u064A\u0645\u064A';
+ t['\uFDB1'] = '\u0645\u0645\u064A';
+ t['\uFDB2'] = '\u0642\u0645\u064A';
+ t['\uFDB3'] = '\u0646\u062D\u064A';
+ t['\uFDB4'] = '\u0642\u0645\u062D';
+ t['\uFDB5'] = '\u0644\u062D\u0645';
+ t['\uFDB6'] = '\u0639\u0645\u064A';
+ t['\uFDB7'] = '\u0643\u0645\u064A';
+ t['\uFDB8'] = '\u0646\u062C\u062D';
+ t['\uFDB9'] = '\u0645\u062E\u064A';
+ t['\uFDBA'] = '\u0644\u062C\u0645';
+ t['\uFDBB'] = '\u0643\u0645\u0645';
+ t['\uFDBC'] = '\u0644\u062C\u0645';
+ t['\uFDBD'] = '\u0646\u062C\u062D';
+ t['\uFDBE'] = '\u062C\u062D\u064A';
+ t['\uFDBF'] = '\u062D\u062C\u064A';
+ t['\uFDC0'] = '\u0645\u062C\u064A';
+ t['\uFDC1'] = '\u0641\u0645\u064A';
+ t['\uFDC2'] = '\u0628\u062D\u064A';
+ t['\uFDC3'] = '\u0643\u0645\u0645';
+ t['\uFDC4'] = '\u0639\u062C\u0645';
+ t['\uFDC5'] = '\u0635\u0645\u0645';
+ t['\uFDC6'] = '\u0633\u062E\u064A';
+ t['\uFDC7'] = '\u0646\u062C\u064A';
+ t['\uFE49'] = '\u203E';
+ t['\uFE4A'] = '\u203E';
+ t['\uFE4B'] = '\u203E';
+ t['\uFE4C'] = '\u203E';
+ t['\uFE4D'] = '\u005F';
+ t['\uFE4E'] = '\u005F';
+ t['\uFE4F'] = '\u005F';
+ t['\uFE80'] = '\u0621';
+ t['\uFE81'] = '\u0622';
+ t['\uFE82'] = '\u0622';
+ t['\uFE83'] = '\u0623';
+ t['\uFE84'] = '\u0623';
+ t['\uFE85'] = '\u0624';
+ t['\uFE86'] = '\u0624';
+ t['\uFE87'] = '\u0625';
+ t['\uFE88'] = '\u0625';
+ t['\uFE89'] = '\u0626';
+ t['\uFE8A'] = '\u0626';
+ t['\uFE8B'] = '\u0626';
+ t['\uFE8C'] = '\u0626';
+ t['\uFE8D'] = '\u0627';
+ t['\uFE8E'] = '\u0627';
+ t['\uFE8F'] = '\u0628';
+ t['\uFE90'] = '\u0628';
+ t['\uFE91'] = '\u0628';
+ t['\uFE92'] = '\u0628';
+ t['\uFE93'] = '\u0629';
+ t['\uFE94'] = '\u0629';
+ t['\uFE95'] = '\u062A';
+ t['\uFE96'] = '\u062A';
+ t['\uFE97'] = '\u062A';
+ t['\uFE98'] = '\u062A';
+ t['\uFE99'] = '\u062B';
+ t['\uFE9A'] = '\u062B';
+ t['\uFE9B'] = '\u062B';
+ t['\uFE9C'] = '\u062B';
+ t['\uFE9D'] = '\u062C';
+ t['\uFE9E'] = '\u062C';
+ t['\uFE9F'] = '\u062C';
+ t['\uFEA0'] = '\u062C';
+ t['\uFEA1'] = '\u062D';
+ t['\uFEA2'] = '\u062D';
+ t['\uFEA3'] = '\u062D';
+ t['\uFEA4'] = '\u062D';
+ t['\uFEA5'] = '\u062E';
+ t['\uFEA6'] = '\u062E';
+ t['\uFEA7'] = '\u062E';
+ t['\uFEA8'] = '\u062E';
+ t['\uFEA9'] = '\u062F';
+ t['\uFEAA'] = '\u062F';
+ t['\uFEAB'] = '\u0630';
+ t['\uFEAC'] = '\u0630';
+ t['\uFEAD'] = '\u0631';
+ t['\uFEAE'] = '\u0631';
+ t['\uFEAF'] = '\u0632';
+ t['\uFEB0'] = '\u0632';
+ t['\uFEB1'] = '\u0633';
+ t['\uFEB2'] = '\u0633';
+ t['\uFEB3'] = '\u0633';
+ t['\uFEB4'] = '\u0633';
+ t['\uFEB5'] = '\u0634';
+ t['\uFEB6'] = '\u0634';
+ t['\uFEB7'] = '\u0634';
+ t['\uFEB8'] = '\u0634';
+ t['\uFEB9'] = '\u0635';
+ t['\uFEBA'] = '\u0635';
+ t['\uFEBB'] = '\u0635';
+ t['\uFEBC'] = '\u0635';
+ t['\uFEBD'] = '\u0636';
+ t['\uFEBE'] = '\u0636';
+ t['\uFEBF'] = '\u0636';
+ t['\uFEC0'] = '\u0636';
+ t['\uFEC1'] = '\u0637';
+ t['\uFEC2'] = '\u0637';
+ t['\uFEC3'] = '\u0637';
+ t['\uFEC4'] = '\u0637';
+ t['\uFEC5'] = '\u0638';
+ t['\uFEC6'] = '\u0638';
+ t['\uFEC7'] = '\u0638';
+ t['\uFEC8'] = '\u0638';
+ t['\uFEC9'] = '\u0639';
+ t['\uFECA'] = '\u0639';
+ t['\uFECB'] = '\u0639';
+ t['\uFECC'] = '\u0639';
+ t['\uFECD'] = '\u063A';
+ t['\uFECE'] = '\u063A';
+ t['\uFECF'] = '\u063A';
+ t['\uFED0'] = '\u063A';
+ t['\uFED1'] = '\u0641';
+ t['\uFED2'] = '\u0641';
+ t['\uFED3'] = '\u0641';
+ t['\uFED4'] = '\u0641';
+ t['\uFED5'] = '\u0642';
+ t['\uFED6'] = '\u0642';
+ t['\uFED7'] = '\u0642';
+ t['\uFED8'] = '\u0642';
+ t['\uFED9'] = '\u0643';
+ t['\uFEDA'] = '\u0643';
+ t['\uFEDB'] = '\u0643';
+ t['\uFEDC'] = '\u0643';
+ t['\uFEDD'] = '\u0644';
+ t['\uFEDE'] = '\u0644';
+ t['\uFEDF'] = '\u0644';
+ t['\uFEE0'] = '\u0644';
+ t['\uFEE1'] = '\u0645';
+ t['\uFEE2'] = '\u0645';
+ t['\uFEE3'] = '\u0645';
+ t['\uFEE4'] = '\u0645';
+ t['\uFEE5'] = '\u0646';
+ t['\uFEE6'] = '\u0646';
+ t['\uFEE7'] = '\u0646';
+ t['\uFEE8'] = '\u0646';
+ t['\uFEE9'] = '\u0647';
+ t['\uFEEA'] = '\u0647';
+ t['\uFEEB'] = '\u0647';
+ t['\uFEEC'] = '\u0647';
+ t['\uFEED'] = '\u0648';
+ t['\uFEEE'] = '\u0648';
+ t['\uFEEF'] = '\u0649';
+ t['\uFEF0'] = '\u0649';
+ t['\uFEF1'] = '\u064A';
+ t['\uFEF2'] = '\u064A';
+ t['\uFEF3'] = '\u064A';
+ t['\uFEF4'] = '\u064A';
+ t['\uFEF5'] = '\u0644\u0622';
+ t['\uFEF6'] = '\u0644\u0622';
+ t['\uFEF7'] = '\u0644\u0623';
+ t['\uFEF8'] = '\u0644\u0623';
+ t['\uFEF9'] = '\u0644\u0625';
+ t['\uFEFA'] = '\u0644\u0625';
+ t['\uFEFB'] = '\u0644\u0627';
+ t['\uFEFC'] = '\u0644\u0627';
 });
 function reverseIfRtl(chars) {
-  var charsLength = chars.length;
-  if (charsLength <= 1 || !isRTLRangeFor(chars.charCodeAt(0))) {
-    return chars;
-  }
-  var s = '';
-  for (var ii = charsLength - 1; ii >= 0; ii--) {
-    s += chars[ii];
-  }
-  return s;
+ var charsLength = chars.length;
+ if (charsLength <= 1 || !isRTLRangeFor(chars.charCodeAt(0))) {
+  return chars;
+ }
+ var s = '';
+ for (var ii = charsLength - 1; ii >= 0; ii--) {
+  s += chars[ii];
+ }
+ return s;
 }
 exports.mapSpecialUnicodeValues = mapSpecialUnicodeValues;
 exports.reverseIfRtl = reverseIfRtl;
@@ -26045,7 +26113,7 @@ exports.getNormalizedUnicodes = getNormalizedUnicodes;
 exports.getUnicodeForGlyph = getUnicodeForGlyph;
 
 /***/ }),
-/* 66 */
+/* 87 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -26062,9 +26130,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _ps_parser = __w_pdfjs_require__(116);
+var _ps_parser = __w_pdfjs_require__(156);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -26104,29 +26172,27 @@ var PDFFunctionFactory = function () {
         fnObj: fnObj
       });
     }
-  }, {
-    key: 'createFromIR',
-    value: function createFromIR(IR) {
-      return PDFFunction.fromIR({
-        xref: this.xref,
-        isEvalSupported: this.isEvalSupported,
-        IR: IR
-      });
-    }
-  }, {
-    key: 'createIR',
-    value: function createIR(fn) {
-      return PDFFunction.getIR({
-        xref: this.xref,
-        isEvalSupported: this.isEvalSupported,
-        fn: fn
-      });
-    }
   }]);
 
   return PDFFunctionFactory;
 }();
 
+function toNumberArray(arr) {
+  if (!Array.isArray(arr)) {
+    return null;
+  }
+  var length = arr.length;
+  for (var i = 0; i < length; i++) {
+    if (typeof arr[i] !== 'number') {
+      var result = new Array(length);
+      for (var _i = 0; _i < length; _i++) {
+        result[_i] = +arr[_i];
+      }
+      return result;
+    }
+  }
+  return arr;
+}
 var PDFFunction = function PDFFunctionClosure() {
   var CONSTRUCT_SAMPLED = 0;
   var CONSTRUCT_INTERPOLATED = 2;
@@ -26271,8 +26337,8 @@ var PDFFunction = function PDFFunctionClosure() {
         }
         return out;
       }
-      var domain = dict.getArray('Domain');
-      var range = dict.getArray('Range');
+      var domain = toNumberArray(dict.getArray('Domain'));
+      var range = toNumberArray(dict.getArray('Range'));
       if (!domain || !range) {
         throw new _util.FormatError('No domain or range');
       }
@@ -26280,22 +26346,22 @@ var PDFFunction = function PDFFunctionClosure() {
       var outputSize = range.length / 2;
       domain = toMultiArray(domain);
       range = toMultiArray(range);
-      var size = dict.get('Size');
+      var size = toNumberArray(dict.get('Size'));
       var bps = dict.get('BitsPerSample');
       var order = dict.get('Order') || 1;
       if (order !== 1) {
         (0, _util.info)('No support for cubic spline interpolation: ' + order);
       }
-      var encode = dict.getArray('Encode');
+      var encode = toNumberArray(dict.getArray('Encode'));
       if (!encode) {
         encode = [];
         for (var i = 0; i < inputSize; ++i) {
-          encode.push(0);
-          encode.push(size[i] - 1);
+          encode.push([0, size[i] - 1]);
         }
+      } else {
+        encode = toMultiArray(encode);
       }
-      encode = toMultiArray(encode);
-      var decode = dict.getArray('Decode');
+      var decode = toNumberArray(dict.getArray('Decode'));
       if (!decode) {
         decode = range;
       } else {
@@ -26370,12 +26436,9 @@ var PDFFunction = function PDFFunctionClosure() {
           fn = _ref8.fn,
           dict = _ref8.dict;
 
-      var c0 = dict.getArray('C0') || [0];
-      var c1 = dict.getArray('C1') || [1];
+      var c0 = toNumberArray(dict.getArray('C0')) || [0];
+      var c1 = toNumberArray(dict.getArray('C1')) || [1];
       var n = dict.get('N');
-      if (!Array.isArray(c0) || !Array.isArray(c1)) {
-        throw new _util.FormatError('Illegal dictionary for interpolated function');
-      }
       var length = c0.length;
       var diff = [];
       for (var i = 0; i < length; ++i) {
@@ -26405,7 +26468,7 @@ var PDFFunction = function PDFFunctionClosure() {
           fn = _ref10.fn,
           dict = _ref10.dict;
 
-      var domain = dict.getArray('Domain');
+      var domain = toNumberArray(dict.getArray('Domain'));
       if (!domain) {
         throw new _util.FormatError('No domain');
       }
@@ -26416,14 +26479,14 @@ var PDFFunction = function PDFFunctionClosure() {
       var fnRefs = dict.get('Functions');
       var fns = [];
       for (var i = 0, ii = fnRefs.length; i < ii; ++i) {
-        fns.push(this.getIR({
+        fns.push(this.parse({
           xref: xref,
           isEvalSupported: isEvalSupported,
           fn: xref.fetchIfRef(fnRefs[i])
         }));
       }
-      var bounds = dict.getArray('Bounds');
-      var encode = dict.getArray('Encode');
+      var bounds = toNumberArray(dict.getArray('Bounds'));
+      var encode = toNumberArray(dict.getArray('Encode'));
       return [CONSTRUCT_STICHED, domain, bounds, encode, fns];
     },
     constructStichedFromIR: function constructStichedFromIR(_ref11) {
@@ -26434,16 +26497,8 @@ var PDFFunction = function PDFFunctionClosure() {
       var domain = IR[1];
       var bounds = IR[2];
       var encode = IR[3];
-      var fnsIR = IR[4];
-      var fns = [];
+      var fns = IR[4];
       var tmpBuf = new Float32Array(1);
-      for (var i = 0, ii = fnsIR.length; i < ii; i++) {
-        fns.push(this.fromIR({
-          xref: xref,
-          isEvalSupported: isEvalSupported,
-          IR: fnsIR[i]
-        }));
-      }
       return function constructStichedFromIRResult(src, srcOffset, dest, destOffset) {
         var clip = function constructStichedFromIRClip(v, min, max) {
           if (v > max) {
@@ -26479,8 +26534,8 @@ var PDFFunction = function PDFFunctionClosure() {
           fn = _ref12.fn,
           dict = _ref12.dict;
 
-      var domain = dict.getArray('Domain');
-      var range = dict.getArray('Range');
+      var domain = toNumberArray(dict.getArray('Domain'));
+      var range = toNumberArray(dict.getArray('Range'));
       if (!domain) {
         throw new _util.FormatError('No domain.');
       }
@@ -27179,7 +27234,7 @@ exports.PostScriptEvaluator = PostScriptEvaluator;
 exports.PostScriptCompiler = PostScriptCompiler;
 
 /***/ }),
-/* 67 */
+/* 88 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -27192,7 +27247,7 @@ exports.AnnotationLayer = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
 var _util = __w_pdfjs_require__(0);
 
@@ -28182,7 +28237,7 @@ var AnnotationLayer = function () {
 exports.AnnotationLayer = AnnotationLayer;
 
 /***/ }),
-/* 68 */
+/* 89 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -28195,7 +28250,7 @@ exports.renderTextLayer = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
 var renderTextLayer = function renderTextLayerClosure() {
   var MAX_TEXT_DIVS_TO_RENDER = 100000;
@@ -28733,7 +28788,7 @@ var renderTextLayer = function renderTextLayerClosure() {
 exports.renderTextLayer = renderTextLayer;
 
 /***/ }),
-/* 69 */
+/* 90 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -28746,7 +28801,7 @@ exports.SVGGraphics = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
 var SVGGraphics = function SVGGraphics() {
   throw new Error('Not implemented: SVGGraphics');
@@ -29755,30 +29810,30 @@ var SVGGraphics = function SVGGraphics() {
 exports.SVGGraphics = SVGGraphics;
 
 /***/ }),
-/* 70 */
+/* 91 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var pdfjsVersion = '1.9.638';
-var pdfjsBuild = 'c8023772';
+var pdfjsVersion = '1.10.100';
+var pdfjsBuild = 'ea29ec83';
 var pdfjsSharedUtil = __w_pdfjs_require__(0);
-var pdfjsDisplayGlobal = __w_pdfjs_require__(98);
-var pdfjsDisplayAPI = __w_pdfjs_require__(54);
-var pdfjsDisplayTextLayer = __w_pdfjs_require__(68);
-var pdfjsDisplayAnnotationLayer = __w_pdfjs_require__(67);
-var pdfjsDisplayDOMUtils = __w_pdfjs_require__(7);
-var pdfjsDisplaySVG = __w_pdfjs_require__(69);
+var pdfjsDisplayGlobal = __w_pdfjs_require__(134);
+var pdfjsDisplayAPI = __w_pdfjs_require__(75);
+var pdfjsDisplayTextLayer = __w_pdfjs_require__(89);
+var pdfjsDisplayAnnotationLayer = __w_pdfjs_require__(88);
+var pdfjsDisplayDOMUtils = __w_pdfjs_require__(17);
+var pdfjsDisplaySVG = __w_pdfjs_require__(90);
 {
   if (pdfjsSharedUtil.isNodeJS()) {
-    var PDFNodeStream = __w_pdfjs_require__(120).PDFNodeStream;
+    var PDFNodeStream = __w_pdfjs_require__(160).PDFNodeStream;
     pdfjsDisplayAPI.setPDFNetworkStreamClass(PDFNodeStream);
   } else if (typeof Response !== 'undefined' && 'body' in Response.prototype && typeof ReadableStream !== 'undefined') {
-    var PDFFetchStream = __w_pdfjs_require__(121).PDFFetchStream;
+    var PDFFetchStream = __w_pdfjs_require__(161).PDFFetchStream;
     pdfjsDisplayAPI.setPDFNetworkStreamClass(PDFFetchStream);
   } else {
-    var PDFNetworkStream = __w_pdfjs_require__(122).PDFNetworkStream;
+    var PDFNetworkStream = __w_pdfjs_require__(162).PDFNetworkStream;
     pdfjsDisplayAPI.setPDFNetworkStreamClass(PDFNetworkStream);
   }
 }
@@ -29813,7 +29868,7 @@ exports.addLinkAttributes = pdfjsDisplayDOMUtils.addLinkAttributes;
 exports.StatTimer = pdfjsSharedUtil.StatTimer;
 
 /***/ }),
-/* 71 */
+/* 92 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -29822,7 +29877,7 @@ exports.StatTimer = pdfjsSharedUtil.StatTimer;
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 if (typeof PDFJS === 'undefined' || !PDFJS.compatibilityChecked) {
-  var globalScope = __w_pdfjs_require__(11);
+  var globalScope = __w_pdfjs_require__(22);
   var userAgent = typeof navigator !== 'undefined' && navigator.userAgent || '';
   var isAndroid = /Android/.test(userAgent);
   var isAndroidPre3 = /Android\s[0-2][^\d]/.test(userAgent);
@@ -29841,7 +29896,7 @@ if (typeof PDFJS === 'undefined' || !PDFJS.compatibilityChecked) {
   PDFJS.compatibilityChecked = true;
   (function checkTypedArrayCompatibility() {
     if (typeof Uint8ClampedArray === 'undefined') {
-      globalScope.Uint8ClampedArray = __w_pdfjs_require__(72);
+      globalScope.Uint8ClampedArray = __w_pdfjs_require__(93);
     }
     if (typeof Uint8Array !== 'undefined') {
       if (typeof Uint8Array.prototype.subarray === 'undefined') {
@@ -30477,310 +30532,25 @@ if (typeof PDFJS === 'undefined' || !PDFJS.compatibilityChecked) {
     if (Number.isNaN) {
       return;
     }
-    Number.isNaN = function (value) {
-      return typeof value === 'number' && isNaN(value);
-    };
+    Number.isNaN = __w_pdfjs_require__(105);
   })();
   (function checkNumberIsInteger() {
     if (Number.isInteger) {
       return;
     }
-    Number.isInteger = function (value) {
-      return typeof value === 'number' && isFinite(value) && Math.floor(value) === value;
-    };
+    Number.isInteger = __w_pdfjs_require__(107);
   })();
   (function checkPromise() {
     if (globalScope.Promise) {
-      if (typeof globalScope.Promise.all !== 'function') {
-        globalScope.Promise.all = function (iterable) {
-          var count = 0,
-              results = [],
-              resolve,
-              reject;
-          var promise = new globalScope.Promise(function (resolve_, reject_) {
-            resolve = resolve_;
-            reject = reject_;
-          });
-          iterable.forEach(function (p, i) {
-            count++;
-            p.then(function (result) {
-              results[i] = result;
-              count--;
-              if (count === 0) {
-                resolve(results);
-              }
-            }, reject);
-          });
-          if (count === 0) {
-            resolve(results);
-          }
-          return promise;
-        };
-      }
-      if (typeof globalScope.Promise.resolve !== 'function') {
-        globalScope.Promise.resolve = function (value) {
-          return new globalScope.Promise(function (resolve) {
-            resolve(value);
-          });
-        };
-      }
-      if (typeof globalScope.Promise.reject !== 'function') {
-        globalScope.Promise.reject = function (reason) {
-          return new globalScope.Promise(function (resolve, reject) {
-            reject(reason);
-          });
-        };
-      }
-      if (typeof globalScope.Promise.prototype.catch !== 'function') {
-        globalScope.Promise.prototype.catch = function (onReject) {
-          return globalScope.Promise.prototype.then(undefined, onReject);
-        };
-      }
       return;
     }
-    var STATUS_PENDING = 0;
-    var STATUS_RESOLVED = 1;
-    var STATUS_REJECTED = 2;
-    var REJECTION_TIMEOUT = 500;
-    var HandlerManager = {
-      handlers: [],
-      running: false,
-      unhandledRejections: [],
-      pendingRejectionCheck: false,
-      scheduleHandlers: function scheduleHandlers(promise) {
-        if (promise._status === STATUS_PENDING) {
-          return;
-        }
-        this.handlers = this.handlers.concat(promise._handlers);
-        promise._handlers = [];
-        if (this.running) {
-          return;
-        }
-        this.running = true;
-        setTimeout(this.runHandlers.bind(this), 0);
-      },
-      runHandlers: function runHandlers() {
-        var RUN_TIMEOUT = 1;
-        var timeoutAt = Date.now() + RUN_TIMEOUT;
-        while (this.handlers.length > 0) {
-          var handler = this.handlers.shift();
-          var nextStatus = handler.thisPromise._status;
-          var nextValue = handler.thisPromise._value;
-          try {
-            if (nextStatus === STATUS_RESOLVED) {
-              if (typeof handler.onResolve === 'function') {
-                nextValue = handler.onResolve(nextValue);
-              }
-            } else if (typeof handler.onReject === 'function') {
-              nextValue = handler.onReject(nextValue);
-              nextStatus = STATUS_RESOLVED;
-              if (handler.thisPromise._unhandledRejection) {
-                this.removeUnhandeledRejection(handler.thisPromise);
-              }
-            }
-          } catch (ex) {
-            nextStatus = STATUS_REJECTED;
-            nextValue = ex;
-          }
-          handler.nextPromise._updateStatus(nextStatus, nextValue);
-          if (Date.now() >= timeoutAt) {
-            break;
-          }
-        }
-        if (this.handlers.length > 0) {
-          setTimeout(this.runHandlers.bind(this), 0);
-          return;
-        }
-        this.running = false;
-      },
-      addUnhandledRejection: function addUnhandledRejection(promise) {
-        this.unhandledRejections.push({
-          promise: promise,
-          time: Date.now()
-        });
-        this.scheduleRejectionCheck();
-      },
-      removeUnhandeledRejection: function removeUnhandeledRejection(promise) {
-        promise._unhandledRejection = false;
-        for (var i = 0; i < this.unhandledRejections.length; i++) {
-          if (this.unhandledRejections[i].promise === promise) {
-            this.unhandledRejections.splice(i);
-            i--;
-          }
-        }
-      },
-      scheduleRejectionCheck: function scheduleRejectionCheck() {
-        var _this = this;
-
-        if (this.pendingRejectionCheck) {
-          return;
-        }
-        this.pendingRejectionCheck = true;
-        setTimeout(function () {
-          _this.pendingRejectionCheck = false;
-          var now = Date.now();
-          for (var i = 0; i < _this.unhandledRejections.length; i++) {
-            if (now - _this.unhandledRejections[i].time > REJECTION_TIMEOUT) {
-              var unhandled = _this.unhandledRejections[i].promise._value;
-              var msg = 'Unhandled rejection: ' + unhandled;
-              if (unhandled.stack) {
-                msg += '\n' + unhandled.stack;
-              }
-              try {
-                throw new Error(msg);
-              } catch (_) {
-                console.warn(msg);
-              }
-              _this.unhandledRejections.splice(i);
-              i--;
-            }
-          }
-          if (_this.unhandledRejections.length) {
-            _this.scheduleRejectionCheck();
-          }
-        }, REJECTION_TIMEOUT);
-      }
-    };
-    var Promise = function Promise(resolver) {
-      this._status = STATUS_PENDING;
-      this._handlers = [];
-      try {
-        resolver.call(this, this._resolve.bind(this), this._reject.bind(this));
-      } catch (e) {
-        this._reject(e);
-      }
-    };
-    Promise.all = function Promise_all(promises) {
-      var resolveAll, rejectAll;
-      var deferred = new Promise(function (resolve, reject) {
-        resolveAll = resolve;
-        rejectAll = reject;
-      });
-      var unresolved = promises.length;
-      var results = [];
-      if (unresolved === 0) {
-        resolveAll(results);
-        return deferred;
-      }
-      function reject(reason) {
-        if (deferred._status === STATUS_REJECTED) {
-          return;
-        }
-        results = [];
-        rejectAll(reason);
-      }
-      for (var i = 0, ii = promises.length; i < ii; ++i) {
-        var promise = promises[i];
-        var resolve = function (i) {
-          return function (value) {
-            if (deferred._status === STATUS_REJECTED) {
-              return;
-            }
-            results[i] = value;
-            unresolved--;
-            if (unresolved === 0) {
-              resolveAll(results);
-            }
-          };
-        }(i);
-        if (Promise.isPromise(promise)) {
-          promise.then(resolve, reject);
-        } else {
-          resolve(promise);
-        }
-      }
-      return deferred;
-    };
-    Promise.isPromise = function Promise_isPromise(value) {
-      return value && typeof value.then === 'function';
-    };
-    Promise.resolve = function Promise_resolve(value) {
-      return new Promise(function (resolve) {
-        resolve(value);
-      });
-    };
-    Promise.reject = function Promise_reject(reason) {
-      return new Promise(function (resolve, reject) {
-        reject(reason);
-      });
-    };
-    Promise.prototype = {
-      _status: null,
-      _value: null,
-      _handlers: null,
-      _unhandledRejection: null,
-      _updateStatus: function Promise__updateStatus(status, value) {
-        if (this._status === STATUS_RESOLVED || this._status === STATUS_REJECTED) {
-          return;
-        }
-        if (status === STATUS_RESOLVED && Promise.isPromise(value)) {
-          value.then(this._updateStatus.bind(this, STATUS_RESOLVED), this._updateStatus.bind(this, STATUS_REJECTED));
-          return;
-        }
-        this._status = status;
-        this._value = value;
-        if (status === STATUS_REJECTED && this._handlers.length === 0) {
-          this._unhandledRejection = true;
-          HandlerManager.addUnhandledRejection(this);
-        }
-        HandlerManager.scheduleHandlers(this);
-      },
-      _resolve: function Promise_resolve(value) {
-        this._updateStatus(STATUS_RESOLVED, value);
-      },
-      _reject: function Promise_reject(reason) {
-        this._updateStatus(STATUS_REJECTED, reason);
-      },
-      then: function Promise_then(onResolve, onReject) {
-        var nextPromise = new Promise(function (resolve, reject) {
-          this.resolve = resolve;
-          this.reject = reject;
-        });
-        this._handlers.push({
-          thisPromise: this,
-          onResolve: onResolve,
-          onReject: onReject,
-          nextPromise: nextPromise
-        });
-        HandlerManager.scheduleHandlers(this);
-        return nextPromise;
-      },
-      catch: function Promise_catch(onReject) {
-        return this.then(undefined, onReject);
-      }
-    };
-    globalScope.Promise = Promise;
+    globalScope.Promise = __w_pdfjs_require__(110);
   })();
   (function checkWeakMap() {
     if (globalScope.WeakMap) {
       return;
     }
-    var id = 0;
-    function WeakMap() {
-      this.id = '$weakmap' + id++;
-    }
-    WeakMap.prototype = {
-      has: function has(obj) {
-        if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) !== 'object' && typeof obj !== 'function' || obj === null) {
-          return false;
-        }
-        return !!Object.getOwnPropertyDescriptor(obj, this.id);
-      },
-      get: function get(obj) {
-        return this.has(obj) ? obj[this.id] : undefined;
-      },
-      set: function set(obj, value) {
-        Object.defineProperty(obj, this.id, {
-          value: value,
-          enumerable: false,
-          configurable: true
-        });
-      },
-      delete: function _delete(obj) {
-        delete obj[this.id];
-      }
-    };
-    globalScope.WeakMap = WeakMap;
+    globalScope.WeakMap = __w_pdfjs_require__(120);
   })();
   (function checkURLConstructor() {
     var hasWorkingUrl = false;
@@ -31335,30 +31105,30 @@ if (typeof PDFJS === 'undefined' || !PDFJS.compatibilityChecked) {
 }
 
 /***/ }),
-/* 72 */
+/* 93 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-__w_pdfjs_require__(73);
-module.exports = __w_pdfjs_require__(20).Uint8ClampedArray;
+__w_pdfjs_require__(94);
+module.exports = __w_pdfjs_require__(6).Uint8ClampedArray;
 
 /***/ }),
-/* 73 */
+/* 94 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-__w_pdfjs_require__(74)('Uint8', 1, function (init) {
+__w_pdfjs_require__(95)('Uint8', 1, function (init) {
   return function Uint8ClampedArray(data, byteOffset, length) {
     return init(this, data, byteOffset, length);
   };
 }, true);
 
 /***/ }),
-/* 74 */
+/* 95 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -31366,45 +31136,45 @@ __w_pdfjs_require__(74)('Uint8', 1, function (init) {
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-if (__w_pdfjs_require__(5)) {
-  var LIBRARY = __w_pdfjs_require__(26);
-  var global = __w_pdfjs_require__(4);
-  var fails = __w_pdfjs_require__(19);
-  var $export = __w_pdfjs_require__(36);
-  var $typed = __w_pdfjs_require__(40);
-  var $buffer = __w_pdfjs_require__(75);
-  var ctx = __w_pdfjs_require__(29);
-  var anInstance = __w_pdfjs_require__(42);
-  var propertyDesc = __w_pdfjs_require__(22);
-  var hide = __w_pdfjs_require__(6);
-  var redefineAll = __w_pdfjs_require__(41);
-  var toInteger = __w_pdfjs_require__(14);
-  var toLength = __w_pdfjs_require__(9);
-  var toIndex = __w_pdfjs_require__(43);
-  var toAbsoluteIndex = __w_pdfjs_require__(24);
-  var toPrimitive = __w_pdfjs_require__(27);
-  var has = __w_pdfjs_require__(8);
-  var classof = __w_pdfjs_require__(51);
-  var isObject = __w_pdfjs_require__(12);
-  var toObject = __w_pdfjs_require__(15);
-  var isArrayIter = __w_pdfjs_require__(76);
-  var create = __w_pdfjs_require__(52);
-  var getPrototypeOf = __w_pdfjs_require__(53);
-  var gOPN = __w_pdfjs_require__(44).f;
-  var getIterFn = __w_pdfjs_require__(80);
-  var uid = __w_pdfjs_require__(13);
-  var wks = __w_pdfjs_require__(2);
-  var createArrayMethod = __w_pdfjs_require__(81);
-  var createArrayIncludes = __w_pdfjs_require__(48);
-  var speciesConstructor = __w_pdfjs_require__(85);
-  var ArrayIterators = __w_pdfjs_require__(86);
-  var Iterators = __w_pdfjs_require__(16);
-  var $iterDetect = __w_pdfjs_require__(91);
-  var setSpecies = __w_pdfjs_require__(92);
-  var arrayFill = __w_pdfjs_require__(50);
-  var arrayCopyWithin = __w_pdfjs_require__(93);
-  var $DP = __w_pdfjs_require__(10);
-  var $GOPD = __w_pdfjs_require__(94);
+if (__w_pdfjs_require__(10)) {
+  var LIBRARY = __w_pdfjs_require__(23);
+  var global = __w_pdfjs_require__(1);
+  var fails = __w_pdfjs_require__(11);
+  var $export = __w_pdfjs_require__(7);
+  var $typed = __w_pdfjs_require__(52);
+  var $buffer = __w_pdfjs_require__(96);
+  var ctx = __w_pdfjs_require__(13);
+  var anInstance = __w_pdfjs_require__(26);
+  var propertyDesc = __w_pdfjs_require__(31);
+  var hide = __w_pdfjs_require__(8);
+  var redefineAll = __w_pdfjs_require__(25);
+  var toInteger = __w_pdfjs_require__(19);
+  var toLength = __w_pdfjs_require__(14);
+  var toIndex = __w_pdfjs_require__(53);
+  var toAbsoluteIndex = __w_pdfjs_require__(33);
+  var toPrimitive = __w_pdfjs_require__(38);
+  var has = __w_pdfjs_require__(12);
+  var classof = __w_pdfjs_require__(34);
+  var isObject = __w_pdfjs_require__(3);
+  var toObject = __w_pdfjs_require__(20);
+  var isArrayIter = __w_pdfjs_require__(59);
+  var create = __w_pdfjs_require__(60);
+  var getPrototypeOf = __w_pdfjs_require__(62);
+  var gOPN = __w_pdfjs_require__(54).f;
+  var getIterFn = __w_pdfjs_require__(63);
+  var uid = __w_pdfjs_require__(18);
+  var wks = __w_pdfjs_require__(4);
+  var createArrayMethod = __w_pdfjs_require__(44);
+  var createArrayIncludes = __w_pdfjs_require__(56);
+  var speciesConstructor = __w_pdfjs_require__(45);
+  var ArrayIterators = __w_pdfjs_require__(64);
+  var Iterators = __w_pdfjs_require__(21);
+  var $iterDetect = __w_pdfjs_require__(46);
+  var setSpecies = __w_pdfjs_require__(66);
+  var arrayFill = __w_pdfjs_require__(58);
+  var arrayCopyWithin = __w_pdfjs_require__(104);
+  var $DP = __w_pdfjs_require__(15);
+  var $GOPD = __w_pdfjs_require__(67);
   var dP = $DP.f;
   var gOPD = $GOPD.f;
   var RangeError = global.RangeError;
@@ -31802,27 +31572,27 @@ if (__w_pdfjs_require__(5)) {
 } else module.exports = function () {};
 
 /***/ }),
-/* 75 */
+/* 96 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var global = __w_pdfjs_require__(4);
-var DESCRIPTORS = __w_pdfjs_require__(5);
-var LIBRARY = __w_pdfjs_require__(26);
-var $typed = __w_pdfjs_require__(40);
-var hide = __w_pdfjs_require__(6);
-var redefineAll = __w_pdfjs_require__(41);
-var fails = __w_pdfjs_require__(19);
-var anInstance = __w_pdfjs_require__(42);
-var toInteger = __w_pdfjs_require__(14);
-var toLength = __w_pdfjs_require__(9);
-var toIndex = __w_pdfjs_require__(43);
-var gOPN = __w_pdfjs_require__(44).f;
-var dP = __w_pdfjs_require__(10).f;
-var arrayFill = __w_pdfjs_require__(50);
-var setToStringTag = __w_pdfjs_require__(33);
+var global = __w_pdfjs_require__(1);
+var DESCRIPTORS = __w_pdfjs_require__(10);
+var LIBRARY = __w_pdfjs_require__(23);
+var $typed = __w_pdfjs_require__(52);
+var hide = __w_pdfjs_require__(8);
+var redefineAll = __w_pdfjs_require__(25);
+var fails = __w_pdfjs_require__(11);
+var anInstance = __w_pdfjs_require__(26);
+var toInteger = __w_pdfjs_require__(19);
+var toLength = __w_pdfjs_require__(14);
+var toIndex = __w_pdfjs_require__(53);
+var gOPN = __w_pdfjs_require__(54).f;
+var dP = __w_pdfjs_require__(15).f;
+var arrayFill = __w_pdfjs_require__(58);
+var setToStringTag = __w_pdfjs_require__(28);
 var ARRAY_BUFFER = 'ArrayBuffer';
 var DATA_VIEW = 'DataView';
 var PROTOTYPE = 'prototype';
@@ -31846,7 +31616,7 @@ var $BUFFER = DESCRIPTORS ? '_b' : BUFFER;
 var $LENGTH = DESCRIPTORS ? '_l' : BYTE_LENGTH;
 var $OFFSET = DESCRIPTORS ? '_o' : BYTE_OFFSET;
 function packIEEE754(value, mLen, nBytes) {
-  var buffer = Array(nBytes);
+  var buffer = new Array(nBytes);
   var eLen = nBytes * 8 - mLen - 1;
   var eMax = (1 << eLen) - 1;
   var eBias = eMax >> 1;
@@ -31965,7 +31735,7 @@ if (!$typed.ABV) {
   $ArrayBuffer = function ArrayBuffer(length) {
     anInstance(this, $ArrayBuffer, ARRAY_BUFFER);
     var byteLength = toIndex(length);
-    this._b = arrayFill.call(Array(byteLength), 0);
+    this._b = arrayFill.call(new Array(byteLength), 0);
     this[$LENGTH] = byteLength;
   };
   $DataView = function DataView(buffer, byteOffset, byteLength) {
@@ -32079,30 +31849,16 @@ exports[ARRAY_BUFFER] = $ArrayBuffer;
 exports[DATA_VIEW] = $DataView;
 
 /***/ }),
-/* 76 */
+/* 97 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var Iterators = __w_pdfjs_require__(16);
-var ITERATOR = __w_pdfjs_require__(2)('iterator');
-var ArrayProto = Array.prototype;
-module.exports = function (it) {
-  return it !== undefined && (Iterators.Array === it || ArrayProto[ITERATOR] === it);
-};
-
-/***/ }),
-/* 77 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var dP = __w_pdfjs_require__(10);
-var anObject = __w_pdfjs_require__(21);
-var getKeys = __w_pdfjs_require__(78);
-module.exports = __w_pdfjs_require__(5) ? Object.defineProperties : function defineProperties(O, Properties) {
+var dP = __w_pdfjs_require__(15);
+var anObject = __w_pdfjs_require__(9);
+var getKeys = __w_pdfjs_require__(43);
+module.exports = __w_pdfjs_require__(10) ? Object.defineProperties : function defineProperties(O, Properties) {
   anObject(O);
   var keys = getKeys(Properties);
   var length = keys.length;
@@ -32114,113 +31870,27 @@ module.exports = __w_pdfjs_require__(5) ? Object.defineProperties : function def
 };
 
 /***/ }),
-/* 78 */
+/* 98 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var $keys = __w_pdfjs_require__(45);
-var enumBugKeys = __w_pdfjs_require__(32);
-module.exports = Object.keys || function keys(O) {
-  return $keys(O, enumBugKeys);
-};
-
-/***/ }),
-/* 79 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var document = __w_pdfjs_require__(4).document;
-module.exports = document && document.documentElement;
-
-/***/ }),
-/* 80 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var classof = __w_pdfjs_require__(51);
-var ITERATOR = __w_pdfjs_require__(2)('iterator');
-var Iterators = __w_pdfjs_require__(16);
-module.exports = __w_pdfjs_require__(20).getIteratorMethod = function (it) {
-  if (it != undefined) return it[ITERATOR] || it['@@iterator'] || Iterators[classof(it)];
-};
-
-/***/ }),
-/* 81 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var ctx = __w_pdfjs_require__(29);
-var IObject = __w_pdfjs_require__(46);
-var toObject = __w_pdfjs_require__(15);
-var toLength = __w_pdfjs_require__(9);
-var asc = __w_pdfjs_require__(82);
-module.exports = function (TYPE, $create) {
-  var IS_MAP = TYPE == 1;
-  var IS_FILTER = TYPE == 2;
-  var IS_SOME = TYPE == 3;
-  var IS_EVERY = TYPE == 4;
-  var IS_FIND_INDEX = TYPE == 6;
-  var NO_HOLES = TYPE == 5 || IS_FIND_INDEX;
-  var create = $create || asc;
-  return function ($this, callbackfn, that) {
-    var O = toObject($this);
-    var self = IObject(O);
-    var f = ctx(callbackfn, that, 3);
-    var length = toLength(self.length);
-    var index = 0;
-    var result = IS_MAP ? create($this, length) : IS_FILTER ? create($this, 0) : undefined;
-    var val, res;
-    for (; length > index; index++) {
-      if (NO_HOLES || index in self) {
-        val = self[index];
-        res = f(val, index, O);
-        if (TYPE) {
-          if (IS_MAP) result[index] = res;else if (res) switch (TYPE) {
-            case 3:
-              return true;
-            case 5:
-              return val;
-            case 6:
-              return index;
-            case 2:
-              result.push(val);
-          } else if (IS_EVERY) return false;
-        }
-      }
-    }return IS_FIND_INDEX ? -1 : IS_SOME || IS_EVERY ? IS_EVERY : result;
-  };
-};
-
-/***/ }),
-/* 82 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var speciesConstructor = __w_pdfjs_require__(83);
+var speciesConstructor = __w_pdfjs_require__(99);
 module.exports = function (original, length) {
   return new (speciesConstructor(original))(length);
 };
 
 /***/ }),
-/* 83 */
+/* 99 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var isObject = __w_pdfjs_require__(12);
-var isArray = __w_pdfjs_require__(84);
-var SPECIES = __w_pdfjs_require__(2)('species');
+var isObject = __w_pdfjs_require__(3);
+var isArray = __w_pdfjs_require__(100);
+var SPECIES = __w_pdfjs_require__(4)('species');
 module.exports = function (original) {
   var C;
   if (isArray(original)) {
@@ -32235,81 +31905,33 @@ module.exports = function (original) {
 };
 
 /***/ }),
-/* 84 */
+/* 100 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var cof = __w_pdfjs_require__(30);
+var cof = __w_pdfjs_require__(27);
 module.exports = Array.isArray || function isArray(arg) {
   return cof(arg) == 'Array';
 };
 
 /***/ }),
-/* 85 */
+/* 101 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var anObject = __w_pdfjs_require__(21);
-var aFunction = __w_pdfjs_require__(39);
-var SPECIES = __w_pdfjs_require__(2)('species');
-module.exports = function (O, D) {
-  var C = anObject(O).constructor;
-  var S;
-  return C === undefined || (S = anObject(C)[SPECIES]) == undefined ? D : aFunction(S);
-};
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var addToUnscopables = __w_pdfjs_require__(87);
-var step = __w_pdfjs_require__(88);
-var Iterators = __w_pdfjs_require__(16);
-var toIObject = __w_pdfjs_require__(23);
-module.exports = __w_pdfjs_require__(89)(Array, 'Array', function (iterated, kind) {
-  this._t = toIObject(iterated);
-  this._i = 0;
-  this._k = kind;
-}, function () {
-  var O = this._t;
-  var kind = this._k;
-  var index = this._i++;
-  if (!O || index >= O.length) {
-    this._t = undefined;
-    return step(1);
-  }
-  if (kind == 'keys') return step(0, index);
-  if (kind == 'values') return step(0, O[index]);
-  return step(0, [index, O[index]]);
-}, 'values');
-Iterators.Arguments = Iterators.Array;
-addToUnscopables('keys');
-addToUnscopables('values');
-addToUnscopables('entries');
-
-/***/ }),
-/* 87 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var UNSCOPABLES = __w_pdfjs_require__(2)('unscopables');
+var UNSCOPABLES = __w_pdfjs_require__(4)('unscopables');
 var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) __w_pdfjs_require__(6)(ArrayProto, UNSCOPABLES, {});
+if (ArrayProto[UNSCOPABLES] == undefined) __w_pdfjs_require__(8)(ArrayProto, UNSCOPABLES, {});
 module.exports = function (key) {
   ArrayProto[UNSCOPABLES][key] = true;
 };
 
 /***/ }),
-/* 88 */
+/* 102 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -32323,99 +31945,17 @@ module.exports = function (done, value) {
 };
 
 /***/ }),
-/* 89 */
+/* 103 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var LIBRARY = __w_pdfjs_require__(26);
-var $export = __w_pdfjs_require__(36);
-var redefine = __w_pdfjs_require__(28);
-var hide = __w_pdfjs_require__(6);
-var has = __w_pdfjs_require__(8);
-var Iterators = __w_pdfjs_require__(16);
-var $iterCreate = __w_pdfjs_require__(90);
-var setToStringTag = __w_pdfjs_require__(33);
-var getPrototypeOf = __w_pdfjs_require__(53);
-var ITERATOR = __w_pdfjs_require__(2)('iterator');
-var BUGGY = !([].keys && 'next' in [].keys());
-var FF_ITERATOR = '@@iterator';
-var KEYS = 'keys';
-var VALUES = 'values';
-var returnThis = function returnThis() {
-  return this;
-};
-module.exports = function (Base, NAME, Constructor, next, DEFAULT, IS_SET, FORCED) {
-  $iterCreate(Constructor, NAME, next);
-  var getMethod = function getMethod(kind) {
-    if (!BUGGY && kind in proto) return proto[kind];
-    switch (kind) {
-      case KEYS:
-        return function keys() {
-          return new Constructor(this, kind);
-        };
-      case VALUES:
-        return function values() {
-          return new Constructor(this, kind);
-        };
-    }
-    return function entries() {
-      return new Constructor(this, kind);
-    };
-  };
-  var TAG = NAME + ' Iterator';
-  var DEF_VALUES = DEFAULT == VALUES;
-  var VALUES_BUG = false;
-  var proto = Base.prototype;
-  var $native = proto[ITERATOR] || proto[FF_ITERATOR] || DEFAULT && proto[DEFAULT];
-  var $default = $native || getMethod(DEFAULT);
-  var $entries = DEFAULT ? !DEF_VALUES ? $default : getMethod('entries') : undefined;
-  var $anyNative = NAME == 'Array' ? proto.entries || $native : $native;
-  var methods, key, IteratorPrototype;
-  if ($anyNative) {
-    IteratorPrototype = getPrototypeOf($anyNative.call(new Base()));
-    if (IteratorPrototype !== Object.prototype && IteratorPrototype.next) {
-      setToStringTag(IteratorPrototype, TAG, true);
-      if (!LIBRARY && !has(IteratorPrototype, ITERATOR)) hide(IteratorPrototype, ITERATOR, returnThis);
-    }
-  }
-  if (DEF_VALUES && $native && $native.name !== VALUES) {
-    VALUES_BUG = true;
-    $default = function values() {
-      return $native.call(this);
-    };
-  }
-  if ((!LIBRARY || FORCED) && (BUGGY || VALUES_BUG || !proto[ITERATOR])) {
-    hide(proto, ITERATOR, $default);
-  }
-  Iterators[NAME] = $default;
-  Iterators[TAG] = returnThis;
-  if (DEFAULT) {
-    methods = {
-      values: DEF_VALUES ? $default : getMethod(VALUES),
-      keys: IS_SET ? $default : getMethod(KEYS),
-      entries: $entries
-    };
-    if (FORCED) for (key in methods) {
-      if (!(key in proto)) redefine(proto, key, methods[key]);
-    } else $export($export.P + $export.F * (BUGGY || VALUES_BUG), NAME, methods);
-  }
-  return methods;
-};
-
-/***/ }),
-/* 90 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var create = __w_pdfjs_require__(52);
-var descriptor = __w_pdfjs_require__(22);
-var setToStringTag = __w_pdfjs_require__(33);
+var create = __w_pdfjs_require__(60);
+var descriptor = __w_pdfjs_require__(31);
+var setToStringTag = __w_pdfjs_require__(28);
 var IteratorPrototype = {};
-__w_pdfjs_require__(6)(IteratorPrototype, __w_pdfjs_require__(2)('iterator'), function () {
+__w_pdfjs_require__(8)(IteratorPrototype, __w_pdfjs_require__(4)('iterator'), function () {
   return this;
 });
 module.exports = function (Constructor, NAME, next) {
@@ -32424,71 +31964,15 @@ module.exports = function (Constructor, NAME, next) {
 };
 
 /***/ }),
-/* 91 */
+/* 104 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var ITERATOR = __w_pdfjs_require__(2)('iterator');
-var SAFE_CLOSING = false;
-try {
-  var riter = [7][ITERATOR]();
-  riter['return'] = function () {
-    SAFE_CLOSING = true;
-  };
-  Array.from(riter, function () {
-    throw 2;
-  });
-} catch (e) {}
-module.exports = function (exec, skipClosing) {
-  if (!skipClosing && !SAFE_CLOSING) return false;
-  var safe = false;
-  try {
-    var arr = [7];
-    var iter = arr[ITERATOR]();
-    iter.next = function () {
-      return { done: safe = true };
-    };
-    arr[ITERATOR] = function () {
-      return iter;
-    };
-    exec(arr);
-  } catch (e) {}
-  return safe;
-};
-
-/***/ }),
-/* 92 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var global = __w_pdfjs_require__(4);
-var dP = __w_pdfjs_require__(10);
-var DESCRIPTORS = __w_pdfjs_require__(5);
-var SPECIES = __w_pdfjs_require__(2)('species');
-module.exports = function (KEY) {
-  var C = global[KEY];
-  if (DESCRIPTORS && C && !C[SPECIES]) dP.f(C, SPECIES, {
-    configurable: true,
-    get: function get() {
-      return this;
-    }
-  });
-};
-
-/***/ }),
-/* 93 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-var toObject = __w_pdfjs_require__(15);
-var toAbsoluteIndex = __w_pdfjs_require__(24);
-var toLength = __w_pdfjs_require__(9);
+var toObject = __w_pdfjs_require__(20);
+var toAbsoluteIndex = __w_pdfjs_require__(33);
+var toLength = __w_pdfjs_require__(14);
 module.exports = [].copyWithin || function copyWithin(target, start) {
   var O = toObject(this);
   var len = toLength(O.length);
@@ -32511,39 +31995,989 @@ module.exports = [].copyWithin || function copyWithin(target, start) {
 };
 
 /***/ }),
-/* 94 */
+/* 105 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-var pIE = __w_pdfjs_require__(95);
-var createDesc = __w_pdfjs_require__(22);
-var toIObject = __w_pdfjs_require__(23);
-var toPrimitive = __w_pdfjs_require__(27);
-var has = __w_pdfjs_require__(8);
-var IE8_DOM_DEFINE = __w_pdfjs_require__(37);
-var gOPD = Object.getOwnPropertyDescriptor;
-exports.f = __w_pdfjs_require__(5) ? gOPD : function getOwnPropertyDescriptor(O, P) {
-  O = toIObject(O);
-  P = toPrimitive(P, true);
-  if (IE8_DOM_DEFINE) try {
-    return gOPD(O, P);
-  } catch (e) {}
-  if (has(O, P)) return createDesc(!pIE.f.call(O, P), O[P]);
+__w_pdfjs_require__(106);
+module.exports = __w_pdfjs_require__(6).Number.isNaN;
+
+/***/ }),
+/* 106 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+$export($export.S, 'Number', {
+  isNaN: function isNaN(number) {
+    return number != number;
+  }
+});
+
+/***/ }),
+/* 107 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+__w_pdfjs_require__(108);
+module.exports = __w_pdfjs_require__(6).Number.isInteger;
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+$export($export.S, 'Number', { isInteger: __w_pdfjs_require__(109) });
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var isObject = __w_pdfjs_require__(3);
+var floor = Math.floor;
+module.exports = function isInteger(it) {
+  return !isObject(it) && isFinite(it) && floor(it) === it;
 };
 
 /***/ }),
-/* 95 */
+/* 110 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
 
 
-exports.f = {}.propertyIsEnumerable;
+__w_pdfjs_require__(69);
+__w_pdfjs_require__(111);
+__w_pdfjs_require__(70);
+__w_pdfjs_require__(113);
+__w_pdfjs_require__(118);
+__w_pdfjs_require__(119);
+module.exports = __w_pdfjs_require__(6).Promise;
 
 /***/ }),
-/* 96 */
+/* 111 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $at = __w_pdfjs_require__(112)(true);
+__w_pdfjs_require__(65)(String, 'String', function (iterated) {
+  this._t = String(iterated);
+  this._i = 0;
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return {
+    value: undefined,
+    done: true
+  };
+  point = $at(O, index);
+  this._i += point.length;
+  return {
+    value: point,
+    done: false
+  };
+});
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var toInteger = __w_pdfjs_require__(19);
+var defined = __w_pdfjs_require__(40);
+module.exports = function (TO_STRING) {
+  return function (that, pos) {
+    var s = String(defined(that));
+    var i = toInteger(pos);
+    var l = s.length;
+    var a, b;
+    if (i < 0 || i >= l) return TO_STRING ? '' : undefined;
+    a = s.charCodeAt(i);
+    return a < 0xd800 || a > 0xdbff || i + 1 === l || (b = s.charCodeAt(i + 1)) < 0xdc00 || b > 0xdfff ? TO_STRING ? s.charAt(i) : a : TO_STRING ? s.slice(i, i + 2) : (a - 0xd800 << 10) + (b - 0xdc00) + 0x10000;
+  };
+};
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var LIBRARY = __w_pdfjs_require__(23);
+var global = __w_pdfjs_require__(1);
+var ctx = __w_pdfjs_require__(13);
+var classof = __w_pdfjs_require__(34);
+var $export = __w_pdfjs_require__(7);
+var isObject = __w_pdfjs_require__(3);
+var aFunction = __w_pdfjs_require__(24);
+var anInstance = __w_pdfjs_require__(26);
+var forOf = __w_pdfjs_require__(35);
+var speciesConstructor = __w_pdfjs_require__(45);
+var task = __w_pdfjs_require__(71).set;
+var microtask = __w_pdfjs_require__(116)();
+var newPromiseCapabilityModule = __w_pdfjs_require__(47);
+var perform = __w_pdfjs_require__(72);
+var userAgent = __w_pdfjs_require__(117);
+var promiseResolve = __w_pdfjs_require__(73);
+var PROMISE = 'Promise';
+var TypeError = global.TypeError;
+var process = global.process;
+var versions = process && process.versions;
+var v8 = versions && versions.v8 || '';
+var $Promise = global[PROMISE];
+var isNode = classof(process) == 'process';
+var empty = function empty() {};
+var Internal, newGenericPromiseCapability, OwnPromiseCapability, Wrapper;
+var newPromiseCapability = newGenericPromiseCapability = newPromiseCapabilityModule.f;
+var USE_NATIVE = !!function () {
+  try {
+    var promise = $Promise.resolve(1);
+    var FakePromise = (promise.constructor = {})[__w_pdfjs_require__(4)('species')] = function (exec) {
+      exec(empty, empty);
+    };
+    return (isNode || typeof PromiseRejectionEvent == 'function') && promise.then(empty) instanceof FakePromise && v8.indexOf('6.6') !== 0 && userAgent.indexOf('Chrome/66') === -1;
+  } catch (e) {}
+}();
+var isThenable = function isThenable(it) {
+  var then;
+  return isObject(it) && typeof (then = it.then) == 'function' ? then : false;
+};
+var notify = function notify(promise, isReject) {
+  if (promise._n) return;
+  promise._n = true;
+  var chain = promise._c;
+  microtask(function () {
+    var value = promise._v;
+    var ok = promise._s == 1;
+    var i = 0;
+    var run = function run(reaction) {
+      var handler = ok ? reaction.ok : reaction.fail;
+      var resolve = reaction.resolve;
+      var reject = reaction.reject;
+      var domain = reaction.domain;
+      var result, then, exited;
+      try {
+        if (handler) {
+          if (!ok) {
+            if (promise._h == 2) onHandleUnhandled(promise);
+            promise._h = 1;
+          }
+          if (handler === true) result = value;else {
+            if (domain) domain.enter();
+            result = handler(value);
+            if (domain) {
+              domain.exit();
+              exited = true;
+            }
+          }
+          if (result === reaction.promise) {
+            reject(TypeError('Promise-chain cycle'));
+          } else if (then = isThenable(result)) {
+            then.call(result, resolve, reject);
+          } else resolve(result);
+        } else reject(value);
+      } catch (e) {
+        if (domain && !exited) domain.exit();
+        reject(e);
+      }
+    };
+    while (chain.length > i) {
+      run(chain[i++]);
+    }promise._c = [];
+    promise._n = false;
+    if (isReject && !promise._h) onUnhandled(promise);
+  });
+};
+var onUnhandled = function onUnhandled(promise) {
+  task.call(global, function () {
+    var value = promise._v;
+    var unhandled = isUnhandled(promise);
+    var result, handler, console;
+    if (unhandled) {
+      result = perform(function () {
+        if (isNode) {
+          process.emit('unhandledRejection', value, promise);
+        } else if (handler = global.onunhandledrejection) {
+          handler({
+            promise: promise,
+            reason: value
+          });
+        } else if ((console = global.console) && console.error) {
+          console.error('Unhandled promise rejection', value);
+        }
+      });
+      promise._h = isNode || isUnhandled(promise) ? 2 : 1;
+    }
+    promise._a = undefined;
+    if (unhandled && result.e) throw result.v;
+  });
+};
+var isUnhandled = function isUnhandled(promise) {
+  return promise._h !== 1 && (promise._a || promise._c).length === 0;
+};
+var onHandleUnhandled = function onHandleUnhandled(promise) {
+  task.call(global, function () {
+    var handler;
+    if (isNode) {
+      process.emit('rejectionHandled', promise);
+    } else if (handler = global.onrejectionhandled) {
+      handler({
+        promise: promise,
+        reason: promise._v
+      });
+    }
+  });
+};
+var $reject = function $reject(value) {
+  var promise = this;
+  if (promise._d) return;
+  promise._d = true;
+  promise = promise._w || promise;
+  promise._v = value;
+  promise._s = 2;
+  if (!promise._a) promise._a = promise._c.slice();
+  notify(promise, true);
+};
+var $resolve = function $resolve(value) {
+  var promise = this;
+  var then;
+  if (promise._d) return;
+  promise._d = true;
+  promise = promise._w || promise;
+  try {
+    if (promise === value) throw TypeError("Promise can't be resolved itself");
+    if (then = isThenable(value)) {
+      microtask(function () {
+        var wrapper = {
+          _w: promise,
+          _d: false
+        };
+        try {
+          then.call(value, ctx($resolve, wrapper, 1), ctx($reject, wrapper, 1));
+        } catch (e) {
+          $reject.call(wrapper, e);
+        }
+      });
+    } else {
+      promise._v = value;
+      promise._s = 1;
+      notify(promise, false);
+    }
+  } catch (e) {
+    $reject.call({
+      _w: promise,
+      _d: false
+    }, e);
+  }
+};
+if (!USE_NATIVE) {
+  $Promise = function Promise(executor) {
+    anInstance(this, $Promise, PROMISE, '_h');
+    aFunction(executor);
+    Internal.call(this);
+    try {
+      executor(ctx($resolve, this, 1), ctx($reject, this, 1));
+    } catch (err) {
+      $reject.call(this, err);
+    }
+  };
+  Internal = function Promise(executor) {
+    this._c = [];
+    this._a = undefined;
+    this._s = 0;
+    this._d = false;
+    this._v = undefined;
+    this._h = 0;
+    this._n = false;
+  };
+  Internal.prototype = __w_pdfjs_require__(25)($Promise.prototype, {
+    then: function then(onFulfilled, onRejected) {
+      var reaction = newPromiseCapability(speciesConstructor(this, $Promise));
+      reaction.ok = typeof onFulfilled == 'function' ? onFulfilled : true;
+      reaction.fail = typeof onRejected == 'function' && onRejected;
+      reaction.domain = isNode ? process.domain : undefined;
+      this._c.push(reaction);
+      if (this._a) this._a.push(reaction);
+      if (this._s) notify(this, false);
+      return reaction.promise;
+    },
+    'catch': function _catch(onRejected) {
+      return this.then(undefined, onRejected);
+    }
+  });
+  OwnPromiseCapability = function OwnPromiseCapability() {
+    var promise = new Internal();
+    this.promise = promise;
+    this.resolve = ctx($resolve, promise, 1);
+    this.reject = ctx($reject, promise, 1);
+  };
+  newPromiseCapabilityModule.f = newPromiseCapability = function newPromiseCapability(C) {
+    return C === $Promise || C === Wrapper ? new OwnPromiseCapability(C) : newGenericPromiseCapability(C);
+  };
+}
+$export($export.G + $export.W + $export.F * !USE_NATIVE, { Promise: $Promise });
+__w_pdfjs_require__(28)($Promise, PROMISE);
+__w_pdfjs_require__(66)(PROMISE);
+Wrapper = __w_pdfjs_require__(6)[PROMISE];
+$export($export.S + $export.F * !USE_NATIVE, PROMISE, {
+  reject: function reject(r) {
+    var capability = newPromiseCapability(this);
+    var $$reject = capability.reject;
+    $$reject(r);
+    return capability.promise;
+  }
+});
+$export($export.S + $export.F * (LIBRARY || !USE_NATIVE), PROMISE, {
+  resolve: function resolve(x) {
+    return promiseResolve(LIBRARY && this === Wrapper ? $Promise : this, x);
+  }
+});
+$export($export.S + $export.F * !(USE_NATIVE && __w_pdfjs_require__(46)(function (iter) {
+  $Promise.all(iter)['catch'](empty);
+})), PROMISE, {
+  all: function all(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var resolve = capability.resolve;
+    var reject = capability.reject;
+    var result = perform(function () {
+      var values = [];
+      var index = 0;
+      var remaining = 1;
+      forOf(iterable, false, function (promise) {
+        var $index = index++;
+        var alreadyCalled = false;
+        values.push(undefined);
+        remaining++;
+        C.resolve(promise).then(function (value) {
+          if (alreadyCalled) return;
+          alreadyCalled = true;
+          values[$index] = value;
+          --remaining || resolve(values);
+        }, reject);
+      });
+      --remaining || resolve(values);
+    });
+    if (result.e) reject(result.v);
+    return capability.promise;
+  },
+  race: function race(iterable) {
+    var C = this;
+    var capability = newPromiseCapability(C);
+    var reject = capability.reject;
+    var result = perform(function () {
+      forOf(iterable, false, function (promise) {
+        C.resolve(promise).then(capability.resolve, reject);
+      });
+    });
+    if (result.e) reject(result.v);
+    return capability.promise;
+  }
+});
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var anObject = __w_pdfjs_require__(9);
+module.exports = function (iterator, fn, value, entries) {
+  try {
+    return entries ? fn(anObject(value)[0], value[1]) : fn(value);
+  } catch (e) {
+    var ret = iterator['return'];
+    if (ret !== undefined) anObject(ret.call(iterator));
+    throw e;
+  }
+};
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+module.exports = function (fn, args, that) {
+  var un = that === undefined;
+  switch (args.length) {
+    case 0:
+      return un ? fn() : fn.call(that);
+    case 1:
+      return un ? fn(args[0]) : fn.call(that, args[0]);
+    case 2:
+      return un ? fn(args[0], args[1]) : fn.call(that, args[0], args[1]);
+    case 3:
+      return un ? fn(args[0], args[1], args[2]) : fn.call(that, args[0], args[1], args[2]);
+    case 4:
+      return un ? fn(args[0], args[1], args[2], args[3]) : fn.call(that, args[0], args[1], args[2], args[3]);
+  }
+  return fn.apply(that, args);
+};
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var global = __w_pdfjs_require__(1);
+var macrotask = __w_pdfjs_require__(71).set;
+var Observer = global.MutationObserver || global.WebKitMutationObserver;
+var process = global.process;
+var Promise = global.Promise;
+var isNode = __w_pdfjs_require__(27)(process) == 'process';
+module.exports = function () {
+  var head, last, notify;
+  var flush = function flush() {
+    var parent, fn;
+    if (isNode && (parent = process.domain)) parent.exit();
+    while (head) {
+      fn = head.fn;
+      head = head.next;
+      try {
+        fn();
+      } catch (e) {
+        if (head) notify();else last = undefined;
+        throw e;
+      }
+    }
+    last = undefined;
+    if (parent) parent.enter();
+  };
+  if (isNode) {
+    notify = function notify() {
+      process.nextTick(flush);
+    };
+  } else if (Observer && !(global.navigator && global.navigator.standalone)) {
+    var toggle = true;
+    var node = document.createTextNode('');
+    new Observer(flush).observe(node, { characterData: true });
+    notify = function notify() {
+      node.data = toggle = !toggle;
+    };
+  } else if (Promise && Promise.resolve) {
+    var promise = Promise.resolve(undefined);
+    notify = function notify() {
+      promise.then(flush);
+    };
+  } else {
+    notify = function notify() {
+      macrotask.call(global, flush);
+    };
+  }
+  return function (fn) {
+    var task = {
+      fn: fn,
+      next: undefined
+    };
+    if (last) last.next = task;
+    if (!head) {
+      head = task;
+      notify();
+    }
+    last = task;
+  };
+};
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var global = __w_pdfjs_require__(1);
+var navigator = global.navigator;
+module.exports = navigator && navigator.userAgent || '';
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+var core = __w_pdfjs_require__(6);
+var global = __w_pdfjs_require__(1);
+var speciesConstructor = __w_pdfjs_require__(45);
+var promiseResolve = __w_pdfjs_require__(73);
+$export($export.P + $export.R, 'Promise', {
+  'finally': function _finally(onFinally) {
+    var C = speciesConstructor(this, core.Promise || global.Promise);
+    var isFunction = typeof onFinally == 'function';
+    return this.then(isFunction ? function (x) {
+      return promiseResolve(C, onFinally()).then(function () {
+        return x;
+      });
+    } : onFinally, isFunction ? function (e) {
+      return promiseResolve(C, onFinally()).then(function () {
+        throw e;
+      });
+    } : onFinally);
+  }
+});
+
+/***/ }),
+/* 119 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+var newPromiseCapability = __w_pdfjs_require__(47);
+var perform = __w_pdfjs_require__(72);
+$export($export.S, 'Promise', {
+  'try': function _try(callbackfn) {
+    var promiseCapability = newPromiseCapability.f(this);
+    var result = perform(callbackfn);
+    (result.e ? promiseCapability.reject : promiseCapability.resolve)(result.v);
+    return promiseCapability.promise;
+  }
+});
+
+/***/ }),
+/* 120 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+__w_pdfjs_require__(69);
+__w_pdfjs_require__(70);
+__w_pdfjs_require__(121);
+__w_pdfjs_require__(128);
+__w_pdfjs_require__(130);
+module.exports = __w_pdfjs_require__(6).WeakMap;
+
+/***/ }),
+/* 121 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var each = __w_pdfjs_require__(44)(0);
+var redefine = __w_pdfjs_require__(16);
+var meta = __w_pdfjs_require__(48);
+var assign = __w_pdfjs_require__(122);
+var weak = __w_pdfjs_require__(124);
+var isObject = __w_pdfjs_require__(3);
+var fails = __w_pdfjs_require__(11);
+var validate = __w_pdfjs_require__(74);
+var WEAK_MAP = 'WeakMap';
+var getWeak = meta.getWeak;
+var isExtensible = Object.isExtensible;
+var uncaughtFrozenStore = weak.ufstore;
+var tmp = {};
+var InternalMap;
+var wrapper = function wrapper(get) {
+  return function WeakMap() {
+    return get(this, arguments.length > 0 ? arguments[0] : undefined);
+  };
+};
+var methods = {
+  get: function get(key) {
+    if (isObject(key)) {
+      var data = getWeak(key);
+      if (data === true) return uncaughtFrozenStore(validate(this, WEAK_MAP)).get(key);
+      return data ? data[this._i] : undefined;
+    }
+  },
+  set: function set(key, value) {
+    return weak.def(validate(this, WEAK_MAP), key, value);
+  }
+};
+var $WeakMap = module.exports = __w_pdfjs_require__(125)(WEAK_MAP, wrapper, methods, weak, true, true);
+if (fails(function () {
+  return new $WeakMap().set((Object.freeze || Object)(tmp), 7).get(tmp) != 7;
+})) {
+  InternalMap = weak.getConstructor(wrapper, WEAK_MAP);
+  assign(InternalMap.prototype, methods);
+  meta.NEED = true;
+  each(['delete', 'has', 'get', 'set'], function (key) {
+    var proto = $WeakMap.prototype;
+    var method = proto[key];
+    redefine(proto, key, function (a, b) {
+      if (isObject(a) && !isExtensible(a)) {
+        if (!this._f) this._f = new InternalMap();
+        var result = this._f[key](a, b);
+        return key == 'set' ? this : result;
+      }
+      return method.call(this, a, b);
+    });
+  });
+}
+
+/***/ }),
+/* 122 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var getKeys = __w_pdfjs_require__(43);
+var gOPS = __w_pdfjs_require__(123);
+var pIE = __w_pdfjs_require__(68);
+var toObject = __w_pdfjs_require__(20);
+var IObject = __w_pdfjs_require__(39);
+var $assign = Object.assign;
+module.exports = !$assign || __w_pdfjs_require__(11)(function () {
+  var A = {};
+  var B = {};
+  var S = Symbol();
+  var K = 'abcdefghijklmnopqrst';
+  A[S] = 7;
+  K.split('').forEach(function (k) {
+    B[k] = k;
+  });
+  return $assign({}, A)[S] != 7 || Object.keys($assign({}, B)).join('') != K;
+}) ? function assign(target, source) {
+  var T = toObject(target);
+  var aLen = arguments.length;
+  var index = 1;
+  var getSymbols = gOPS.f;
+  var isEnum = pIE.f;
+  while (aLen > index) {
+    var S = IObject(arguments[index++]);
+    var keys = getSymbols ? getKeys(S).concat(getSymbols(S)) : getKeys(S);
+    var length = keys.length;
+    var j = 0;
+    var key;
+    while (length > j) {
+      if (isEnum.call(S, key = keys[j++])) T[key] = S[key];
+    }
+  }
+  return T;
+} : $assign;
+
+/***/ }),
+/* 123 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+exports.f = Object.getOwnPropertySymbols;
+
+/***/ }),
+/* 124 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var redefineAll = __w_pdfjs_require__(25);
+var getWeak = __w_pdfjs_require__(48).getWeak;
+var anObject = __w_pdfjs_require__(9);
+var isObject = __w_pdfjs_require__(3);
+var anInstance = __w_pdfjs_require__(26);
+var forOf = __w_pdfjs_require__(35);
+var createArrayMethod = __w_pdfjs_require__(44);
+var $has = __w_pdfjs_require__(12);
+var validate = __w_pdfjs_require__(74);
+var arrayFind = createArrayMethod(5);
+var arrayFindIndex = createArrayMethod(6);
+var id = 0;
+var uncaughtFrozenStore = function uncaughtFrozenStore(that) {
+  return that._l || (that._l = new UncaughtFrozenStore());
+};
+var UncaughtFrozenStore = function UncaughtFrozenStore() {
+  this.a = [];
+};
+var findUncaughtFrozen = function findUncaughtFrozen(store, key) {
+  return arrayFind(store.a, function (it) {
+    return it[0] === key;
+  });
+};
+UncaughtFrozenStore.prototype = {
+  get: function get(key) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) return entry[1];
+  },
+  has: function has(key) {
+    return !!findUncaughtFrozen(this, key);
+  },
+  set: function set(key, value) {
+    var entry = findUncaughtFrozen(this, key);
+    if (entry) entry[1] = value;else this.a.push([key, value]);
+  },
+  'delete': function _delete(key) {
+    var index = arrayFindIndex(this.a, function (it) {
+      return it[0] === key;
+    });
+    if (~index) this.a.splice(index, 1);
+    return !!~index;
+  }
+};
+module.exports = {
+  getConstructor: function getConstructor(wrapper, NAME, IS_MAP, ADDER) {
+    var C = wrapper(function (that, iterable) {
+      anInstance(that, C, NAME, '_i');
+      that._t = NAME;
+      that._i = id++;
+      that._l = undefined;
+      if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
+    });
+    redefineAll(C.prototype, {
+      'delete': function _delete(key) {
+        if (!isObject(key)) return false;
+        var data = getWeak(key);
+        if (data === true) return uncaughtFrozenStore(validate(this, NAME))['delete'](key);
+        return data && $has(data, this._i) && delete data[this._i];
+      },
+      has: function has(key) {
+        if (!isObject(key)) return false;
+        var data = getWeak(key);
+        if (data === true) return uncaughtFrozenStore(validate(this, NAME)).has(key);
+        return data && $has(data, this._i);
+      }
+    });
+    return C;
+  },
+  def: function def(that, key, value) {
+    var data = getWeak(anObject(key), true);
+    if (data === true) uncaughtFrozenStore(that).set(key, value);else data[that._i] = value;
+    return that;
+  },
+  ufstore: uncaughtFrozenStore
+};
+
+/***/ }),
+/* 125 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var global = __w_pdfjs_require__(1);
+var $export = __w_pdfjs_require__(7);
+var redefine = __w_pdfjs_require__(16);
+var redefineAll = __w_pdfjs_require__(25);
+var meta = __w_pdfjs_require__(48);
+var forOf = __w_pdfjs_require__(35);
+var anInstance = __w_pdfjs_require__(26);
+var isObject = __w_pdfjs_require__(3);
+var fails = __w_pdfjs_require__(11);
+var $iterDetect = __w_pdfjs_require__(46);
+var setToStringTag = __w_pdfjs_require__(28);
+var inheritIfRequired = __w_pdfjs_require__(126);
+module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
+  var Base = global[NAME];
+  var C = Base;
+  var ADDER = IS_MAP ? 'set' : 'add';
+  var proto = C && C.prototype;
+  var O = {};
+  var fixMethod = function fixMethod(KEY) {
+    var fn = proto[KEY];
+    redefine(proto, KEY, KEY == 'delete' ? function (a) {
+      return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
+    } : KEY == 'has' ? function has(a) {
+      return IS_WEAK && !isObject(a) ? false : fn.call(this, a === 0 ? 0 : a);
+    } : KEY == 'get' ? function get(a) {
+      return IS_WEAK && !isObject(a) ? undefined : fn.call(this, a === 0 ? 0 : a);
+    } : KEY == 'add' ? function add(a) {
+      fn.call(this, a === 0 ? 0 : a);
+      return this;
+    } : function set(a, b) {
+      fn.call(this, a === 0 ? 0 : a, b);
+      return this;
+    });
+  };
+  if (typeof C != 'function' || !(IS_WEAK || proto.forEach && !fails(function () {
+    new C().entries().next();
+  }))) {
+    C = common.getConstructor(wrapper, NAME, IS_MAP, ADDER);
+    redefineAll(C.prototype, methods);
+    meta.NEED = true;
+  } else {
+    var instance = new C();
+    var HASNT_CHAINING = instance[ADDER](IS_WEAK ? {} : -0, 1) != instance;
+    var THROWS_ON_PRIMITIVES = fails(function () {
+      instance.has(1);
+    });
+    var ACCEPT_ITERABLES = $iterDetect(function (iter) {
+      new C(iter);
+    });
+    var BUGGY_ZERO = !IS_WEAK && fails(function () {
+      var $instance = new C();
+      var index = 5;
+      while (index--) {
+        $instance[ADDER](index, index);
+      }return !$instance.has(-0);
+    });
+    if (!ACCEPT_ITERABLES) {
+      C = wrapper(function (target, iterable) {
+        anInstance(target, C, NAME);
+        var that = inheritIfRequired(new Base(), target, C);
+        if (iterable != undefined) forOf(iterable, IS_MAP, that[ADDER], that);
+        return that;
+      });
+      C.prototype = proto;
+      proto.constructor = C;
+    }
+    if (THROWS_ON_PRIMITIVES || BUGGY_ZERO) {
+      fixMethod('delete');
+      fixMethod('has');
+      IS_MAP && fixMethod('get');
+    }
+    if (BUGGY_ZERO || HASNT_CHAINING) fixMethod(ADDER);
+    if (IS_WEAK && proto.clear) delete proto.clear;
+  }
+  setToStringTag(C, NAME);
+  O[NAME] = C;
+  $export($export.G + $export.W + $export.F * (C != Base), O);
+  if (!IS_WEAK) common.setStrong(C, NAME, IS_MAP);
+  return C;
+};
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var isObject = __w_pdfjs_require__(3);
+var setPrototypeOf = __w_pdfjs_require__(127).set;
+module.exports = function (that, target, C) {
+  var S = target.constructor;
+  var P;
+  if (S !== C && typeof S == 'function' && (P = S.prototype) !== C.prototype && isObject(P) && setPrototypeOf) {
+    setPrototypeOf(that, P);
+  }
+  return that;
+};
+
+/***/ }),
+/* 127 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var isObject = __w_pdfjs_require__(3);
+var anObject = __w_pdfjs_require__(9);
+var check = function check(O, proto) {
+  anObject(O);
+  if (!isObject(proto) && proto !== null) throw TypeError(proto + ": can't set as prototype!");
+};
+module.exports = {
+  set: Object.setPrototypeOf || ('__proto__' in {} ? function (test, buggy, set) {
+    try {
+      set = __w_pdfjs_require__(13)(Function.call, __w_pdfjs_require__(67).f(Object.prototype, '__proto__').set, 2);
+      set(test, []);
+      buggy = !(test instanceof Array);
+    } catch (e) {
+      buggy = true;
+    }
+    return function setPrototypeOf(O, proto) {
+      check(O, proto);
+      if (buggy) O.__proto__ = proto;else set(O, proto);
+      return O;
+    };
+  }({}, false) : undefined),
+  check: check
+};
+
+/***/ }),
+/* 128 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+__w_pdfjs_require__(129)('WeakMap');
+
+/***/ }),
+/* 129 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+module.exports = function (COLLECTION) {
+  $export($export.S, COLLECTION, {
+    of: function of() {
+      var length = arguments.length;
+      var A = new Array(length);
+      while (length--) {
+        A[length] = arguments[length];
+      }return new this(A);
+    }
+  });
+};
+
+/***/ }),
+/* 130 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+__w_pdfjs_require__(131)('WeakMap');
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+var $export = __w_pdfjs_require__(7);
+var aFunction = __w_pdfjs_require__(24);
+var ctx = __w_pdfjs_require__(13);
+var forOf = __w_pdfjs_require__(35);
+module.exports = function (COLLECTION) {
+  $export($export.S, COLLECTION, {
+    from: function from(source) {
+      var mapFn = arguments[1];
+      var mapping, A, n, cb;
+      aFunction(this);
+      mapping = mapFn !== undefined;
+      if (mapping) aFunction(mapFn);
+      if (source == undefined) return new this();
+      A = [];
+      if (mapping) {
+        n = 0;
+        cb = ctx(mapFn, arguments[2], 2);
+        forOf(source, false, function (nextItem) {
+          A.push(cb(nextItem, n++));
+        });
+      } else {
+        forOf(source, false, A.push, A);
+      }
+      return new this(A);
+    }
+  });
+};
+
+/***/ }),
+/* 132 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -32563,11 +32997,11 @@ if (typeof ReadableStream !== 'undefined') {
 if (isReadableStreamSupported) {
   exports.ReadableStream = ReadableStream;
 } else {
-  exports.ReadableStream = __w_pdfjs_require__(97).ReadableStream;
+  exports.ReadableStream = __w_pdfjs_require__(133).ReadableStream;
 }
 
 /***/ }),
-/* 97 */
+/* 133 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -35587,7 +36021,7 @@ var _typeof2 = typeof Symbol === "function" && typeof Symbol.iterator === "symbo
 }]));
 
 /***/ }),
-/* 98 */
+/* 134 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -35598,23 +36032,23 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PDFJS = exports.globalScope = undefined;
 
-var _api = __w_pdfjs_require__(54);
+var _api = __w_pdfjs_require__(75);
 
-var _dom_utils = __w_pdfjs_require__(7);
+var _dom_utils = __w_pdfjs_require__(17);
 
 var _util = __w_pdfjs_require__(0);
 
-var _annotation_layer = __w_pdfjs_require__(67);
+var _annotation_layer = __w_pdfjs_require__(88);
 
-var _global_scope = __w_pdfjs_require__(11);
+var _global_scope = __w_pdfjs_require__(22);
 
 var _global_scope2 = _interopRequireDefault(_global_scope);
 
-var _metadata = __w_pdfjs_require__(56);
+var _metadata = __w_pdfjs_require__(77);
 
-var _text_layer = __w_pdfjs_require__(68);
+var _text_layer = __w_pdfjs_require__(89);
 
-var _svg = __w_pdfjs_require__(69);
+var _svg = __w_pdfjs_require__(90);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35623,8 +36057,8 @@ if (!_global_scope2.default.PDFJS) {
 }
 var PDFJS = _global_scope2.default.PDFJS;
 {
-  PDFJS.version = '1.9.638';
-  PDFJS.build = 'c8023772';
+  PDFJS.version = '1.10.100';
+  PDFJS.build = 'ea29ec83';
 }
 PDFJS.pdfBug = false;
 if (PDFJS.verbosity !== undefined) {
@@ -35730,7 +36164,7 @@ exports.globalScope = _global_scope2.default;
 exports.PDFJS = PDFJS;
 
 /***/ }),
-/* 99 */
+/* 135 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -36027,7 +36461,7 @@ exports.FontFaceObject = FontFaceObject;
 exports.FontLoader = FontLoader;
 
 /***/ }),
-/* 100 */
+/* 136 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -36040,9 +36474,9 @@ exports.CanvasGraphics = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _pattern_helper = __w_pdfjs_require__(101);
+var _pattern_helper = __w_pdfjs_require__(137);
 
-var _webgl = __w_pdfjs_require__(55);
+var _webgl = __w_pdfjs_require__(76);
 
 var MIN_FONT_SIZE = 16;
 var MAX_FONT_SIZE = 100;
@@ -37765,7 +38199,7 @@ var CanvasGraphics = function CanvasGraphicsClosure() {
 exports.CanvasGraphics = CanvasGraphics;
 
 /***/ }),
-/* 101 */
+/* 137 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -37778,7 +38212,7 @@ exports.TilingPattern = exports.getShadingPatternFromIR = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _webgl = __w_pdfjs_require__(55);
+var _webgl = __w_pdfjs_require__(76);
 
 var ShadingIRs = {};
 ShadingIRs.RadialAxial = {
@@ -38143,7 +38577,426 @@ exports.getShadingPatternFromIR = getShadingPatternFromIR;
 exports.TilingPattern = TilingPattern;
 
 /***/ }),
-/* 102 */
+/* 138 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var XMLParserErrorCode = {
+  NoError: 0,
+  EndOfDocument: -1,
+  UnterminatedCdat: -2,
+  UnterminatedXmlDeclaration: -3,
+  UnterminatedDoctypeDeclaration: -4,
+  UnterminatedComment: -5,
+  MalformedElement: -6,
+  OutOfMemory: -7,
+  UnterminatedAttributeValue: -8,
+  UnterminatedElement: -9,
+  ElementNeverBegun: -10
+};
+function isWhitespace(s, index) {
+  var ch = s[index];
+  return ch === ' ' || ch === '\n' || ch === '\r' || ch === '\t';
+}
+function isWhitespaceString(s) {
+  for (var i = 0, ii = s.length; i < ii; i++) {
+    if (!isWhitespace(s, i)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+var XMLParserBase = function () {
+  function XMLParserBase() {
+    _classCallCheck(this, XMLParserBase);
+  }
+
+  _createClass(XMLParserBase, [{
+    key: '_resolveEntities',
+    value: function _resolveEntities(s) {
+      return s.replace(/&([^;]+);/g, function (all, entity) {
+        if (entity.substring(0, 2) === '#x') {
+          return String.fromCharCode(parseInt(entity.substring(2), 16));
+        } else if (entity.substring(0, 1) === '#') {
+          return String.fromCharCode(parseInt(entity.substring(1), 10));
+        }
+        switch (entity) {
+          case 'lt':
+            return '<';
+          case 'gt':
+            return '>';
+          case 'amp':
+            return '&';
+          case 'quot':
+            return '\"';
+        }
+        return this.onResolveEntity(entity);
+      });
+    }
+  }, {
+    key: '_parseContent',
+    value: function _parseContent(s, start) {
+      var pos = start,
+          name = void 0,
+          attributes = [];
+      function skipWs() {
+        while (pos < s.length && isWhitespace(s, pos)) {
+          ++pos;
+        }
+      }
+      while (pos < s.length && !isWhitespace(s, pos) && s[pos] !== '>' && s[pos] !== '/') {
+        ++pos;
+      }
+      name = s.substring(start, pos);
+      skipWs();
+      while (pos < s.length && s[pos] !== '>' && s[pos] !== '/' && s[pos] !== '?') {
+        skipWs();
+        var attrName = '',
+            attrValue = '';
+        while (pos < s.length && !isWhitespace(s, pos) && s[pos] !== '=') {
+          attrName += s[pos];
+          ++pos;
+        }
+        skipWs();
+        if (s[pos] !== '=') {
+          return null;
+        }
+        ++pos;
+        skipWs();
+        var attrEndChar = s[pos];
+        if (attrEndChar !== '\"' && attrEndChar !== '\'') {
+          return null;
+        }
+        var attrEndIndex = s.indexOf(attrEndChar, ++pos);
+        if (attrEndIndex < 0) {
+          return null;
+        }
+        attrValue = s.substring(pos, attrEndIndex);
+        attributes.push({
+          name: attrName,
+          value: this._resolveEntities(attrValue)
+        });
+        pos = attrEndIndex + 1;
+        skipWs();
+      }
+      return {
+        name: name,
+        attributes: attributes,
+        parsed: pos - start
+      };
+    }
+  }, {
+    key: '_parseProcessingInstruction',
+    value: function _parseProcessingInstruction(s, start) {
+      var pos = start,
+          name = void 0,
+          value = void 0;
+      function skipWs() {
+        while (pos < s.length && isWhitespace(s, pos)) {
+          ++pos;
+        }
+      }
+      while (pos < s.length && !isWhitespace(s, pos) && s[pos] !== '>' && s[pos] !== '/') {
+        ++pos;
+      }
+      name = s.substring(start, pos);
+      skipWs();
+      var attrStart = pos;
+      while (pos < s.length && (s[pos] !== '?' || s[pos + 1] !== '>')) {
+        ++pos;
+      }
+      value = s.substring(attrStart, pos);
+      return {
+        name: name,
+        value: value,
+        parsed: pos - start
+      };
+    }
+  }, {
+    key: 'parseXml',
+    value: function parseXml(s) {
+      var i = 0;
+      while (i < s.length) {
+        var ch = s[i];
+        var j = i;
+        if (ch === '<') {
+          ++j;
+          var ch2 = s[j];
+          var q = void 0;
+          switch (ch2) {
+            case '/':
+              ++j;
+              q = s.indexOf('>', j);
+              if (q < 0) {
+                this.onError(XMLParserErrorCode.UnterminatedElement);
+                return;
+              }
+              this.onEndElement(s.substring(j, q));
+              j = q + 1;
+              break;
+            case '?':
+              ++j;
+              var pi = this._parseProcessingInstruction(s, j);
+              if (s.substring(j + pi.parsed, j + pi.parsed + 2) !== '?>') {
+                this.onError(XMLParserErrorCode.UnterminatedXmlDeclaration);
+                return;
+              }
+              this.onPi(pi.name, pi.value);
+              j += pi.parsed + 2;
+              break;
+            case '!':
+              if (s.substring(j + 1, j + 3) === '--') {
+                q = s.indexOf('-->', j + 3);
+                if (q < 0) {
+                  this.onError(XMLParserErrorCode.UnterminatedComment);
+                  return;
+                }
+                this.onComment(s.substring(j + 3, q));
+                j = q + 3;
+              } else if (s.substring(j + 1, j + 8) === '[CDATA[') {
+                q = s.indexOf(']]>', j + 8);
+                if (q < 0) {
+                  this.onError(XMLParserErrorCode.UnterminatedCdat);
+                  return;
+                }
+                this.onCdata(s.substring(j + 8, q));
+                j = q + 3;
+              } else if (s.substring(j + 1, j + 8) === 'DOCTYPE') {
+                var q2 = s.indexOf('[', j + 8);
+                var complexDoctype = false;
+                q = s.indexOf('>', j + 8);
+                if (q < 0) {
+                  this.onError(XMLParserErrorCode.UnterminatedDoctypeDeclaration);
+                  return;
+                }
+                if (q2 > 0 && q > q2) {
+                  q = s.indexOf(']>', j + 8);
+                  if (q < 0) {
+                    this.onError(XMLParserErrorCode.UnterminatedDoctypeDeclaration);
+                    return;
+                  }
+                  complexDoctype = true;
+                }
+                var doctypeContent = s.substring(j + 8, q + (complexDoctype ? 1 : 0));
+                this.onDoctype(doctypeContent);
+                j = q + (complexDoctype ? 2 : 1);
+              } else {
+                this.onError(XMLParserErrorCode.MalformedElement);
+                return;
+              }
+              break;
+            default:
+              var content = this._parseContent(s, j);
+              if (content === null) {
+                this.onError(XMLParserErrorCode.MalformedElement);
+                return;
+              }
+              var isClosed = false;
+              if (s.substring(j + content.parsed, j + content.parsed + 2) === '/>') {
+                isClosed = true;
+              } else if (s.substring(j + content.parsed, j + content.parsed + 1) !== '>') {
+                this.onError(XMLParserErrorCode.UnterminatedElement);
+                return;
+              }
+              this.onBeginElement(content.name, content.attributes, isClosed);
+              j += content.parsed + (isClosed ? 2 : 1);
+              break;
+          }
+        } else {
+          while (j < s.length && s[j] !== '<') {
+            j++;
+          }
+          var text = s.substring(i, j);
+          this.onText(this._resolveEntities(text));
+        }
+        i = j;
+      }
+    }
+  }, {
+    key: 'onResolveEntity',
+    value: function onResolveEntity(name) {
+      return '&' + name + ';';
+    }
+  }, {
+    key: 'onPi',
+    value: function onPi(name, value) {}
+  }, {
+    key: 'onComment',
+    value: function onComment(text) {}
+  }, {
+    key: 'onCdata',
+    value: function onCdata(text) {}
+  }, {
+    key: 'onDoctype',
+    value: function onDoctype(doctypeContent) {}
+  }, {
+    key: 'onText',
+    value: function onText(text) {}
+  }, {
+    key: 'onBeginElement',
+    value: function onBeginElement(name, attributes, isEmpty) {}
+  }, {
+    key: 'onEndElement',
+    value: function onEndElement(name) {}
+  }, {
+    key: 'onError',
+    value: function onError(code) {}
+  }]);
+
+  return XMLParserBase;
+}();
+
+var SimpleDOMNode = function () {
+  function SimpleDOMNode(nodeName, nodeValue) {
+    _classCallCheck(this, SimpleDOMNode);
+
+    this.nodeName = nodeName;
+    this.nodeValue = nodeValue;
+    Object.defineProperty(this, 'parentNode', {
+      value: null,
+      writable: true
+    });
+  }
+
+  _createClass(SimpleDOMNode, [{
+    key: 'hasChildNodes',
+    value: function hasChildNodes() {
+      return this.childNodes && this.childNodes.length > 0;
+    }
+  }, {
+    key: 'firstChild',
+    get: function get() {
+      return this.childNodes[0];
+    }
+  }, {
+    key: 'nextSibling',
+    get: function get() {
+      var index = this.parentNode.childNodes.indexOf(this);
+      return this.parentNode.childNodes[index + 1];
+    }
+  }, {
+    key: 'textContent',
+    get: function get() {
+      if (!this.childNodes) {
+        return this.nodeValue || '';
+      }
+      return this.childNodes.map(function (child) {
+        return child.textContent;
+      }).join('');
+    }
+  }]);
+
+  return SimpleDOMNode;
+}();
+
+var SimpleXMLParser = function (_XMLParserBase) {
+  _inherits(SimpleXMLParser, _XMLParserBase);
+
+  function SimpleXMLParser() {
+    _classCallCheck(this, SimpleXMLParser);
+
+    var _this = _possibleConstructorReturn(this, (SimpleXMLParser.__proto__ || Object.getPrototypeOf(SimpleXMLParser)).call(this));
+
+    _this._currentFragment = null;
+    _this._stack = null;
+    _this._errorCode = XMLParserErrorCode.NoError;
+    return _this;
+  }
+
+  _createClass(SimpleXMLParser, [{
+    key: 'parseFromString',
+    value: function parseFromString(data) {
+      this._currentFragment = [];
+      this._stack = [];
+      this._errorCode = XMLParserErrorCode.NoError;
+      this.parseXml(data);
+      if (this._errorCode !== XMLParserErrorCode.NoError) {
+        return undefined;
+      }
+
+      var _currentFragment = _slicedToArray(this._currentFragment, 1),
+          documentElement = _currentFragment[0];
+
+      return { documentElement: documentElement };
+    }
+  }, {
+    key: 'onResolveEntity',
+    value: function onResolveEntity(name) {
+      switch (name) {
+        case 'apos':
+          return '\'';
+      }
+      return _get(SimpleXMLParser.prototype.__proto__ || Object.getPrototypeOf(SimpleXMLParser.prototype), 'onResolveEntity', this).call(this, name);
+    }
+  }, {
+    key: 'onText',
+    value: function onText(text) {
+      if (isWhitespaceString(text)) {
+        return;
+      }
+      var node = new SimpleDOMNode('#text', text);
+      this._currentFragment.push(node);
+    }
+  }, {
+    key: 'onCdata',
+    value: function onCdata(text) {
+      var node = new SimpleDOMNode('#text', text);
+      this._currentFragment.push(node);
+    }
+  }, {
+    key: 'onBeginElement',
+    value: function onBeginElement(name, attributes, isEmpty) {
+      var node = new SimpleDOMNode(name);
+      node.childNodes = [];
+      this._currentFragment.push(node);
+      if (isEmpty) {
+        return;
+      }
+      this._stack.push(this._currentFragment);
+      this._currentFragment = node.childNodes;
+    }
+  }, {
+    key: 'onEndElement',
+    value: function onEndElement(name) {
+      this._currentFragment = this._stack.pop();
+      var lastElement = this._currentFragment[this._currentFragment.length - 1];
+      for (var i = 0, ii = lastElement.childNodes.length; i < ii; i++) {
+        lastElement.childNodes[i].parentNode = lastElement;
+      }
+    }
+  }, {
+    key: 'onError',
+    value: function onError(code) {
+      this._errorCode = code;
+    }
+  }]);
+
+  return SimpleXMLParser;
+}(XMLParserBase);
+
+exports.SimpleXMLParser = SimpleXMLParser;
+
+/***/ }),
+/* 139 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -38381,7 +39234,7 @@ var PDFDataTransportStream = function PDFDataTransportStreamClosure() {
 exports.PDFDataTransportStream = PDFDataTransportStream;
 
 /***/ }),
-/* 103 */
+/* 140 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -38396,9 +39249,9 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _util = __w_pdfjs_require__(0);
 
-var _pdf_manager = __w_pdfjs_require__(104);
+var _pdf_manager = __w_pdfjs_require__(141);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
 var WorkerTask = function WorkerTaskClosure() {
   function WorkerTask(name) {
@@ -38581,7 +39434,7 @@ var WorkerMessageHandler = {
     var cancelXHRs = null;
     var WorkerTasks = [];
     var apiVersion = docParams.apiVersion;
-    var workerVersion = '1.9.638';
+    var workerVersion = '1.10.100';
     if (apiVersion !== null && apiVersion !== workerVersion) {
       throw new Error('The API version "' + apiVersion + '" does not match ' + ('the Worker version "' + workerVersion + '".'));
     }
@@ -38970,7 +39823,7 @@ exports.WorkerTask = WorkerTask;
 exports.WorkerMessageHandler = WorkerMessageHandler;
 
 /***/ }),
-/* 104 */
+/* 141 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -38983,11 +39836,11 @@ exports.NetworkPdfManager = exports.LocalPdfManager = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _chunked_stream = __w_pdfjs_require__(57);
+var _chunked_stream = __w_pdfjs_require__(78);
 
-var _document = __w_pdfjs_require__(105);
+var _document = __w_pdfjs_require__(142);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var BasePdfManager = function BasePdfManagerClosure() {
   function BasePdfManager() {
@@ -39154,7 +40007,7 @@ exports.LocalPdfManager = LocalPdfManager;
 exports.NetworkPdfManager = NetworkPdfManager;
 
 /***/ }),
-/* 105 */
+/* 142 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -39167,23 +40020,23 @@ exports.PDFDocument = exports.Page = undefined;
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _obj = __w_pdfjs_require__(58);
+var _obj = __w_pdfjs_require__(79);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
 var _util = __w_pdfjs_require__(0);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
-var _evaluator = __w_pdfjs_require__(62);
+var _evaluator = __w_pdfjs_require__(83);
 
-var _annotation = __w_pdfjs_require__(119);
+var _annotation = __w_pdfjs_require__(159);
 
-var _crypto = __w_pdfjs_require__(61);
+var _crypto = __w_pdfjs_require__(82);
 
-var _parser = __w_pdfjs_require__(25);
+var _parser = __w_pdfjs_require__(36);
 
-var _function = __w_pdfjs_require__(66);
+var _function = __w_pdfjs_require__(87);
 
 var Page = function PageClosure() {
   var DEFAULT_USER_UNIT = 1.0;
@@ -39716,7 +40569,1597 @@ exports.Page = Page;
 exports.PDFDocument = PDFDocument;
 
 /***/ }),
-/* 106 */
+/* 143 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.JpegImage = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _util = __w_pdfjs_require__(0);
+
+var JpegError = function JpegErrorClosure() {
+  function JpegError(msg) {
+    this.message = 'JPEG error: ' + msg;
+  }
+  JpegError.prototype = new Error();
+  JpegError.prototype.name = 'JpegError';
+  JpegError.constructor = JpegError;
+  return JpegError;
+}();
+var JpegImage = function JpegImageClosure() {
+  var dctZigZag = new Uint8Array([0, 1, 8, 16, 9, 2, 3, 10, 17, 24, 32, 25, 18, 11, 4, 5, 12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6, 7, 14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47, 55, 62, 63]);
+  var dctCos1 = 4017;
+  var dctSin1 = 799;
+  var dctCos3 = 3406;
+  var dctSin3 = 2276;
+  var dctCos6 = 1567;
+  var dctSin6 = 3784;
+  var dctSqrt2 = 5793;
+  var dctSqrt1d2 = 2896;
+  function JpegImage() {
+    this.decodeTransform = null;
+    this.colorTransform = -1;
+  }
+  function buildHuffmanTable(codeLengths, values) {
+    var k = 0,
+        code = [],
+        i,
+        j,
+        length = 16;
+    while (length > 0 && !codeLengths[length - 1]) {
+      length--;
+    }
+    code.push({
+      children: [],
+      index: 0
+    });
+    var p = code[0],
+        q;
+    for (i = 0; i < length; i++) {
+      for (j = 0; j < codeLengths[i]; j++) {
+        p = code.pop();
+        p.children[p.index] = values[k];
+        while (p.index > 0) {
+          p = code.pop();
+        }
+        p.index++;
+        code.push(p);
+        while (code.length <= i) {
+          code.push(q = {
+            children: [],
+            index: 0
+          });
+          p.children[p.index] = q.children;
+          p = q;
+        }
+        k++;
+      }
+      if (i + 1 < length) {
+        code.push(q = {
+          children: [],
+          index: 0
+        });
+        p.children[p.index] = q.children;
+        p = q;
+      }
+    }
+    return code[0].children;
+  }
+  function getBlockBufferOffset(component, row, col) {
+    return 64 * ((component.blocksPerLine + 1) * row + col);
+  }
+  function decodeScan(data, offset, frame, components, resetInterval, spectralStart, spectralEnd, successivePrev, successive) {
+    var mcusPerLine = frame.mcusPerLine;
+    var progressive = frame.progressive;
+    var startOffset = offset,
+        bitsData = 0,
+        bitsCount = 0;
+    function readBit() {
+      if (bitsCount > 0) {
+        bitsCount--;
+        return bitsData >> bitsCount & 1;
+      }
+      bitsData = data[offset++];
+      if (bitsData === 0xFF) {
+        var nextByte = data[offset++];
+        if (nextByte) {
+          throw new JpegError('unexpected marker ' + (bitsData << 8 | nextByte).toString(16));
+        }
+      }
+      bitsCount = 7;
+      return bitsData >>> 7;
+    }
+    function decodeHuffman(tree) {
+      var node = tree;
+      while (true) {
+        node = node[readBit()];
+        if (typeof node === 'number') {
+          return node;
+        }
+        if ((typeof node === 'undefined' ? 'undefined' : _typeof(node)) !== 'object') {
+          throw new JpegError('invalid huffman sequence');
+        }
+      }
+    }
+    function receive(length) {
+      var n = 0;
+      while (length > 0) {
+        n = n << 1 | readBit();
+        length--;
+      }
+      return n;
+    }
+    function receiveAndExtend(length) {
+      if (length === 1) {
+        return readBit() === 1 ? 1 : -1;
+      }
+      var n = receive(length);
+      if (n >= 1 << length - 1) {
+        return n;
+      }
+      return n + (-1 << length) + 1;
+    }
+    function decodeBaseline(component, offset) {
+      var t = decodeHuffman(component.huffmanTableDC);
+      var diff = t === 0 ? 0 : receiveAndExtend(t);
+      component.blockData[offset] = component.pred += diff;
+      var k = 1;
+      while (k < 64) {
+        var rs = decodeHuffman(component.huffmanTableAC);
+        var s = rs & 15,
+            r = rs >> 4;
+        if (s === 0) {
+          if (r < 15) {
+            break;
+          }
+          k += 16;
+          continue;
+        }
+        k += r;
+        var z = dctZigZag[k];
+        component.blockData[offset + z] = receiveAndExtend(s);
+        k++;
+      }
+    }
+    function decodeDCFirst(component, offset) {
+      var t = decodeHuffman(component.huffmanTableDC);
+      var diff = t === 0 ? 0 : receiveAndExtend(t) << successive;
+      component.blockData[offset] = component.pred += diff;
+    }
+    function decodeDCSuccessive(component, offset) {
+      component.blockData[offset] |= readBit() << successive;
+    }
+    var eobrun = 0;
+    function decodeACFirst(component, offset) {
+      if (eobrun > 0) {
+        eobrun--;
+        return;
+      }
+      var k = spectralStart,
+          e = spectralEnd;
+      while (k <= e) {
+        var rs = decodeHuffman(component.huffmanTableAC);
+        var s = rs & 15,
+            r = rs >> 4;
+        if (s === 0) {
+          if (r < 15) {
+            eobrun = receive(r) + (1 << r) - 1;
+            break;
+          }
+          k += 16;
+          continue;
+        }
+        k += r;
+        var z = dctZigZag[k];
+        component.blockData[offset + z] = receiveAndExtend(s) * (1 << successive);
+        k++;
+      }
+    }
+    var successiveACState = 0,
+        successiveACNextValue;
+    function decodeACSuccessive(component, offset) {
+      var k = spectralStart;
+      var e = spectralEnd;
+      var r = 0;
+      var s;
+      var rs;
+      while (k <= e) {
+        var z = dctZigZag[k];
+        switch (successiveACState) {
+          case 0:
+            rs = decodeHuffman(component.huffmanTableAC);
+            s = rs & 15;
+            r = rs >> 4;
+            if (s === 0) {
+              if (r < 15) {
+                eobrun = receive(r) + (1 << r);
+                successiveACState = 4;
+              } else {
+                r = 16;
+                successiveACState = 1;
+              }
+            } else {
+              if (s !== 1) {
+                throw new JpegError('invalid ACn encoding');
+              }
+              successiveACNextValue = receiveAndExtend(s);
+              successiveACState = r ? 2 : 3;
+            }
+            continue;
+          case 1:
+          case 2:
+            if (component.blockData[offset + z]) {
+              component.blockData[offset + z] += readBit() << successive;
+            } else {
+              r--;
+              if (r === 0) {
+                successiveACState = successiveACState === 2 ? 3 : 0;
+              }
+            }
+            break;
+          case 3:
+            if (component.blockData[offset + z]) {
+              component.blockData[offset + z] += readBit() << successive;
+            } else {
+              component.blockData[offset + z] = successiveACNextValue << successive;
+              successiveACState = 0;
+            }
+            break;
+          case 4:
+            if (component.blockData[offset + z]) {
+              component.blockData[offset + z] += readBit() << successive;
+            }
+            break;
+        }
+        k++;
+      }
+      if (successiveACState === 4) {
+        eobrun--;
+        if (eobrun === 0) {
+          successiveACState = 0;
+        }
+      }
+    }
+    function decodeMcu(component, decode, mcu, row, col) {
+      var mcuRow = mcu / mcusPerLine | 0;
+      var mcuCol = mcu % mcusPerLine;
+      var blockRow = mcuRow * component.v + row;
+      var blockCol = mcuCol * component.h + col;
+      var offset = getBlockBufferOffset(component, blockRow, blockCol);
+      decode(component, offset);
+    }
+    function decodeBlock(component, decode, mcu) {
+      var blockRow = mcu / component.blocksPerLine | 0;
+      var blockCol = mcu % component.blocksPerLine;
+      var offset = getBlockBufferOffset(component, blockRow, blockCol);
+      decode(component, offset);
+    }
+    var componentsLength = components.length;
+    var component, i, j, k, n;
+    var decodeFn;
+    if (progressive) {
+      if (spectralStart === 0) {
+        decodeFn = successivePrev === 0 ? decodeDCFirst : decodeDCSuccessive;
+      } else {
+        decodeFn = successivePrev === 0 ? decodeACFirst : decodeACSuccessive;
+      }
+    } else {
+      decodeFn = decodeBaseline;
+    }
+    var mcu = 0,
+        fileMarker;
+    var mcuExpected;
+    if (componentsLength === 1) {
+      mcuExpected = components[0].blocksPerLine * components[0].blocksPerColumn;
+    } else {
+      mcuExpected = mcusPerLine * frame.mcusPerColumn;
+    }
+    var h, v;
+    while (mcu < mcuExpected) {
+      var mcuToRead = resetInterval ? Math.min(mcuExpected - mcu, resetInterval) : mcuExpected;
+      for (i = 0; i < componentsLength; i++) {
+        components[i].pred = 0;
+      }
+      eobrun = 0;
+      if (componentsLength === 1) {
+        component = components[0];
+        for (n = 0; n < mcuToRead; n++) {
+          decodeBlock(component, decodeFn, mcu);
+          mcu++;
+        }
+      } else {
+        for (n = 0; n < mcuToRead; n++) {
+          for (i = 0; i < componentsLength; i++) {
+            component = components[i];
+            h = component.h;
+            v = component.v;
+            for (j = 0; j < v; j++) {
+              for (k = 0; k < h; k++) {
+                decodeMcu(component, decodeFn, mcu, j, k);
+              }
+            }
+          }
+          mcu++;
+        }
+      }
+      bitsCount = 0;
+      fileMarker = findNextFileMarker(data, offset);
+      if (fileMarker && fileMarker.invalid) {
+        (0, _util.warn)('decodeScan - unexpected MCU data, next marker is: ' + fileMarker.invalid);
+        offset = fileMarker.offset;
+      }
+      var marker = fileMarker && fileMarker.marker;
+      if (!marker || marker <= 0xFF00) {
+        throw new JpegError('marker was not found');
+      }
+      if (marker >= 0xFFD0 && marker <= 0xFFD7) {
+        offset += 2;
+      } else {
+        break;
+      }
+    }
+    fileMarker = findNextFileMarker(data, offset);
+    if (fileMarker && fileMarker.invalid) {
+      (0, _util.warn)('decodeScan - unexpected Scan data, next marker is: ' + fileMarker.invalid);
+      offset = fileMarker.offset;
+    }
+    return offset - startOffset;
+  }
+  function quantizeAndInverse(component, blockBufferOffset, p) {
+    var qt = component.quantizationTable,
+        blockData = component.blockData;
+    var v0, v1, v2, v3, v4, v5, v6, v7;
+    var p0, p1, p2, p3, p4, p5, p6, p7;
+    var t;
+    if (!qt) {
+      throw new JpegError('missing required Quantization Table.');
+    }
+    for (var row = 0; row < 64; row += 8) {
+      p0 = blockData[blockBufferOffset + row];
+      p1 = blockData[blockBufferOffset + row + 1];
+      p2 = blockData[blockBufferOffset + row + 2];
+      p3 = blockData[blockBufferOffset + row + 3];
+      p4 = blockData[blockBufferOffset + row + 4];
+      p5 = blockData[blockBufferOffset + row + 5];
+      p6 = blockData[blockBufferOffset + row + 6];
+      p7 = blockData[blockBufferOffset + row + 7];
+      p0 *= qt[row];
+      if ((p1 | p2 | p3 | p4 | p5 | p6 | p7) === 0) {
+        t = dctSqrt2 * p0 + 512 >> 10;
+        p[row] = t;
+        p[row + 1] = t;
+        p[row + 2] = t;
+        p[row + 3] = t;
+        p[row + 4] = t;
+        p[row + 5] = t;
+        p[row + 6] = t;
+        p[row + 7] = t;
+        continue;
+      }
+      p1 *= qt[row + 1];
+      p2 *= qt[row + 2];
+      p3 *= qt[row + 3];
+      p4 *= qt[row + 4];
+      p5 *= qt[row + 5];
+      p6 *= qt[row + 6];
+      p7 *= qt[row + 7];
+      v0 = dctSqrt2 * p0 + 128 >> 8;
+      v1 = dctSqrt2 * p4 + 128 >> 8;
+      v2 = p2;
+      v3 = p6;
+      v4 = dctSqrt1d2 * (p1 - p7) + 128 >> 8;
+      v7 = dctSqrt1d2 * (p1 + p7) + 128 >> 8;
+      v5 = p3 << 4;
+      v6 = p5 << 4;
+      v0 = v0 + v1 + 1 >> 1;
+      v1 = v0 - v1;
+      t = v2 * dctSin6 + v3 * dctCos6 + 128 >> 8;
+      v2 = v2 * dctCos6 - v3 * dctSin6 + 128 >> 8;
+      v3 = t;
+      v4 = v4 + v6 + 1 >> 1;
+      v6 = v4 - v6;
+      v7 = v7 + v5 + 1 >> 1;
+      v5 = v7 - v5;
+      v0 = v0 + v3 + 1 >> 1;
+      v3 = v0 - v3;
+      v1 = v1 + v2 + 1 >> 1;
+      v2 = v1 - v2;
+      t = v4 * dctSin3 + v7 * dctCos3 + 2048 >> 12;
+      v4 = v4 * dctCos3 - v7 * dctSin3 + 2048 >> 12;
+      v7 = t;
+      t = v5 * dctSin1 + v6 * dctCos1 + 2048 >> 12;
+      v5 = v5 * dctCos1 - v6 * dctSin1 + 2048 >> 12;
+      v6 = t;
+      p[row] = v0 + v7;
+      p[row + 7] = v0 - v7;
+      p[row + 1] = v1 + v6;
+      p[row + 6] = v1 - v6;
+      p[row + 2] = v2 + v5;
+      p[row + 5] = v2 - v5;
+      p[row + 3] = v3 + v4;
+      p[row + 4] = v3 - v4;
+    }
+    for (var col = 0; col < 8; ++col) {
+      p0 = p[col];
+      p1 = p[col + 8];
+      p2 = p[col + 16];
+      p3 = p[col + 24];
+      p4 = p[col + 32];
+      p5 = p[col + 40];
+      p6 = p[col + 48];
+      p7 = p[col + 56];
+      if ((p1 | p2 | p3 | p4 | p5 | p6 | p7) === 0) {
+        t = dctSqrt2 * p0 + 8192 >> 14;
+        t = t < -2040 ? 0 : t >= 2024 ? 255 : t + 2056 >> 4;
+        blockData[blockBufferOffset + col] = t;
+        blockData[blockBufferOffset + col + 8] = t;
+        blockData[blockBufferOffset + col + 16] = t;
+        blockData[blockBufferOffset + col + 24] = t;
+        blockData[blockBufferOffset + col + 32] = t;
+        blockData[blockBufferOffset + col + 40] = t;
+        blockData[blockBufferOffset + col + 48] = t;
+        blockData[blockBufferOffset + col + 56] = t;
+        continue;
+      }
+      v0 = dctSqrt2 * p0 + 2048 >> 12;
+      v1 = dctSqrt2 * p4 + 2048 >> 12;
+      v2 = p2;
+      v3 = p6;
+      v4 = dctSqrt1d2 * (p1 - p7) + 2048 >> 12;
+      v7 = dctSqrt1d2 * (p1 + p7) + 2048 >> 12;
+      v5 = p3;
+      v6 = p5;
+      v0 = (v0 + v1 + 1 >> 1) + 4112;
+      v1 = v0 - v1;
+      t = v2 * dctSin6 + v3 * dctCos6 + 2048 >> 12;
+      v2 = v2 * dctCos6 - v3 * dctSin6 + 2048 >> 12;
+      v3 = t;
+      v4 = v4 + v6 + 1 >> 1;
+      v6 = v4 - v6;
+      v7 = v7 + v5 + 1 >> 1;
+      v5 = v7 - v5;
+      v0 = v0 + v3 + 1 >> 1;
+      v3 = v0 - v3;
+      v1 = v1 + v2 + 1 >> 1;
+      v2 = v1 - v2;
+      t = v4 * dctSin3 + v7 * dctCos3 + 2048 >> 12;
+      v4 = v4 * dctCos3 - v7 * dctSin3 + 2048 >> 12;
+      v7 = t;
+      t = v5 * dctSin1 + v6 * dctCos1 + 2048 >> 12;
+      v5 = v5 * dctCos1 - v6 * dctSin1 + 2048 >> 12;
+      v6 = t;
+      p0 = v0 + v7;
+      p7 = v0 - v7;
+      p1 = v1 + v6;
+      p6 = v1 - v6;
+      p2 = v2 + v5;
+      p5 = v2 - v5;
+      p3 = v3 + v4;
+      p4 = v3 - v4;
+      p0 = p0 < 16 ? 0 : p0 >= 4080 ? 255 : p0 >> 4;
+      p1 = p1 < 16 ? 0 : p1 >= 4080 ? 255 : p1 >> 4;
+      p2 = p2 < 16 ? 0 : p2 >= 4080 ? 255 : p2 >> 4;
+      p3 = p3 < 16 ? 0 : p3 >= 4080 ? 255 : p3 >> 4;
+      p4 = p4 < 16 ? 0 : p4 >= 4080 ? 255 : p4 >> 4;
+      p5 = p5 < 16 ? 0 : p5 >= 4080 ? 255 : p5 >> 4;
+      p6 = p6 < 16 ? 0 : p6 >= 4080 ? 255 : p6 >> 4;
+      p7 = p7 < 16 ? 0 : p7 >= 4080 ? 255 : p7 >> 4;
+      blockData[blockBufferOffset + col] = p0;
+      blockData[blockBufferOffset + col + 8] = p1;
+      blockData[blockBufferOffset + col + 16] = p2;
+      blockData[blockBufferOffset + col + 24] = p3;
+      blockData[blockBufferOffset + col + 32] = p4;
+      blockData[blockBufferOffset + col + 40] = p5;
+      blockData[blockBufferOffset + col + 48] = p6;
+      blockData[blockBufferOffset + col + 56] = p7;
+    }
+  }
+  function buildComponentData(frame, component) {
+    var blocksPerLine = component.blocksPerLine;
+    var blocksPerColumn = component.blocksPerColumn;
+    var computationBuffer = new Int16Array(64);
+    for (var blockRow = 0; blockRow < blocksPerColumn; blockRow++) {
+      for (var blockCol = 0; blockCol < blocksPerLine; blockCol++) {
+        var offset = getBlockBufferOffset(component, blockRow, blockCol);
+        quantizeAndInverse(component, offset, computationBuffer);
+      }
+    }
+    return component.blockData;
+  }
+  function findNextFileMarker(data, currentPos, startPos) {
+    function peekUint16(pos) {
+      return data[pos] << 8 | data[pos + 1];
+    }
+    var maxPos = data.length - 1;
+    var newPos = startPos < currentPos ? startPos : currentPos;
+    if (currentPos >= maxPos) {
+      return null;
+    }
+    var currentMarker = peekUint16(currentPos);
+    if (currentMarker >= 0xFFC0 && currentMarker <= 0xFFFE) {
+      return {
+        invalid: null,
+        marker: currentMarker,
+        offset: currentPos
+      };
+    }
+    var newMarker = peekUint16(newPos);
+    while (!(newMarker >= 0xFFC0 && newMarker <= 0xFFFE)) {
+      if (++newPos >= maxPos) {
+        return null;
+      }
+      newMarker = peekUint16(newPos);
+    }
+    return {
+      invalid: currentMarker.toString(16),
+      marker: newMarker,
+      offset: newPos
+    };
+  }
+  JpegImage.prototype = {
+    parse: function parse(data) {
+      function readUint16() {
+        var value = data[offset] << 8 | data[offset + 1];
+        offset += 2;
+        return value;
+      }
+      function readDataBlock() {
+        var length = readUint16();
+        var endOffset = offset + length - 2;
+        var fileMarker = findNextFileMarker(data, endOffset, offset);
+        if (fileMarker && fileMarker.invalid) {
+          (0, _util.warn)('readDataBlock - incorrect length, next marker is: ' + fileMarker.invalid);
+          endOffset = fileMarker.offset;
+        }
+        var array = data.subarray(offset, endOffset);
+        offset += array.length;
+        return array;
+      }
+      function prepareComponents(frame) {
+        var mcusPerLine = Math.ceil(frame.samplesPerLine / 8 / frame.maxH);
+        var mcusPerColumn = Math.ceil(frame.scanLines / 8 / frame.maxV);
+        for (var i = 0; i < frame.components.length; i++) {
+          component = frame.components[i];
+          var blocksPerLine = Math.ceil(Math.ceil(frame.samplesPerLine / 8) * component.h / frame.maxH);
+          var blocksPerColumn = Math.ceil(Math.ceil(frame.scanLines / 8) * component.v / frame.maxV);
+          var blocksPerLineForMcu = mcusPerLine * component.h;
+          var blocksPerColumnForMcu = mcusPerColumn * component.v;
+          var blocksBufferSize = 64 * blocksPerColumnForMcu * (blocksPerLineForMcu + 1);
+          component.blockData = new Int16Array(blocksBufferSize);
+          component.blocksPerLine = blocksPerLine;
+          component.blocksPerColumn = blocksPerColumn;
+        }
+        frame.mcusPerLine = mcusPerLine;
+        frame.mcusPerColumn = mcusPerColumn;
+      }
+      var offset = 0;
+      var jfif = null;
+      var adobe = null;
+      var frame, resetInterval;
+      var quantizationTables = [];
+      var huffmanTablesAC = [],
+          huffmanTablesDC = [];
+      var fileMarker = readUint16();
+      if (fileMarker !== 0xFFD8) {
+        throw new JpegError('SOI not found');
+      }
+      fileMarker = readUint16();
+      while (fileMarker !== 0xFFD9) {
+        var i, j, l;
+        switch (fileMarker) {
+          case 0xFFE0:
+          case 0xFFE1:
+          case 0xFFE2:
+          case 0xFFE3:
+          case 0xFFE4:
+          case 0xFFE5:
+          case 0xFFE6:
+          case 0xFFE7:
+          case 0xFFE8:
+          case 0xFFE9:
+          case 0xFFEA:
+          case 0xFFEB:
+          case 0xFFEC:
+          case 0xFFED:
+          case 0xFFEE:
+          case 0xFFEF:
+          case 0xFFFE:
+            var appData = readDataBlock();
+            if (fileMarker === 0xFFE0) {
+              if (appData[0] === 0x4A && appData[1] === 0x46 && appData[2] === 0x49 && appData[3] === 0x46 && appData[4] === 0) {
+                jfif = {
+                  version: {
+                    major: appData[5],
+                    minor: appData[6]
+                  },
+                  densityUnits: appData[7],
+                  xDensity: appData[8] << 8 | appData[9],
+                  yDensity: appData[10] << 8 | appData[11],
+                  thumbWidth: appData[12],
+                  thumbHeight: appData[13],
+                  thumbData: appData.subarray(14, 14 + 3 * appData[12] * appData[13])
+                };
+              }
+            }
+            if (fileMarker === 0xFFEE) {
+              if (appData[0] === 0x41 && appData[1] === 0x64 && appData[2] === 0x6F && appData[3] === 0x62 && appData[4] === 0x65) {
+                adobe = {
+                  version: appData[5] << 8 | appData[6],
+                  flags0: appData[7] << 8 | appData[8],
+                  flags1: appData[9] << 8 | appData[10],
+                  transformCode: appData[11]
+                };
+              }
+            }
+            break;
+          case 0xFFDB:
+            var quantizationTablesLength = readUint16();
+            var quantizationTablesEnd = quantizationTablesLength + offset - 2;
+            var z;
+            while (offset < quantizationTablesEnd) {
+              var quantizationTableSpec = data[offset++];
+              var tableData = new Uint16Array(64);
+              if (quantizationTableSpec >> 4 === 0) {
+                for (j = 0; j < 64; j++) {
+                  z = dctZigZag[j];
+                  tableData[z] = data[offset++];
+                }
+              } else if (quantizationTableSpec >> 4 === 1) {
+                for (j = 0; j < 64; j++) {
+                  z = dctZigZag[j];
+                  tableData[z] = readUint16();
+                }
+              } else {
+                throw new JpegError('DQT - invalid table spec');
+              }
+              quantizationTables[quantizationTableSpec & 15] = tableData;
+            }
+            break;
+          case 0xFFC0:
+          case 0xFFC1:
+          case 0xFFC2:
+            if (frame) {
+              throw new JpegError('Only single frame JPEGs supported');
+            }
+            readUint16();
+            frame = {};
+            frame.extended = fileMarker === 0xFFC1;
+            frame.progressive = fileMarker === 0xFFC2;
+            frame.precision = data[offset++];
+            frame.scanLines = readUint16();
+            frame.samplesPerLine = readUint16();
+            frame.components = [];
+            frame.componentIds = {};
+            var componentsCount = data[offset++],
+                componentId;
+            var maxH = 0,
+                maxV = 0;
+            for (i = 0; i < componentsCount; i++) {
+              componentId = data[offset];
+              var h = data[offset + 1] >> 4;
+              var v = data[offset + 1] & 15;
+              if (maxH < h) {
+                maxH = h;
+              }
+              if (maxV < v) {
+                maxV = v;
+              }
+              var qId = data[offset + 2];
+              l = frame.components.push({
+                h: h,
+                v: v,
+                quantizationId: qId,
+                quantizationTable: null
+              });
+              frame.componentIds[componentId] = l - 1;
+              offset += 3;
+            }
+            frame.maxH = maxH;
+            frame.maxV = maxV;
+            prepareComponents(frame);
+            break;
+          case 0xFFC4:
+            var huffmanLength = readUint16();
+            for (i = 2; i < huffmanLength;) {
+              var huffmanTableSpec = data[offset++];
+              var codeLengths = new Uint8Array(16);
+              var codeLengthSum = 0;
+              for (j = 0; j < 16; j++, offset++) {
+                codeLengthSum += codeLengths[j] = data[offset];
+              }
+              var huffmanValues = new Uint8Array(codeLengthSum);
+              for (j = 0; j < codeLengthSum; j++, offset++) {
+                huffmanValues[j] = data[offset];
+              }
+              i += 17 + codeLengthSum;
+              (huffmanTableSpec >> 4 === 0 ? huffmanTablesDC : huffmanTablesAC)[huffmanTableSpec & 15] = buildHuffmanTable(codeLengths, huffmanValues);
+            }
+            break;
+          case 0xFFDD:
+            readUint16();
+            resetInterval = readUint16();
+            break;
+          case 0xFFDA:
+            readUint16();
+            var selectorsCount = data[offset++];
+            var components = [],
+                component;
+            for (i = 0; i < selectorsCount; i++) {
+              var componentIndex = frame.componentIds[data[offset++]];
+              component = frame.components[componentIndex];
+              var tableSpec = data[offset++];
+              component.huffmanTableDC = huffmanTablesDC[tableSpec >> 4];
+              component.huffmanTableAC = huffmanTablesAC[tableSpec & 15];
+              components.push(component);
+            }
+            var spectralStart = data[offset++];
+            var spectralEnd = data[offset++];
+            var successiveApproximation = data[offset++];
+            var processed = decodeScan(data, offset, frame, components, resetInterval, spectralStart, spectralEnd, successiveApproximation >> 4, successiveApproximation & 15);
+            offset += processed;
+            break;
+          case 0xFFFF:
+            if (data[offset] !== 0xFF) {
+              offset--;
+            }
+            break;
+          default:
+            if (data[offset - 3] === 0xFF && data[offset - 2] >= 0xC0 && data[offset - 2] <= 0xFE) {
+              offset -= 3;
+              break;
+            }
+            throw new JpegError('unknown marker ' + fileMarker.toString(16));
+        }
+        fileMarker = readUint16();
+      }
+      this.width = frame.samplesPerLine;
+      this.height = frame.scanLines;
+      this.jfif = jfif;
+      this.adobe = adobe;
+      this.components = [];
+      for (i = 0; i < frame.components.length; i++) {
+        component = frame.components[i];
+        var quantizationTable = quantizationTables[component.quantizationId];
+        if (quantizationTable) {
+          component.quantizationTable = quantizationTable;
+        }
+        this.components.push({
+          output: buildComponentData(frame, component),
+          scaleX: component.h / frame.maxH,
+          scaleY: component.v / frame.maxV,
+          blocksPerLine: component.blocksPerLine,
+          blocksPerColumn: component.blocksPerColumn
+        });
+      }
+      this.numComponents = this.components.length;
+    },
+    _getLinearizedBlockData: function getLinearizedBlockData(width, height) {
+      var scaleX = this.width / width,
+          scaleY = this.height / height;
+      var component, componentScaleX, componentScaleY, blocksPerScanline;
+      var x, y, i, j, k;
+      var index;
+      var offset = 0;
+      var output;
+      var numComponents = this.components.length;
+      var dataLength = width * height * numComponents;
+      var data = new Uint8ClampedArray(dataLength);
+      var xScaleBlockOffset = new Uint32Array(width);
+      var mask3LSB = 0xfffffff8;
+      for (i = 0; i < numComponents; i++) {
+        component = this.components[i];
+        componentScaleX = component.scaleX * scaleX;
+        componentScaleY = component.scaleY * scaleY;
+        offset = i;
+        output = component.output;
+        blocksPerScanline = component.blocksPerLine + 1 << 3;
+        for (x = 0; x < width; x++) {
+          j = 0 | x * componentScaleX;
+          xScaleBlockOffset[x] = (j & mask3LSB) << 3 | j & 7;
+        }
+        for (y = 0; y < height; y++) {
+          j = 0 | y * componentScaleY;
+          index = blocksPerScanline * (j & mask3LSB) | (j & 7) << 3;
+          for (x = 0; x < width; x++) {
+            data[offset] = output[index + xScaleBlockOffset[x]];
+            offset += numComponents;
+          }
+        }
+      }
+      var transform = this.decodeTransform;
+      if (transform) {
+        for (i = 0; i < dataLength;) {
+          for (j = 0, k = 0; j < numComponents; j++, i++, k += 2) {
+            data[i] = (data[i] * transform[k] >> 8) + transform[k + 1];
+          }
+        }
+      }
+      return data;
+    },
+    _isColorConversionNeeded: function _isColorConversionNeeded() {
+      if (this.adobe) {
+        return !!this.adobe.transformCode;
+      }
+      if (this.numComponents === 3) {
+        if (this.colorTransform === 0) {
+          return false;
+        }
+        return true;
+      }
+      if (this.colorTransform === 1) {
+        return true;
+      }
+      return false;
+    },
+
+    _convertYccToRgb: function convertYccToRgb(data) {
+      var Y, Cb, Cr;
+      for (var i = 0, length = data.length; i < length; i += 3) {
+        Y = data[i];
+        Cb = data[i + 1];
+        Cr = data[i + 2];
+        data[i] = Y - 179.456 + 1.402 * Cr;
+        data[i + 1] = Y + 135.459 - 0.344 * Cb - 0.714 * Cr;
+        data[i + 2] = Y - 226.816 + 1.772 * Cb;
+      }
+      return data;
+    },
+    _convertYcckToRgb: function convertYcckToRgb(data) {
+      var Y, Cb, Cr, k;
+      var offset = 0;
+      for (var i = 0, length = data.length; i < length; i += 4) {
+        Y = data[i];
+        Cb = data[i + 1];
+        Cr = data[i + 2];
+        k = data[i + 3];
+        data[offset++] = -122.67195406894 + Cb * (-6.60635669420364e-5 * Cb + 0.000437130475926232 * Cr - 5.4080610064599e-5 * Y + 0.00048449797120281 * k - 0.154362151871126) + Cr * (-0.000957964378445773 * Cr + 0.000817076911346625 * Y - 0.00477271405408747 * k + 1.53380253221734) + Y * (0.000961250184130688 * Y - 0.00266257332283933 * k + 0.48357088451265) + k * (-0.000336197177618394 * k + 0.484791561490776);
+        data[offset++] = 107.268039397724 + Cb * (2.19927104525741e-5 * Cb - 0.000640992018297945 * Cr + 0.000659397001245577 * Y + 0.000426105652938837 * k - 0.176491792462875) + Cr * (-0.000778269941513683 * Cr + 0.00130872261408275 * Y + 0.000770482631801132 * k - 0.151051492775562) + Y * (0.00126935368114843 * Y - 0.00265090189010898 * k + 0.25802910206845) + k * (-0.000318913117588328 * k - 0.213742400323665);
+        data[offset++] = -20.810012546947 + Cb * (-0.000570115196973677 * Cb - 2.63409051004589e-5 * Cr + 0.0020741088115012 * Y - 0.00288260236853442 * k + 0.814272968359295) + Cr * (-1.53496057440975e-5 * Cr - 0.000132689043961446 * Y + 0.000560833691242812 * k - 0.195152027534049) + Y * (0.00174418132927582 * Y - 0.00255243321439347 * k + 0.116935020465145) + k * (-0.000343531996510555 * k + 0.24165260232407);
+      }
+      return data;
+    },
+    _convertYcckToCmyk: function convertYcckToCmyk(data) {
+      var Y, Cb, Cr;
+      for (var i = 0, length = data.length; i < length; i += 4) {
+        Y = data[i];
+        Cb = data[i + 1];
+        Cr = data[i + 2];
+        data[i] = 434.456 - Y - 1.402 * Cr;
+        data[i + 1] = 119.541 - Y + 0.344 * Cb + 0.714 * Cr;
+        data[i + 2] = 481.816 - Y - 1.772 * Cb;
+      }
+      return data;
+    },
+    _convertCmykToRgb: function convertCmykToRgb(data) {
+      var c, m, y, k;
+      var offset = 0;
+      var scale = 1 / 255;
+      for (var i = 0, length = data.length; i < length; i += 4) {
+        c = data[i] * scale;
+        m = data[i + 1] * scale;
+        y = data[i + 2] * scale;
+        k = data[i + 3] * scale;
+        data[offset++] = 255 + c * (-4.387332384609988 * c + 54.48615194189176 * m + 18.82290502165302 * y + 212.25662451639585 * k - 285.2331026137004) + m * (1.7149763477362134 * m - 5.6096736904047315 * y - 17.873870861415444 * k - 5.497006427196366) + y * (-2.5217340131683033 * y - 21.248923337353073 * k + 17.5119270841813) - k * (21.86122147463605 * k + 189.48180835922747);
+        data[offset++] = 255 + c * (8.841041422036149 * c + 60.118027045597366 * m + 6.871425592049007 * y + 31.159100130055922 * k - 79.2970844816548) + m * (-15.310361306967817 * m + 17.575251261109482 * y + 131.35250912493976 * k - 190.9453302588951) + y * (4.444339102852739 * y + 9.8632861493405 * k - 24.86741582555878) - k * (20.737325471181034 * k + 187.80453709719578);
+        data[offset++] = 255 + c * (0.8842522430003296 * c + 8.078677503112928 * m + 30.89978309703729 * y - 0.23883238689178934 * k - 14.183576799673286) + m * (10.49593273432072 * m + 63.02378494754052 * y + 50.606957656360734 * k - 112.23884253719248) + y * (0.03296041114873217 * y + 115.60384449646641 * k - 193.58209356861505) - k * (22.33816807309886 * k + 180.12613974708367);
+      }
+      return data;
+    },
+    getData: function getData(width, height, forceRGBoutput) {
+      if (this.numComponents > 4) {
+        throw new JpegError('Unsupported color mode');
+      }
+      var data = this._getLinearizedBlockData(width, height);
+      if (this.numComponents === 1 && forceRGBoutput) {
+        var dataLength = data.length;
+        var rgbData = new Uint8ClampedArray(dataLength * 3);
+        var offset = 0;
+        for (var i = 0; i < dataLength; i++) {
+          var grayColor = data[i];
+          rgbData[offset++] = grayColor;
+          rgbData[offset++] = grayColor;
+          rgbData[offset++] = grayColor;
+        }
+        return rgbData;
+      } else if (this.numComponents === 3 && this._isColorConversionNeeded()) {
+        return this._convertYccToRgb(data);
+      } else if (this.numComponents === 4) {
+        if (this._isColorConversionNeeded()) {
+          if (forceRGBoutput) {
+            return this._convertYcckToRgb(data);
+          }
+          return this._convertYcckToCmyk(data);
+        } else if (forceRGBoutput) {
+          return this._convertCmykToRgb(data);
+        }
+      }
+      return data;
+    }
+  };
+  return JpegImage;
+}();
+exports.JpegImage = JpegImage;
+
+/***/ }),
+/* 144 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CCITTFaxStream = undefined;
+
+var _primitives = __w_pdfjs_require__(2);
+
+var _ccitt = __w_pdfjs_require__(145);
+
+var _stream = __w_pdfjs_require__(5);
+
+var CCITTFaxStream = function CCITTFaxStreamClosure() {
+  function CCITTFaxStream(str, maybeLength, params) {
+    this.str = str;
+    this.dict = str.dict;
+    if (!(0, _primitives.isDict)(params)) {
+      params = _primitives.Dict.empty;
+    }
+    var source = {
+      next: function next() {
+        return str.getByte();
+      }
+    };
+    this.ccittFaxDecoder = new _ccitt.CCITTFaxDecoder(source, {
+      K: params.get('K'),
+      EndOfLine: params.get('EndOfLine'),
+      EncodedByteAlign: params.get('EncodedByteAlign'),
+      Columns: params.get('Columns'),
+      Rows: params.get('Rows'),
+      EndOfBlock: params.get('EndOfBlock'),
+      BlackIs1: params.get('BlackIs1')
+    });
+    _stream.DecodeStream.call(this, maybeLength);
+  }
+  CCITTFaxStream.prototype = Object.create(_stream.DecodeStream.prototype);
+  CCITTFaxStream.prototype.readBlock = function () {
+    while (!this.eof) {
+      var c = this.ccittFaxDecoder.readNextChar();
+      if (c === -1) {
+        this.eof = true;
+        return;
+      }
+      this.ensureBuffer(this.bufferLength + 1);
+      this.buffer[this.bufferLength++] = c;
+    }
+  };
+  return CCITTFaxStream;
+}();
+exports.CCITTFaxStream = CCITTFaxStream;
+
+/***/ }),
+/* 145 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.CCITTFaxDecoder = undefined;
+
+var _util = __w_pdfjs_require__(0);
+
+var CCITTFaxDecoder = function CCITTFaxDecoder() {
+  var ccittEOL = -2;
+  var ccittEOF = -1;
+  var twoDimPass = 0;
+  var twoDimHoriz = 1;
+  var twoDimVert0 = 2;
+  var twoDimVertR1 = 3;
+  var twoDimVertL1 = 4;
+  var twoDimVertR2 = 5;
+  var twoDimVertL2 = 6;
+  var twoDimVertR3 = 7;
+  var twoDimVertL3 = 8;
+  var twoDimTable = [[-1, -1], [-1, -1], [7, twoDimVertL3], [7, twoDimVertR3], [6, twoDimVertL2], [6, twoDimVertL2], [6, twoDimVertR2], [6, twoDimVertR2], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [4, twoDimPass], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimHoriz], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertL1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [3, twoDimVertR1], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0], [1, twoDimVert0]];
+  var whiteTable1 = [[-1, -1], [12, ccittEOL], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [11, 1792], [11, 1792], [12, 1984], [12, 2048], [12, 2112], [12, 2176], [12, 2240], [12, 2304], [11, 1856], [11, 1856], [11, 1920], [11, 1920], [12, 2368], [12, 2432], [12, 2496], [12, 2560]];
+  var whiteTable2 = [[-1, -1], [-1, -1], [-1, -1], [-1, -1], [8, 29], [8, 29], [8, 30], [8, 30], [8, 45], [8, 45], [8, 46], [8, 46], [7, 22], [7, 22], [7, 22], [7, 22], [7, 23], [7, 23], [7, 23], [7, 23], [8, 47], [8, 47], [8, 48], [8, 48], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [6, 13], [7, 20], [7, 20], [7, 20], [7, 20], [8, 33], [8, 33], [8, 34], [8, 34], [8, 35], [8, 35], [8, 36], [8, 36], [8, 37], [8, 37], [8, 38], [8, 38], [7, 19], [7, 19], [7, 19], [7, 19], [8, 31], [8, 31], [8, 32], [8, 32], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 1], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [6, 12], [8, 53], [8, 53], [8, 54], [8, 54], [7, 26], [7, 26], [7, 26], [7, 26], [8, 39], [8, 39], [8, 40], [8, 40], [8, 41], [8, 41], [8, 42], [8, 42], [8, 43], [8, 43], [8, 44], [8, 44], [7, 21], [7, 21], [7, 21], [7, 21], [7, 28], [7, 28], [7, 28], [7, 28], [8, 61], [8, 61], [8, 62], [8, 62], [8, 63], [8, 63], [8, 0], [8, 0], [8, 320], [8, 320], [8, 384], [8, 384], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 10], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [5, 11], [7, 27], [7, 27], [7, 27], [7, 27], [8, 59], [8, 59], [8, 60], [8, 60], [9, 1472], [9, 1536], [9, 1600], [9, 1728], [7, 18], [7, 18], [7, 18], [7, 18], [7, 24], [7, 24], [7, 24], [7, 24], [8, 49], [8, 49], [8, 50], [8, 50], [8, 51], [8, 51], [8, 52], [8, 52], [7, 25], [7, 25], [7, 25], [7, 25], [8, 55], [8, 55], [8, 56], [8, 56], [8, 57], [8, 57], [8, 58], [8, 58], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 192], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [6, 1664], [8, 448], [8, 448], [8, 512], [8, 512], [9, 704], [9, 768], [8, 640], [8, 640], [8, 576], [8, 576], [9, 832], [9, 896], [9, 960], [9, 1024], [9, 1088], [9, 1152], [9, 1216], [9, 1280], [9, 1344], [9, 1408], [7, 256], [7, 256], [7, 256], [7, 256], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 2], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 128], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 8], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [5, 9], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 16], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [6, 17], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 4], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [4, 5], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 14], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [6, 15], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [5, 64], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 6], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7], [4, 7]];
+  var blackTable1 = [[-1, -1], [-1, -1], [12, ccittEOL], [12, ccittEOL], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [-1, -1], [11, 1792], [11, 1792], [11, 1792], [11, 1792], [12, 1984], [12, 1984], [12, 2048], [12, 2048], [12, 2112], [12, 2112], [12, 2176], [12, 2176], [12, 2240], [12, 2240], [12, 2304], [12, 2304], [11, 1856], [11, 1856], [11, 1856], [11, 1856], [11, 1920], [11, 1920], [11, 1920], [11, 1920], [12, 2368], [12, 2368], [12, 2432], [12, 2432], [12, 2496], [12, 2496], [12, 2560], [12, 2560], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [12, 52], [12, 52], [13, 640], [13, 704], [13, 768], [13, 832], [12, 55], [12, 55], [12, 56], [12, 56], [13, 1280], [13, 1344], [13, 1408], [13, 1472], [12, 59], [12, 59], [12, 60], [12, 60], [13, 1536], [13, 1600], [11, 24], [11, 24], [11, 24], [11, 24], [11, 25], [11, 25], [11, 25], [11, 25], [13, 1664], [13, 1728], [12, 320], [12, 320], [12, 384], [12, 384], [12, 448], [12, 448], [13, 512], [13, 576], [12, 53], [12, 53], [12, 54], [12, 54], [13, 896], [13, 960], [13, 1024], [13, 1088], [13, 1152], [13, 1216], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64], [10, 64]];
+  var blackTable2 = [[8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [8, 13], [11, 23], [11, 23], [12, 50], [12, 51], [12, 44], [12, 45], [12, 46], [12, 47], [12, 57], [12, 58], [12, 61], [12, 256], [10, 16], [10, 16], [10, 16], [10, 16], [10, 17], [10, 17], [10, 17], [10, 17], [12, 48], [12, 49], [12, 62], [12, 63], [12, 30], [12, 31], [12, 32], [12, 33], [12, 40], [12, 41], [11, 22], [11, 22], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [8, 14], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 10], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [7, 11], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [9, 15], [12, 128], [12, 192], [12, 26], [12, 27], [12, 28], [12, 29], [11, 19], [11, 19], [11, 20], [11, 20], [12, 34], [12, 35], [12, 36], [12, 37], [12, 38], [12, 39], [11, 21], [11, 21], [12, 42], [12, 43], [10, 0], [10, 0], [10, 0], [10, 0], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12], [7, 12]];
+  var blackTable3 = [[-1, -1], [-1, -1], [-1, -1], [-1, -1], [6, 9], [6, 8], [5, 7], [5, 7], [4, 6], [4, 6], [4, 6], [4, 6], [4, 5], [4, 5], [4, 5], [4, 5], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 1], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [3, 4], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 3], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2], [2, 2]];
+  function CCITTFaxDecoder(source) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+    if (!source || typeof source.next !== 'function') {
+      throw new Error('CCITTFaxDecoder - invalid "source" parameter.');
+    }
+    this.source = source;
+    this.eof = false;
+    this.encoding = options['K'] || 0;
+    this.eoline = options['EndOfLine'] || false;
+    this.byteAlign = options['EncodedByteAlign'] || false;
+    this.columns = options['Columns'] || 1728;
+    this.rows = options['Rows'] || 0;
+    var eoblock = options['EndOfBlock'];
+    if (eoblock === null || eoblock === undefined) {
+      eoblock = true;
+    }
+    this.eoblock = eoblock;
+    this.black = options['BlackIs1'] || false;
+    this.codingLine = new Uint32Array(this.columns + 1);
+    this.refLine = new Uint32Array(this.columns + 2);
+    this.codingLine[0] = this.columns;
+    this.codingPos = 0;
+    this.row = 0;
+    this.nextLine2D = this.encoding < 0;
+    this.inputBits = 0;
+    this.inputBuf = 0;
+    this.outputBits = 0;
+    this.rowsDone = false;
+    var code1 = void 0;
+    while ((code1 = this._lookBits(12)) === 0) {
+      this._eatBits(1);
+    }
+    if (code1 === 1) {
+      this._eatBits(12);
+    }
+    if (this.encoding > 0) {
+      this.nextLine2D = !this._lookBits(1);
+      this._eatBits(1);
+    }
+  }
+  CCITTFaxDecoder.prototype = {
+    readNextChar: function readNextChar() {
+      if (this.eof) {
+        return -1;
+      }
+      var refLine = this.refLine;
+      var codingLine = this.codingLine;
+      var columns = this.columns;
+      var refPos = void 0,
+          blackPixels = void 0,
+          bits = void 0,
+          i = void 0;
+      if (this.outputBits === 0) {
+        if (this.rowsDone) {
+          this.eof = true;
+        }
+        if (this.eof) {
+          return -1;
+        }
+        this.err = false;
+        var code1 = void 0,
+            code2 = void 0,
+            code3 = void 0;
+        if (this.nextLine2D) {
+          for (i = 0; codingLine[i] < columns; ++i) {
+            refLine[i] = codingLine[i];
+          }
+          refLine[i++] = columns;
+          refLine[i] = columns;
+          codingLine[0] = 0;
+          this.codingPos = 0;
+          refPos = 0;
+          blackPixels = 0;
+          while (codingLine[this.codingPos] < columns) {
+            code1 = this._getTwoDimCode();
+            switch (code1) {
+              case twoDimPass:
+                this._addPixels(refLine[refPos + 1], blackPixels);
+                if (refLine[refPos + 1] < columns) {
+                  refPos += 2;
+                }
+                break;
+              case twoDimHoriz:
+                code1 = code2 = 0;
+                if (blackPixels) {
+                  do {
+                    code1 += code3 = this._getBlackCode();
+                  } while (code3 >= 64);
+                  do {
+                    code2 += code3 = this._getWhiteCode();
+                  } while (code3 >= 64);
+                } else {
+                  do {
+                    code1 += code3 = this._getWhiteCode();
+                  } while (code3 >= 64);
+                  do {
+                    code2 += code3 = this._getBlackCode();
+                  } while (code3 >= 64);
+                }
+                this._addPixels(codingLine[this.codingPos] + code1, blackPixels);
+                if (codingLine[this.codingPos] < columns) {
+                  this._addPixels(codingLine[this.codingPos] + code2, blackPixels ^ 1);
+                }
+                while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                  refPos += 2;
+                }
+                break;
+              case twoDimVertR3:
+                this._addPixels(refLine[refPos] + 3, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  ++refPos;
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVertR2:
+                this._addPixels(refLine[refPos] + 2, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  ++refPos;
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVertR1:
+                this._addPixels(refLine[refPos] + 1, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  ++refPos;
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVert0:
+                this._addPixels(refLine[refPos], blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  ++refPos;
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVertL3:
+                this._addPixelsNeg(refLine[refPos] - 3, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  if (refPos > 0) {
+                    --refPos;
+                  } else {
+                    ++refPos;
+                  }
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVertL2:
+                this._addPixelsNeg(refLine[refPos] - 2, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  if (refPos > 0) {
+                    --refPos;
+                  } else {
+                    ++refPos;
+                  }
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case twoDimVertL1:
+                this._addPixelsNeg(refLine[refPos] - 1, blackPixels);
+                blackPixels ^= 1;
+                if (codingLine[this.codingPos] < columns) {
+                  if (refPos > 0) {
+                    --refPos;
+                  } else {
+                    ++refPos;
+                  }
+                  while (refLine[refPos] <= codingLine[this.codingPos] && refLine[refPos] < columns) {
+                    refPos += 2;
+                  }
+                }
+                break;
+              case ccittEOF:
+                this._addPixels(columns, 0);
+                this.eof = true;
+                break;
+              default:
+                (0, _util.info)('bad 2d code');
+                this._addPixels(columns, 0);
+                this.err = true;
+            }
+          }
+        } else {
+          codingLine[0] = 0;
+          this.codingPos = 0;
+          blackPixels = 0;
+          while (codingLine[this.codingPos] < columns) {
+            code1 = 0;
+            if (blackPixels) {
+              do {
+                code1 += code3 = this._getBlackCode();
+              } while (code3 >= 64);
+            } else {
+              do {
+                code1 += code3 = this._getWhiteCode();
+              } while (code3 >= 64);
+            }
+            this._addPixels(codingLine[this.codingPos] + code1, blackPixels);
+            blackPixels ^= 1;
+          }
+        }
+        var gotEOL = false;
+        if (this.byteAlign) {
+          this.inputBits &= ~7;
+        }
+        if (!this.eoblock && this.row === this.rows - 1) {
+          this.rowsDone = true;
+        } else {
+          code1 = this._lookBits(12);
+          if (this.eoline) {
+            while (code1 !== ccittEOF && code1 !== 1) {
+              this._eatBits(1);
+              code1 = this._lookBits(12);
+            }
+          } else {
+            while (code1 === 0) {
+              this._eatBits(1);
+              code1 = this._lookBits(12);
+            }
+          }
+          if (code1 === 1) {
+            this._eatBits(12);
+            gotEOL = true;
+          } else if (code1 === ccittEOF) {
+            this.eof = true;
+          }
+        }
+        if (!this.eof && this.encoding > 0 && !this.rowsDone) {
+          this.nextLine2D = !this._lookBits(1);
+          this._eatBits(1);
+        }
+        if (this.eoblock && gotEOL && this.byteAlign) {
+          code1 = this._lookBits(12);
+          if (code1 === 1) {
+            this._eatBits(12);
+            if (this.encoding > 0) {
+              this._lookBits(1);
+              this._eatBits(1);
+            }
+            if (this.encoding >= 0) {
+              for (i = 0; i < 4; ++i) {
+                code1 = this._lookBits(12);
+                if (code1 !== 1) {
+                  (0, _util.info)('bad rtc code: ' + code1);
+                }
+                this._eatBits(12);
+                if (this.encoding > 0) {
+                  this._lookBits(1);
+                  this._eatBits(1);
+                }
+              }
+            }
+            this.eof = true;
+          }
+        } else if (this.err && this.eoline) {
+          while (true) {
+            code1 = this._lookBits(13);
+            if (code1 === ccittEOF) {
+              this.eof = true;
+              return -1;
+            }
+            if (code1 >> 1 === 1) {
+              break;
+            }
+            this._eatBits(1);
+          }
+          this._eatBits(12);
+          if (this.encoding > 0) {
+            this._eatBits(1);
+            this.nextLine2D = !(code1 & 1);
+          }
+        }
+        if (codingLine[0] > 0) {
+          this.outputBits = codingLine[this.codingPos = 0];
+        } else {
+          this.outputBits = codingLine[this.codingPos = 1];
+        }
+        this.row++;
+      }
+      var c = void 0;
+      if (this.outputBits >= 8) {
+        c = this.codingPos & 1 ? 0 : 0xFF;
+        this.outputBits -= 8;
+        if (this.outputBits === 0 && codingLine[this.codingPos] < columns) {
+          this.codingPos++;
+          this.outputBits = codingLine[this.codingPos] - codingLine[this.codingPos - 1];
+        }
+      } else {
+        bits = 8;
+        c = 0;
+        do {
+          if (this.outputBits > bits) {
+            c <<= bits;
+            if (!(this.codingPos & 1)) {
+              c |= 0xFF >> 8 - bits;
+            }
+            this.outputBits -= bits;
+            bits = 0;
+          } else {
+            c <<= this.outputBits;
+            if (!(this.codingPos & 1)) {
+              c |= 0xFF >> 8 - this.outputBits;
+            }
+            bits -= this.outputBits;
+            this.outputBits = 0;
+            if (codingLine[this.codingPos] < columns) {
+              this.codingPos++;
+              this.outputBits = codingLine[this.codingPos] - codingLine[this.codingPos - 1];
+            } else if (bits > 0) {
+              c <<= bits;
+              bits = 0;
+            }
+          }
+        } while (bits);
+      }
+      if (this.black) {
+        c ^= 0xFF;
+      }
+      return c;
+    },
+    _addPixels: function _addPixels(a1, blackPixels) {
+      var codingLine = this.codingLine;
+      var codingPos = this.codingPos;
+      if (a1 > codingLine[codingPos]) {
+        if (a1 > this.columns) {
+          (0, _util.info)('row is wrong length');
+          this.err = true;
+          a1 = this.columns;
+        }
+        if (codingPos & 1 ^ blackPixels) {
+          ++codingPos;
+        }
+        codingLine[codingPos] = a1;
+      }
+      this.codingPos = codingPos;
+    },
+    _addPixelsNeg: function _addPixelsNeg(a1, blackPixels) {
+      var codingLine = this.codingLine;
+      var codingPos = this.codingPos;
+      if (a1 > codingLine[codingPos]) {
+        if (a1 > this.columns) {
+          (0, _util.info)('row is wrong length');
+          this.err = true;
+          a1 = this.columns;
+        }
+        if (codingPos & 1 ^ blackPixels) {
+          ++codingPos;
+        }
+        codingLine[codingPos] = a1;
+      } else if (a1 < codingLine[codingPos]) {
+        if (a1 < 0) {
+          (0, _util.info)('invalid code');
+          this.err = true;
+          a1 = 0;
+        }
+        while (codingPos > 0 && a1 < codingLine[codingPos - 1]) {
+          --codingPos;
+        }
+        codingLine[codingPos] = a1;
+      }
+      this.codingPos = codingPos;
+    },
+    _findTableCode: function _findTableCode(start, end, table, limit) {
+      var limitValue = limit || 0;
+      for (var i = start; i <= end; ++i) {
+        var code = this._lookBits(i);
+        if (code === ccittEOF) {
+          return [true, 1, false];
+        }
+        if (i < end) {
+          code <<= end - i;
+        }
+        if (!limitValue || code >= limitValue) {
+          var p = table[code - limitValue];
+          if (p[0] === i) {
+            this._eatBits(i);
+            return [true, p[1], true];
+          }
+        }
+      }
+      return [false, 0, false];
+    },
+    _getTwoDimCode: function _getTwoDimCode() {
+      var code = 0;
+      var p = void 0;
+      if (this.eoblock) {
+        code = this._lookBits(7);
+        p = twoDimTable[code];
+        if (p && p[0] > 0) {
+          this._eatBits(p[0]);
+          return p[1];
+        }
+      } else {
+        var result = this._findTableCode(1, 7, twoDimTable);
+        if (result[0] && result[2]) {
+          return result[1];
+        }
+      }
+      (0, _util.info)('Bad two dim code');
+      return ccittEOF;
+    },
+    _getWhiteCode: function _getWhiteCode() {
+      var code = 0;
+      var p = void 0;
+      if (this.eoblock) {
+        code = this._lookBits(12);
+        if (code === ccittEOF) {
+          return 1;
+        }
+        if (code >> 5 === 0) {
+          p = whiteTable1[code];
+        } else {
+          p = whiteTable2[code >> 3];
+        }
+        if (p[0] > 0) {
+          this._eatBits(p[0]);
+          return p[1];
+        }
+      } else {
+        var result = this._findTableCode(1, 9, whiteTable2);
+        if (result[0]) {
+          return result[1];
+        }
+        result = this._findTableCode(11, 12, whiteTable1);
+        if (result[0]) {
+          return result[1];
+        }
+      }
+      (0, _util.info)('bad white code');
+      this._eatBits(1);
+      return 1;
+    },
+    _getBlackCode: function _getBlackCode() {
+      var code = void 0,
+          p = void 0;
+      if (this.eoblock) {
+        code = this._lookBits(13);
+        if (code === ccittEOF) {
+          return 1;
+        }
+        if (code >> 7 === 0) {
+          p = blackTable1[code];
+        } else if (code >> 9 === 0 && code >> 7 !== 0) {
+          p = blackTable2[(code >> 1) - 64];
+        } else {
+          p = blackTable3[code >> 7];
+        }
+        if (p[0] > 0) {
+          this._eatBits(p[0]);
+          return p[1];
+        }
+      } else {
+        var result = this._findTableCode(2, 6, blackTable3);
+        if (result[0]) {
+          return result[1];
+        }
+        result = this._findTableCode(7, 12, blackTable2, 64);
+        if (result[0]) {
+          return result[1];
+        }
+        result = this._findTableCode(10, 13, blackTable1);
+        if (result[0]) {
+          return result[1];
+        }
+      }
+      (0, _util.info)('bad black code');
+      this._eatBits(1);
+      return 1;
+    },
+    _lookBits: function _lookBits(n) {
+      var c = void 0;
+      while (this.inputBits < n) {
+        if ((c = this.source.next()) === -1) {
+          if (this.inputBits === 0) {
+            return ccittEOF;
+          }
+          return this.inputBuf << n - this.inputBits & 0xFFFF >> 16 - n;
+        }
+        this.inputBuf = this.inputBuf << 8 | c;
+        this.inputBits += 8;
+      }
+      return this.inputBuf >> this.inputBits - n & 0xFFFF >> 16 - n;
+    },
+    _eatBits: function _eatBits(n) {
+      if ((this.inputBits -= n) < 0) {
+        this.inputBits = 0;
+      }
+    }
+  };
+  return CCITTFaxDecoder;
+}();
+exports.CCITTFaxDecoder = CCITTFaxDecoder;
+
+/***/ }),
+/* 146 */
+/***/ (function(module, exports, __w_pdfjs_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Jbig2Stream = undefined;
+
+var _primitives = __w_pdfjs_require__(2);
+
+var _stream = __w_pdfjs_require__(5);
+
+var _jbig = __w_pdfjs_require__(147);
+
+var _util = __w_pdfjs_require__(0);
+
+var Jbig2Stream = function Jbig2StreamClosure() {
+  function Jbig2Stream(stream, maybeLength, dict, params) {
+    this.stream = stream;
+    this.maybeLength = maybeLength;
+    this.dict = dict;
+    this.params = params;
+    _stream.DecodeStream.call(this, maybeLength);
+  }
+  Jbig2Stream.prototype = Object.create(_stream.DecodeStream.prototype);
+  Object.defineProperty(Jbig2Stream.prototype, 'bytes', {
+    get: function get() {
+      return (0, _util.shadow)(this, 'bytes', this.stream.getBytes(this.maybeLength));
+    },
+
+    configurable: true
+  });
+  Jbig2Stream.prototype.ensureBuffer = function (req) {
+    if (this.bufferLength) {
+      return;
+    }
+    var jbig2Image = new _jbig.Jbig2Image();
+    var chunks = [];
+    if ((0, _primitives.isDict)(this.params)) {
+      var globalsStream = this.params.get('JBIG2Globals');
+      if ((0, _primitives.isStream)(globalsStream)) {
+        var globals = globalsStream.getBytes();
+        chunks.push({
+          data: globals,
+          start: 0,
+          end: globals.length
+        });
+      }
+    }
+    chunks.push({
+      data: this.bytes,
+      start: 0,
+      end: this.bytes.length
+    });
+    var data = jbig2Image.parseChunks(chunks);
+    var dataLength = data.length;
+    for (var i = 0; i < dataLength; i++) {
+      data[i] ^= 0xFF;
+    }
+    this.buffer = data;
+    this.bufferLength = dataLength;
+    this.eof = true;
+  };
+  return Jbig2Stream;
+}();
+exports.Jbig2Stream = Jbig2Stream;
+
+/***/ }),
+/* 147 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -39729,7 +42172,7 @@ exports.Jbig2Image = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _arithmetic_decoder = __w_pdfjs_require__(59);
+var _arithmetic_decoder = __w_pdfjs_require__(81);
 
 var Jbig2Error = function Jbig2ErrorClosure() {
   function Jbig2Error(msg) {
@@ -40968,926 +43411,7 @@ var Jbig2Image = function Jbig2ImageClosure() {
 exports.Jbig2Image = Jbig2Image;
 
 /***/ }),
-/* 107 */
-/***/ (function(module, exports, __w_pdfjs_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.JpegImage = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _util = __w_pdfjs_require__(0);
-
-var JpegError = function JpegErrorClosure() {
-  function JpegError(msg) {
-    this.message = 'JPEG error: ' + msg;
-  }
-  JpegError.prototype = new Error();
-  JpegError.prototype.name = 'JpegError';
-  JpegError.constructor = JpegError;
-  return JpegError;
-}();
-var JpegImage = function JpegImageClosure() {
-  var dctZigZag = new Uint8Array([0, 1, 8, 16, 9, 2, 3, 10, 17, 24, 32, 25, 18, 11, 4, 5, 12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13, 6, 7, 14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31, 39, 46, 53, 60, 61, 54, 47, 55, 62, 63]);
-  var dctCos1 = 4017;
-  var dctSin1 = 799;
-  var dctCos3 = 3406;
-  var dctSin3 = 2276;
-  var dctCos6 = 1567;
-  var dctSin6 = 3784;
-  var dctSqrt2 = 5793;
-  var dctSqrt1d2 = 2896;
-  function JpegImage() {
-    this.decodeTransform = null;
-    this.colorTransform = -1;
-  }
-  function buildHuffmanTable(codeLengths, values) {
-    var k = 0,
-        code = [],
-        i,
-        j,
-        length = 16;
-    while (length > 0 && !codeLengths[length - 1]) {
-      length--;
-    }
-    code.push({
-      children: [],
-      index: 0
-    });
-    var p = code[0],
-        q;
-    for (i = 0; i < length; i++) {
-      for (j = 0; j < codeLengths[i]; j++) {
-        p = code.pop();
-        p.children[p.index] = values[k];
-        while (p.index > 0) {
-          p = code.pop();
-        }
-        p.index++;
-        code.push(p);
-        while (code.length <= i) {
-          code.push(q = {
-            children: [],
-            index: 0
-          });
-          p.children[p.index] = q.children;
-          p = q;
-        }
-        k++;
-      }
-      if (i + 1 < length) {
-        code.push(q = {
-          children: [],
-          index: 0
-        });
-        p.children[p.index] = q.children;
-        p = q;
-      }
-    }
-    return code[0].children;
-  }
-  function getBlockBufferOffset(component, row, col) {
-    return 64 * ((component.blocksPerLine + 1) * row + col);
-  }
-  function decodeScan(data, offset, frame, components, resetInterval, spectralStart, spectralEnd, successivePrev, successive) {
-    var mcusPerLine = frame.mcusPerLine;
-    var progressive = frame.progressive;
-    var startOffset = offset,
-        bitsData = 0,
-        bitsCount = 0;
-    function readBit() {
-      if (bitsCount > 0) {
-        bitsCount--;
-        return bitsData >> bitsCount & 1;
-      }
-      bitsData = data[offset++];
-      if (bitsData === 0xFF) {
-        var nextByte = data[offset++];
-        if (nextByte) {
-          throw new JpegError('unexpected marker ' + (bitsData << 8 | nextByte).toString(16));
-        }
-      }
-      bitsCount = 7;
-      return bitsData >>> 7;
-    }
-    function decodeHuffman(tree) {
-      var node = tree;
-      while (true) {
-        node = node[readBit()];
-        if (typeof node === 'number') {
-          return node;
-        }
-        if ((typeof node === 'undefined' ? 'undefined' : _typeof(node)) !== 'object') {
-          throw new JpegError('invalid huffman sequence');
-        }
-      }
-    }
-    function receive(length) {
-      var n = 0;
-      while (length > 0) {
-        n = n << 1 | readBit();
-        length--;
-      }
-      return n;
-    }
-    function receiveAndExtend(length) {
-      if (length === 1) {
-        return readBit() === 1 ? 1 : -1;
-      }
-      var n = receive(length);
-      if (n >= 1 << length - 1) {
-        return n;
-      }
-      return n + (-1 << length) + 1;
-    }
-    function decodeBaseline(component, offset) {
-      var t = decodeHuffman(component.huffmanTableDC);
-      var diff = t === 0 ? 0 : receiveAndExtend(t);
-      component.blockData[offset] = component.pred += diff;
-      var k = 1;
-      while (k < 64) {
-        var rs = decodeHuffman(component.huffmanTableAC);
-        var s = rs & 15,
-            r = rs >> 4;
-        if (s === 0) {
-          if (r < 15) {
-            break;
-          }
-          k += 16;
-          continue;
-        }
-        k += r;
-        var z = dctZigZag[k];
-        component.blockData[offset + z] = receiveAndExtend(s);
-        k++;
-      }
-    }
-    function decodeDCFirst(component, offset) {
-      var t = decodeHuffman(component.huffmanTableDC);
-      var diff = t === 0 ? 0 : receiveAndExtend(t) << successive;
-      component.blockData[offset] = component.pred += diff;
-    }
-    function decodeDCSuccessive(component, offset) {
-      component.blockData[offset] |= readBit() << successive;
-    }
-    var eobrun = 0;
-    function decodeACFirst(component, offset) {
-      if (eobrun > 0) {
-        eobrun--;
-        return;
-      }
-      var k = spectralStart,
-          e = spectralEnd;
-      while (k <= e) {
-        var rs = decodeHuffman(component.huffmanTableAC);
-        var s = rs & 15,
-            r = rs >> 4;
-        if (s === 0) {
-          if (r < 15) {
-            eobrun = receive(r) + (1 << r) - 1;
-            break;
-          }
-          k += 16;
-          continue;
-        }
-        k += r;
-        var z = dctZigZag[k];
-        component.blockData[offset + z] = receiveAndExtend(s) * (1 << successive);
-        k++;
-      }
-    }
-    var successiveACState = 0,
-        successiveACNextValue;
-    function decodeACSuccessive(component, offset) {
-      var k = spectralStart;
-      var e = spectralEnd;
-      var r = 0;
-      var s;
-      var rs;
-      while (k <= e) {
-        var z = dctZigZag[k];
-        switch (successiveACState) {
-          case 0:
-            rs = decodeHuffman(component.huffmanTableAC);
-            s = rs & 15;
-            r = rs >> 4;
-            if (s === 0) {
-              if (r < 15) {
-                eobrun = receive(r) + (1 << r);
-                successiveACState = 4;
-              } else {
-                r = 16;
-                successiveACState = 1;
-              }
-            } else {
-              if (s !== 1) {
-                throw new JpegError('invalid ACn encoding');
-              }
-              successiveACNextValue = receiveAndExtend(s);
-              successiveACState = r ? 2 : 3;
-            }
-            continue;
-          case 1:
-          case 2:
-            if (component.blockData[offset + z]) {
-              component.blockData[offset + z] += readBit() << successive;
-            } else {
-              r--;
-              if (r === 0) {
-                successiveACState = successiveACState === 2 ? 3 : 0;
-              }
-            }
-            break;
-          case 3:
-            if (component.blockData[offset + z]) {
-              component.blockData[offset + z] += readBit() << successive;
-            } else {
-              component.blockData[offset + z] = successiveACNextValue << successive;
-              successiveACState = 0;
-            }
-            break;
-          case 4:
-            if (component.blockData[offset + z]) {
-              component.blockData[offset + z] += readBit() << successive;
-            }
-            break;
-        }
-        k++;
-      }
-      if (successiveACState === 4) {
-        eobrun--;
-        if (eobrun === 0) {
-          successiveACState = 0;
-        }
-      }
-    }
-    function decodeMcu(component, decode, mcu, row, col) {
-      var mcuRow = mcu / mcusPerLine | 0;
-      var mcuCol = mcu % mcusPerLine;
-      var blockRow = mcuRow * component.v + row;
-      var blockCol = mcuCol * component.h + col;
-      var offset = getBlockBufferOffset(component, blockRow, blockCol);
-      decode(component, offset);
-    }
-    function decodeBlock(component, decode, mcu) {
-      var blockRow = mcu / component.blocksPerLine | 0;
-      var blockCol = mcu % component.blocksPerLine;
-      var offset = getBlockBufferOffset(component, blockRow, blockCol);
-      decode(component, offset);
-    }
-    var componentsLength = components.length;
-    var component, i, j, k, n;
-    var decodeFn;
-    if (progressive) {
-      if (spectralStart === 0) {
-        decodeFn = successivePrev === 0 ? decodeDCFirst : decodeDCSuccessive;
-      } else {
-        decodeFn = successivePrev === 0 ? decodeACFirst : decodeACSuccessive;
-      }
-    } else {
-      decodeFn = decodeBaseline;
-    }
-    var mcu = 0,
-        fileMarker;
-    var mcuExpected;
-    if (componentsLength === 1) {
-      mcuExpected = components[0].blocksPerLine * components[0].blocksPerColumn;
-    } else {
-      mcuExpected = mcusPerLine * frame.mcusPerColumn;
-    }
-    var h, v;
-    while (mcu < mcuExpected) {
-      var mcuToRead = resetInterval ? Math.min(mcuExpected - mcu, resetInterval) : mcuExpected;
-      for (i = 0; i < componentsLength; i++) {
-        components[i].pred = 0;
-      }
-      eobrun = 0;
-      if (componentsLength === 1) {
-        component = components[0];
-        for (n = 0; n < mcuToRead; n++) {
-          decodeBlock(component, decodeFn, mcu);
-          mcu++;
-        }
-      } else {
-        for (n = 0; n < mcuToRead; n++) {
-          for (i = 0; i < componentsLength; i++) {
-            component = components[i];
-            h = component.h;
-            v = component.v;
-            for (j = 0; j < v; j++) {
-              for (k = 0; k < h; k++) {
-                decodeMcu(component, decodeFn, mcu, j, k);
-              }
-            }
-          }
-          mcu++;
-        }
-      }
-      bitsCount = 0;
-      fileMarker = findNextFileMarker(data, offset);
-      if (fileMarker && fileMarker.invalid) {
-        (0, _util.warn)('decodeScan - unexpected MCU data, next marker is: ' + fileMarker.invalid);
-        offset = fileMarker.offset;
-      }
-      var marker = fileMarker && fileMarker.marker;
-      if (!marker || marker <= 0xFF00) {
-        throw new JpegError('marker was not found');
-      }
-      if (marker >= 0xFFD0 && marker <= 0xFFD7) {
-        offset += 2;
-      } else {
-        break;
-      }
-    }
-    fileMarker = findNextFileMarker(data, offset);
-    if (fileMarker && fileMarker.invalid) {
-      (0, _util.warn)('decodeScan - unexpected Scan data, next marker is: ' + fileMarker.invalid);
-      offset = fileMarker.offset;
-    }
-    return offset - startOffset;
-  }
-  function quantizeAndInverse(component, blockBufferOffset, p) {
-    var qt = component.quantizationTable,
-        blockData = component.blockData;
-    var v0, v1, v2, v3, v4, v5, v6, v7;
-    var p0, p1, p2, p3, p4, p5, p6, p7;
-    var t;
-    if (!qt) {
-      throw new JpegError('missing required Quantization Table.');
-    }
-    for (var row = 0; row < 64; row += 8) {
-      p0 = blockData[blockBufferOffset + row];
-      p1 = blockData[blockBufferOffset + row + 1];
-      p2 = blockData[blockBufferOffset + row + 2];
-      p3 = blockData[blockBufferOffset + row + 3];
-      p4 = blockData[blockBufferOffset + row + 4];
-      p5 = blockData[blockBufferOffset + row + 5];
-      p6 = blockData[blockBufferOffset + row + 6];
-      p7 = blockData[blockBufferOffset + row + 7];
-      p0 *= qt[row];
-      if ((p1 | p2 | p3 | p4 | p5 | p6 | p7) === 0) {
-        t = dctSqrt2 * p0 + 512 >> 10;
-        p[row] = t;
-        p[row + 1] = t;
-        p[row + 2] = t;
-        p[row + 3] = t;
-        p[row + 4] = t;
-        p[row + 5] = t;
-        p[row + 6] = t;
-        p[row + 7] = t;
-        continue;
-      }
-      p1 *= qt[row + 1];
-      p2 *= qt[row + 2];
-      p3 *= qt[row + 3];
-      p4 *= qt[row + 4];
-      p5 *= qt[row + 5];
-      p6 *= qt[row + 6];
-      p7 *= qt[row + 7];
-      v0 = dctSqrt2 * p0 + 128 >> 8;
-      v1 = dctSqrt2 * p4 + 128 >> 8;
-      v2 = p2;
-      v3 = p6;
-      v4 = dctSqrt1d2 * (p1 - p7) + 128 >> 8;
-      v7 = dctSqrt1d2 * (p1 + p7) + 128 >> 8;
-      v5 = p3 << 4;
-      v6 = p5 << 4;
-      v0 = v0 + v1 + 1 >> 1;
-      v1 = v0 - v1;
-      t = v2 * dctSin6 + v3 * dctCos6 + 128 >> 8;
-      v2 = v2 * dctCos6 - v3 * dctSin6 + 128 >> 8;
-      v3 = t;
-      v4 = v4 + v6 + 1 >> 1;
-      v6 = v4 - v6;
-      v7 = v7 + v5 + 1 >> 1;
-      v5 = v7 - v5;
-      v0 = v0 + v3 + 1 >> 1;
-      v3 = v0 - v3;
-      v1 = v1 + v2 + 1 >> 1;
-      v2 = v1 - v2;
-      t = v4 * dctSin3 + v7 * dctCos3 + 2048 >> 12;
-      v4 = v4 * dctCos3 - v7 * dctSin3 + 2048 >> 12;
-      v7 = t;
-      t = v5 * dctSin1 + v6 * dctCos1 + 2048 >> 12;
-      v5 = v5 * dctCos1 - v6 * dctSin1 + 2048 >> 12;
-      v6 = t;
-      p[row] = v0 + v7;
-      p[row + 7] = v0 - v7;
-      p[row + 1] = v1 + v6;
-      p[row + 6] = v1 - v6;
-      p[row + 2] = v2 + v5;
-      p[row + 5] = v2 - v5;
-      p[row + 3] = v3 + v4;
-      p[row + 4] = v3 - v4;
-    }
-    for (var col = 0; col < 8; ++col) {
-      p0 = p[col];
-      p1 = p[col + 8];
-      p2 = p[col + 16];
-      p3 = p[col + 24];
-      p4 = p[col + 32];
-      p5 = p[col + 40];
-      p6 = p[col + 48];
-      p7 = p[col + 56];
-      if ((p1 | p2 | p3 | p4 | p5 | p6 | p7) === 0) {
-        t = dctSqrt2 * p0 + 8192 >> 14;
-        t = t < -2040 ? 0 : t >= 2024 ? 255 : t + 2056 >> 4;
-        blockData[blockBufferOffset + col] = t;
-        blockData[blockBufferOffset + col + 8] = t;
-        blockData[blockBufferOffset + col + 16] = t;
-        blockData[blockBufferOffset + col + 24] = t;
-        blockData[blockBufferOffset + col + 32] = t;
-        blockData[blockBufferOffset + col + 40] = t;
-        blockData[blockBufferOffset + col + 48] = t;
-        blockData[blockBufferOffset + col + 56] = t;
-        continue;
-      }
-      v0 = dctSqrt2 * p0 + 2048 >> 12;
-      v1 = dctSqrt2 * p4 + 2048 >> 12;
-      v2 = p2;
-      v3 = p6;
-      v4 = dctSqrt1d2 * (p1 - p7) + 2048 >> 12;
-      v7 = dctSqrt1d2 * (p1 + p7) + 2048 >> 12;
-      v5 = p3;
-      v6 = p5;
-      v0 = (v0 + v1 + 1 >> 1) + 4112;
-      v1 = v0 - v1;
-      t = v2 * dctSin6 + v3 * dctCos6 + 2048 >> 12;
-      v2 = v2 * dctCos6 - v3 * dctSin6 + 2048 >> 12;
-      v3 = t;
-      v4 = v4 + v6 + 1 >> 1;
-      v6 = v4 - v6;
-      v7 = v7 + v5 + 1 >> 1;
-      v5 = v7 - v5;
-      v0 = v0 + v3 + 1 >> 1;
-      v3 = v0 - v3;
-      v1 = v1 + v2 + 1 >> 1;
-      v2 = v1 - v2;
-      t = v4 * dctSin3 + v7 * dctCos3 + 2048 >> 12;
-      v4 = v4 * dctCos3 - v7 * dctSin3 + 2048 >> 12;
-      v7 = t;
-      t = v5 * dctSin1 + v6 * dctCos1 + 2048 >> 12;
-      v5 = v5 * dctCos1 - v6 * dctSin1 + 2048 >> 12;
-      v6 = t;
-      p0 = v0 + v7;
-      p7 = v0 - v7;
-      p1 = v1 + v6;
-      p6 = v1 - v6;
-      p2 = v2 + v5;
-      p5 = v2 - v5;
-      p3 = v3 + v4;
-      p4 = v3 - v4;
-      p0 = p0 < 16 ? 0 : p0 >= 4080 ? 255 : p0 >> 4;
-      p1 = p1 < 16 ? 0 : p1 >= 4080 ? 255 : p1 >> 4;
-      p2 = p2 < 16 ? 0 : p2 >= 4080 ? 255 : p2 >> 4;
-      p3 = p3 < 16 ? 0 : p3 >= 4080 ? 255 : p3 >> 4;
-      p4 = p4 < 16 ? 0 : p4 >= 4080 ? 255 : p4 >> 4;
-      p5 = p5 < 16 ? 0 : p5 >= 4080 ? 255 : p5 >> 4;
-      p6 = p6 < 16 ? 0 : p6 >= 4080 ? 255 : p6 >> 4;
-      p7 = p7 < 16 ? 0 : p7 >= 4080 ? 255 : p7 >> 4;
-      blockData[blockBufferOffset + col] = p0;
-      blockData[blockBufferOffset + col + 8] = p1;
-      blockData[blockBufferOffset + col + 16] = p2;
-      blockData[blockBufferOffset + col + 24] = p3;
-      blockData[blockBufferOffset + col + 32] = p4;
-      blockData[blockBufferOffset + col + 40] = p5;
-      blockData[blockBufferOffset + col + 48] = p6;
-      blockData[blockBufferOffset + col + 56] = p7;
-    }
-  }
-  function buildComponentData(frame, component) {
-    var blocksPerLine = component.blocksPerLine;
-    var blocksPerColumn = component.blocksPerColumn;
-    var computationBuffer = new Int16Array(64);
-    for (var blockRow = 0; blockRow < blocksPerColumn; blockRow++) {
-      for (var blockCol = 0; blockCol < blocksPerLine; blockCol++) {
-        var offset = getBlockBufferOffset(component, blockRow, blockCol);
-        quantizeAndInverse(component, offset, computationBuffer);
-      }
-    }
-    return component.blockData;
-  }
-  function findNextFileMarker(data, currentPos, startPos) {
-    function peekUint16(pos) {
-      return data[pos] << 8 | data[pos + 1];
-    }
-    var maxPos = data.length - 1;
-    var newPos = startPos < currentPos ? startPos : currentPos;
-    if (currentPos >= maxPos) {
-      return null;
-    }
-    var currentMarker = peekUint16(currentPos);
-    if (currentMarker >= 0xFFC0 && currentMarker <= 0xFFFE) {
-      return {
-        invalid: null,
-        marker: currentMarker,
-        offset: currentPos
-      };
-    }
-    var newMarker = peekUint16(newPos);
-    while (!(newMarker >= 0xFFC0 && newMarker <= 0xFFFE)) {
-      if (++newPos >= maxPos) {
-        return null;
-      }
-      newMarker = peekUint16(newPos);
-    }
-    return {
-      invalid: currentMarker.toString(16),
-      marker: newMarker,
-      offset: newPos
-    };
-  }
-  JpegImage.prototype = {
-    parse: function parse(data) {
-      function readUint16() {
-        var value = data[offset] << 8 | data[offset + 1];
-        offset += 2;
-        return value;
-      }
-      function readDataBlock() {
-        var length = readUint16();
-        var endOffset = offset + length - 2;
-        var fileMarker = findNextFileMarker(data, endOffset, offset);
-        if (fileMarker && fileMarker.invalid) {
-          (0, _util.warn)('readDataBlock - incorrect length, next marker is: ' + fileMarker.invalid);
-          endOffset = fileMarker.offset;
-        }
-        var array = data.subarray(offset, endOffset);
-        offset += array.length;
-        return array;
-      }
-      function prepareComponents(frame) {
-        var mcusPerLine = Math.ceil(frame.samplesPerLine / 8 / frame.maxH);
-        var mcusPerColumn = Math.ceil(frame.scanLines / 8 / frame.maxV);
-        for (var i = 0; i < frame.components.length; i++) {
-          component = frame.components[i];
-          var blocksPerLine = Math.ceil(Math.ceil(frame.samplesPerLine / 8) * component.h / frame.maxH);
-          var blocksPerColumn = Math.ceil(Math.ceil(frame.scanLines / 8) * component.v / frame.maxV);
-          var blocksPerLineForMcu = mcusPerLine * component.h;
-          var blocksPerColumnForMcu = mcusPerColumn * component.v;
-          var blocksBufferSize = 64 * blocksPerColumnForMcu * (blocksPerLineForMcu + 1);
-          component.blockData = new Int16Array(blocksBufferSize);
-          component.blocksPerLine = blocksPerLine;
-          component.blocksPerColumn = blocksPerColumn;
-        }
-        frame.mcusPerLine = mcusPerLine;
-        frame.mcusPerColumn = mcusPerColumn;
-      }
-      var offset = 0;
-      var jfif = null;
-      var adobe = null;
-      var frame, resetInterval;
-      var quantizationTables = [];
-      var huffmanTablesAC = [],
-          huffmanTablesDC = [];
-      var fileMarker = readUint16();
-      if (fileMarker !== 0xFFD8) {
-        throw new JpegError('SOI not found');
-      }
-      fileMarker = readUint16();
-      while (fileMarker !== 0xFFD9) {
-        var i, j, l;
-        switch (fileMarker) {
-          case 0xFFE0:
-          case 0xFFE1:
-          case 0xFFE2:
-          case 0xFFE3:
-          case 0xFFE4:
-          case 0xFFE5:
-          case 0xFFE6:
-          case 0xFFE7:
-          case 0xFFE8:
-          case 0xFFE9:
-          case 0xFFEA:
-          case 0xFFEB:
-          case 0xFFEC:
-          case 0xFFED:
-          case 0xFFEE:
-          case 0xFFEF:
-          case 0xFFFE:
-            var appData = readDataBlock();
-            if (fileMarker === 0xFFE0) {
-              if (appData[0] === 0x4A && appData[1] === 0x46 && appData[2] === 0x49 && appData[3] === 0x46 && appData[4] === 0) {
-                jfif = {
-                  version: {
-                    major: appData[5],
-                    minor: appData[6]
-                  },
-                  densityUnits: appData[7],
-                  xDensity: appData[8] << 8 | appData[9],
-                  yDensity: appData[10] << 8 | appData[11],
-                  thumbWidth: appData[12],
-                  thumbHeight: appData[13],
-                  thumbData: appData.subarray(14, 14 + 3 * appData[12] * appData[13])
-                };
-              }
-            }
-            if (fileMarker === 0xFFEE) {
-              if (appData[0] === 0x41 && appData[1] === 0x64 && appData[2] === 0x6F && appData[3] === 0x62 && appData[4] === 0x65) {
-                adobe = {
-                  version: appData[5] << 8 | appData[6],
-                  flags0: appData[7] << 8 | appData[8],
-                  flags1: appData[9] << 8 | appData[10],
-                  transformCode: appData[11]
-                };
-              }
-            }
-            break;
-          case 0xFFDB:
-            var quantizationTablesLength = readUint16();
-            var quantizationTablesEnd = quantizationTablesLength + offset - 2;
-            var z;
-            while (offset < quantizationTablesEnd) {
-              var quantizationTableSpec = data[offset++];
-              var tableData = new Uint16Array(64);
-              if (quantizationTableSpec >> 4 === 0) {
-                for (j = 0; j < 64; j++) {
-                  z = dctZigZag[j];
-                  tableData[z] = data[offset++];
-                }
-              } else if (quantizationTableSpec >> 4 === 1) {
-                for (j = 0; j < 64; j++) {
-                  z = dctZigZag[j];
-                  tableData[z] = readUint16();
-                }
-              } else {
-                throw new JpegError('DQT - invalid table spec');
-              }
-              quantizationTables[quantizationTableSpec & 15] = tableData;
-            }
-            break;
-          case 0xFFC0:
-          case 0xFFC1:
-          case 0xFFC2:
-            if (frame) {
-              throw new JpegError('Only single frame JPEGs supported');
-            }
-            readUint16();
-            frame = {};
-            frame.extended = fileMarker === 0xFFC1;
-            frame.progressive = fileMarker === 0xFFC2;
-            frame.precision = data[offset++];
-            frame.scanLines = readUint16();
-            frame.samplesPerLine = readUint16();
-            frame.components = [];
-            frame.componentIds = {};
-            var componentsCount = data[offset++],
-                componentId;
-            var maxH = 0,
-                maxV = 0;
-            for (i = 0; i < componentsCount; i++) {
-              componentId = data[offset];
-              var h = data[offset + 1] >> 4;
-              var v = data[offset + 1] & 15;
-              if (maxH < h) {
-                maxH = h;
-              }
-              if (maxV < v) {
-                maxV = v;
-              }
-              var qId = data[offset + 2];
-              l = frame.components.push({
-                h: h,
-                v: v,
-                quantizationId: qId,
-                quantizationTable: null
-              });
-              frame.componentIds[componentId] = l - 1;
-              offset += 3;
-            }
-            frame.maxH = maxH;
-            frame.maxV = maxV;
-            prepareComponents(frame);
-            break;
-          case 0xFFC4:
-            var huffmanLength = readUint16();
-            for (i = 2; i < huffmanLength;) {
-              var huffmanTableSpec = data[offset++];
-              var codeLengths = new Uint8Array(16);
-              var codeLengthSum = 0;
-              for (j = 0; j < 16; j++, offset++) {
-                codeLengthSum += codeLengths[j] = data[offset];
-              }
-              var huffmanValues = new Uint8Array(codeLengthSum);
-              for (j = 0; j < codeLengthSum; j++, offset++) {
-                huffmanValues[j] = data[offset];
-              }
-              i += 17 + codeLengthSum;
-              (huffmanTableSpec >> 4 === 0 ? huffmanTablesDC : huffmanTablesAC)[huffmanTableSpec & 15] = buildHuffmanTable(codeLengths, huffmanValues);
-            }
-            break;
-          case 0xFFDD:
-            readUint16();
-            resetInterval = readUint16();
-            break;
-          case 0xFFDA:
-            readUint16();
-            var selectorsCount = data[offset++];
-            var components = [],
-                component;
-            for (i = 0; i < selectorsCount; i++) {
-              var componentIndex = frame.componentIds[data[offset++]];
-              component = frame.components[componentIndex];
-              var tableSpec = data[offset++];
-              component.huffmanTableDC = huffmanTablesDC[tableSpec >> 4];
-              component.huffmanTableAC = huffmanTablesAC[tableSpec & 15];
-              components.push(component);
-            }
-            var spectralStart = data[offset++];
-            var spectralEnd = data[offset++];
-            var successiveApproximation = data[offset++];
-            var processed = decodeScan(data, offset, frame, components, resetInterval, spectralStart, spectralEnd, successiveApproximation >> 4, successiveApproximation & 15);
-            offset += processed;
-            break;
-          case 0xFFFF:
-            if (data[offset] !== 0xFF) {
-              offset--;
-            }
-            break;
-          default:
-            if (data[offset - 3] === 0xFF && data[offset - 2] >= 0xC0 && data[offset - 2] <= 0xFE) {
-              offset -= 3;
-              break;
-            }
-            throw new JpegError('unknown marker ' + fileMarker.toString(16));
-        }
-        fileMarker = readUint16();
-      }
-      this.width = frame.samplesPerLine;
-      this.height = frame.scanLines;
-      this.jfif = jfif;
-      this.adobe = adobe;
-      this.components = [];
-      for (i = 0; i < frame.components.length; i++) {
-        component = frame.components[i];
-        var quantizationTable = quantizationTables[component.quantizationId];
-        if (quantizationTable) {
-          component.quantizationTable = quantizationTable;
-        }
-        this.components.push({
-          output: buildComponentData(frame, component),
-          scaleX: component.h / frame.maxH,
-          scaleY: component.v / frame.maxV,
-          blocksPerLine: component.blocksPerLine,
-          blocksPerColumn: component.blocksPerColumn
-        });
-      }
-      this.numComponents = this.components.length;
-    },
-    _getLinearizedBlockData: function getLinearizedBlockData(width, height) {
-      var scaleX = this.width / width,
-          scaleY = this.height / height;
-      var component, componentScaleX, componentScaleY, blocksPerScanline;
-      var x, y, i, j, k;
-      var index;
-      var offset = 0;
-      var output;
-      var numComponents = this.components.length;
-      var dataLength = width * height * numComponents;
-      var data = new Uint8ClampedArray(dataLength);
-      var xScaleBlockOffset = new Uint32Array(width);
-      var mask3LSB = 0xfffffff8;
-      for (i = 0; i < numComponents; i++) {
-        component = this.components[i];
-        componentScaleX = component.scaleX * scaleX;
-        componentScaleY = component.scaleY * scaleY;
-        offset = i;
-        output = component.output;
-        blocksPerScanline = component.blocksPerLine + 1 << 3;
-        for (x = 0; x < width; x++) {
-          j = 0 | x * componentScaleX;
-          xScaleBlockOffset[x] = (j & mask3LSB) << 3 | j & 7;
-        }
-        for (y = 0; y < height; y++) {
-          j = 0 | y * componentScaleY;
-          index = blocksPerScanline * (j & mask3LSB) | (j & 7) << 3;
-          for (x = 0; x < width; x++) {
-            data[offset] = output[index + xScaleBlockOffset[x]];
-            offset += numComponents;
-          }
-        }
-      }
-      var transform = this.decodeTransform;
-      if (transform) {
-        for (i = 0; i < dataLength;) {
-          for (j = 0, k = 0; j < numComponents; j++, i++, k += 2) {
-            data[i] = (data[i] * transform[k] >> 8) + transform[k + 1];
-          }
-        }
-      }
-      return data;
-    },
-    _isColorConversionNeeded: function _isColorConversionNeeded() {
-      if (this.adobe) {
-        return !!this.adobe.transformCode;
-      }
-      if (this.numComponents === 3) {
-        if (this.colorTransform === 0) {
-          return false;
-        }
-        return true;
-      }
-      if (this.colorTransform === 1) {
-        return true;
-      }
-      return false;
-    },
-
-    _convertYccToRgb: function convertYccToRgb(data) {
-      var Y, Cb, Cr;
-      for (var i = 0, length = data.length; i < length; i += 3) {
-        Y = data[i];
-        Cb = data[i + 1];
-        Cr = data[i + 2];
-        data[i] = Y - 179.456 + 1.402 * Cr;
-        data[i + 1] = Y + 135.459 - 0.344 * Cb - 0.714 * Cr;
-        data[i + 2] = Y - 226.816 + 1.772 * Cb;
-      }
-      return data;
-    },
-    _convertYcckToRgb: function convertYcckToRgb(data) {
-      var Y, Cb, Cr, k;
-      var offset = 0;
-      for (var i = 0, length = data.length; i < length; i += 4) {
-        Y = data[i];
-        Cb = data[i + 1];
-        Cr = data[i + 2];
-        k = data[i + 3];
-        data[offset++] = -122.67195406894 + Cb * (-6.60635669420364e-5 * Cb + 0.000437130475926232 * Cr - 5.4080610064599e-5 * Y + 0.00048449797120281 * k - 0.154362151871126) + Cr * (-0.000957964378445773 * Cr + 0.000817076911346625 * Y - 0.00477271405408747 * k + 1.53380253221734) + Y * (0.000961250184130688 * Y - 0.00266257332283933 * k + 0.48357088451265) + k * (-0.000336197177618394 * k + 0.484791561490776);
-        data[offset++] = 107.268039397724 + Cb * (2.19927104525741e-5 * Cb - 0.000640992018297945 * Cr + 0.000659397001245577 * Y + 0.000426105652938837 * k - 0.176491792462875) + Cr * (-0.000778269941513683 * Cr + 0.00130872261408275 * Y + 0.000770482631801132 * k - 0.151051492775562) + Y * (0.00126935368114843 * Y - 0.00265090189010898 * k + 0.25802910206845) + k * (-0.000318913117588328 * k - 0.213742400323665);
-        data[offset++] = -20.810012546947 + Cb * (-0.000570115196973677 * Cb - 2.63409051004589e-5 * Cr + 0.0020741088115012 * Y - 0.00288260236853442 * k + 0.814272968359295) + Cr * (-1.53496057440975e-5 * Cr - 0.000132689043961446 * Y + 0.000560833691242812 * k - 0.195152027534049) + Y * (0.00174418132927582 * Y - 0.00255243321439347 * k + 0.116935020465145) + k * (-0.000343531996510555 * k + 0.24165260232407);
-      }
-      return data;
-    },
-    _convertYcckToCmyk: function convertYcckToCmyk(data) {
-      var Y, Cb, Cr;
-      for (var i = 0, length = data.length; i < length; i += 4) {
-        Y = data[i];
-        Cb = data[i + 1];
-        Cr = data[i + 2];
-        data[i] = 434.456 - Y - 1.402 * Cr;
-        data[i + 1] = 119.541 - Y + 0.344 * Cb + 0.714 * Cr;
-        data[i + 2] = 481.816 - Y - 1.772 * Cb;
-      }
-      return data;
-    },
-    _convertCmykToRgb: function convertCmykToRgb(data) {
-      var c, m, y, k;
-      var offset = 0;
-      var scale = 1 / 255;
-      for (var i = 0, length = data.length; i < length; i += 4) {
-        c = data[i] * scale;
-        m = data[i + 1] * scale;
-        y = data[i + 2] * scale;
-        k = data[i + 3] * scale;
-        data[offset++] = 255 + c * (-4.387332384609988 * c + 54.48615194189176 * m + 18.82290502165302 * y + 212.25662451639585 * k - 285.2331026137004) + m * (1.7149763477362134 * m - 5.6096736904047315 * y - 17.873870861415444 * k - 5.497006427196366) + y * (-2.5217340131683033 * y - 21.248923337353073 * k + 17.5119270841813) - k * (21.86122147463605 * k + 189.48180835922747);
-        data[offset++] = 255 + c * (8.841041422036149 * c + 60.118027045597366 * m + 6.871425592049007 * y + 31.159100130055922 * k - 79.2970844816548) + m * (-15.310361306967817 * m + 17.575251261109482 * y + 131.35250912493976 * k - 190.9453302588951) + y * (4.444339102852739 * y + 9.8632861493405 * k - 24.86741582555878) - k * (20.737325471181034 * k + 187.80453709719578);
-        data[offset++] = 255 + c * (0.8842522430003296 * c + 8.078677503112928 * m + 30.89978309703729 * y - 0.23883238689178934 * k - 14.183576799673286) + m * (10.49593273432072 * m + 63.02378494754052 * y + 50.606957656360734 * k - 112.23884253719248) + y * (0.03296041114873217 * y + 115.60384449646641 * k - 193.58209356861505) - k * (22.33816807309886 * k + 180.12613974708367);
-      }
-      return data;
-    },
-    getData: function getData(width, height, forceRGBoutput) {
-      if (this.numComponents > 4) {
-        throw new JpegError('Unsupported color mode');
-      }
-      var data = this._getLinearizedBlockData(width, height);
-      if (this.numComponents === 1 && forceRGBoutput) {
-        var dataLength = data.length;
-        var rgbData = new Uint8ClampedArray(dataLength * 3);
-        var offset = 0;
-        for (var i = 0; i < dataLength; i++) {
-          var grayColor = data[i];
-          rgbData[offset++] = grayColor;
-          rgbData[offset++] = grayColor;
-          rgbData[offset++] = grayColor;
-        }
-        return rgbData;
-      } else if (this.numComponents === 3 && this._isColorConversionNeeded()) {
-        return this._convertYccToRgb(data);
-      } else if (this.numComponents === 4) {
-        if (this._isColorConversionNeeded()) {
-          if (forceRGBoutput) {
-            return this._convertYcckToRgb(data);
-          }
-          return this._convertYcckToCmyk(data);
-        } else if (forceRGBoutput) {
-          return this._convertCmykToRgb(data);
-        }
-      }
-      return data;
-    }
-  };
-  return JpegImage;
-}();
-exports.JpegImage = JpegImage;
-
-/***/ }),
-/* 108 */
+/* 148 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -41900,11 +43424,11 @@ exports.CMapFactory = exports.IdentityCMap = exports.CMap = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _parser = __w_pdfjs_require__(25);
+var _parser = __w_pdfjs_require__(36);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var BUILT_IN_CMAPS = ['Adobe-GB1-UCS2', 'Adobe-CNS1-UCS2', 'Adobe-Japan1-UCS2', 'Adobe-Korea1-UCS2', '78-EUC-H', '78-EUC-V', '78-H', '78-RKSJ-H', '78-RKSJ-V', '78-V', '78ms-RKSJ-H', '78ms-RKSJ-V', '83pv-RKSJ-H', '90ms-RKSJ-H', '90ms-RKSJ-V', '90msp-RKSJ-H', '90msp-RKSJ-V', '90pv-RKSJ-H', '90pv-RKSJ-V', 'Add-H', 'Add-RKSJ-H', 'Add-RKSJ-V', 'Add-V', 'Adobe-CNS1-0', 'Adobe-CNS1-1', 'Adobe-CNS1-2', 'Adobe-CNS1-3', 'Adobe-CNS1-4', 'Adobe-CNS1-5', 'Adobe-CNS1-6', 'Adobe-GB1-0', 'Adobe-GB1-1', 'Adobe-GB1-2', 'Adobe-GB1-3', 'Adobe-GB1-4', 'Adobe-GB1-5', 'Adobe-Japan1-0', 'Adobe-Japan1-1', 'Adobe-Japan1-2', 'Adobe-Japan1-3', 'Adobe-Japan1-4', 'Adobe-Japan1-5', 'Adobe-Japan1-6', 'Adobe-Korea1-0', 'Adobe-Korea1-1', 'Adobe-Korea1-2', 'B5-H', 'B5-V', 'B5pc-H', 'B5pc-V', 'CNS-EUC-H', 'CNS-EUC-V', 'CNS1-H', 'CNS1-V', 'CNS2-H', 'CNS2-V', 'ETHK-B5-H', 'ETHK-B5-V', 'ETen-B5-H', 'ETen-B5-V', 'ETenms-B5-H', 'ETenms-B5-V', 'EUC-H', 'EUC-V', 'Ext-H', 'Ext-RKSJ-H', 'Ext-RKSJ-V', 'Ext-V', 'GB-EUC-H', 'GB-EUC-V', 'GB-H', 'GB-V', 'GBK-EUC-H', 'GBK-EUC-V', 'GBK2K-H', 'GBK2K-V', 'GBKp-EUC-H', 'GBKp-EUC-V', 'GBT-EUC-H', 'GBT-EUC-V', 'GBT-H', 'GBT-V', 'GBTpc-EUC-H', 'GBTpc-EUC-V', 'GBpc-EUC-H', 'GBpc-EUC-V', 'H', 'HKdla-B5-H', 'HKdla-B5-V', 'HKdlb-B5-H', 'HKdlb-B5-V', 'HKgccs-B5-H', 'HKgccs-B5-V', 'HKm314-B5-H', 'HKm314-B5-V', 'HKm471-B5-H', 'HKm471-B5-V', 'HKscs-B5-H', 'HKscs-B5-V', 'Hankaku', 'Hiragana', 'KSC-EUC-H', 'KSC-EUC-V', 'KSC-H', 'KSC-Johab-H', 'KSC-Johab-V', 'KSC-V', 'KSCms-UHC-H', 'KSCms-UHC-HW-H', 'KSCms-UHC-HW-V', 'KSCms-UHC-V', 'KSCpc-EUC-H', 'KSCpc-EUC-V', 'Katakana', 'NWP-H', 'NWP-V', 'RKSJ-H', 'RKSJ-V', 'Roman', 'UniCNS-UCS2-H', 'UniCNS-UCS2-V', 'UniCNS-UTF16-H', 'UniCNS-UTF16-V', 'UniCNS-UTF32-H', 'UniCNS-UTF32-V', 'UniCNS-UTF8-H', 'UniCNS-UTF8-V', 'UniGB-UCS2-H', 'UniGB-UCS2-V', 'UniGB-UTF16-H', 'UniGB-UTF16-V', 'UniGB-UTF32-H', 'UniGB-UTF32-V', 'UniGB-UTF8-H', 'UniGB-UTF8-V', 'UniJIS-UCS2-H', 'UniJIS-UCS2-HW-H', 'UniJIS-UCS2-HW-V', 'UniJIS-UCS2-V', 'UniJIS-UTF16-H', 'UniJIS-UTF16-V', 'UniJIS-UTF32-H', 'UniJIS-UTF32-V', 'UniJIS-UTF8-H', 'UniJIS-UTF8-V', 'UniJIS2004-UTF16-H', 'UniJIS2004-UTF16-V', 'UniJIS2004-UTF32-H', 'UniJIS2004-UTF32-V', 'UniJIS2004-UTF8-H', 'UniJIS2004-UTF8-V', 'UniJISPro-UCS2-HW-V', 'UniJISPro-UCS2-V', 'UniJISPro-UTF8-V', 'UniJISX0213-UTF32-H', 'UniJISX0213-UTF32-V', 'UniJISX02132004-UTF32-H', 'UniJISX02132004-UTF32-V', 'UniKS-UCS2-H', 'UniKS-UCS2-V', 'UniKS-UTF16-H', 'UniKS-UTF16-V', 'UniKS-UTF32-H', 'UniKS-UTF32-V', 'UniKS-UTF8-H', 'UniKS-UTF8-V', 'V', 'WP-Symbol'];
 var CMap = function CMapClosure() {
@@ -42604,7 +44128,7 @@ exports.IdentityCMap = IdentityCMap;
 exports.CMapFactory = CMapFactory;
 
 /***/ }),
-/* 109 */
+/* 149 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -42617,21 +44141,21 @@ exports.getFontType = exports.ProblematicCharRanges = exports.IdentityToUnicodeM
 
 var _util = __w_pdfjs_require__(0);
 
-var _cff_parser = __w_pdfjs_require__(63);
+var _cff_parser = __w_pdfjs_require__(84);
 
-var _glyphlist = __w_pdfjs_require__(34);
+var _glyphlist = __w_pdfjs_require__(49);
 
-var _encodings = __w_pdfjs_require__(18);
+var _encodings = __w_pdfjs_require__(30);
 
-var _standard_fonts = __w_pdfjs_require__(64);
+var _standard_fonts = __w_pdfjs_require__(85);
 
-var _unicode = __w_pdfjs_require__(65);
+var _unicode = __w_pdfjs_require__(86);
 
-var _font_renderer = __w_pdfjs_require__(111);
+var _font_renderer = __w_pdfjs_require__(151);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
-var _type1_parser = __w_pdfjs_require__(112);
+var _type1_parser = __w_pdfjs_require__(152);
 
 var PRIVATE_USE_OFFSET_START = 0xE000;
 var PRIVATE_USE_OFFSET_END = 0xF8FF;
@@ -43044,6 +44568,10 @@ var Font = function FontClosure() {
   }();
   function int16(b0, b1) {
     return (b0 << 8) + b1;
+  }
+  function writeSignedInt16(bytes, index, value) {
+    bytes[index + 1] = value;
+    bytes[index] = value >>> 8;
   }
   function signedInt16(b0, b1) {
     var value = (b0 << 8) + b1;
@@ -43696,8 +45224,10 @@ var Font = function FontClosure() {
           return glyphProfile;
         }
         var glyf = source.subarray(sourceStart, sourceEnd);
-        var contoursCount = glyf[0] << 8 | glyf[1];
-        if (contoursCount & 0x8000) {
+        var contoursCount = signedInt16(glyf[0], glyf[1]);
+        if (contoursCount < 0) {
+          contoursCount = -1;
+          writeSignedInt16(glyf, 0, contoursCount);
           dest.set(glyf, destStart);
           glyphProfile.length = glyf.length;
           return glyphProfile;
@@ -45076,7 +46606,7 @@ exports.ProblematicCharRanges = ProblematicCharRanges;
 exports.getFontType = getFontType;
 
 /***/ }),
-/* 110 */
+/* 150 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -45093,7 +46623,7 @@ exports.ExpertCharset = ExpertCharset;
 exports.ExpertSubsetCharset = ExpertSubsetCharset;
 
 /***/ }),
-/* 111 */
+/* 151 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -45106,13 +46636,13 @@ exports.FontRendererFactory = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _cff_parser = __w_pdfjs_require__(63);
+var _cff_parser = __w_pdfjs_require__(84);
 
-var _glyphlist = __w_pdfjs_require__(34);
+var _glyphlist = __w_pdfjs_require__(49);
 
-var _encodings = __w_pdfjs_require__(18);
+var _encodings = __w_pdfjs_require__(30);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var FontRendererFactory = function FontRendererFactoryClosure() {
   function getLong(data, offset) {
@@ -45833,7 +47363,7 @@ var FontRendererFactory = function FontRendererFactoryClosure() {
 exports.FontRendererFactory = FontRendererFactory;
 
 /***/ }),
-/* 112 */
+/* 152 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -45846,9 +47376,9 @@ exports.Type1Parser = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _encodings = __w_pdfjs_require__(18);
+var _encodings = __w_pdfjs_require__(30);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 var HINTING_ENABLED = false;
 var Type1CharString = function Type1CharStringClosure() {
@@ -45935,6 +47465,10 @@ var Type1CharString = function Type1CharStringClosure() {
                 break;
               }
               subrNumber = this.stack.pop();
+              if (!subrs[subrNumber]) {
+                error = true;
+                break;
+              }
               error = this.convert(subrs[subrNumber], subrs, seacAnalysisEnabled);
               break;
             case 11:
@@ -46213,6 +47747,12 @@ var Type1Parser = function Type1ParserClosure() {
       } while (ch >= 0 && !(0, _util.isSpace)(ch) && !isSpecial(ch));
       return token;
     },
+    readCharStrings: function Type1Parser_readCharStrings(bytes, lenIV) {
+      if (lenIV === -1) {
+        return bytes;
+      }
+      return decrypt(bytes, CHAR_STRS_ENCRYPT_KEY, lenIV);
+    },
     extractFontProgram: function Type1Parser_extractFontProgram() {
       var stream = this.stream;
       var subrs = [],
@@ -46249,7 +47789,7 @@ var Type1Parser = function Type1ParserClosure() {
               this.getToken();
               data = stream.makeSubStream(stream.pos, length);
               lenIV = program.properties.privateData['lenIV'];
-              encoded = decrypt(data.getBytes(), CHAR_STRS_ENCRYPT_KEY, lenIV);
+              encoded = this.readCharStrings(data.getBytes(), lenIV);
               stream.skip(length);
               this.nextChar();
               token = this.getToken();
@@ -46271,7 +47811,7 @@ var Type1Parser = function Type1ParserClosure() {
               this.getToken();
               data = stream.makeSubStream(stream.pos, length);
               lenIV = program.properties.privateData['lenIV'];
-              encoded = decrypt(data.getBytes(), CHAR_STRS_ENCRYPT_KEY, lenIV);
+              encoded = this.readCharStrings(data.getBytes(), lenIV);
               stream.skip(length);
               this.nextChar();
               token = this.getToken();
@@ -46386,7 +47926,7 @@ var Type1Parser = function Type1ParserClosure() {
 exports.Type1Parser = Type1Parser;
 
 /***/ }),
-/* 113 */
+/* 153 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -46399,9 +47939,9 @@ exports.getTilingPatternIR = exports.Pattern = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _colorspace = __w_pdfjs_require__(17);
+var _colorspace = __w_pdfjs_require__(29);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
 var ShadingType = {
   FUNCTION_BASED: 1,
@@ -47176,7 +48716,7 @@ exports.Pattern = Pattern;
 exports.getTilingPatternIR = getTilingPatternIR;
 
 /***/ }),
-/* 114 */
+/* 154 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -47421,7 +48961,7 @@ function bidi(str, startLevel, vertical) {
 exports.bidi = bidi;
 
 /***/ }),
-/* 115 */
+/* 155 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -50375,7 +51915,7 @@ var getMetrics = (0, _util.getLookupTableFactory)(function (t) {
 exports.getMetrics = getMetrics;
 
 /***/ }),
-/* 116 */
+/* 156 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -50388,7 +51928,7 @@ exports.PostScriptParser = exports.PostScriptLexer = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
 var PostScriptParser = function PostScriptParserClosure() {
   function PostScriptParser(lexer) {
@@ -50579,7 +52119,7 @@ exports.PostScriptLexer = PostScriptLexer;
 exports.PostScriptParser = PostScriptParser;
 
 /***/ }),
-/* 117 */
+/* 157 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -50696,7 +52236,7 @@ var MurmurHash3_64 = function MurmurHash3_64Closure(seed) {
 exports.MurmurHash3_64 = MurmurHash3_64;
 
 /***/ }),
-/* 118 */
+/* 158 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -50711,13 +52251,13 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _util = __w_pdfjs_require__(0);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _colorspace = __w_pdfjs_require__(17);
+var _colorspace = __w_pdfjs_require__(29);
 
-var _jpx = __w_pdfjs_require__(60);
+var _jpx = __w_pdfjs_require__(80);
 
 var PDFImage = function PDFImageClosure() {
   function handleImageData(image, nativeDecoder) {
@@ -51240,7 +52780,7 @@ var PDFImage = function PDFImageClosure() {
 exports.PDFImage = PDFImage;
 
 /***/ }),
-/* 119 */
+/* 159 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -51257,15 +52797,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __w_pdfjs_require__(0);
 
-var _obj = __w_pdfjs_require__(58);
+var _obj = __w_pdfjs_require__(79);
 
-var _primitives = __w_pdfjs_require__(1);
+var _primitives = __w_pdfjs_require__(2);
 
-var _colorspace = __w_pdfjs_require__(17);
+var _colorspace = __w_pdfjs_require__(29);
 
-var _evaluator = __w_pdfjs_require__(62);
+var _evaluator = __w_pdfjs_require__(83);
 
-var _stream = __w_pdfjs_require__(3);
+var _stream = __w_pdfjs_require__(5);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -52139,7 +53679,7 @@ exports.AnnotationBorderStyle = AnnotationBorderStyle;
 exports.AnnotationFactory = AnnotationFactory;
 
 /***/ }),
-/* 120 */
+/* 160 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -52154,7 +53694,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __w_pdfjs_require__(0);
 
-var _network_utils = __w_pdfjs_require__(35);
+var _network_utils = __w_pdfjs_require__(50);
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
@@ -52569,7 +54109,7 @@ var PDFNodeStreamFsRangeReader = function (_BaseRangeReader2) {
 exports.PDFNodeStream = PDFNodeStream;
 
 /***/ }),
-/* 121 */
+/* 161 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -52584,7 +54124,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __w_pdfjs_require__(0);
 
-var _network_utils = __w_pdfjs_require__(35);
+var _network_utils = __w_pdfjs_require__(50);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -52839,7 +54379,7 @@ var PDFFetchStreamRangeReader = function () {
 exports.PDFFetchStream = PDFFetchStream;
 
 /***/ }),
-/* 122 */
+/* 162 */
 /***/ (function(module, exports, __w_pdfjs_require__) {
 
 "use strict";
@@ -52852,9 +54392,9 @@ exports.NetworkManager = exports.PDFNetworkStream = undefined;
 
 var _util = __w_pdfjs_require__(0);
 
-var _network_utils = __w_pdfjs_require__(35);
+var _network_utils = __w_pdfjs_require__(50);
 
-var _global_scope = __w_pdfjs_require__(11);
+var _global_scope = __w_pdfjs_require__(22);
 
 var _global_scope2 = _interopRequireDefault(_global_scope);
 
@@ -52881,11 +54421,7 @@ function getArrayBuffer(xhr) {
   if (typeof data !== 'string') {
     return data;
   }
-  var length = data.length;
-  var array = new Uint8Array(length);
-  for (var i = 0; i < length; i++) {
-    array[i] = data.charCodeAt(i) & 0xFF;
-  }
+  var array = (0, _util.stringToBytes)(data);
   return array.buffer;
 }
 var supportsMozChunked = function supportsMozChunkedClosure() {

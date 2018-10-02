@@ -21,11 +21,12 @@
             'cloudinary',
             'pdf',
             'firebase',
-            'ngNotify',
+            // 'ngNotify',
             'angularjs-dropdown-multiselect',
             'angular-popover',
             'ngPopover',
-            'summernote'
+            'summernote',
+            'ngMaterial', 'ngMessages'
         ])
         .run(run);
 
