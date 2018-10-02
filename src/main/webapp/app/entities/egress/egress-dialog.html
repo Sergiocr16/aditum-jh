@@ -61,7 +61,7 @@
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
                                         <input type="text" class="form-control gray" name="folio" id="field_folio"
-                                               ng-model="vm.egress.folio"
+                                               ng-model="vm.egress.folio" ng-disabled="vm.admingConfig.egressFolio == true"
                                         />
                                     </div>
                                 </div>

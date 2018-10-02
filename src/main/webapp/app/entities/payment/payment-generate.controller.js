@@ -19,6 +19,7 @@
         vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
+        vm.payment = {}
         vm.openCalendar = openCalendar;
         vm.residents = [];
         angular.element(document).ready(function () {
@@ -52,7 +53,6 @@
             });
             $(element).popover('show')
         }
-
 
         loadAll();
         $('.dating').keypress(function (e) {
@@ -285,8 +285,8 @@
             AdministrationConfiguration.get({
                 companyId: globalCompany.getId()
             }).$promise.then(function (result) {
-                if (result.folioSerie != null) {
-                    vm.admingConfig = result;
+                vm.admingConfig = result;
+                if (result.incomeFolio == true) {
                     vm.folioSerie = result.folioSerie;
                     vm.folioNumber = result.folioNumber;
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
@@ -501,6 +501,27 @@
                                     bootbox.hideAll();
                                     toastr["success"]("Se ha capturado el ingreso correctamente.")
                                     vm.printReceipt = false;
+                                    if (vm.admingConfig.incomeFolio == true) {
+                                        increaseFolioNumber(function (result) {
+                                            vm.admingConfig = result;
+                                            vm.folioSerie = result.folioSerie;
+                                            vm.folioNumber = result.folioNumber;
+                                            if (vm.toPay > 0) {
+                                                registrarAdelantoCondomino();
+                                            } else {
+                                                clear();
+                                                loadAll();
+                                                loadAdminConfig();
+                                            }
+                                        })
+                                    }
+                                }, 5000)
+
+
+                            } else {
+                                bootbox.hideAll();
+                                toastr["success"]("Se ha capturado el ingreso correctamente.");
+                                if (vm.admingConfig.incomeFolio == true) {
                                     increaseFolioNumber(function (result) {
                                         vm.admingConfig = result;
                                         vm.folioSerie = result.folioSerie;
@@ -513,24 +534,7 @@
                                             loadAdminConfig();
                                         }
                                     })
-                                }, 5000)
-
-
-                            } else {
-                                bootbox.hideAll();
-                                toastr["success"]("Se ha capturado el ingreso correctamente.")
-                                increaseFolioNumber(function (result) {
-                                    vm.admingConfig = result;
-                                    vm.folioSerie = result.folioSerie;
-                                    vm.folioNumber = result.folioNumber;
-                                    if (vm.toPay > 0) {
-                                        registrarAdelantoCondomino();
-                                    } else {
-                                        clear();
-                                        loadAll();
-                                        loadAdminConfig();
-                                    }
-                                })
+                                }
                             }
 
 

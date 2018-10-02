@@ -143,54 +143,60 @@ console.log(vm.complaint.complaintComments.content)
 
         vm.editComment = function(comment) {
             comment.editing = true;
+            comment.newComment = comment.description;
         };
 
         vm.submitEditComment = function(comment) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea editar el comentario?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
+            if(comment.description==comment.newComment){
+                toastr["success"]("Comentario editado correctamente.");
+                formatComments(vm.complaint.complaintComments.content);
+            }else {
+                bootbox.confirm({
+                    message: "¿Está seguro que desea editar el comentario?",
+                    buttons: {
+                        confirm: {
+                            label: 'Aceptar',
+                            className: 'btn-success'
+                        },
+                        cancel: {
+                            label: 'Cancelar',
+                            className: 'btn-danger'
+                        }
                     },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        var editedComment = {
-                            description: comment.newComment,
-                            creationDate: comment.creationDate,
-                            residentId: companyUser.companies === undefined ? companyUser.id : null,
-                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
-                            complaintId: vm.complaint.id,
-                            id: comment.id,
-                            deleted: 0,
-                            editedDate: moment(new Date()).format()
-                        };
-                        ComplaintComment.update(editedComment,
-                            function () {
-                                toastr["success"]("Comentario editado correctamente.");
-                                vm.complaint.complaintComments = undefined;
-                                Complaint.update(vm.complaint, function(result){
-                                    vm.complaint = result;
-                                    vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
-                                    formatComments(vm.complaint.complaintComments.content);
-                                }, function(){
-                                    toastr["error"]("Ha ocurrido un error enviando tu respuesta.")
+                    callback: function (result) {
+                        if (result) {
+                            var editedComment = {
+                                description: comment.newComment,
+                                creationDate: comment.creationDate,
+                                residentId: companyUser.companies === undefined ? companyUser.id : null,
+                                adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                                complaintId: vm.complaint.id,
+                                id: comment.id,
+                                deleted: 0,
+                                editedDate: moment(new Date()).format()
+                            };
+                            ComplaintComment.update(editedComment,
+                                function () {
+                                    toastr["success"]("Comentario editado correctamente.");
+                                    vm.complaint.complaintComments = undefined;
+                                    Complaint.update(vm.complaint, function (result) {
+                                        vm.complaint = result;
+                                        vm.complaint.showingCreationDate = moment(vm.complaint.creationDate).format('ll hh:mm a');
+                                        formatComments(vm.complaint.complaintComments.content);
+                                    }, function () {
+                                        toastr["error"]("Ha ocurrido un error enviando tu respuesta.")
+                                    });
+                                }, function () {
+                                    toastr["error"]("Ha ocurrido un error editando tu comentario.")
                                 });
-                            }, function () {
-                                toastr["error"]("Ha ocurrido un error editando tu comentario.")
-                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         };
 
        vm.cancelEditing = function(comment) {
-            comment.newComment = comment.comment;
+            comment.newComment = comment.description;
             comment.editing = false;
         };
 
