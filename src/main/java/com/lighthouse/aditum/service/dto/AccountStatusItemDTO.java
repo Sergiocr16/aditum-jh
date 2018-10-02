@@ -6,15 +6,15 @@ import java.util.List;
 public class AccountStatusItemDTO {
     private ZonedDateTime date;
     private String concept;
-    private int charge;
+    private double charge;
     private int recharge;
-    private int total;
-    private int saldo;
+    private double total;
+    private double saldo;
     private int abono;
     private List<ChargeDTO> charges;
     private boolean showDetail;
 
-    public AccountStatusItemDTO(ZonedDateTime date,String concept, int charge,int recharge){
+    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,int recharge){
         this.date = date;
         this.concept = concept;
         this.charge = charge;
@@ -45,7 +45,7 @@ public class AccountStatusItemDTO {
         this.concept = concept;
     }
 
-    public int getCharge() {
+    public double getCharge() {
         return charge;
     }
 
@@ -61,7 +61,7 @@ public class AccountStatusItemDTO {
         this.recharge = recharge;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
@@ -69,11 +69,11 @@ public class AccountStatusItemDTO {
         this.total = total;
     }
 
-    public int getSaldo() {
+    public double getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(int saldo) {
+    public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 

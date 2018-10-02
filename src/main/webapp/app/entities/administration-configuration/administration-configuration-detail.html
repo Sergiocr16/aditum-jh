@@ -115,8 +115,19 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                 <button class="btn btn-success float-right" type="submit">Guardar cambios</button>
                             </div>
+
                         </div>
                     </form>
+<div class="col-md-12">
+
+    <div class="inset switchdemoBasicUsage"  ng-cloak="">
+        <md-switch ng-model="vm.data.cb1" aria-label="Switch 1">
+            Switch 1: {{ vm.data.cb1 }}
+        </md-switch>
+    </div>
+
+</div>
+
                 </div>
             </div>
         </div>
@@ -127,23 +138,23 @@
 
 
 <!--<div>-->
-<!--<h2><span data-translate="aditumApp.administrationConfiguration.detail.title">Administration Configuration</span> {{vm.administrationConfiguration.id}}</h2>-->
+<!--<h2><span vm.data-translate="aditumApp.administrationConfiguration.detail.title">Administration Configuration</span> {{vm.administrationConfiguration.id}}</h2>-->
 <!--<hr>-->
 <!--<jhi-alert-error></jhi-alert-error>-->
 <!--<dl class="dl-horizontal jh-entity-details">-->
-<!--<dt><span data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span></dt>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span></dt>-->
 <!--<dd>-->
 <!--<span>{{vm.administrationConfiguration.squareMetersPrice}}</span>-->
 <!--</dd>-->
-<!--<dt><span data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span></dt>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span></dt>-->
 <!--<dd>-->
 <!--<span>{{vm.administrationConfiguration.folioSerie}}</span>-->
 <!--</dd>-->
-<!--<dt><span data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span></dt>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span></dt>-->
 <!--<dd>-->
 <!--<span>{{vm.administrationConfiguration.folioNumber}}</span>-->
 <!--</dd>-->
-<!--<dt><span data-translate="aditumApp.administrationConfiguration.company">Company</span></dt>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.company">Company</span></dt>-->
 <!--<dd>-->
 <!--<a ui-sref="company-detail({id:vm.administrationConfiguration.companyId})">{{vm.administrationConfiguration.companyId}}</a>-->
 <!--</dd>-->
@@ -152,11 +163,11 @@
 <!--<button type="submit"-->
 <!--ui-sref="{{ vm.previousState }}"-->
 <!--class="btn btn-info">-->
-<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
+<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span vm.data-translate="entity.action.back"> Back</span>-->
 <!--</button>-->
 
 <!--<button type="button" ui-sref="administration-configuration-detail.edit({id:vm.administrationConfiguration.id})" class="btn btn-primary">-->
 <!--<span class="glyphicon glyphicon-pencil"></span>-->
-<!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
+<!--<span class="hidden-sm-down" vm.data-translate="entity.action.edit"> Edit</span>-->
 <!--</button>-->
 <!--</div>-->

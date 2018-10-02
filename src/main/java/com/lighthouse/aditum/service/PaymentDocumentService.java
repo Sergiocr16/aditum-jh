@@ -2,10 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.domain.House;
-import com.lighthouse.aditum.service.dto.ChargeDTO;
-import com.lighthouse.aditum.service.dto.IncomeReportDTO;
-import com.lighthouse.aditum.service.dto.PaymentDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
 import com.lowagie.text.DocumentException;
@@ -23,6 +20,7 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 @Service
@@ -45,17 +43,27 @@ public class PaymentDocumentService {
 //    INCOME REPORT
     private static final String INCOME_REPORT = "incomeReport";
     private static final String RANGO_FECHAS = "rangoFechas";
+
+
+//    REMINDER SUBCHARGE
+    private static final String CHARGES = "charges";
+    private static final String SUBCHARGE_TOTAL = "subchargeTotal";
+    private static final String ADMINISTRATION_CONFIGURATION = "administrationConfiguration";
+
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
     private final HouseService houseService;
+    private final ResidentService residentService;
     private final HouseMapper houseMapper;
     private final ChargeService chargeService;
     private final MailService mailService;
     private final SpringTemplateEngine templateEngine;
 
 
-    public PaymentDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, ChargeService chargeService){
+
+
+    public PaymentDocumentService(ResidentService residentService,SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties, MailService mailService, CompanyService companyService, CompanyMapper companyMapper, HouseService houseService, HouseMapper houseMapper, ChargeService chargeService){
         this.chargeService = chargeService;
         this.companyMapper = companyMapper;
         this.houseService = houseService;
@@ -64,6 +72,7 @@ public class PaymentDocumentService {
         this.mailService = mailService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
+        this.residentService = residentService;
     }
 
 
@@ -75,9 +84,13 @@ public class PaymentDocumentService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
             if(payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getPaymentAmmount())).substring(1));
+                chargeDTO.setPaymentAmmount(currencyFormatter.format(chargeDTO.getTotal()).substring(1));
+                chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setSubcharge(currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
             }else{
-                chargeDTO.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setPaymentAmmount(currencyFormatter.format(chargeDTO.getTotal()).substring(1));
+                chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setSubcharge(currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
             }
         });
         if(payment.getTransaction().equals("1")){
@@ -146,7 +159,7 @@ public class PaymentDocumentService {
             String paymentTotal = payment.getAmmount();
             if(isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
-                paymentTotal = payment.getCharges().get(0).getAmmount();
+                paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getTotal()).sum()+"";
                 Locale locale = new Locale("es", "CR");
                 NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
                 paymentTotal=currencyFormatter.format(Double.parseDouble(paymentTotal)).substring(1);
@@ -292,6 +305,46 @@ public class PaymentDocumentService {
     private String formatRangoFechas(ZonedDateTime fechaInicial,ZonedDateTime fechaFinal){
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM . yyyy", new Locale("es","ES"));
         return "Del "+spanish.format(fechaInicial) + " al "+ spanish.format(fechaFinal);
+    }
+
+
+
+    @Async
+    public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, List<ChargeDTO> chargesDTOS){
+        ResidentDTO residentDTO = null;
+        List<ResidentDTO> residentDTOS = this.residentService.findEnabledByHouseId(null,house.getId()).getContent();
+        for (int i = 0; i < residentDTOS.size(); i++) {
+            if(residentDTOS.get(i).getPrincipalContact()==1){
+                residentDTO = residentDTOS.get(i);
+            }
+        }
+        if(residentDTO!=null){
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
+            contextTemplate.setVariable(HOUSE,house);
+            contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM . yyyy", new Locale("es","ES"));
+            Locale locale = new Locale("es", "CR");
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            double subchargeTotal = 0;
+            for (int i = 0; i < chargesDTOS.size(); i++) {
+                ChargeDTO chargeDTO = chargesDTOS.get(i);
+                chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
+                subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
+                chargeDTO.setAmmount("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setSubcharge("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
+                chargeDTO.setPaymentAmmount("₡"+currencyFormatter.format(chargeDTO.getTotal()).substring(1));
+            }
+            CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+            contextTemplate.setVariable(COMPANY,company);
+            contextTemplate.setVariable(SUBCHARGE_TOTAL,currencyFormatter.format(subchargeTotal).substring(1));
+            contextTemplate.setVariable(CHARGES,chargesDTOS);
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            String content = templateEngine.process("subchargeReminderEmail", contextTemplate);
+            String subject = "Recordatorio de pago, Filial # "+house.getHousenumber()+" ,"+company.getName();
+            this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
+        }
+
     }
 }
 

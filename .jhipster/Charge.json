@@ -69,11 +69,20 @@
         {
             "fieldName": "paymentDate",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "subcharge",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "payedSubcharge",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180324000506",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "charge",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

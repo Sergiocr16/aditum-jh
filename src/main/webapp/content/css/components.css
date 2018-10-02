@@ -26,9 +26,9 @@ ul,
 code,
 pre,
 li {
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  border-radius: 0 !important;
+  /*-webkit-border-radius: 0 !important;*/
+  /*-moz-border-radius: 0 !important;*/
+  /*border-radius: 0 !important;*/
 }
 
 /* except below bootstrap elements */
