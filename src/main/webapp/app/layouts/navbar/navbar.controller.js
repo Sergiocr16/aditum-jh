@@ -5,11 +5,18 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House'];
+    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav'];
 
-    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House) {
+    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav) {
         var vm = this;
         $rootScope.isAuthenticated = Principal.isAuthenticated;
+        vm.isAuthenticated = Principal.isAuthenticated;
+        $rootScope.toggleLeft = buildToggler('left');
+        function buildToggler(componentId) {
+            return function () {
+                $mdSidenav(componentId).toggle();
+            };
+        }
 
         function logout() {
             collapseNavbar();

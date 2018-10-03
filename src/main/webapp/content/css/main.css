@@ -447,7 +447,7 @@ ul#strengthBar {
     vertical-align: 2px;
 }
 
-.point:last {
+.point: last {
     margin: 0 !important;
 }
 
@@ -1397,4 +1397,104 @@ div.scrollmenu a:hover {
 .switchdemoBasicUsage .inset {
     padding-left: 25px;
     padding-top: 25px;
+}
+.mat-toolbar.mat-primary{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .all-content{
+        margin-top: 64px;
+        margin-left: 235px;
+    }
+    .side-nav-bar{
+        margin-top: 64px;
+        width: 235px!important;
+    }
+}
+.all-content{
+    padding:15px;
+    margin-top: 64px;
+}
+
+
+
+
+/*LOADING PAGE*/
+
+.app-loading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    z-index:9980;
+}
+.spinner {
+    /* Spinner size and color */
+    width: 1.5rem;
+    height: 1.5rem;
+    border-top-color: #44b6ae;
+    border-left-color: #44b6ae;
+    /* Additional spinner styles */
+    animation: spinner 1000ms linear infinite;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Animation styles */
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* Optional — create your own variations! */
+.spinner-large {
+    width: 10rem;
+    height: 10rem;
+    border-width: 6px;
+}
+
+.spinner-slow {
+    animation: spinner 1s linear infinite;
+}
+
+.spinner-blue {
+    border-top-color: #09d;
+    border-left-color: #09d;
 }
