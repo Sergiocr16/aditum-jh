@@ -77,12 +77,13 @@
 
         vm.getAcount = function () {
             Principal.identity().then(function (account) {
-
+               vm.account = account;
                 switch (account.authorities[0]) {
                     case "ROLE_ADMIN":
-                        vm.contextLiving = "Dios de Aditum"
+                        vm.contextLiving = "Dios de Aditum";
                         $rootScope.contextLiving = vm.contextLiving;
                         $rootScope.currentUserImage = null;
+                        $rootScope.hideFilial = true;
                         break;
                     case "ROLE_MANAGER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
@@ -99,7 +100,7 @@
 
                                 }
                                 Company.get({id: $rootScope.companyId}, function (condo) {
-                                    vm.contextLiving = " / " + condo.name;
+                                    vm.contextLiving = condo.name;
                                     $rootScope.companyName = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     $rootScope.currentUserImage = data.image_url;
@@ -108,7 +109,7 @@
                                     }
                                 })
                             }
-
+                            $rootScope.hideFilial = true;
                         })
                         break;
                     case "ROLE_OFFICER":
@@ -120,18 +121,22 @@
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = null;
                             }
-                        })
+                            $rootScope.hideFilial = true;
+                        });
                         break;
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
                             House.get({id: parseInt(data.houseId)}, function (house) {
-                                vm.contextLiving = " / Casa " + house.housenumber;
                                 $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.hideFilial = false;
+                                $rootScope.filialNumber = house.housenumber;
                                 $rootScope.companyId = data.companyId;
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
                                 Company.get({id: parseInt($rootScope.companyId)}, function (condo) {
+                                    vm.contextLiving = condo.name;
+                                    $rootScope.contextLiving = vm.contextLiving;
                                     if (condo.active == 0 || data.enabled == 0) {
                                         logout();
                                     }

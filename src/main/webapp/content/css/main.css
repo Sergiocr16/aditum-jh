@@ -1300,18 +1300,35 @@ div.scrollmenu a:hover {
 }
 
 .image-navbar {
-    width: 29px;
-    height: 29px;
+    width: 35px;
+    height: 35px;
     display: inline-block;
     float: left;
     margin-right: 5px;
-    margin-top: -5px
+    margin-top: -5px;
+    cursor: pointer;
 }
 
 .object-fit_scale-down-navbar {
     object-fit: scale-down;
-    height: 29px;
-    width: 29px;
+    height: 35px;
+    width: 35px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+
+
+.image-navbar-big {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    margin:10px;
+}
+
+.object-fit_scale-down-navbar-big {
+    object-fit: scale-down;
+    height: 80px;
+    width: 80px;
     background-color: #ebedf0;
     border-radius: 50% !important;
 }
@@ -1497,4 +1514,73 @@ div.scrollmenu a:hover {
 .spinner-blue {
     border-top-color: #09d;
     border-left-color: #09d;
+}
+
+/*END LOADING SPINNER*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: white;
+    color: #979797;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+
+}
+
+#sidebar ul p {
+    margin: 0;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a i {
+    vertical-align: middle !important;
+}
+.principal-icon{
+    margin-right: 15px;
+}
+#sidebar ul li a:hover {
+    color: #44b6ae;
+    background: white;
+}
+#sidebar ul li{
+
+}
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    color: #44b6ae!important;
+    background: #f5f5f5;
+    text-decoration: none;
+}
+#sidebar ul li.collapse.active > a, a[aria-expanded="true"] {
+    color: #3c3c3c!important;
+    background-color: white;
+    text-decoration: none;
+}
+
+.activeSubmenu a {
+    color: #3c3c3c!important;
+    text-decoration: none!important;
+    background: white!important;
+}
+.collapse li {
+    border-bottom: none!important;
+}
+
+.material-icons-with-text{
+    vertical-align: middle !important;
+    margin-right:15px;
 }

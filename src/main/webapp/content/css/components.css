@@ -798,7 +798,7 @@ body {
   border-radius: 50% !important;
   -moz-border-radius: 50% !important;
   -webkit-border-radius: 50% !important;
-  z-index: 5;
+  /*z-index: 5;*/
 }
 .md-radio label > .check {
   top: 5px;
@@ -807,7 +807,7 @@ body {
   height: 10px;
   background: #45B6AF;
   opacity: 0;
-  z-index: 6;
+  /*z-index: 6;*/
   border-radius: 50% !important;
   -moz-border-radius: 50% !important;
   -webkit-border-radius: 50% !important;
