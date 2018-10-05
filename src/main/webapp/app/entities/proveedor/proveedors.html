@@ -23,26 +23,24 @@
 </div>
 <div  class="row display-none" id="tableData">
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
-    <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list">Proveedores
+    <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12  font-green-sharp font-weight-600  " style="color: #00b19d">Proveedores
 
     </h3>
-    <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
-        <div class="input-icon col-md-7   col-lg-7  col-md-7 col-xs-12">
+        <div class="input-icon col-md-offset-6  col-lg-offset-6 margin-bottom-20 col-sm-offset-6  col-md-3   col-lg-3  col-md-3 col-xs-12">
             <i class="fa fa-search"></i>
             <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
         </div>
-        <button type="button" class="btn btn-success green col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="proveedor.new" name="button">Registrar proveedor</button>
-
-    </div>
+        <button type="button" class="btn orange-button-oficial margin-bottom-20 col-md-3  col-lg-3 col-sm-3 col-xs-12" ui-sref="proveedor.new" name="button">Registrar proveedor</button>
 
     <br/>
     <div class="portlet-body ">
-        <div ng-show="vm.proveedorsQuantity == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <h2 class="text-center gray-font">No hay proveedores registrados</h2>
+        <div ng-show="vm.proveedorsQuantity == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marging-top-100">
+            <h2 class="text-center gray-font font-24">No hay proveedores registrados</h2>
         </div>
-    <div class="table-scrollable" ng-show="vm.proveedorsQuantity>0">
-        <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:12px;">
-            <thead  class="flip-content">
+        <div class="table-scrollable hidden-xs   " ng-show="vm.proveedorsQuantity>0" style="border: 0px!important;">
+            <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
+                <thead style="background-color: #fafafa;" >
+
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="empresa"><span data-translate="aditumApp.proveedor.empresa">Empresa</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
                     <th jh-sort-by="responsable"><span data-translate="aditumApp.proveedor.responsable">Responsable</span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>

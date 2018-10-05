@@ -34,7 +34,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-        vm.filterAuthorized = 2;
+        vm.filterAuthorized = "2";
         vm.setAuthorizedView = function(val){
                 vm.filterAuthorized = val;
         }
@@ -56,19 +56,18 @@
 
         vm.changesTitles = function() {
             if (enabledOptions) {
-                vm.title = "Residentes habilitados";
-                vm.buttonTitle = "Ver residentes deshabilitados";
+                vm.title = "Usuarios autorizados";
+                vm.buttonTitle = "Ver usuarios autorizados deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
-
                  vm.iconDisabled = "fa fa-user-times";
                  vm.color = "red-font";
             } else {
-                vm.title = "Residentes deshabilitados";
-                vm.buttonTitle = "Ver residentes habilitados";
+                vm.title = "Usuarios deshabilitados";
+                vm.buttonTitle = "Ver usuarios autorizados habilitados";
                 vm.actionButtonTitle = "Habilitar";
- vm.iconDisabled = "fa fa-undo";
-                   vm.titleDisabledButton = "Habilitar residente";
-                  vm.color = "green";
+                vm.iconDisabled = "fa fa-undo";
+                vm.titleDisabledButton = "Habilitar usuario";
+                vm.color = "green";
             }
         }
         setTimeout(function(){

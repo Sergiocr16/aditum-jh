@@ -20,6 +20,14 @@
         {
             "fieldName": "folioNumber",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "egressFolioSerie",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "egressFolioNumber",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180328213553",

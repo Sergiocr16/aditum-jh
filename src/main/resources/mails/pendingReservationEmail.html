@@ -44,8 +44,8 @@
             <p class="font-14 black"><span class="bold">Horario: </span><span th:text="|${schedule}|"></span></p>
             <p class="font-14 black"><span class="bold">Responsable: </span><span th:text="|${resident}|"></span></p>
             <div th:if="${commonArea.getChargeRequired()==1}" >
-                <p class="font-14 black"><span class="bold">Costo por reservación: </span>₡<span th:text="|${reservation.getReservationCharge()}|"></span></p>
-                <p class="font-14 black"><span class="bold">Devolución: </span>₡<span th:text="|${reservation.getDevolutionAmmount()}|"></span></p>
+                <p class="font-14 black"><span class="bold">Costo por reservación: </span>₡<span th:text="|${reservationCharge}|"></span></p>
+                <p class="font-14 black"><span class="bold">Devolución: </span>₡<span th:text="|${devolutionAmount}|"></span></p>
                 <p class="font-14 black" th:if="${reservation.getStatus()==2}"><span class="bold">Fecha de cargo: </span><span th:text="|${chargeDate}|"></span></p>
 
             </div>

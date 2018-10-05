@@ -24,6 +24,7 @@
         })
 
         vm.officer = entity;
+        vm.officer.type = "9";
          if(vm.officer.image_url==undefined){
             vm.officer.image_url = null;
           }

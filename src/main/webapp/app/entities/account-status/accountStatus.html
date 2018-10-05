@@ -4,7 +4,7 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="col-md-12 display-none" id="data">
+<div class="col-md-12 display-none no-padding" id="data">
     <div class="col-md-12 no-padding">
             <h2 class="bold uppercase" style="font-size:15px">Estado de cuenta <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
 
@@ -17,15 +17,15 @@
         </div>
 
         <div class=" col-md-5 col-md-offset-1 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input  name="initialDate"  ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font" >
+                <input  name="initialDate" style=" border: 1px solid #f2f2f2 !important;" ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha"  required >
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input  name="finalDate"  ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                <input  name="finalDate" style=" border: 1px solid #f2f2f2 !important;" ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
                        class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
             </div>
-            <button ng-click="vm.consult()" class="btn btn-primary col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <button ng-click="vm.consult()" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
         </div>
 
     </div>
@@ -35,11 +35,11 @@
             <div class="double-bounce2"></div>
         </div>
     </div>
-    <div class="portlet-body" id="accountStatusContainer" style="margin-bottom:50px;">
-        <div class="table-scrollable" style="overflow-x: hidden!important">
+    <div class="portlet-body" id="accountStatusContainer" style="margin-bottom:50px; ">
+        <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
             <h3 class="text-center" ng-show="vm.accountStatusItems.length==0" style="margin-top:30px!important">La filial no tiene deudas vigentes ni pagos realizados</h3>
-            <table class="jh-table table table-bordered  table-condensed flip-content" style="font-size:12px;">
-                <thead >
+            <table class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                <thead  style="background-color: #fafafa;" class="">
 
                 <tr >
                     <th class="text-center">Fecha </th>
@@ -86,10 +86,10 @@
                     <tbody style="border-top:0px;">
                         <tr >
                             <td  colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
-                            <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}</td>
-                            <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}</td>
-                            <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}</td>
-                            <td class="text-center bold" style="color:green;">₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}</td>
+                            <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}</td>
+                            <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}</td>
+                            <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}</td>
+                            <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}</td>
                             <td class="text-center bold" ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">₡{{vm.formatearNumero(vm.accountStatusItems.saldo+"")}}</td>
                         </tr>
                     </tbody>

@@ -12,16 +12,24 @@
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house = entity;
+
         if(vm.house.due==null || vm.house.due==undefined){
-        vm.house.due=0;
-        }
-        if(vm.house.squareMeters==null || vm.house.squareMeters==undefined){
-        vm.house.squareMeters=0;
-        }
-        if(vm.house.isdesocupated!=null ){
-        vm.house.isdesocupated = vm.house.isdesocupated.toString()
+              vm.house.due=0;
         }else{
-        vm.house.isdesocupated = "0";
+            vm.house.due = parseInt(vm.house.due);
+        }
+
+
+        if(vm.house.squareMeters==null || vm.house.squareMeters==undefined){
+              vm.house.squareMeters=0;
+        }else{
+            vm.house.squareMeters = parseInt(vm.house.squareMeters);
+        }
+
+        if(vm.house.isdesocupated!=null ){
+             vm.house.isdesocupated = vm.house.isdesocupated.toString()
+        }else{
+             vm.house.isdesocupated = "0";
         }
         vm.save = save;
         setTimeout(getConfiguration(),800);
@@ -33,12 +41,7 @@
                vm.companyConfiguration = configuration;
              });
               loadQuantities();
-               setTimeout(function() {
-                         $("#loadingIcon").fadeOut(300);
-               }, 400)
-                setTimeout(function() {
-                    $("#edit_house_form").fadeIn('slow');
-                },900 )
+
         }
         function onError () {
         }
@@ -63,7 +66,12 @@
         }
         function onSuccess(data) {
             vm.houseQuantity = data.length;
-
+            setTimeout(function() {
+                $("#loadingIcon").fadeOut(300);
+            }, 400)
+            setTimeout(function() {
+                $("#edit_house_form").fadeIn('slow');
+            },900 )
         }
         if(vm.house.id !== null){
             vm.title = "Editar casa";
@@ -132,9 +140,11 @@
         }
 
         function onSaveSuccess (result) {
-var balance = {houseId:parseInt(result.id),extraordinary:0,commonAreas:0,maintenance:0};
+            if(entity.id==null){
+                var balance = {houseId:parseInt(result.id),extraordinary:0,commonAreas:0,maintenance:0};
+                Balance.save(balance);
+            }
 
- Balance.save(balance)
 
             WSHouse.sendActivity(result);
             $state.go('house');

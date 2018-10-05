@@ -48,6 +48,44 @@
                 }]
             }
         })
+            .state('common-area-administration.reservation-charge-devolution', {
+                url: '/reservation-charge-devolution',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.commonAreaReservations.home.title'
+                },
+                templateUrl:'app/entities/common-area-reservations/reservation-devolution-charge.html',
+                controller: 'ReservationDevolutionChargeController',
+                controllerAs: 'vm',
+
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('commonAreaReservations');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('common-area-administration.common-area-all-reservations', {
 
                 url: '/common-area-all-reservations?page&sort&search',

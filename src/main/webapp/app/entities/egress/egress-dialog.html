@@ -176,10 +176,9 @@
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
-                                            <input type="text" class="form-control numbers " name="total" placeholder="0.00"
+                                            <input type="text" class="form-control  " name="total" placeholder="0.00"
                                                    id="field_total" pattern="[0-9]*"
-                                                   ng-model="vm.egress.total"
-                                                   ng-change="formatearNumero(vm.egress.total)" required
+                                                   ng-model="vm.egress.total" ng-change="vm.hola(vm.egress.total)" required
                                             />
                                         </div>
 

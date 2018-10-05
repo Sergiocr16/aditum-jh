@@ -34,6 +34,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="egress_folio_serie" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_folio_number" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>

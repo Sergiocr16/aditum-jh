@@ -4,35 +4,42 @@
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="col-md-12 display-none" id="data">
+<div class="col-md-12 display-none no-padding" id="data">
+
     <div class="col-md-12 no-padding">
-        <div class="pull-left">
-            <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
-        </div>
-        <div class="col-md-7 col-md-offset-2" ng-hide="vm.payments.length==0 && vm.filtering==false">
-            <div class="col-md-4 no-padding-right">
-            <input ng-model="vm.initialTime.date" ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating" placeholder="Fecha de inicio">
+        <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
+    </div>
+    <div class="col-md-12 no-padding margin-bottom-10">
+        <div class="btn-group col-md-3"></div>
+        <div class="col-md-7 no-padding" ng-hide="vm.payments.length==0 && vm.filtering==false">
+            <div class="btn-group col-md-3 ">
+                <button class="btn btn-success col-md-12" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">Mostrar todos</button>
             </div>
-            <div class="col-md-4">
-                <input ng-model="vm.finalTime.date" ng-change="vm.updatePicker()" type="text" name="date" ng-click="vm.openCalendar(vm.finalTime)" datepicker-options="vm.picker2.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.finalTime.openCalendar" class="form-control letters gray-font dating" placeholder="Fecha final">
+            <div class="col-md-3 no-padding">
+              <input ng-model="vm.initialTime.date" style=" border: 1px solid #f2f2f2 !important;"  ng-change="vm.updatePicker()" name="date" ng-click="vm.openCalendar(vm.initialTime)" datepicker-options="vm.picker1.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.initialTime.openCalendar" type="text" class="form-control letters gray-font dating" placeholder="Fecha de inicio">
             </div>
-            <button class="btn btn-info blue" ng-click="vm.filter()" ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined">Consultar</button>
-            <button class="btn btn-success" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">Mostrar todos</button>
+            <div class="col-md-3 no-padding">
+                <input ng-model="vm.finalTime.date" style=" border: 1px solid #f2f2f2 !important;"  ng-change="vm.updatePicker()" type="text" name="date" ng-click="vm.openCalendar(vm.finalTime)" datepicker-options="vm.picker2.datepickerOptions" enable-time="false" datetime-picker="longDate" is-open="vm.finalTime.openCalendar" class="form-control letters gray-font dating" placeholder="Fecha final">
+            </div>
+            <div class="btn-group col-md-3 no-padding">
+                <button class="btn orange-button-oficial col-md-12" ng-click="vm.filter()" ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined">Consultar</button>
+            </div>
+
         </div>
-        <div class="btn-group pull-right">
-            <button class="btn btn-success red" ui-sref="generatePayment"><i class="fa fa-money"></i> Realizar pago</button>
+        <div class="btn-group col-md-2 no-padding-right">
+            <button class="btn btn-success red col-md-12" ui-sref="generatePayment"><i class="fa fa-money"></i> Realizar pago</button>
         </div>
     </div>
     <hr>
     <div class="portlet-body">
-        <h3 class="text-center" ng-show="vm.payments.length==0 && vm.filtering==false" style="margin-top:60px!important">La filial no ha realizado ningún pago aún</h3>
-        <h3 class="text-center" ng-show="vm.payments.length==0 && vm.filtering==true" style="margin-top:70px!important">No se encontraron pagos en las fechas seleccionadas</h3>
+        <h3 class="text-center font-24 " ng-show="vm.payments.length==0 && vm.filtering==false" style="margin-top:60px!important">La filial no ha realizado ningún pago aún</h3>
+        <h3 class="text-center font-24 " ng-show="vm.payments.length==0 && vm.filtering==true" style="margin-top:70px!important">No se encontraron pagos en las fechas seleccionadas</h3>
 
         <div ng-show="vm.payments.length!=0">
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-bordered font-13 gray-font tableMaterialDesign">
+                <thead  style="background-color: #fafafa;" class="">
                 <tr>
-                    <th>
+                    <th class="text-center">
                         Número de recibo
                     </th>
                     <th>
@@ -47,7 +54,7 @@
                     <th>
                         Concepto
                     </th>
-                    <th>
+                    <th  class="text-center">
                         Cantidad
                     </th>
                 </tr>
@@ -61,7 +68,7 @@
                     <td>{{payment.paymentMethod}}</td>
                     <td ng-show="payment.transaction==1">Abono a cuotas</td>
                     <td ng-show="payment.transaction==2">Adelanto de condómino</td>
-                    <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                    <td  class="text-center" style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
                 </tr>
                 <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
                     <td style="background-color:white!important;position:relative" colspan="3">

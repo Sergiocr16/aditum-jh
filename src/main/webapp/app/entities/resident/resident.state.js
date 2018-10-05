@@ -50,6 +50,33 @@
                 }]
             }
         })
+        .state('residentByHouse.residentDetail', {
+            parent: 'residentByHouse',
+            url: '/detalleResidenteVista?id2',
+            data: {
+                authorities: ['ROLE_USER'],
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/resident/resident-detail-house-administration.html',
+                    controller: 'ResidentDetailHouseAdministrationController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['Resident','CommonMethods', function(Resident) {
+
+                            return Resident.get({id : $stateParams.id2}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    $state.go('^', {}, { reload: false });
+                }, function() {
+                    $state.go('^');
+                });
+            }]
+        })
+
         .state('resident-detail', {
             parent: 'resident',
             url: '/resident/{id}',
@@ -82,35 +109,35 @@
                 }]
             }
         })
-        .state('resident-detail.edit', {
-            parent: 'resident-detail',
-            url: '/detail/edit',
-            data: {
-             authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/resident/resident-form.html',
-                    controller: 'ResidentDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Resident','CommonMethods', function(Resident,CommonMethods) {
-                         var id = CommonMethods.decryptIdUrl($stateParams.id)
-                            return Resident.get({id : id}).$promise;
-                        }],
-                        companyUser: ['MultiCompany',function(MultiCompany){
-                                         return MultiCompany.getCurrentUserCompany()
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('^', {}, { reload: false });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
+    .state('resident-detail.edit', {
+        parent: 'resident-detail',
+        url: '/detail/edit',
+        data: {
+            authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+        },
+        onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+            $uibModal.open({
+                templateUrl: 'app/entities/resident/resident-form.html',
+                controller: 'ResidentDialogController',
+                controllerAs: 'vm',
+                backdrop: 'static',
+                size: 'lg',
+                resolve: {
+                    entity: ['Resident','CommonMethods', function(Resident,CommonMethods) {
+                        var id = CommonMethods.decryptIdUrl($stateParams.id)
+                        return Resident.get({id : id}).$promise;
+                    }],
+                    companyUser: ['MultiCompany',function(MultiCompany){
+                        return MultiCompany.getCurrentUserCompany()
+                    }]
+                }
+            }).result.then(function() {
+                $state.go('^', {}, { reload: false });
+            }, function() {
+                $state.go('^');
+            });
+        }]
+    })
         .state('resident.new', {
           parent: 'resident',
                     url: '/new',

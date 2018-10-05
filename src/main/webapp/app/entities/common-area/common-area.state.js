@@ -416,6 +416,7 @@
                     }]
                 }
             })
+
             .state('common-area-administration.general-reservation-calendar', {
                 url: '/general-reservation-calendar',
                 data: {

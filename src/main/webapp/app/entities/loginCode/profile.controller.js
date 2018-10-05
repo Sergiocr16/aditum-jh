@@ -168,10 +168,10 @@
 
         function insertResident(){
             vm.profileInfo.company_id=$localStorage.companyId;
-            vm.profileInfo.name =  vm.profileInfo.name.toUpperCase()
-            vm.profileInfo.lastname =  vm.profileInfo.lastname.toUpperCase()
-            vm.profileInfo.secondlastname =  vm.profileInfo.secondlastname.toUpperCase()
-
+            vm.profileInfo.name =  vm.profileInfo.name.toUpperCase();
+            vm.profileInfo.lastname =  vm.profileInfo.lastname.toUpperCase();
+            vm.profileInfo.secondlastname =  vm.profileInfo.secondlastname.toUpperCase();
+            vm.profileInfo.principalContact = 1;
             if(vm.profileInfo.identificationnumber!==undefined || vm.profileInfo.identificationnumber!== null){
                 vm.profileInfo.identificationnumber = vm.profileInfo.identificationnumber.toUpperCase()
             }
@@ -180,9 +180,10 @@
         }
         function updateResident(){
             indentification = vm.profileInfo.identificationnumber;
-            vm.profileInfo.name =  vm.profileInfo.name.toUpperCase()
-            vm.profileInfo.lastname =  vm.profileInfo.lastname.toUpperCase()
-            vm.profileInfo.secondlastname =  vm.profileInfo.secondlastname.toUpperCase()
+            vm.profileInfo.name =  vm.profileInfo.name.toUpperCase();
+            vm.profileInfo.lastname =  vm.profileInfo.lastname.toUpperCase();
+            vm.profileInfo.secondlastname =  vm.profileInfo.secondlastname.toUpperCase();
+            vm.profileInfo.principalContact = 1;
             if(vm.profileInfo.identificationnumber!==undefined || vm.profileInfo.identificationnumber!== null){
                 vm.profileInfo.identificationnumber = vm.profileInfo.identificationnumber.toUpperCase()
             }

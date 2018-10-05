@@ -12,6 +12,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.lang.reflect.Array;
+import java.text.NumberFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,10 @@ public class CommonAreaMailService {
     private static final String SCHEDULE = "schedule";
 
     private static final String TYPE = "type";
+
+    private static final String DEVOLUTIONAMOUNT = "devolutionAmount";
+
+    private static final String RESERVATIONCHARGE = "reservationCharge";
 
 
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
@@ -93,12 +98,18 @@ public class CommonAreaMailService {
     private String defineContentAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
         Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         Context context = new Context(locale);
         context.setVariable(RESERVATION, commonAreaReservationsDTO);
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(TYPE, "Administrador");
+
+        if(commonAreaReservationsDTO.getReservationCharge()!=null){
+            context.setVariable(RESERVATIONCHARGE, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getReservationCharge()+"")).substring(1));
+            context.setVariable(DEVOLUTIONAMOUNT, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getDevolutionAmmount()+"")).substring(1));
+        }
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
@@ -109,13 +120,19 @@ public class CommonAreaMailService {
 
     }
     private String defineContentResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-
         Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+
         Context context = new Context(locale);
         context.setVariable(RESERVATION, commonAreaReservationsDTO);
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(TYPE, "Residente");
+        if(commonAreaReservationsDTO.getReservationCharge()!=null){
+            context.setVariable(RESERVATIONCHARGE, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getReservationCharge()+"")).substring(1));
+            context.setVariable(DEVOLUTIONAMOUNT, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getDevolutionAmmount()+"")).substring(1));
+        }
+
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
         context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());

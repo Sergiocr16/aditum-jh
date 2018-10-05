@@ -17,7 +17,7 @@
         if (entity.image_url == undefined) {
             entity.image_url = null;
         }
-        vm.resident.type = 9;
+        vm.resident.nationality = "9";
         vm.required = 1;
         vm.validEmail = function (email) {
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -82,14 +82,14 @@
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
         if (vm.resident.id !== null) {
-            vm.title = "Editar residente";
+            vm.title = "Editar usuario";
             vm.button = "Editar";
             var autorizadorStatus = vm.resident.isOwner;
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
             }
         } else {
-            vm.title = "Registrar residente";
+            vm.title = "Registrar usuario";
             vm.button = "Registrar";
         }
 
@@ -125,13 +125,13 @@
         vm.findInPadron = function(resident){
 
             if(resident.identificationnumber!=undefined || resident.identificationnumber != ""){
-                if(hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.type=="9" && hasLetter(resident.identificationnumber)){
+                if(hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality=="9" && hasLetter(resident.identificationnumber)){
                     resident.validIdentification = 0;
                 }else{
                     resident.validIdentification = 1;
                 }
 
-                if(resident.type=="9" && resident.identificationnumber != undefined){
+                if(resident.nationality=="9" && resident.identificationnumber != undefined){
                     if(resident.identificationnumber.trim().length==9){
                         PadronElectoral.find(resident.identificationnumber,function(person){
                             setTimeout(function(){
@@ -198,10 +198,11 @@
             }
         }
         function save() {
+
             if (vm.validate()) {
-                vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
-                vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
-                vm.resident.secondlastname = CommonMethods.capitalizeFirstLetter(vm.resident.secondlastname);
+                vm.resident.name = vm.resident.name.toUpperCase();
+                vm.resident.lastname = vm.resident.lastname.toUpperCase();
+                vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                 vm.isSaving = true;
                 if (vm.resident.id !== null) {
                     if (indentification !== vm.resident.identificationnumber) {
@@ -235,7 +236,7 @@
 
             function allClearInsert(data) {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
+                    toastr["error"]("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
                 } else if (vm.resident.isOwner == 1) {
                     CommonMethods.waitingMessage();
                     createAccount(1);
@@ -251,7 +252,7 @@
 
             function updateResident() {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    toastr["error"]("Debe ingresar un correo para asignar el residente como autorizador de filial.");
+                    toastr["error"]("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
                 } else if (autorizadorStatus == 1 && vm.resident.isOwner == false) {
                     CommonMethods.waitingMessage();
                     updateAccount(0);
@@ -402,7 +403,7 @@
                 vm.isSaving = false;
                 $state.go('resident');
                 bootbox.hideAll();
-                toastr["success"]("Se ha editado el residente correctamente.");
+                toastr["success"]("Se ha editado el usuario correctamente.");
             }
 
             function insertResident(id) {
@@ -437,7 +438,7 @@
                             vm.isSaving = false;
                             $state.go('resident');
                             bootbox.hideAll();
-                            toastr["success"]("Se ha registrado el residente correctamente.");
+                            toastr["success"]("Se ha registrado el usuario correctamente.");
                         }
                     }
                 } else {
@@ -453,7 +454,7 @@
                         vm.isSaving = false;
                         $state.go('resident');
                         bootbox.hideAll();
-                        toastr["success"]("Se ha registrado el residente correctamente.");
+                        toastr["success"]("Se ha registrado el usuario correctamente.");
                     }
                 }
 

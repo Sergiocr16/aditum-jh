@@ -30,144 +30,156 @@
     </div>
     <div class="row" ng-if="vm.houses.length!==0">
         <div class="col-md-12">
-    <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                    <div class="portlet-title">
-                        <div class="caption font-green-haze">
-                            <i class="fa fa-money font-green-haze"></i>
-                         <span class="caption-subject bold uppercase">Generar cuota mensual</span>
-                        </div>
+            <div class="portlet light  col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                <div class="portlet-title">
+                    <div class="caption font-green-haze">
+                        <span class="caption-subject bold uppercase">Generar cuota mensual</span>
                     </div>
-                    <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
-                            <form ng-submit="vm.verificarCargos()">
-                            <h4><b>1. Seleccione si su cuota es fija o por Metro cuadrado.</b></h4>
-                        <p>Si usted aún no configura sus cuotas haga <a ui-sref="configureCharges">click aquí</a>. Si usted necesita configurar la cuota por metro cuadrado haga <a href="">click aquí.</a></p>
-                        <label class="col-md-2 control-label"><b>Tipo de cuota:</b></label>
-                        <div class="col-md-7 form-group form-md-radios">
-                            <div class="md-radio-inline">
-                                <div class="md-radio" >
-                                    <input type="radio" id="radio18" name="radio2" ng-checked="{{vm.radiostatus}}"  class="md-radiobtn"  ng-click="vm.definirCuotaFija()">
-                                    <label for="radio18">
-                                        <span class="inc"></span>
-                                        <span class="inc"></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                        Fija </label>
-                                </div>
-                                <div class="md-radio">
-                                    <input type="radio" id="radio19" name="radio2" class="md-radiobtn" ng-click="vm.definirCuotaMetroCuadrado()">
-                                    <label for="radio19">
-                                        <span class="inc"></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                        Metros cuadrados </label>
+                </div>
+                <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12" >
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
+                        <form ng-submit="vm.verificarCargos()">
+                            <h4 style="font-weight: 600!important;">1. Seleccione si su cuota es fija o por Metro cuadrado.</h4>
+                            <div class="col-md-12">
+                                <p>Si usted aún no configura sus cuotas haga <a ui-sref="configureCharges">click aquí</a>. Si usted necesita configurar la cuota por metro cuadrado haga <a href="">click aquí.</a></p>
+
+                            </div>
+                            <div class="form-group col-md-1 margin-top-10">
+                                <span class=" control-label no-padding font-weight-600">Tipo de cuota:</span>
+
+                            </div>
+                            <div class="col-md-7 form-group form-md-radios no-padding">
+                                <div class="md-radio-inline">
+                                    <div class="md-radio" >
+                                        <input type="radio" id="radio18" name="radio2" ng-checked="vm.radiostatus"  class="md-radiobtn"  ng-click="vm.definirCuotaFija()">
+                                        <label for="radio18">
+                                            <span class="inc"></span>
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span>
+                                            Fija </label>
+                                    </div>
+                                    <div class="md-radio">
+                                        <input type="radio" id="radio19" name="radio2" class="md-radiobtn" ng-click="vm.definirCuotaMetroCuadrado()">
+                                        <label for="radio19">
+                                            <span class="inc"></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span>
+                                            Metros cuadrados </label>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <h4 class="col-md-3" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>₡{{vm.adminConfig.squareMetersPrice | currency : "" : 0}}</b></h4>
+                            <h4 class="col-md-3 text-right" ng-show="vm.cuotaFija==false">Precio por metro cuadrado: <b>₡{{vm.adminConfig.squareMetersPrice | currency : "" : 0}}</b></h4>
 
-                    <div class="col-md-12">
-                        <div class="col-md-10 col-lg-10 no-padding">
-                        <h4><b>2. Ingrese el concepto y la fecha de los cuotas que va a cobrar.</b></h4>
-                        <p>En este proceso puede modificar lo que se le va a cobrar a cada condómino. Así mismo puede agregar más conceptos para cobrar</p>
-                        </div>
-                        <div class="col-md-2 col-lg-2">
-                    <button ng-click="vm.addNewDue()"ng-show="vm.houses.length!=0" class="btn btn-primary">Agregar columna</button>
-                        </div>
-                    </div>
+                            <div class="col-md-12 no-padding">
+                                <div class="col-md-10 col-lg-10 no-padding">
+                                    <h4  style="font-weight: 600!important;">2. Ingrese el concepto y la fecha de los cuotas que va a cobrar.</h4>
+                                    <div class="col-md-12">
+                                        <p>En este proceso puede modificar lo que se le va a cobrar a cada condómino. Así mismo puede agregar más conceptos para cobrar</p>
 
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-                        <div class="table-scrollable">
-                            <table ng-show="vm.houses.length>0" class="table table-striped table-hover font-12">
-                                <thead>
-                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                    <th class="text-center"><b>Filial</b></th>
-                                    <th class="text-center" ng-show="vm.cuotaFija==true"><b>Cuota</b></th>
-                                    <th class="text-center" ng-show="vm.cuotaFija==false"><b>AreaM2</b></th>
-                                    <th ng-repeat="globalConcept in vm.globalConcept track by $index">
-                                        <div class="col-md-12 no-padding">
-                                            <div class="no-padding" style="display:inline">
-                                        <div style="margin-bottom:5px">
-                                            <input style="width:150px" ng-model="globalConcept.date" placeholder="Fecha de cobro" ng-change="vm.autoConcept(globalConcept)" ng-click="vm.openCalendar($index)"  datetime-picker="mediumDate"   is-open="globalConcept.datePickerOpenStatus"  type="text" enable-time="false" class="form-control gray-font text-center dating" required>
-                                        </div>
-                                        <input style="width:150px" ng-model="globalConcept.concept" class="form-control letters gray-font text-center" type="text" placeholder="Concepto">
-                                            </div>
-                                            <div ng-show="vm.globalConcept.length>1" style="width:150px">
-                                                <button type="button" ng-click="vm.deleteDue(globalConcept.id)" class="btn btn-danger col-md-12" style="padding:3px 7px!important"><b>Eliminar</b></button>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th class="text-center"><b>Habitada</b></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">{{house.housenumber}}</td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency : "" : 0}}</td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}</td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-repeat="cuota in house.cuotas" class="text-center">
-                                        <input style="width:150px" ng-disabled="house.isdesocupated == 1" ng-class="{redBorder: cuota.valida==false}" ng-change="vm.validate(cuota)" class="form-control numbers gray-font text-center dating" type="text" fcsa-number  ng-model="cuota.ammount" required>
-                                    </td>
-                                    <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="label label-sm label-danger col-md-12 bold" style="padding: 5px 15px;margin-top:5px" aria-hidden="false">No</span></td>
-                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="label label-sm label-success col-md-12 bold" style="padding: 5px 15px;margin-top:5px"  aria-hidden="false">Si</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                            <button ng-show="vm.houses.length!=0" class="btn btn-primary col-md-12 col-xs-12 col-sm-12 col-lg-12" type="submit">Verificar cargos</button>
-                            </form>
-                        </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
-                            <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes cargos?</b></h3>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-lg-2">
+                                    <button ng-click="vm.addNewDue()"ng-show="vm.houses.length!=0" class="btn orange-button-oficial col-md-12">Agregar columna</button>
+                                </div>
+                            </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="table-scrollable">
-                                    <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales para realizar una cuota</h2>
-                                    <table ng-show="vm.houses.length>0" class="table table-striped table-bordered table-hover font-12">
-                                        <thead>
+
+                                <div class="table-scrollable" style="border: 0px!important;">
+                                    <table table ng-if="vm.houses.length>0" id="tableToExport" class="table font-13 gray-font tableMaterialDesign">
+                                        <thead  style="background-color: #fafafa;" class="">
                                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                             <th class="text-center"><b>Filial</b></th>
-
+                                            <th class="text-center" ng-show="vm.cuotaFija==true"><b>Cuota</b></th>
+                                            <th class="text-center" ng-show="vm.cuotaFija==false"><b>AreaM2</b></th>
                                             <th ng-repeat="globalConcept in vm.globalConcept track by $index">
-
-                                                            <h5 class="text-center" style="margin-bottom:5px"><b>{{globalConcept.concept}}</b></h5>
-
-                                                        <hr>
-                                                        <h5 class="text-center">{{globalConcept.date | date}}</h5>
-                                                        <h6 class="text-center" style="font-size:11px"><b>Fecha de cobro</b></h6>
-
+                                                <div class="col-md-12 no-padding">
+                                                    <div class="no-padding" style="display:inline">
+                                                        <div style="margin-bottom:5px">
+                                                            <input style="width:150px" ng-model="globalConcept.date" placeholder="Fecha de cobro" ng-change="vm.autoConcept(globalConcept)" ng-click="vm.openCalendar($index)"  datetime-picker="mediumDate"   is-open="globalConcept.datePickerOpenStatus"  type="text" enable-time="false" class="form-control gray-font text-center dating" required>
+                                                        </div>
+                                                        <input style="width:150px" ng-model="globalConcept.concept" class="form-control letters gray-font text-center" type="text" placeholder="Concepto">
+                                                    </div>
+                                                    <div ng-show="vm.globalConcept.length>1" style="width:150px">
+                                                        <button type="button" ng-click="vm.deleteDue(globalConcept.id)" class="btn btn-danger col-md-12" style="padding:3px 7px!important"><b>Eliminar</b></button>
+                                                    </div>
+                                                </div>
                                             </th>
+                                            <th class="text-center"><b>Habitada</b></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="house in vm.houses | orderBy:'housenumber'" >
-                                            <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}" >
-                                                <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
-                                                <span  ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"class="label label-sm label-danger" aria-hidden="false">Filial {{house.housenumber}} Deshabitada</span>
+                                        <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
+                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center ">{{house.housenumber}}</td>
+                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency : "" : 0}}</td>
+                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}</td>
+                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-repeat="cuota in house.cuotas" class="text-center">
+                                                <input style="width:150px" ng-disabled="house.isdesocupated == 1" ng-class="{redBorder: cuota.valida==false}" ng-change="vm.validate(cuota)" class="form-control numbers gray-font text-center dating" type="text" fcsa-number  ng-model="cuota.ammount" required>
                                             </td>
-                                            <td ng-class="{noCharge:cuota.ammount == 0}" ng-repeat="cuota in house.cuotas" class="text-center" style="width:150px" >
-                                                <span ng-show="cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover direction="left" template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>" mode="mouseover">    ₡{{cuota.ammount | currency : "" : 0}}</span>
-                                                <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >    ₡{{cuota.ammount | currency : "" : 0}}</span>
-                                            </td>
+                                            <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6" style="padding: 5px 15px;margin-top:5px" aria-hidden="false">No</span></td>
+                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6" style="padding: 5px 15px;margin-top:5px"  aria-hidden="false">Si</span></td>
+
                                         </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-                                    <div class="col-lg-6">
-                                        <h1 class="text-center"><button class="btn btn-danger" ng-click="vm.cancelar()">Cancelar</button></h1>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <h1 class="text-center"><button class="btn btn-success" ng-click="vm.createDues()">Aceptar</button></h1>
-                                    </div>
+                            </div>
+                            <div class="col-md-12">
+                                <button ng-show="vm.houses.length!=0" class="btn orange-button-oficial col-md-12 col-xs-12 col-sm-12 col-lg-12" type="submit">Verificar cargos</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
+                        <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes cargos?</b></h3>
+
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="table-scrollable" style="border: 0px!important;">
+                                <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales para realizar una cuota</h2>
+                                <table ng-show="vm.houses.length>0"  class="table font-13 gray-font tableMaterialDesign">
+                                    <thead  style="background-color: #fafafa;" class="">
+                                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                        <th class="text-center"><b>Filial</b></th>
+
+                                        <th ng-repeat="globalConcept in vm.globalConcept track by $index">
+
+                                            <h5 class="text-center" style="margin-bottom:5px"><b>{{globalConcept.concept}}</b></h5>
+
+                                            <hr>
+                                            <h5 class="text-center font-13">{{globalConcept.date | date}}</h5>
+                                            <h6 class="text-center" style="font-size:13px"><b>Fecha de cobro</b></h6>
+
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="house in vm.houses | orderBy:'housenumber'" >
+                                        <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}" >
+                                            <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
+                                            <span  ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"class="label label-sm label-danger font-13 bold" aria-hidden="false">Filial {{house.housenumber}} - Deshabitada</span>
+                                        </td>
+                                        <td ng-class="{noCharge:cuota.ammount == 0}" ng-repeat="cuota in house.cuotas" class="text-center" style="width:150px" >
+                                            <span ng-show="cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover direction="left" template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>" mode="mouseover">    ₡{{cuota.ammount | currency : "" : 0}}</span>
+                                            <span ng-show="cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >    ₡{{cuota.ammount | currency : "" : 0}}</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" >
+                                <div class="col-lg-6 no-padding">
+                                 <button class="btn btn-danger col-md-12" ng-click="vm.cancelar()">Cancelar</button>
+                                </div>
+                                <div class="col-lg-6 no-padding-right">
+                                  <button class="btn btn-success col-md-12" ng-click="vm.createDues()">Aceptar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-    </div></div>
+                </div>
+            </div></div>
     </div>
 </div>
 

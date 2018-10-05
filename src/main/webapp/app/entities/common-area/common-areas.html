@@ -11,7 +11,7 @@
         <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
 
 
-            <button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.new" name="button">Registrar área común</button>
+            <button type="button" class="btn orange-button-oficial col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.new" name="button">Registrar área común</button>
         </div>
 
         <div class="portlet-body ">
@@ -19,15 +19,15 @@
                 <h2 class="text-center gray-font">No hay áreas comunes registradas</h2>
             </div>
 
-            <div class="table-scrollable hidden-xs" ng-if="vm.commonAreas.length>0">
-                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:13px;">
-                    <thead>
+            <div class="table-scrollable hidden-xs gray-font" ng-if="vm.commonAreas.length>0" style="border: 0px!important;">
+                <table class=" table table-hover   font-13 tableMaterialDesign" >
+                    <thead style="background-color: #fafafa;">
                     <tr>
                         <th>Nombre</th>
                         <th>Cuota por reservación</th>
-                        <th>Ver calendario</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
+                        <th class="text-center">Ver calendario</th>
+                        <th class="text-center">Editar</th>
+                        <th class="text-center">Eliminar</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,9 +36,9 @@
                         <td ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</td>
                         <td ng-if="commonArea.chargeRequired==0">No requiere</td>
 
-                        <td><a class="light-gray-font"   ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})" >Ver calendario</a></td>
-                        <td> <a class="light-gray-font" ui-sref="common-area-administration.editCommonArea({id:commonArea.id})">Editar</a></td>
-                        <td> <a class="light-gray-font"   ng-click="vm.deleteReservation(commonArea)">Eliminar</a></td>
+                        <td class="text-center"><a class="light-gray-font"   ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})" >Ver calendario</a></td>
+                        <td class="text-center"> <a class="light-gray-font" ui-sref="common-area-administration.editCommonArea({id:commonArea.id})">Editar</a></td>
+                        <td class="text-center"> <a class="light-gray-font"   ng-click="vm.deleteReservation(commonArea)">Eliminar</a></td>
                     </tr>
                     </tbody>
                 </table>

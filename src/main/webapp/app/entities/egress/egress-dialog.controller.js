@@ -46,7 +46,9 @@
             }
         }, 700)
 
-
+        vm.hola = function(egress){
+            console.log(egress)
+        }
         function onSuccessEgressCategories(data, headers) {
             angular.forEach(data, function (value, key) {
                 if (value.group == 'Gastos fijos') {
@@ -100,11 +102,6 @@
             }
             Proveedor.get({id: vm.egress.proveedor}, onSuccessProovedor)
 
-            function onSuccessProovedor(proovedor, headers) {
-                vm.egress.empresa = proovedor.empresa;
-
-            }
-
             if (vm.egress.folio == null || vm.egress.folio == 'undefined') {
                 vm.egress.folio = 'Sin Registrar'
             }
@@ -119,6 +116,10 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
 
+        function onSuccessProovedor(proovedor, headers) {formatearNumero
+            vm.egress.empresa = proovedor.empresa;
+
+        }
         function clear() {
             $uibModalInstance.dismiss('cancel');
         }
@@ -206,10 +207,11 @@
                 vm.egress.paymentMethod = 0;
                 vm.egress.account = 0;
                 vm.egress.account = 0;
+
                 Egress.save(vm.egress, onSaveSuccess, onSaveError);
             }
         }
-
+        vm.hola(vm.egress.total)
         function onSaveReport(result) {
             bootbox.hideAll();
             $scope.$emit('aditumApp:egressUpdate', result);

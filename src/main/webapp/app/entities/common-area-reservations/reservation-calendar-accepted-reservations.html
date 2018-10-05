@@ -7,75 +7,75 @@
             <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
                     ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
-                <span>Información de la reservación</span>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding font-14">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
+                <span style="font-weight: 600">Información de la reservación</span>
                 <div class=" pull-right no-padding">
                     <span ng-if="vm.commonAreaReservations.status==2">Estado: <span class="bold">aprobada</span></span>
                     <span ng-if="vm.commonAreaReservations.status==1">Estado: <span class="bold">pendiente</span></span>
 
                 </div>
             </div>
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #939393; ">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
-                    <div class="margin-bottom-5 bold">Área común</div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #e7e7e7; ">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #e7e7e7;">
+                    <div class="margin-bottom-5 " style="font-weight: 600">Área común</div>
                     <span>{{ vm.commonAreaReservations.commonAreaName}}</span>
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
-                    <div class="margin-bottom-5 bold">Fecha de reservación</div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #e7e7e7;">
+                    <div class="margin-bottom-5 " style="font-weight: 600">Fecha de reservación</div>
                     <span>{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
                 </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-10" style="border-right: 1px solid #b0b0b0;">
-                    <div class="margin-bottom-5 bold">Horario</div>
+                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-10" style="border-right: 1px solid #e7e7e7;">
+                    <div class="margin-bottom-5 " style="font-weight: 600">Horario</div>
                     <span>{{vm.commonAreaReservations.schedule}}</span>
                 </div>
                 <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-10" >
-                    <div class="margin-bottom-5 bold">Responsable</div>
+                    <div class="margin-bottom-5 " style="font-weight: 600">Responsable</div>
                     <span>{{vm.commonAreaReservations.residentName}} - Filial {{vm.commonAreaReservations.houseNumber}}</span>
                 </div>
 
             </div>
-            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
-                <span>Costo por reservación</span>
+            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
+                <span style="font-weight: 600">Costo por reservación</span>
             </div>
-            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #939393;">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10 " style="border-right: 1px solid #b0b0b0;  ">
-                    <div class=" bold control-label">Fecha del cargo</div>
+            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #e7e7e7;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10 " style="border-right: 1px solid #e7e7e7;  ">
+                    <div class="  control-label" style="font-weight: 600">Fecha del cargo</div>
 
                     <span  ng-if="vm.commonAreaReservations.status==1">No realizado</span>
                     <span ng-if="vm.commonAreaReservations.status==2">{{vm.charge.date | date:'longDate'}}</span>
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
-                    <div class=" bold control-label">Concepto</div>
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-20 " style="border-right: 1px solid #e7e7e7; ">
+                    <div class="  control-label" style="font-weight: 600">Concepto</div>
                     <span>{{vm.charge.concept | date:'longDate'}}</span>
 
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
-                    <div class=" bold control-label">Cantidad</div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #e7e7e7; ">
+                    <div class="  control-label" style="font-weight: 600">Cantidad</div>
 
                         <span>₡{{vm.formatearNumero(vm.charge.ammount+"")}}</span>
 
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20" >
-                    <div class=" bold">Devolución</div>
+                <div class=" col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-20" >
+                    <div class=" " style="font-weight: 600">Devolución</div>
 
                         <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
 
                 </div>
 
             </div>
-            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; " ng-if="vm.commonAreaReservations.status==2">
-                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span>Información de envío de correo</span></div>
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; " ng-if="vm.commonAreaReservations.status==2">
+                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span style="font-weight: 600">Información de envío de correo</span></div>
 
             </div>
-            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #939393; border-top:0px;" ng-if="vm.commonAreaReservations.status==2">
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #e7e7e7; border-top:0px;" ng-if="vm.commonAreaReservations.status==2">
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20 form-group" style="padding-bottom: 10px!important;">
-                    <div class="control-label"><span class="bold">Correo electrónico: </span> {{vm.commonAreaReservations.chargeEmail}} </div>
+                    <div class="control-label"><span class="" style="font-weight: 600">Correo electrónico: </span> {{vm.commonAreaReservations.chargeEmail}} </div>
 
 
                 </div>
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" ng-if="vm.commonAreaReservations.comments!==null">
-                    <div class="margin-bottom-10 "><span class="bold">Comentarios: </span> {{vm.commonAreaReservations.comments}}</div>
+                    <div class="margin-bottom-10 "><span class="" style="font-weight: 600">Comentarios: </span> {{vm.commonAreaReservations.comments}}</div>
 
                     <!--<textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"-->
                               <!--class="form-control col-md-12" name="comments" id="field_comments">-->

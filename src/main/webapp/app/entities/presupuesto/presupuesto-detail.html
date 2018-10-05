@@ -29,8 +29,8 @@
 <div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }"  class="row display-none" id="budgetContainer">
     <div class="col-md-12">
         <div style="margin-bottom:15px;" class="caption font-green-haze">
-            <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==2">Editar PRESUPUESTO {{vm.presupuesto.anno}}</span>
-            <span class="caption-subject bold uppercase font-15"  ng-show="vm.budgetAction==1">PRESUPUESTO {{vm.presupuesto.anno}}</span>
+            <h3 class="caption-subject bold uppercase font-green-sharp font-weight-600" style="margin-top:0px!important;" ng-show="vm.budgetAction==2">Editar PRESUPUESTO {{vm.presupuesto.anno}}</h3>
+            <h3 class="caption-subject bold uppercase font-green-sharp font-weight-600"  style="margin-top:0px!important;" ng-show="vm.budgetAction==1">PRESUPUESTO {{vm.presupuesto.anno}}</h3>
             <div class="btn-group pull-right">
                 <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
 
@@ -45,17 +45,17 @@
 
 
             <div class="no-padding-right col-md-offset-4 col-sm-offset-4 col-xs-offset-4 col-md-2 col-sm-2 col-xs-2 "  ng-show="vm.budgetAction==2">
-                <button class="btn btn-primary col-md-12" ng-click="vm.edit()">Guardar presupuesto</button>
+                <button class="btn btn-primary col-md-12 orange-button-oficial" ng-click="vm.edit()">Guardar presupuesto</button>
             </div>
             <div class="no-padding-right col-md-offset-10 col-sm-offset-10 col-md-2 col-sm-2 col-xs-12 "  ng-show="vm.budgetAction==1">
-                <button class="btn btn-primary col-md-12" ng-click="vm.showEditOptions()">Editar presupuesto</button>
+                <button class="btn orange-button-oficial col-md-12" ng-click="vm.showEditOptions()">Editar presupuesto</button>
 
             </div>
         </div>
     </div>
     <div class="col-md-12">
         <div class="table-responsive">
-            <table class="jh-table table table-bordered ">
+            <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesignAccountStatus" >
                 <tbody>
                 <tr>
                     <th class="budgetTableHeader">CONCEPTO</th>
@@ -148,7 +148,7 @@
             </table>
             <div class="col-md-12 text-center">
                 <h5 class=" text-center">
-                    <button class="btn btn-primary" style="text-align:center;width:300px" ng-show="vm.budgetAction==2" ng-click="vm.edit()">Guardar presupuesto</button>
+                    <button class="btn orange-button-oficial" style="text-align:center;width:300px" ng-show="vm.budgetAction==2" ng-click="vm.edit()">Guardar presupuesto</button>
                 </h5>
             </div>
         </div>
