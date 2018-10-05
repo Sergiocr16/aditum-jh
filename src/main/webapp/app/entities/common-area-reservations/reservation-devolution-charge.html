@@ -1,0 +1,55 @@
+<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
+    <div class="spinnerLoading">
+        <div class="double-bounce1"></div>
+        <div class="double-bounce2"></div>
+    </div>
+</div>
+<div class="row " >
+
+    <div class="col-lg-12 col-md-12 display-none" id="tableDatas">
+        <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
+
+            <button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.newReservation" name="button">Crear nueva reservación</button>
+        </div>
+        <div class="portlet-body">
+            <div ng-if="vm.finalListReservations.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h2 class="text-center gray-font">No hay reservaciones pendientes</h2>
+            </div>
+
+            <div class="table-scrollable hidden-xs gray-font" ng-if="vm.finalListReservations.length>0" style="border: 0px!important;">
+                <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;">
+                    <thead style="background-color: #fafafa;">
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Ver</th>
+                        <th>Fecha</th>
+                        <th>Horario</th>
+                        <th class="text-center">Filial</th>
+                        <th>Responsable</th>
+                        <th>Área común</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Editar</th>
+                        <th class="text-center">Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="finalListReservations in vm.finalListReservations"  >
+                        <td class="text-center"  style="padding: 5px!important; padding-top: 7px!important;"><button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==1" ui-sref="common-area-administration.common-area-all-reservations.reservationDetail({id:finalListReservations.id})" name="button">Ver</button> <button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==2" ui-sref="common-area-administration.common-area-all-reservations.acceptedReservationsDetail({id:finalListReservations.id})" name="button">Ver</button></td>
+                        <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
+                        <td >{{finalListReservations.schedule}}</td>
+                        <td class="text-center">{{finalListReservations.houseNumber}}</td>
+                        <td>{{finalListReservations.residentName}}</td>
+                        <td>{{finalListReservations.commonAreaName}}</td>
+                        <td class="text-center" ><span  ng-if="finalListReservations.status==1" aria-hidden="false">PENDIENTE</span><span  ng-if="finalListReservations.status==2" aria-hidden="false">APROBADA</span><span  ng-if="finalListReservations.status==3" aria-hidden="false">RECHAZADA</span></td>
+                        <td class="text-center"><a class="light-gray-font " ui-sref="common-area-administration.edit({id:finalListReservations.id})" ng-if="finalListReservations.status==1">Editar</a></td>
+                        <td class="text-center"><a class="light-gray-font " ng-click="vm.deleteReservation(finalListReservations)" ng-if="finalListReservations.status==1">Eliminar</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="text-center" ng-if="vm.finalListReservations.length>0">
+                <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+                <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>

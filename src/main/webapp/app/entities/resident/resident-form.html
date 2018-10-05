@@ -7,11 +7,11 @@
             <i class="fa fa-angle-right"></i>
         </li>
         <li has-authority="ROLE_MANAGER">
-            <a href="" ui-sref="resident()">Residentes</a>
+            <a href="" ui-sref="resident()">Usuarios autorizados</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li has-authority="ROLE_USER">
-            <a href="" ui-sref="residentByHouse()">Residentes</a>
+            <a href="" ui-sref="residentByHouse()">Usuarios autorizados</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -56,7 +56,7 @@
                     </div>
                     <div class="portlet-body form">
                         <div has-any-authority="ROLE_MANAGER,ROLE_ADMIN" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
-                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Autorizado de filial: </span>
+                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Crear cuenta en aditum: </span>
                             <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
                                 <div class="md-checkbox">
                                     <input type="checkbox"  ng-model="vm.resident.isOwner" id="checkbox1" class="md-check">
@@ -69,16 +69,16 @@
                             </div>
                         </div>
                         <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url!==null" >
-                            <img width="200" height="200" class="img-circle" src="content/images/nobody-image.jpg"/>
+                            <img width="170" height="170" class="img-circle" src="content/images/nobody-image.jpg"/>
                         </h3>
                         <h3 class="text-center no-margin"  ng-hide="vm.displayImage || vm.resident.image_url===null" >
-                            <img width="200" height="200" class="img-circle" src="{{vm.resident.image_url}}"/>
+                            <img width="170" height="170" class="object-fit_scale-down-resident-form" src="{{vm.resident.image_url}}"/>
                         </h3>
                         <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)" ngf-pattern="'image/*'">
                             <div ng-if="vm.displayImage" class="image-overlay-position" >
                                 <div class="image-overlay-container image-overlay-view-first">
                                     <h3 class="text-center no-margin">
-                                        <img data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}" width="170px" height="170px" class="img-circle" alt="imageUser image"/>
+                                        <img data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}" width="170px" height="170px" class="object-fit_scale-down-resident-form" alt="imageUser image"/>
                                     </h3>
                                 </div>
                             </div>
@@ -91,28 +91,41 @@
                             </h3>
 
 
-                            <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+                        <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
+
                             <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.name" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label  class="font-15">Nombre</label>
+                                <select class="form-control gray-font" name="type" ng-model="vm.resident.nationality" ng-required='vm.required==1'>
+                                    <option value="9">Costarricense</option>
+                                    <option value="20">Extranjero</option>
+                                </select>
+                                <label class="font-15" >Nacionalidad</label>
                             </div>
                             <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.lastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label  class="font-15">Primer Apellido</label>
-                            </div>
-                            <div class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.secondlastname" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
-                                <label class="font-15">Segundo Apellido</label>
-                            </div>
-                            <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control gray-font" required style='text-transform:uppercase'>
+                                <input  ng-class="{redBorder: vm.resident.validIdentification == 0}" maxlength="{{vm.resident.nationality}}" ng-model="vm.resident.identificationnumber" ng-change="vm.findInPadron(vm.resident)" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
                                 <label  class="font-15">Número de cédula</label>
                                 <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
                             </div>
+
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.name" type="text" ng-disabled="vm.resident.found==1" class="form-control letters gray-font" required style="text-transform: uppercase;">
+                                <label  class="font-15">Nombre</label>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.lastname" type="text" ng-disabled="vm.resident.found==1"  class="form-control letters gray-font" required style="text-transform: uppercase;">
+                                <label  class="font-15">Primer Apellido</label>
+                            </div>
+                            <div has-authority="ROLE_MANAGER"  class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.secondlastname"  ng-disabled="vm.resident.found==1" type="text" class="form-control letters gray-font" required style="text-transform: uppercase;">
+                                <label class="font-15">Segundo Apellido</label>
+                            </div>
+
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 marging-top-20">
-
+                            <div has-authority="ROLE_USER"  class="form-group form-md-line-input">
+                                <input ng-model="vm.resident.secondlastname"  ng-disabled="vm.resident.found==1" type="text" class="form-control letters gray-font" required style="text-transform: capitalize;">
+                                <label class="font-15">Segundo Apellido</label>
+                            </div>
                             <div class="form-group form-md-line-input">
                                 <input ng-focus="expression==1" ng-model="vm.resident.phonenumber" type="text" placeholder="" maxlength="20" class="form-control numbers gray-font">
                                 <label class="font-15">Número celular</label>
@@ -129,18 +142,22 @@
                                 </select>
                                 <label class="font-15 ">Contacto principal de la filial</label >
                             </div>
-
-                            <div has-authority="ROLE_USER" class="form-group form-md-line-input">
-                                <input ng-model="vm.resident.identificationnumber" type="text" class="form-control  gray-font" required style='text-transform:uppercase'>
-                                <label  class="font-15">Número de cédula</label>
-                                <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
+                            <div class="form-group form-md-line-input has-info" >
+                                <select class="form-control gray-font"  ng-model="vm.resident.type" >
+                                    <option value="">Seleccione una opción</option>
+                                    <option value="1">Residente propietario</option>
+                                    <option value="2">Residente inquilino</option>
+                                    <option value="3">Visitante autorizado</option>
+                                </select>
+                                <label class="font-15 ">Tipo de usuario</label >
                             </div>
+
 
                             <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
                             <select class="form-control gray-font" id="field_house"  ng-model="vm.resident.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'"  ng-required='vm.required==1'>
-                                <option value="">Seleccione una casa</option>
+                                <option value="">Seleccione una filial</option>
                             </select>
-                                <label class="font-15 ">Número de casa</label >
+                                <label class="font-15 ">Número de filial</label >
                             </div>
                         </div>
                         <div class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>

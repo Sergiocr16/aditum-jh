@@ -123,6 +123,105 @@
                         }]
                     }
                 })
+            .state('houseAdministration.residentsByHouse', {
+                url: '/residentesPorFilial',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                },
+                templateUrl:'app/entities/resident/residents-house-administration.html',
+                controller: 'ResidentsHouseAdministrationController',
+                controllerAs: 'vm',
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('house');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('houseAdministration.vehiculesByHouse', {
+                url: '/vehiculosPorFilial',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                },
+                templateUrl:'app/entities/vehicule/vehicules-house-administration.html',
+                controller: 'VehiculesHouseAdministrationController',
+                controllerAs: 'vm',
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('house');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('houseAdministration.residentsByHouse.residentDetail', {
+                parent: 'houseAdministration.residentsByHouse',
+                url: '/detalleResidente?id2',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/resident/resident-detail-house-administration.html',
+                        controller: 'ResidentDetailHouseAdministrationController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            entity: ['Resident','CommonMethods', function(Resident) {
+
+                                return Resident.get({id : $stateParams.id2}).$promise;
+                            }]
+                        }
+                    }).result.then(function() {
+                        $state.go('^', {}, { reload: false });
+                    }, function() {
+                        $state.go('^');
+                    });
+                }]
+            })
+
                 .state('houseAdministration.chargePerHouse.new', {
                     parent: 'houseAdministration.chargePerHouse',
                     url: '/crear',

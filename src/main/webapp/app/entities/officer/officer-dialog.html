@@ -83,31 +83,33 @@
                                     </button>
                                 </h3>
                             <div class="col-md-6 col-sm-6 marging-top-20">
+                                <div class="form-group form-md-line-input">
+                                    <select class="form-control gray-font" name="type" ng-model="vm.officer.type" ng-required='vm.required==1'>
+                                        <option value="9">Costarricense</option>
+                                        <option value="20">Extranjero</option>
+                                    </select>
+                                    <label class="font-15" >Nacionalidad</label>
+                                </div>
+                                <div class="form-group form-md-line-input l">
+                                    <input  ng-class="{redBorder: vm.officer.validIdentification == 0}" maxlength="{{vm.officer.type}}"  ng-change="vm.findInPadron(vm.officer)"  ng-model="vm.officer.identificationnumber" type="text" class="form-control  numbers gray-font"  required>
+                                    <label class="font-15">Cédula</label>
+                                </div>
                                 <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.officer.name" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
+                                    <input ng-model="vm.officer.name" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
                                     <label class="font-15">Nombre</label>
                                 </div>
-
-
-
                                 <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.officer.lastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
+                                    <input ng-model="vm.officer.lastname" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
                                     <label class="font-15">Primer Apellido</label>
                                 </div>
                                 <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
+                                    <input ng-model="vm.officer.secondlastname" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
                                     <label class="font-15">Segundo Apellido</label>
                                 </div>
-                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <textarea ng-model="vm.officer.direction" class="form-control gray-font"  rows="3" placeholder="Dirección de residencia del oficial" required style="resize: none;"></textarea>
-                                    <label >Dirección física</label>
-                                </div>
+
                             </div>
                             <div class="col-md-6 col-sm-6 marging-top-20">
-                                <div class="form-group form-md-line-input l">
-                                    <input ng-model="vm.officer.identificationnumber" type="text" class="form-control  numbers gray-font"  required>
-                                    <label class="font-15">Cédula</label>
-                                </div>
+
                                 <div class="form-group form-md-line-input">
                                     <input ng-model="vm.birthdate" ng-value="vm.birthdateToShow"  ng-click="vm.openCalendar('birthdate')" datepicker-options="vm.picker.datepickerOptions"  ng-change="vm.updatePicker()" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.birthdate"  type="text" enable-time="false" class="form-control numbers letters gray-font text-center dating" required>
                                     <label  class="font-15">Fecha de nacimiento</label>
@@ -120,7 +122,10 @@
                                     <input ng-model="vm.officer.phonenumber" class="form-control numbers gray-font"  required>
                                     <label class="font-15">Número de telefono</label>
                                 </div>
-
+                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
+                                    <textarea ng-model="vm.officer.direction" class="form-control gray-font"  rows="3" placeholder="Dirección de residencia del oficial" required style="resize: none;"></textarea>
+                                    <label >Dirección física</label>
+                                </div>
                             <div has-authority="ROLE_RH" class="form-group form-md-line-input has-info">
                                 <select class="form-control gray-font" id="field_house"  ng-model="vm.officer.companyId" ng-options="company.id as company.name for company in companyUser.companies"  ng-required='vm.required==1'>
                                     <option value="">Seleccione un condominio</option>

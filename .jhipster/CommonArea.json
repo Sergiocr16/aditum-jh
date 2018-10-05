@@ -41,6 +41,14 @@
         {
             "fieldName": "maximunHours",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "companyId",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180724215437",

@@ -50,9 +50,9 @@ public class CommonAreaService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommonAreaDTO> findAll(Pageable pageable) {
+    public Page<CommonAreaDTO> findAll(Pageable pageable,int companyId) {
         log.debug("Request to get all CommonAreas");
-        return commonAreaRepository.findAll(pageable)
+        return commonAreaRepository.findByCompanyIdAndDeleted(pageable,companyId,0)
             .map(commonAreaMapper::toDto);
     }
 

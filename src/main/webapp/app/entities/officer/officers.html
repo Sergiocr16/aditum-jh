@@ -3,8 +3,8 @@
 <div class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-lock"></i>
+            <a ui-sref="home()">Seguridad</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -29,45 +29,50 @@
 </div>
 <div class="row display-none" id="tableData">
     <div class="col-md-12">
-        <h3 class="page-title col-md-9 col-sm-9 col-xs-12">	{{vm.title}}</h3>
-            <div class="form-group form-md-radios"  ng-show="vm.canEditOfficers==1" >
-                <div class="md-radio-inline">
+        <h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600  " style="color: #00b19d">{{vm.title}}</h3>
 
-                    <div class="md-radio" >
-                        <input type="radio" id="radio18" name="radio2" class="md-radiobtn" ng-checked="{{vm.radiostatus}}"  ng-click="vm.switchEnabledResidents()">
-                        <label for="radio18" style="color:#45B6AF">
-                            <span class="inc"></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                            Habilitados </label>
-                    </div>
-                    <div class="md-radio has-error">
-                        <input type="radio" id="radio19" name="radio2" class="md-radiobtn"  ng-click="vm.switchDisabledResidents()">
-                        <label for="radio19">
-                            <span class="inc"></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                            Deshabilitados </label>
-                    </div>
-                </div>
-            </div>
-            <div  ng-show="vm.canEditOfficers==0" class="no-padding form-group col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
-                <div class="input-icon">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
-                </div>
-            </div>
-            <div  ng-show="vm.canEditOfficers==1"  class="form-group col-md-offset-7 col-md-3 col-sm-offset-7 col-sm-3 col-xs-6">
-                <div class="input-icon">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
-                </div>
-            </div>
-            <button ng-show="vm.canEditOfficers==1" type="submit" class="btn green col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
+            <div  class="btn-group pull-right ">
+                <div class="form-group form-md-radios"  ng-show="vm.canEditOfficers==1" >
+                    <div class="md-radio-inline">
 
+                        <div class="md-radio" >
+                            <input type="radio" id="radio18" name="radio2" class="md-radiobtn" ng-checked="vm.radiostatus"  ng-click="vm.switchEnabledResidents()">
+                            <label for="radio18" style="color:#45B6AF">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Habilitados </label>
+                        </div>
+                        <div class="md-radio has-error">
+                            <input type="radio" id="radio19" name="radio2" class="md-radiobtn"  ng-click="vm.switchDisabledResidents()">
+                            <label for="radio19">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Deshabilitados </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 no-padding">
+
+                <div  ng-show="vm.canEditOfficers==0" class="no-padding form-group col-md-offset-10 col-md-2 col-sm-offset-9 col-sm-3 col-xs-12">
+                    <div class="input-icon">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
+                    </div>
+                </div>
+                <div  ng-show="vm.canEditOfficers==1"  class="form-group col-md-offset-8 col-md-2 col-sm-offset-8 col-sm-2 col-xs-6">
+                    <div class="input-icon">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control" placeholder="Buscar oficial" ng-model="vm.search">
+                    </div>
+                </div>
+                <button ng-show="vm.canEditOfficers==1" type="submit" class="btn orange-button-oficial col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="officer.new()">Registrar oficial</button>
+            </div>
             <div class="portlet-body ">
-                <div ng-show="vm.officers.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                    <h2  class="text-center gray-font ">No hay oficiales registrados</h2>
+                <div ng-show="vm.officers.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 marging-top-100">
+                    <h2  class="text-center gray-font font-24 ">No hay oficiales registrados</h2>
                 </div>
                 <div class="col-xs-12 hidden-lg hidden-md hidden-sm">
                     <div class="portlet light bordered text-center col-sm-12 col-xs-12" ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
@@ -90,27 +95,27 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-scrollable hidden-xs" ng-show="vm.officers.length>0" >
-                    <table class="table table-striped table-hover font-12">
-                        <thead>
+                <div class="table-scrollable hidden-xs" ng-show="vm.officers.length>0" style="border: 0px!important;">
+                    <table class="table  table-hover font-13 gray-font tableMaterialDesign">
+                        <thead style="background-color: #fafafa;" >
                         <tr>
                             <th>Nombre completo</th>
                             <th>Cédula</th>
 
-                            <th>Ver detalle</th>
-                            <th ng-show="vm.canEditOfficers==1">{{vm.actionButtonTitle}}</th>
-                            <th ng-show="vm.canEditOfficers==1">Editar</th>
-                            <th ng-show="vm.canEditOfficers==1">Eliminar</th>
+                            <th class="text-center" >Ver detalle</th>
+                            <th class="text-center" ng-show="vm.canEditOfficers==1">{{vm.actionButtonTitle}}</th>
+                            <th class="text-center" ng-show="vm.canEditOfficers==1">Editar</th>
+                            <th class="text-center" ng-show="vm.canEditOfficers==1">Eliminar</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="officer in vm.officers | filter:vm.search | orderBy:'name'">
                             <td>{{officer.name}} {{officer.lastname}} {{officer.secondlastname}}</td>
                             <td>{{officer.identificationnumber}}</td>
-                            <td> <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)">Ver detalle</a></td>
-                            <td ng-show="vm.canEditOfficers==1"> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
-                            <td ng-show="vm.canEditOfficers==1"> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
-                            <td ng-show="vm.canEditOfficers==1"> <a ng-click="vm.deleteOfficer(officer)">Eliminar</a></td>
+                            <td class="text-center" > <a  class="light-gray-font" ng-click="vm.detailOfficer(officer.id)">Ver detalle</a></td>
+                            <td class="text-center" ng-show="vm.canEditOfficers==1"> <a  class="light-gray-font" ng-click="vm.disableEnabledOfficer(officer)">{{vm.actionButtonTitle}}</a></td>
+                            <td class="text-center" ng-show="vm.canEditOfficers==1"> <a ng-click="vm.editOfficer(officer.id)">Editar</a></td>
+                            <td class="text-center" ng-show="vm.canEditOfficers==1"> <a ng-click="vm.deleteOfficer(officer)">Eliminar</a></td>
                         </tr>
                         </tbody>
                     </table>

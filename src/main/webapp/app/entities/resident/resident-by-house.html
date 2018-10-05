@@ -59,16 +59,16 @@
                     <button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="residentByHouse.new()">Registrar residente</button>
                 </div>
                 <div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                    <h2  class="text-center gray-font ">No tienes residentes deshabilitados</h2>
+                    <h2  class="text-center gray-font ">No tienes residentes registrados</h2>
                 </div>
                 <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3" ng-repeat="resident in vm.residents  | orderBy:'name'">
-                    <div class="portlet light bordered  text-center  col-sm-12 col-xs-12" id="">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3"  ng-repeat="resident in vm.residents  | orderBy:'name'">
+                    <div class="portlet light bordered  text-center  col-sm-12 col-xs-12 " id="">
 <span style="z-index:-1!important;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>
 
-                            <h3 class="text-center">
-                                <img ng-show="resident.image_url==null" width="160" height="160" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="resident.image_url==null" src="{{resident.image_url}}" width="160" height="160" class="img-circle"/>
+                            <h3 class="text-center " style="cursor: pointer;" ui-sref="residentByHouse.residentDetail({id2:resident.id})">
+                                <img ng-show="resident.image_url==null" width="150" height="150" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="resident.image_url==null" src="{{resident.image_url}}" width="160" height="160" class="object-fit_scale-down-resident-by-house"/>
                             </h3>
 
 

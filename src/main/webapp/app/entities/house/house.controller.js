@@ -17,11 +17,11 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
-        vm.ocultarACondos = false;
-        setTimeout(function(){loadAll();
-        if($rootScope.companyId>2){
         vm.ocultarACondos = true;
-        }
+        setTimeout(function(){loadAll();
+        // if($rootScope.companyId>2){
+        // vm.ocultarACondos = true;
+        // }
         },1500)
 
         vm.editHouse = function(id){
