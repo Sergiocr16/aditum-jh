@@ -4,7 +4,7 @@ html {
 
 body {
     background: #fafafa;
-
+    overflow-y: hidden !important;
     font-family: 'Roboto Condensed', sans-serif;
     color: #333;
 }
