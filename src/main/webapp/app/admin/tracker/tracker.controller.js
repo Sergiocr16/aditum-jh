@@ -5,12 +5,12 @@
         .module('aditumApp')
         .controller('JhiTrackerController', JhiTrackerController);
 
-    JhiTrackerController.$inject = ['$cookies', '$http', 'JhiTrackerService','Principal'];
+    JhiTrackerController.$inject = ['$cookies', '$http', 'JhiTrackerService','Principal','$rootScope'];
 
-    function JhiTrackerController ($cookies, $http, JhiTrackerService,Principal) {
+    function JhiTrackerController ($cookies, $http, JhiTrackerService,Principal, $rootScope) {
         // This controller uses a Websocket connection to receive user activities in real-time.
         var vm = this;
-
+        $rootScope.active = "tracker"
         vm.activities = [];
         vm.isAuthenticated = Principal.isAuthenticated;
         JhiTrackerService.receive().then(null, null, function(activity) {

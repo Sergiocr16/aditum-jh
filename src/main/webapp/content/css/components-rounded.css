@@ -1002,7 +1002,7 @@ hr {
 
 /* Unstyled List */
 .list-unstyled li > .list-unstyled {
-  margin-left: 25px;
+  margin-left: 15px;
 }
 
 /* Code */

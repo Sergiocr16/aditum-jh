@@ -1539,12 +1539,15 @@ div.scrollmenu a:hover {
 
 #sidebar ul p {
     margin: 0;
+    padding: 7px 5px;
+    border-radius: 3px;
 }
 
 #sidebar ul li a {
-    padding: 10px;
+    padding: 5px;
     font-size: 1.1em;
     display: block;
+    text-decoration: none;
 }
 
 #sidebar ul li a i {
@@ -1554,19 +1557,16 @@ div.scrollmenu a:hover {
     margin-right: 15px;
 }
 #sidebar ul li a:hover {
-    color: #44b6ae;
+    color: #01579B;
     background: white;
 }
 #sidebar ul li{
 
 }
 #sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #44b6ae!important;
-    background: #f5f5f5;
     text-decoration: none;
 }
 #sidebar ul li.collapse.active > a, a[aria-expanded="true"] {
-    color: #3c3c3c!important;
     background-color: white;
     text-decoration: none;
 }
@@ -1584,3 +1584,4 @@ div.scrollmenu a:hover {
     vertical-align: middle !important;
     margin-right:15px;
 }
+
