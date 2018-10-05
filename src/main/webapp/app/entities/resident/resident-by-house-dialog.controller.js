@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentByHouseDialogController', ResidentByHouseDialogController);
 
-    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary','globalCompany'];
+    ResidentByHouseDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary','PadronElectoral'];
 
-    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, globalCompany) {
+    function ResidentByHouseDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary,PadronElectoral) {
         $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
@@ -16,7 +16,53 @@
         if (entity.image_url == undefined) {
             entity.image_url = null;
         }
+        vm.resident = entity;
+        vm.resident.nationality = "9";
+        vm.resident.principalContact = vm.resident.principalContact+"";
 
+        vm.previousState = previousState.name;
+        vm.byteSize = DataUtils.byteSize;
+        vm.openFile = DataUtils.openFile;
+        vm.save = save;
+        vm.user = entity;
+        vm.temporalIndentification = vm.resident.identificationnumber;
+        vm.success = null;
+        vm.loginStringCount = 0;
+        vm.SaveUserError = false;
+        CommonMethods.validateLetters();
+        CommonMethods.validateNumbers();
+        Principal.identity().then(function(account) {
+            vm.account = account;
+        });
+
+        if (vm.resident.id !== null) {
+            vm.title = "Editar residente";
+            vm.button = "Editar";
+            var autorizadorStatus = vm.resident.isOwner;
+            if (vm.resident.isOwner == 1) {
+                vm.resident.isOwner = true;
+            }
+            vm.resident.type =  vm.resident.type +"";
+            console.log(vm.resident.type);
+        } else {
+
+            vm.title = "Registrar residente";
+            vm.button = "Registrar";
+        }
+
+        House.query({
+            companyId: $rootScope.companyId
+        }).$promise.then(onSuccessHouses);
+
+        function onSuccessHouses(data, headers) {
+            vm.houses = data;
+            setTimeout(function() {
+                $("#loadingIcon").fadeOut(300);
+            }, 400)
+            setTimeout(function() {
+                $("#edit_resident_form").fadeIn('slow');
+            }, 900)
+        }
 
         vm.validate = function() {
             var invalido = 0;
@@ -64,51 +110,83 @@
             }
         }
 
-
-
-        vm.resident = entity;
-        vm.resident.principalContact = vm.resident.principalContact+"";
-
-        vm.previousState = previousState.name;
-        vm.byteSize = DataUtils.byteSize;
-        vm.openFile = DataUtils.openFile;
-        vm.save = save;
-        vm.user = entity;
-        vm.temporalIndentification = vm.resident.identificationnumber;
-        vm.success = null;
-        vm.loginStringCount = 0;
-        vm.SaveUserError = false;
-        CommonMethods.validateLetters();
-        CommonMethods.validateNumbers();
-        Principal.identity().then(function(account) {
-            vm.account = account;
-        });
-        if (vm.resident.id !== null) {
-            vm.title = "Editar residente";
-            vm.button = "Editar";
-            var autorizadorStatus = vm.resident.isOwner;
-            if (vm.resident.isOwner == 1) {
-                vm.resident.isOwner = true;
-            }
-
-        } else {
-            vm.title = "Registrar residente";
-            vm.button = "Registrar";
+        function haswhiteCedula(s){
+            return /\s/g.test(s);
         }
+        vm.findInPadron = function(resident){
+
+            if(resident.identificationnumber!=undefined || resident.identificationnumber != ""){
+                if(hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality=="9" && hasLetter(resident.identificationnumber)){
+                    resident.validIdentification = 0;
+                }else{
+                    resident.validIdentification = 1;
+                }
+
+                if(resident.nationality=="9" && resident.identificationnumber != undefined){
+                    if(resident.identificationnumber.trim().length==9){
+                        PadronElectoral.find(resident.identificationnumber,function(person){
+                            setTimeout(function(){
+                                $scope.$apply(function(){
+                                    var nombre = person.nombre.split(",");
+                                    resident.name = nombre[0];
+                                    resident.lastname = nombre[1];
+                                    resident.secondlastname = nombre[2];
+                                    resident.found = 1;
+                                })
+                            },100)
+                        },function(){
+
+                        })
 
 
-        House.query({
-            companyId: globalCompany.getId()
-        }).$promise.then(onSuccessHouses);
+                    }else{
+                        setTimeout(function(){
+                            $scope.$apply(function(){
+                                resident.found = 0;
+                            })
+                        },100)
+                    }
+                }else{
+                    resident.found = 0;
+                }
+            }
+        };
+        function hasLetter(s){
+            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i).toUpperCase()==val.toUpperCase()){
 
-        function onSuccessHouses(data, headers) {
-            vm.houses = data;
-            setTimeout(function() {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function() {
-                $("#edit_resident_form").fadeIn('slow');
-            }, 900)
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
+        }
+        function hasCaracterEspecial(s){
+            var caracteres = [,",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
+            var invalido = 0;
+            angular.forEach(caracteres,function(val,index){
+                if (s!=undefined){
+                    for(var i=0;i<s.length;i++){
+                        if(s.charAt(i)==val){
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if(invalido==0){
+                return false;
+            }else{
+                return true;
+            }
         }
 
 
@@ -123,7 +201,7 @@
                 if (vm.resident.id !== null) {
                     if (vm.temporalIndentification !== vm.resident.identificationnumber) {
                         Resident.getByCompanyAndIdentification({
-                            companyId: globalCompany.getId(),
+                            companyId: $rootScope.companyId,
                             identificationID: vm.resident.identificationnumber
                         }, alreadyExist, allClearUpdate)
 
@@ -206,7 +284,7 @@
 
                 } else {
                     Resident.getByCompanyAndIdentification({
-                        companyId: globalCompany.getId(),
+                        companyId: $rootScope.companyId,
                         identificationID: vm.resident.identificationnumber
                     }, alreadyExist, allClearInsert)
 
@@ -225,7 +303,7 @@
                 CommonMethods.waitingMessage();
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
-                vm.resident.companyId = globalCompany.getId();
+                vm.resident.companyId = $rootScope.companyId;
                 vm.resident.houseId = $rootScope.companyUser.houseId
                 if (fileImage !== null) {
                     console.log("HAY IMAGEN")

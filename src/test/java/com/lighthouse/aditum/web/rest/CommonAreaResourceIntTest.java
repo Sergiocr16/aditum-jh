@@ -67,6 +67,12 @@ public class CommonAreaResourceIntTest {
     private static final Integer DEFAULT_MAXIMUN_HOURS = 1;
     private static final Integer UPDATED_MAXIMUN_HOURS = 2;
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
+    private static final Integer DEFAULT_COMPANY_ID = 1;
+    private static final Integer UPDATED_COMPANY_ID = 2;
+
     @Autowired
     private CommonAreaRepository commonAreaRepository;
 
@@ -118,7 +124,9 @@ public class CommonAreaResourceIntTest {
             .reservationWithDebt(DEFAULT_RESERVATION_WITH_DEBT)
             .picture(DEFAULT_PICTURE)
             .pictureContentType(DEFAULT_PICTURE_CONTENT_TYPE)
-            .maximunHours(DEFAULT_MAXIMUN_HOURS);
+            .maximunHours(DEFAULT_MAXIMUN_HOURS)
+            .deleted(DEFAULT_DELETED)
+            .companyId(DEFAULT_COMPANY_ID);
         return commonArea;
     }
 
@@ -152,6 +160,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getPicture()).isEqualTo(DEFAULT_PICTURE);
         assertThat(testCommonArea.getPictureContentType()).isEqualTo(DEFAULT_PICTURE_CONTENT_TYPE);
         assertThat(testCommonArea.getMaximunHours()).isEqualTo(DEFAULT_MAXIMUN_HOURS);
+        assertThat(testCommonArea.getDeleted()).isEqualTo(DEFAULT_DELETED);
+        assertThat(testCommonArea.getCompanyId()).isEqualTo(DEFAULT_COMPANY_ID);
     }
 
     @Test
@@ -212,7 +222,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.[*].reservationWithDebt").value(hasItem(DEFAULT_RESERVATION_WITH_DEBT)))
             .andExpect(jsonPath("$.[*].pictureContentType").value(hasItem(DEFAULT_PICTURE_CONTENT_TYPE)))
             .andExpect(jsonPath("$.[*].picture").value(hasItem(Base64Utils.encodeToString(DEFAULT_PICTURE))))
-            .andExpect(jsonPath("$.[*].maximunHours").value(hasItem(DEFAULT_MAXIMUN_HOURS)));
+            .andExpect(jsonPath("$.[*].maximunHours").value(hasItem(DEFAULT_MAXIMUN_HOURS)))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
+            .andExpect(jsonPath("$.[*].companyId").value(hasItem(DEFAULT_COMPANY_ID)));
     }
 
     @Test
@@ -234,7 +246,9 @@ public class CommonAreaResourceIntTest {
             .andExpect(jsonPath("$.reservationWithDebt").value(DEFAULT_RESERVATION_WITH_DEBT))
             .andExpect(jsonPath("$.pictureContentType").value(DEFAULT_PICTURE_CONTENT_TYPE))
             .andExpect(jsonPath("$.picture").value(Base64Utils.encodeToString(DEFAULT_PICTURE)))
-            .andExpect(jsonPath("$.maximunHours").value(DEFAULT_MAXIMUN_HOURS));
+            .andExpect(jsonPath("$.maximunHours").value(DEFAULT_MAXIMUN_HOURS))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
+            .andExpect(jsonPath("$.companyId").value(DEFAULT_COMPANY_ID));
     }
 
     @Test
@@ -263,7 +277,9 @@ public class CommonAreaResourceIntTest {
             .reservationWithDebt(UPDATED_RESERVATION_WITH_DEBT)
             .picture(UPDATED_PICTURE)
             .pictureContentType(UPDATED_PICTURE_CONTENT_TYPE)
-            .maximunHours(UPDATED_MAXIMUN_HOURS);
+            .maximunHours(UPDATED_MAXIMUN_HOURS)
+            .deleted(UPDATED_DELETED)
+            .companyId(UPDATED_COMPANY_ID);
         CommonAreaDTO commonAreaDTO = commonAreaMapper.toDto(updatedCommonArea);
 
         restCommonAreaMockMvc.perform(put("/api/common-areas")
@@ -284,6 +300,8 @@ public class CommonAreaResourceIntTest {
         assertThat(testCommonArea.getPicture()).isEqualTo(UPDATED_PICTURE);
         assertThat(testCommonArea.getPictureContentType()).isEqualTo(UPDATED_PICTURE_CONTENT_TYPE);
         assertThat(testCommonArea.getMaximunHours()).isEqualTo(UPDATED_MAXIMUN_HOURS);
+        assertThat(testCommonArea.getDeleted()).isEqualTo(UPDATED_DELETED);
+        assertThat(testCommonArea.getCompanyId()).isEqualTo(UPDATED_COMPANY_ID);
     }
 
     @Test

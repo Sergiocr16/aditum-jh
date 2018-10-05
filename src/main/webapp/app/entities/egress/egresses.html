@@ -23,9 +23,9 @@
 </div>
 <div class="row display-none" id="tableData">
     <div class="col-md-12">
-        <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12 no-list" ng-hide="vm.isConsulting==true">{{vm.title}}
+        <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12  font-green-sharp font-weight-600  " style="color: #00b19d" ng-hide="vm.isConsulting==true">{{vm.title}}
         </h3>
-        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list" ng-show="vm.isConsulting==true">{{vm.title}}
+        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d" ng-show="vm.isConsulting==true">{{vm.title}}
             <div ng-show="vm.isConsulting==true">
                 <h4>{{vm.titleConsult}}</h4>
             </div>
@@ -40,18 +40,18 @@
                 <input ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
                        class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
             </div>
-            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn btn-primary col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
         </div>
 
         <div class="form-group no-padding col-md-offset-3  col-lg-offset-3  col-sm-offset-3 col-md-9 col-sm-9 col-xs-12" id="index-search-bar">
             <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <button type="button" class="btn btn-primary  col-md-2  col-lg-2 col-sm-2 col-xs-12" ui-sref="egress-report" name="button" >Generar reporte</button>
+            <button type="button" class="btn green-button-oficial  col-md-2  col-lg-2 col-sm-2 col-xs-12" ui-sref="egress-report" name="button" >Generar reporte</button>
 
             <div class="input-icon col-md-4   col-lg-4  col-md-4 col-xs-12">
                 <i class="fa fa-search"></i>
                 <input type="text" class="form-control" placeholder="Buscar" ng-model="vm.search">
             </div>
-            <button type="button" class="btn btn-success green col-md-3  col-lg-3 col-sm-3 col-xs-12" ui-sref="egress.new" name="button">Capturar gasto</button>
+            <button type="button" class="btn orange-button-oficial col-md-3  col-lg-3 col-sm-3 col-xs-12" ui-sref="egress.new" name="button">Capturar gasto</button>
 
         </div>
         <div class="portlet-body ">
@@ -83,9 +83,11 @@
             <div ng-show="vm.egresses.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h2 class="text-center gray-font">No hay egresos registrados</h2>
             </div>
-            <div class="table-scrollable" ng-show="vm.egresses.length>0">
-                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content" style="font-size:12px;">
-                    <thead  class="flip-content">
+
+            <div class="table-scrollable hidden-xs   " ng-show="vm.egresses.length>0" style="border: 0px!important;">
+                <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
+                    <thead style="background-color: #fafafa;" >
+
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th  ng-click="vm.sortBy('concept')"><span >Concepto </span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
 
@@ -99,10 +101,10 @@
 
                         <th  ng-click="vm.sortBy('total')" ><span data-translate="aditumApp.egress.total">Total </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
 
-                        <th><span>Detalle </span> </th>
+                        <th  class="text-center"><span>Detalle </span> </th>
 
-                        <th  ng-click="vm.sortBy('state')"><span>Estado </span><span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
-                        <th><span>Registrar pago </span> </th>
+                        <th class="text-center"  ng-click="vm.sortBy('state')"><span>Estado </span><span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
+                        <th class="text-center"><span>Registrar pago </span> </th>
 
                     </tr>
                     </thead>
@@ -116,11 +118,11 @@
                         <td>{{egress.proveedor}}</td>
                         <td>{{egress.expirationDate | date:'mediumDate'}}</td>
                         <td>{{egress.paymentDate | date:'mediumDate'}}</td>
-                        <td>{{egress.reference}}</td>
+                        <td >{{egress.reference}}</td>
                         <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
 
-                        <td><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
-                        <td> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; padding:10px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; padding:10px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
+                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
+                        <td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; padding:10px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; padding:10px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
                         <td  class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2" ng-click="vm.detailEgress(egress.id)" class=" label label-success horizontal-padding-15" style=""  aria-hidden="false">Registrar pago</span></td>
 
 
@@ -132,6 +134,7 @@
             <!--<div class="bs-example">-->
                 <!--<button type="button" class="btn btn-primary" data-toggle="13" ng-click="vm.clickPopover()">Click Me</button>-->
             <!--</div>-->
+            <!--</div>-->
             <div class="text-center" ng-show="vm.egresses.length>0">
                 <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
             </div>
@@ -140,87 +143,3 @@
 
     </div>
 </div>
-
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a ui-sref="home()">Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Residentes</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Consultar</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right">-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<!--<div  class="row " id="tableData">-->
-    <!--<h3 class="page-title col-md-10">	Casas </h3>-->
-    <!--<div class="container-fluid">-->
-        <!--<button type="submit" class="btn green col-lg-2 col-md-2 col-sm-2 col-xs-6 small-margin-bottom" ui-sref="house.new()">Registrar casa</button>-->
-
-    <!--</div>-->
-    <!--<br/>-->
-    <!--<div class="table-scrollable">-->
-        <!--<table class="jh-table table table-striped table-hover font-12">-->
-            <!--<thead>-->
-                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
-                    <!--<th jh-sort-by="concept"><span >Concepto</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-
-                    <!--<th jh-sort-by="folio"><span data-translate="aditumApp.egress.folio">Folio</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="account"><span data-translate="aditumApp.egress.account">Account</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="reference"><span data-translate="aditumApp.egress.reference">Reference</span>  <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="paymentDate"><span>Fecha pagado</span> </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>-->
-                    <!--<th jh-sort-by="total"><span data-translate="aditumApp.egress.total">Total &nbsp&nbsp&nbsp&nbsp &nbsp&nbsp    </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>-->
-                    <!--<th><span>Estado</span></th>-->
-
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr ng-repeat="egress in vm.egresses track by egress.id">-->
-                    <!--<td>{{egress.concept}}</td>-->
-                    <!--<td>{{egress.folio}}</td>-->
-                    <!--<td>{{egress.account}}</td>-->
-
-
-
-                    <!--<td>{{egress.reference}}</td>-->
-
-                    <!--<td>{{egress.paymentDate | date:'mediumDate'}}</td>-->
-                    <!--<td>₡{{egress.total}}</td>-->
-                    <!--<td  ><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Pagado</span></td>-->
-
-                    <!--&lt;!&ndash;<td class="text-right">&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="btn-group flex-btn-group-container">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<button type="submit"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;ui-sref="egress-detail({id:egress.id})"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;class="btn btn-info btn-sm">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-eye-open"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="hidden-sm-down" ></span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<button type="submit"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;ng-click="vm.payEgress(egress.id)"&ndash;&gt;-->
-                                    <!--&lt;!&ndash;class="btn btn-primary btn-sm">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-pencil"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="hidden-sm-down">Pagar</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
-
-                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;</td>&ndash;&gt;-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-    <!--</div>-->
-    <!--<div class="text-center">-->
-        <!--<jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
-    <!--</div>-->
-    <!--<uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>-->
-<!--</div>-->

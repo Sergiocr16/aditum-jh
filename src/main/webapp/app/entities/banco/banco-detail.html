@@ -2,6 +2,7 @@
 <div class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
+            <i class="fa fa-money"></i>
             <a>Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
@@ -27,55 +28,30 @@
 </div>
 <div class="row display-none" id="tableData">
     <div class="col-md-12">
-        <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12 no-list" ng-hide="vm.isConsulting==true">{{vm.banco.beneficiario}}
+        <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" ng-hide="vm.isConsulting==true">{{vm.banco.beneficiario}}
         </h3>
-        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list" ng-show="vm.isConsulting==true">{{vm.banco.beneficiario}}
+        <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" ng-show="vm.isConsulting==true">{{vm.banco.beneficiario}}
             <div ng-show="vm.isConsulting==true">
-                <h4>{{vm.titleConsult}}</h4>
+                <h4 class="caption-subject font-green-sharp font-weight-600">{{vm.titleConsult}}</h4>
             </div>
         </h3>
         <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
         <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                <input ng-model="vm.dates.initial_time" style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
                        type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                <input ng-model="vm.dates.final_time"  style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
                        class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
             </div>
-            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn btn-primary col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
         </div>
 
         <div class="portlet-body ">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 hidden-lg hidden-md hidden-sm" ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | orderBy:'housenumber'">
-                <div class="portlet light bordered text-center col-sm-12 col-xs-12 ">
-                    <div class="col-xs-6">
-                        <h1 class="col-lg-6" ng-show="house.isdesocupated==0"><i class=" text-center fa fa-home font-60 " style="color:green;font-size:45px!important" aria-hidden="true "></i> </h1>
-                        <h1 class="col-lg-6" ng-show="house.isdesocupated==1"><i class=" text-center fa fa-home font-60 " style="color:grey;font-size:45px!important" aria-hidden="true "></i> </h1>
-                        <h3 class="no-padding no-margin " style='text-transform:uppercase'><b>{{house.housenumber}}</b></h3>
-                        <h5>Número de casa</h5>
-                        <h5 class="no-padding">
-                            Teléfono:
-                            <spam  ng-show="house.extension!=undefined">{{house.extension}}</spam>
-                            <span  ng-hide="house.extension!=undefined">No registrado</span>
-                        </h5>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="col-xs-12 no-padding" ></div>
-                        <button ng-click="vm.editHouse(house.id)" type="submit" style="margin:15px 0px 5px 0px;font-size:12px!important"  class="btn blue col-xs-12 "><i class="fa fa-pencil "></i> Editar</button>
-                        <div class="col-xs-12 no-padding">
-                            <button ng-click="vm.showKeys(house.housenumber,house.securityKey,house.emergencyKey)" type="submit"  class="btn purple col-xs-12 " style="margin-bottom:5px;font-size:11px!important" ><i class="fa fa-key "></i> Claves de seguridad</button>
-                        </div>
-                        <div class="col-xs-12 no-padding" ng-show="vm.ocultarACondos==true">
-                            <button ng-click="vm.showLoginCode(house.housenumber,house.codeStatus,house.loginCode)" type="submit" style="font-size:12px!important"  class="btn yellow col-xs-12 " ><i class="fa fa-keyboard-o"></i> Código de ingreso</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="table-scrollable" style="overflow-x: hidden!important">
-                <table class="jh-table table table-striped table-bordered  table-condensed flip-content" style="font-size:12px;">
-                    <thead  class="flip-content">
+            <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
+                <table class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                    <thead  style="background-color: #fafafa;" class="">
 
                         <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                             <th></th>
@@ -98,33 +74,33 @@
                     </thead>
                     <tbody>
 
-                    <tr>  <td  colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initialDate | date:'longDate'}}</span></td> <td class="bold text-center" ng-hide="vm.isConsulting">₡{{vm.formatearNumero(vm.saldoInicial+"")}}</td> <td ng-show="vm.isConsulting" class="bold text-center">₡{{vm.formatearNumero(vm.saldoInicialConsulting+"")}}</td></tr>
+                    <tr>  <td  colspan="6"><span class=" bold" style="font-size:12px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initialDate | date:'longDate'}}</span></td> <td class="bold text-center" ng-hide="vm.isConsulting">₡{{vm.formatearNumero(vm.saldoInicial+"")}}</td> <td ng-show="vm.isConsulting" class="bold text-center">₡{{vm.formatearNumero(vm.saldoInicialConsulting+"")}}</td></tr>
                     <tr ng-repeat="movement in vm.movementsList "  data-toggle="{{egress.id}}" >
-                        <td style="text-align:center;"> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia saliente hacia {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;" ng-show="movement.movementType==4"></i> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia entrante del {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#38d142; font-size:18px;" ng-show="movement.movementType==3"></i> <i class="fa fa-arrow-right" ng-show="movement.movementType==2" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Ingreso<h5></div>" mode="mouseover" style="color:#38d142; font-size:18px;"></i><i class=" fa fa-arrow-left" ng-show="movement.movementType==1" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Egreso<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;"></i></td>
+                        <td style="text-align:center;"> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia saliente hacia {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;" ng-show="movement.movementType==4"></i> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia entrante del {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#009200; font-size:18px;" ng-show="movement.movementType==3"></i> <i class="fa fa-arrow-right" ng-show="movement.movementType==2" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Ingreso<h5></div>" mode="mouseover" style="color:#009200; font-size:18px;"></i><i class=" fa fa-arrow-left" ng-show="movement.movementType==1" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Egreso<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;"></i></td>
                         <td style="text-align:center;"> {{movement.paymentDate | date:'mediumDate'}}</td>
                         <td style="text-align:center;">{{movement.folio}}</td>
                         <td>{{movement.concept}}</td>
-                        <td style="color:green; text-align:center;"><span ng-show="movement.ammount!==undefined">₡{{vm.formatearNumero(movement.ammount+"")}}</span></td>
+                        <td style="color:#009200; text-align:center;"><span ng-show="movement.ammount!==undefined">₡{{vm.formatearNumero(movement.ammount+"")}}</span></td>
                         <td style="color:red; text-align:center;"><span ng-show="movement.total!==undefined">₡{{vm.formatearNumero(movement.total+"")}}</span></td>
                         <td class="text-center">₡{{vm.formatearNumero(movement.balance+"")}}</td>
 
 
                     </tr>
-                    <tr>  <td  colspan="4"><span class=" bold" style="font-size:11px; ">TOTAL</span></td>  <td class="text-center bold" style="color:green;">₡{{vm.formatearNumero(vm.totalIngress+"")}}</td> <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.totalEgress+"")}}</td><td class="text-center bold">₡{{vm.formatearNumero(vm.totalBalance+"")}}</td></tr>
+                    <tr>  <td  colspan="4"><span class=" bold" style="font-size:11px; ">TOTAL</span></td>  <td class="text-center bold" style="color:#009200;">₡{{vm.formatearNumero(vm.totalIngress+"")}}</td> <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.totalEgress+"")}}</td><td class="text-center bold">₡{{vm.formatearNumero(vm.totalBalance+"")}}</td></tr>
 
                     </tbody>
                 </table>
             </div>
             <hr>
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" style="border:1px solid #dddddd">
-                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 font-15" style="border:1px solid #dddddd; margin:10px 0px 10px 10px; padding-top:10px; padding-bottom:10px; background-color:#e5e5e5"><i class="fa fa-balance-scale"></i> <span>Saldo</span>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" style="border:1px solid #f2f2f2">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 font-15" style="border:1px solid #dddddd; margin:10px 0px 10px 10px; padding-top:10px; padding-bottom:10px; background-color:#f8f8f8"><i class="fa fa-balance-scale"></i> <span>Saldo</span>
                     <div class="btn-group pull-right">
                          <span style="color:{{vm.balanceColor}};">₡{{vm.formatearNumero(vm.totalBalance+"")}}</span>
                     </div>
 
                 </div>
                 <div class="btn-group pull-right col-lg-2 col-md-2" style="margin-top:10px;">
-                    <button type="button"  class="btn default col-md-12" ui-sref="banco.transferencia" style="padding:10px;"><i class="fa fa-exchange" ></i> Transferir fondos</button>
+                    <button type="button"  class="btn  green-button-oficial col-md-12" ui-sref="banco.transferencia" style="padding:10px;"><i class="fa fa-exchange" ></i> Transferir fondos</button>
                 </div>
 
             </div>

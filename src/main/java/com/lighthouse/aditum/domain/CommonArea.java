@@ -49,6 +49,12 @@ public class CommonArea implements Serializable {
     @Column(name = "maximun_hours")
     private Integer maximunHours;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
+    @Column(name = "company_id")
+    private Integer companyId;
+
     public Long getId() {
         return id;
     }
@@ -174,6 +180,32 @@ public class CommonArea implements Serializable {
         this.maximunHours = maximunHours;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public CommonArea deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public Integer getCompanyId() {
+        return companyId;
+    }
+
+    public CommonArea companyId(Integer companyId) {
+        this.companyId = companyId;
+        return this;
+    }
+
+    public void setCompanyId(Integer companyId) {
+        this.companyId = companyId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -207,6 +239,8 @@ public class CommonArea implements Serializable {
             ", picture='" + getPicture() + "'" +
             ", pictureContentType='" + pictureContentType + "'" +
             ", maximunHours='" + getMaximunHours() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            ", companyId='" + getCompanyId() + "'" +
             "}";
     }
 }

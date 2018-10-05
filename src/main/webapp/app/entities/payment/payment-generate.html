@@ -2,8 +2,8 @@
 <div class="page-bar route-title" style="margin-bottom:0px!important">
     <ul class="page-breadcrumb">
         <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-money"></i>
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -18,7 +18,7 @@
         <div class="btn-group pull-right" style="padding:5px">
             <div class="input-icon">
                 <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar casa" ng-model="vm.query.housenumber">
+                <input type="text" class="form-control" placeholder="Buscar filial" ng-model="vm.query.housenumber">
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <h3 class="caption-subject font-green-sharp bold uppercase">
+            <h3 class="caption-subject font-green-sharp bold ">
                 <span style="cursor:pointer" ui-sref="houseAdministration">Filial {{vm.house.housenumber}}</span>
                 <span style="float:right;padding:5px 10px" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger">
             Deshabitada </span>
@@ -92,7 +92,7 @@
             <div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                        <div class="portlet light  col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <div class="portlet-title">
                                 <div class="caption font-green-haze">
                                     <i class="fa fa-money font-green-haze"></i>
@@ -108,7 +108,7 @@
                                                     <span class="font-13 bold">Número de recibo *</span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" required ng-disabled="vm.admingConfig.incomeFolio == true">
+                                                    <input ng-model="vm.payment.receiptNumber" type="text" class="form-control letters gray-font " placeholder="Número de recibo" required>
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
@@ -156,14 +156,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
-
                                                 <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
                                                     <span class="font-13 bold control-label ">Cantidad * </span>
                                                 </div>
                                                 <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
                                                     <div class="input-group form-group">
                                                         <span class="input-group-addon">₡</span>
-                                                        <input ng-class="{redBorder: vm.payment.valida==false}" format="number" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.payment.ammount" ng-change="vm.calculatePayments(vm.payment)" required />
+                                                        <input ng-class="{redBorder: vm.payment.valida==false}" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.payment.ammount" ng-change="vm.calculatePayments(vm.payment)" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -176,8 +175,8 @@
                                             </div>
                                         </div>
                                         <div id="tableContent">
-                                            <table class="table table-bordered">
-                                                <thead>
+                                            <table  class="table table-bordered font-13 gray-font tableMaterialDesignResidents" >
+                                                <thead >
                                                 <tr>
                                                     <th style="border-top:white 1px solid;border-left:white 1px solid;">
                                                         <span style="display:grid;text-align:center">Liquidar cuota</span>
@@ -200,9 +199,6 @@
                                                         Cargo
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
-                                                        Recargo
-                                                    </th>
-                                                    <th style="vertical-align: top;" class="text-center">
                                                         Restante
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;" class="text-center">
@@ -219,16 +215,15 @@
                                                         </h5>
                                                     </td>
                                                     <td class="text-center">{{charge.date | date}}</td>
-                                                    <td>{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
-                                                    <td>₡ {{charge.ammount | currency : "" : 0}}</td>
-                                                    <td>₡ {{charge.subcharge | currency : "" : 0}}</td>
-                                                    <td ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
-                                                    <td ng-show="charge.isIncluded ==false">₡ -</td>
-                                                    <td ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
-                                                    <td ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
-                                                    <td id="{{charge.id}}" class="infoCharge" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
-                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.total) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
-                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#F05232;height:{{(charge.left/charge.total) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                    <td  class="text-center"   >{{vm.getCategory(charge.type)}}: {{charge.concept}}</td>
+                                                    <td  class="text-center"   >₡ {{charge.ammount | currency : "" : 0}}</td>
+                                                    <td  class="text-center"   ng-show="charge.isIncluded ==true">₡ {{charge.left | currency : "" : 0}}</td>
+                                                    <td  class="text-center"   ng-show="charge.isIncluded ==false">₡ -</td>
+                                                    <td class="text-center"  ng-show="charge.paymentAmmount!=0" style="min-width: 90px;">₡ {{charge.paymentAmmount | currency : "" : 0}}</td>
+                                                    <td class="text-center" ng-show="charge.paymentAmmount==0" style="min-width: 90px;">-</td>
+                                                    <td id="{{charge.id}}" class="infoCharge text-center" style="width:1.5%; padding:0;border-left:white 1px solid;height:35px" data-content="{{vm.defineContent(charge)}}" ng-mouseover="vm.showPopOver(charge)" ng-blur="vm.hidePopOver(charge)">
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
+                                                        <div ng-class="{'no-bg-color':charge.isIncluded==false}" style="background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">&nbsp;&nbsp;&nbsp;</div>
                                                     </td>
                                                 </tr>
                                                 <tr ng-show="vm.charges.length==0" class="tableContent" style="background-color:rgb(234, 250, 238)">

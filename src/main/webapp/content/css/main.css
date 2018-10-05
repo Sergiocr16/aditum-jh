@@ -4,7 +4,8 @@ html {
 
 body {
     background: #fafafa;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+    font-family: 'Roboto Condensed', sans-serif;
     color: #333;
 }
 
@@ -64,11 +65,11 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 }
 
 .tdDisabled {
-    background: #d6d6d6;
+    background: #e4e4e4;
 }
 
 .noCharge {
-    background: #fcff70;
+    background: #fff59d;
 }
 
 #chartdiv {
@@ -1067,11 +1068,11 @@ ui bootstrap tweaks
 }
 
 .greenBalance {
-    color: green !important;
+    color: #009200 !important;
 }
 
 .redBalance {
-    color: #F00 !important;
+    color: #f3565d !important;
 
 }
 
@@ -1083,7 +1084,7 @@ ui bootstrap tweaks
 }
 
 .tab_container label {
-    font-weight: 700;
+    font-weight: 600;
     font-size: 14px;
     display: block;
     float: left;
@@ -1093,7 +1094,7 @@ ui bootstrap tweaks
     cursor: pointer;
     text-decoration: none;
     text-align: center;
-    background: #f0f0f0;
+    background: #f9f9f9;
 }
 
 .active-tab-charge {
@@ -1143,10 +1144,10 @@ div.scrollmenu a:hover {
 }
 
 .deuda-total-negativa {
-    border: hsl(0, 0%, 80%) solid 1px;
+    border: #e3e3e3 solid 1px;
     border-radius: 10px !important;
     padding: 10px;
-    background-color: antiquewhite;
+    background-color: rgba(255, 133, 106, 0.13);
 }
 
 .deuda-total-positiva {
@@ -1299,6 +1300,12 @@ div.scrollmenu a:hover {
     height: 35px;
 }
 
+.oficial-title-index{
+    font-weight: 600!important;
+    color: #00b19d!important;
+
+}
+
 .image-navbar {
     width: 35px;
     height: 35px;
@@ -1333,6 +1340,82 @@ div.scrollmenu a:hover {
     border-radius: 50% !important;
 }
 
+.object-fit_scale-down-resident-form {
+    object-fit: scale-down;
+    height: 170px;
+    width: 170px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+
+.font-weight-600{
+    font-weight: 600!important;
+}
+.oficial-background-red{
+    background-color: #c00022 !important;
+}
+
+.green-button-oficial{
+    background-color: #00b19d!important;
+    color: white;
+}
+.orange-button-oficial{
+    background-color: #f37960!important;
+    color: white;
+}
+.orange-button-oficial:hover{
+    background-color: #e57461 !important;
+    color: white;
+}
+.green-button-oficial:hover{
+    background-color: #00a492 !important;
+    color: white;
+}
+.tableMaterialDesign table, .tableMaterialDesign th, .tableMaterialDesign td {
+    border: 1px solid #f2f2f2 !important;
+    padding: 15px!important;
+    font-weight: 500;
+    border-collapse: collapse;
+
+}
+.tableMaterialDesignResidents table, .tableMaterialDesignResidents th, .tableMaterialDesignResidents td {
+    border: 1px solid #f2f2f2 !important;
+    padding-top: 15px!important;
+    padding-bottom: 15px!important;
+    padding-left: 5px!important;
+    padding-right: 5px!important;
+    font-weight: 500;
+    border-collapse: collapse;
+
+}
+.tableMaterialDesignAccountStatus table, .tableMaterialDesignAccountStatus th, .tableMaterialDesignAccountStatus td {
+    border: 1px solid #f2f2f2 !important;
+    padding: 7px!important;
+    font-weight: 500;
+    border-collapse: collapse;
+
+}
+.object-fit_scale-down-resident-by-house {
+    object-fit: scale-down;
+    height: 150px;
+    width: 150px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+.object-fit_scale-down-common-area {
+    object-fit: scale-down;
+    height: 60px;
+    width: 60px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+.object-fit_scale-down-resident-index {
+    object-fit: scale-down;
+    height: 100px;
+    width: 100px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
 .object-fit_scale-down {
     object-fit: scale-down;
     height: 29px;

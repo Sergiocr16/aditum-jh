@@ -90,9 +90,9 @@ public class CommonAreaResource {
      */
     @GetMapping("/common-areas")
     @Timed
-    public ResponseEntity<List<CommonAreaDTO>> getAllCommonAreas(@ApiParam Pageable pageable) throws URISyntaxException  {
+    public ResponseEntity<List<CommonAreaDTO>> getAllCommonAreas(@ApiParam Pageable pageable,int companyId) throws URISyntaxException  {
         log.debug("REST request to get a page of CommonAreas");
-        Page<CommonAreaDTO> page = commonAreaService.findAll(pageable);
+        Page<CommonAreaDTO> page = commonAreaService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/common-areas");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

@@ -3,8 +3,8 @@
 <div class="page-bar route-title" style="margin-bottom:0px!important">
     <ul class="page-breadcrumb">
         <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-money"></i>
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -16,7 +16,7 @@
         </li>
     </ul>
     <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding:5px">
+        <div class="btn-group pull-right no-padding" style="padding:5px">
 
             <div class="input-icon">
                 <i class="fa fa-search"></i>
@@ -55,7 +55,7 @@
 
         </div>
         <div class="col-md-12">
-            <h3 class="caption-subject font-green-sharp bold uppercase">Filial {{vm.house.housenumber}}
+            <h3 class="caption-subject font-green-sharp bold ">Filial {{vm.house.housenumber}}
                 <div class="btn-group pull-right">
                     <span style="padding:5px 10px; margin-right:13px;" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger bold">
 										Deshabitada </span>
@@ -66,18 +66,18 @@
 
             <div class="col-md-12 no-padding" style="margin-bottom:10px">
                 <div class="col-md-9 no-padding">
-                    <h5 class="text-center"><b>Saldos generales</b></h5>
-                    <div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                        <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
-                            <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
+                    <h5 class="text-center font-14"><b>Saldos generales</b></h5>
+                    <div class="col-md-12 no-padding" style="border:#e3e3e3 solid 1px;border-radius:10px!important">
+                        <div class="col-md-4" style="border-right:#e3e3e3 solid 1px ">
+                            <h5 class="text-center font-14" style="font-weight:bold">Mantenimiento</h5>
                             <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡ {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
                         </div>
                         <div class="col-md-4">
-                            <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
+                            <h5 class="text-center font-14" style="font-weight:bold">Extraordinarias</h5>
                             <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
                         </div>
-                        <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px;">
-                            <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
+                        <div class="col-md-4" style="border-left:#e3e3e3 solid 1px;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Áreas comunes</h5>
                             <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
                         </div>
                     </div>
@@ -85,14 +85,14 @@
                 </div>
 
                 <div class="col-md-3 no-padding-right">
-                    <h5 class="text-center"><b>Adeudos totales</b></h5>
+                    <h5 class="text-center font-14"><b>Adeudos totales</b></h5>
                     <div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
                         <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
                     </div>
                 </div>
             </div>
 
-            <div class="little-container col-md-12">
+            <div class="little-container col-md-12 font-14">
                 <div class="col-md-4">
                     <b>Área m2:</b> {{vm.house.squareMeters}}
                 </div>
@@ -109,8 +109,8 @@
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"  ui-sref="houseAdministration.accountStatus"><i class="fa fa-bank"></i> <span>Estado de cuenta</span></label>
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.chargePerHouse')}" ui-sref="houseAdministration.chargePerHouse"><i class="fa fa-book"></i> <span>Cuotas</span></label>
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.paymentsPerHouse')}" ui-sref="houseAdministration.paymentsPerHouse"><i class="fa fa-money"></i> <span>Pagos</span></label>
-                <label><i class="fa fa-users"></i> <span>Residentes</span></label>
-                <label><i class="fa fa-car"></i> <span>Vehículos</span></label>
+                <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.residentsByHouse')}" ui-sref="houseAdministration.residentsByHouse"><i class="fa fa-users"></i> <span>Residentes</span></label>
+                <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}" ui-sref="houseAdministration.vehiculesByHouse"><i class="fa fa-car" ></i> <span>Vehículos</span></label>
             </div>
         </div>
         <div ui-view class="col-md-12" style="margin-top:10px">

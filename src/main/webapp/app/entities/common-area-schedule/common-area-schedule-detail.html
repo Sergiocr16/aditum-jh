@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="aditumApp.commonAreaSchedule.detail.title">Common Area Schedule</span> {{vm.commonAreaSchedule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.commonAreaSchedule.lunes">Lunes</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.lunes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.martes">Martes</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.martes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.miercoles">Miercoles</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.miercoles}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.jueves">Jueves</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.jueves}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.viernes">Viernes</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.viernes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.sabado">Sabado</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.sabado}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.domingo">Domingo</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.domingo}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.commonAreaSchedule.commonAreaId">Common Area Id</span></dt>
+        <dd>
+            <span>{{vm.commonAreaSchedule.commonAreaId}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="common-area-schedule-detail.edit({id:vm.commonAreaSchedule.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

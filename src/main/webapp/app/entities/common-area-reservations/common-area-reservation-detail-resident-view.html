@@ -1,0 +1,88 @@
+
+
+<form name="editForm" role="form" novalidate ng-submit="vm.acceptReservation()" show-validation>
+
+    <div class="modal-body">
+        <div class=" pull-right no-padding">
+            <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
+                    ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
+                <span>Información de la reservación</span>
+                <div class=" pull-right no-padding">
+                    <span>Estado: <span class="bold">aprobada</span></span>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #939393; ">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
+                    <div class="margin-bottom-5 bold">Área común</div>
+                    <span>{{ vm.commonAreaReservations.commonAreaName}}</span>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #b0b0b0;">
+                    <div class="margin-bottom-5 bold">Fecha de reservación</div>
+                    <span>{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
+                </div>
+                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-10" style="border-right: 1px solid #b0b0b0;">
+                    <div class="margin-bottom-5 bold">Horario</div>
+                    <span>{{vm.commonAreaReservations.schedule}}</span>
+                </div>
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-10" >
+                    <div class="margin-bottom-5 bold">Responsable</div>
+                    <span>{{vm.commonAreaReservations.residentName}} - Filial {{vm.commonAreaReservations.houseNumber}}</span>
+                </div>
+
+            </div>
+            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; border-bottom:0px;">
+                <span>Costo por reservación</span>
+            </div>
+            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #939393;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10 " style="border-right: 1px solid #b0b0b0;  ">
+                    <div class=" bold control-label">Fecha del cargo</div>
+
+                    <span>{{vm.charge.date | date:'longDate'}}</span>
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
+                    <div class=" bold control-label">Concepto</div>
+                    <span>{{vm.charge.concept | date:'longDate'}}</span>
+
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 " style="border-right: 1px solid #b0b0b0; ">
+                    <div class=" bold control-label">Cantidad</div>
+
+                    <span>₡{{vm.formatearNumero(vm.charge.ammount+"")}}</span>
+
+                </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20" >
+                    <div class=" bold">Devolución</div>
+
+                    <span>₡{{vm.formatearNumero(vm.commonAreaReservations.devolutionAmmount+"")}}</span>
+
+                </div>
+
+            </div>
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 font-16" style="border: 1px solid #939393; background-color: #e4e4e4; ">
+                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span>Información de envío de correo</span></div>
+
+            </div>
+            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #939393; border-top:0px;">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20 form-group" style="padding-bottom: 10px!important;">
+                    <div class="control-label"><span class="bold">Correo electrónico:</span>  diegobari06@gmail.com</div>
+
+
+                </div>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" >
+                    <div class="margin-bottom-10 "><span class="bold">Comentarios: </span> Ejemplo de un comentario que podria ponerse</div>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+
+    </div>
+</form>

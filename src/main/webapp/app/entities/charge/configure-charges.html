@@ -33,24 +33,23 @@
     </div>
     <div class="row" ng-if="vm.houses.length!==0">
         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-    <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
+    <div class="portlet light  col-md-12 col-lg-12 col-sm-12 col-xs-12">
         <div class="portlet-title">
             <div class="caption font-green-haze col-lg-9">
-                <i class="fa fa-money font-green-haze"></i>
                 <span class="caption-subject bold uppercase">Configurar cuotas y Área metros cuadrados</span>
             </div>
             <div class="col-lg-3">
-                <button class="btn btn-primary col-lg-12"  ng-hide="vm.houses.length==0" ui-sref="configureCharges.global">Modificar todas las cuotas</button>
+                <button class="btn orange-button-oficial col-lg-12"  ng-hide="vm.houses.length==0" ui-sref="configureCharges.global">Modificar todas las cuotas</button>
             </div>
         </div>
         <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
                 <form ng-submit="vm.verificarCargos()">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="table-scrollable hidden-xs   " ng-if="vm.houses.length>0" style="border: 0px!important;">
+                            <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
+                                <thead style="background-color: #fafafa;" >
 
-                        <div class="table-scrollable" ng-if="vm.houses.length>0">
-                            <table class="table table-striped table-hover font-12">
-                                <thead>
                                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                                     <th class="text-center"><b>Casa</b></th>
                                     <th class="text-center"><b>Cuota</b></th>
@@ -73,8 +72,8 @@
                                         <input ng-class="{redBorder: house.validSquare==false}" ng-blur="vm.saveHouse(house,2)" ng-change="vm.validate(house,house.squareMeters,2)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="house.squareMeters" required> <span class="input-group-addon">m²</span>
                                         </div>
                                     </td>
-                                    <td   ng-if="house.isdesocupated == 1" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-danger" aria-hidden="false">No</span></td>
-                                    <td   ng-if="house.isdesocupated == 0" class="text-center"><span class="padding-10 col-lg-9 col-md-9 col-sm-9 col-xs-12 label label-sm label-success" aria-hidden="false">Sí</span></td>
+                                    <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0" class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span style="padding:5px" ng-if="house.isdesocupated == 1" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+
                                 </tr>
                                 </tbody>
                             </table>

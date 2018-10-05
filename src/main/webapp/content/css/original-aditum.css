@@ -341,7 +341,7 @@ overflow-y: auto!important;
     padding-top: 0px !important;
 }
 .redBorder{
-    border-color: red !important;
+    border-color: #e65558 !important;
     border-weight: 2px !important;
     border-style:solid;
 }
@@ -542,7 +542,7 @@ color: #C62828;
 
 .accountStatusBtn{
     margin-left:0px!important;
-    border:1px solid #E0E0E0;
+    border:1px solid #f2f2f2;
 
 
 
@@ -555,7 +555,7 @@ color: #C62828;
 
 }
 .accountStatusBtnActive{
-    background-color:#F5F5F5!important;;
+    background-color: #f9f9f9 !important;;
     color:#424242!important;
 
 
@@ -742,6 +742,10 @@ margin: 0 auto;
     font-weight:normal;
     padding:4px !important;
     text-align:center;
+}
+
+.residentDivHouseAdministration:hover{
+    background-color:rgb(244, 244, 244);
 }
 
 .container{
@@ -949,7 +953,13 @@ li.active span.round-tabs.six{
 .ballsInCodePage{
 
 }
+.redfont{
+    color:red;
+}
 
+.borderRed{
+    border-color:red;
+}
 .btn.green{
     background-color:#5cb85c;
     /*border: 2px solid #5cb85c;*/
@@ -960,6 +970,10 @@ li.active span.round-tabs.six{
 }
 #donerResidentsContainer{
     padding-top: 15px!important;
+}
+
+.commonAreaDivResidentView:hover{
+    background-color: rgba(235,235,235,0.57);
 }
 
 @media( max-width : 585px ){

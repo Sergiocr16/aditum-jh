@@ -105,23 +105,7 @@
     <!--</div>-->
 <!--</form>-->
 <!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-tree"></i>
-            <a ui-sref="common-area()">Áreas comunes</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">{{vm.button}}</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
 
-        </div>
-    </div>
-</div>
 <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loadingIcon">
     <div class="spinnerLoading">
         <div class="double-bounce1"></div>
@@ -157,10 +141,10 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
                                     <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Descripciónaeeeeee</span>
+                                        <span class="font-13 bold control-label" >Descripción</span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                    <textarea type="text" class="form-control"  rows="3" name="description" id="field_description" ng-model="vm.commonArea.description" placeholder="Ubicación, reglas del área común, etc."></textarea>
+                                    <textarea type="text" class="form-control"  rows="3" name="description" id="field_description" ng-model="vm.commonArea.description" placeholder="Ubicación, reglas del área común, etc." ></textarea>
 
                                     </div>
                                 </div>
@@ -171,14 +155,14 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
                                     <div class="col-lg-3 col-md-3 col-sm-2 col-xs-2 no-padding-left " style="margin-top:25px;">
-                                        <span class="font-13 bold control-label" >Días permitidos para adsadsdf</span>
+                                        <span ng-class="{redfont: vm.spaceInvalid3==true}" class="font-13 bold control-label" >Días permitidos para reservar *</span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
                                         <div class="form-group form-md-line-input">
 
                                             <div class="md-checkbox-inline">
                                                 <div class="md-checkbox">
-                                                    <input type="checkbox" id="checkbox33" class="md-check" ng-click="vm.selectDay(0)">
+                                                    <input type="checkbox" id="checkbox33" name="day1" ng-model="vm.lunesSelected" class="md-check" ng-click="vm.selectDay(0)">
                                                     <label for="checkbox33">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -186,7 +170,7 @@
                                                         Lunes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox34" class="md-check" ng-click="vm.selectDay(1)">
+                                                    <input type="checkbox" id="checkbox34" name="day2" ng-model="vm.martesSelected" class="md-check" ng-click="vm.selectDay(1)">
                                                     <label for="checkbox34">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -194,7 +178,7 @@
                                                         Martes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox35" class="md-check" ng-click="vm.selectDay(2)">
+                                                    <input type="checkbox" id="checkbox35" name="day3" ng-model="vm.miercolesSelected"  class="md-check" ng-click="vm.selectDay(2)">
                                                     <label for="checkbox35">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -202,7 +186,7 @@
                                                         Miércoles </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox36" class="md-check" ng-click="vm.selectDay(3)">
+                                                    <input type="checkbox" id="checkbox36" name="day4" ng-model="vm.juevesSelected"  class="md-check" ng-click="vm.selectDay(3)">
                                                     <label for="checkbox36">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -210,7 +194,7 @@
                                                         Jueves </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox37" class="md-check" ng-click="vm.selectDay(4)">
+                                                    <input type="checkbox" id="checkbox37"name="day5"  ng-model="vm.viernesSelected" class="md-check" ng-click="vm.selectDay(4)">
                                                     <label for="checkbox37">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -218,7 +202,7 @@
                                                         Viernes </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox38" class="md-check" ng-click="vm.selectDay(5)">
+                                                    <input type="checkbox" id="checkbox38" name="day6" ng-model="vm.sabadoSelected" class="md-check" ng-click="vm.selectDay(5)">
                                                     <label for="checkbox38">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -226,7 +210,7 @@
                                                         Sábado </label>
                                                 </div>
                                                 <div class="md-checkbox ">
-                                                    <input type="checkbox" id="checkbox39" class="md-check" ng-click="vm.selectDay(6)">
+                                                    <input type="checkbox" id="checkbox39" name="day7" ng-model="vm.domingoSelected"  class="md-check" ng-click="vm.selectDay(6)">
                                                     <label for="checkbox39">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -240,33 +224,58 @@
                                     </div>
 
                                 </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="item.selected" ng-repeat="item in vm.daysOfWeek">
-                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Horas permitidas para reservar el {{item.day}}</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
-                                        <select>
-                                            <option value="5000">5:00AM</option>
-                                            <option value="5000">Saab</option>
-                                            <option value="mercedes">Mercedes</option>
-                                            <option value="audi">Audi</option>
-                                        </select>
-                                    </div>
 
-                                </div>
                             </div>
 
                             <div class="col-lg-9 col-md-9 col-sm-9 col-xs-8 no-padding" style="margin-top:0px;">
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="item.selected" ng-repeat="item in vm.daysOfWeek">
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Horas permitidas para reservar el {{item.day}} *</span>
+                                    </div>
+
+                                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3  form-group">
+
+                                        <select ng-change="vm.validateDaysHours($index,item)"; required type="text" class="form-control" ng-model="item.initialTime" ng-options="hour.value as hour.time for hour in vm.hours">
+                                            <option value="">Seleccione una hora</option>
+                                        </select>
+
+                                    </div>
+                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding form-group">
+                                        <h6 class="text-center font-16">hasta</h6>
+
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  form-group ">
+                                        <select ng-change="vm.validateDaysHours($index,item)" ng-class="{borderRed: item.isValid==false}"  required type="text" class="form-control " ng-model="item.finalTime" ng-options="hour.value as hour.time for hour in vm.hours">
+                                            <option value="">Seleccione una hora</option>
+                                        </select>
+
+                                    </div>
+                                </div>
                                 <hr>
+                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" >
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
+                                        <span class="font-13 bold control-label" >Reservar por bloques de </span>
+                                    </div>
+
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+
+                                        <select name="maximunHours" type="text" class="form-control" ng-model="vm.commonArea.maximunHours" ng-options="bloque.value as bloque.hour for bloque in vm.bloques">
+                                            <option value="">Todo el día</option>
+
+                                        </select>
+
+                                    </div>
+
+                                </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Requiere cobro *</span>
+                                        <span ng-class="{redfont: vm.spaceInvalid1==true}" class="font-13 bold control-label" >Requiere cobro *</span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
                                         <div class="form-group form-md-radios">
-                                            <div class="md-radio-inline">
+                                            <div class="md-radio-inline ">
                                                 <div class="md-radio">
-                                                    <input type="radio" ng-click="vm.paymentRequired=true"  id="radio14" name="radio2" class="md-radiobtn">
+                                                    <input type="radio" ng-checked="vm.paymentRequiredUpdate==1" ng-click="vm.changeChargeRequired(true)"  id="radio14" name="radio2" class="md-radiobtn">
                                                     <label for="radio14">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -274,7 +283,7 @@
                                                         Si </label>
                                                 </div>
                                                 <div class="md-radio has-error">
-                                                    <input type="radio" id="radio15" name="radio2" class="md-radiobtn" ng-click="vm.paymentRequired=false" >
+                                                    <input type="radio" id="radio15" ng-checked="vm.paymentRequiredUpdate==2" name="radio2" class="md-radiobtn" ng-click="vm.changeChargeRequired(false)" >
                                                     <label for="radio15">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -293,11 +302,11 @@
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
                                         <span class="font-13 bold control-label" >Cuota por reservación *</span>
                                     </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group" >
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
-                                            <input type="text" class="form-control numbers" name="total" id="field_reservationCharge"
-                                                   ng-model="vm.commonArea.reservationCharge" required
+                                            <input ng-class="{redBorder: vm.commonArea.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.commonArea)" type="text" class="form-control numbers" name="total" id="field_reservationCharge"
+                                                   ng-model="vm.commonArea.reservationCharge"  placeholder="0.00" required
                                             />
                                         </div>
 
@@ -307,14 +316,14 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group" ng-if="vm.paymentRequired">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Dinero a devolver</span>
-                                        <span  style="z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Dinero que se devuelve al condómino una vez que el área comùn se utilizó.<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+                                        <span class="font-13 bold control-label" >Dinero a devolver *</span>
+                                        <span  style="z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Dinero que se devuelve al condómino una vez que el área común se utilizó. Si no hay devolución digite la cantidad 0.<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
                                         <div class="input-group form-group">
                                             <span class="input-group-addon">₡</span>
-                                            <input type="text" class="form-control numbers" name="total" id="field_devolutionAmmount"
-                                                   ng-model="vm.commonArea.devolutionAmmount" required
+                                            <input  ng-class="{redBorder: vm.commonArea.devolutionAmmountValida==false}" type="text" class="form-control numbers" name="total" ng-change="vm.validateDevolutionAmmount(vm.commonArea)" id="field_devolutionAmmount" placeholder="0.00"
+                                                   required ng-model="vm.commonArea.devolutionAmmount"
                                             />
                                         </div>
 
@@ -324,13 +333,13 @@
                                 </div>
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
                                     <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Permite reservar con deudas? *</span>
+                                        <span ng-class="{redfont: vm.spaceInvalid2==true}" class="font-13 bold control-label" >Permite reservar con deudas? * </span>
                                     </div>
                                     <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 " >
                                         <div class="form-group form-md-radios">
                                             <div class="md-radio-inline">
                                                 <div class="md-radio">
-                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt==1"  id="radio16" name="radio3" class="md-radiobtn">
+                                                    <input type="radio" ng-checked="vm.reservationWithDebts==1"  ng-click="vm.commonArea.reservationWithDebt=1; vm.spaceInvalid2=false "  id="radio16" name="radio3" class="md-radiobtn" required>
                                                     <label for="radio16">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -338,7 +347,7 @@
                                                         Si </label>
                                                 </div>
                                                 <div class="md-radio has-error">
-                                                    <input type="radio" ng-click="vm.commonArea.reservationWithDebt==0" id="radio17" name="radio3" class="md-radiobtn" >
+                                                    <input type="radio" ng-checked="vm.reservationWithDebts==2" ng-click="vm.commonArea.reservationWithDebt=0; vm.spaceInvalid2=false " id="radio17" name="radio3" class="md-radiobtn" required>
                                                     <label for="radio17">
                                                         <span></span>
                                                         <span class="check"></span>
@@ -389,14 +398,12 @@
                         <div class="form-actions noborder" style="padding-bottom:0px;">
                             <h3 class="text-right">
 
-                                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                <button type="button"  ui-sref="egress()" class="btn red default">Cancelar</button>
+                                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ></i> {{vm.button}}</button>
+                                <button type="button"  ui-sref="common-area-administration.common-area" class="btn red default">Cancelar</button>
 
 
                             </h3>
-                            <h3 class="text-right" ng-if="vm.proveedores.length==0">
-                                <span style="font-size:13px;font-weight:bold;color:#c23f44">No es posible capturar un egreso sin tener ningún proveedor registrado. *</span>
-                            </h3>
+
                         </div>
                     </form>
                 </div>
@@ -404,11 +411,6 @@
         </div>
     </div>
 </div>
-<!--<script>-->
-    <!--jQuery(document).ready(function() {-->
-        <!--$("#loadingIcon").fadeIn("slow");-->
-    <!--});-->
-<!--</script>-->
 <script>
     jQuery(document).ready(function() {
         $("#register_edit_form").fadeIn("slow");

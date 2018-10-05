@@ -27,6 +27,13 @@
         if(vm.resident.userLogin== "" || vm.resident.userLogin == null){
             vm.resident.userLogin = "No hay";
         }
+        if(vm.resident.type==1){
+            vm.resident.type = "Residente propietario";
+        }else if(vm.resident.type==2){
+            vm.resident.type = "Residente inquilino";
+        }else if(vm.resident.type==3){
+            vm.resident.type = "Visitante autorizado";
+        }
         House.get({id:vm.resident.houseId},onSuccessHouses);
         function onSuccessHouses(house, headers) {
           vm.resident.houseId = house.housenumber;

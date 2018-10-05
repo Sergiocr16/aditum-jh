@@ -2,12 +2,12 @@
 <div class="page-bar route-title">
     <ul class="page-breadcrumb">
         <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Contabilidad</a>
+            <i class="fa fa-money"></i>
+            <a ui-sref="home()">Finanzas</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
-            <a ui-sref="house()">Viviendas</a>
+            <a ui-sref="house()">Filiales</a>
             <i class="fa fa-angle-right"></i>
         </li>
         <li>
@@ -26,46 +26,47 @@
     </div>
 </div>
 <div class="row display-none" id="tableData">
-    <div ng-if="vm.houses.length==0">
-        <h2 class="text-center"  style="margin-top:60px">No hay filiales registradas.</h2>
+    <div ng-if="vm.houses.length==0" class="marging-top-100">
+        <h2 class="text-center "  style="margin-top:60px">No hay filiales registradas.</h2>
         <h4 class="text-center gray-font">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
     </div>
-    <div class="col-md-12" ng-if="vm.houses.length!==0">
-        <h3 class="page-title col-md-10">	Saldo de viviendas </h3>
-        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
-        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <label class="col-md-4 col-sm-4 col-xs-4 control-label no-padding gray-font">Filtrar por estado</label>
-            <div class="col-md-7 col-sm-7 col-xs-7 ">
-                <select class="form-control gray-font" data-ng-model="vm.estado" required>
-                    <option value="">Todos</option>
-                    <option value="0">Habitadas</option>
-                    <option value="1">Deshabitadas</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12" >
-            <label class="col-md-4 col-sm-4 col-xs-4 control-label no-padding gray-font">Filtrar por deuda</label>
-            <div class="col-md-7 col-sm-7 col-xs-7 ">
-                <select class="form-control gray-font" data-ng-model="vm.deudaFilter" required>
-                    <option value="">Todas</option>
-                    <option value="1">Deudores</option>
-                    <option value="0">Sin deudas</option>
-                </select>
-            </div>
-        </div>
+    <div ng-if="vm.houses.length!==0" class="col-md-12"><h3 class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">	Saldo de filiales </h3></div>
+    <div class="" ng-if="vm.houses.length!==0">
 
-        <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <div class="input-icon">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar casa" ng-model="vm.query.housenumber">
+        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-md-offset-4 no-padding" style="margin-bottom:0px;">
+            <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-12 no-padding">
+                <label class="col-md-5 col-sm-5 col-xs-5 control-label no-padding gray-font text-right" style="padding-top: 5px!important;">Filtrar por estado</label>
+                <div class="col-md-7 col-sm-7 col-xs-7 no-padding-right">
+                    <select class="form-control gray-font" data-ng-model="vm.estado" required>
+                        <option value="">Todos</option>
+                        <option value="0">Habitadas</option>
+                        <option value="1">Deshabitadas</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-12 no-padding" >
+                <label class="col-md-4 col-sm-4 col-xs-4 control-label no-padding gray-font text-right" style="padding-top: 5px!important;">Filtrar por deuda</label>
+                <div class="col-md-8 col-sm-8 col-xs-8 no-padding-right">
+                    <select class="form-control gray-font" data-ng-model="vm.deudaFilter" required>
+                        <option value="">Todas</option>
+                        <option value="1">Deudores</option>
+                        <option value="0">Sin deudas</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group col-lg-2 col-md-2 col-sm-2 col-xs-12">
+                <div class="input-icon">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control" placeholder="Buscar filial" ng-model="vm.query.housenumber">
+                </div>
             </div>
         </div>
-        </div>
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center">
-            <div class="table-scrollable">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center ">
+            <div class="table-scrollable" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 gray-font tableMaterialDesign">
+                    <thead  style="background-color: #fafafa;" class="text-center">
 
-                <table class="jh-table table table-striped table-bordered table-hover table-condensed flip-content">
-                    <thead class="flip-content text-center">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Número</th>
                         <th class="text-center">Mantenimiento</th>
@@ -82,8 +83,10 @@
                         <td class="{{vm.defineBalanceClass(house.balance.extraordinary)}}">₡ {{house.balance.extraordinary | currency : "" : 0}}</td>
                         <td class="{{vm.defineBalanceClass(house.balance.commonAreas)}}">₡ {{house.balance.commonAreas | currency : "" : 0}}</td>
                         <td class="{{vm.defineBalanceClass(house.balance.total)}}">₡ {{house.balance.total | currency : "" : 0}}</td>
-                        <td  ng-if="house.isdesocupated == 1"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger" aria-hidden="false">No</span></td>
-                        <td  ng-if="house.isdesocupated == 0"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success" aria-hidden="false">Sí</span></td>
+
+                        <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0" class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span style="padding:5px" ng-if="house.isdesocupated == 1" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
+
+
                     </tr>
                     </tbody>
                 </table>

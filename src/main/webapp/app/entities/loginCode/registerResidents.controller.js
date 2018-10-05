@@ -152,6 +152,7 @@
 
                     angular.forEach(vm.residents,function(resident,i){
                         vm.isSaving = true;
+                        resident.principalContact = 0;
                         Resident.save(resident,onSaveSuccess, onSaveError);
                     })
                 }

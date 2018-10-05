@@ -38,10 +38,14 @@
                 "presupuesto": "Presupuesto",
                 "detallePresupuesto": "Detalle Presupuesto",
                 "commonArea": "Common Area",
+                "commonAreaSchedule": "Common Area Schedule",
+                "commonAreaReservations": "Common Area Reservations",
+
                 "announcement": "Announcement",
                 "announcementComment": "Announcement Comment",
                 "complaint": "Complaint",
                 "complaintComment": "Complaint Comment",
+
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

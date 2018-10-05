@@ -33,7 +33,7 @@
                         <div class="actions">
                             <span class="font-15 gray-font" style="margin-right:270px">Contacto principal: <span class="bold" ng-if="vm.resident.principalContact==1">SI</span> <span class="bold" ng-if="vm.resident.principalContact==0">NO</span></span>
 
-                            <span class="font-15 gray-font">Autorizado de filial: <span class="bold">{{vm.authorizer}}</span> </span>
+                            <span class="font-15 gray-font">Posee cuenta en aditum: <span class="bold">{{vm.authorizer}}</span> </span>
                         </div>
                     </div>
                     <div class="portlet-body form">
@@ -52,8 +52,8 @@
                         </div>
                         <div class="hidden-lg hidden-md hidden-sm col-xs-12">
                             <h3 class="text-center">
-                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                                <img ng-show="vm.resident.image_url==null" width="170px" height="170px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
                             </h3>
                         </div>
 
@@ -85,13 +85,15 @@
                             <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
                                 <span class="font-15 gray-font">Nombre de usuario: {{vm.resident.userLogin}}</span>
                             </div>
-
+                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
+                                <span class="font-15 gray-font">Tipo: {{vm.resident.type}}</span>
+                            </div>
 
                         </div>
                         <div class="hidden-xs col-md-3 col-sm-3">
                             <h3 class="text-center">
-                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
+                                <img ng-show="vm.resident.image_url==null" width="170px" height="170px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
                             </h3>
                             </div>
                             <div class="form-actions noborder ">
