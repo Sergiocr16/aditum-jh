@@ -1,16 +1,16 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ConfigureChargesController', ConfigureChargesController);
 
-    ConfigureChargesController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge','CommonMethods'];
+    ConfigureChargesController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany'];
 
-    function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods) {
+    function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany) {
         var vm = this;
 
-              $rootScope.active = "configureCharges";
+        $rootScope.active = "configureCharges";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -22,72 +22,71 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
         moment.locale("es");
-         vm.validate = function(house,s,t){
-                                    var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+        vm.validate = function (house, s, t) {
+            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
-              var invalido = 0;
-              angular.forEach(caracteres,function(val,index){
-              if (s!=undefined){
-               for(var i=0;i<s.length;i++){
-               if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+            var invalido = 0;
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
 
-               invalido++;
-               }
-               }
-               }
-              })
-              if(invalido==0){
-               if (t==1){
-               house.validDue = true;
-                house.dirtyDue = true;
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                if (t == 1) {
+                    house.validDue = true;
+                    house.dirtyDue = true;
 
-               }else{
-               house.validSquare=true;
-                house.dirtySquare = true;
-               }
-              }else{
-                if (t==1){
-                  house.validDue = false;
-                      house.dirtyDue = false;
-                  }else{
-                  house.validSquare=false ;
+                } else {
+                    house.validSquare = true;
+                    house.dirtySquare = true;
+                }
+            } else {
+                if (t == 1) {
+                    house.validDue = false;
+                    house.dirtyDue = false;
+                } else {
+                    house.validSquare = false;
 
-                                      house.dirtySquare = false;
-                  }
-              }
-             }
-        setTimeout(function() {
-            loadAll();
-        }, 1500)
-
-       vm.saveHouse = function(house,t){
-       if(house.validDue==true && house.validSquare == true){
-       if(t==1){
-        if(house.dirtyDue==true){
-               House.update(house,function(result){
-               toastr["success"]("Guardado.")
-               house.dirtyDue = false;
-               })
+                    house.dirtySquare = false;
+                }
+            }
         }
-       }else{
-       if(house.dirtySquare==true){
-                      House.update(house,function(result){
-                      toastr["success"]("Guardado.")
-                        house.dirtySquare = false;
-                      })
-               }
-       }
+        loadAll();
 
-       }else{
-        toastr["error"]("Debe de ingresar solo números.")
-       }
-       }
+        vm.saveHouse = function (house, t) {
+            if (house.validDue == true && house.validSquare == true) {
+                if (t == 1) {
+                    if (house.dirtyDue == true) {
+                        House.update(house, function (result) {
+                            toastr["success"]("Guardado.")
+                            house.dirtyDue = false;
+                        })
+                    }
+                } else {
+                    if (house.dirtySquare == true) {
+                        House.update(house, function (result) {
+                            toastr["success"]("Guardado.")
+                            house.dirtySquare = false;
+                        })
+                    }
+                }
+
+            } else {
+                toastr["error"]("Debe de ingresar solo números.")
+            }
+        }
+
         function loadAll() {
             House.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
@@ -100,8 +99,8 @@
 
             function onSuccess(data, headers) {
                 AdministrationConfiguration.get({
-                    companyId: $rootScope.companyId
-                }).$promise.then(function(result) {
+                    companyId: globalCompany.getId()
+                }).$promise.then(function (result) {
                     vm.adminConfig = result;
 
                 })
@@ -115,8 +114,8 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
-                value.housenumber = parseInt(value.housenumber)
+                angular.forEach(data, function (value, key) {
+                    value.housenumber = parseInt(value.housenumber)
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -128,10 +127,10 @@
                 vm.houses = data;
 
                 vm.page = pagingParams.page;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }

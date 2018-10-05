@@ -28,6 +28,5 @@
   },
   "_source": "https://github.com/winkerVSbecks/angular-pdf-viewer.git",
   "_target": "^0.2.13",
-  "_originalSource": "angular-pdf-viewer",
-  "_direct": true
+  "_originalSource": "angular-pdf-viewer"
 }

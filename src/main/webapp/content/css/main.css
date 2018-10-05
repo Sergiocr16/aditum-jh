@@ -1476,3 +1476,8 @@ div.scrollmenu a:hover {
     float: left;
     margin-right: 6px;
 }
+
+.switchdemoBasicUsage .inset {
+    padding-left: 25px;
+    padding-top: 25px;
+}

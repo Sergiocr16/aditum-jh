@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('HouseAdministrationController', HouseAdministrationController);
 
-    HouseAdministrationController.$inject = ['$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House','$scope'];
+    HouseAdministrationController.$inject = ['$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', '$scope','globalCompany'];
 
-    function HouseAdministrationController($localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House,$scope) {
+    function HouseAdministrationController($localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, $scope, globalCompany) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -20,13 +20,12 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "houseAdministration";
         vm.expanding = false;
-        setTimeout(function() {
-            loadAll();
-        }, 3000)
+
+        loadAll();
 
         function loadAll() {
             Balance.queryBalances({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
@@ -42,22 +41,22 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
-                value.housenumber = parseInt(value.housenumber);
+                angular.forEach(data, function (value, key) {
+                    value.housenumber = parseInt(value.housenumber);
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
                     value.debit = value.balance.debit;
                 })
                 vm.houses = data;
-                if(vm.houses.length>0){
-                $localStorage.houseSelected = vm.houses[0]
+                if (vm.houses.length > 0) {
+                    $localStorage.houseSelected = vm.houses[0]
                 }
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
                         id: $localStorage.houseSelected.id
-                    }, function(result) {
-                    $localStorage.houseSelected = result
+                    }, function (result) {
+                        $localStorage.houseSelected = result
                         vm.house = $localStorage.houseSelected;
                         $rootScope.houseSelected = $localStorage.houseSelected;
                     })
@@ -69,10 +68,10 @@
                     }
                 }
                 vm.page = pagingParams.page;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }
@@ -82,16 +81,16 @@
             }
         }
 
-             vm.expand = function(){
+        vm.expand = function () {
 
-                        setTimeout(function () {
-                                $scope.$apply(function () {
-                                     vm.expanding = !vm.expanding;
-                                });
-                            }, 200);
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.expanding = !vm.expanding;
+                });
+            }, 200);
 
-                        }
-        vm.defineBalanceClass = function(balance) {
+        }
+        vm.defineBalanceClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -101,7 +100,7 @@
                 }
             }
         }
-        vm.defineBalanceTotalClass = function(balance) {
+        vm.defineBalanceTotalClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -114,7 +113,7 @@
             }
         }
 
-        vm.formatearNumero = function(nStr) {
+        vm.formatearNumero = function (nStr) {
 
             var x = nStr.split('.');
             var x1 = x[0];
@@ -125,10 +124,10 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function(house) {
+        vm.changeHouse = function (house) {
             House.get({
                 id: house.id
-            }, function(result) {
+            }, function (result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;

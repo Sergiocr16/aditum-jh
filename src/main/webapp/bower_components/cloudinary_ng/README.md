@@ -1,5 +1,9 @@
 Cloudinary
 ==========
+The official [Cloudinary](https://cloudinary.com) SDK for AngularJS (AKA Angular 1).
+
+Cloudinary's Angular SDK can be found [here](https://github.com/cloudinary/cloudinary_angular)
+and on [npm](https://www.npmjs.com/package/@cloudinary/angular)
 
 Cloudinary is a cloud service that offers a solution to a web application's entire image management pipeline. 
 
@@ -16,7 +20,7 @@ For AngularJS, Cloudinary provides a plugin for simplifying the integration even
 You can get it on bower.
 
 ```shell
-bower install cloudinary_ng --save
+bower install cloudinary_ng#1.x --save
 ```
 
 ## Setup ######################################################################

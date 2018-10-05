@@ -34,11 +34,59 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="days_tobe_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="has_subcharges" type="bit">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="subcharge_percentage" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="subcharge_ammount" type="double">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="days_to_send_email_before_be_defaulter" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="using_subcharge_percentage" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="book_common_area" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="income_statement" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="monthly_income_statement" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_report" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="income_folio" type="bit">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="egress_folio" type="bit">
+                <constraints nullable="true" />
+            </column>
+
             <column name="egress_folio_serie" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="egress_folio_number" type="integer">
+            <column name="egress_folio_number" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 
@@ -50,4 +98,5 @@
         </createTable>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

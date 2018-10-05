@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintController', ComplaintController);
 
-    ComplaintController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state'];
+    ComplaintController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'globalCompany'];
 
-    function ComplaintController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state) {
+    function ComplaintController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint';
@@ -24,17 +24,17 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
-        setTimeout(function () {
-            loadAll();
-        }, 1000);
+        // setTimeout(function () {
+        loadAll();
+        // }, 1000);
 
-        vm.changeStatus = function(){
+        vm.changeStatus = function () {
             vm.page = 0;
-           vm.loadAllByStatus();
-           setTimeout(function () {
-               vm.complaints=[]
-               },400)
-       }
+            vm.loadAllByStatus();
+            setTimeout(function () {
+                vm.complaints = []
+            }, 400)
+        }
 
         function loadAllByStatus() {
             $("#tableData").fadeOut();
@@ -42,18 +42,19 @@
                 $("#loadingIcon").fadeIn();
 
 
-            if(vm.status!=="-1") {
-                Complaint.queryByStatus({
-                    companyId: $rootScope.companyId,
-                    status: parseInt(vm.status),
-                    page: vm.page,
-                    size: 10,
-                    sort: sort()
-                }, onSuccess, onError);
-            }else{
-                loadAll();
-            }
+                if (vm.status !== "-1") {
+                    Complaint.queryByStatus({
+                        companyId: globalCompany.getId(),
+                        status: parseInt(vm.status),
+                        page: vm.page,
+                        size: 10,
+                        sort: sort()
+                    }, onSuccess, onError);
+                } else {
+                    loadAll();
+                }
             }, 400);
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'creationDate') {
@@ -82,9 +83,10 @@
                 AlertService.error(error.data.message);
             }
         }
+
         function loadAll() {
             Complaint.query({
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 page: vm.page,
                 size: 10,
                 sort: sort()
@@ -125,17 +127,18 @@
             loadAll();
         }
 
-        vm.viewDetail = function(id){
+        vm.viewDetail = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('complaint-detail', {
                 id: encryptedId
             });
         };
+
         function loadPage(page) {
             vm.page = page;
-            if(vm.status!=="-1"){
+            if (vm.status !== "-1") {
                 loadAllByStatus();
-            }else{
+            } else {
                 loadAll();
             }
 

@@ -33,19 +33,65 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private Integer deleted;
 
-    private String left;
+    private ZonedDateTime paymentDate;
+
+    private String subcharge;
 
     private String paymentAmmount;
 
-    private ZonedDateTime paymentDate;
+    private String left;
+
+    private double total;
 
     private Long houseId;
 
     private Long paymentId;
 
-    private int total;
-
     private Long companyId;
+
+    private String formatedDate;
+
+
+    private boolean payedSubcharge;
+
+    public ChargeDTO() {
+    }
+    public ChargeDTO(String concept,int total ) {
+        this.concept = concept;
+        this.total = total;
+
+    }
+
+    public ChargeDTO(Long id, @NotNull Integer type, @NotNull ZonedDateTime date, @NotNull String concept, @NotNull String ammount, @NotNull Integer state, @NotNull Integer deleted, ZonedDateTime paymentDate, String subcharge, String paymentAmmount, String left, double total, Long houseId, Long paymentId, Long companyId) {
+        this.id = id;
+        this.type = type;
+        this.date = date;
+        this.concept = concept;
+        this.ammount = ammount;
+        this.state = state;
+        this.deleted = deleted;
+        this.paymentDate = paymentDate;
+        this.subcharge = subcharge;
+        this.paymentAmmount = paymentAmmount;
+        this.left = left;
+        this.total = total;
+        this.houseId = houseId;
+        this.paymentId = paymentId;
+        this.companyId = companyId;
+    }
+
+    public ChargeDTO(String ammount, ZonedDateTime date, Long companyId, Long id, Long houseId) {
+        this.concept = "Pagos anticipados";
+        this.ammount = ammount;
+        this.date = date;
+        this.state = 2;
+        this.type = 1;
+        this.companyId = companyId;
+        this.id = id;
+        this.houseId = houseId;
+        this.deleted = 0;
+
+    }
 
     public Long getId() {
         return id;
@@ -111,6 +157,14 @@ public class ChargeDTO implements Serializable {
         this.paymentDate = paymentDate;
     }
 
+    public String getSubcharge() {
+        return subcharge;
+    }
+
+    public void setSubcharge(String subcharge) {
+        this.subcharge = subcharge;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -127,27 +181,6 @@ public class ChargeDTO implements Serializable {
         this.paymentId = paymentId;
     }
 
-    public ChargeDTO(String concept,int total ) {
-        this.concept = concept;
-        this.total = total;
-
-    }
-    public ChargeDTO(String ammount, ZonedDateTime date,Long companyId,Long id,Long houseId) {
-        this.concept = "Pagos anticipados";
-        this.ammount = ammount;
-        this.date = date;
-        this.state = 2;
-        this.type = 1;
-        this.companyId = companyId;
-        this.id = id;
-        this.houseId = houseId;
-        this.deleted = 0;
-
-    }
-    public ChargeDTO() {
-
-    }
-
     public Long getCompanyId() {
         return companyId;
     }
@@ -155,7 +188,6 @@ public class ChargeDTO implements Serializable {
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -182,14 +214,31 @@ public class ChargeDTO implements Serializable {
     public String toString() {
         return "ChargeDTO{" +
             "id=" + getId() +
-            ", type='" + getType() + "'" +
+            ", type=" + getType() +
             ", date='" + getDate() + "'" +
             ", concept='" + getConcept() + "'" +
             ", ammount='" + getAmmount() + "'" +
-            ", state='" + getState() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", state=" + getState() +
+            ", deleted=" + getDeleted() +
             ", paymentDate='" + getPaymentDate() + "'" +
+            ", subcharge='" + getSubcharge() + "'" +
             "}";
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public String getPaymentAmmount() {
+        return paymentAmmount;
+    }
+
+    public void setPaymentAmmount(String paymentAmmount) {
+        this.paymentAmmount = paymentAmmount;
     }
 
     public String getLeft() {
@@ -200,11 +249,36 @@ public class ChargeDTO implements Serializable {
         this.left = left;
     }
 
-    public String getPaymentAmmount() {
-        return paymentAmmount;
+    public boolean isPayedSubcharge() {
+        return payedSubcharge;
     }
 
-    public void setPaymentAmmount(String paymentAmmount) {
-        this.paymentAmmount = paymentAmmount;
+    public void setPayedSubcharge(boolean payedSubcharge) {
+        this.payedSubcharge = payedSubcharge;
     }
+
+    public String getFormatedDate() {
+        return formatedDate;
+    }
+
+    public void setFormatedDate(String formatedDate) {
+        this.formatedDate = formatedDate;
+    }
+
+    public String getFormatedType() {
+        String formattedType = "";
+        switch (this.getType()) {
+            case 1:
+                formattedType =  "MANTENIMIENTO";
+            break;
+            case 2:
+                formattedType = "EXTRAORDINARIA";
+            break;
+            case 3:
+                formattedType = "ÁREAS COMUNES";
+            break;
+        }
+        return formattedType;
+    }
+
 }

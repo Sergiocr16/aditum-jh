@@ -1,35 +1,173 @@
+<div class="page-bar route-title">
+    <ul ng-if="companyUser.id !== vm.resident.id" class="page-breadcrumb">
+        <li>
+            <i class="fa fa-home"></i>
+            <a ui-sref="home()">Condominio</a>
+            <i class="fa fa-angle-right"></i>
 
-<div>
-    <h2><span data-translate="aditumApp.administrationConfiguration.detail.title">Administration Configuration</span> {{vm.administrationConfiguration.id}}</h2>
-    <hr>
-    <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
-        <dt><span data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span></dt>
-        <dd>
-            <span>{{vm.administrationConfiguration.squareMetersPrice}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span></dt>
-        <dd>
-            <span>{{vm.administrationConfiguration.folioSerie}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span></dt>
-        <dd>
-            <span>{{vm.administrationConfiguration.folioNumber}}</span>
-        </dd>
-        <dt><span data-translate="aditumApp.administrationConfiguration.company">Company</span></dt>
-        <dd>
-            <a ui-sref="company-detail({id:vm.administrationConfiguration.companyId})">{{vm.administrationConfiguration.companyId}}</a>
-        </dd>
-    </dl>
+        <li has-authority="ROLE_USER">
+            <a href="" ui-sref="residentByHouse()">Finanzas</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="">Configuración general</a>
+        </li>
+    </ul>
 
-    <button type="submit"
-            ui-sref="{{ vm.previousState }}"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button" ui-sref="administration-configuration-detail.edit({id:vm.administrationConfiguration.id})" class="btn btn-primary">
-        <span class="glyphicon glyphicon-pencil"></span>
-        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
-    </button>
+    <div class="page-toolbar">
+        <div class="btn-group pull-right"></div>
+    </div>
 </div>
+
+<div class="col-md-12">
+    <!-- BEGIN Portlet PORTLET-->
+    <div class="portlet light col-md-12">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="fa fa-cog font-green-haze"></i>
+                <span class="caption-subject bold font-green-haze uppercase">
+								Panel de configuración</span>
+                <!--<span class="caption-helper">more samples...</span>-->
+            </div>
+            <div class="inputs">
+                <div class="portlet-input input-inline input-medium">
+                    <!--<div class="input-group">-->
+                    <!--<input type="text" class="form-control input-circle-left" placeholder="search...">-->
+                    <!--<span class="input-group-btn">-->
+                    <!--<button class="btn btn-circle-right btn-default" type="submit">Go!</button>-->
+                    <!--</span>-->
+                    <!--</div>-->
+                </div>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <!--<h4>Heading text goes here...</h4>-->
+            <!--<p>-->
+            <!--Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.-->
+            <!--</p>-->
+
+
+            <div class="portlet light col-md-12 no-padding" style="box-shadow:none!important;">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <!--<i class="icon-puzzle font-grey-gallery"></i>-->
+                        <span class="caption-subject bold font-grey-gallery uppercase font-14 font-green-haze">
+								Configuración de finanzas </span>
+                        <!--<span class="caption-helper">more samples...</span>-->
+                    </div>
+                    <div class="tools">
+                    </div>
+                </div>
+                <div class="portlet-body col-md-12 ">
+                    <form ng-submit="vm.save()">
+                        <div class="col-md-12 padding-bottom-15" style="border-bottom: 1px solid #eee">
+                            <div class="col-md-12" style="border-bottom: 1px solid #eee">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
+                                    <h5 class="bold">Configuración de folios internos</h5>
+                                    Esto configura el incremento automático de los folios al capturar ingresos.
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  no-padding-right form-group">
+                                        <div
+                                            class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                            <span class="font-13 bold">Serie *</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                            <input ng-model="vm.administrationConfiguration.folioSerie" type="text"
+                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
+                                                   placeholder="Serie" required="" aria-invalid="false">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  no-padding-right form-group">
+                                        <div
+                                            class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
+                                            <span class="font-13 bold">Folio inicial *</span>
+                                        </div>
+                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
+                                            <input ng-model="vm.administrationConfiguration.folioNumber" type="text"
+                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
+                                                   placeholder="Número de folio" required="" aria-invalid="false">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
+                                    <h5 class="bold">Configuración de precio por mts2</h5>
+                                    Esto configura el precio por metro cuadrado de las cuotas.
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right margin-top-10">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
+                                        <div
+                                            class="col-lg-8 col-md-8  col-sm-8 col-xs-8 no-padding-right margin-top-10">
+                                            <span class="font-13 bold">Precio por metro cuadrado *</span>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  form-group">
+                                            <input ng-model="vm.administrationConfiguration.squareMetersPrice"
+                                                   type="text"
+                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
+                                                   placeholder="Serie" required="" aria-invalid="false">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <button class="btn btn-success float-right" type="submit">Guardar cambios</button>
+                            </div>
+
+                        </div>
+                    </form>
+<div class="col-md-12">
+
+    <div class="inset switchdemoBasicUsage"  ng-cloak="">
+        <md-switch ng-model="vm.data.cb1" aria-label="Switch 1">
+            Switch 1: {{ vm.data.cb1 }}
+        </md-switch>
+    </div>
+
+</div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END Portlet PORTLET-->
+</div>
+
+
+<!--<div>-->
+<!--<h2><span vm.data-translate="aditumApp.administrationConfiguration.detail.title">Administration Configuration</span> {{vm.administrationConfiguration.id}}</h2>-->
+<!--<hr>-->
+<!--<jhi-alert-error></jhi-alert-error>-->
+<!--<dl class="dl-horizontal jh-entity-details">-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.administrationConfiguration.squareMetersPrice}}</span>-->
+<!--</dd>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.administrationConfiguration.folioSerie}}</span>-->
+<!--</dd>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span></dt>-->
+<!--<dd>-->
+<!--<span>{{vm.administrationConfiguration.folioNumber}}</span>-->
+<!--</dd>-->
+<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.company">Company</span></dt>-->
+<!--<dd>-->
+<!--<a ui-sref="company-detail({id:vm.administrationConfiguration.companyId})">{{vm.administrationConfiguration.companyId}}</a>-->
+<!--</dd>-->
+<!--</dl>-->
+
+<!--<button type="submit"-->
+<!--ui-sref="{{ vm.previousState }}"-->
+<!--class="btn btn-info">-->
+<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span vm.data-translate="entity.action.back"> Back</span>-->
+<!--</button>-->
+
+<!--<button type="button" ui-sref="administration-configuration-detail.edit({id:vm.administrationConfiguration.id})" class="btn btn-primary">-->
+<!--<span class="glyphicon glyphicon-pencil"></span>-->
+<!--<span class="hidden-sm-down" vm.data-translate="entity.action.edit"> Edit</span>-->
+<!--</button>-->
+<!--</div>-->

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeByHouseController', VehiculeByHouseController);
 
-    VehiculeByHouseController.$inject = ['$state','CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle'];
+    VehiculeByHouseController.$inject = ['$state','CommonMethods','$rootScope','Vehicule', 'House','ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','WSVehicle','companyUser'];
 
-    function VehiculeByHouseController($state,CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle) {
+    function VehiculeByHouseController($state,CommonMethods,$rootScope,Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,WSVehicle, companyUser) {
      $rootScope.active = "vehiculesHouses";
      var enabledOptions = true;
         var vm = this;
@@ -21,7 +21,7 @@
             })
         }
         setTimeout(function(){
-        House.get({ id: $rootScope.companyUser.houseId}).$promise.then(onSuccess);
+        House.get({ id: companyUser.houseId}).$promise.then(onSuccess);
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
                    bootbox.confirm({
@@ -72,12 +72,12 @@
             if(enabledOptions){
               vm.changesTitles();
                 Vehicule.findVehiculesEnabledByHouseId({
-                    houseId: $rootScope.companyUser.houseId
+                    houseId: companyUser.houseId
                }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Vehicule.findVehiculesDisabledByHouseId({
-                    houseId: $rootScope.companyUser.houseId
+                    houseId: companyUser.houseId
                 }).$promise.then(onSuccess, onError);
             }
 

@@ -1,15 +1,15 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods','$localStorage'];
+    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany'];
 
-    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods,$localStorage) {
+    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany) {
         var vm = this;
-         $rootScope.active = 'individual';
+        $rootScope.active = 'individual';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -29,23 +29,23 @@
             deleted: 0
         }
         moment.locale("es");
-        vm.autoConcept = function() {
-        if(vm.charge.type=="1"){
-        vm.charge.concept = "";
-            String.prototype.capitalize = function() {
-                return this.replace(/(?:^|\s)\S/g, function(a) {
-                    return a.toUpperCase();
-                });
-            };
-            vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
-}
+        vm.autoConcept = function () {
+            if (vm.charge.type == "1") {
+                vm.charge.concept = "";
+                String.prototype.capitalize = function () {
+                    return this.replace(/(?:^|\s)\S/g, function (a) {
+                        return a.toUpperCase();
+                    });
+                };
+                vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
+            }
         }
-        vm.validate = function(cuota) {
+        vm.validate = function (cuota) {
             var s = cuota.ammount;
-                       var caracteres = ['´','Ç','_','ñ','Ñ','¨',';','{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
+            angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
                     for (var i = 0; i < s.length; i++) {
                         if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
@@ -61,12 +61,10 @@
                 vm.charge.valida = false
             }
         }
-        setTimeout(function() {
-            loadAll();
-        }, 1500)
+        loadAll();
 
-        angular.element(document).ready(function() {
-            $('.dating').keydown(function() {
+        angular.element(document).ready(function () {
+            $('.dating').keydown(function () {
                 return false;
             });
         });
@@ -79,7 +77,8 @@
             house.cuota.deleted = 0;
             return house.cuota;
         }
-        vm.formatearNumero = function(nStr) {
+
+        vm.formatearNumero = function (nStr) {
 
             var x = nStr.split('.');
             var x1 = x[0];
@@ -91,16 +90,16 @@
             return x1 + x2;
         }
 
-        vm.encontrarHouseNumber = function(houseId) {
+        vm.encontrarHouseNumber = function (houseId) {
             var housenumber = undefined;
-            angular.forEach(vm.houses, function(house, i) {
+            angular.forEach(vm.houses, function (house, i) {
                 if (house.id == houseId) {
                     housenumber = house.housenumber;
                 }
             })
             return housenumber;
         }
-        vm.crearCuota = function() {
+        vm.crearCuota = function () {
             if (vm.charge.ammount != 0) {
                 bootbox.confirm({
                     message: "¿Está seguro que generar una cuota por ₡" + vm.formatearNumero(vm.charge.ammount) + " a la filial " + vm.encontrarHouseNumber(vm.selectedHouse) + "?",
@@ -114,26 +113,27 @@
                             className: 'btn-danger'
                         }
                     },
-                    callback: function(result) {
+                    callback: function (result) {
                         if (result) {
-                         CommonMethods.waitingMessage();
+                            CommonMethods.waitingMessage();
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
-                            vm.charge.companyId = $rootScope.companyId;
-                            Charge.save(vm.charge, function(result) {
+                            vm.charge.companyId = globalCompany.getId();
+                            Charge.save(vm.charge, function (result) {
                                 vm.isSaving == false;
                                 House.get({
-                                        id: result.houseId
-                                    }, onSuccess)
-                                    function onSuccess(house) {
-                                    bootbox.hideAll();
-                                       bootbox.hideAll();
-                                                                       toastr["success"]("Se ha generado la cuota correctamente.")
-                                                                       $state.go('houseAdministration.chargePerHouse')
-                                        $rootScope.houseSelected = house;
-                                        $localStorage.houseSelected = house;
+                                    id: result.houseId
+                                }, onSuccess)
 
-                                    }
+                                function onSuccess(house) {
+                                    bootbox.hideAll();
+                                    bootbox.hideAll();
+                                    toastr["success"]("Se ha generado la cuota correctamente.")
+                                    $state.go('houseAdministration.chargePerHouse')
+                                    $rootScope.houseSelected = house;
+                                    $localStorage.houseSelected = house;
+
+                                }
 
                             })
 
@@ -151,7 +151,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function sort() {
@@ -164,8 +164,8 @@
 
             function onSuccess(data, headers) {
                 AdministrationConfiguration.get({
-                    companyId: $rootScope.companyId
-                }).$promise.then(function(result) {
+                    companyId: globalCompany.getId()
+                }).$promise.then(function (result) {
                     vm.adminConfig = result;
 
                 })
@@ -174,7 +174,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
+                angular.forEach(data, function (value, key) {
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -184,10 +184,10 @@
 
                 })
                 vm.page = pagingParams.page;
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#loadingIcon").fadeOut(300);
                 }, 400)
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tableData").fadeIn('slow');
                 }, 700)
             }

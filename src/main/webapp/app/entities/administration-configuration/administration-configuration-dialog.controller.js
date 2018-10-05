@@ -15,6 +15,9 @@
         vm.save = save;
         vm.companies = Company.query();
 
+
+
+
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -24,12 +27,30 @@
         }
 
         function save () {
-            vm.isSaving = true;
-            if (vm.administrationConfiguration.id !== null) {
-                AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
-            } else {
-                AdministrationConfiguration.save(vm.administrationConfiguration, onSaveSuccess, onSaveError);
-            }
+            bootbox.confirm({
+                message: "¿Está seguro que desea guardar los cambios?",
+                buttons: {
+                    confirm: {
+                        label: 'Aceptar',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancelar',
+                        className: 'btn-danger'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
+                        vm.isSaving = true;
+                        if (vm.administrationConfiguration.id !== null) {
+                            AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
+                        } else {
+                            AdministrationConfiguration.save(vm.administrationConfiguration, onSaveSuccess, onSaveError);
+                        }
+                    }
+                }
+            });
+
         }
 
         function onSaveSuccess (result) {

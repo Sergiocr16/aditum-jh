@@ -18,6 +18,20 @@
             "squareMetersPrice": "Square Meters Price",
             "folioSerie": "Folio Serie",
             "folioNumber": "Folio Number",
+            "daysTobeDefaulter": "Days Tobe Defaulter",
+            "hasSubcharges": "Has Subcharges",
+            "subchargePercentage": "Subcharge Percentage",
+            "subchargeAmmount": "Subcharge Ammount",
+            "daysToSendEmailBeforeBeDefaulter": "Days To Send Email Before Be Defaulter",
+            "usingSubchargePercentage": "Using Subcharge Percentage",
+            "bookCommonArea": "Book Common Area",
+            "incomeStatement": "Income Statement",
+            "monthlyIncomeStatement": "Monthly Income Statement",
+            "egressReport": "Egress Report",
+            "incomeFolio": "Income Folio",
+            "egressFolio": "Egress Folio",
+            "egressFolioSerie": "Egress Folio Serie",
+            "egressFolioNumber": "Egress Folio Number",
             "company": "Company"
         }
     }

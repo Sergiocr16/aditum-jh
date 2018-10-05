@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('AdvancePaymentController', AdvancePaymentController);
 
-    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident'];
+    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany'];
 
-    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident) {
+    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -22,16 +22,14 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.residents = [];
-        angular.element(document).ready(function() {
+        angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
 
-        setTimeout(function() {
-            loadAll();
-            $('.dating').keypress(function(e) {
-                return false
-            });
-        }, 2000)
+        loadAll();
+        $('.dating').keypress(function (e) {
+            return false
+        });
 
 
         function defineNewStateCharge(chargeIn) {
@@ -49,12 +47,13 @@
                 chargeIn.estado = 1;
             }
         }
-        vm.validate = function(cuota) {
+
+        vm.validate = function (cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
+            angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
                     for (var i = 0; i < s.length; i++) {
                         if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
@@ -72,7 +71,7 @@
 
         function loadAll() {
             Balance.queryBalances({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
 
@@ -80,7 +79,7 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                angular.forEach(data, function(value, key) {
+                angular.forEach(data, function (value, key) {
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
@@ -90,7 +89,7 @@
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                     House.get({
                         id: $localStorage.houseSelected.id
-                    }, function(result) {
+                    }, function (result) {
                         $localStorage.houseSelected = result
                         vm.house = $localStorage.houseSelected;
                         $rootScope.houseSelected = $localStorage.houseSelected;
@@ -107,7 +106,7 @@
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
-                    companyId: $rootScope.companyId,
+                    companyId: globalCompany.getId(),
                     concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
                 loadAdminConfig()
@@ -125,7 +124,7 @@
             }).$promise.then(onSuccessResident, onError);
 
             function onSuccessResident(data, headers) {
-                angular.forEach(data, function(resident, i) {
+                angular.forEach(data, function (resident, i) {
                     if (resident.email != undefined && resident.email != "" && resident.email != null) {
                         resident.selected = false;
                         if (resident.principalContact == 1) {
@@ -135,12 +134,12 @@
                         vm.residents.push(resident);
                     }
                 });
-                 setTimeout(function() {
-                                                    $("#loadingTable").fadeOut(300);
-                                                }, 400)
-                                                setTimeout(function() {
-                                                    $("#tableContent").fadeIn('slow');
-                                                }, 700)
+                setTimeout(function () {
+                    $("#loadingTable").fadeOut(300);
+                }, 400)
+                setTimeout(function () {
+                    $("#tableContent").fadeIn('slow');
+                }, 700)
 
             }
 
@@ -149,31 +148,31 @@
             }
         }
 
-        vm.selectPrincipalContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectPrincipalContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 if (resident.principalContact == 1) {
                     resident.selected = true;
                 }
             });
         }
-        vm.selectAllContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectAllContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 resident.selected = true;
             });
         }
 
-        vm.selectNoneContact = function() {
-            angular.forEach(vm.residents, function(resident, i) {
+        vm.selectNoneContact = function () {
+            angular.forEach(vm.residents, function (resident, i) {
                 resident.selected = false;
             });
         }
 
         function loadAdminConfig() {
             AdministrationConfiguration.get({
-                companyId: $rootScope.companyId
-            }).$promise.then(function(result) {
-                if (result.folioSerie != null) {
-                    vm.admingConfig = result;
+                companyId: globalCompany.getId()
+            }).$promise.then(function (result) {
+                vm.admingConfig = result;
+                if (result.incomeFolio == true) {
                     vm.folioSerie = result.folioSerie;
                     vm.folioNumber = result.folioNumber;
                     vm.payment.receiptNumber = result.folioSerie + "-" + result.folioNumber;
@@ -183,7 +182,7 @@
 
         function obtainEmailToList() {
             var residentsToSendEmails = [];
-            angular.forEach(vm.residents, function(resident, i) {
+            angular.forEach(vm.residents, function (resident, i) {
                 if (resident.selected == true) {
                     residentsToSendEmails.indexOf(resident) === -1 ? residentsToSendEmails.push(resident) : false;
                 }
@@ -205,7 +204,7 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 vm.toPay = 0;
-                angular.forEach(data, function(charge, i) {
+                angular.forEach(data, function (charge, i) {
                     charge.isIncluded = true;
                     charge.type = charge.type + ""
                     charge.left = charge.ammount;
@@ -213,7 +212,7 @@
                     charge.estado = 1;
                     vm.toPay = vm.toPay - parseInt(charge.ammount);
                 })
-                vm.charges = data.sort(function(a, b) {
+                vm.charges = data.sort(function (a, b) {
                     // Turn your strings into dates, and then subtract them
                     // to get a value that is either negative, positive, or zero.
                     return new Date(a.date) - new Date(b.date);
@@ -229,7 +228,8 @@
             }
 
         }
-        vm.defineBalanceClass = function(balance) {
+
+        vm.defineBalanceClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -239,7 +239,7 @@
                 }
             }
         }
-        vm.getCategory = function(type) {
+        vm.getCategory = function (type) {
             switch (type) {
                 case "1":
                     return "MANTENIMIENTO"
@@ -252,7 +252,7 @@
                     break;
             }
         }
-        vm.defineBalanceTotalClass = function(balance) {
+        vm.defineBalanceTotalClass = function (balance) {
             var b = parseInt(balance);
             if (b != 0) {
                 if (b > 0) {
@@ -265,7 +265,7 @@
             }
         }
 
-        vm.formatearNumero = function(nStr) {
+        vm.formatearNumero = function (nStr) {
             var x = nStr.split('.');
             var x1 = x[0];
             var x2 = x.length > 1 ? ',' + x[1] : '';
@@ -275,13 +275,13 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function(houseId) {
+        vm.changeHouse = function (houseId) {
             $("#loadingTable").fadeIn(10);
             $("#tableContent").fadeOut(10);
 
             House.get({
                 id: houseId
-            }, function(result) {
+            }, function (result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.selectedHouse = result;
@@ -312,26 +312,26 @@
 
         function loadBancos() {
             Banco.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
                 vm.bancos = data;
                 vm.page = pagingParams.page;
-                setTimeout(function() {
-                                    $("#loadingTable").fadeOut(300);
-                                }, 400)
-                                setTimeout(function() {
-                                    $("#tableContent").fadeIn('slow');
-                                }, 700)
+                setTimeout(function () {
+                    $("#loadingTable").fadeOut(300);
+                }, 400)
+                setTimeout(function () {
+                    $("#tableContent").fadeIn('slow');
+                }, 700)
 
 
-                                setTimeout(function() {
-                                    $("#loadingIcon").fadeOut(300);
-                                }, 400)
-                                setTimeout(function() {
-                                    $("#tableData").fadeIn('slow');
-                                }, 700)
+                setTimeout(function () {
+                    $("#loadingIcon").fadeOut(300);
+                }, 400)
+                setTimeout(function () {
+                    $("#tableData").fadeIn('slow');
+                }, 700)
             }
 
             function onError(error) {
@@ -340,12 +340,12 @@
         }
 
 
-        vm.createPayment = function() {
-        if(vm.selectedHouse.balance.total<0){
+        vm.createPayment = function () {
+            if (vm.selectedHouse.balance.total < 0) {
                 toastr["error"]("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
-           }else{
-           adelantoCondomino();
-           }
+            } else {
+                adelantoCondomino();
+            }
         }
 
 
@@ -368,7 +368,7 @@
                         className: 'btn-danger'
                     }
                 },
-                callback: function(result) {
+                callback: function (result) {
                     if (result) {
                         registrarAdelantoCondomino()
                     }
@@ -380,7 +380,7 @@
             vm.payment = {
                 paymentMethod: "DEPOSITO BANCO",
                 transaction: "1",
-                companyId: $rootScope.companyId,
+                companyId: globalCompany.getId(),
                 concept: 'Abono a cuotas'
             };
         }
@@ -388,7 +388,7 @@
         function registrarAdelantoCondomino() {
             CommonMethods.waitingMessage();
             vm.payment.transaction = "2",
-            vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
+                vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = parseInt(vm.house);
             vm.payment.charges = [];
             vm.increasedAmmount = vm.payment.ammount;
@@ -397,20 +397,22 @@
             vm.payment.emailTo = obtainEmailToList();
             console.log(vm.payment)
             Payment.save(vm.payment, onSuccess, onError)
+
             function onSuccess(result) {
-            increaseMaintBalance(result.ammount);
+                increaseMaintBalance(result.ammount);
                 if (vm.printReceipt == true) {
                     printJS({
                         printable: '/api/payments/file/' + result.id,
                         type: 'pdf',
                         modalMessage: "Obteniendo comprobante de pago"
                     })
-                    setTimeout(function() {
+                    setTimeout(function () {
                         bootbox.hideAll();
                         clear();
                         toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
                         vm.printReceipt = false;
-                        increaseFolioNumber(function() {});
+                        increaseFolioNumber(function () {
+                        });
                         loadAll();
                         loadAdminConfig();
                     }, 5000)
@@ -420,7 +422,8 @@
                     bootbox.hideAll();
                     clear();
                     toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
-                    increaseFolioNumber(function() {});
+                    increaseFolioNumber(function () {
+                    });
                     loadAll();
                     loadAdminConfig();
                 }
@@ -440,11 +443,11 @@
 
             House.get({
                 id: vm.house
-            }, function(result) {
-              var house = result;
+            }, function (result) {
+                var house = result;
                 house.balance.maintenance = parseInt(house.balance.maintenance) + parseInt(ammount);
-                 console.log(house.balance)
-                Balance.update(house.balance, function() {
+                console.log(house.balance)
+                Balance.update(house.balance, function () {
                     bootbox.hideAll();
                     loadAll();
                 })
@@ -453,9 +456,9 @@
             })
         }
 
-        vm.isAnyChargeSelected = function() {
+        vm.isAnyChargeSelected = function () {
             var count = 0;
-            angular.forEach(vm.charges, function(charge, i) {
+            angular.forEach(vm.charges, function (charge, i) {
                 if (charge.isIncluded == true) {
                     count++
                 }
@@ -463,7 +466,7 @@
             return (count > 0)
         }
 
-        vm.back = function() {
+        vm.back = function () {
             window.history.back();
         }
     }

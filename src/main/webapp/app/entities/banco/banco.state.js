@@ -135,6 +135,13 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
+                        globalCompanyId: ['CommonMethods', '$localStorage', function (CommonMethods, $localStorage) {
+                            if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
+                                return CommonMethods.decryptIdUrl($localStorage.companyId)
+                            } else {
+                                return null;
+                            }
+                        }],
                         entity: ['Banco', function(Banco) {
                             return Banco.get({id : $stateParams.id}).$promise;
                         }]
@@ -160,6 +167,13 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
+                        globalCompanyId: ['CommonMethods', '$localStorage', function (CommonMethods, $localStorage) {
+                            if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
+                                return CommonMethods.decryptIdUrl($localStorage.companyId)
+                            } else {
+                                return null;
+                            }
+                        }],
                         entity: function () {
                             return {
                                 beneficiario: null,
@@ -197,6 +211,13 @@
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
+                        globalCompanyId: ['CommonMethods', '$localStorage', function (CommonMethods, $localStorage) {
+                            if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
+                                return CommonMethods.decryptIdUrl($localStorage.companyId)
+                            } else {
+                                return null;
+                            }
+                        }],
                         entity: function () {
                             return {
                                 concepto: null,

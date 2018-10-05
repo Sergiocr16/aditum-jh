@@ -23,6 +23,7 @@ public class ComplaintMailService {
     private final JHipsterProperties jHipsterProperties;
     private final AdminInfoService adminInfoService;
     private final MessageSource messageSource;
+    private final ResidentService residentService;
     private final SpringTemplateEngine templateEngine;
 
     private final MailService mailService;
@@ -43,13 +44,14 @@ public class ComplaintMailService {
     private final Logger log = LoggerFactory.getLogger(ComplaintMailService.class);
 
 
-    public ComplaintMailService(CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
+    public ComplaintMailService(ResidentService residentService, CompanyService companyService, AdminInfoService adminInfoService, MailService mailService, JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender, MessageSource messageSource, SpringTemplateEngine templateEngine) {
         this.jHipsterProperties = jHipsterProperties;
         this.adminInfoService = adminInfoService;
         this.messageSource = messageSource;
         this.templateEngine = templateEngine;
         this.mailService = mailService;
         this.companyService = companyService;
+        this.residentService = residentService;
     }
 
 
@@ -92,9 +94,9 @@ public class ComplaintMailService {
 
     @Async
     public void sendNewComplaintEmail(ComplaintDTO complaintDTO) {
-
         String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
         String content = defineContent(complaintDTO);
+        this.mailService.sendEmail(this.residentService.findOne(complaintDTO.getResidentId()).getEmail(), subject, content, false, true);
         this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
             this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
         });

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeByHouseDialogController', VehiculeByHouseDialogController);
 
-    VehiculeByHouseDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle','Brand'];
+    VehiculeByHouseDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle','Brand','globalCompany'];
 
-    function VehiculeByHouseDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle,Brand) {
+    function VehiculeByHouseDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle,Brand, globalCompany) {
         $rootScope.active = "vehiculesHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -89,7 +89,7 @@
         }
  }
 
-        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+        House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
     setTimeout(function() {
@@ -113,13 +113,13 @@
           vm.vehicule.color = "rgb(255, 255, 255)";
           }
            vm.vehicule.enabled = 1;
-           vm.vehicule.companyId = $rootScope.companyId;
+           vm.vehicule.companyId = globalCompany.getId();
             vm.vehicule.houseId = $rootScope.companyUser.houseId;
           vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
             if (vm.vehicule.id !== null ) {
              if(vm.myPlate!==vm.vehicule.licenseplate){
-              Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
+              Vehicule.getByCompanyAndPlate({companyId:globalCompany.getId(),licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
                    function alreadyExist(data){
                     toastr["error"]("La placa ingresada ya existe.");
                    }
@@ -130,7 +130,7 @@
               }
 
       } else {
-                Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearInsert)
+                Vehicule.getByCompanyAndPlate({companyId:globalCompany.getId(),licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearInsert)
                function alreadyExist(data){
                 toastr["error"]("La placa ingresada ya existe.");
                }
