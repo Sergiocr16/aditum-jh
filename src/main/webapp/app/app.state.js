@@ -42,8 +42,6 @@
                     data: {authorities: ['ROLE_OFFICER']}
 
                 }
-
-
             },
             resolve: {
                 authorize: ['Auth',

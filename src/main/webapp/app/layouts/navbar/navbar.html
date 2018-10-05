@@ -1,92 +1,236 @@
-<div  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" id="rightView"  ng-show="menu==true" >
-    <div  class="page-header-fixed page-quick-sidebar-over-content ng-scope"><div class="page-header md-shadow-z-1-i navbar navbar-fixed-top ng-scope">
-        <!-- BEGIN HEADER INNER -->
-        <div class="page-header-inner">
-            <!-- BEGIN LOGO -->
-            <div class="page-logo">
+<md-toolbar layout="row" layout-align="space-between center" style="position:fixed;background-color:{{vm.colors.primary}}">
+    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div>
+            <h1>
+                <i class="material-icons" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
                 <a ui-sref="home">
-                <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">
+                    <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22">
                 </a>
-                <!-- <div class="menu-toggler sidebar-toggler">
+            </h1>
+        </div>
+        <div layout-align="left center">
+            <div class="dropdown">
+                <div class="image-navbar  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
+                         class="object-fit_scale-down-navbar"/>
+                    <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                         class="object-fit_scale-down-navbar"/>
+                </div>
 
-                </div> -->
-            </div>
-            <!-- END LOGO -->
-            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            </a>
-            <!-- END RESPONSIVE MENU TOGGLER -->
-            <!-- BEGIN TOP NAVIGATION MENU -->
-            <div class="top-menu">
-                <ul class="nav navbar-nav pull-right">
-                    <li class="dropdown dropdown-user" ng-show="contextLiving!=undefined ">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <div class="image-navbar">
-                                <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
-                                     class="object-fit_scale-down-navbar"/>
-                                <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
-                                     class="object-fit_scale-down-navbar"/>
+                <ul class="dropdown-menu pull-right" style="margin-top: 35px;min-width: 310px;z-index:999999">
+                    <li>
+                        <div style="min-height:70px">
+                            <div class="image-navbar-big" aria-haspopup="true" aria-expanded="false">
+                                <img ng-if="currentUserImage==null" src="content/images/nobody-image.jpg"
+                                     class="object-fit_scale-down-navbar-big"/>
+                                <img ng-if="currentUserImage!==null" src="{{currentUserImage}}"
+                                     class="object-fit_scale-down-navbar-big"/>
                             </div>
-                            <span class="username username-hide-on-mobile ng-binding">
-					        {{' '+companyUser.name +' '+ companyUser.lastname}}{{contextLiving}}</span>
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default ">
-                            <li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()" href="#/usuario/perfil/editar/32" class="ng-hide">
-                                <a href="">
-                                    <i class="icon-user"></i> Mi perfil </a>
-                            </li>
-                            <li has-authority="ROLE_USER">
-                                <a ng-click="vm.editMyInfoAsUser()" >
-                                    <i class="fa fa-user"></i>Editar mi información</a>
-                            </li>
-                            <li has-authority="ROLE_MANAGER">
-                                <a ng-click="vm.editMyInfoAsManager()" >
-                                    <i class="fa fa-user"></i>Editar mi información</a>
-                            </li>
-                            <li>
-                                <a ui-sref="password" >
-                                    <i class="fa fa-key"></i>Cambiar contraseña</a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="vm.logout()">
-                                    <i class="fa fa-sign-out"></i>Cerrar sesión</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- END USER LOGIN DROPDOWN -->
-                    <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                            <div class="float-right margin-right-10" style="max-width: 190px">
+                                <div style="color:black;" class="margin-top-15 bold-font">
+                                    {{' '+companyUser.name +' '+ companyUser.lastname+' '+companyUser.secondlastname}}
 
-                    <!-- END QUICK SIDEBAR TOGGLER -->
+                                    <div style="font-size: 13px;margin-top: 5px">
+                                    <span style="color: #44b6ae;" ng-if="hideFilial==false"><i style="margin: 0 3px 4px 0px;
+    font-size: 19px;" class="material-icons material-icons-with-text">home</i> Filial 1</span> <span  ng-if="hideFilial==false">-</span> <span
+                                        style="color:#666">{{vm.account.login}}</span>
+                                    </div>
+                                </div>
+
+                                <div style="color:#a4aab2;">
+                                    {{contextLiving}}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                    <li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()"
+                        class="ng-hide">
+                        <a href="">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li has-authority="ROLE_USER">
+                        <a ng-click="vm.editMyInfoAsUser()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li has-authority="ROLE_MANAGER">
+                        <a ng-click="vm.editMyInfoAsManager()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li>
+                        <a ui-sref="password">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    vpn_key
+                                </i>
+                                Cambiar contraseña
+                            </p>
+                        </a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+
+                    <li>
+                        <a ng-click="vm.logout()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    power_settings_new
+                                </i>
+                                Cerrar sesión
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <!-- END TOP NAVIGATION MENU -->
+            <!--<ul class="nav navbar-nav pull-right">-->
+            <!--<li class="dropdown dropdown-user" ng-show="contextLiving!=undefined ">-->
+            <!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"-->
+            <!--data-close-others="true">-->
+            <!--<div class="image-navbar">-->
+            <!--<img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"-->
+            <!--class="object-fit_scale-down-navbar"/>-->
+            <!--<img ng-show="currentUserImage!==null" src="{{currentUserImage}}"-->
+            <!--class="object-fit_scale-down-navbar"/>-->
+            <!--</div>-->
+            <!--<span class="username username-hide-on-mobile ng-binding"></span>-->
+            <!--&lt;!&ndash;<span class="username username-hide-on-mobile ng-binding">&ndash;&gt;-->
+            <!--&lt;!&ndash;{{' '+companyUser.name +' '+ companyUser.lastname}}{{contextLiving}}</span>&ndash;&gt;-->
+            <!--<i class="fa fa-angle-down"></i>-->
+            <!--</a>-->
+            <!--<ul class="dropdown-menu dropdown-menu-default ">-->
+            <!--<li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()" href="#/usuario/perfil/editar/32"-->
+            <!--class="ng-hide">-->
+            <!--<a href="">-->
+            <!--<i class="icon-user"></i> Mi perfil </a>-->
+            <!--</li>-->
+            <!--<li has-authority="ROLE_USER">-->
+            <!--<a ng-click="vm.editMyInfoAsUser()">-->
+            <!--<i class="fa fa-user"></i>Editar mi información</a>-->
+            <!--</li>-->
+            <!--<li has-authority="ROLE_MANAGER">-->
+            <!--<a ng-click="vm.editMyInfoAsManager()">-->
+            <!--<i class="fa fa-user"></i>Editar mi información</a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a ui-sref="password">-->
+            <!--<i class="fa fa-key"></i>Cambiar contraseña</a>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="" ng-click="vm.logout()">-->
+            <!--<i class="fa fa-sign-out"></i>Cerrar sesión</a>-->
+            <!--</li>-->
+            <!--</ul>-->
         </div>
-        <!-- END HEADER INNER -->
     </div>
-    </div>
-</div>
+</md-toolbar>
 
-<!--<style>-->
-<!--@-webkit-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@-moz-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@-o-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--</style>-->
+<!--<div  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" id="rightView"  ng-show="menu==true" >-->
+<!--<div  class="page-header-fixed page-quick-sidebar-over-content ng-scope"><div class="page-header md-shadow-z-1-i navbar navbar-fixed-top ng-scope">-->
+<!--&lt;!&ndash; BEGIN HEADER INNER &ndash;&gt;-->
+<!--<div class="page-header-inner">-->
+<!--&lt;!&ndash; BEGIN LOGO &ndash;&gt;-->
+<!--<div class="page-logo">-->
+<!--<a ui-sref="home">-->
+<!--<img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">-->
+<!--</a>-->
+<!--&lt;!&ndash; <div class="menu-toggler sidebar-toggler">-->
+
+<!--</div> &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; END LOGO &ndash;&gt;-->
+<!--&lt;!&ndash; BEGIN RESPONSIVE MENU TOGGLER &ndash;&gt;-->
+<!--<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">-->
+<!--</a>-->
+<!--&lt;!&ndash; END RESPONSIVE MENU TOGGLER &ndash;&gt;-->
+<!--&lt;!&ndash; BEGIN TOP NAVIGATION MENU &ndash;&gt;-->
+<!--<div class="top-menu">-->
+<!--<ul class="nav navbar-nav pull-right">-->
+<!--<li class="dropdown dropdown-user" ng-show="contextLiving!=undefined ">-->
+<!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">-->
+<!--<div class="image-navbar">-->
+<!--<img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"-->
+<!--class="object-fit_scale-down-navbar"/>-->
+<!--<img ng-show="currentUserImage!==null" src="{{currentUserImage}}"-->
+<!--class="object-fit_scale-down-navbar"/>-->
+<!--</div>-->
+<!--<span class="username username-hide-on-mobile ng-binding">-->
+<!--{{' '+companyUser.name +' '+ companyUser.lastname}}{{contextLiving}}</span>-->
+<!--<i class="fa fa-angle-down"></i>-->
+<!--</a>-->
+<!--<ul class="dropdown-menu dropdown-menu-default ">-->
+<!--<li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()" href="#/usuario/perfil/editar/32" class="ng-hide">-->
+<!--<a href="">-->
+<!--<i class="icon-user"></i> Mi perfil </a>-->
+<!--</li>-->
+<!--<li has-authority="ROLE_USER">-->
+<!--<a ng-click="vm.editMyInfoAsUser()" >-->
+<!--<i class="fa fa-user"></i>Editar mi información</a>-->
+<!--</li>-->
+<!--<li has-authority="ROLE_MANAGER">-->
+<!--<a ng-click="vm.editMyInfoAsManager()" >-->
+<!--<i class="fa fa-user"></i>Editar mi información</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a ui-sref="password" >-->
+<!--<i class="fa fa-key"></i>Cambiar contraseña</a>-->
+<!--</li>-->
+<!--<li>-->
+<!--<a href="" ng-click="vm.logout()">-->
+<!--<i class="fa fa-sign-out"></i>Cerrar sesión</a>-->
+<!--</li>-->
+<!--</ul>-->
+<!--</li>-->
+<!--&lt;!&ndash; END USER LOGIN DROPDOWN &ndash;&gt;-->
+<!--&lt;!&ndash; BEGIN QUICK SIDEBAR TOGGLER &ndash;&gt;-->
+<!--&lt;!&ndash; DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte &ndash;&gt;-->
+
+<!--&lt;!&ndash; END QUICK SIDEBAR TOGGLER &ndash;&gt;-->
+<!--</ul>-->
+<!--</div>-->
+<!--&lt;!&ndash; END TOP NAVIGATION MENU &ndash;&gt;-->
+<!--</div>-->
+<!--&lt;!&ndash; END HEADER INNER &ndash;&gt;-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash;<style>&ndash;&gt;-->
+<!--&lt;!&ndash;@-webkit-keyframes loginBackground {&ndash;&gt;-->
+<!--&lt;!&ndash;0%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;50%{background-position:100% 97%}&ndash;&gt;-->
+<!--&lt;!&ndash;100%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+<!--&lt;!&ndash;@-moz-keyframes loginBackground {&ndash;&gt;-->
+<!--&lt;!&ndash;0%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;50%{background-position:100% 97%}&ndash;&gt;-->
+<!--&lt;!&ndash;100%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+<!--&lt;!&ndash;@-o-keyframes loginBackground {&ndash;&gt;-->
+<!--&lt;!&ndash;0%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;50%{background-position:100% 97%}&ndash;&gt;-->
+<!--&lt;!&ndash;100%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+<!--&lt;!&ndash;@keyframes loginBackground {&ndash;&gt;-->
+<!--&lt;!&ndash;0%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;50%{background-position:100% 97%}&ndash;&gt;-->
+<!--&lt;!&ndash;100%{background-position:0% 4%}&ndash;&gt;-->
+<!--&lt;!&ndash;}&ndash;&gt;-->
+<!--&lt;!&ndash;</style>&ndash;&gt;-->

@@ -13,7 +13,7 @@
         vm.isInLogin = $state.includes('home');
         vm.account = null;
         vm.login = LoginService.open;
-
+        vm.isReady = false;
 
         function getAccount() {
             Principal.identity().then(function (account) {
@@ -28,18 +28,15 @@
                 showData();
                 vm.visitorTitle = "Visitantes de la semana";
                 vm.watch = formatWatch(vm.dashboard.currentWatch);
-                $("#loadingIcon").fadeOut(300);
-                setTimeout(function () {
-                    $("#tableData").fadeIn("slow");
-                }, 900)
                 if (vm.dashboard.currentWatch !== null) {
                     vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100) / vm.dashboard.officerQuantity)
                 } else {
                     vm.officerPercentage = 0;
                 }
+                vm.isReady = true;
                 vm.housesPercentage = ((vm.dashboard.houseQuantity * 100) / vm.dashboard.totalHouses).toFixed(2)
                 if ($rootScope.backgroundSelectCompany == true) {
-                    $("#dashboard").fadeIn("slow");
+                    $("#dashboard").fadeIn();
                     setTimeout(function () {
                         $("#selectCompany").fadeOut("slow");
                         $rootScope.loadingDash = false;

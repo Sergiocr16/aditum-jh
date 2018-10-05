@@ -1,654 +1,82 @@
-<!-- END CONTENT -->
-<!-- BEGIN QUICK SIDEBAR -->
+<md-sidenav style="position:fixed" class="md-sidenav-left side-nav-bar" md-component-id="left"
+            md-whiteframe="4" md-disable-close-events
+            md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar class="md-theme-indigo" hide-lg hide-gt-lg hide-xl>
+        <h1 class="md-toolbar-tools">
+            <i class="material-icons" ng-click="toggleLeft()">
+                menu
+            </i>
+            Aditum
+        </h1>
+    </md-toolbar>
+    <md-content>
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+                <li ng-repeat="mainItem in vm.menu" has-any-authority="{{mainItem.authoritites}}">
+                    <a ng-mouseenter="mainItem.hover = true;" ng-mouseleave="mainItem.hover = false" ng-if="!mainItem.collapsable" ng-click="vm.go(mainItem.uisref)" data-toggle="collapse"
+                       aria-expanded="false"
+                       class="dropdown-toggle"  style="{{vm.defineStyleMainButton(mainItem).color}}">
+                        <p style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}"><i
+                            class="material-icons principal-icon">
+                            {{mainItem.icon}}
+                        </i> {{mainItem.title}}
+                        </p>
+                    </a>
+                    <a ng-mouseenter="mainItem.hover = true;" ng-click="vm.collapseAllOther(mainItem,null)" ng-mouseleave="mainItem.hover = false" ng-if="mainItem.collapsable" href="#{{mainItem.menuId}}" target="_self" data-toggle="collapse"
+                       aria-expanded="false"
+                       class="dropdown-toggle" style="{{vm.defineStyleMainButton(mainItem).color}}">
+                        <p style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}"><i
+                            class="material-icons principal-icon">
+                            {{mainItem.icon}}
+                        </i> {{mainItem.title}} <i class="material-icons float-right">
+                            expand_more
+                        </i>
+                        </p>
+                    </a>
+                    <ul ng-if="mainItem.collapsable" class="collapse list-unstyled" id="{{mainItem.menuId}}">
+                        <li has-any-authority="{{secondItem.authoritites}}" ng-repeat="secondItem in mainItem.secondaryItems"
+                            ng-class="{ 'activeSubmenu' : vm.defineActive(secondItem)}">
+                            <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false" ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)" data-toggle="collapse"
+                               aria-expanded="false"
+                               class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}};padding:0 5px;">
+                                <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                    class="material-icons principal-icon">
+                                    {{secondItem.icon}}
+                                </i> {{secondItem.title}}
+                                </p>
+                            </a>
+                            <a ng-mouseenter="secondItem.hover = true;" ng-click="vm.collapseAllOther(secondItem,mainItem)" ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable" href="#{{secondItem.menuId}}" target="_self"
+                               data-toggle="collapse" aria-expanded="false"
+                               class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}};padding:0 5px;">
+                                <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                    class="material-icons principal-icon">
+                                    {{secondItem.icon}}
+                                </i> {{secondItem.title}} <i class="material-icons float-right">
+                                    expand_more
+                                </i>
+                                </p>
+                            </a>
+                            <ul ng-if="mainItem.collapsable" class="collapse list-unstyled" id="{{secondItem.menuId}}"
+                                style="margin-left: 0px">
+                                <li has-any-authority="{{thirItem.authoritites}}"  ng-repeat="thirItem in secondItem.thirdItems"
+                                    ng-class="{ 'activeSubmenu' :  vm.defineActive(thirItem)}">
+                                    <a  ng-mouseenter="thirItem.hover = true;" ng-mouseleave="thirItem.hover = false" ng-click="vm.go(thirItem.uisref)" data-toggle="collapse"
+                                       aria-expanded="false"
+                                       class="dropdown-toggle" style="{{vm.defineStyleThirdButton(thirItem).color}};padding:0 5px;">
+                                        <p style="{{vm.defineStyleThirdButton(thirItem).backgroundColor}}"><i
+                                            class="material-icons principal-icon">
+                                            {{thirItem.icon}}
+                                        </i> {{thirItem.title}}
+                                        </p>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--<hr style="margin:2px" ng-if="">-->
+                        </li>
 
-<div has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" style="margin-top:46px;" ></div>
-
-<div ng-hideclass="page-sidebar-wrapper" ng-show="menu==true">
-
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-    <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
-        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-
-            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-            <!--// es admin-->
-            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'condons' || active === 'admins' || active === 'recursosHumanos' || active === 'brands' || active === 'destinies' || active === 'dataprogress' }">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-list-alt" aria-hidden="true" style="font-weight:500; color:white;"></i>
-                    <span class="title" style="font-weight:500; color:white;">Administración</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-
-
-                <ul class="sub-menu">
-                    <li ui-sref="company" ng-class="{ 'active' : active === 'condons'  }">
-                        <a ui-sref="company">
-                            <i class="glyphicon glyphicon-home" aria-hidden="true"></i> Gestión de condominios
-                        </a>
-                    </li>
-                    <li ui-sref="admin-info" ng-class="{ 'active' : active === 'admins' }">
-                        <a ui-sref="admin-info">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Administradores
-                        </a>
-                    </li>
-
-                    <li ui-sref="rh-account" ng-class="{ 'active' : active === 'recursosHumanos' }">
-                        <a ui-sref="rh-account">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Recursos Humanos
-                        </a>
-                    </li>
-                    <li ui-sref="brand" ng-class="{ 'active' : active === 'brands' }">
-                        <a ui-sref="brand">
-                            <i class="fa fa-car" aria-hidden="true"></i> Marca vehículos
-                        </a>
-                    </li>
-
-                    <li ui-sref="destinies" ng-class="{ 'active' : active === 'destinies' }">
-                        <a ui-sref="destinies">
-                            <i class="fa fa-building" aria-hidden="true"></i> Destinos Custom
-                        </a>
-                    </li>
-                    <li ui-sref="data-progress" ng-class="{ 'active' : active === 'dataprogress' }">
-                        <a ui-sref="destinies">
-                            <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Progreso ingreso datos
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'user-managment' ||  active === 'tracker' || active === 'metrics' }">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
-                    <span class="title">Aditum Jhipster</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="user-management" ng-class="{ 'active' : active === 'user-managment' }">
-                        <a ui-sref="user-management">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Gestión de usuarios
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-tracker" ng-class="{ 'active' : active === 'tracker' }">
-                        <a ui-sref="jhi-tracker">
-                            <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Seguimiento
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-metrics" ng-class="{ 'active' : active === 'metrics'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i> Métricas
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-health" ng-class="{ 'active' : active === 'health'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-heart" aria-hidden="true"></i> Salud
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-configuration" ng-class="{ 'active' : active === 'configuration'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i> Configuración
-                        </a>
-                    </li>
-                    <li ui-sref="audits" ng-class="{ 'active' : active === 'audits'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-bell" aria-hidden="true"></i> Auditorías
-                        </a>
-                    </li>
-                    <li ui-sref="logs" ng-class="{ 'active' : active === 'logs'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Logs
-                        </a>
-                    </li>
-                    <li ui-sref="docs" ng-class="{ 'active' : active === 'api'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-book" aria-hidden="true"></i> API
-                        </a>
-                    </li>
-
-                </ul>
-            </li>
-            <li ui-sref="dashboard" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'dashboard'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-dashboard" style="color:white; " aria-hidden="true"></i>
-                    <span class="title" style="font-weight:500; color:white; ">Dashboard</span>
-                </a>
-            </li>
-            <li ui-sref="announcement" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'announcements'}">
-                <a href="javascript:;">
-                    <i class="fa fa-newspaper-o" style="color:white; " aria-hidden="true"></i>
-                    <span class="title" style="font-weight:500; color:white; ">Administrar anuncios</span>
-                </a>
-            </li>
-
-            <li ui-sref="announcement-user" has-any-authority="ROLE_MANAGER,ROLE_USER" ng-class="{ 'active' : active === 'userNews'}">
-                <a href="javascript:;">
-                    <i class="fa fa-newspaper-o" style="color:white; " aria-hidden="true"></i>
-                    <span class="title" style="font-weight:500; color:white; ">Anuncios</span>
-                </a>
-            </li>
-
-
-
-            <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
-                <a href="javascript:;"  style="font-weight:500; color:white;">
-                    <i class="glyphicon glyphicon-home" style="color:white;  " aria-hidden="true"></i>
-                    <span class="title">Administración</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-
-
-                <ul class="sub-menu">
-                    <li ui-sref="resident" ng-class="{ 'active' : active === 'residents' }">
-                        <a href=""  style=" color:white;">
-                            <i style=" color:white;" class="fa fa-users" aria-hidden="true"></i> Usuarios
-                        </a>
-                    </li>
-                    <li ui-sref="house" ng-class="{ 'active' : active === 'houses' }">
-                        <a href=""  style=" color:white;">
-                            <i style=" color:white;" class="fa fa-home fa-lg" aria-hidden="true"></i> Filiales
-                        </a>
-                    </li>
-                    <li ui-sref="vehicule" ng-class="{ 'active' : active === 'vehicules'}">
-                        <a href=""  style="color:white;">
-                            <i class="fa fa-car "style=" color:white;" aria-hidden="true"></i> Vehículos
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-admin" ng-class="{ 'active' : active === 'adminVisitors'}">
-                        <a href=""  style=" color:white;">
-                            <i class="fa fa-user"style=" color:white;" aria-hidden="true"></i> Visitantes
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!--//es admin-->
-
-            <li ui-sref="company-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'company-rh' || active === 'watches' || active === 'condons'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                    <span class="title"> Gestión de condominios</span>
-                </a>
-            </li>
-            <li ui-sref="officer-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'officer-rh' || active === 'officers'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-shield" aria-hidden="true"></i>
-                    <span class="title">Gestión de oficiales</span>
-                </a>
-            </li>
-
-
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
-
-                <a href="javascript:;">
-                    <i class="fa fa-lock"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title "  style="font-weight:500; color:white;"> Seguridad</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="officer" ng-class="{ 'active' : active === 'officers'}">
-                        <a href="" style="color:white;">
-                            <i class="fa fa-shield"  style=" color:white;" aria-hidden="true"></i> Oficiales
-                        </a>
-                    </li>
-                    <li ng-click="vm.viewWatch()" ng-class="{ 'active' : active === 'watches'}">
-                        <a href="" style=" color:white;">
-                            <i class="fa fa-clock-o"  style=" color:white;" aria-hidden="true"></i> Turnos
-                        </a>
-                    </li>
-                </ul>
-
-            </li>
-
-            <li ui-sref="dashboard.selectCompany" ng-show="showSelectCompany" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'selectCondominio'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-transfer" style="color:white;" aria-hidden="true"></i>
-                    <span class="title" style="font-weight:500; color:white;">Seleccionar condominio</span>
-                </a>
-            </li>
-            <li ui-sref="finanzasPorCasa" has-authority="ROLE_USER"  class="start hidden-xs hidden-sm" ng-class="{ 'active' : active === 'financesResidentAccount'  }">
-                <a href="javascript:;">
-                    <i class="fa fa-money"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Finanzas</span>
-                    <span class="selected "></span>
-                </a>
-            </li>
-            <!--//es residente-->
-            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'common-area-resident-account' ||  active === 'reservationCalendarResidentView' ||  active === 'allReservationsResidentsView'  ||  active === 'reservationDialogResidentView'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-tree"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Áreas comunes</span>
-                    <span class="arrow "  style=" color:white;"></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="common-area-resident-account" ng-class="{'active' : active === 'common-area-resident-account'  ||  active === 'reservationCalendarResidentView' } ">
-                        <a href="">
-                            <i class="fa fa-circle-o" aria-hidden="true" style=" color:white;"></i> <span class=" menu-li-item"> Ver todas</span>
-                        </a>
-                    </li>
-                    <li  ui-sref="common-area-reservation-resident-view" ng-class="{'active' : active === 'reservationDialogResidentView'}">
-                        <a href="">
-                            <i class="fa fa-circle-o" aria-hidden="true" style=" color:white;"></i><span class=" menu-li-item"> Reservar</span>
-                        </a>
-                    </li>
-                    <li  ui-sref="common-area-all-reservations-resident-view" ng-class="{'active' : active === 'allReservationsResidentsView'}">
-                        <a href="">
-                            <i class="fa fa-circle-o" aria-hidden="true" style=" color:white;"></i><span class=" menu-li-item"> Mis reservaciones</span>
-                        </a>
-                    </li>
-
-                    <!--<li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">-->
-                    <!--<a href="">-->
-                    <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
-                    <!--</a>-->
-                    <!--</li>-->
-                </ul>
-            </li>
-            <!--//es residente-->
-            <li  class="start hidden-lg  hidden-md"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-money" style=" color:white;"  aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Finanzas</span>
-                    <span class="arrow "  style=" color:white;"></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li  ui-sref="finanzasPorCasa" ng-class="{ 'active' : active === 'residentsHouses'}">
-                        <a href="">
-                            <i class="fa fa-users "   style=" color:white;"  aria-hidden="true"></i> <span class=" menu-li-item">Mis pagos</span>
-                        </a>
-                    </li>
-                    <li ui-sref="vehiculeByHouse" ng-class="{ 'active' : active === 'vehiculesHouses'}">
-                        <a href="">
-                            <i class="fa fa-car "style=" color:white;"   aria-hidden="true"></i><span class=" menu-li-item"> Estado de cuenta</span>
-                        </a>
-                    </li>
-                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user "style=" color:white;"  aria-hidden="true"></i><span class=" menu-li-item"> Resumen histórico</span>
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-invited-user" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user menu-li-item" style=" color:white;" aria-hidden="true"></i> <span class=" menu-li-item"> Estado de resultados</span>
-                        </a>
-                    </li>
-                    <li ui-sref="keysConguration" ng-class="{ 'active' : active === 'keysConguration'}">
-                        <a href="">
-                            <i class="fa fa-key"style=" color:white;" aria-hidden="true"></i> <span class=" menu-li-item"> Reporte de egresos</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li  class="start"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-home" style=" color:white;"  aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Administrar</span>
-                    <span class="arrow "  style=" color:white;"></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="residentByHouse" ng-class="{ 'active' : active === 'residentsHouses'}">
-                        <a href="">
-                            <i class="fa fa-users "   style=" color:white;"  aria-hidden="true"></i> <span class=" menu-li-item">Usuarios</span>
-                        </a>
-                    </li>
-                    <li ui-sref="vehiculeByHouse" ng-class="{ 'active' : active === 'vehiculesHouses'}">
-                        <a href="">
-                            <i class="fa fa-car "style=" color:white;"   aria-hidden="true"></i><span class=" menu-li-item"> Vehiculos</span>
-                        </a>
-                    </li>
-                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user "style=" color:white;"  aria-hidden="true"></i><span class=" menu-li-item"> Bitácora de visitantes</span>
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-invited-user" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user menu-li-item" style=" color:white;" aria-hidden="true"></i> <span class=" menu-li-item">Visitantes invitados</span>
-                        </a>
-                    </li>
-                    <li ui-sref="keysConguration" ng-class="{ 'active' : active === 'keysConguration'}">
-                        <a href="">
-                            <i class="fa fa-key"style=" color:white;" aria-hidden="true"></i> <span class=" menu-li-item">Clave de seguridad</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!--//es residente-->
-            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'house-absence' ||  active === 'reportHomeService' || active === 'reportEmergency' || active === 'reportInvitationList'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-flag-o"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Reportar</span>
-                    <span class="arrow "  style=" color:white;"></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="visitant-invited-user.new" ng-class="{'active' : active === 'reportInvitation'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true" style=" color:white;"></i> <span class=" menu-li-item"> Visitante</span>
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-invited-user.new-list" ng-class="{'active' : active === 'reportInvitationList'}">
-                        <a href="">
-                            <i class="fa fa-group" aria-hidden="true" style=" color:white;"></i><span class=" menu-li-item"> Reunión o fiesta </span>
-                        </a>
-                    </li>
-                    <li ui-sref="note.new" ng-class="{'active' : active === 'reportHomeService'}">
-                        <a href="">
-                            <i class="fa fa-cutlery" aria-hidden="true" style=" color:white;"></i> <span class=" menu-li-item"> Servicio a domicilio</span>
-                        </a>
-                    </li>
-                    <!--<li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">-->
-                    <!--<a href="">-->
-                    <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
-                    <!--</a>-->
-                    <!--</li>-->
-                </ul>
-            </li>
-
-            <!--//es residente-->
-
-            <li ui-sref="emergency.new" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
-                <a href="javascript:;">
-                    <i class="fa fa-ambulance"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title menu-li-item"> Reportar emergencia</span>
-                    <span class="selected "></span>
-                </a>
-            </li>
-            <!--<li ui-sref="watch-in-residents" has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">-->
-            <!--<a href="">-->
-            <!--<i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio-->
-            <!--</a>-->
-            <!--</li>-->
-            <li has-authority="ROLE_USER">
-                <a ng-click="vm.openManual()" >
-                    <i class="fa fa-book menu-li-item" style=" color:white;" aria-hidden="true"></i> <span class=" menu-li-item"> Manual de usuario</span>
-                </a>
-            </li>
-
-
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress' ||  active === 'houseAdministration' || active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual' ||  active === 'generatePayment' ||  active === 'presupuestos' ||  active === 'bancos' ||    active === 'capturarAdelanto' || active === 'collectionTable' || active === 'balance' } ">
-
-                <a href="javascript:;">
-                    <i class="fa fa-money"  style="color:white;" aria-hidden="true"></i>
-                    <span class="title " style="font-weight:500; color:white;"> Finanzas</span>
-                    <span class="arrow "  style=" color:white;"></span>
-                    <span class="selected "  style="font-weight:500; color:white;"></span>
-                </a>
-
-                <ul class="sub-menu">
-                    <li ui-sref="houseAdministration.accountStatus" ng-class="{ 'active' : active === 'houseAdministration'}">
-                        <a href=""  style="color:white;">
-                            <i class="fa fa-list-alt" style="color:white;" aria-hidden="true"></i> Contabilidad filiales
-                        </a>
-                    </li>
-                    <li ng-class="{ 'active' : active === 'egress' ||  active === 'newEgress'} ">
-                        <a href="javascript:;" style="color:white;">
-                            <i class="fa fa-arrow-left"  style="font-weight:500; color:white;"></i>
-                            <span class="title">Egresos</span>
-                            <span class="selected">
-                            </span>
-                                    <span class="arrow ">
-                            </span>
-                        </a>
-                        <ul class="sub-menu" >
-                            <li ui-sref="egress" ng-class="{ 'active' : active === 'egress' }"  style="border-bottom:1px solid #444c56">
-                                <a href="" style=" color:white;">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span >Gastos</span>
-                                </a>
-                            </li>
-                            <li ui-sref="egress.new" ng-class="{ 'active' : active === 'newEgress' }"  style="border-bottom:1px solid #444c56">
-                                <a href="" style=" color:white;">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span>Capturar gasto</span>
-                                </a>
-                            </li>
-
-
-                        </ul>
-                    </li>
-                    <li ng-class="{ 'active' : active === 'capturarAdelanto' ||  active === 'generatePayment'} " >
-                        <a href="javascript:;">
-
-                            <i class="fa fa-arrow-right" style=" color:white;"></i>
-
-                            <span class="title" style=" color:white;">Ingresos</span>
-                            <span class="selected">
-					</span>
-                            <span class="arrow ">
-					</span>
-                        </a>
-                        <ul class="sub-menu" >
-                            <li ui-sref="generatePayment" ng-class="{ 'active' : active === 'generatePayment' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span   style=" color:white;">Capturar ingreso</span>
-                                </a>
-                            </li>
-                            <li ui-sref="advancePayment" ng-class="{ 'active' : active === 'capturarAdelanto' }" style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span   style=" color:white;">Adelanto de condómino</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-
-                    <li ng-class="{ 'active' : active === 'mensual' ||  active === 'extraordinary' ||  active === 'individual'} ">
-                        <a href="javascript:;">
-                            <i class="fa fa-arrow-left" style=" color:white;"></i>
-                            <span class="title" style=" color:white;">Cuotas</span>
-                            <span class="selected">
-                            </span>
-                            <span class="arrow ">
-                            </span>
-                        </a>
-                        <ul class="sub-menu" >
-                            <li ui-sref="mensualCharge" ng-class="{ 'active' : active === 'mensual' }"style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style="color:white;">Generar cuotas mensuales</span>
-                                </a>
-                            </li>
-                            <li ui-sref="extraordinaryCharge" ng-class="{ 'active' : active === 'extraordinary' }"style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style=" color:white;">Generar cuotas extraordinarias</span>
-                                </a>
-                            </li>
-                            <li ui-sref="individualCharge" ng-class="{ 'active' : active === 'individual' }"style="border-bottom:1px solid #444c56">
-                                <a href="">
-                                    <i class="fa fa-circle-o"></i>
-                                    <span  style=" color:white;">Generar cuota individual</span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
-                    <li ng-class="{ 'active' : active === 'presupuestos'} "  ui-sref="presupuesto">
-                        <a href="javascript:;" >
-                            <i class="fa fa-line-chart"  style="color:white;"></i>
-                            <span class="title"  style="color:white;">Presupuestos</span>
-                            <span class="selected">
-                            </span>
-
-                        </a>
-
-                    </li>
-                    <li ng-class="{ 'active' : active === 'bancos' } "  ui-sref="banco">
-                        <a href="javascript:;" >
-                            <i class="fa fa-university"  style="color:white;"></i>
-                            <span class="title"  style="color:white;">Bancos</span>
-                            <span class="selected">
-                            </span>
-
-                        </a>
-
-                    </li>
-
-                    <li ui-sref="houses-balance" ng-class="{ 'active' : active === 'balance'}">
-                        <a href=""  style=" color:white;">
-                            <i class="fa fa-balance-scale" aria-hidden="true"  style="font-weight:500; color:white;"></i> Saldos
-                        </a>
-                    </li>
-
-                    <li ui-sref="collection-table" ng-class="{ 'active' : active === 'collectionTable'}">
-                        <a href=""  style=" color:white;">
-                            <i class="fa fa-table" aria-hidden="true"  style="font-weight:500; color:white;"></i> Tabla de cobranza
-                        </a>
-                    </li>
-
-                    <li ui-sref="administration-configuration-detail" ng-class="{ 'active' : active === 'administrationConfiguration'}">
-                        <a href=""  style=" color:white;">
-                            <i class="fa fa-cog" aria-hidden="true"  style="font-weight:500; color:white;"></i> Configuración
-                        </a>
-                    </li>
-
-                </ul>
-
-            </li>
-
-
-
-            <li  class="start" ng-class="{ 'active' : active === 'estadoResultados' ||  active === 'reporteGastos'  ||  active === 'reporteIngresos'} " >
-
-                <a href="javascript:;">
-                    <i class="fa fa-pie-chart"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title "  style="font-weight:500; color:white;"> Reportes</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu" >
-                    <li ui-sref="budgetExecution.mensualReport" ng-class="{ 'active' : active === 'estadoResultados' }" >
-                        <a href=""  style="color:white;">
-                            <i class="fa fa-circle-o" style=" color:white;"></i>
-                            <span   style=" color:white;">Estado de resultados</span>
-                        </a>
-                    </li>
-                    <li ui-sref="egress-report" ng-class="{ 'active' : active === 'reporteGastos' }" >
-                        <a href=""  style="color:white;">
-                            <i class="fa fa-circle-o" style=" color:white;"></i>
-                            <span   style=" color:white;">Reporte de gastos</span>
-                        </a>
-                    </li>
-                    <li ui-sref="payment-report" ng-class="{ 'active' : active === 'reporteIngresos' }" >
-                        <a href=""  style="color:white;">
-                            <i class="fa fa-circle-o" style=" color:white;"></i>
-                            <span   style=" color:white;">Reporte de ingresos</span>
-                        </a>
-                    </li>
-                </ul>
-
-            </li>
-
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'reservationAdministration' ||  active === 'generaCalendar'  ||  active === 'createReservation'} ">
-
-                <a href="javascript:;">
-                    <i class="fa fa-tree"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title "  style="font-weight:500; color:white;"> Áreas comunes</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="common-area-administration.common-area" ng-class="{ 'active' : active === 'reservationAdministration'}">
-                        <a href="" style="color:white;">
-                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Administrar
-                        </a>
-                    </li>
-                    <li ui-sref="common-area-administration.general-reservation-calendar"  ng-class="{ 'active' : active === 'generaCalendar'}">
-                        <a href="" style=" color:white;">
-                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Calendario general
-                        </a>
-                    </li>
-                    <li ui-sref="common-area-administration.newReservation"  ng-class="{ 'active' : active === 'createReservation'}">
-                        <a href="" style=" color:white;">
-                            <i class="fa fa-circle-o"  style=" color:white;" aria-hidden="true"></i> Reservar
-                        </a>
-                    </li>
-
-                </ul>
-
-            </li>
-
-
-            <li  class="start" ng-class="{ 'active' : active === 'proovedores' ||  active === 'configureCharges' ||  active === 'bancoConfiguration' ||  active === 'egressCategories'  } ">
-                <a href="javascript:;">
-                    <i class="fa fa-cogs"  style=" color:white;" aria-hidden="true"></i>
-                    <span class="title "  style="font-weight:500; color:white;">Configuracion</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-
-                <ul class="sub-menu" >
-                    <li ui-sref="proveedor" ng-class="{ 'active' : active === 'proovedores' }" >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
-                            <span  style=" color:white;">Proveedores</span>
-                        </a>
-                    </li>
-                    <li ui-sref="configureCharges" ng-class="{ 'active' : active === 'configureCharges' }"  >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
-                            <span  style="color:white;">Cuotas</span>
-                        </a>
-                    </li>
-                    <li ui-sref="banco-configuration" ng-class="{ 'active' : active === 'bancoConfiguration' }"  >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
-                            <span  style=" color:white;">Cuentas de banco</span>
-                        </a>
-                    </li>
-                    <li ui-sref="egress-category" ng-class="{ 'active' : active === 'egressCategories' }"  >
-                        <a href="">
-                            <i class="fa fa-circle-o"></i>
-                            <span  style=" color:white;">Categoría de egresos </span>
-                        </a>
-                    </li>
-
-                </ul>
-            </li>
-            <li has-any-authority="ROLE_USER" ng-class="{ 'active' : active === 'complaint-user'}">
-                <a ui-sref="complaint-user"  style="font-weight:500; color:white;">
-                    <i class="fa  fa-commenting-o" aria-hidden="true"  style="font-weight:600; color:white;"></i> Quejas y sugerencias
-                </a>
-            </li>
-            <li ui-sref="complaint" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'complaint'}">
-                <a href="javascript:;">
-                    <i class="fa fa-commenting-o" style="color:white; " aria-hidden="true"></i>
-                    <span class="title" style="font-weight:500; color:white; ">Gestionar quejas</span>
-                </a>
-            </li>
-            <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
-                <a ui-sref="soporte"  style="font-weight:500; color:white;">
-                    <i class="fa fa-life-ring" aria-hidden="true"  style="font-weight:600; color:white;"></i> Soporte
-                </a>
-            </li>
-        </ul>
-        <!-- END SIDEBAR MENU -->
-    </div>
-</div>
-<script>
-    $( document ).ready(function() {
-      Metronic.init(); // init metronic core components
-    Layout.init(); // init current layout
-    QuickSidebar.init(); // init quick sidebar
-    Demo.init(); // init demo features
-    console.log( "ready!" );
-    });
-</script>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </md-content>
+</md-sidenav>

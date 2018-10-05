@@ -1307,18 +1307,35 @@ div.scrollmenu a:hover {
 }
 
 .image-navbar {
-    width: 29px;
-    height: 29px;
+    width: 35px;
+    height: 35px;
     display: inline-block;
     float: left;
     margin-right: 5px;
-    margin-top: -5px
+    margin-top: -5px;
+    cursor: pointer;
 }
 
 .object-fit_scale-down-navbar {
     object-fit: scale-down;
-    height: 29px;
-    width: 29px;
+    height: 35px;
+    width: 35px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+
+
+.image-navbar-big {
+    width: 80px;
+    height: 80px;
+    display: inline-block;
+    margin:10px;
+}
+
+.object-fit_scale-down-navbar-big {
+    object-fit: scale-down;
+    height: 80px;
+    width: 80px;
     background-color: #ebedf0;
     border-radius: 50% !important;
 }
@@ -1480,4 +1497,177 @@ div.scrollmenu a:hover {
 .switchdemoBasicUsage .inset {
     padding-left: 25px;
     padding-top: 25px;
+}
+.mat-toolbar.mat-primary{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
+}
+
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+
+}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+}
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+    .all-content{
+        margin-top: 64px;
+        margin-left: 235px;
+    }
+    .side-nav-bar{
+        margin-top: 64px;
+        width: 235px!important;
+    }
+}
+.all-content{
+    padding:15px;
+    margin-top: 64px;
+}
+
+
+
+
+/*LOADING PAGE*/
+
+.app-loading {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    z-index:9980;
+}
+.spinner {
+    /* Spinner size and color */
+    width: 1.5rem;
+    height: 1.5rem;
+    border-top-color: #44b6ae;
+    border-left-color: #44b6ae;
+    /* Additional spinner styles */
+    animation: spinner 1000ms linear infinite;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 50%;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* Animation styles */
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* Optional — create your own variations! */
+.spinner-large {
+    width: 10rem;
+    height: 10rem;
+    border-width: 6px;
+}
+
+.spinner-slow {
+    animation: spinner 1s linear infinite;
+}
+
+.spinner-blue {
+    border-top-color: #09d;
+    border-left-color: #09d;
+}
+
+/*END LOADING SPINNER*/
+
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+
+
+#sidebar {
+    /* don't forget to add all the previously mentioned styles here too */
+    background: white;
+    color: #979797;
+    transition: all 0.3s;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: #6d7fcc;
+}
+
+#sidebar ul.components {
+
+}
+
+#sidebar ul p {
+    margin: 0;
+    padding: 7px 5px;
+    border-radius: 3px;
+}
+
+#sidebar ul li a {
+    padding: 5px;
+    font-size: 1.1em;
+    display: block;
+    text-decoration: none;
+}
+
+#sidebar ul li a i {
+    vertical-align: middle !important;
+}
+.principal-icon{
+    margin-right: 15px;
+}
+#sidebar ul li a:hover {
+    color: #01579B;
+    background: white;
+}
+#sidebar ul li{
+
+}
+#sidebar ul li.active > a, a[aria-expanded="true"] {
+    text-decoration: none;
+}
+#sidebar ul li.collapse.active > a, a[aria-expanded="true"] {
+    background-color: white;
+    text-decoration: none;
+}
+
+.activeSubmenu a {
+    color: #3c3c3c!important;
+    text-decoration: none!important;
+    background: white!important;
+}
+.collapse li {
+    border-bottom: none!important;
+}
+
+.material-icons-with-text{
+    vertical-align: middle !important;
+    margin-right:15px;
+}
+
+.content-loader{
+    height: 500px!important;
 }

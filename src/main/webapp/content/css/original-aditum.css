@@ -366,8 +366,9 @@ overflow-y: auto!important;
 }
 
 .route-title {
-    margin: -24px -20px;
-    padding: 0px 15px !important;
+    margin-left: -15px;
+    margin-top: -15px;
+    margin-bottom: 0px!important;
 }
 
 #imgInp {
