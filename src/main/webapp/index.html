@@ -45,7 +45,7 @@
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp" id="body">
+<body ng-app="aditumApp" id="body" style="background-color: #fafafa!important">
 <div class="app-loading">
     <span class="spinner spinner-large"></span>
 </div>
@@ -60,7 +60,7 @@
                 <div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
                 </div>
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" class="all-content">
+                <div ui-view="content" style="background-color: #fafafa!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" class="all-content">
                 </div>
             <div flex></div>
         </md-content>

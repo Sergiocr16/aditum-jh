@@ -1,6 +1,6 @@
 package com.lighthouse.aditum.service;
 
-import org.ocpsoft.prettytime.*;
+//import org.ocpsoft.prettytime.*;
 import com.lighthouse.aditum.service.dto.ComplaintCommentDTO;
 import com.lighthouse.aditum.service.dto.ComplaintDTO;
 import io.github.jhipster.config.JHipsterProperties;
@@ -69,7 +69,7 @@ public class ComplaintMailService {
         List<ComplaintCommentDTO> complaintCommentDTOList = complaintDTO.getComplaintComments().getContent();
 
         complaintCommentDTOList.forEach(complaintCommentDTO -> {
-            PrettyTime p = new PrettyTime(new Locale("es"));
+//            PrettyTime p = new PrettyTime(new Locale("es"));
             complaintCommentDTO.setFormattedCreationDate(DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a").format(complaintCommentDTO.getCreationDate().minusHours(6)));
         });
 

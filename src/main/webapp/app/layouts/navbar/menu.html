@@ -15,14 +15,14 @@
                 <li ng-repeat="mainItem in vm.menu" has-any-authority="{{mainItem.authoritites}}">
                     <a ng-mouseenter="mainItem.hover = true;" ng-mouseleave="mainItem.hover = false" ng-if="!mainItem.collapsable" ng-click="vm.go(mainItem.uisref)" data-toggle="collapse"
                        aria-expanded="false"
-                       class="dropdown-toggle" style="{{vm.defineStyleMainButton(mainItem).color}}">
+                       class="dropdown-toggle"  style="{{vm.defineStyleMainButton(mainItem).color}}">
                         <p style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}"><i
                             class="material-icons principal-icon">
                             {{mainItem.icon}}
                         </i> {{mainItem.title}}
                         </p>
                     </a>
-                    <a ng-mouseenter="mainItem.hover = true;" ng-mouseleave="mainItem.hover = false" ng-if="mainItem.collapsable" href="#{{mainItem.menuId}}" target="_self" data-toggle="collapse"
+                    <a ng-mouseenter="mainItem.hover = true;" ng-click="vm.collapseAllOther(mainItem,null)" ng-mouseleave="mainItem.hover = false" ng-if="mainItem.collapsable" href="#{{mainItem.menuId}}" target="_self" data-toggle="collapse"
                        aria-expanded="false"
                        class="dropdown-toggle" style="{{vm.defineStyleMainButton(mainItem).color}}">
                         <p style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}"><i
@@ -45,7 +45,7 @@
                                 </i> {{secondItem.title}}
                                 </p>
                             </a>
-                            <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable" href="#{{secondItem.menuId}}" target="_self"
+                            <a ng-mouseenter="secondItem.hover = true;" ng-click="vm.collapseAllOther(secondItem,mainItem)" ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable" href="#{{secondItem.menuId}}" target="_self"
                                data-toggle="collapse" aria-expanded="false"
                                class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}};padding:0 5px;">
                                 <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i

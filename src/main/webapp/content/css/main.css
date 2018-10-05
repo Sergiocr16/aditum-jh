@@ -447,7 +447,7 @@ ul#strengthBar {
     vertical-align: 2px;
 }
 
-.point: last {
+.point:last {
     margin: 0 !important;
 }
 
@@ -1585,3 +1585,6 @@ div.scrollmenu a:hover {
     margin-right:15px;
 }
 
+.content-loader{
+    height: 500px!important;
+}
