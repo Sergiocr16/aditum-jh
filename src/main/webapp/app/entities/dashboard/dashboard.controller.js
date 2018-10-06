@@ -23,7 +23,6 @@
         }
 
         vm.loadAll = function () {
-
             Dashboard.query({companyId: globalCompany.getId()}, function (result) {
                 vm.dashboard = result;
                 showData();

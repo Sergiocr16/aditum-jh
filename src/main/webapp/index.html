@@ -50,18 +50,18 @@
 <div class="app-loading" ng-if="!showContent">
     <span class="spinner spinner-large"></span>
 </div>
-<div layout="column" ng-cloak="" ng-if="showContent">
+<div ui-view="reset" ng-if="showContent">
+</div>
+<div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin" ng-if="showContent">
+</div>
+<div layout="column" ng-cloak="" >
     <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
     <section layout="row" flex="">
         <div ui-view="menu" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
-        <md-content flex style="overflow-x: hidden">
-            <div ui-view="reset">
-            </div>
-                <div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
-                </div>
+        <md-content flex style="overflow-x: hidden" class="all-content">
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" class="all-content">
+                <div ui-view="content" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
                 </div>
             <div flex></div>
         </md-content>

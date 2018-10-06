@@ -1,10 +1,32 @@
 html {
-    overflow-x: hidden;
+    overflow: hidden!important;
+    height: 100%;
+    overflow: hidden;
+}
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+    padding: 4px 0;
 }
 
+/* Track */
+::-webkit-scrollbar-track {
+    background: white;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background-color: rgba(30,30,30,0.3);
+    margin: 4px 0;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #979797;
+}
 body {
     background: #fafafa;
-    overflow-y: hidden !important;
+    overflow: hidden !important;
     font-family: 'Roboto Condensed', sans-serif;
     color: #333;
 }
@@ -1508,19 +1530,37 @@ div.scrollmenu a:hover {
 
 
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-
+@media only screen and (max-width: 500px) {
+    .all-content{
+        margin-top: 56px;
+    }
+    .side-nav-bar{
+        margin-top: 0px;
+    }
 }
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .all-content{
+        margin-top: 56px;
+    }
+    .side-nav-bar{
+        margin-top: 0px;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+    .all-content{
+        margin-top: 56px;
+    }
 }
-}
+
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-
+    .all-content{
+        margin-top: 64px;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -1538,10 +1578,14 @@ div.scrollmenu a:hover {
         margin-top: 64px;
         width: 235px!important;
     }
+
 }
 .all-content{
     padding:15px;
-    margin-top: 64px;
+}
+
+.reset-page{
+    width: 100%;
 }
 
 
@@ -1670,4 +1714,23 @@ div.scrollmenu a:hover {
 
 .content-loader{
     height: 500px!important;
+}
+
+.scrollbox {
+    overflow: auto;
+    visibility: hidden;
+}
+.scrollbox-content,
+.scrollbox:hover,
+.scrollbox:focus {
+    visibility: visible;
+}
+
+.scrollbox_delayed {
+    visibility: visible;
+    transition: 3s;
+}
+.scrollbox_delayed:hover {
+    visibility: visible;
+    transition: 3s;
 }

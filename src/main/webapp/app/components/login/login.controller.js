@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'pdfDelegate', '$localStorage', 'CommonMethods'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'pdfDelegate', '$localStorage', 'CommonMethods','Modal'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, pdfDelegate, $localStorage, CommonMethods) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, pdfDelegate, $localStorage, CommonMethods, Modal) {
 
 
         angular.element(document).ready(function () {
@@ -57,8 +57,7 @@
         }
 
         function showLoginHelp() {
-
-            toastr["info"]("Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac");
+      Modal.dialog("Nombre de usuario","Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac","¡Entendido!")
         }
 
         function login(event) {
@@ -143,7 +142,8 @@
                 }
             }).catch(function (a) {
                 vm.authenticationError = true;
-                toastr["error"]("Credenciales inválidos o cuenta deshabilitada.");
+                Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
+
             });
         }
 
