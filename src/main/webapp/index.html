@@ -47,16 +47,16 @@
 </head>
 
 <body ng-app="aditumApp" id="popupContainer" style="background-color: white!important " layout="column">
-<div class="app-loading" ng-if="!showContent">
+<div class="app-loading fade-out" ng-if="!showContent">
     <span class="spinner spinner-large"></span>
 </div>
-<div ui-view="reset" ng-if="showContent">
+<div ui-view="reset" ng-if="showContent" >
 </div>
-<div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin" ng-if="showContent">
+<div ui-view="login"  ng-hide="vm.isAuthenticated() || !showLogin" ng-if="showContent">
 </div>
 <div layout="column" ng-cloak="" >
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
-    <section layout="row" flex="">
+    <div ui-view="navbar"   has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
+    <section layout="row" flex="" >
         <div ui-view="menu" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
         <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
