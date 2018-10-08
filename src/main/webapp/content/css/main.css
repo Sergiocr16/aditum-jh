@@ -1537,6 +1537,9 @@ div.scrollmenu a:hover {
     .side-nav-bar{
         margin-top: 0px;
     }
+    .loading-bar{
+        margin-top: 56px;
+    }
 }
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -1546,11 +1549,17 @@ div.scrollmenu a:hover {
     .side-nav-bar{
         margin-top: 0px;
     }
+    .loading-bar{
+        margin-top: 56px;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
     .all-content{
+        margin-top: 56px;
+    }
+    .loading-bar{
         margin-top: 56px;
     }
 }
@@ -1559,6 +1568,9 @@ div.scrollmenu a:hover {
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
     .all-content{
+        margin-top: 64px;
+    }
+    .loading-bar{
         margin-top: 64px;
     }
 }
@@ -1578,10 +1590,18 @@ div.scrollmenu a:hover {
         margin-top: 64px;
         width: 235px!important;
     }
+    .loading-bar{
+        margin-top: 64px;
+    }
 
 }
 .all-content{
     padding:15px;
+}
+.loading-bar{
+    position:fixed;
+    margin-left: 235px;
+    z-index:100;
 }
 
 .reset-page{
@@ -1733,4 +1753,9 @@ div.scrollmenu a:hover {
 .scrollbox_delayed:hover {
     visibility: visible;
     transition: 3s;
+}
+
+.disabledDiv {
+    pointer-events: none;
+    opacity: 0.6;
 }

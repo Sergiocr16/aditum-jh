@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods'];
+    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods) {
+    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal) {
         var vm = this;
 
         vm.announcement = entity;
@@ -16,73 +16,46 @@
         vm.save = save;
         vm.saveAsSketch = saveAsSketch;
         vm.isCreatingOne = $state.includes('announcement.new');
-        console.log(vm.announcement)
-        $timeout(function () {
-            angular.element('.form-group:eq(1)>input').focus();
-        });
-
-        setTimeout(function () {
-            $("#loadingIcon").fadeOut(300);
-        }, 400);
-        setTimeout(function () {
-            $("#form").fadeIn('slow');
-        }, 900);
+        $rootScope.mainTitle = 'Crear/Editar noticia';
 
 
-        function defineImageSize(str){
+        function defineImageSize(str) {
             var res;
             var n1 = str.search('style="width: 25%;"');
             var n2 = str.search('style="width: 50%;"');
             var n3 = str.search('style="width: 100%;"');
-            if(n1!=-1) {
+            if (n1 != -1) {
                 res = str.replace("<img", '<img width="25%"');
             }
-            if(n2!=-1) {
+            if (n2 != -1) {
                 res = str.replace("<img", '<img width="50%"');
             }
-            if(n3!=-1) {
+            if (n3 != -1) {
                 res = str.replace("<img", '<img width="100%"');
             }
             return res;
         }
+
         function save() {
-            vm.isSaving = true;
-
-            bootbox.confirm({
-                message: "¿Está seguro que desea publicar la noticia? , una vez publicada será visible para los condóminos.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        vm.announcement.publishingDate = moment(new Date()).format();
-                        vm.announcement.status = 2;
-                        vm.announcement.companyId = $rootScope.companyId;
-                        var str = vm.announcement.description;
-                        vm.announcement.description = defineImageSize(str);
-                        if (vm.announcement.id !== null) {
-                            Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
-                        } else {
-                            Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
-                        }
-                    }
+            Modal.confirmDialog("¿Está seguro que desea publicar la noticia?", "Una vez publicada será visible para los condóminos", function () {
+                Modal.showLoadingBar()
+                vm.announcement.publishingDate = moment(new Date()).format();
+                vm.announcement.status = 2;
+                vm.announcement.companyId = $rootScope.companyId;
+                var str = vm.announcement.description;
+                vm.announcement.description = defineImageSize(str);
+                if (vm.announcement.id !== null) {
+                    Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
+                } else {
+                    Announcement.save(vm.announcement, onSaveSuccess, onSaveError);
                 }
-            });
-
+            })
 
         }
 
         function saveAsSketch() {
             vm.isSaving = true;
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             vm.announcement.publishingDate = moment(new Date()).format();
             vm.announcement.status = 1;
             vm.announcement.companyId = $rootScope.companyId;
@@ -95,24 +68,24 @@
 
         function onSaveSuccess(result) {
             vm.announcement = result;
-            bootbox.hideAll();
-            toastr["success"]("Se ha publicado exitosamente el anuncio en el condominio.");
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha publicado exitosamente el anuncio en el condominio.");
             $state.go("announcement");
             vm.isSaving = false;
         }
 
         function onSaveSuccessSketch(result) {
             vm.announcement = result;
-            bootbox.hideAll();
-            toastr["success"]("Guardado como borrador.");
+            Modal.hideLoadingBar();
+            Modal.toast("Guardado como borrador.");
             $state.go("announcement-sketch");
             vm.isSaving = false;
         }
 
         function onSaveError() {
             vm.isSaving = false;
-            toastr["error"]("Ah ocurrido un error, es posible que el contenido del anuncio sea demasiado largo o tenga muchas imagenes en el mismo.")
-            bootbox.hideAll();
+            Modal.toast("Ah ocurrido un error, es posible que el contenido del anuncio sea demasiado largo o tenga muchas imagenes en el mismo.")
+            Modal.hideLoadingBar();
         }
 
         vm.datePickerOpenStatus.publishingDate = false;

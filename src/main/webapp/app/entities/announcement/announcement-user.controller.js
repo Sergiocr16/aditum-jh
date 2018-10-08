@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser','globalCompany'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser','globalCompany','Modal'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany, Modal) {
 
         var vm = this;
         $rootScope.active = 'userNews';
-
+        $rootScope.mainTitle = 'Noticias';
+        vm.isReady = false;
         moment.locale("es");
         vm.announcements = [];
         vm.loadPage = loadPage;
@@ -34,9 +35,7 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = false;
-        // setTimeout(function () {
             loadAll();
-        // }, 2000);
 
 
         function onSaveSuccess() {
@@ -45,7 +44,7 @@
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
         vm.hideCommentForm = function (announcement) {
@@ -59,7 +58,6 @@
         function onSuccess(data, headers) {
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
-
             for (var i = 0; i < data.length; i++) {
                 data[i].publishingDate = moment(data[i].publishingDate).fromNow();
                 data[i].comments = [];
@@ -72,21 +70,15 @@
                 };
                 vm.announcements.push(data[i]);
             }
-            console.log(vm.announcements)
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400);
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 900);
+           vm.isReady = true;
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
         function onErrorComments(error) {
-            toastr["error"]("Ha ocurrido un error cargando los comentarios.")
+            Modal.toast("Ha ocurrido un error cargando los comentarios.")
         }
 
         function sort() {
@@ -174,73 +166,46 @@
         }
 
         function saveComment(announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea realizar el comentario?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        var comment = {
-                            comment: announcement.currentComment.comment,
-                            creationDate: moment(new Date()).format(),
-                            residentId: companyUser.companies === undefined ? companyUser.id : null,
-                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
-                            announcementId: announcement.id,
-                            deleted: 0
-                        };
-                        Announcement.saveComment(comment,
-                            function () {
-                                toastr["success"]("Comentario enviado.")
-                                announcement.currentComment = {comment: ""};
-                                announcement.commentsQuantity++;
-                                announcement.showingComments = true;
-                                loadComments(announcement);
-                            }, function () {
-                                toastr["error"]("Ha ocurrido un error enviando tu comentario.")
-
-                            });
-                    }
-                }
+            Modal.confirmDialog("¿Está seguro que desea realizar el comentario?","",function(){
+                Modal.showLoadingBar();
+                var comment = {
+                    comment: announcement.currentComment.comment,
+                    creationDate: moment(new Date()).format(),
+                    residentId: companyUser.companies === undefined ? companyUser.id : null,
+                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    announcementId: announcement.id,
+                    deleted: 0
+                };
+                Announcement.saveComment(comment,
+                    function () {
+                        Modal.toast("Comentario enviado.")
+                        announcement.currentComment = {comment: ""};
+                        announcement.commentsQuantity++;
+                        announcement.showingComments = true;
+                        loadComments(announcement);
+                        Modal.hideLoadingBar();
+                    }, function () {
+                        Modal.hideLoadingBar()
+                        Modal.toast("Ha ocurrido un error enviando tu comentario.")
+                    });
             });
-
         }
 
         function deleteComment(comment, announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar el comentario?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        comment.deleted = 1;
-                        Announcement.deleteComment(comment,
-                            function (result) {
-                                toastr["success"]("Comentario eliminado correctamente.");
-                                announcement.commentsQuantity--;
+            Modal.confirmDialog("¿Está seguro que desea eliminar el comentario?","",function(){
+                comment.deleted = 1;
+                Announcement.deleteComment(comment,
+                    function (result) {
+                        Modal.toast("Comentario eliminado correctamente.");
+                        announcement.commentsQuantity--;
+                        Modal.hideLoadingBar()
+                        loadComments(announcement);
+                    }, function () {
+                        Modal.hideLoadingBar()
+                        Modal.toast("Ha ocurrido un error eliminando tu comentario.")
+                    });
 
-                                loadComments(announcement);
-                            }, function () {
-                                toastr["error"]("Ha ocurrido un error eliminando tu comentario.")
-                            });
-                    }
-                }
-            });
+            })
         }
 
         function showActionEdit(comment) {
@@ -256,40 +221,29 @@
         }
 
         function submitEditComment(comment, announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea editar el comentario?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        var editedComment = {
-                            comment: comment.newComment,
-                            creationDate: comment.creationDate,
-                            residentId: companyUser.companies === undefined ? companyUser.id : null,
-                            adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
-                            announcementId: announcement.id,
-                            id: comment.id,
-                            deleted: 0,
-                            editedDate: moment(new Date()).format()
-                        };
-                        Announcement.editComment(editedComment,
-                            function () {
-                                toastr["success"]("Comentario editado correctamente.");
-                                loadComments(announcement);
-                            }, function () {
-                                toastr["error"]("Ha ocurrido un error editando tu comentario.")
-                            });
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea editar el comentario?","",function(){
+                Modal.showLoadingBar()
+                var editedComment = {
+                    comment: comment.newComment,
+                    creationDate: comment.creationDate,
+                    residentId: companyUser.companies === undefined ? companyUser.id : null,
+                    adminInfoId: companyUser.companies !== undefined ? companyUser.id : null,
+                    announcementId: announcement.id,
+                    id: comment.id,
+                    deleted: 0,
+                    editedDate: moment(new Date()).format()
+                };
+                Announcement.editComment(editedComment,
+                    function () {
+                        Modal.toast("Comentario editado correctamente.");
+                        loadComments(announcement);
+                        Modal.hideLoadingBar()
+                    }, function () {
+                        Modal.toast("Ha ocurrido un error editando tu comentario.")
+                        Modal.hideLoadingBar()
+                    });
+            })
+
         }
 
 

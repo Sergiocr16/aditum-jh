@@ -16,13 +16,10 @@
         </div>
     </div>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="display-none" id="tableData">
+<div ng-if="vm.isReady" >
     <div class="col-md-12 no-padding">
         <h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list oficial-title-index">Noticias</h3>
 
@@ -46,7 +43,7 @@
         <div ng-if="vm.announcements == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marging-top-100">
             <h2 class="text-center gray-font font-24">No hay anuncios registrados</h2>
         </div>
-        <table class=" table table-hover   font-13 tableMaterialDesign" >
+        <table class=" table table-hover   font-13 tableMaterialDesign" ng-if="vm.announcements != 0">
             <thead style="background-color: #fafafa;">
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                     <th>Título</th>

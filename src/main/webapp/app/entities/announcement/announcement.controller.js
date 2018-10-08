@@ -5,17 +5,19 @@
         .module('aditumApp')
         .controller('AnnouncementController', AnnouncementController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany'];
+    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany) {
+    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal) {
 
         var vm = this;
         $rootScope.active = 'announcements';
+        $rootScope.mainTitle = 'Administrar noticias';
         vm.announcements = [];
         vm.loadPage = loadPage;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.showingNews = true;
         vm.loadAll = loadAll;
+        vm.isReady = false;
         vm.page = 0;
         vm.links = {
             last: 0
@@ -24,7 +26,8 @@
         vm.reset = reset;
         vm.reverse = true;
         // setTimeout(function () {
-            loadAll();
+        loadAll();
+
         // }, 1000);
 
 
@@ -34,55 +37,25 @@
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
         vm.publish = function (announcement) {
-
-            bootbox.confirm({
-                message: "¿Está seguro que desea publicar la noticia? , una vez publicada será visible para los condóminos.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        announcement.status = 2;
-                        announcement.publishingDate = moment(new Date()).format();
-                        Announcement.update(announcement, onSaveSuccess, onError);
-                    }
-                }
-            });
-
-        }
+            Modal.confirmDialog("¿Está seguro que desea publicar la noticia?",
+                "Una vez publicada será visible para los condóminos.", function () {
+                    announcement.status = 2;
+                    announcement.publishingDate = moment(new Date()).format();
+                    Announcement.update(announcement, onSaveSuccess, onError);
+                });
+        };
 
 
         vm.unPublish = function (announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea retirar la noticia? , una vez retirada no será visible para los condóminos.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        announcement.status = 3;
-                        Announcement.update(announcement, onSaveSuccess, onError);
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea retirar la noticia?",
+                "Una vez retirada no será visible para los condóminos.", function () {
+                    announcement.status = 3;
+                    Announcement.update(announcement, onSaveSuccess, onError);
+                });
         };
 
         function onSuccess(data, headers) {
@@ -92,16 +65,11 @@
             for (var i = 0; i < data.length; i++) {
                 vm.announcements.push(data[i]);
             }
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400);
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 900);
+            vm.isReady = true;
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.");
         }
 
         function sort() {
@@ -112,31 +80,16 @@
             return result;
         }
 
-        vm.delete = function(announcement){
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar la noticia? , una vez eliminada no podrá ser recuperada.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        Announcement.delete({id: announcement.id},
-                            function () {
-                                toastr["success"]("Se ha elminado la noticia correctamente.")
-                                vm.announcements =[];
-                                loadAll();
-                            });
-                    }
-                }
-            });
-
+        vm.delete = function (announcement) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la noticia?",
+                "Una vez eliminada no podrá ser recuperada.", function () {
+                    Announcement.delete({id: announcement.id},
+                        function () {
+                            Modal.toast("Se ha elminado la noticia correctamente.")
+                            vm.announcements = [];
+                            loadAll();
+                        });
+                });
         };
 
 

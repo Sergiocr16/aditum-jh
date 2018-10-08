@@ -5,11 +5,13 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary','PadronElectoral'];
+    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal'];
 
-    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary,PadronElectoral) {
+    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal) {
         $rootScope.active = "residents";
         var vm = this;
+        vm.isReady = false;
+
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -67,11 +69,11 @@
             }
 
             if (vm.resident.name == undefined || vm.resident.lastname == undefined || vm.resident.secondlastname == undefined || hasWhiteSpace(vm.resident.identificationnumber)) {
-                toastr["error"]("No puede ingresar espacios en blanco.");
+                Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
             } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
                 invalido++;
-                toastr["error"]("No puede ingresar ningún caracter especial.");
+                Modal.toast("No puede ingresar ningún caracter especial.");
             }
             if (invalido == 0) {
                 return true;
@@ -94,109 +96,103 @@
         }
 
 
-        setTimeout(function () {
-            House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
 
-            function onSuccessHouses(data, headers) {
-                angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                })
-                vm.houses = data;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#edit_resident_form").fadeIn('slow');
-                }, 900)
+        function onSuccessHouses(data, headers) {
+            angular.forEach(data, function (value, key) {
+                value.housenumber = parseInt(value.housenumber);
+                if (value.housenumber == 9999) {
+                    value.housenumber = "Oficina"
+                }
+            })
+            vm.houses = data;
+            vm.isReady = true;
 
-            }
-        }, 500)
+        }
 
-        $timeout(function () {
-            angular.element('.form-group:eq(1)>input').focus();
-        });
 
-        function haswhiteCedula(s){
+        function haswhiteCedula(s) {
             return /\s/g.test(s);
         }
-        vm.findInPadron = function(resident){
 
-            if(resident.identificationnumber!=undefined || resident.identificationnumber != ""){
-                if(hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality=="9" && hasLetter(resident.identificationnumber)){
+        vm.findInPadron = function (resident) {
+
+            if (resident.identificationnumber != undefined || resident.identificationnumber != "") {
+                if (hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality == "9" && hasLetter(resident.identificationnumber)) {
                     resident.validIdentification = 0;
-                }else{
+                } else {
                     resident.validIdentification = 1;
                 }
 
-                if(resident.nationality=="9" && resident.identificationnumber != undefined){
-                    if(resident.identificationnumber.trim().length==9){
-                        PadronElectoral.find(resident.identificationnumber,function(person){
-                            setTimeout(function(){
-                                $scope.$apply(function(){
+                if (resident.nationality == "9" && resident.identificationnumber != undefined) {
+                    if (resident.identificationnumber.trim().length == 9) {
+                        PadronElectoral.find(resident.identificationnumber, function (person) {
+                            setTimeout(function () {
+                                $scope.$apply(function () {
                                     var nombre = person.nombre.split(",");
                                     resident.name = nombre[0];
                                     resident.lastname = nombre[1];
                                     resident.secondlastname = nombre[2];
                                     resident.found = 1;
                                 })
-                            },100)
-                        },function(){
+                            }, 100)
+                        }, function () {
 
                         })
 
 
-                    }else{
-                        setTimeout(function(){
-                            $scope.$apply(function(){
+                    } else {
+                        setTimeout(function () {
+                            $scope.$apply(function () {
                                 resident.found = 0;
                             })
-                        },100)
+                        }, 100)
                     }
-                }else{
+                } else {
                     resident.found = 0;
                 }
             }
         };
-        function hasLetter(s){
-            var caracteres = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ","o","q","r","s","t","u","v","w","x","y","z"]
+
+        function hasLetter(s) {
+            var caracteres = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
             var invalido = 0;
-            angular.forEach(caracteres,function(val,index){
-                if (s!=undefined){
-                    for(var i=0;i<s.length;i++){
-                        if(s.charAt(i).toUpperCase()==val.toUpperCase()){
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
 
                             invalido++;
                         }
                     }
                 }
             })
-            if(invalido==0){
+            if (invalido == 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
-        function hasCaracterEspecial(s){
-            var caracteres = [,",",".","-","$","@","(",")","=","+","/",":","%","*","'","",">","<","?","¿","#","!","}","{",'"',";","_","^","!"]
+
+        function hasCaracterEspecial(s) {
+            var caracteres = [, ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
             var invalido = 0;
-            angular.forEach(caracteres,function(val,index){
-                if (s!=undefined){
-                    for(var i=0;i<s.length;i++){
-                        if(s.charAt(i)==val){
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i) == val) {
                             invalido++;
                         }
                     }
                 }
             })
-            if(invalido==0){
+            if (invalido == 0) {
                 return false;
-            }else{
+            } else {
                 return true;
             }
         }
+
         function save() {
 
             if (vm.validate()) {
@@ -212,7 +208,7 @@
                         }, alreadyExist, allClearUpdate)
 
                         function alreadyExist(data) {
-                            toastr["error"]("La cédula ingresada ya existe.");
+                            Modal.toast("La cédula ingresada ya existe.");
                         }
 
                     } else {
@@ -227,7 +223,7 @@
                     }, alreadyExist, allClearInsert)
 
                     function alreadyExist(data) {
-                        toastr["error"]("La cédula ingresada ya existe.");
+                        Modal.toast("La cédula ingresada ya existe.");
                     }
 
 
@@ -236,12 +232,12 @@
 
             function allClearInsert(data) {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    toastr["error"]("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
+                    Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
                 } else if (vm.resident.isOwner == 1) {
-                    CommonMethods.waitingMessage();
+                    Modal.showLoadingBar();
                     createAccount(1);
                 } else {
-                    CommonMethods.waitingMessage();
+                    Modal.showLoadingBar();
                     insertResident(null);
                 }
             }
@@ -252,21 +248,21 @@
 
             function updateResident() {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    toastr["error"]("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
+                    Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
                 } else if (autorizadorStatus == 1 && vm.resident.isOwner == false) {
-                    CommonMethods.waitingMessage();
+                    Modal.showLoadingBar();
                     updateAccount(0);
                 } else if (autorizadorStatus == 0 && vm.resident.isOwner == true) {
                     if (vm.resident.userId !== null) {
-                        CommonMethods.waitingMessage();
+                        Modal.showLoadingBar();
                         updateAccount(1);
                     } else {
-                        CommonMethods.waitingMessage();
+                        Modal.showLoadingBar();
                         createAccount(2);
                     }
                 } else if (vm.resident.isOwner == false) {
                     changeStatusIsOwner();
-                    CommonMethods.waitingMessage();
+                    Modal.showLoadingBar();
                     vm.imageUser = {user: vm.resident.id};
                     if (fileImage !== null) {
                         SaveImageCloudinary
@@ -293,7 +289,7 @@
                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                     }
                 } else {
-                    CommonMethods.waitingMessage();
+                    Modal.showLoadingBar();
                     updateAccount(vm.resident.enabled);
                 }
             }
@@ -402,8 +398,8 @@
                 WSResident.sendActivity(result);
                 vm.isSaving = false;
                 $state.go('resident');
-                bootbox.hideAll();
-                toastr["success"]("Se ha editado el usuario correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha editado el usuario correctamente.");
             }
 
             function insertResident(id) {
@@ -437,8 +433,8 @@
                             WSResident.sendActivity(result);
                             vm.isSaving = false;
                             $state.go('resident');
-                            bootbox.hideAll();
-                            toastr["success"]("Se ha registrado el usuario correctamente.");
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se ha registrado el usuario correctamente.");
                         }
                     }
                 } else {
@@ -453,8 +449,8 @@
                         WSResident.sendActivity(result);
                         vm.isSaving = false;
                         $state.go('resident');
-                        bootbox.hideAll();
-                        toastr["success"]("Se ha registrado el usuario correctamente.");
+                        Modal.hideLoadingBar();
+                        Modal.toast("Se ha registrado el usuario correctamente.");
                     }
                 }
 
@@ -503,8 +499,8 @@
                 vm.isSaving = false;
                 switch (error.data.login) {
                     case "emailexist":
-                        toastr["error"]("El correo electrónico ingresado ya existe.");
-                        bootbox.hideAll();
+                        Modal.toast("El correo electrónico ingresado ya existe.");
+                        Modal.hideLoadingBar();
                         break;
                     case "userexist":
                         vm.user.login = generateLogin(1);

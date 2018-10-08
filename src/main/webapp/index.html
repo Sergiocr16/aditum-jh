@@ -59,7 +59,8 @@
     <section layout="row" flex="">
         <div ui-view="menu" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
-        <md-content flex style="overflow-x: hidden" class="all-content">
+        <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
+        <md-content flex style="overflow-x: hidden;background:white" class="all-content" id="content">
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
                 <div ui-view="content" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
                 </div>
@@ -882,6 +883,8 @@
 <script src="app/components/util/money-util.filter.js"></script>
 
 <script src="app/components/util/modal-util.js"></script>
+
+<script src="app/components/util/loadingBarComponent.js"></script>
 
 <script src="app/components/util/jhi-item-count.directive.js"></script>
 

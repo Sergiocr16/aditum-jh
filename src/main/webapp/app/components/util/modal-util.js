@@ -4,15 +4,17 @@
     angular
         .module('aditumApp')
         .factory('Modal', Modal);
-    Modal.$inject = ['$mdToast', '$mdDialog'];
+    Modal.$inject = ['$mdToast', '$mdDialog', '$rootScope'];
 
-    function Modal($mdToast, $mdDialog) {
+    function Modal($mdToast, $mdDialog, $rootScope) {
         var service = {
             toast: toast,
             actionToast: actionToast,
             dialog: dialog,
             confirmDialog: confirmDialog,
-            confirmDialogCustom: confirmDialogCustom
+            confirmDialogCustom: confirmDialogCustom,
+            showLoadingBar: showLoadingBar,
+            hideLoadingBar: hideLoadingBar
         };
         var $scope = {};
         var last = {
@@ -99,11 +101,12 @@
 
             $mdDialog.show(confirm).then(function () {
                 ok()
-            },function() {
+            }, function () {
 
-            } );
+            });
         };
-        function confirmDialogCustom (title, content, okText, cancelText, ok) {
+
+        function confirmDialogCustom(title, content, okText, cancelText, ok) {
             var ev = new Event('build');
             var confirm = $mdDialog.confirm()
                 .title(title)
@@ -118,6 +121,16 @@
 
             });
         };
+
+        function hideLoadingBar() {
+            $rootScope.isShowingLoadingBar = false;
+            $("#content").removeClass("disabledDiv");
+        }
+
+        function showLoadingBar() {
+            $rootScope.isShowingLoadingBar = true;
+            $("#content").addClass("disabledDiv");
+        }
 
     }
 })

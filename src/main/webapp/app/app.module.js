@@ -83,5 +83,6 @@
 
 
       vm.showContent = true;
+      vm.isShowingLoadingBar = false;
     }
 })();
