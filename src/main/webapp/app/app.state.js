@@ -4,12 +4,12 @@
     angular
         .module('aditumApp')
         .config(stateConfig);
-    // angular
-    //     .module('aditumApp').config(function($mdThemingProvider) {
-    //     $mdThemingProvider.theme('default')
-    //         .primaryPalette('indigo')
-    //         .accentPalette('indigo');
-    // });
+    angular
+        .module('aditumApp').config(function($mdThemingProvider) {
+        $mdThemingProvider.theme('default')
+            .primaryPalette('teal')
+            .accentPalette('orange');
+    });
     stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider) {

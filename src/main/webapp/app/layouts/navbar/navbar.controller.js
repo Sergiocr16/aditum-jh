@@ -9,7 +9,7 @@
 
     function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav,$localStorage,globalCompany) {
         var vm = this;
-        vm.colors = {primary: "#01579B", secondary: "#E1F5FE", normalColorFont: "##c3c3c3"};
+        vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.colorsMenu = {
             mainButton: {

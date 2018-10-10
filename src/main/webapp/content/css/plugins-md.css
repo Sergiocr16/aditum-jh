@@ -347,7 +347,7 @@ Bootstrap Markdown
 ***/
 .md-input {
   padding: 5px !important;
-  border-bottom: 0 !important;
+  /*border-bottom: 0 !important;*/
   -webkit-border-radius: 0 0 2px 2px;
   -moz-border-radius: 0 0 2px 2px;
   -ms-border-radius: 0 0 2px 2px;

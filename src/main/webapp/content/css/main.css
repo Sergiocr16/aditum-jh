@@ -1803,3 +1803,22 @@ div.scrollmenu a:hover {
 
 .material-icons.md-light { color: rgba(255, 255, 255, 1); }
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
+
+.form-wrapper {
+    border: 1px solid rgba(0, 0, 0, .03);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
+}
+.form-content{
+    background-color: white;
+    padding: 30px;
+}
+.form-title{
+    color: rgba(0,0,0,.54) !important;
+    background-color: rgba(0,0,0,.03)!important;
+    font-weight: bold!important;
+    padding-left: 15px;
+}
+.form-title h2{
+    font-weight: bold!important;
+    font-size:17px!important;
+}
