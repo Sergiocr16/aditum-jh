@@ -5,15 +5,15 @@
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal'];
 
-    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident) {
+    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal) {
 
-        var vm = this;
         var vm = this;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
+        vm.isReady = false;
         vm.transition = transition;
         vm.loadAll = loadAll;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -56,69 +56,58 @@
         }
 
         vm.sendEmail = function (payment) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        vm.exportActions.sendingEmail = true;
-                        Resident.findResidentesEnabledByHouseId({
-                            houseId: parseInt($localStorage.houseSelected.id),
-                        }).$promise.then(onSuccessResident, onError);
 
-                        function onSuccessResident(data, headers) {
-                            var thereIs = false;
-                            angular.forEach(data, function (resident, i) {
-                                if (resident.email != undefined && resident.email != "" && resident.email != null) {
-                                    resident.selected = false;
-                                    if (resident.principalContact == 1) {
-                                        thereIs = true;
-                                    }
+            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
+                function(){
+                    vm.exportActions.sendingEmail = true;
+                    Resident.findResidentesEnabledByHouseId({
+                        houseId: parseInt($localStorage.houseSelected.id),
+                    }).$promise.then(onSuccessResident, onError);
+
+                    function onSuccessResident(data, headers) {
+                        var thereIs = false;
+                        angular.forEach(data, function (resident, i) {
+                            if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                                resident.selected = false;
+                                if (resident.principalContact == 1) {
+                                    thereIs = true;
                                 }
-                            });
-                            if (thereIs == true) {
-                                Payment.sendPaymentEmail({
-                                    paymentId: payment.id
-                                })
-                                setTimeout(function () {
-                                    $scope.$apply(function () {
-                                        vm.exportActions.sendingEmail = false;
-                                    })
-                                    toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
-
-                                }, 8000)
-                            } else {
-
-                                vm.exportActions.sendingEmail = false;
-
-                                toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
-
                             }
-                        }
+                        });
+                        if (thereIs == true) {
+                            Payment.sendPaymentEmail({
+                                paymentId: payment.id
+                            })
+                            setTimeout(function () {
+                                $scope.$apply(function () {
+                                    vm.exportActions.sendingEmail = false;
+                                });
+                                Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
 
-                        function onError() {
-                            toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
+
+                            }, 8000)
+                        } else {
+
+                            vm.exportActions.sendingEmail = false;
+                            Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
+
 
                         }
                     }
-                }
-            });
+
+                    function onError() {
+                        Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
+
+
+                    }
+                });
+
 
 
         }
 
         vm.cleanSearch = function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
+            vm.isReady = false;
             vm.initialTime = {
                 date: undefined,
                 openCalendar: false
@@ -133,8 +122,7 @@
         }
 
         vm.filter = function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
+            vm.isReady = false;
             vm.filtering = true;
             loadAll();
         }
@@ -168,8 +156,7 @@
         $scope.$watch(function () {
             return $rootScope.houseSelected;
         }, function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
+            vm.isReady = false;
             vm.filtering = false;
             vm.initialTime = {
                 date: undefined,
@@ -223,10 +210,7 @@
                     payment.isShowingCharges = false;
                 })
                 vm.page = pagingParams.page;
-                $("#loading").fadeOut(300);
-                setTimeout(function () {
-                    $("#data").fadeIn("slow");
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {

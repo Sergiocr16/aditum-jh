@@ -5,11 +5,13 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods','Modal'];
 
-    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
-    $rootScope.active = "houses";
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods,Modal ) {
+        $rootScope.active = "houses";
+
         var vm = this;
+        $rootScope.mainTitle = "Filiales";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -18,11 +20,9 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
         vm.ocultarACondos = true;
-        setTimeout(function(){loadAll();
-        // if($rootScope.companyId>2){
-        // vm.ocultarACondos = true;
-        // }
-        },1500)
+        vm.isReady = false;
+        loadAll();
+
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -56,12 +56,7 @@
                   })
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                  setTimeout(function() {
-                            $("#loadingIcon").fadeOut(300);
-                  }, 400)
-                   setTimeout(function() {
-                       $("#tableData").fadeIn('slow');
-                   },700 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -85,7 +80,7 @@
 
        vm.showKeys = function(house_number, securityKey, emergencyKey) {
             if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "" ) {
-                toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas.");
+                Modal.toast("Esta casa aún no tiene claves de seguridad asignadas.");
             } else {
                 bootbox.dialog({
                     message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de seguridad: <span class="font-20 bold" id="security_key">1134314</span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de emergencia: <span class="font-20 bold" id="emergency_key">1134314</span></h1></div>',
@@ -105,7 +100,7 @@
        vm.showLoginCode = function(house_number, codeStatus, loginCode) {
              var estado = "";
             if (loginCode == null) {
-                toastr["error"]("Esta casa aún no tiene un código de iniciación asignado.");
+                Modal.toast("Esta casa aún no tiene claves de seguridad asignadas.");
             } else {
 
                 if(codeStatus==false || codeStatus ==0){estado = 'No activada'} else { estado = "Activada"};

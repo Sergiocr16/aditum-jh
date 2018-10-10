@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany'];
+    VehiculeController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany','Modal'];
 
-    function VehiculeController($state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany) {
+    function VehiculeController($state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany,Modal) {
         $rootScope.active = "vehicules";
         var enabledOptions = true;
         var vm = this;
@@ -15,7 +15,10 @@
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
+        vm.radioEnablestatus = true;
         vm.transition = transition;
+        $rootScope.mainTitle = vm.title;
+        vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.editVehicle = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -103,12 +106,7 @@
                     }
                     vm.vehicules = formatVehicules(vehiculesByHouse);
                 }
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -117,17 +115,23 @@
 
         }
 
-        vm.switchEnabledDisabledResidents = function () {
-            enabledOptions = !enabledOptions;
+
+        vm.switchEnabledVehicules = function () {
+            enabledOptions = true;
+            vm.radioEnablestatus = true;
+            vm.radioDisablestatus = false;
             vm.findVehiculesByHouse(vm.house);
         }
+        vm.switchDisabledVehicules = function () {
+            enabledOptions = false;
+            vm.radioEnablestatus = false;
+            vm.radioDisablestatus = true;
+            vm.findVehiculesByHouse(vm.house);
 
+        }
 
         vm.findVehiculesByHouse = function (house) {
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             vm.house = house;
 
             if (house == undefined) {
@@ -152,30 +156,18 @@
         }
 
         vm.deleteVehicule = function (id_vehicule, license_plate) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar al vehículo " + license_plate + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar al vehículo "+ license_plate + "?","Una vez eliminado no podrá recuperar los datos",
+                function(){
+                    Modal.showLoadingBar();
+                    Vehicule.delete({
+                        id: id_vehicule
+                    }, onSuccessDelete);
+                });
 
-                        Vehicule.delete({
-                            id: id_vehicule
-                        }, onSuccessDelete);
-                    }
-                }
-            });
 
             function onSuccessDelete(data, headers) {
-                toastr["success"]("Se ha eliminado el vehículo correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha eliminado el vehículo correctamente.");
                 loadVehicules();
                 WSDeleteEntity.sendActivity({type: 'vehicle', id: id_vehicule})
             }
@@ -190,51 +182,36 @@
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al vehículo " + vehicule.licenseplate + "?";
             }
-            bootbox.confirm({
-
-                message: correctMessage,
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        if (enabledOptions) {
-                            vehicule.enabled = 0;
-                            Vehicule.update(vehicule, onSuccessDisable);
+            Modal.confirmDialog(correctMessage,"",function(){
+                Modal.showLoadingBar();
+                if (enabledOptions) {
+                    vehicule.enabled = 0;
+                    Vehicule.update(vehicule, onSuccessDisable);
 
 
-                        } else {
-                            vehicule.enabled = 1;
-                            Vehicule.update(vehicule, onSuccessEnable);
+                } else {
+                    vehicule.enabled = 1;
+                    Vehicule.update(vehicule, onSuccessEnable);
 
-                        }
-
-                    }
                 }
             });
 
+
             function onSuccessEnable(data, headers) {
                 WSVehicle.sendActivity(data);
-                bootbox.hideAll();
-                toastr["success"]("Se ha habilitado el vehículo correctamente.");
                 loadVehicules();
+
+                Modal.toast("Se ha habilitado el vehículo correctamente.");
+                Modal.hideLoadingBar();
 
             }
 
             function onSuccessDisable(data, headers) {
                 WSVehicle.sendActivity(data);
                 loadVehicules();
-                toastr["success"]("Se ha deshabilitado el vehículo correctamente.");
-                bootbox.hideAll();
+
+                Modal.toast("Se ha deshabilitado el vehículo correctamente.");
+                Modal.hideLoadingBar();
             }
         };
 

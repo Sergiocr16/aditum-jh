@@ -11,7 +11,7 @@
         $rootScope.active = "residents";
         var vm = this;
         vm.isReady = false;
-
+        $rootScope.mainTitle = vm.title;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -86,6 +86,7 @@
         if (vm.resident.id !== null) {
             vm.title = "Editar usuario";
             vm.button = "Editar";
+            vm.resident.type = vm.resident.type+"";
             var autorizadorStatus = vm.resident.isOwner;
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;

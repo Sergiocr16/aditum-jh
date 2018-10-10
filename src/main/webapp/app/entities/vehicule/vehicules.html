@@ -20,30 +20,27 @@
         </div>
     </div>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="row display-none" id="tableData">
+<div ng-if="vm.isReady" class="padding-top-20 fade-in">
     <div class="col-md-12">
         <h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600">{{vm.title}}  </h3>
             <div class="btn-group pull-right ">
                 <div class="form-group form-md-radios ">
                     <div class="md-radio-inline">
-
                         <div class="md-radio" >
-                            <input type="radio" ng-click="vm.switchEnabledDisabledResidents()" id="radio20" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">
-                            <label for="radio20" style="color:#45B6AF">
+                            <input type="radio" id="radio400" name="radio53" ng-checked="vm.radioEnablestatus"  class="md-radiobtn"  ng-click="vm.switchEnabledVehicules()">
+                            <label for="radio400" style="color:#45B6AF">
+                                <span class="inc"></span>
                                 <span class="inc"></span>
                                 <span class="check"></span>
                                 <span class="box"></span>
                                 Habilitados </label>
                         </div>
                         <div class="md-radio has-error">
-                            <input type="radio" ng-click="vm.switchEnabledDisabledResidents()" id="radio21" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">
-                            <label for="radio21">
+                            <input type="radio" id="radio401" name="radio5" ng-checked="vm.radioDisablestatus" class="md-radiobtn" ng-click="vm.switchDisabledVehicules()">
+                            <label for="radio401">
                                 <span class="inc"></span>
                                 <span class="check"></span>
                                 <span class="box"></span>

@@ -5,13 +5,13 @@
         .module('aditumApp')
         .controller('EgressDialogController', EgressDialogController);
 
-    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany', 'AdministrationConfiguration'];
+    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany', 'AdministrationConfiguration','Modal'];
 
-    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany, AdministrationConfiguration) {
+    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany, AdministrationConfiguration,Modal) {
         var vm = this;
         $rootScope.active = "newEgress";
-
-
+        $rootScope.mainTitle =  vm.title;
+        vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.egress = entity;
         vm.clear = clear;
@@ -83,12 +83,7 @@
 
             })
             vm.egressCategories = data;
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#new_egress_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
         }
 
 
@@ -153,59 +148,23 @@
 
 
         function confirmCreateEgress() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
+            Modal.confirmDialog("¿Está seguro que desea registrar este egreso?","Una vez registrada esta información no se podrá editar",
+                function(){
+                    save();
+                });
 
-                    if (result) {
-                        save()
-
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         }
 
         function confirmReportPayment() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
+            Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?","Una vez registrada esta información no se podrá editar",
+                function(){
+                    save();
+                });
 
-                    if (result) {
-                        save()
-
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         }
 
         function save() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
             if (currentTime <= expirationTime) {
@@ -231,10 +190,10 @@
         }
         vm.hola(vm.egress.total)
         function onSaveReport(result) {
-            bootbox.hideAll();
+            Modal.hideLoadingBar();
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
-            toastr["success"]("Se reportó el pago correctamente");
+            Modal.toast("Se reportó el pago correctamente");
             vm.isSaving = false;
 
         }
@@ -245,25 +204,27 @@
                     vm.admingConfig = admin;
                     vm.egressfolioSerie = admin.egressfolioSerie;
                     vm.egressfolioSerie = admin.egressfolioSerie;
-                    bootbox.hideAll();
+                    Modal.hideLoadingBar();
                     $scope.$emit('aditumApp:egressUpdate', result);
                     $state.go('egress');
-                    toastr["success"]("Se registró el gasto correctamente");
+                    Modal.toast("Se registró el gasto correctamente");
                     vm.isSaving = false;
                 })
             }else{
-                bootbox.hideAll();
+                Modal.hideLoadingBar();
                 $scope.$emit('aditumApp:egressUpdate', result);
+                Modal.hideLoadingBar();
+                Modal.toast("Se registró el gasto correctamente");
                 $state.go('egress');
-                toastr["success"]("Se registró el gasto correctamente");
+
                 vm.isSaving = false;
             }
 
         }
 
         function onSaveError() {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             vm.isSaving = false;
         }
 

@@ -12,6 +12,8 @@
 
         var vm = this;
         var enabledOptions = true;
+        vm.isReady = false;
+        vm.radiostatus = true;
         vm.isAuthenticated = Principal.isAuthenticated;
         setTimeout(function(){ loadResidents();},100)
         function loadResidents() {
@@ -32,14 +34,7 @@
 
             function onSuccess(data) {
                 vm.residents = data;
-                console.log(data)
-
-                setTimeout(function() {
-                    $("#loadingIcon4").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#residents_container").fadeIn('slow');
-                },700 )
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -47,10 +42,8 @@
             }
         }
         vm.switchEnabledDisabledResidents = function() {
-            $("#residents_container").fadeOut(0);
-            setTimeout(function() {
-                $("#loadingIcon4").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
+            vm.radiostatus = !vm.radiostatus;
             enabledOptions = !enabledOptions;
             loadResidents();
         }
@@ -73,8 +66,7 @@
         $scope.$watch(function() {
             return $rootScope.houseSelected;
         }, function() {
-            $("#residents_container").fadeOut(0);
-            $("#loadingIcon4").fadeIn("slow");
+            vm.isReady = true;
             loadResidents();
             vm.isEditing = false;
         });

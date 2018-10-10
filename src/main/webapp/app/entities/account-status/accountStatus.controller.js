@@ -14,6 +14,7 @@
         var firstDay = new Date(y, m - 6, 1);
         var lastDay = new Date(y, m + 2, 0);
         vm.searchType = 1;
+        vm.isReady = false;
         vm.openCalendar = openCalendar;
         vm.loadAll = loadAll;
         vm.datePickerOpenStatus = {};
@@ -38,8 +39,7 @@
         $scope.$watch(function () {
             return $rootScope.houseSelected;
         }, function () {
-            $("#data").fadeOut(0);
-            $("#loading").fadeIn("slow");
+            vm.isReady = true;
             loadAll();
             vm.isEditing = false;
         });

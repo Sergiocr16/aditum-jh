@@ -17,6 +17,8 @@
         vm.transition = transition;
         $localStorage.houseSelected = {};
         $rootScope.houseSelected = {};
+        $rootScope.mainTitle = "Contabilidad filiales";
+        vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "houseAdministration";
         vm.expanding = false;
@@ -68,12 +70,7 @@
                     }
                 }
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

@@ -15,13 +15,10 @@
         </div>
     </div>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="row display-none" id="tableData">
+<div ng-if="vm.isReady" class="fade-in">
     <div class="col-md-12">
         <h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12  font-green-sharp font-weight-600  " style="color: #00b19d" ng-hide="vm.isConsulting==true">{{vm.title}}
         </h3>
@@ -33,14 +30,14 @@
         <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Mostrar todos</button>
         <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                <input ng-model="vm.dates.initial_time" style="border-radius: 0px!important;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
                        type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
             </div>
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                <input ng-model="vm.dates.final_time" style="border-radius: 0px!important;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
                        class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
             </div>
-            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <button ng-disabled="vm.isDisableButton()" style="border-radius: 0px!important;" ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
         </div>
 
         <div class="form-group no-padding col-md-offset-3  col-lg-offset-3  col-sm-offset-3 col-md-9 col-sm-9 col-xs-12" id="index-search-bar">
@@ -121,8 +118,8 @@
                         <td >{{egress.reference}}</td>
                         <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
 
-                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><h5 class="text-center" style="font-size:12px;">Detalle</h5></a></td>
-                        <td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; padding:10px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; padding:10px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
+                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)">Detalle</a></td>
+                        <td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
                         <td  class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2" ng-click="vm.detailEgress(egress.id)" class=" label label-success horizontal-padding-15" style=""  aria-hidden="false">Registrar pago</span></td>
 
 
