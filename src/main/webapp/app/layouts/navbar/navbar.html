@@ -1,11 +1,15 @@
 <md-toolbar layout="row" layout-align="space-between center" style="position:fixed;background-color:{{vm.colors.primary}}">
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <div>
-            <h1>
-                <i class="material-icons" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
+            <h1 hide-sm hide-xs>
+                <i class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
                 <a ui-sref="home">
                     <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22">
                 </a>
+            </h1>
+            <h1 hide-lg hide-gt-lg hide-xl>
+                <i class="material-icons  material-icons-with-text" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
+                {{mainTitle}}
             </h1>
         </div>
         <div layout-align="left center">
@@ -37,7 +41,6 @@
                                         style="color:#666">{{vm.account.login}}</span>
                                     </div>
                                 </div>
-
                                 <div style="color:#a4aab2;">
                                     {{contextLiving}}
                                 </div>

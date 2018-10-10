@@ -82,18 +82,11 @@
                         case "ROLE_MANAGER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
                                 $rootScope.companyUser = data;
-                                if (data.companies.length > 1 && $rootScope.companyId == undefined) {
-                                    $rootScope.showSelectCompany = true;
-                                    vm.backgroundSelectCompany = true;
-                                    $state.go('dashboard.selectCompany');
-                                } else {
                                     $rootScope.showSelectCompany = false;
                                     $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                                     $rootScope.companyId = data.companies[0].id;
-                                    console.log(data.companies[0].id)
                                     vm.backgroundSelectCompany = true;
                                     $state.go('dashboard');
-                                }
                             })
                             break;
                         case "ROLE_OFFICER":
