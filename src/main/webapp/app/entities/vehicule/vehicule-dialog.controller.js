@@ -5,13 +5,15 @@
         .module('aditumApp')
         .controller('VehiculeDialogController', VehiculeDialogController);
 
-    VehiculeDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand','globalCompany'];
+    VehiculeDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand','globalCompany','Modal'];
 
-    function VehiculeDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand,globalCompany) {
+    function VehiculeDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand,globalCompany,Modal) {
         $rootScope.active = "vehicules";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+        vm.isReady = false;
+        $rootScope.mainTitle = vm.title;
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         vm.required = 1;
@@ -51,12 +53,7 @@
                     }
                 })
                 vm.houses = data;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#register_edit_form").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
 
             }
 
@@ -99,11 +96,12 @@
             }
 
             if (vm.vehicule.licenseplate == undefined || hasWhiteSpace(vm.vehicule.licenseplate)) {
-                toastr["error"]("No puede ingresar la placa con espacios en blanco.");
+                Modal.toast("No puede ingresar la placa con espacios en blanco.");
+
                 invalido++;
             } else if (hasCaracterEspecial(vm.vehicule.licenseplate)) {
                 invalido++;
-                toastr["error"]("No puede ingresar la placa con guiones o cualquier otro carácter especial");
+                Modal.toast("No puede ingresar la placa con guiones o cualquier otro carácter especial");
             }
             if (invalido == 0) {
                 return true;
@@ -130,7 +128,7 @@
                         }, alreadyExist, allClearUpdate)
 
                         function alreadyExist(data) {
-                            toastr["error"]("La placa ingresada ya existe.");
+                            Modal.toast("La placa ingresada ya existe.");
                         }
                     } else {
                         Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
@@ -142,11 +140,11 @@
                     }, alreadyExist, allClearInsert)
 
                     function alreadyExist(data) {
-                        toastr["error"]("La placa ingresada ya existe.");
+                        Modal.toast("La placa ingresada ya existe.");
                     }
 
                     function allClearInsert() {
-                        CommonMethods.waitingMessage();
+                        Modal.showLoadingBar();
                         insertVehicule();
                     }
 
@@ -158,7 +156,7 @@
             }
 
             function allClearUpdate(data) {
-                CommonMethods.waitingMessage();
+                Modal.showLoadingBar();
                 updateVehicule();
 
             }
@@ -170,8 +168,8 @@
             function onSaveSuccess(result) {
                 WSVehicle.sendActivity(result);
                 $state.go('vehicule');
-                bootbox.hideAll();
-                toastr["success"]("Se ha registrado el vehículo correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha registrado el vehículo correctamente.");
 
                 vm.isSaving = false;
             }
@@ -179,9 +177,8 @@
             function onEditSuccess(result) {
                 WSVehicle.sendActivity(result);
                 $state.go('vehicule');
-                bootbox.hideAll();
-
-                toastr["success"]("Se ha editado el vehículo correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha editado el vehículo correctamente.");
 
                 vm.isSaving = false;
             }

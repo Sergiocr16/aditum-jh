@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage','Modal'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage,Modal) {
 
         var vm = this;
 
@@ -18,9 +18,9 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.loadAll = loadAll;
         vm.isEditing = false;
-        setTimeout(function() {
-            loadAll();
-        }, 4000)
+        vm.isReady = false;
+        loadAll();
+
 
 
         vm.datePassed = function(cuota){
@@ -47,15 +47,16 @@
                         id: $localStorage.houseSelected.id
                     }, onSuccess)
 
-                    function onSuccess(house) {
-                        toastr["success"]("Se han actualizado las cuotas correctamente.")
-                        $rootScope.houseSelected = house;
-                        $localStorage.houseSelected = house;
-                        loadAll();
-                        bootbox.hideAll();
-                        vm.isEditing = true;
-                    }
 
+                }
+
+                function onSuccess(house) {
+                    Modal.toast("Se han actualizado las cuotas correctamente.");
+                    $rootScope.houseSelected = house;
+                    $localStorage.houseSelected = house;
+                    loadAll();
+                    Modal.hideLoadingBar();
+                    vm.isEditing = true;
                 }
             }
             var allGood = 0;
@@ -65,72 +66,46 @@
                 }
             })
             if (allGood == 0) {
-                bootbox.confirm({
-                    message: "¿Está seguro que desea modificar las cuotas?",
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function(result) {
-                        if (result) {
-                            CommonMethods.waitingMessage();
-                            updateCharge(0)
 
-                        }
-                    }
-                });
+                Modal.confirmDialog("¿Está seguro que desea modificar las cuotas?","",
+                    function(){
+                        Modal.showLoadingBar();
+                        updateCharge(0)
+                    });
+
             } else {
-                toastr["error"]("Alguna de las cuotas tiene un formato inválido.")
+                Modal.toast("Alguna de las cuotas tiene un formato inválido.")
             }
         }
 
         vm.deleteCharge = function(charge) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar la cuota " + charge.concept + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        charge.deleted = 1;
-                        Charge.update(charge, onSaveSuccess, onSaveError);
 
-                        function onSaveSuccess(result) {
-                            House.get({
-                                id: result.houseId
-                            }, onSuccess)
+            Modal.confirmDialog("¿Está seguro que desea eliminar la cuota " + charge.concept + "?","Una vez eliminado no podrá recuperar los datos",
+                function(){
+                    Modal.showLoadingBar();
+                    charge.deleted = 1;
+                    Charge.update(charge, onSaveSuccess, onSaveError);
 
-                            function onSuccess(house) {
-                                bootbox.hideAll();
-                                toastr["success"]("La cuota se ha eliminado correctamente.")
-                                $rootScope.houseSelected = house;
-                                $localStorage.houseSelected = house;
-                                loadAll();
-                                vm.isEditing = true;
-                            }
+                    function onSaveSuccess(result) {
+                        House.get({
+                            id: result.houseId
+                        }, onSuccess)
 
+                        function onSuccess(house) {
+                            Modal.hideLoadingBar();
+                            Modal.toast("La cuota se ha eliminado correctamente.")
+                            $rootScope.houseSelected = house;
+                            $localStorage.houseSelected = house;
+                            loadAll();
+                            vm.isEditing = true;
                         }
 
-                        function onSaveError() {
-
-                        }
                     }
-                }
-            });
+
+                    function onSaveError() {
+
+                    }
+                });
 
         }
         vm.validate = function(cuota) {
@@ -248,10 +223,7 @@
                 vm.charges = data;
 
                 vm.page = pagingParams.page;
-                $("#loading").fadeOut(300);
-                setTimeout(function() {
-                    $("#data").fadeIn("slow");
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {

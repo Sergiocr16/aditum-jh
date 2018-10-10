@@ -5,17 +5,18 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal'];
+    ResidentController.$inject = ['$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal','globalCompany'];
 
-    function ResidentController($state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal) {
+    function ResidentController($state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal,globalCompany) {
         $rootScope.active = "residents";
 
         var enabledOptions = true;
         var vm = this;
         vm.radiostatus = true;
         $rootScope.mainTitle = vm.title;
-        vm.isAuthenticated = Principal.isAuthenticated;
         vm.isReady = false;
+        vm.isAuthenticated = Principal.isAuthenticated;
+
 
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -79,7 +80,7 @@
 
         function loadHouses() {
             House.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }).$promise.then(onSuccessHouses);
 
             function onSuccessHouses(data, headers) {
@@ -103,7 +104,7 @@
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort(),
-                    companyId: $rootScope.companyId,
+                    companyId: globalCompany.getId(),
                 }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
@@ -111,7 +112,7 @@
                     page: pagingParams.page - 1,
                     size: vm.itemsPerPage,
                     sort: sort(),
-                    companyId: $rootScope.companyId,
+                    companyId: globalCompany.getId(),
                 }).$promise.then(onSuccess, onError);
             }
 
@@ -159,10 +160,7 @@
             $("#radio19").prop("checked", "checked")
         }
         vm.findResidentsByHouse = function (house) {
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             vm.house = house;
             if (house == undefined) {
                 loadResidents();
@@ -196,7 +194,7 @@
             vm.residentToDelete = resident;
             Modal.confirmDialog("¿Está seguro que desea eliminar al residente "+ resident.name + "?","Una vez eliminado no podrá recuperar los datos",
                 function(){
-                Modal.showLoadingBar();
+                    Modal.showLoadingBar();
                     vm.login = resident.userLogin;
                     Resident.delete({
                         id: resident.id

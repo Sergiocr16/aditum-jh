@@ -63,6 +63,7 @@
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content">
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
                 <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
+
                 </div>
         </md-content>
     </section>

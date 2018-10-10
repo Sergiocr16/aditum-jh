@@ -5,10 +5,13 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = ['$scope', '$state','$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company','Proveedor','Banco','Principal'];
+    EgressDetailController.$inject = ['$scope', '$state','$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company','Proveedor','Banco','Principal','Modal'];
 
-    function EgressDetailController($scope,$state, $rootScope, $stateParams, previousState, entity, Egress, Company,Proveedor,Banco,Principal) {
+    function EgressDetailController($scope,$state, $rootScope, $stateParams, previousState, entity, Egress, Company,Proveedor,Banco,Principal,Modal) {
         var vm = this;
+        $rootScope.active = "newEgress";
+        vm.isReady = false;
+        $rootScope.mainTitle =  vm.title;
         vm.save = save;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
@@ -56,30 +59,12 @@
                     vm.isSaving = false;
                 }
         vm.confirmReportPayment = function(){
-                   bootbox.confirm({
-                         message: '<div class="text-center gray-font font-15"><h4 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h4><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                            buttons: {
-                                confirm: {
-                                    label: 'Aceptar',
-                                    className: 'btn-success'
-                                },
-                                cancel: {
-                                    label: 'Cancelar',
-                                    className: 'btn-danger'
-                                }
-                            },
-                            callback: function(result) {
+            Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?","Una vez registrada esta información no se podrá editar",
+                function(){
+                    save();
+                });
 
-                                if (result) {
-                                       save()
-
-                                }else{
-                                    vm.isSaving = false;
-
-                                }
-                            }
-                        });
-                }
+        }
          function onSaveSuccess (result) {
              angular.forEach(vm.bancos,function(banco,key){
                  if(banco.id == vm.egress.account){
@@ -96,7 +81,8 @@
         function  onAccountBalanceSuccess (result) {
             $scope.$emit('aditumApp:egressUpdate', result);
             $state.go('egress');
-            toastr["success"]("Se reportó el pago correctamente");
+            Modal.toast("Se reportó el pago correctamente");
+            Modal.hideLoadingBar();
             vm.isSaving = false;
         }
 
@@ -110,12 +96,7 @@
          }
          function onSuccessBancos(data, headers) {
 
-           setTimeout(function() {
-                              $("#loadingIcon").fadeOut(300);
-                      }, 400)
-                         setTimeout(function() {
-                             $("#new_egress_form").fadeIn('slow');
-                      },900 )
+             vm.isReady = true;
               vm.bancos = data;
          }
          function onSuccessAccount(account, headers) {

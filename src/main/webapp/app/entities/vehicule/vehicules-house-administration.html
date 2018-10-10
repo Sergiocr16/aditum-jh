@@ -1,13 +1,9 @@
-
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon5">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="row display-none no-padding" id="vehicules_container">
-    <div class="col-lg-12 col-md-12 ">
-        <div class="col-md-12 no-padding-right">
+<div ng-if="vm.isReady" class=" fade-in no-padding">
+    <div class="col-lg-12 col-md-12 no-padding">
+        <div class="col-md-12 no-padding">
             <div class="pull-left">
                 <h2 class="bold uppercase" style="font-size:15px">{{vm.titleVehiculeIndex}}</h2>
             </div>
@@ -16,7 +12,7 @@
                     <div class="md-radio-inline">
 
                         <div class="md-radio" >
-                            <input type="radio" id="radio23" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <input type="radio" id="radio23" name="radio2" class="md-radiobtn" ng-checked="vm.radiostatus"  ng-click="vm.swithEnabledDisabledVehicules()">
                             <label for="radio23" style="color:#45B6AF">
                                 <span class="inc"></span>
                                 <span class="check"></span>
@@ -24,7 +20,7 @@
                                 Habilitados </label>
                         </div>
                         <div class="md-radio has-error">
-                            <input type="radio" id="radio24" name="radio2" class="md-radiobtn"  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <input type="radio" id="radio24" name="radio2" class="md-radiobtn" ng-checked="!vm.radiostatus" ng-click="vm.swithEnabledDisabledVehicules()">
                             <label for="radio24">
                                 <span class="inc"></span>
                                 <span class="check"></span>
@@ -39,7 +35,7 @@
 
         <div>
             <div ng-show="vm.vehicules.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                <h2  class="text-center gray-font ">No hay vehículos registrados</h2>
+                <h2  class="text-center gray-font font-24 margin-top-100">No hay vehículos registrados</h2>
             </div>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">

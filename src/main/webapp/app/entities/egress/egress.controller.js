@@ -10,6 +10,8 @@
     function EgressController($scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
+        $rootScope.mainTitle =  vm.title;
+        vm.isReady = false;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.loadPage = loadPage;
@@ -98,13 +100,8 @@
                     }
 
                 })
-            })
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 900)
+            });
+            vm.isReady = true;
         }
 
 
@@ -155,10 +152,7 @@
         vm.updatePicker();
 
         function consult() {
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             Egress.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -194,10 +188,7 @@
 
 
         vm.stopConsulting = function () {
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             vm.dates = {
                 initial_time: undefined,
                 final_time: undefined

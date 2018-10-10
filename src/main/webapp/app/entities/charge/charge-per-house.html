@@ -1,13 +1,10 @@
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loading">
-    <div class="spinnerLoading" style="margin:70px auto!important;margin-bottom:100px!important">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="col-md-12 display-none no-padding" id="data">
+<div ng-if="vm.isReady" class=" fade-in" >
 
-    <div class="col-md-12 no-padding">
-        <h2 class="bold uppercase" style="font-size:15px">Deudas vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
+    <div class="col-md-12 no-padding " style="">
+        <h2 class="bold uppercase" style="font-size:15px; margin-top: 0px!important; padding-top: 0px!important;">Deudas vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
     </div>
     <div class="col-md-12 no-padding margin-bottom-10">
         <div class="col-md-6"></div>
@@ -34,7 +31,7 @@
         <div  ng-show="vm.charges.length!=0">
             <form ng-submit="vm.edit()">
                 <table class="table  table-hover font-13 tableMaterialDesign">
-                    <thead  style="background-color: #fafafa;" class="">
+                    <thead  style="background-color: #fafafa;" >
                 <tr>
                     <th class="text-center">
                         Fecha de cobro
