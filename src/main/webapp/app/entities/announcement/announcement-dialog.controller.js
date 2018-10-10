@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal'];
+    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal','globalCompany'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal) {
+    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal,globalCompany) {
         var vm = this;
 
         vm.announcement = entity;
@@ -20,7 +20,7 @@
 
 
         function defineImageSize(str) {
-            var res;
+            var res = str;
             var n1 = str.search('style="width: 25%;"');
             var n2 = str.search('style="width: 50%;"');
             var n3 = str.search('style="width: 100%;"');
@@ -41,9 +41,11 @@
                 Modal.showLoadingBar()
                 vm.announcement.publishingDate = moment(new Date()).format();
                 vm.announcement.status = 2;
-                vm.announcement.companyId = $rootScope.companyId;
+                vm.announcement.companyId = globalCompany.getId();
                 var str = vm.announcement.description;
+                console.log(str)
                 vm.announcement.description = defineImageSize(str);
+                console.log(vm.announcement.description)
                 if (vm.announcement.id !== null) {
                     Announcement.update(vm.announcement, onSaveSuccess, onSaveError);
                 } else {
@@ -58,7 +60,7 @@
             Modal.showLoadingBar();
             vm.announcement.publishingDate = moment(new Date()).format();
             vm.announcement.status = 1;
-            vm.announcement.companyId = $rootScope.companyId;
+            vm.announcement.companyId = globalCompany.getId();
             if (vm.announcement.id !== null) {
                 Announcement.update(vm.announcement, onSaveSuccessSketch, onSaveError);
             } else {

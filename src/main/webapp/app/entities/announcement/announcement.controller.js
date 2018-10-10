@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementController', AnnouncementController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal'];
+    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal','$state'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal) {
+    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal,$state) {
 
         var vm = this;
         $rootScope.active = 'announcements';
@@ -35,7 +35,9 @@
             bootbox.hideAll();
             loadAll();
         }
-
+vm.goTo = function(link){
+            $state.go(link)
+}
         function onError(error) {
             Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }

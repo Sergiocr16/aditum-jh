@@ -10,6 +10,7 @@
     function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav,$localStorage,globalCompany) {
         var vm = this;
         vm.colors = {primary: "#01579B", secondary: "#E1F5FE", normalColorFont: "##c3c3c3"};
+        $rootScope.colors = vm.colors;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -275,7 +276,7 @@
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "announcements",
                                 collapsable: false,
-                                uisref: "announcement",
+                                uisref: "announcements.announcement",
                                 menuId: "",
                                 hover: false,
                             },
@@ -1132,23 +1133,13 @@
         function collapseNavbar() {
             vm.isNavbarCollapsed = true;
         }
-        loadAllCompanies();
 
-        function loadAllCompanies() {
-            MultiCompany.getCurrentUserCompany().then(function (data) {
-                if (data != null) {
-                    $rootScope.companyUser = data;
-                    vm.companies = data.companies;
-                }
-            })
-        }
 
         vm.selectCompany = function(company){
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
             setTimeout(function(){
                 $scope.$apply(function(){
                     vm.getAcount();
-
                 })
             },300)
             $state.reload();

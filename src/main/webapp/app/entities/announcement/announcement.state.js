@@ -9,17 +9,17 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-            .state('announcement', {
+            .state('announcements', {
                 parent: 'entity',
-                url: '/announcement',
+                url: '/noticias',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'app/entities/announcement/announcements.html',
-                        controller: 'AnnouncementController',
+                        templateUrl: 'app/entities/announcement/announcements-all.html',
+                        controller: 'AnnouncementsController',
                         controllerAs: 'vm'
                     }
                 },
@@ -31,11 +31,30 @@
                     }]
                 }
             })
+            .state('announcements.announcement', {
+                url: '/published',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.announcement.home.title'
+                },
+
+                templateUrl: 'app/entities/announcement/announcements.html',
+                controller: 'AnnouncementController',
+                controllerAs: 'vm'
+                ,
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('announcement');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('announcement-user', {
                 parent: 'entity',
-                url: '/noticias',
+                url: '/noticias-user',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_USER'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {
@@ -51,25 +70,22 @@
                         $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }],
-                    companyUser: ['MultiCompany',function(MultiCompany){
+                    companyUser: ['MultiCompany', function (MultiCompany) {
                         return MultiCompany.getCurrentUserCompany()
                     }]
                 }
             })
-            .state('announcement-sketch', {
-                parent: 'entity',
-                url: '/announcement/sketches',
+            .state('announcements.announcement-sketch', {
+                url: '/sketches',
                 data: {
                     authorities: ['ROLE_MANAGER'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/announcement/announcement-sketch.html',
-                        controller: 'AnnouncementSketchController',
-                        controllerAs: 'vm'
-                    }
-                },
+
+                templateUrl: 'app/entities/announcement/announcement-sketch.html',
+                controller: 'AnnouncementSketchController',
+                controllerAs: 'vm'
+                ,
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('announcement');
@@ -79,7 +95,7 @@
                 }
             })
             .state('announcement-detail', {
-                parent: 'announcement',
+                parent: 'announcements',
                 url: '/announcement/{id}',
                 data: {
                     authorities: ['ROLE_MANAGER'],
@@ -135,8 +151,8 @@
                     });
                 }]
             })
-            .state('announcement.new', {
-                parent: 'announcement',
+            .state('announcements.new', {
+                parent: 'announcements',
                 url: '/new',
                 data: {
                     authorities: ['ROLE_MANAGER']
@@ -165,8 +181,8 @@
                     }]
                 }
             })
-            .state('announcement.edit', {
-                parent: 'announcement',
+            .state('announcements.edit', {
+                parent: 'announcements',
                 url: '/{id}/edit',
                 data: {
                     authorities: ['ROLE_MANAGER']

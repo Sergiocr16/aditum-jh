@@ -20,7 +20,7 @@
                             <p ><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
                         </a>
                         <md-menu-content width="4">
-                            <md-menu-item ng-repeat="company in vm.companies">
+                            <md-menu-item ng-repeat="company in companyUser.companies">
                                 <a ng-click="vm.selectCompany(company)" style="{{vm.defineSelectCompanyColor(company).color}}">
                                     <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
                                 </a>

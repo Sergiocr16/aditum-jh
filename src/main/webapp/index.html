@@ -54,17 +54,16 @@
 </div>
 <div ui-view="login"  ng-hide="vm.isAuthenticated() || !showLogin" ng-if="showContent">
 </div>
-<div layout="column" ng-cloak="" >
+<div layout="row" flex ng-cloak="" >
     <div ui-view="navbar"   has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
     <section layout="row" flex="" >
         <div ui-view="menu" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
         <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
-        <md-content flex style="overflow-x: hidden;background:white" class="all-content" id="content">
+        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content">
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
+                <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
                 </div>
-            <div flex></div>
         </md-content>
     </section>
 </div>
@@ -802,6 +801,8 @@
 
 <script src="app/entities/balance/balance.controller.js"></script>
 
+<script src="app/entities/announcement/announcements.controller.js"></script>
+
 <script src="app/entities/announcement/announcement-user.controller.js"></script>
 
 <script src="app/entities/announcement/announcement-sketch.controller.js"></script>
@@ -880,11 +881,11 @@
 
 <script src="app/components/util/padron-electoral.js"></script>
 
+<script src="app/components/util/no-content-component.js"></script>
+
 <script src="app/components/util/money-util.filter.js"></script>
 
 <script src="app/components/util/modal-util.js"></script>
-
-<script src="app/components/util/loadingBarComponent.js"></script>
 
 <script src="app/components/util/jhi-item-count.directive.js"></script>
 

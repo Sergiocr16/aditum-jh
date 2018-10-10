@@ -49,6 +49,7 @@ public class AnnouncementService {
         }
         Announcement announcement = announcementMapper.toEntity(announcementDTO);
         announcement.setDeleted(0);
+        announcement.setCompany(announcementMapper.companyFromId(announcementDTO.getCompanyId()));
         announcement = announcementRepository.save(announcement);
         return announcementMapper.toDto(announcement);
     }

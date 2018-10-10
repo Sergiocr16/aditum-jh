@@ -13,7 +13,7 @@
 
         vm.announcements = [];
         vm.loadPage = loadPage;
-        $rootScope.mainTitle = 'Borradores';
+        $rootScope.mainTitle = 'Administrar noticias';
 
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.loadAll = loadAll;

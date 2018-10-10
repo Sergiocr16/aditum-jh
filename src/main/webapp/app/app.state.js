@@ -5,9 +5,11 @@
         .module('aditumApp')
         .config(stateConfig);
     // angular
-    //     .module('aditumApp').config(['$qProvider', function ($qProvider) {
-    //     $qProvider.errorOnUnhandledRejections(false);
-    // }]);
+    //     .module('aditumApp').config(function($mdThemingProvider) {
+    //     $mdThemingProvider.theme('default')
+    //         .primaryPalette('indigo')
+    //         .accentPalette('indigo');
+    // });
     stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider) {
