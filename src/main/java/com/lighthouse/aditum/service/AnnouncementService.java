@@ -102,7 +102,9 @@ public class AnnouncementService {
     public AnnouncementDTO findOne(Long id) {
         log.debug("Request to get Announcement : {}", id);
         Announcement announcement = announcementRepository.findOne(id);
-        return announcementMapper.toDto(announcement);
+        AnnouncementDTO announcementDTO = announcementMapper.toDto(announcement);
+        announcementDTO.setCommentsQuantity(announcementCommentService.countByAnnouncement(announcement.getId()));
+        return announcementDTO;
     }
 
     /**

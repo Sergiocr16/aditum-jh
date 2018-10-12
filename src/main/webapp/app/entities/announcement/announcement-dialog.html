@@ -1,93 +1,31 @@
-<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding">
-    <md-toolbar class="form-title">
-        <!--<h2 ng-if="vm.isCreatingOne==true">Crear nuevo anuncio</h2>-->
-        <h2 >Editar anuncio</h2>
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
     </md-toolbar>
     <md-content layout-padding class="form-content">
         <div>
-            <md-input-container>
-                <label>Title</label>
-                <input ng-model="vm.announcement.title">
-            </md-input-container>
-
-            <md-input-container>
-                <label>Email</label>
-                <input ng-model="user.email" type="email">
-            </md-input-container>
-        </div>
-        <div>
-            <form name="userForm">
-
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
                 <div layout-gt-xs="row">
                     <md-input-container class="md-block" flex-gt-xs>
-                        <label>Company (Disabled)</label>
-                        <input ng-model="user.company" disabled>
-                    </md-input-container>
-
-                    <md-input-container>
-                        <label>Enter date</label>
-                        <md-datepicker ng-model="user.submissionDate"></md-datepicker>
+                        <label>Titulo</label>
+                        <input ng-model="vm.announcement.title" required>
                     </md-input-container>
                 </div>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>First name</label>
-                        <input ng-model="user.firstName">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Long Last Name That Will Be Truncated And 3 Dots (Ellipsis) Will Appear At The End</label>
-                        <input ng-model="theMax">
+                <div>
+                    <label class="md-block" style="color:rgba(0,0,0,0.38)">Descripción *</label>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <summernote  lang="es-ES" height="400" ng-model="vm.announcement.description"
+                                    required></summernote>
                     </md-input-container>
                 </div>
-
-                <md-input-container class="md-block">
-                    <label>Address</label>
-                    <input ng-model="user.address">
-                </md-input-container>
-
-                <md-input-container md-no-float class="md-block">
-                    <input ng-model="user.address2" placeholder="Address 2">
-                </md-input-container>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>City</label>
-                        <input ng-model="user.city">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>State</label>
-                        <md-select ng-model="user.state">
-                            <md-option ng-repeat="state in states" value="{{state.abbrev}}">
-                                {{state.abbrev}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Postal Code</label>
-                        <input name="postalCode" ng-model="user.postalCode" placeholder="12345"
-                               required ng-pattern="/^[0-9]{5}$/" md-maxlength="5">
-
-                        <div ng-messages="userForm.postalCode.$error" role="alert" multiple>
-                            <div ng-message="required" class="my-message">You must supply a postal code.</div>
-                            <div ng-message="pattern" class="my-message">That doesn't look like a valid postal
-                                code.
-                            </div>
-                            <div ng-message="md-maxlength" class="my-message">
-                                Don't use the long version silly...we don't need to be that specific...
-                            </div>
-                        </div>
-                    </md-input-container>
+                <div layout="row" layout-align="end center" hide-sm hide-xs>
+                    <md-button class="md-raised md-primary" ng-click="vm.saveAsSketch()" ng-disabled="form.$invalid">Guardar borrador</md-button>
+                    <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Publicar</md-button>
+                    <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
                 </div>
-
-                <md-input-container class="md-block">
-                    <label>Biography</label>
-                    <textarea ng-model="user.biography" md-maxlength="150" rows="5" md-select-on-focus></textarea>
-                </md-input-container>
-
+                </div>
             </form>
         </div>
     </md-content>
@@ -95,68 +33,67 @@
 </div>
 
 <!--<div style="">-->
-    <!--<div class="row">-->
-        <!--<div class="col-md-12">-->
-            <!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
-                <!--<div class="portlet light bordered">-->
-                    <!--<div class="portlet-title">-->
-                        <!--<div class="caption font-green-haze">-->
-                            <!--<i class="fa fa-user font-green-haze"></i>-->
-                            <span ng-if="vm.isCreatingOne==true" class="caption-subject bold uppercase">Crear nuevo anuncio</span>
-                            <span ng-if="vm.isCreatingOne==false"
-                                  class="caption-subject bold uppercase">Editar anuncio</span>
-                            <!--<span style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-left: 15px!important;color:-->
-                            <!--white;float: right;"-->
-                                  <!--ng-if="vm.announcement.status==1">Borrador</span>-->
+<!--<div class="row">-->
+<!--<div class="col-md-12">-->
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+<!--<div class="portlet light bordered">-->
+<!--<div class="portlet-title">-->
+<!--<div class="caption font-green-haze">-->
+<!--<i class="fa fa-user font-green-haze"></i>-->
+<span ng-if="vm.isCreatingOne==true" class="caption-subject bold uppercase">Crear nuevo anuncio</span>
+<span ng-if="vm.isCreatingOne==false"
+      class="caption-subject bold uppercase">Editar anuncio</span>
+<!--<span style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-left: 15px!important;color:-->
+<!--white;float: right;"-->
+<!--ng-if="vm.announcement.status==1">Borrador</span>-->
 
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="portlet-body form">-->
-                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">-->
-                            <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding-left margin-top-10">-->
-                                <!--<span class="font-13 bold  control-label">Titulo *</span>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">-->
-                                <!--<input type="text" class="form-control gray" name="folio" id="field_folio"-->
-                                       <!--ng-model="vm.announcement.title"-->
-                                       <!--required/>-->
-                                <!--<div ng-show="editForm.title.$invalid">-->
-                                    <!--<p class="help-block"-->
-                                       <!--ng-show="editForm.title.$error.required"-->
-                                       <!--data-translate="entity.validation.required">-->
-                                        <!--This field is required.-->
-                                    <!--</p>-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                        <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">-->
-                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-left margin-top-10">-->
-                                <!--<span class="font-13 bold  control-label">Descripción *</span>-->
-                            <!--</div>-->
-                            <!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-10">-->
-                                <!--<summernote lang="es-ES" height="400" ng-model="vm.announcement.description"-->
-                                            <!--required></summernote>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-actions noborder">-->
-                        <!--<h3 class="text-right">-->
-                            <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-                                <!--<span>Cancelar</span>-->
-                            <!--</button>-->
-                            <!--<button ng-if="vm.isCreatingOne==true || vm.announcement.status==1"-->
-                                    <!--ng-click="vm.saveAsSketch()"-->
-                                    <!--ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-warning">-->
-                                <!--<span>Guardar borrador</span>-->
-                            <!--</button>-->
-                            <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving"-->
-                                    <!--class="btn btn-primary">-->
-                                <!--<span>Publicar</span>-->
-                            <!--</button>-->
-                        <!--</h3>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</form>-->
-        <!--</div>-->
-    <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="portlet-body form">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">-->
+<!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 no-padding-left margin-top-10">-->
+<!--<span class="font-13 bold  control-label">Titulo *</span>-->
+<!--</div>-->
+<!--<div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 form-group">-->
+<!--<input type="text" class="form-control gray" name="folio" id="field_folio"-->
+<!--ng-model="vm.announcement.title"-->
+<!--required/>-->
+<!--<div ng-show="editForm.title.$invalid">-->
+<!--<p class="help-block"-->
+<!--ng-show="editForm.title.$error.required"-->
+<!--data-translate="entity.validation.required">-->
+<!--This field is required.-->
+<!--</p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-left margin-top-10">-->
+<!--<span class="font-13 bold  control-label">Descripción *</span>-->
+<!--</div>-->
+<!--<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding margin-top-10">-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="form-actions noborder">-->
+<!--<h3 class="text-right">-->
+<!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+<!--<span>Cancelar</span>-->
+<!--</button>-->
+<!--<button ng-if="vm.isCreatingOne==true || vm.announcement.status==1"-->
+<!--ng-click="vm.saveAsSketch()"-->
+<!--ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-warning">-->
+<!--<span>Guardar borrador</span>-->
+<!--</button>-->
+<!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving"-->
+<!--class="btn btn-primary">-->
+<!--<span>Publicar</span>-->
+<!--</button>-->
+<!--</h3>-->
+<!--</div>-->
+<!--</div>-->
+<!--</form>-->
+<!--</div>-->
+<!--</div>-->
 <!--</div>-->

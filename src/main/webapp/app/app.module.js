@@ -1,5 +1,4 @@
-
-(function() {
+(function () {
     'use strict';
 
     angular
@@ -58,15 +57,33 @@
         firebase.initializeApp(config);
 
         vm.navigated = false;
-        vm.$on('$stateChangeSuccess', function(ev, to, toParams, from, fromParams) {
+        vm.$on('$stateChangeSuccess', function (ev, to, toParams, from, fromParams) {
             if (from.name) {
                 vm.navigated = true;
             }
         });
 
 
-
-      vm.showContent = true;
-      vm.isShowingLoadingBar = false;
+        vm.showContent = true;
+        vm.isShowingLoadingBar = false;
+        vm.inForm = false;
+        vm.inDetail = false;
+        vm.secondBtnForm = true;
+        vm.setInvalidForm = function(i){
+            vm.isInvalidForm = i;
+        };
+        vm.back = function () {
+            window.history.back();
+        };
+        vm.formAction = function () {
+            setTimeout(function(){
+                vm.action();
+            },30)
+        }
+        vm.formAction2 = function () {
+            setTimeout(function(){
+                vm.action2();
+            },30)
+        }
     }
 })();

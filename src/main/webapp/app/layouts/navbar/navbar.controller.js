@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav','$localStorage','globalCompany'];
+    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany'];
 
-    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav,$localStorage,globalCompany) {
+    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -939,16 +939,17 @@
 
             }
         };
-        setTimeout(function(){
+        setTimeout(function () {
             showTheOneThatsActive()
-        },500)
-        function showTheOneThatsActive(){
+        }, 500)
+
+        function showTheOneThatsActive() {
             for (var i = 0; i < vm.menu.length; i++) {
                 for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
                     var secondaryItem = vm.menu[i].secondaryItems[j];
-                    if(secondaryItem.collapsable){
+                    if (secondaryItem.collapsable) {
                         for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
-                            if(secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)){
+                            if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
                                 $("#" + secondaryItem.menuId).collapse('show');
                             }
                         }
@@ -962,6 +963,7 @@
         $rootScope.isAuthenticated = Principal.isAuthenticated;
         vm.isAuthenticated = Principal.isAuthenticated;
         $rootScope.toggleLeft = buildToggler('left');
+
 
         function buildToggler(componentId) {
             return function () {
@@ -1038,20 +1040,20 @@
                         break;
                     case "ROLE_MANAGER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
-                                if ($localStorage.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            if ($localStorage.companyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            }
+                            Company.get({id: globalCompany.getId()}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.companyName = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = data.image_url;
+                                if (data.enabled == 0) {
+                                    logout();
                                 }
-                                Company.get({id: globalCompany.getId()}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = data.image_url;
-                                    if (data.enabled == 0) {
-                                        logout();
-                                    }
-                                });
+                            });
 
                             $rootScope.hideFilial = true;
                         });
@@ -1135,25 +1137,56 @@
         }
 
 
-        vm.selectCompany = function(company){
+        vm.selectCompany = function (company) {
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
-            setTimeout(function(){
-                $scope.$apply(function(){
+            setTimeout(function () {
+                $scope.$apply(function () {
                     vm.getAcount();
                 })
-            },300)
+            }, 300)
             $state.reload();
         }
 
-        vm.defineSelectCompanyColor = function(company){
-            if(company.id == globalCompany.getId()){
+        vm.defineSelectCompanyColor = function (company) {
+            if (company.id == globalCompany.getId()) {
                 return vm.colorsMenu.secondButtonActive;
-            }else{
+            } else {
                 return vm.colorsMenu.secondButton;
             }
         };
 //        $scope.$on('$destroy', subChangeState);
         $scope.$on('$destroy', subLogin);
+
+        vm.findBootstrapEnvironment = function () {
+            var envs = ['xs', 'sm', 'md', 'lg'];
+
+            var $el = $('<div>');
+            $el.appendTo($('body'));
+
+            for (var i = envs.length - 1; i >= 0; i--) {
+                var env = envs[i];
+
+                $el.addClass('hidden-' + env);
+                if ($el.is(':hidden')) {
+                    $el.remove();
+                    return env;
+                }
+            }
+        }
+
+        vm.isScreenSizeSmall = function () {
+            var envs = ['xs', 'sm', 'md'];
+            var e = 0;
+            for (var i = 0; i < envs.length; i++) {
+                if (envs[i] === vm.findBootstrapEnvironment()) {
+                    e++;
+                }
+            }
+            if (e > 0) {
+                return true;
+            }
+            return false;
+        }
     }
 })
 ();

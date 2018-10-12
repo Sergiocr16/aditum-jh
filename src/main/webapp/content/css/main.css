@@ -1448,10 +1448,12 @@ div.scrollmenu a:hover {
 .object-fit_scale-down[class] {
     width: 100%;
 }
-
+.note-toolbar{
+    z-index: 50!important;
+}
 .comments-button {
     outline: none;
-    background-color: #f7f7f738;
+    background-color: white;
     cursor: pointer;
 }
 
@@ -1561,6 +1563,8 @@ div.scrollmenu a:hover {
     }
     .loading-bar{
         margin-top: 56px;
+        margin-left: 0;
+
     }
 }
 
@@ -1572,6 +1576,7 @@ div.scrollmenu a:hover {
     }
     .loading-bar{
         margin-top: 64px;
+        margin-left: 0;
     }
 }
 
@@ -1592,6 +1597,7 @@ div.scrollmenu a:hover {
     }
     .loading-bar{
         margin-top: 64px;
+        margin-left: 235px;
     }
 
 }
@@ -1600,7 +1606,6 @@ div.scrollmenu a:hover {
 }
 .loading-bar{
     position:fixed;
-    margin-left: 235px;
     z-index:100;
 }
 .nav-bar-top{
@@ -1805,8 +1810,7 @@ div.scrollmenu a:hover {
 .material-icons.md-light.md-inactive { color: rgba(255, 255, 255, 0.3); }
 
 .form-wrapper {
-    border: 1px solid rgba(0, 0, 0, .03);
-    box-shadow: 0 2px 2px rgba(0, 0, 0, .24), 0 0 2px rgba(0, 0, 0, .12);
+    box-shadow:0 1px 4px 0 rgba(0,0,0,0.14)
 }
 .form-content{
     background-color: white;
@@ -1821,4 +1825,42 @@ div.scrollmenu a:hover {
 .form-title h2{
     font-weight: bold!important;
     font-size:17px!important;
+}
+
+md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
+    color: red !important;
+    background-color:red !important;
+}
+
+
+.create-comment{
+    color:#999;
+    background-color: #fafafa;
+    margin:0;
+    width:100%;
+    padding: 12px 16px;
+}
+
+.input-no-decoration{
+    border: none;
+    background-color: transparent;
+    outline: none;
+    color: black;
+}
+
+.comments-container{
+    max-height: 400px;
+    overflow-y: auto;
+}
+.circle-material-image{
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 16px;
+    border-radius: 50%;
+    box-sizing: content-box;    flex: none;
+    width: 40px;
+    height: 40px;
+}
+.white-bg{
+    background-color: white!important;
 }

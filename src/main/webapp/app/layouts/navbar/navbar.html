@@ -2,18 +2,31 @@
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <div>
             <h1 hide-sm hide-xs>
-                <i class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
+                <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                   ng-click="toggleLeft()">menu</i>
+                <i ng-if="inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                   ng-click="back()">arrow_back</i>
                 <a ui-sref="home">
                     <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22">
                 </a>
             </h1>
             <h1 hide-lg hide-gt-lg hide-xl>
-                <i class="material-icons  material-icons-with-text" hide-lg hide-gt-lg hide-xl ng-click="toggleLeft()">menu</i>
+                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                   ng-click="toggleLeft()">menu</i>
+                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                   ng-click="back()">arrow_back</i>
                 {{mainTitle}}
             </h1>
         </div>
+
         <div layout-align="left center">
-            <div class="dropdown">
+            <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
+                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important" ng-click="formAction2()">{{formActionText2}}
+            </md-button>
+            <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
+                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important" ng-click="formAction()">{{formActionText}}
+            </md-button>
+            <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
                 <div class="image-navbar  dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                      aria-expanded="false">
                     <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
@@ -21,7 +34,6 @@
                     <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
                          class="object-fit_scale-down-navbar"/>
                 </div>
-
                 <ul class="dropdown-menu pull-right" style="margin-top: 35px;min-width: 310px;z-index:999999">
                     <li>
                         <div style="min-height:70px">
@@ -37,7 +49,8 @@
 
                                     <div style="font-size: 13px;margin-top: 5px">
                                     <span style="color: #44b6ae;" ng-if="hideFilial==false"><i style="margin: 0 3px 4px 0px;
-    font-size: 19px;" class="material-icons material-icons-with-text">home</i> Filial 1</span> <span  ng-if="hideFilial==false">-</span> <span
+    font-size: 19px;" class="material-icons material-icons-with-text">home</i> Filial 1</span> <span
+                                        ng-if="hideFilial==false">-</span> <span
                                         style="color:#666">{{vm.account.login}}</span>
                                     </div>
                                 </div>

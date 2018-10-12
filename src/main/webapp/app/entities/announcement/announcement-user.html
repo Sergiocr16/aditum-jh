@@ -1,143 +1,274 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Noticias</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
-</div>
-<div ng-if="vm.isReady" >
-    <div ng-show="vm.announcements.length == 0" class="margin-top-25">
-        <h2 class="text-center gray-font">El condominio no ha realizado ningún anuncio aún.</h2>
-    </div>
-    <div infinite-scroll="vm.loadPage(vm.page + 1)"
-         infinite-scroll-disabled="vm.page >= vm.links['last']" class="row">
-        <div class="margin-bottom-25 col-md-12"
+<div ng-if="vm.isReady">
+    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias"></no-content>
+
+
+    <md-card ng-show="vm.announcements.length != 0" style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper" infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row"
              ng-repeat="announcement in vm.announcements track by announcement.id">
-            <div class="announcement col-md-12">
-                <h2 class="announcement-title">
-                    {{announcement.title}}
-                    <spam style="float: right;font-size: 12px;color: #616770;text-transform: lowercase;font-weight: normal;">{{announcement.publishingDate}}</spam>
-                </h2>
-                <div>
-                    <div ng-bind-html="announcement.description"></div>
-                </div>
-                <hr style="margin-bottom: 8px!important">
-                <div class="col-md-6 margin-bottom-10 comments-button" ng-click="vm.loadComments(announcement)">
-                    Comentarios ({{announcement.commentsQuantity}})
-                </div>
-                <div class="col-md-6 margin-bottom-10 comments-button" ng-if="announcement.showingCommentForm===false && announcement.showingComments===false">
-                    <span style="float: right;" ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-                </div>
-                <div ng-if="announcement.showingComments==true" class="col-md-12 no-padding">
-                    <div class="col-md-12 text-center margin-bottom-10" ng-if="announcement.commentsPage < announcement.links['last']">
-                        <span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>
+        <md-card-title layout-align="space-between center">
+            <md-card-title-text>
+                <span class="md-headline">{{announcement.title}}</span>
+            </md-card-title-text>
+            <div>
+            <span class="md-subhead" style="font-size: 12px">{{announcement.showDate}}</span>
+                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                        <i class="material-icons" style="color:#999">more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4" >
+                        <md-menu-item>
+                            <md-button ng-click="vm.unPublish(announcement)">
+                                <div layout="row" flex>
+                                    <p flex>Retirar noticia</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item >
+                            <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                <div layout="row" flex>
+                                    <p flex>Editar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item >
+                            <md-button ng-click="vm.delete(announcement)">
+                                <div layout="row" flex>
+                                    <p flex>Eliminar</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </md-card-title>
+        <md-card-content>
+            <div ng-bind-html="announcement.description"></div>
+        </md-card-content>
+        <md-divider ng-if="announcement.showingComments==true"></md-divider>
+        <md-card-actions layout="row" class="no-margin" layout-align="space-between center">
+            <div class="create-comment md-3-line" ng-class="{'white-bg': announcement.showingComments==true}">
+                <div class="row" style="padding: 0 16px">
+                    <div class="comments-button text-center" style="background-color: transparent!important" ng-click="vm.loadComments(announcement)" ng-if="announcement.commentsQuantity!=0">
+                        <i class="material-icons material-icons-with-text" style="margin:0">comment</i> Comentarios {{announcement.commentsQuantity}}
                     </div>
-                    <div class="col-md-12  no-padding" style="margin-bottom:10px;"
-                         ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id ">
-                        <div class="col-md-1">
-                            <div class="image" style="float: right">
-                                <img ng-hide="comment.resident.image_url" class="object-fit_scale-down"
+                    <div class="comments-container" ng-if="announcement.showingComments==true">
+                        <md-list flex>
+                            <div layout="row" layout-align="center center"
+                                 ng-if="announcement.commentsPage < announcement.links['last']">
+                                <span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>
+                            </div>
+                            <md-list-item class="md-3-line"
+                                          ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id ">
+                                <img class="md-avatar" ng-hide="comment.resident.image_url"
                                      src="content/images/nobody-image.jpg"/>
                                 <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
-                                     class="object-fit_scale-down"/>
-                            </div>
-                        </div>
-                        <div ng-class="{'announcement-comment-description' : comment.editing===false}"
-                             class="col-md-11">
-                            <span style="color:#365899; font-weight: bold;" ng-if="comment.editing===false">{{comment.resident.name +" "+ comment.resident.lastname +" "+ comment.resident.secondlastname}} </span>
-                            <p style="display: inline" ng-if="comment.editing===false">{{comment.comment}}</p>
-                            <textarea ng-if="comment.editing===true" class="comment-input col-md-12 textarea"
-                                      type="text"
-                                      ng-model="comment.newComment"
-                                      placeholder="Editar comentario..." required></textarea>
-                        </div>
-                        <div class="col-md-offset-1 col-md-11 no-padding">
-                            <button
-                                style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;cursor:default"
-                                class="comments-button" ng-if="comment.editing===false">{{comment.showingDate}}
-                            </button>
-                            <span style="color: #90949c;cursor: pointer;font-size: 11px;"
-                                  ng-if="comment.editedDate!=undefined" title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
-                            <button
-                                style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                class="comment-actions float-right"
-                                ng-if="vm.showActionDelete(comment) && comment.editing===false"
-                                ng-click="vm.deleteComment(comment, announcement)">Eliminar
-                            </button>
-                            <button
-                                style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;margin:5px"
-                                class="comment-actions float-right" ng-click="vm.editComment(comment)"
-                                ng-if="vm.showActionEdit(comment)  && comment.editing===false">Editar
-                            </button>
-                            <button
-                                style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                class="comment-actions float-right" ng-click="vm.cancelEditing(comment)"
-                                ng-if="comment.editing===true">Cancelar
-                            </button>
-                            <button
-                                style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                class="comment-actions float-right"
-                                ng-click="vm.submitEditComment(comment, announcement)"
-                                ng-if="comment.editing===true">Editar comentario <i class="fa fa-paper-plane"
-                                                                                    aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div>
-                    <div class="col-md-12" ng-if="announcement.showingCommentForm===false && announcement.showingComments===true">
-                        <hr style="margin-bottom: 10px!important">
-                        <div class="text-center comments-button">
-                        <span ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i class="fa fa-paper-plane" aria-hidden="true"></i></span>
-                        </div>
-                    </div>
-                    <div class="col-md-12 no-padding" ng-if="announcement.showingCommentForm===true">
-                        <hr style="margin-top:0px!important">
-                        <form ng-submit="vm.saveComment(announcement)">
-                            <div class="col-md-1">
-                                <div class="image" style="float: right">
-                                    <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
-                                         class="object-fit_scale-down"/>
-                                    <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
-                                         class="object-fit_scale-down"/>
+                                     class="md-avatar"/>
+                                <div class="md-list-item-text" layout="column">
+                                    <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
+                                        <div>
+                                            <h3 style="font-size: 13px;font-weight: bold">
+                                                {{comment.resident.name +" "+ comment.resident.lastname +" "+
+                                                comment.resident.secondlastname}}</h3>
+                                            <h4 class="inline"  style="font-size: 12px">
+                                                {{comment.showingDate}}
+                                                <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                                      ng-if="comment.editedDate!=undefined" title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                            </h4>
+                                        </div>
+                                        <div ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                            <md-menu md-position-mode="target-right target" >
+                                                <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                                   <i class="material-icons">more_vert</i>
+                                                </md-button>
+                                                <md-menu-content width="4" >
+                                                    <md-menu-item  ng-if="vm.showActionDelete(comment)">
+                                                        <md-button ng-click="vm.deleteComment(comment, announcement)">
+                                                            <div layout="row" flex>
+                                                                <p flex>Eliminar comentario</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item  ng-if="vm.showActionEdit(comment)">
+                                                        <md-button ng-click="vm.editComment(comment)">
+                                                            <div layout="row" flex>
+                                                                <p flex>Editar</p>
+                                                            </div>
+                                                        </md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 13px" ng-if="comment.editing===false">
+                                        {{comment.comment}}
+                                    </p>
+                                    <form name="form1" ng-submit="vm.submitEditComment(comment, announcement)">
+                                    <div flex="100" class="inline" ng-if="comment.editing===true">
+                                        <textarea   style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment" class="input-no-decoration" style="margin-left: 5px" type="text"
+                                               placeholder="Actualizar comentario.." required>
+                                        </textarea>
+                                    </div>
+                                    <div layout="row" layout-align="end center" ng-if="comment.editing===true">
+                                        <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
+                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">Actualizar</md-button>
+                                    </div>
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="col-md-11">
-                     <textarea class="comment-input col-md-12 textarea" type="text"
-                               ng-model="announcement.currentComment.comment"
-                               placeholder="Escribe un comentario..." required></textarea>
-                            </div>
-                            <div class="col-md-11 col-md-offset-1">
-                                <button ng-click="vm.hideCommentForm(announcement)"
-                                        style="border: none;background-color:#f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                        class="comments-button float-right">
-                                    Cancelar
-                                </button>
-                                <button  type="submit"
-                                        style="border: none;background-color:#f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                        class="comments-button float-right">
-                                    Enviar comentario <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                </button>
-
-                            </div>
-                        </form>
+                            </md-list-item>
+                        </md-list>
                     </div>
                 </div>
+                <form flex action="" name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
+                    <div layout="row">
+                        <img class="circle-material-image" ng-hide="currentUserImage"
+                             src="content/images/nobody-image.jpg"/>
+                        <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                             class="circle-material-image"/>
+                    <div flex="100" >
+                        <textarea  style="margin:15px 0 0 0;width:100%;" ng-model="announcement.currentComment.comment"
+                               ng-click="vm.showCommentForm(announcement)" class="input-no-decoration"
+                               style="margin-left: 5px" type="text"
+                               placeholder="Añadir un comentario.." required>
+                        </textarea>
+                    </div>
+                    </div>
+                    <div layout="row" layout-align="end center" ng-if="announcement.showingCommentForm===true">
+                        <md-button ng-click="vm.hideCommentForm(announcement)">Cancelar</md-button>
+                        <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Publicar</md-button>
+                    </div>
+                </form>
             </div>
-        </div>
-    </div>
-</div>
+
+        </md-card-actions>
+    </md-card>
+    <!--&lt;!&ndash;AQUIIII&ndash;&gt;-->
+    <!--<div infinite-scroll="vm.loadPage(vm.page + 1)"-->
+         <!--infinite-scroll-disabled="vm.page >= vm.links['last']" class="row">-->
+        <!--<div class="margin-bottom-25 col-md-12"-->
+             <!--ng-repeat="announcement in vm.announcements track by announcement.id">-->
+            <!--<div class="announcement col-md-12">-->
+                <!--<h2 class="announcement-title">-->
+                    <!--{{announcement.title}}-->
+                    <!--<spam-->
+                        <!--style="float: right;font-size: 12px;color: #616770;text-transform: lowercase;font-weight: normal;">-->
+                        <!--{{announcement.publishingDate}}-->
+                    <!--</spam>-->
+                <!--</h2>-->
+                <!--<div>-->
+                    <!--<div ng-bind-html="announcement.description"></div>-->
+                <!--</div>-->
+                <!--<hr style="margin-bottom: 8px!important">-->
+                <!--<div class="col-md-6 margin-bottom-10 comments-button" ng-click="vm.loadComments(announcement)">-->
+                    <!--Comentarios ({{announcement.commentsQuantity}})-->
+                <!--</div>-->
+                <!--<div class="col-md-6 margin-bottom-10 comments-button"-->
+                     <!--ng-if="announcement.showingCommentForm===false && announcement.showingComments===false">-->
+                    <!--<span style="float: right;" ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i-->
+                        <!--class="fa fa-paper-plane" aria-hidden="true"></i></span>-->
+                <!--</div>-->
+                <!--<div ng-if="announcement.showingComments==true" class="col-md-12 no-padding">-->
+                    <!--<div class="col-md-12 text-center margin-bottom-10"-->
+                         <!--ng-if="announcement.commentsPage < announcement.links['last']">-->
+                        <!--<span class="comments-button" ng-click="vm.loadCommentsPage(announcement)">Ver comentarios anteriores</span>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-12  no-padding" style="margin-bottom:10px;"-->
+                         <!--ng-repeat="comment in announcement.comments | orderBy: 'creationDate' track by comment.id ">-->
+                        <!--<div class="col-md-1">-->
+                            <!--<div class="image" style="float: right">-->
+                                <!--<img ng-hide="comment.resident.image_url" class="object-fit_scale-down"-->
+                                     <!--src="content/images/nobody-image.jpg"/>-->
+                                <!--<img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"-->
+                                     <!--class="object-fit_scale-down"/>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div ng-class="{'announcement-comment-description' : comment.editing===false}"-->
+                             <!--class="col-md-11">-->
+                            <!--<span style="color:#365899; font-weight: bold;" ng-if="comment.editing===false">{{comment.resident.name +" "+ comment.resident.lastname +" "+ comment.resident.secondlastname}} </span>-->
+                            <!--<p style="display: inline" ng-if="comment.editing===false">{{comment.comment}}</p>-->
+                            <!--<textarea ng-if="comment.editing===true" class="comment-input col-md-12 textarea"-->
+                                      <!--type="text"-->
+                                      <!--ng-model="comment.newComment"-->
+                                      <!--placeholder="Editar comentario..." required></textarea>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-offset-1 col-md-11 no-padding">-->
+                            <!--<button-->
+                                <!--style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;cursor:default"-->
+                                <!--class="comments-button" ng-if="comment.editing===false">{{comment.showingDate}}-->
+                            <!--</button>-->
+                            <!--<span style="color: #90949c;cursor: pointer;font-size: 11px;"-->
+                                  <!--ng-if="comment.editedDate!=undefined" title="{{comment.editedDate | date:'medium'}}"> - Editado</span>-->
+                            <!--<button-->
+                                <!--style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"-->
+                                <!--class="comment-actions float-right"-->
+                                <!--ng-if="vm.showActionDelete(comment) && comment.editing===false"-->
+                                <!--ng-click="vm.deleteComment(comment, announcement)">Eliminar-->
+                            <!--</button>-->
+                            <!--<button-->
+                                <!--style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;margin:5px"-->
+                                <!--class="comment-actions float-right" ng-click="vm.editComment(comment)"-->
+                                <!--ng-if="vm.showActionEdit(comment)  && comment.editing===false">Editar-->
+                            <!--</button>-->
+                            <!--<button-->
+                                <!--style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"-->
+                                <!--class="comment-actions float-right" ng-click="vm.cancelEditing(comment)"-->
+                                <!--ng-if="comment.editing===true">Cancelar-->
+                            <!--</button>-->
+                            <!--<button-->
+                                <!--style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"-->
+                                <!--class="comment-actions float-right"-->
+                                <!--ng-click="vm.submitEditComment(comment, announcement)"-->
+                                <!--ng-if="comment.editing===true">Editar comentario <i class="fa fa-paper-plane"-->
+                                                                                    <!--aria-hidden="true"></i>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div>-->
+                    <!--<div class="col-md-12"-->
+                         <!--ng-if="announcement.showingCommentForm===false && announcement.showingComments===true">-->
+                        <!--<hr style="margin-bottom: 10px!important">-->
+                        <!--<div class="text-center comments-button">-->
+                            <!--<span ng-click="vm.showCommentForm(announcement)">Comentar anuncio <i-->
+                                <!--class="fa fa-paper-plane" aria-hidden="true"></i></span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-12 no-padding" ng-if="announcement.showingCommentForm===true">-->
+                        <!--<hr style="margin-top:0px!important">-->
+                        <!--<form ng-submit="vm.saveComment(announcement)">-->
+                            <!--<div class="col-md-1">-->
+                                <!--<div class="image" style="float: right">-->
+                                    <!--<img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"-->
+                                         <!--class="object-fit_scale-down"/>-->
+                                    <!--<img ng-show="currentUserImage!==null" src="{{currentUserImage}}"-->
+                                         <!--class="object-fit_scale-down"/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-11">-->
+                     <!--<textarea class="comment-input col-md-12 textarea" type="text"-->
+                               <!--ng-model="announcement.currentComment.comment"-->
+                               <!--placeholder="Escribe un comentario..." required></textarea>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-11 col-md-offset-1">-->
+                                <!--<button ng-click="vm.hideCommentForm(announcement)"-->
+                                        <!--style="border: none;background-color:#f7f7f738;;color: #616770;font-size: 11px;margin:5px"-->
+                                        <!--class="comments-button float-right">-->
+                                    <!--Cancelar-->
+                                <!--</button>-->
+                                <!--<button type="submit"-->
+                                        <!--style="border: none;background-color:#f7f7f738;;color: #616770;font-size: 11px;margin:5px"-->
+                                        <!--class="comments-button float-right">-->
+                                    <!--Enviar comentario <i class="fa fa-paper-plane" aria-hidden="true"></i>-->
+                                <!--</button>-->
+
+                            <!--</div>-->
+                        <!--</form>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

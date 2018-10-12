@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementController', AnnouncementController);
 
-    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal','$state'];
+    AnnouncementController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal', '$state', 'CommonMethods'];
 
-    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal,$state) {
+    function AnnouncementController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal, $state, CommonMethods) {
 
         var vm = this;
         $rootScope.active = 'announcements';
@@ -32,12 +32,14 @@
 
 
         function onSaveSuccess() {
-            bootbox.hideAll();
+            Modal.hideLoadingBar();
             loadAll();
         }
-vm.goTo = function(link){
+
+        vm.goTo = function (link) {
             $state.go(link)
-}
+        }
+
         function onError(error) {
             Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
@@ -47,7 +49,11 @@ vm.goTo = function(link){
                 "Una vez publicada será visible para los condóminos.", function () {
                     announcement.status = 2;
                     announcement.publishingDate = moment(new Date()).format();
-                    Announcement.update(announcement, onSaveSuccess, onError);
+                    Modal.showLoadingBar();
+                    Announcement.update(announcement, function(){
+                        Modal.hideLoadingBar();
+                        Modal.toast("Se ha publicado la noticia.");
+                    }, onError);
                 });
         };
 
@@ -56,7 +62,10 @@ vm.goTo = function(link){
             Modal.confirmDialog("¿Está seguro que desea retirar la noticia?",
                 "Una vez retirada no será visible para los condóminos.", function () {
                     announcement.status = 3;
-                    Announcement.update(announcement, onSaveSuccess, onError);
+                    Announcement.update(announcement, function(){
+                        Modal.hideLoadingBar();
+                        Modal.toast("Se ha retirado la noticia.");
+                    }, onError);
                 });
         };
 
@@ -85,11 +94,12 @@ vm.goTo = function(link){
         vm.delete = function (announcement) {
             Modal.confirmDialog("¿Está seguro que desea eliminar la noticia?",
                 "Una vez eliminada no podrá ser recuperada.", function () {
+                    Modal.showLoadingBar()
                     Announcement.delete({id: announcement.id},
                         function () {
-                            Modal.toast("Se ha elminado la noticia correctamente.")
-                            vm.announcements = [];
-                            loadAll();
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se ha elminado la noticia correctamente.");
+                            CommonMethods.deleteFromArray(announcement,vm.announcements);
                         });
                 });
         };

@@ -48,7 +48,7 @@
                     <a ng-if="announcement.status==1" ng-click="vm.publish(announcement)">Publicar</a>
                 </td>
                 <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})">Detalle</a></td>
-                <td class="text-center"><a ui-sref="announcement.edit({id:announcement.id})">Editar</a></td>
+                <td class="text-center"><a ui-sref="announcements.edit({id:announcement.id})">Editar</a></td>
                 <td class="text-center"><a ng-click="vm.delete(announcement)">Eliminar</a></td>
             </tr>
             </tbody>

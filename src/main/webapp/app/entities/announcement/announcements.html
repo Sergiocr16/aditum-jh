@@ -26,7 +26,7 @@
 
     <!--</div>-->
     <!--<br/>-->
-    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias"></no-content>
+    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias" text2="subtitulo aqui"></no-content>
 
     <div class="table-responsive" style="border: 0px!important;">
         <table class=" table table-hover   font-13 tableMaterialDesign" ng-if="vm.announcements != 0">
@@ -42,7 +42,7 @@
             </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
-            <tr ng-repeat="announcement in vm.announcements track by announcement.id">
+            <tr ng-repeat="announcement in vm.announcements track by $index">
                 <td>{{announcement.title}}</td>
                 <td class="text-center" ng-if="announcement.status==2">{{announcement.publishingDate | date:'dd MMM yyyy
                     hh:mm a'}}

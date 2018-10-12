@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementUserController', AnnouncementUserController);
 
-    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser','globalCompany','Modal'];
+    AnnouncementUserController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'companyUser', 'globalCompany', 'Modal', 'CommonMethods'];
 
-    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany, Modal) {
+    function AnnouncementUserController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, companyUser, globalCompany, Modal, CommonMethods) {
 
         var vm = this;
         $rootScope.active = 'userNews';
@@ -35,7 +35,7 @@
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = false;
-            loadAll();
+        loadAll();
 
 
         function onSaveSuccess() {
@@ -49,6 +49,7 @@
 
         vm.hideCommentForm = function (announcement) {
             announcement.showingCommentForm = false;
+            announcement.currentComment.comment = undefined;
         };
 
         vm.showCommentForm = function (announcement) {
@@ -58,8 +59,9 @@
         function onSuccess(data, headers) {
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
+
             for (var i = 0; i < data.length; i++) {
-                data[i].publishingDate = moment(data[i].publishingDate).fromNow();
+                data[i].showDate = moment(data[i].publishingDate).fromNow();
                 data[i].comments = [];
                 data[i].showingComments = false;
                 data[i].currentComment = {comment: ""};
@@ -70,8 +72,9 @@
                 };
                 vm.announcements.push(data[i]);
             }
-           vm.isReady = true;
+            vm.isReady = true;
         }
+
 
         function onError(error) {
             Modal.toast("Ha ocurrido un error actualizando la noticia.")
@@ -126,29 +129,28 @@
         }
 
         function loadCommentsPage(announcement) {
-            announcement.commentsPage =  announcement.commentsPage + 1;
-                Announcement.getComments({
-                    announcementId: announcement.id,
-                    page: announcement.commentsPage,
-                    size: vm.itemsPerPage,
-                    sort: sortComment()
-                }, function (data, headers) {
-                    announcement.links = ParseLinks.parse(headers('link'));
-                    for (var i = 0; i < data.length; i++) {
-                        data[i].showingDate = moment(data[i].creationDate).fromNow();
-                        data[i].editing = false;
-                        data[i].newComment = data[i].comment;
-                        console.log( announcement.comments.indexOf(data[i]));
-                        verifyIfCommentExist(data[i],announcement.comments) === false ? announcement.comments.push(data[i]) : false ;
-                    }
-                    console.log(announcement.comments)
-                    announcement.showingComments = true;
-                }, onErrorComments);
+            announcement.commentsPage = announcement.commentsPage + 1;
+            Announcement.getComments({
+                announcementId: announcement.id,
+                page: announcement.commentsPage,
+                size: vm.itemsPerPage,
+                sort: sortComment()
+            }, function (data, headers) {
+                announcement.links = ParseLinks.parse(headers('link'));
+                for (var i = 0; i < data.length; i++) {
+                    data[i].showingDate = moment(data[i].creationDate).fromNow();
+                    data[i].editing = false;
+                    data[i].newComment = data[i].comment;
+                    verifyIfCommentExist(data[i], announcement.comments) === false ? announcement.comments.push(data[i]) : false;
+                }
+                console.log(announcement.comments)
+                announcement.showingComments = true;
+            }, onErrorComments);
         }
 
-        function verifyIfCommentExist(comment,comments){
+        function verifyIfCommentExist(comment, comments) {
             for (var i = 0; i < comments.length; i++) {
-                if(comment.id===comments[i].id){
+                if (comment.id === comments[i].id) {
                     return true;
                 }
             }
@@ -166,7 +168,7 @@
         }
 
         function saveComment(announcement) {
-            Modal.confirmDialog("¿Está seguro que desea realizar el comentario?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea realizar el comentario?", "", function () {
                 Modal.showLoadingBar();
                 var comment = {
                     comment: announcement.currentComment.comment,
@@ -177,12 +179,17 @@
                     deleted: 0
                 };
                 Announcement.saveComment(comment,
-                    function () {
+                    function (data) {
                         Modal.toast("Comentario enviado.")
                         announcement.currentComment = {comment: ""};
                         announcement.commentsQuantity++;
-                        announcement.showingComments = true;
-                        loadComments(announcement);
+                        data.showingDate = moment(data.creationDate).fromNow();
+                        data.editing = false;
+                        console.log(data);
+                        data.newComment = data.comment;
+                        if(announcement.showingComments==true) {
+                            announcement.comments.push(data);
+                        }
                         Modal.hideLoadingBar();
                     }, function () {
                         Modal.hideLoadingBar()
@@ -192,14 +199,15 @@
         }
 
         function deleteComment(comment, announcement) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar el comentario?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar el comentario?", "", function () {
                 comment.deleted = 1;
+                Modal.showLoadingBar();
                 Announcement.deleteComment(comment,
                     function (result) {
                         Modal.toast("Comentario eliminado correctamente.");
                         announcement.commentsQuantity--;
-                        Modal.hideLoadingBar()
-                        loadComments(announcement);
+                        Modal.hideLoadingBar();
+                        CommonMethods.deleteFromArray(comment,announcement.comments)
                     }, function () {
                         Modal.hideLoadingBar()
                         Modal.toast("Ha ocurrido un error eliminando tu comentario.")
@@ -221,8 +229,8 @@
         }
 
         function submitEditComment(comment, announcement) {
-            Modal.confirmDialog("¿Está seguro que desea editar el comentario?","",function(){
-                Modal.showLoadingBar()
+            Modal.confirmDialog("¿Está seguro que desea editar el comentario?", "", function () {
+                Modal.showLoadingBar();
                 var editedComment = {
                     comment: comment.newComment,
                     creationDate: comment.creationDate,
@@ -234,9 +242,12 @@
                     editedDate: moment(new Date()).format()
                 };
                 Announcement.editComment(editedComment,
-                    function () {
+                    function (data) {
                         Modal.toast("Comentario editado correctamente.");
-                        loadComments(announcement);
+                        comment.editing = false;
+                        comment.showingDate = moment(data.creationDate).fromNow();
+                        comment.comment = data.comment;
+                        comment.editedDate = data.editedDate
                         Modal.hideLoadingBar()
                     }, function () {
                         Modal.toast("Ha ocurrido un error editando tu comentario.")
@@ -263,5 +274,43 @@
             vm.page = page;
             loadAll();
         }
+
+
+        function onSaveSuccess() {
+
+            Modal.hideLoadingBar();
+            loadAll();
+        }
+
+
+        function onError(error) {
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
+        }
+
+        vm.delete = function (announcement) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la noticia?",
+                "Una vez eliminada no podrá ser recuperada.", function () {
+                    Modal.showLoadingBar()
+                    Announcement.delete({id: announcement.id},
+                        function () {
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se ha elminado la noticia correctamente.");
+                            CommonMethods.deleteFromArray(announcement, vm.announcements);
+                        });
+                });
+        };
+        vm.unPublish = function (announcement) {
+            Modal.confirmDialog("¿Está seguro que desea retirar la noticia?",
+                "Una vez retirada no será visible para los condóminos.", function () {
+                    announcement.status = 3;
+                    Announcement.update(announcement, function () {
+                        Modal.hideLoadingBar();
+                        Modal.toast("Se retiro la noticia exitosamente.")
+                        CommonMethods.deleteFromArray(announcement, vm.announcements);
+                    }, onError);
+                });
+        };
+
+
     }
 })();
