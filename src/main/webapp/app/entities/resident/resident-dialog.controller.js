@@ -5,13 +5,12 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal'];
+    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal','globalCompany'];
 
-    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal) {
+    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
         $rootScope.active = "residents";
         var vm = this;
         vm.isReady = false;
-        $rootScope.mainTitle = vm.title;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -29,6 +28,10 @@
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         var indentification = vm.resident.identificationnumber;
         vm.user = entity;
         vm.success = null;
@@ -95,9 +98,11 @@
             vm.title = "Registrar usuario";
             vm.button = "Registrar";
         }
+        $rootScope.mainTitle = vm.title;
 
 
-        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+
+        House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
         function onSuccessHouses(data, headers) {
             angular.forEach(data, function (value, key) {
@@ -204,7 +209,7 @@
                 if (vm.resident.id !== null) {
                     if (indentification !== vm.resident.identificationnumber) {
                         Resident.getByCompanyAndIdentification({
-                            companyId: $rootScope.companyId,
+                            companyId: globalCompany.getId(),
                             identificationID: vm.resident.identificationnumber
                         }, alreadyExist, allClearUpdate)
 
@@ -219,7 +224,7 @@
 
                 } else {
                     Resident.getByCompanyAndIdentification({
-                        companyId: $rootScope.companyId,
+                        companyId: globalCompany.getId(),
                         identificationID: vm.resident.identificationnumber
                     }, alreadyExist, allClearInsert)
 
@@ -405,7 +410,7 @@
 
             function insertResident(id) {
                 vm.resident.enabled = 1;
-                vm.resident.companyId = $rootScope.companyId;
+                vm.resident.companyId = globalCompany.getId();
                 vm.resident.userId = id;
                 if (vm.resident.isOwner) {
                     vm.resident.isOwner = 1;

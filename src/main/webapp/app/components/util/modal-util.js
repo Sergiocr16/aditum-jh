@@ -165,7 +165,7 @@
 
         function leavingForm() {
             $rootScope.inForm = false;
-            $rootScope.secondBtnForm = true;
+            $rootScope.secondBtnForm = false;
         }
 
 
