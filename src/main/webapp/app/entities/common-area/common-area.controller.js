@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaController', CommonAreaController);
 
-    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods','companyUser'];
+    CommonAreaController.$inject = ['$state', 'DataUtils', 'CommonArea', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','$rootScope','CommonMethods','companyUser','globalCompany','Modal'];
 
-    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods,companyUser) {
+    function CommonAreaController($state, DataUtils, CommonArea, ParseLinks, AlertService, paginationConstants, pagingParams,$rootScope,CommonMethods,companyUser,globalCompany,Modal) {
 
         var vm = this;
         if(companyUser.companies == null){
@@ -18,7 +18,8 @@
             $rootScope.active = "reservationAdministration";
         }
 
-
+        vm.isReady = false;
+        $rootScope.mainTitle = "Areas comunes";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -27,14 +28,14 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
 
-        setTimeout(function(){loadAll();},1000)
+       loadAll();
 
         function loadAll () {
             CommonArea.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -49,12 +50,7 @@
                 vm.queryCount = vm.totalItems;
                 vm.commonAreas = data;
                 vm.page = pagingParams.page;
-                setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#tableDatas").fadeIn(300);
-                },900 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -85,42 +81,26 @@
         }
 
         vm.deleteReservation = function(commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar el área común?","",
+                function(){
+                    Modal.showLoadingBar();
+                    commonArea.deleted = 1;
+                    CommonArea.update(commonArea, onDeleteSuccess, onSaveError);
 
-            bootbox.confirm({
+                });
 
-                message: "¿Está seguro que desea eliminar el área común?",
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        commonArea.deleted = 1;
-                        CommonArea.update(commonArea, onDeleteSuccess, onSaveError);
-
-                    }
-                }
-            });
         };
 
         function onSaveError(error) {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
         }
         function onDeleteSuccess (result) {
 
             loadAll();
-            toastr["success"]("Se eliminó el área común correctamente");
-            bootbox.hideAll()
+            Modal.toast("Se eliminó el área común correctamente");
+            Modal.hideLoadingBar();
             // $state.go('common-area-administration.common-area-all-reservations');
             //
         }

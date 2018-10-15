@@ -1,28 +1,28 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Administración</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="house()">Filiales</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="house()">Consultar</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
+<!--<div class="page-bar route-title">-->
+    <!--<ul class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<i class="fa fa-home"></i>-->
+            <!--<a ui-sref="home()">Administración</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="house()">Filiales</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="house()">Consultar</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class="padding-top-20 fade-in">
+<div ng-if="vm.isReady" class=" row fade-in">
     <div class="col-md-12">
         <h3 class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">	Filiales </h3>
         <div class="col-md-12 no-padding">
@@ -84,9 +84,7 @@
             </div>
             <div class="table-scrollable hidden-xs gray-font" style="border: 0px!important;">
 
-                <div ng-if="vm.houses.length == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marging-top-100">
-                    <h2 class="text-center gray-font font-24">No existen filiales registradas</h2>
-                </div>
+                <no-content ng-if="vm.houses.length == 0" icon="home" text="No hay filiales registradas"></no-content>
 
                 <table ng-show="vm.houses.length>0" class="table  table-hover font-13 tableMaterialDesign">
                     <thead  style="background-color: #fafafa;" class="">

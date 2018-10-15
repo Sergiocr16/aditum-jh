@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods','Modal'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods','Modal','globalCompany'];
 
-    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods,Modal ) {
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods,Modal,globalCompany ) {
         $rootScope.active = "houses";
 
         var vm = this;
         $rootScope.mainTitle = "Filiales";
+        vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -20,7 +21,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
         vm.ocultarACondos = true;
-        vm.isReady = false;
+
         loadAll();
 
 
@@ -35,7 +36,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];

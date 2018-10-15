@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('BancoDialogController', BancoDialogController);
 
-    BancoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$state', 'Banco', 'Company', '$rootScope', 'CommonMethods','globalCompany'];
+    BancoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$state', 'Banco', 'Company', '$rootScope', 'CommonMethods','globalCompany','Modal'];
 
-    function BancoDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, $state, Banco, Company, $rootScope, CommonMethods,globalCompany) {
+    function BancoDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, $state, Banco, Company, $rootScope, CommonMethods,globalCompany,Modal) {
         var vm = this;
         $rootScope.active = "bancoConfiguration";
         CommonMethods.validateNumbers();
@@ -31,7 +31,7 @@
         function save() {
             vm.isSaving = true;
             if (vm.banco.id !== null) {
-                Banco.update(vm.banco, onSaveSuccess, onSaveError);
+                Banco.update(vm.banco, onUpdateSuccess, onSaveError);
             } else {
                 if (vm.banco.cuentaCorriente == null) {
                     vm.banco.cuentaCorriente = 'No registrado'
@@ -48,12 +48,18 @@
 
         function onSaveSuccess(result) {
             $scope.$emit('aditumApp:bancoUpdate', result);
-            toastr["success"]("Se ha registrado la cuenta de banco correctamente");
+            Modal.toast("Se ha registrado la cuenta de banco correctamente");
             $state.go('banco-configuration');
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
-
+        function onUpdateSuccess(result) {
+            $scope.$emit('aditumApp:bancoUpdate', result);
+            Modal.toast("Se ha editado la cuenta de banco correctamente");
+            $state.go('banco-configuration');
+            $uibModalInstance.close(result);
+            vm.isSaving = false;
+        }
         function onSaveError() {
             vm.isSaving = false;
         }

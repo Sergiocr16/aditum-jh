@@ -1,14 +1,11 @@
 
 <div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="" id="new_egress_form">
     <div class="row">
-        <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 " id="loadingIcon2">
-            <div class="spinnerLoading">
-                <div class="double-bounce1"></div>
-                <div class="double-bounce2"></div>
-            </div>
+        <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+            <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
         </div>
-        <div   class="col-md-12 display-none" id="reportResults" >
-            <div class="portlet light bordered">
+        <div ng-if="vm.isReady" class=" col-md-12 fade-in">
+            <div class="portlet light bordered ">
                 <div class="">
                     <div class="12 col-md-12 col-sm-12 col-xs-12 margin-bottom-10">
                         <h5 class="text-center">
@@ -30,7 +27,7 @@
 
                     </div>
                 </div>
-                <div class="portlet-body form" id="register_edit_form">
+                <div class="portlet-body form " id="register_edit_form">
 
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
 

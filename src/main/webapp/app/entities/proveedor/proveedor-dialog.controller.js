@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ProveedorDialogController', ProveedorDialogController);
 
-    ProveedorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company', '$rootScope', 'CommonMethods', 'globalCompany'];
+    ProveedorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company', '$rootScope', 'CommonMethods', 'globalCompany','Modal'];
 
-    function ProveedorDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company, $rootScope, CommonMethods, globalCompany) {
+    function ProveedorDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company, $rootScope, CommonMethods, globalCompany,Modal) {
         var vm = this;
         $rootScope.active = "proovedores";
         vm.proveedor = entity;
@@ -38,7 +38,7 @@
         }
 
         function onSaveSuccess(result) {
-            toastr["success"]("Se registró el proveedor correctamente");
+            Modal.toast("Se registró el proveedor correctamente");
 
             $scope.$emit('aditumApp:proveedorUpdate', result);
             $uibModalInstance.close(result);
@@ -46,7 +46,7 @@
         }
 
         function onUpdateSuccess(result) {
-            toastr["success"]("Se modificó el proveedor correctamente");
+            Modal.toast("Se modificó el proveedor correctamente");
 
             $scope.$emit('aditumApp:proveedorUpdate', result);
             $uibModalInstance.close(result);

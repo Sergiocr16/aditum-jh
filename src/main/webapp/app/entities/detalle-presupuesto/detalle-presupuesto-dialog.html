@@ -1,35 +1,32 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <a>Finanzas</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="presupuesto()">Presupuestos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Capturar presupuesto</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
+<!--<div class="page-bar route-title">-->
+    <!--<ul class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<a>Finanzas</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="presupuesto()">Presupuestos</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="">Capturar presupuesto</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right">-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="row display-none" id="budgetContainer">
+<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" ng-if="vm.isReady" class="row fade-in" id="budgetContainer">
     <div class="col-md-12">
         <div style="margin-bottom:15px;" class="caption font-green-haze">
-
-            <span class="caption-subject bold uppercase font-15">Capturar presupuesto</span>
+            <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d">Capturar presupuestos</h3>
             <div class="btn-group pull-right">
                 <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
 

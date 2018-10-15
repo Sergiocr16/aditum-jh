@@ -5,21 +5,23 @@
         .module('aditumApp')
         .controller('CommonAreaAllReservationsController', CommonAreaAllReservationsController);
 
-    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods'];
+    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany'];
 
-    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods) {
+    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany) {
 
         var vm = this
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
         vm.loadPage = loadPage;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Administrar reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        setTimeout(function(){loadAll();},1000)
+        loadAll();
 
         function onError(error) {
             AlertService.error(error.data.message);
@@ -29,7 +31,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [];
@@ -47,12 +49,7 @@
                 vm.finalListReservations = data;
                 vm.page = pagingParams.page;
                 loadInfoByReservation(data);
-                setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#tableDatas").fadeIn(300);
-                },1000 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -109,46 +106,30 @@
             vm.transition();
         }
         vm.deleteReservation = function(commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
+                function(){
+                    commonArea.initalDate = new Date(commonArea.initalDate)
+                    commonArea.initalDate.setHours(0);
+                    commonArea.initalDate.setMinutes(0);
+                    Modal.showLoadingBar();
+                    commonArea.status = 4;
+                    CommonAreaReservations.update(commonArea, onDeleteSuccess, onSaveError);
 
-            bootbox.confirm({
+                });
 
-                message: "¿Está seguro que desea eliminar la solicitud de reservación?",
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        commonArea.initalDate = new Date(commonArea.initalDate)
-                        commonArea.initalDate.setHours(0);
-                        commonArea.initalDate.setMinutes(0);
-                        CommonMethods.waitingMessage();
-                        commonArea.status = 4;
-                        CommonAreaReservations.update(commonArea, onDeleteSuccess, onSaveError);
-
-                    }
-                }
-            });
         };
 
         function onDeleteSuccess (result) {
 
             loadAll();
-            toastr["success"]("Se eliminó la solicitud de reservación correctamente");
-            bootbox.hideAll()
+            Modal.toast("Se eliminó la solicitud de reservación correctamente");
+            Modal.hideLoadingBar();
             // $state.go('common-area-administration.common-area-all-reservations');
             //
         }
         function onSaveError(error) {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
         }
 

@@ -41,9 +41,11 @@ public class MensualReportService {
         for (int i = 0; i <adelantosIngress.size() ; i++) {
 
             ChargeDTO adelanto = new ChargeDTO(adelantosIngress.get(i).getAmmountLeft(),adelantosIngress.get(i).getDate(),companyId,adelantosIngress.get(i).getId(),adelantosIngress.get(i).getHouseId());
+            String a = "as";
             maintenanceIngress.add(adelanto);
 
         }
+        String a = "as";
         List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,2,companyId);
         List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,3,companyId);
         List<ChargeDTO> otherIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,4,companyId);

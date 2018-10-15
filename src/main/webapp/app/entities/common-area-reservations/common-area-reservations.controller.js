@@ -5,19 +5,21 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsController', CommonAreaReservationsController);
 
-    CommonAreaReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope'];
+    CommonAreaReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','globalCompany'];
 
-    function CommonAreaReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope) {
+    function CommonAreaReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,globalCompany) {
 
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.loadPage = loadPage;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Reservaciones pendientes";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        setTimeout(function(){loadAll();},1000)
+        loadAll();
 
         function onError(error) {
             AlertService.error(error.data.message);
@@ -27,7 +29,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -61,12 +63,7 @@
                         })
                     })
                 });
-                setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#tableDatas").fadeIn(300);
-                },900 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);

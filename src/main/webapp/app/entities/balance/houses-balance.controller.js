@@ -15,6 +15,8 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Saldo de filiales";
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
         vm.ocultarACondos = false;
@@ -71,12 +73,7 @@
                 })
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -100,7 +97,7 @@
 
         vm.showKeys = function (house_number, securityKey, emergencyKey) {
             if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "") {
-                toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas.");
+                Modal.toast("Esta casa aún no tiene claves de seguridad asignadas.");
             } else {
                 bootbox.dialog({
                     message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de seguridad: <span class="font-20 bold" id="security_key">1134314</span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de emergencia: <span class="font-20 bold" id="emergency_key">1134314</span></h1></div>',
@@ -120,7 +117,7 @@
         vm.showLoginCode = function (house_number, codeStatus, loginCode) {
             var estado = "";
             if (loginCode == null) {
-                toastr["error"]("Esta casa aún no tiene un código de iniciación asignado.");
+                Modal.toast("Esta casa aún no tiene un código de iniciación asignado.");
             } else {
 
                 if (codeStatus == false || codeStatus == 0) {

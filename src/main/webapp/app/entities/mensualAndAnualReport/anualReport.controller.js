@@ -5,10 +5,12 @@
         .module('aditumApp')
         .controller('AnualReportController', AnualReportController);
 
-    AnualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany'];
+    AnualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function AnualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany) {
+    function AnualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
         var vm = this;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Reporte anual";
         vm.datePickerOpenStatus = {};
         vm.isShowingMaintenanceDetail = false;
         vm.isShowingExtrardinaryDetail = false;
@@ -36,10 +38,7 @@
         function onSuccess(data, headers) {
             vm.report = data;
             vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
-            $("#loadingIcon2").fadeOut(0);
-            setTimeout(function () {
-                $("#reportResults").fadeIn(500);
-            }, 200)
+            vm.isReady = true;
         }
 
         vm.showWithBudget = function () {
@@ -58,10 +57,10 @@
 
                     })
                     if (yearExist == 0) {
-                        toastr["error"]("No existe un presupuesto del 2018 registrado.");
+                        Modal.toast("No existe un presupuesto del 2018 registrado.");
                     }
                 } else {
-                    toastr["error"]("No existe un presupuesto del 2018 registrado.");
+                    Modal.toast("No existe un presupuesto del 2018 registrado.");
                 }
 
             });

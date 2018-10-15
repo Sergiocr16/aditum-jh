@@ -13,6 +13,9 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
+        $rootScope.mainTitle = "Reporte de gastos";
+        vm.isReady = false;
+        vm.isReady2 = false;
         vm.reverse = true;
         vm.gastosQuantity = 0;
         vm.showNoResults = false;
@@ -104,13 +107,7 @@
 
         function onSuccessBancos(data, headers) {
             vm.bancos = data;
-            vm.egressCategories = data;
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#new_egress_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
         }
 
         function formatEgresses() {
@@ -173,10 +170,7 @@
 
         vm.generateReport = function () {
             vm.gastosQuantity = 0;
-            $("#reportResults").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon2").fadeIn(100);
-            }, 200)
+            vm.isReady2 = false;
             Egress.findBetweenCobroDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -233,13 +227,8 @@
                 })
                 vm.reportResult.push(objectProveedor)
             })
-            setTimeout(function () {
-                $("#loadingIcon2").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                console.log(vm.gastosQuantity)
-                $("#reportResults").fadeIn('slow');
-            }, 900)
+
+            vm.isReady2 = true;
             if (vm.gastosQuantity > 0) {
                 vm.showNoResults = false
                 vm.hideReportForm = true;

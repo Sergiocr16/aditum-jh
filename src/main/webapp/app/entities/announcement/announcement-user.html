@@ -20,9 +20,9 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" >
-    <div ng-show="vm.announcements.length == 0" class="margin-top-25">
-        <h2 class="text-center gray-font">El condominio no ha realizado ningún anuncio aún.</h2>
-    </div>
+
+    <no-content ng-if="vm.announcements.length == 0" icon="picture_in_picture" text="El condominio no ha realizado ningún anuncio aún"></no-content>
+
     <div infinite-scroll="vm.loadPage(vm.page + 1)"
          infinite-scroll-disabled="vm.page >= vm.links['last']" class="row">
         <div class="margin-bottom-25 col-md-12"

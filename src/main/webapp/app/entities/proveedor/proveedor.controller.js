@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('ProveedorController', ProveedorController);
 
-    ProveedorController.$inject = ['$state', 'Proveedor', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', 'globalCompany'];
+    ProveedorController.$inject = ['$state', 'Proveedor', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', 'globalCompany','Modal'];
 
-    function ProveedorController($state, Proveedor, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, globalCompany) {
+    function ProveedorController($state, Proveedor, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, globalCompany,Modal) {
 
         var vm = this;
         $rootScope.active = "proovedores";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
+        $rootScope.mainTitle = "Proovedores";
+        vm.isReady = false;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -38,13 +40,7 @@
             }
 
             function onSuccess(data, headers) {
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900)
-
+                vm.isReady = true;
                 angular.forEach(data, function (value, key) {
                     if (value.email == null || value.email == "") {
                         value.email = 'No registrado'
@@ -75,24 +71,14 @@
         }
 
         vm.confirmDeleteProveedor = function (proveedor) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar este proveedor " + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        vm.deleteProveedor(proveedor)
-                    }
-                }
-            });
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar este proveedor " + "?","Una vez eliminado no podrá recuperar los datos",
+                function(){
+                    Modal.showLoadingBar();
+                    vm.deleteProveedor(proveedor)
+                });
+
+
 
         };
 
@@ -103,8 +89,9 @@
         }
 
         function onSuccessDeleted() {
-            loadAll()
-            toastr["success"]("Se eliminó el proveedor correctamente");
+            loadAll();
+            Modal.hideLoadingBar();
+            Modal.toast("Se eliminó el proveedor correctamente");
         }
 
         function onError(error) {

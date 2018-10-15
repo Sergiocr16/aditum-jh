@@ -41,11 +41,11 @@
                 backgroundColor: 'background-color:white!important',
             },
             thirdButtonActive: {
-                color: 'color:#474747!important',
+                color: 'color:' + '#f37960!important',
                 backgroundColor: 'background-color:white!important',
             },
             thirdButtonHover: {
-                color: 'color:#474747!important',
+                color: 'color:' + vm.colors.primary + '!important',
                 backgroundColor: 'background-color:white!important',
             }
         };
@@ -272,7 +272,7 @@
                             },
                             {
                                 title: "Administrar noticias",
-                                icon: "build",
+                                icon: "view_agenda",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "announcements",
                                 collapsable: false,
@@ -285,7 +285,7 @@
 
                     {
                         title: "Administración",
-                        icon: "picture_in_picture",
+                        icon: "location_city",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "residents,vehicules,houses,adminVisitors",
                         collapsable: true,
@@ -295,7 +295,7 @@
                         thirdItems: [
                             {
                                 title: "Residentes",
-                                icon: "remove_red_eye",
+                                icon: "group",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "residents",
                                 collapsable: false,
@@ -305,7 +305,7 @@
                             },
                             {
                                 title: "Filiales",
-                                icon: "build",
+                                icon: "home",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "houses",
                                 collapsable: false,
@@ -315,7 +315,7 @@
                             },
                             {
                                 title: "Vehículos",
-                                icon: "build",
+                                icon: "directions_car",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "vehicules",
                                 collapsable: false,
@@ -325,7 +325,7 @@
                             },
                             {
                                 title: "Visitantes",
-                                icon: "build",
+                                icon: "group_add",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "adminVisitors",
                                 collapsable: false,
@@ -337,7 +337,7 @@
                     },
                     {
                         title: "Seguridad",
-                        icon: "picture_in_picture",
+                        icon: "security",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "officers,watches",
                         collapsable: true,
@@ -347,7 +347,7 @@
                         thirdItems: [
                             {
                                 title: "Oficiales",
-                                icon: "remove_red_eye",
+                                icon: "people_outline",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "officers",
                                 collapsable: false,
@@ -358,7 +358,7 @@
                             },
                             {
                                 title: "Turnos",
-                                icon: "build",
+                                icon: "timer",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "watches",
                                 collapsable: false,
@@ -378,7 +378,7 @@
                 secondaryItems: [
                     {
                         title: "Contabilidad filiales",
-                        icon: "remove_red_eye",
+                        icon: "dvr",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "houseAdministration",
                         collapsable: false,
@@ -389,7 +389,7 @@
                     },
                     {
                         title: "Egresos",
-                        icon: "build",
+                        icon: "call_received",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "egress,newEgress",
                         collapsable: true,
@@ -409,7 +409,7 @@
                             },
                             {
                                 title: "Capturar gasto",
-                                icon: "remove_red_eye",
+                                icon: "plus_one",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "newEgress",
                                 collapsable: false,
@@ -421,7 +421,7 @@
                     },
                     {
                         title: "Ingresos",
-                        icon: "build",
+                        icon: "call_made",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "generatePayment,capturarAdelanto",
                         collapsable: true,
@@ -431,7 +431,7 @@
                         thirdItems: [
                             {
                                 title: "Capturar ingreso",
-                                icon: "remove_red_eye",
+                                icon: "plus_one",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "generatePayment",
                                 collapsable: false,
@@ -441,7 +441,7 @@
                             },
                             {
                                 title: "Capturar adelanto",
-                                icon: "remove_red_eye",
+                                icon: "redo",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "capturarAdelanto",
                                 collapsable: false,
@@ -454,7 +454,7 @@
                     },
                     {
                         title: "Cuotas",
-                        icon: "build",
+                        icon: "bookmarks",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "mensual,extraordinary,individual",
                         collapsable: true,
@@ -497,7 +497,7 @@
                     },
                     {
                         title: "Presupuestos",
-                        icon: "build",
+                        icon: "trending_up",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "presupuestos",
                         collapsable: false,
@@ -508,7 +508,7 @@
                     },
                     {
                         title: "Bancos",
-                        icon: "build",
+                        icon: "account_balance",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "bancos",
                         collapsable: false,
@@ -519,7 +519,7 @@
                     },
                     {
                         title: "Saldos",
-                        icon: "build",
+                        icon: "library_books",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "balance",
                         collapsable: false,
@@ -531,7 +531,7 @@
                     },
                     {
                         title: "Tabla de cobranza",
-                        icon: "build",
+                        icon: "grid_on",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "collectionTable",
                         collapsable: false,
@@ -555,7 +555,7 @@
                     },
                     {
                         title: "Reportes",
-                        icon: "picture_in_picture",
+                        icon: "pie_chart",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "estadoResultados,reporteGastos,reporteIngresos",
                         collapsable: true,
@@ -565,7 +565,7 @@
                         thirdItems: [
                             {
                                 title: "Estado de resultados",
-                                icon: "remove_red_eye",
+                                icon: "equalizer",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "estadoResultados",
                                 collapsable: false,
@@ -575,7 +575,7 @@
                             },
                             {
                                 title: "Reporte de gastos",
-                                icon: "build",
+                                icon: "keyboard_backspace",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "reporteGastos",
                                 collapsable: false,
@@ -585,7 +585,7 @@
                             },
                             {
                                 title: "Reporte de ingresos",
-                                icon: "build",
+                                icon: "trending_flat",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "reporteIngresos",
                                 collapsable: false,
@@ -597,7 +597,7 @@
                     },
                     {
                         title: "Áreas comunes",
-                        icon: "picture_in_picture",
+                        icon: "local_florist",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "common-area-resident-account,reservationAdministration,reporteIngresos",
                         collapsable: true,
@@ -607,31 +607,31 @@
                         thirdItems: [
                             {
                                 title: "Administrar",
-                                icon: "remove_red_eye",
+                                icon: "view_agenda",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "reservationAdministration",
                                 collapsable: false,
-                                uisref: "budgetExecution.mensualReport",
+                                uisref: "common-area-administration.common-area",
                                 menuId: "",
                                 hover: false,
                             },
                             {
                                 title: "Ver calendario",
-                                icon: "build",
+                                icon: "event_note",
                                 authoritites: "ROLE_MANAGER",
-                                activeOn: "reporteGastos",
+                                activeOn: "generaCalendar",
                                 collapsable: false,
-                                uisref: "egress-report",
+                                uisref: "common-area-administration.general-reservation-calendar",
                                 menuId: "",
                                 hover: false,
                             },
                             {
                                 title: "Reservar",
-                                icon: "build",
+                                icon: "event_available",
                                 authoritites: "ROLE_MANAGER",
-                                activeOn: "reporteIngresos",
+                                activeOn: "createReservation",
                                 collapsable: false,
-                                uisref: "payment-report",
+                                uisref: "common-area-administration.newReservation",
                                 menuId: "",
                                 hover: false,
                             },
@@ -640,7 +640,7 @@
                     },
                     {
                         title: "Configuración",
-                        icon: "picture_in_picture",
+                        icon: "settings",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "proovedor,configureCharges,bancoConfiguration,egressCategories,proovedores",
                         collapsable: true,
@@ -650,7 +650,7 @@
                         thirdItems: [
                             {
                                 title: "Proveedores",
-                                icon: "remove_red_eye",
+                                icon: "store_mall_directory",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "proovedores",
                                 collapsable: false,
@@ -660,7 +660,7 @@
                             },
                             {
                                 title: "Cuotas",
-                                icon: "build",
+                                icon: "bookmarks",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "configureCharges",
                                 collapsable: false,
@@ -670,7 +670,7 @@
                             },
                             {
                                 title: "Cuentas de banco",
-                                icon: "build",
+                                icon: "account_balance",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "bancoConfiguration",
                                 collapsable: false,
@@ -680,7 +680,7 @@
                             },
                             {
                                 title: "Categoría de egresos",
-                                icon: "build",
+                                icon: "call_received",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "egressCategories",
                                 collapsable: false,
@@ -692,7 +692,7 @@
                     },
                     {
                         title: "Gestionar quejas",
-                        icon: "picture_in_picture",
+                        icon: "sentiment_very_dissatisfied",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "complaint",
                         collapsable: false,
@@ -868,7 +868,7 @@
                     {
                         title: "Soporte",
                         icon: "picture_in_picture",
-                        authoritites: "ROLE_USER,ROLE_RH",
+                        authoritites: "ROLE_USER,ROLE_RH,ROLE_MANAGER",
                         activeOn: "soporte",
                         collapsable: false,
                         uisref: "soporte",

@@ -34,9 +34,8 @@
         </div>
 
         <div>
-            <div ng-show="vm.vehicules.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                <h2  class="text-center gray-font font-24 margin-top-100">No hay vehículos registrados</h2>
-            </div>
+
+            <no-content ng-if="vm.vehicules.length==0" icon="directions_car" text="Esta filial no tiene vehículos registrados" ></no-content>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
                 <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 "  ng-repeat="vehicule in vm.vehicules">

@@ -1,45 +1,45 @@
 
-<div class="page-bar route-title">
-    <ul ng-if="companyUser.id !== vm.resident.id" class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li has-authority="ROLE_MANAGER">
-            <a href="" ui-sref="resident()">Usuarios autorizados</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li has-authority="ROLE_USER">
-            <a href="" ui-sref="residentByHouse()">Usuarios autorizados</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">{{vm.title}}</a>
-        </li>
-    </ul>
-    <ul ng-if="companyUser.id === vm.resident.id" class="page-breadcrumb">
-        <li>
-            <i class="fa fa-user"></i>
-            <a>Mi perfil</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a >Administrar</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Información</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
-</div>
+<!--<div class="page-bar route-title">-->
+    <!--<ul ng-if="companyUser.id !== vm.resident.id" class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<i class="fa fa-home"></i>-->
+            <!--<a ui-sref="home()">Condominio</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li has-authority="ROLE_MANAGER">-->
+            <!--<a href="" ui-sref="resident()">Usuarios autorizados</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li has-authority="ROLE_USER">-->
+            <!--<a href="" ui-sref="residentByHouse()">Usuarios autorizados</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="">{{vm.title}}</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<ul ng-if="companyUser.id === vm.resident.id" class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<i class="fa fa-user"></i>-->
+            <!--<a>Mi perfil</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a >Administrar</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="">Información</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right"> </div>-->
+    <!--</div>-->
+<!--</div>-->
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class="padding-top-20 fade-in">
+<div ng-if="vm.isReady" class=" fade-in">
     <div class="row">
         <div class="col-md-12">
             <form ng-submit="vm.save()">

@@ -4,7 +4,7 @@
 <div ng-if="vm.isReady" class=" fade-in">
 
     <div class="col-md-12 no-padding">
-        <h2 class="bold uppercase" style="font-size:15px">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
+        <h2 class="bold uppercase" style="font-size:15px; margin-top: 0px!important; padding-top: 0px!important;">Pagos <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>" mode="mouseover"></i></h2>
     </div>
     <div class="col-md-12 no-padding margin-bottom-10" ng-hide="vm.payments.length==0 && vm.filtering==false">
         <div class="btn-group col-md-3"></div>
@@ -35,8 +35,9 @@
     </div>
     <hr>
     <div class="portlet-body">
-        <h3 class="text-center font-24 marging-top-100" ng-show="vm.payments.length==0 && vm.filtering==false" style="margin-top:60px!important">La filial no ha realizado ningún pago aún</h3>
-        <h3 class="text-center font-24 marging-top-100 " ng-show="vm.payments.length==0 && vm.filtering==true" style="margin-top:70px!important">No se encontraron pagos en las fechas seleccionadas</h3>
+        <no-content ng-if="vm.payments.length==0 && vm.filtering==false" icon="dvr" text="La filial no ha realizado ningún pago aún" ></no-content>
+
+        <no-content ng-if="vm.payments.length==0 && vm.filtering==true" icon="dvr" text="No se encontraron pagos en las fechas seleccionadas" ></no-content>
 
         <div ng-show="vm.payments.length!=0">
             <table class="table table-bordered font-13 gray-font tableMaterialDesign">

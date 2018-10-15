@@ -5,12 +5,13 @@
         .module('aditumApp')
         .controller('ConfigureChargeGlobalController', ConfigureChargeGlobalController);
 
-    ConfigureChargeGlobalController.$inject = ['$uibModalInstance', 'House', '$rootScope', '$scope', 'globalCompany'];
+    ConfigureChargeGlobalController.$inject = ['$uibModalInstance', 'House', '$rootScope', '$scope', 'globalCompany','Modal'];
 
-    function ConfigureChargeGlobalController($uibModalInstance, House, $rootScope, $scope, globalCompany) {
+    function ConfigureChargeGlobalController($uibModalInstance, House, $rootScope, $scope, globalCompany,Modal) {
         var vm = this;
 
         vm.clear = clear;
+        vm.isReady = false;
         vm.isSaving = false;
         vm.formatearNumero = function (nStr) {
 
@@ -79,7 +80,7 @@
                             $scope.$emit('aditumApp:globaChargeUpdate', result);
                             $uibModalInstance.close(result);
                             vm.isSaving = false;
-                            toastr["success"]("Se modificó la cuota global correctamente.")
+                          Modal.toast("Se modificó la cuota global correctamente.")
                         }
                     })
                 }))

@@ -63,7 +63,7 @@
 
 
         function loadQuantities(){
-            House.query({ companyId: $rootScope.companyId}, onSuccess, onError);
+            House.query({ companyId: globalCompany.getId()}, onSuccess, onError);
         }
         function onSuccess(data) {
             console.log('fds')
@@ -97,7 +97,7 @@
             vm.isSaving = true;
             if (vm.house.id !== null) {
                   Modal.showLoadingBar();
-                  House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: $rootScope.companyId},onSuccessUp,onErrorUp)
+                  House.validateUpdate({houseId: vm.house.id,houseNumber: vm.house.housenumber, extension: vm.extension, companyId: globalCompany.getId()},onSuccessUp,onErrorUp)
 
             } else {
                 if(vm.companyConfiguration.quantityhouses <= vm.houseQuantity ){
@@ -105,12 +105,12 @@
                     Modal.hideLoadingBar();
                 } else {
                      Modal.showLoadingBar();
-                     vm.house.companyId = $rootScope.companyId;
+                     vm.house.companyId = globalCompany.getId();
                      vm.house.desocupationinitialtime = new Date();
                      vm.house.desocupationfinaltime = new Date();
                      vm.house.loginCode = generateLoginCode();
                      vm.house.codeStatus = 0;
-                     House.validate({houseNumber: vm.house.housenumber, extension: vm.extension,companyId: $rootScope.companyId},onSuccess,onError)
+                     House.validate({houseNumber: vm.house.housenumber, extension: vm.extension,companyId: globalCompany.getId()},onSuccess,onError)
                 }
             }
             function onSuccessUp(data){

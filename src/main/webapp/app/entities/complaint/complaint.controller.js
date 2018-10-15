@@ -12,6 +12,8 @@
         var vm = this;
         $rootScope.active = 'complaint';
         vm.status = "-1";
+        $rootScope.mainTitle = "Quejas y sugerencias";
+        vm.isReady = false;
         moment.locale("es");
         vm.complaints = [];
         vm.loadPage = loadPage;
@@ -37,24 +39,18 @@
         }
 
         function loadAllByStatus() {
-            $("#tableData").fadeOut();
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn();
-
-
-                if (vm.status !== "-1") {
-                    Complaint.queryByStatus({
-                        companyId: globalCompany.getId(),
-                        status: parseInt(vm.status),
-                        page: vm.page,
-                        size: 10,
-                        sort: sort()
-                    }, onSuccess, onError);
-                } else {
-                    loadAll();
-                }
-            }, 400);
-
+            vm.isReady = false;
+            if (vm.status !== "-1") {
+                Complaint.queryByStatus({
+                    companyId: globalCompany.getId(),
+                    status: parseInt(vm.status),
+                    page: vm.page,
+                    size: 10,
+                    sort: sort()
+                }, onSuccess, onError);
+            } else {
+                loadAll();
+            }
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'creationDate') {
@@ -71,12 +67,7 @@
                     vm.complaints.push(data[i]);
                 }
                 console.log(vm.complaints)
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400);
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900);
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -108,12 +99,7 @@
                     vm.complaints.push(data[i]);
                 }
                 console.log(vm.complaints)
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400);
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900);
+                vm.isReady = true;
             }
 
             function onError(error) {

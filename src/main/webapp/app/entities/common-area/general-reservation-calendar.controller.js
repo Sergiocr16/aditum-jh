@@ -5,12 +5,13 @@
         .module('aditumApp')
         .controller('GeneralReservationCalendarController', GeneralReservationCalendarController);
 
-    GeneralReservationCalendarController.$inject = ['$compile','uiCalendarConfig','CommonAreaReservations','AlertService','Resident','$state','$rootScope'];
+    GeneralReservationCalendarController.$inject = ['$compile','uiCalendarConfig','CommonAreaReservations','AlertService','Resident','$state','$rootScope','globalCompany'];
 
-    function GeneralReservationCalendarController($compile,uiCalendarConfig,CommonAreaReservations,AlertService,Resident,$state,$rootScope) {
+    function GeneralReservationCalendarController($compile,uiCalendarConfig,CommonAreaReservations,AlertService,Resident,$state,$rootScope,globalCompany) {
         var vm = this;
         $rootScope.active = "generaCalendar";
         vm.reservations = [];
+        $rootScope.mainTitle = "Calendario general";
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -164,7 +165,7 @@
                 events: function(start, end, timezone, callback) {
                     var events = [];
                         CommonAreaReservations.getPendingAndAcceptedReservations({
-                            companyId: $rootScope.companyId
+                            companyId: globalCompany.getId()
                         }, function(data) {
                             console.log(data)
                             angular.forEach(data,function(value){

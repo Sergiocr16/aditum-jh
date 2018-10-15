@@ -5,15 +5,17 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods','companyUser'];
+    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods','companyUser','globalCompany','Modal'];
 
-    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods,companyUser) {
+    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods,companyUser,globalCompany,Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
         console.log(CommonAreaReservations)
         var initialDateTemporal;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Crear reservación";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.reservationTitle = "Crear"
@@ -34,7 +36,7 @@
 
         function loadHouses() {
             House.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccessHouses, onError);
 
         }
@@ -48,18 +50,13 @@
             });
             vm.houses = data;
             CommonArea.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccessCommonAreas, onError);
         }
         function onSuccessCommonAreas(data, headers) {
 
             vm.commonareas = data;
-            setTimeout(function() {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function() {
-                $("#register_edit_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
             if (vm.commonAreaReservations.id !== null) {
                 loadInfoToUpdate();
             }
@@ -231,12 +228,12 @@
 
                 if (parseInt(vm.timeSelected.initialTime.value) >= parseInt(vm.timeSelected.finalTime.value)) {
                     vm.timeSelected.finalTime.isValid = false;
-                    toastr["error"]("Debe seleccionar una hora final posterior a la hora anterior");
+                    Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
                 } else {
 
                     if (vm.timeSelected.finalTime.value - vm.timeSelected.initialTime.value > vm.commonarea.maximunHours) {
                         vm.timeSelected.finalTime.isValid = false;
-                        toastr["error"]("No puede seleccionar más horas del máximo establecido");
+                        Modal.toast("No puede seleccionar más horas del máximo establecido");
                         vm.timeSelected.finalTime = temporalFinalTime;
 
 
@@ -261,7 +258,7 @@
                     });
                 }, 100);
 
-                toastr["error"]("Debe seleccionar al menos una hora de diferencia");
+                Modal.toast("Debe seleccionar al menos una hora de diferencia");
 
 
             } else {
@@ -359,7 +356,7 @@
 
                 $("#loadingAvailability").fadeOut('50');
                 vm.dateNotPermited = true;
-                toastr["error"]("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
+                Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
             }
 
 
@@ -480,7 +477,7 @@
 
         function onError(error) {
             AlertService.error(error.data.message);
-            toastr["error"]("Ocurrio un error inesperado.")
+            Modal.toast("Ocurrio un error inesperado.")
         }
 
         function onErrorSchedule(error) {
@@ -489,7 +486,7 @@
         }
 
         function createReservation() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar()
             vm.isSaving = true;
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
@@ -523,7 +520,7 @@
                     vm.commonAreaReservations.sendPendingEmail = false ;
                 }
                 vm.commonAreaReservations.status = 1;
-                vm.commonAreaReservations.companyId = $rootScope.companyId;
+                vm.commonAreaReservations.companyId = globalCompany.getId();
                 CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
@@ -531,15 +528,15 @@
         }
 
         function onSaveSuccess(result) {
-            bootbox.hideAll();
+            Modal.hideLoadingBar()
             $state.go('common-area-administration.common-area-reservations');
-            toastr["success"]("Se ha enviado la reservación correctamente para su respectiva aprobación")
+            Modal.toast("Se ha enviado la reservación correctamente para su respectiva aprobación")
             vm.isSaving = false;
         }
 
         function onSaveError() {
             vm.isSaving = false;
-            bootbox.hideAll();
+            Modal.showLoadingBar()
         }
 
         vm.datePickerOpenStatus.date = false;
@@ -566,6 +563,7 @@
                 } else {
                     vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
                 }
+
                 bootbox.confirm({
                     message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea enviar la solicitud de reservación?</h3><h4>Área común: <span class="bold" id="commonArea"></span> </h4><h4>Día: <span class="bold" id="reservationDate"></span> </h4><h4>Hora: <span class="bold" id="time"></span> </h4></div>',
                     buttons: {
@@ -595,9 +593,9 @@
 
             } else {
                 if (vm.timeSelected.finalTime.isValid == false && vm.commonarea.maximunHours !== 0) {
-                    toastr["error"]("Debe seleccionar una hora final posterior a la hora anterior");
+                    Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
                 } else {
-                    toastr["error"]("Las horas seleccionadas se encuentran ocupadas para reservar.")
+                    Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                 }
 
             }

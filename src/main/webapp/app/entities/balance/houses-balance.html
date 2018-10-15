@@ -1,37 +1,35 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-money"></i>
-            <a ui-sref="home()">Finanzas</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="house()">Filiales</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="house()">Saldos</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-        </div>
-    </div>
+<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
+<!--<div class="page-bar route-title">-->
+    <!--<ul class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<i class="fa fa-money"></i>-->
+            <!--<a ui-sref="home()">Finanzas</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="house()">Filiales</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="house()">Saldos</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="row display-none" id="tableData">
-    <div ng-if="vm.houses.length==0" class="marging-top-100">
-        <h2 class="text-center "  style="margin-top:60px">No hay filiales registradas.</h2>
-        <h4 class="text-center gray-font">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
-    </div>
+
+<div ng-if="vm.isReady" class="row fade-in no-padding" >
+
+
+    <no-content ng-if="vm.houses.length==0" icon="library_books" text="No hay filiales registradas" text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
     <div ng-if="vm.houses.length!==0" class="col-md-12"><h3 class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">	Saldo de filiales </h3></div>
-    <div class="" ng-if="vm.houses.length!==0">
+    <div class="no-padding" ng-if="vm.houses.length!==0">
 
         <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 col-md-offset-4 no-padding" style="margin-bottom:0px;">
             <div class="form-group col-lg-3 col-md-3 col-sm-3 col-xs-12 no-padding">

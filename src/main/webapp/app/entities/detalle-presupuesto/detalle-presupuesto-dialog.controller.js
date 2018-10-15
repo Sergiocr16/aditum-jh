@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('DetallePresupuestoDialogController', DetallePresupuestoDialogController);
 
-    DetallePresupuestoDialogController.$inject = ['$localStorage','$state','Presupuesto','CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory'];
+    DetallePresupuestoDialogController.$inject = ['$localStorage','$state','Presupuesto','CommonMethods','$timeout', '$scope', '$stateParams', 'entity', 'DetallePresupuesto','$rootScope','EgressCategory','Modal','globalCompany'];
 
-    function DetallePresupuestoDialogController ($localStorage,$state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory) {
+    function DetallePresupuestoDialogController ($localStorage,$state,Presupuesto,CommonMethods,$timeout, $scope, $stateParams, entity, DetallePresupuesto,$rootScope,EgressCategory,Modal,globalCompany) {
         var vm = this;
            $rootScope.active = "presupuestos";
         vm.presupuesto = {};
         vm.detallePresupuesto = entity;
         vm.save = save;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Capturar presupuesto";
         vm.mantenimientoValues = [];
         vm.extraordinariaValues = [];
         vm.areasComunesValues = [];
@@ -57,7 +59,7 @@
          });
          setTimeout(function(){
             createBudgetYears();
-            EgressCategory.query({companyId: $rootScope.companyId}).$promise.then(onSuccessEgressCategories);
+            EgressCategory.query({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
 
          },900)
         function onSuccessEgressCategories(data, headers) {
@@ -70,12 +72,7 @@
                  }
             })
             vm.egressCategories = data;
-            setTimeout(function() {
-               $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function() {
-                $("#budgetContainer").fadeIn('slow');
-            }, 700)
+            vm.isReady = true;
         }
         function createBudgetYears(){
             vm.budgetYearsToSelect = []
@@ -83,7 +80,7 @@
             for(var i=0;i<4;i++){
                 vm.budgetYearsToSelect.push({year:actualYear+i});
             }
-               Presupuesto.query({companyId:$rootScope.companyId},function(result) {
+               Presupuesto.query({companyId:globalCompany.getId()},function(result) {
                      angular.forEach(result,function(item,key){
                          angular.forEach(vm.budgetYearsToSelect,function(yearItem,key){
                              if(item.anno == yearItem.year){
@@ -240,38 +237,22 @@
             vm.isSaving = false;
         }
          vm.confirmSave = function() {
+             Modal.confirmDialog("¿Está seguro que desea registrar el presupuesto con los valores ingresados?","",
+                 function(){
+                     save ();
+                 });
 
-                bootbox.confirm({
-
-                    message: "¿Está seguro que desea registrar el presupuesto con los valores ingresados?",
-
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function(result) {
-                        if (result) {
-                            save ();
-                        }
-                    }
-                });
             };
          function save (){
 
            if(vm.presupuesto.anno==undefined){
-                toastr["error"]("Debe seleccionar el año a presupuestar");
+                Modal.toast("Debe seleccionar el año a presupuestar");
            }else{
                 getValuesPerMonth();
                 if(invalidInputs>0){
-                    toastr["error"]("No puede ingresar letras ni carácteres especiales");
+                    Modal.toast("No puede ingresar letras ni carácteres especiales");
                 }else if(inputsFullQuantity==0){
-                    toastr["error"]("Debe ingresar al menos un valor en algún campo");}
+                    Modal.toast("Debe ingresar al menos un valor en algún campo");}
                 else{
                   var date = new Date();
                   date.setDate(1);
@@ -280,7 +261,7 @@
                   vm.presupuesto.date = date;
                   vm.presupuesto.anno = vm.presupuesto.anno.year;
                     vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
-                    vm.presupuesto.companyId = $rootScope.companyId;
+                    vm.presupuesto.companyId = globalCompany.getId();
                     vm.presupuesto.deleted = 0;
                     Presupuesto.save(vm.presupuesto, saveIngresosValues, onSaveError);
                 }
@@ -353,7 +334,7 @@
                 DetallePresupuesto.save(detallePresupuesto);
 
           })
-           toastr["success"]("Se ha creado el presupuesto correctamente");
+           Modal.toast("Se ha creado el presupuesto correctamente");
            $localStorage.budgetAction = 1;
            $state.go('presupuesto-detail', {id:result.id});
 

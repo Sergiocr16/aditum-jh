@@ -34,9 +34,9 @@
         </div>
 
         <div>
-            <div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                <h2  class="text-center gray-font font-24 margin-top-100 ">Esta filial no tiene residentes registrados</h2>
-            </div>
+
+            <no-content ng-if="vm.residents.length==0" icon="group" text="Esta filial no tiene residentes registrados" ></no-content>
+
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
                 <div style="cursor: pointer;"  ui-sref="houseAdministration.residentsByHouse.residentDetail({id2:resident.id})" class="col-md-3 col-sm-6 col-xs-12 col-lg-3 " ng-repeat="resident in vm.residents  | orderBy:'name'">
                     <div class="portlet light   text-center  col-sm-12 col-xs-12 residentDivHouseAdministration" id="">

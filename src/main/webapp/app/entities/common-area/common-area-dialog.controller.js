@@ -5,13 +5,15 @@
         .module('aditumApp')
         .controller('CommonAreaDialogController', CommonAreaDialogController);
 
-    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods','CommonAreaSchedule','$state','$rootScope','Principal'];
+    CommonAreaDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'DataUtils', 'entity', 'CommonArea','CommonMethods','CommonAreaSchedule','$state','$rootScope','Principal','Modal','globalCompany'];
 
-    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods,CommonAreaSchedule,$state,$rootScope,Principal) {
+    function CommonAreaDialogController ($timeout, $scope, $stateParams, DataUtils, entity, CommonArea,CommonMethods,CommonAreaSchedule,$state,$rootScope,Principal,Modal,globalCompany) {
         var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.commonArea = entity;
+        vm.isReady = true;
+        $rootScope.mainTitle = "Registrar área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
@@ -151,7 +153,7 @@
                             item.isValid=false;
                         });
                     }, 200);
-                        toastr["error"]("Debe seleccionar una hora final posterior a la hora anterior");
+                        Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
 
 
                 }else{
@@ -183,7 +185,7 @@
                         }, 200);
 
                     }
-                    toastr["error"]("Debe completar los campos obligatorios");
+                    Modal.toast("Debe completar los campos obligatorios");
 
                 }else if(!vm.isAnyDaySelected()){
                     setTimeout(function () {
@@ -192,35 +194,34 @@
                         });
                     }, 200);
 
-                    toastr["error"]("Debe seleccionar al menos un día permitido para reservar");
+                    Modal.toast("Debe seleccionar al menos un día permitido para reservar");
                 }else{
                     if(vm.isAllHoursValid()==false){
-                        toastr["error"]("Debe corregir las horas permitidas para reservar");{}
+                        Modal.toast("Debe corregir las horas permitidas para reservar");{}
 
                     }else{
                         save();
                     }
                 }
             }else{
-                toastr["error"]("No se permite agregar carácteres especiales");
+                Modal.toast("No se permite agregar carácteres especiales");
 
             }
 
         }
 
         function save() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             if (vm.commonArea.id !== null) {
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
                     vm.commonArea.maximunHours = 0;
                 }
-                console.log(vm.commonArea)
                 CommonArea.update(vm.commonArea, onSaveSuccess, onSaveError);
             } else {
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
                     vm.commonArea.maximunHours = 0;
                 }
-                vm.commonArea.companyId = $rootScope.companyId;
+                vm.commonArea.companyId = globalCompany.getId();
                 vm.commonArea.deleted = 0;
                 CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
 
@@ -287,14 +288,14 @@
 
         }
         function onSaveScheduleSuccess (result) {
-            bootbox.hideAll();
+            Modal.hideLoadingBar();
             $state.go('common-area-administration.common-area');
-            toastr["success"]("Se ha gestionado el área común correctamente.")
+            Modal.toast("Se ha gestionado el área común correctamente.")
 
             vm.isSaving = false;
         }
         function onSaveError () {
-            bootbox.hideAll();
+            Modal.hideLoadingBar()
             vm.isSaving = false;
         }
 
@@ -365,29 +366,13 @@
             }
         }
         vm.confirmMessage = function() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:10px;">¿Está seguro que desea registrar el área común?</h3></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
 
-                    if (result) {
-                        validateForm()
+            Modal.confirmDialog("¿Está seguro que desea registrar el área común?","",
+                function(){
+                    validateForm()
 
-                    } else {
-                        vm.isSaving = false;
+                });
 
-                    }
-                }
-            });
         }
 
     }
