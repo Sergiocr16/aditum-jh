@@ -1,7 +1,7 @@
 <md-toolbar layout="row" layout-align="space-between center" style="position:fixed;">
     <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
         <div>
-            <h1 hide-sm hide-xs>
+            <h3 hide-sm hide-xs style="font-size: 15px">
                 <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="toggleLeft()">menu</i>
                 <i ng-if="inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
@@ -9,24 +9,24 @@
                 <a ui-sref="home">
                     <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22">
                 </a>
-            </h1>
-            <h1 hide-lg hide-gt-lg hide-xl>
+            </h3>
+            <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
                 <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
                    hide-xl
                    ng-click="toggleLeft()">menu</i>
                 <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
                 {{mainTitle}}
-            </h1>
+            </h3>
         </div>
 
         <div layout-align="left center">
             <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
-                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important"
+                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"
                        ng-click="formAction2()">{{formActionText2}}
             </md-button>
             <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
-                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important"
+                       class="md-no-ink md-raised md-primary" style="background-color: transparent!important;font-size: 13px;"
                        ng-click="formAction()">{{formActionText}}
             </md-button>
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">

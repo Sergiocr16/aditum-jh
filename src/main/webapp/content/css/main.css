@@ -630,14 +630,14 @@ entity detail page css
 .spinner {
     height: 50px;
     width: 50px;
-    margin-left: -50px;
-    margin-top: -50px;
     position: relative;
     text-align: center;
     -webkit-animation: sk-rotate 2.0s infinite linear;
     animation: sk-rotate 2.0s infinite linear;
 }
-
+.fixed{
+    position: fixed !important;
+}
 .dot1, .dot2 {
     width: 60%;
     height: 60%;
@@ -1581,6 +1581,10 @@ div.scrollmenu a:hover {
         margin-top: 56px;
     }
 
+    .navbar {
+        min-height: 56px;
+    }
+
     .loading-bar {
         margin-top: 56px;
         margin-left: 0;
@@ -1593,7 +1597,9 @@ div.scrollmenu a:hover {
     .all-content {
         margin-top: 64px;
     }
-
+    .navbar {
+        min-height: 56px;
+    }
     .loading-bar {
         margin-top: 64px;
         margin-left: 0;
@@ -1908,6 +1914,7 @@ md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
     background-color: transparent;
     outline: none;
     color: black;
+    box-shadow: none;
 }
 
 .comments-container {
@@ -1938,6 +1945,7 @@ md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
     color: grey;
     font-size: 12px;
 }
-md-input-container>md-select{
-    margin-bottom: 24px!important;
+
+md-input-container > md-select {
+    margin-bottom: 24px !important;
 }

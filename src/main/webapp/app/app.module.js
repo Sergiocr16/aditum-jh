@@ -64,7 +64,7 @@
         });
 
 
-        vm.showContent = true;
+        vm.showContent = false;
         vm.isShowingLoadingBar = false;
         vm.inForm = false;
         vm.inDetail = false;
