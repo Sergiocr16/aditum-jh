@@ -57,7 +57,7 @@
 <div layout="row" flex ng-cloak="" >
     <div ui-view="navbar"   has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
     <section layout="row" flex="" >
-        <div ui-view="menu" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+        <div ui-view="menu" ng-if="showContent" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
         <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content">

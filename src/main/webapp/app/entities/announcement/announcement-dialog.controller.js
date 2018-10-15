@@ -5,18 +5,27 @@
         .module('aditumApp')
         .controller('AnnouncementDialogController', AnnouncementDialogController);
 
-    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal','globalCompany'];
+    AnnouncementDialogController.$inject = ['$state', '$rootScope', '$timeout', '$scope', '$stateParams', 'entity', 'Announcement', 'CommonMethods', 'Modal', 'globalCompany'];
 
-    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal,globalCompany) {
+    function AnnouncementDialogController($state, $rootScope, $timeout, $scope, $stateParams, entity, Announcement, CommonMethods, Modal, globalCompany) {
         var vm = this;
 
         vm.announcement = entity;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
+
+        vm.isCreatingOne = $state.includes('announcement.new');
+        if (vm.announcement.id == undefined) {
+            $rootScope.mainTitle = 'Crear noticia';
+        } else {
+            $rootScope.mainTitle = 'Editar noticia';
+        }
         vm.save = save;
         vm.saveAsSketch = saveAsSketch;
-        vm.isCreatingOne = $state.includes('announcement.new');
-        $rootScope.mainTitle = 'Crear/Editar noticia';
+        Modal.enteringForm(save,"Publicar",saveAsSketch,"Guardar borrador");
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
 
 
         function defineImageSize(str) {
@@ -24,13 +33,23 @@
             var n1 = str.search('style="width: 25%;"');
             var n2 = str.search('style="width: 50%;"');
             var n3 = str.search('style="width: 100%;"');
+            var noneVar = 0;
             if (n1 != -1) {
                 res = str.replace("<img", '<img width="25%"');
+            }else{
+                noneVar++;
             }
             if (n2 != -1) {
                 res = str.replace("<img", '<img width="50%"');
+            }else{
+                noneVar++;
             }
             if (n3 != -1) {
+                res = str.replace("<img", '<img width="100%"');
+            }else{
+                noneVar++;
+            }
+            if(noneVar==3){
                 res = str.replace("<img", '<img width="100%"');
             }
             return res;
@@ -70,17 +89,17 @@
 
         function onSaveSuccess(result) {
             vm.announcement = result;
+            $state.go("announcements.announcement");
             Modal.hideLoadingBar();
             Modal.toast("Se ha publicado exitosamente el anuncio en el condominio.");
-            $state.go("announcement");
             vm.isSaving = false;
         }
 
         function onSaveSuccessSketch(result) {
             vm.announcement = result;
+            $state.go("announcements.announcement-sketch");
             Modal.hideLoadingBar();
             Modal.toast("Guardado como borrador.");
-            $state.go("announcement-sketch");
             vm.isSaving = false;
         }
 

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnnouncementSketchController', AnnouncementSketchController);
 
-    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal'];
+    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal','CommonMethods'];
 
-    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal) {
+    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal,CommonMethods) {
 
         var vm = this;
 
@@ -26,9 +26,19 @@
         vm.reset = reset;
         vm.reverse = true;
         loadAll();
-
-
-
+        vm.publish = function (announcement) {
+            Modal.confirmDialog("¿Está seguro que desea publicar la noticia?",
+                "Una vez publicada será visible para los condóminos.", function () {
+                    announcement.status = 2;
+                    announcement.publishingDate = moment(new Date()).format();
+                    Modal.showLoadingBar();
+                    Announcement.update(announcement, function(){
+                        Modal.hideLoadingBar();
+                        CommonMethods.deleteFromArray(announcement,vm.announcements)
+                        Modal.toast("Se ha publicado la noticia.");
+                    }, onError);
+                });
+        };
         function onSaveSuccess() {
             bootbox.hideAll();
             loadAll();
@@ -38,24 +48,16 @@
             Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
-        vm.publish = function (announcement) {
-            Modal.confirmDialog("¿Está seguro que desea publicar la noticia?", "Una vez publicada será visible para los condóminos", function () {
-                Announcement.delete({id: announcement.id},
-                    function () {
-                        announcement.status = 2;
-                        announcement.publishingDate = moment(new Date()).format();
-                        Announcement.update(announcement, onSaveSuccess, onError);
-                    });
-            })
-        };
 
 
         vm.delete = function (announcement) {
             Modal.confirmDialog("¿Está seguro que desea eliminar la noticia?", "Una vez eliminada no podrá ser recuperada", function () {
+                Modal.showLoadingBar();
                 Announcement.delete({id: announcement.id},
                     function () {
-                        Modal.toast("Se ha elminado la noticia correctamente.")
-                        loadAll();
+                    Modal.hideLoadingBar()
+                        CommonMethods.deleteFromArray(announcement,vm.announcements)
+                        Modal.toast("Se ha elminado el borrador correctamente.")
                     });
             })
 

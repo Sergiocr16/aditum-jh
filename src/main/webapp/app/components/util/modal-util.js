@@ -14,7 +14,11 @@
             confirmDialog: confirmDialog,
             confirmDialogCustom: confirmDialogCustom,
             showLoadingBar: showLoadingBar,
-            hideLoadingBar: hideLoadingBar
+            hideLoadingBar: hideLoadingBar,
+            enteringForm: enteringForm,
+            leavingForm: leavingForm,
+            enteringDetail:enteringDetail,
+            leavingDetail:leavingDetail
         };
         var $scope = {};
         var last = {
@@ -130,6 +134,70 @@
         function showLoadingBar() {
             $rootScope.isShowingLoadingBar = true;
             $("#content").addClass("disabledDiv");
+        }
+
+        function enteringForm(f,text,f2,text2) {
+            $rootScope.action = f;
+            if(f2!=undefined){
+                $rootScope.action2 = f2;
+                $rootScope.secondBtnForm = true;
+                if (text2 == undefined) {
+                    $rootScope.formActionText = "Aceptar";
+                } else {
+                    $rootScope.formActionText2 = text2;
+                }
+            }
+            if (text == undefined) {
+                $rootScope.formActionText = "Aceptar";
+            } else {
+                $rootScope.formActionText = text;
+            }
+
+            $rootScope.inForm = true;
+        }
+
+        function enteringDetail() {
+            $rootScope.inDetail = true;
+        }
+        function leavingDetail() {
+            $rootScope.inDetail = false;
+        }
+
+        function leavingForm() {
+            $rootScope.inForm = false;
+            $rootScope.secondBtnForm = false;
+        }
+
+
+        function findBootstrapEnvironment() {
+            var envs = ['xs', 'sm', 'md', 'lg'];
+
+            var $el = $('<div>');
+            $el.appendTo($('body'));
+
+            for (var i = envs.length - 1; i >= 0; i--) {
+                var env = envs[i];
+
+                $el.addClass('hidden-' + env);
+                if ($el.is(':hidden')) {
+                    $el.remove();
+                    return env;
+                }
+            }
+        }
+
+        function isScreenSizeSmall() {
+            var envs = ['xs', 'sm', 'md'];
+            var e = 0;
+            for (var i = 0; i < envs.length; i++) {
+                if (envs[i] === findBootstrapEnvironment()) {
+                    e++;
+                }
+            }
+            if (e > 0) {
+                return true;
+            }
+            return false;
         }
 
     }

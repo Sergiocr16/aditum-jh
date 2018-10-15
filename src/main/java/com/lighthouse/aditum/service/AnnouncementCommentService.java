@@ -54,7 +54,21 @@ public class AnnouncementCommentService {
         announcementComment.setDeleted(announcementCommentDTO.getDeleted());
         announcementComment.setEditedDate(announcementCommentDTO.getEditedDate());
         announcementComment = announcementCommentRepository.save(announcementComment);
-        return announcementCommentMapper.toDto(announcementComment);
+        AnnouncementCommentDTO announcementCommentDTO1 = announcementCommentMapper.toDto(announcementComment);
+        if(announcementCommentDTO.getResidentId()!=null){
+            announcementCommentDTO1.setResident(residentService.findOne(announcementCommentDTO.getResidentId()));
+        }else {
+            AdminInfoDTO adminInfoFound = adminInfoService.findOne(announcementCommentDTO.getAdminInfoId());
+            ResidentDTO adminAsResident = new ResidentDTO();
+            adminAsResident.setId(adminInfoFound.getId());
+            adminAsResident.setName(adminInfoFound.getName());
+            adminAsResident.setLastname(adminInfoFound.getLastname());
+            adminAsResident.setSecondlastname(adminInfoFound.getSecondlastname());
+            adminAsResident.setImage_url(adminInfoFound.getImage_url());
+            adminAsResident.setIdentificationnumber(adminInfoFound.getIdentificationnumber());
+            announcementCommentDTO1.setResident(adminAsResident);
+        }
+        return announcementCommentDTO1;
     }
 
     /**
