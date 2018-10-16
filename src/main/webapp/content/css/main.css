@@ -1573,6 +1573,22 @@ div.scrollmenu a:hover {
     .loading-bar {
         margin-top: 56px;
     }
+    .nav-bar-top {
+        background-color: rgb(0,150,136)!important;
+    }
+    .md-nav-item .md-active{
+        color: white!important;
+    }
+    .md-unselected{
+        color: rgba(255,255,255,0.5)!important;
+    }
+    md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar{
+        background-color: white!important;
+        color:white!important;
+        margin-bottom: -1px;
+        height: 3px;
+    }
+
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -1588,8 +1604,8 @@ div.scrollmenu a:hover {
     .loading-bar {
         margin-top: 56px;
         margin-left: 0;
-
     }
+
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
@@ -1604,6 +1620,7 @@ div.scrollmenu a:hover {
         margin-top: 64px;
         margin-left: 0;
     }
+
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -1629,7 +1646,18 @@ div.scrollmenu a:hover {
     }
 
 }
+.md-nav-item .md-active{
+    color: #f37960;
+    font-weight: 500;
+}
+.md-unselected{
 
+}
+md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar{
+    background-color: #f37960;
+    color:#f37960;
+
+}
 .all-content:not(#nav-bar-top) {
     padding: 15px;
 }
@@ -1896,10 +1924,7 @@ a
     font-size: 17px !important;
 }
 
-md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
-    color: red !important;
-    background-color: red !important;
-}
+
 
 .create-comment {
     color: #999;
@@ -1949,3 +1974,4 @@ md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
 md-input-container > md-select {
     margin-bottom: 24px !important;
 }
+

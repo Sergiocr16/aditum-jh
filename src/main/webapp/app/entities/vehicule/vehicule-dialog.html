@@ -1,104 +1,144 @@
-<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a href="index.html">Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li has-authority="ROLE_MANAGER">-->
-            <!--<a ui-sref="vehicule()">Vehículos</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
 
-        <!--<li has-authority="ROLE_USER">-->
-            <!--<a href="" ui-sref="vehiculeByHouse()">Vehículos</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a href="">{{vm.title}}</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right">-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class=" fade-in">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-car font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">{{vm.title}}</span>
-                    </div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                        <label>Número de filial</label>
+                        <md-select ng-model="vm.resident.houseId" required>
+                            <md-option ng-repeat="house in vm.houses" ng-value="house.id">
+                                {{house.housenumber}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Seleccione un tipo</label>
+                        <md-select ng-model="vm.house.isdesocupated" ng-required='vm.required==1'>
+                            <md-option value="Automóvil">
+                                Automóvil
+                            </md-option>
+                            <md-option value="Motocicleta">
+                                Motocicleta
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                        <label>Selecciona una marca</label>
+                        <md-select ng-model="vm.vehicule.brand" required>
+                            <md-option ng-repeat="brand in vm.brands| orderBy: 'brand' track by brand.brand" ng-value="brand.brand">
+                                {{brand.brand}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
                 </div>
-                <div class="portlet-body form">
-                    <form role="form" ng-submit="vm.save()">
-                        <div class="form-body">
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input has-info">
-                                    <select class="form-control gray-font" name="vehicule" ng-model="vm.vehicule.type" ng-required='vm.required==1'>
-                                        <option value="">Seleccione un tipo</option>
-                                        <option value="Automóvil">Automóvil</option>
-                                        <option value="Motocicleta">Motocicleta</option>
-                                    </select>
-                                    <label for="form_control_1" class="font-15">Tipo de vehículo</label>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.vehicule.licenseplate" type="text" class="form-control specialCharactersAndVocals gray-font" id="form_control_1" style='text-transform:uppercase' required>
-                                    <label for="form_control_1" class="font-15">Número de placa</label>
-                                    <span class="help-block">Escriba el número de placa sin guiones</span>
 
-                                </div>
-                                <div class="form-group form-md-line-input has-info">
-                                <select id="pruebisiima" class="form-control gray-font" data-ng-model="vm.vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand"  ng-required='vm.required==1'>
-                                    <option value="">Seleccione una marca</option>
-                                </select>
-                                <label for="form_control_1" class="font-15">Marca</label>
-                            </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">
-                                    <select class="form-control gray-font" id="field_house" name="house" ng-model="vm.vehicule.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'" ng-required='vm.required2==1'>
-                                        <option value="">Seleccione una filial</option>
-                                    </select>
-                                    <label for="form_control_1" class="font-15">Número de filial</label>
-                                </div>
-                                <div class="form-group form-md-line-input has-info color-pickerr">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block">
+                        <label>Número de placa</label>
+                        <input  class="uppercase" ng-model="vm.vehicule.licenseplate"
+                               maxlength="20" class="">
+                        <div class="hint">Escriba el número de placa sin guiones</div>
 
-                                    <label class="gray-font">Color del vehículo</label>
-                                    <div style="background-color:{{vm.vehicule.color}};border: 1px solid #E6E6E6!important" class="input-group color colorpicker-default col-lg-12" data-color="#ffff" data-color-format="rgba">
-                                        <input ng-model="vm.vehicule.color" ng-show="false" type="text" class="form-control gray-font"  value="#ffff" readonly required>
+                    </md-input-container>
+                    <md-input-container class="md-block" >
+                        <label>Metros cuadrados</label>
+                        <input  ng-model="vm.house.squareMeters" type="number" min="0" class="">
+                    </md-input-container>
 
-                                        <span class="input-group-btn">
-                              <button ng-blur="vm.submitColor()" class="btn default form-control no-padding" type="button"><i id="color" style="background-color: #ffff;"></i>&nbsp;</button>
-                              </span>
-                                    </div>
-                                </div>
-                                <div has-authority="ROLE_USER" class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>
-
-                            </div>
-                            <div class="form-actions noborder">
-                                <h3 class="text-right">
-                                    <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button has-authority="ROLE_USER" type="button" ui-sref="vehiculeByHouse()"  class="btn red default">Cancelar</button>
-                                    <button has-authority="ROLE_MANAGER" type="button" ui-sref="vehicule()"  class="btn red default">Cancelar</button>
-
-                                </h3>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                    {{vm.button}}
+                </md-button>
+            </div>
+        </form>
+    </md-content>
 </div>
+<!--<div ng-if="vm.isReady" class=" fade-in">-->
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<div class="portlet light bordered">-->
+                <!--<div class="portlet-title">-->
+                    <!--<div class="caption font-green-haze">-->
+                        <!--<i class="fa fa-car font-green-haze"></i>-->
+                        <!--<span class="caption-subject bold uppercase">{{vm.title}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="portlet-body form">-->
+                    <!--<form role="form" ng-submit="vm.save()">-->
+                        <!--<div class="form-body">-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div class="form-group form-md-line-input has-info">-->
+                                    <!--<select class="form-control gray-font" name="vehicule" ng-model="vm.vehicule.type" ng-required='vm.required==1'>-->
+                                        <!--<option value="">Seleccione un tipo</option>-->
+                                        <!--<option value="Automóvil">Automóvil</option>-->
+                                        <!--<option value="Motocicleta">Motocicleta</option>-->
+                                    <!--</select>-->
+                                    <!--<label for="form_control_1" class="font-15">Tipo de vehículo</label>-->
+                                <!--</div>-->
+                                <!--<div class="form-group form-md-line-input">-->
+                                    <!--<input ng-model="vm.vehicule.licenseplate" type="text" class="form-control specialCharactersAndVocals gray-font" id="form_control_1" style='text-transform:uppercase' required>-->
+                                    <!--<label for="form_control_1" class="font-15">Número de placa</label>-->
+                                    <!--<span class="help-block">Escriba el número de placa sin guiones</span>-->
+
+                                <!--</div>-->
+                                <!--<div class="form-group form-md-line-input has-info">-->
+                                <!--<select id="pruebisiima" class="form-control gray-font" data-ng-model="vm.vehicule.brand" ng-options="brand.brand for brand in vm.brands| orderBy: 'brand' track by brand.brand"  ng-required='vm.required==1'>-->
+                                    <!--<option value="">Seleccione una marca</option>-->
+                                <!--</select>-->
+                                <!--<label for="form_control_1" class="font-15">Marca</label>-->
+                            <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="col-md-6">-->
+                                <!--<div has-authority="ROLE_MANAGER" class="form-group form-md-line-input has-info">-->
+                                    <!--<select class="form-control gray-font" id="field_house" name="house" ng-model="vm.vehicule.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'" ng-required='vm.required2==1'>-->
+                                        <!--<option value="">Seleccione una filial</option>-->
+                                    <!--</select>-->
+                                    <!--<label for="form_control_1" class="font-15">Número de filial</label>-->
+                                <!--</div>-->
+                                <!--<div class="form-group form-md-line-input has-info color-pickerr">-->
+
+                                    <!--<label class="gray-font">Color del vehículo</label>-->
+                                    <!--<div style="background-color:{{vm.vehicule.color}};border: 1px solid #E6E6E6!important" class="input-group color colorpicker-default col-lg-12" data-color="#ffff" data-color-format="rgba">-->
+                                        <!--<input ng-model="vm.vehicule.color" ng-show="false" type="text" class="form-control gray-font"  value="#ffff" readonly required>-->
+
+                                        <!--<span class="input-group-btn">-->
+                              <!--<button ng-blur="vm.submitColor()" class="btn default form-control no-padding" type="button"><i id="color" style="background-color: #ffff;"></i>&nbsp;</button>-->
+                              <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div has-authority="ROLE_USER" class="col-md-6 col-sm-6 hidden-xs" style="height: 45px;"></div>-->
+
+                            <!--</div>-->
+                            <!--<div class="form-actions noborder">-->
+                                <!--<h3 class="text-right">-->
+                                    <!--<button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>-->
+                                    <!--<button has-authority="ROLE_USER" type="button" ui-sref="vehiculeByHouse()"  class="btn red default">Cancelar</button>-->
+                                    <!--<button has-authority="ROLE_MANAGER" type="button" ui-sref="vehicule()"  class="btn red default">Cancelar</button>-->
+
+                                <!--</h3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</form>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
 

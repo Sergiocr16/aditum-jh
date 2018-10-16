@@ -9,7 +9,10 @@
 
     function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany) {
         var vm = this;
-        $rootScope.showContent = true;
+
+        angular.element(document).ready(function () {
+            $rootScope.showContent = true;
+        });
 
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
