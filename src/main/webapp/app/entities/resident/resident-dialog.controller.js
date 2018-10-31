@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal','globalCompany'];
+    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
 
     function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
         $rootScope.active = "residents";
@@ -89,7 +89,7 @@
         if (vm.resident.id !== null) {
             vm.title = "Editar usuario";
             vm.button = "Editar";
-            vm.resident.type = vm.resident.type+"";
+            vm.resident.type = vm.resident.type + "";
             var autorizadorStatus = vm.resident.isOwner;
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
@@ -99,7 +99,6 @@
             vm.button = "Registrar";
         }
         $rootScope.mainTitle = vm.title;
-
 
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
@@ -200,40 +199,43 @@
         }
 
         function save() {
+            var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
 
             if (vm.validate()) {
-                vm.resident.name = vm.resident.name.toUpperCase();
-                vm.resident.lastname = vm.resident.lastname.toUpperCase();
-                vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
-                vm.isSaving = true;
-                if (vm.resident.id !== null) {
-                    if (indentification !== vm.resident.identificationnumber) {
+                Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
+
+                    vm.resident.name = vm.resident.name.toUpperCase();
+                    vm.resident.lastname = vm.resident.lastname.toUpperCase();
+                    vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
+                    vm.isSaving = true;
+                    if (vm.resident.id !== null) {
+                        if (indentification !== vm.resident.identificationnumber) {
+                            Resident.getByCompanyAndIdentification({
+                                companyId: globalCompany.getId(),
+                                identificationID: vm.resident.identificationnumber
+                            }, alreadyExist, allClearUpdate)
+
+                            function alreadyExist(data) {
+                                Modal.toast("La cédula ingresada ya existe.");
+                            }
+
+                        } else {
+                            updateResident();
+                        }
+
+
+                    } else {
                         Resident.getByCompanyAndIdentification({
                             companyId: globalCompany.getId(),
                             identificationID: vm.resident.identificationnumber
-                        }, alreadyExist, allClearUpdate)
+                        }, alreadyExist, allClearInsert)
 
                         function alreadyExist(data) {
                             Modal.toast("La cédula ingresada ya existe.");
                         }
-
-                    } else {
-                        updateResident();
                     }
+                })
 
-
-                } else {
-                    Resident.getByCompanyAndIdentification({
-                        companyId: globalCompany.getId(),
-                        identificationID: vm.resident.identificationnumber
-                    }, alreadyExist, allClearInsert)
-
-                    function alreadyExist(data) {
-                        Modal.toast("La cédula ingresada ya existe.");
-                    }
-
-
-                }
             }
 
             function allClearInsert(data) {

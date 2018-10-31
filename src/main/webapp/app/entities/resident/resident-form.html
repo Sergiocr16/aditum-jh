@@ -83,7 +83,7 @@
                                    class="uppercase" required>
                         </md-input-container>
 
-                        <md-input-container class="md-block">
+                        <md-input-container class="md-block no-margin-bottom">
                             <label>Segundo Apellido</label>
                             <input required ng-model="vm.resident.secondlastname" type="text"
                                    ng-disabled="vm.resident.found==1"
@@ -92,7 +92,6 @@
                     </div>
 
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-
                         <md-input-container class="md-block" has-authority="ROLE_USER">
                             <label>Segundo Apellido</label>
                             <input ng-model="vm.resident.secondlastname" ng-disabled="vm.resident.found==1"
@@ -113,7 +112,8 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <label>Contacto principal de la filial</label>
-                            <md-select ng-model="vm.resident.principalContact" ng-disabled="vm.validEmail(vm.resident.email)==false">
+                            <md-select ng-model="vm.resident.principalContact"
+                                       ng-disabled="vm.validEmail(vm.resident.email)==false">
                                 <md-option value="1">Sí
                                 </md-option>
                                 <md-option value="0">No

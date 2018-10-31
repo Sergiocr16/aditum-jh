@@ -16,7 +16,9 @@
     <link rel="stylesheet" href="bower_components/jquery-timepicker-wvega/jquery.timepicker.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/ng-notify/src/styles/ng-notify.css">
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/md-color-picker/dist/mdColorPicker.min.css">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -41,28 +43,32 @@
     <link rel="stylesheet" href="content/css/colorpicker.css">
     <link rel="stylesheet" href="content/css/summernote-bs4.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link  rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
 
     <!-- endbuild -->
 </head>
 
 <body ng-app="aditumApp" id="popupContainer" style="background-color: white!important " layout="column">
-<div class="app-loading" ng-if="!showContent">
+<div class="app-loading" id="page-loading">
     <span class="spinner spinner-large"></span>
 </div>
-<div ui-view="reset" ng-if="showContent" >
+
+<div ui-view="reset"  >
 </div>
-<div ui-view="login"  ng-hide="vm.isAuthenticated() || !showLogin" ng-if="showContent">
+<div ui-view="login"  ng-hide="vm.isAuthenticated() || !showLogin">
 </div>
+
+
 <div layout="row" flex ng-cloak="" >
     <div ui-view="navbar"   has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
     <section layout="row" flex="" >
-        <div ui-view="menu" ng-if="showContent" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+        <div ui-view="menu"  id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
-        <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
-        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content">
-                <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
+        <div ui-view="access_door"  has-authority="ROLE_OFFICER"></div>
+
+        <md-progress-linear  md-mode="indeterminate"class="loading-bar md-warn" ng-if="isShowingLoadingBar"></md-progress-linear>
+        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+            <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
 
                 </div>
         </md-content>
@@ -93,6 +99,8 @@
 <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
 <script src="bower_components/jquery-timepicker-wvega/jquery.timepicker.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
+<script src="bower_components/tinycolor/tinycolor.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -118,7 +126,10 @@
 <script src="bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
 <script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
+<script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 
@@ -1046,5 +1057,14 @@
 
 <!-- endinject -->
 <!-- endbuild -->
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+      setTimeout(function(){
+          $('#page-loading')
+              .fadeOut(0);
+      },500)
+    });
+</script>
 </body>
 </html>

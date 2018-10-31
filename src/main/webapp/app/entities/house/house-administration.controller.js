@@ -15,8 +15,7 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
-        $localStorage.houseSelected = {};
-        $rootScope.houseSelected = {};
+
         $rootScope.mainTitle = "Contabilidad filiales";
         vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -51,10 +50,11 @@
                     value.debit = value.balance.debit;
                 })
                 vm.houses = data;
-                if (vm.houses.length > 0) {
+                if (vm.houses.length > 0 && $localStorage.houseSelected == null || $localStorage.houseSelected == undefined) {
                     $localStorage.houseSelected = vm.houses[0]
                 }
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+
                     House.get({
                         id: $localStorage.houseSelected.id
                     }, function (result) {

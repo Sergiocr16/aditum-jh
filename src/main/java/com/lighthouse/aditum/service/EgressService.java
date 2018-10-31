@@ -135,6 +135,7 @@ public class EgressService {
         Egress egress = egressRepository.findOne(id);
         EgressDTO egreesDTO = egressMapper.toDto(egress);
         egreesDTO.setCategoryName(egressCategoryService.findOne(Long.parseLong(egreesDTO.getCategory())).getCategory());
+        egreesDTO.setPaymentMethod(egress.getPaymentMethod());
         return egreesDTO;
     }
 

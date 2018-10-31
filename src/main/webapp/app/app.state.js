@@ -4,15 +4,18 @@
     angular
         .module('aditumApp')
         .config(stateConfig);
-    angular
-        .module('aditumApp').config(function($mdThemingProvider) {
+
+    stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider'];
+
+    function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider) {
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return moment(date).format('DD-MM-YYYY');
+        };
         $mdThemingProvider.theme('default')
             .primaryPalette('teal')
             .accentPalette('orange');
-    });
-    stateConfig.$inject = ['$stateProvider'];
 
-    function stateConfig($stateProvider) {
+
         $stateProvider.state('app', {
             abstract: true,
             views: {

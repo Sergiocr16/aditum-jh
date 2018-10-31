@@ -3,10 +3,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-</div>
+
 <div ng-if="vm.isReady">
 
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"

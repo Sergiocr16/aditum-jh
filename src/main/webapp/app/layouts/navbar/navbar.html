@@ -32,9 +32,9 @@
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
                 <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                      aria-expanded="false">
-                    <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
+                    <img style="cursor: pointer" ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
                          class="circle-material-image"/>
-                    <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                    <img style="cursor: pointer" ng-show="currentUserImage!==null" src="{{currentUserImage}}"
                          class="circle-material-image"/>
                 </div>
                 <ul class="dropdown-menu pull-right" style="min-width: 310px;

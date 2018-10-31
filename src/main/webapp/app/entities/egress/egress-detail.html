@@ -1,322 +1,260 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a >Contabilidad</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="egress()">Egresos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Detalle de gasto</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
+<md-card  ng-if="vm.isReady" class="fade-in" style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
+    <md-card-title layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de gasto</span>
+        </md-card-title-text>
+        <div style="margin-right: 15px">
+             <span class="bold" ng-show="vm.egress.state==3" style="font-size:17px;color:#F3565D"
+             >Vencido </span>
+            <span class="bold" ng-show="vm.egress.state==2" style="font-size:17px;color:#45B6AF"
+            >Pagado </span>
+            <span class="bold" ng-show="vm.egress.state==1" style="font-size:17px;color:#dfba49"
+            >Pendiente </span>
         </div>
-    </div>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+            <div style="padding: 16px!important;">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                            <span class="font-13 bold  control-label">Folio:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
 
-</div>
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
-</div>
-<div ng-if="vm.isReady" class="fade-in">
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
+                            <span class="font-13   control-label">{{vm.egress.folio}}</span>
 
-                        <span class="caption-subject bold uppercase">Detalle de gasto</span>
+                        </div>
                     </div>
-                    <div class="caption font-green-haze pull-right" style="padding-top:10px;">
-                       <span class=" padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger bold"  style="font-size:15px;"  ng-show="vm.egress.state==3" aria-hidden="false">Vencido</span><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success bold" style="font-size:15px;" ng-show="vm.egress.state==2" aria-hidden="false">Pagado</span><span class=" padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12  label label-sm label-warning bold"  style="font-size:15px;"  ng-show="vm.egress.state==1" aria-hidden="false">Pendiente</span>
+
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Fecha contable:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">{{vm.egress.date | date: 'longDate'}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                            <span class="font-13 bold control-label">Fecha vencimiento:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  ">
+
+                            <span
+                                class="font-13  control-label">{{vm.egress.expirationDate  | date: 'longDate' }}</span>
+
+                            <!--<input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"-->
+                            <!--type="text" class="form-control letters gray-font  dating"  required>-->
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Concepto:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">{{vm.egress.concept}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group"
+                         ng-hide=" vm.egress.state!==2">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Fecha pagado:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">{{vm.egress.paymentDate  | date: 'longDate'}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group"
+                         ng-hide=" vm.egress.state!==2">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Cuenta:</span>
+                        </div>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">{{vm.egress.banco}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group"
+                         ng-show="vm.egress.state == 2">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Referencia bancaria: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">{{vm.egress.reference}}</span>
+
+                        </div>
 
                     </div>
                 </div>
-                <div class="portlet-body ">
-                    <form name="editForm" role="form" novalidate ng-submit="vm.confirmReportPayment()" show-validation>
-
-                        <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
-                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
-                                        <span class="font-13 bold  control-label">Folio:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13   control-label">{{vm.egress.folio}}</span>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group">
-                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Fecha contable:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.date | date: 'longDate'}}</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
-                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
-                                        <span class="font-13 bold control-label">Fecha vencimiento:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.expirationDate  | date: 'longDate' }}</span>
-
-                                        <!--<input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"-->
-                                        <!--type="text" class="form-control letters gray-font  dating"  required>-->
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Concepto:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.concept}}</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group"  ng-hide=" vm.egress.state!==2">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Fecha pagado:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.paymentDate  | date: 'longDate'}}</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group" ng-hide=" vm.egress.state!==2">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Cuenta:</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.banco}}</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group" ng-show="vm.egress.state == 2">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Referencia bancaria: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.reference}}</span>
-
-                                    </div>
-
-                                </div>
-                            </div>
 
 
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding ">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Categoría: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding " >
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Categoría: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                            <span class="font-13  control-label">{{vm.egress.categoryName}}</span>
 
-                                        <span class="font-13  control-label" >{{vm.egress.categoryName}}</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
+                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
+                            <span class="font-13 bold  control-label"># Factura:</span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group">
-                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 no-padding-left ">
-                                        <span class="font-13 bold  control-label"># Factura:</span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13   control-label">{{vm.egress.billNumber}}</span>
-
-                                    </div>
-
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Proovedor: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.empresa}}</span>
-
-                                    </div>
-
-                                </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group hidden-md hidden-sm hidden-lg">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Total: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >₡{{vm.egress.total | currency : "" : 0}}</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Comentarios: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" ng-show="vm.egress.comments!==null || vm.egress.comments!==undefined">{{vm.egress.comments}}</span>
-                                        <span class="font-13  control-label"  ng-show="vm.egress.comments==null || vm.egress.comments==undefined">No hay</span>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group"  ng-hide=" vm.egress.state!==2">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
-                                        <span class="font-13 bold control-label" >Método de pago: </span>
-                                    </div>
-                                    <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
-
-                                        <span class="font-13  control-label" >{{vm.egress.paymentMethod}}</span>
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
-
-                                <h3 class=" text-center control-label bold" >Total</h3>
-
-                                <h2 class="control-label  text-center margin-top-20">₡{{vm.egress.total | currency : "" : 0}}</h2>
-
-                            </div>
-
-
+                            <span class="font-13   control-label">{{vm.egress.billNumber}}</span>
 
                         </div>
 
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-hide=" vm.egress.state==2">
-                            <hr>
-                            <div class="portlet-title">
-                                <div class="caption font-green-haze">
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Proovedor: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                                    <span class="caption-subject bold uppercase" style="font-size:15px;">Reportar pago</span>
-                                </div>
+                            <span class="font-13  control-label">{{vm.egress.empresa}}</span>
 
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-7 col-xs-12 no-padding" style="margin-top:15px;">
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label " >Fecha de pago * </span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <input ng-model="vm.egress.paymentDate" id="field_paymentDate" name="paymentDate" ng-click="vm.openCalendar('paymentDate')"  enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker3.datepickerOptions" is-open="vm.datePickerOpenStatus.paymentDate"
-                                               type="text" class="form-control letters gray-font  dating"  required>
-
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Método de pago *</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <select  class="form-control" id="field_paymentMethod" name="paymentMethod" ng-model="vm.egress.paymentMethod" required>
-                                            <option value="">Seleccione un método</option>
-                                            <option value="Efectivo">Efectivo</option>
-                                            <option value="Cheque">Cheque</option>
-                                            <option value="Transferencia">Transferencia</option>
-                                            <option value="Tarjeta">Tarjeta</option>
-                                            <option value="Deposito en banco">Deposito en banco</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group" >
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" ># Factura</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <input type="text" class="form-control" name="billNumber" id="field_billNumber"
-                                               ng-model="vm.egress.billNumber"
-                                        />
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class=" col-md-offset-1 col-lg-offset-1 col-sm-offset-1 col-lg-5 col-md-5 col-sm-7 col-xs-12 no-padding" style="margin-top:15px;">
-
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Cuenta de banco a debitar*</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-
-                                        <select class="form-control" id="field_account" name="company" required ng-model="vm.egress.account" ng-options="banco.id as banco.beneficiario for banco in vm.bancos"             required>
-                                            <option value="">Seleccione una cuenta</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group" >
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left margin-top-10">
-                                        <span class="font-13 bold control-label" >Referencia bancaria</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <input type="text" class="form-control" name="reference" id="field_reference"
-                                               ng-model="vm.egress.reference"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
-                        <div class="form-actions noborder" style="padding-bottom:0px;">
-                            <h3 class="text-right" ng-hide=" vm.egress.state==2">
+                    </div>
 
-                                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue">Reportar</button>
-                                <button type="button"  ui-sref="egress()" class="btn red default">Atrás</button>
-
-
-                                <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-                                <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-                                <!--</button>-->
-                                <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
-                                <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
-                                <!--</button>-->
-
-                            </h3>
-                            <h3 class="text-right" ng-hide=" vm.egress.state!==2">
-
-                                <button type="button"  ui-sref="egress()" class="btn red default">Atrás</button>
-
-
-                            </h3>
+                    <div
+                        class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group hidden-md hidden-sm hidden-lg">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Total: </span>
                         </div>
-                    </form>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label">₡{{vm.egress.total | currency : "" : 0}}</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Comentarios: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+
+                            <span class="font-13  control-label"
+                                  ng-show="vm.egress.comments!==null || vm.egress.comments!==undefined">{{vm.egress.comments}}</span>
+                            <span class="font-13  control-label"
+                                  ng-show="vm.egress.comments==null || vm.egress.comments==undefined">No hay</span>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group"
+                         ng-hide=" vm.egress.state!==2">
+                        <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-left">
+                            <span class="font-13 bold control-label">Método de pago: </span>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
+                            <span class="font-13  control-label">{{vm.egress.paymentMethod}}</span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs ">
+
+                    <h3 class=" text-center control-label bold">Total</h3>
+
+                    <h2 class="control-label  text-center margin-top-20">₡{{vm.egress.total | currency : "" : 0}}</h2>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<script>
-    jQuery(document).ready(function() {
-        $("#loadingIcon").fadeIn("slow");
-    });
-</script>
-<script>
-    jQuery(document).ready(function() {
-        $("#register_edit_form").fadeIn("slow");
-    });
-</script>
+            <div class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in" ng-hide=" vm.egress.state==2">
+                <md-toolbar class="form-title">
+                    <h2>Reportar pago</h2>
+                </md-toolbar>
+                <md-content layout-padding class="form-content">
+                    <div>
+                        <form name="form" ng-submit="vm.confirmReportPayment()">
+                            <div ng-model="vm.form">
+                                <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <md-input-container class="md-block  no-margin-bottom">
+                                            <label>Fecha de pago</label>
+                                            <md-datepicker md-hide-icons="calendar" required ng-model="vm.egress.paymentDate"
+                                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                                           required></md-datepicker>
+                                        </md-input-container>
+                                        <md-input-container class="md-block">
+                                            <label>Seleccione un método de pago</label>
+                                            <md-select ng-model="vm.egress.paymentMethod" required>
+                                                <md-option value="Efectivo">
+                                                    Efectivo
+                                                </md-option>
+                                                <md-option value="Cheque">
+                                                    Cheque
+                                                </md-option>
+                                                <md-option value="Transferencia">
+                                                    Transferencia
+                                                </md-option>
+                                                <md-option value="Tarjeta">
+                                                    Tarjeta
+                                                </md-option>
+                                                <md-option value="Deposito en banco">
+                                                    Deposito en banco
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+
+                                        <md-input-container class="md-block no-margin-bottom">
+                                            <label># Factura</label>
+                                            <input type="text" class="form-control" name="billNumber"
+                                                   ng-model="vm.egress.billNumber" required>
+                                        </md-input-container>
+
+
+                                    </div>
+
+                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <md-input-container class="md-block no-margin-bottom" has-authority="ROLE_MANAGER">
+                                            <label>Cuenta de banco a debitar</label>
+                                            <md-select    ng-model="vm.egress.account" required>
+                                                <md-option ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
+                                                           ng-value="banco.id">
+                                                    {{banco.beneficiario}}
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container class="md-block">
+                                            <label>Referencia bancaria</label>
+                                            <input type="text" class="form-control" name="reference" id="field_reference"
+                                                   ng-model="vm.egress.reference"
+                                            />
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div layout="row" layout-align="end center">
+                                    <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Reportar</md-button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </md-content>
+            </div>
+    </md-card-content>
+</md-card>
+

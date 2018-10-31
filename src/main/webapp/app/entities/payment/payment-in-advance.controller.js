@@ -24,6 +24,12 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.residents = [];
+
+vm.save = createPayment;
+        Modal.enteringForm(createPayment);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
@@ -272,9 +278,6 @@
             return x1 + x2;
         }
         vm.changeHouse = function (houseId) {
-            $("#loadingTable").fadeIn(10);
-            $("#tableContent").fadeOut(10);
-
             House.get({
                 id: houseId
             }, function (result) {
@@ -323,7 +326,7 @@
         }
 
 
-        vm.createPayment = function () {
+        function createPayment () {
             if (vm.selectedHouse.balance.total < 0) {
                 Modal.toast("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
             } else {
@@ -383,19 +386,15 @@
                         vm.printReceipt = false;
                         increaseFolioNumber(function () {
                         });
-                        loadAll();
-                        loadAdminConfig();
-                    }, 5000)
-
-
+                        $state.go("houseAdministration.paymentsPerHouse")
+                    }, 7000)
                 } else {
                     Modal.hideLoadingBar();
                     clear();
                     Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
                     increaseFolioNumber(function () {
                     });
-                    loadAll();
-                    loadAdminConfig();
+                    $state.go("houseAdministration.paymentsPerHouse")
                 }
 
 

@@ -110,7 +110,9 @@
                 vm.house.squareMeters = 0;
             }
             vm.isSaving = true;
-            Modal.confirmDialog("¿Está seguro que desea registrar la filial?","",function(){
+            var wordOnModal = vm.house.id == undefined ? "registrar" : "modificar"
+
+            Modal.confirmDialog("¿Está seguro que desea "+wordOnModal+" la filial?","",function(){
                 if (vm.house.id !== null) {
                     Modal.showLoadingBar();
                     House.validateUpdate({

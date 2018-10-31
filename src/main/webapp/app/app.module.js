@@ -27,7 +27,9 @@
             'summernote',
             'ngMaterial',
             'ngMessages',
-            'ngSanitize'
+            'ngSanitize',
+            'mdColorPicker',
+            'ui.calendar'
         ])
         .run(run);
 

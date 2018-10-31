@@ -28,12 +28,11 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block">
+                        <md-input-container class="md-block no-margin-bottom">
                             <label>Extensión o teléfono de filial</label>
                             <input  maxlength="20"  ng-model="vm.house.extension">
                         </md-input-container>
                     </div>
-
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block">
                             <label>Clave de seguridad</label>
@@ -61,7 +60,7 @@
                     <md-button type="button" ng-click="back()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
                         {{vm.button}}
                     </md-button>
                 </div>

@@ -100,7 +100,7 @@ public class BancoService {
 
     public void increaseSaldo(Long id,String saldoToIncrease){
         BancoDTO banco = this.findOne(id);
-        int newSaldo = Integer.parseInt(banco.getSaldo()) + Integer.parseInt(saldoToIncrease);
+        double newSaldo = Double.parseDouble(banco.getSaldo()) + Double.parseDouble(saldoToIncrease);
         banco.setSaldo(newSaldo+"");
         this.save(banco);
     }
