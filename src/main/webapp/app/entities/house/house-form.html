@@ -1,102 +1,69 @@
-<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a ui-sref="home()">Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="house()">Casas</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a href="">{{vm.title}}</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right">-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class=" fade-in">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-home  font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">{{vm.title}}</span>
-                    </div>
-
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block">
+                        <label>Número de filial</label>
+                        <input required ng-model="vm.house.housenumber" type="text" ng-disabled="vm.resident.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Estado</label>
+                        <md-select ng-model="vm.house.isdesocupated" ng-required='vm.required==1'>
+                            <md-option value="0">
+                                Habitada
+                            </md-option>
+                            <md-option value="1">
+                                Deshabitada
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Extensión o teléfono de filial</label>
+                        <input maxlength="20" ng-model="vm.house.extension">
+                    </md-input-container>
                 </div>
-                <div class="portlet-body form " >
-                    <form role="form" ng-submit="vm.insert()">
-                        <div class="form-body">
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.housenumber" type="text" class="form-control gray-font" required>
-                                    <label class="font-15">Número de casa</label>
-                                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block">
+                        <label>Clave de seguridad</label>
+                        <input ng-model="vm.house.securityKey" type="text"
+                               maxlength="20" class="">
+                    </md-input-container>
+                    <md-input-container class="md-block" ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Clave de emergencia</label>
+                        <input ng-model="vm.house.emergencyKey">
+                    </md-input-container>
+                    <md-input-container class="md-block" ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Cuota</label>
+                        <input format="currency" ng-model="vm.house.due"
+                               maxlength="20" class="">
+                    </md-input-container>
+                    <md-input-container class="md-block" ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Metros cuadrados</label>
+                        <input ng-model="vm.house.squareMeters" type="number" min="0" class="">
+                    </md-input-container>
 
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.extension" type="text" class="form-control gray-font" >
-                                    <label class="font-15">Extensión o teléfono de casa</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.securityKey" type="text" class="form-control gray-font" >
-                                    <label class="font-15">Clave de seguridad</label>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6" ng-show="vm.companyConfiguration.hasContability==1">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.due" type="number" min="0" class="form-control gray-font">
-                                    <label class="font-15">Cuota</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.emergencyKey" type="text" class="form-control gray-font">
-                                    <label class="font-15">Clave de emergencia</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6" ng-show="vm.companyConfiguration.hasContability==1">
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.house.squareMeters" type="number" min="0" class="form-control gray-font">
-                                    <label class="font-15">Metros cuadrados</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group form-md-line-input has-info">
-                                <select class="form-control gray-font" ng-model="vm.house.isdesocupated" required>
-                                    <option value="0">Habitada</option>
-                                    <option value="1">Deshabitada</option>
-                                </select>
-                                <label class="font-15">Estado</label>
-                                </div>
-                            </div>
-                          <div class="col-lg-6 col-md-6"></div>
-
-                            <div class="form-actions noborder">
-                                <h3 class="text-right">
-                                    <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button type="button"  ui-sref="houses-tabs.house()" class="btn red default">Cancelar</button>
-                                </h3>
-                            </div>
-                        </div>
-                    </form>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
 
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    {{vm.button}}
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>

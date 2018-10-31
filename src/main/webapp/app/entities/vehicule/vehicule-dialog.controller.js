@@ -12,6 +12,14 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+
+        if(vm.vehicule.id==undefined){
+            vm.button = "Registrar";
+            vm.title = "Registrar vehículo";
+        }else{
+            vm.button = "Editar";
+            vm.title = "Editar vehículo";
+        }
         vm.isReady = false;
         $rootScope.mainTitle = vm.title;
         vm.myPlate = vm.vehicule.licenseplate;

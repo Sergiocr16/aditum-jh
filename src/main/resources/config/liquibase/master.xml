@@ -39,11 +39,10 @@
     <include file="classpath:config/liquibase/changelog/20180822174717_added_entity_CommonAreaSchedule.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180824030452_added_entity_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_Announcement.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180823184330_added_entity_AnnouncementComment.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180328213553_added_entity_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_AnnouncementComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_Complaint.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -71,10 +70,9 @@
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_constraints_Presupuesto.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180824030452_added_entity_constraints_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_constraints_Announcement.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180823184330_added_entity_constraints_AnnouncementComment.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_constraints_AnnouncementComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
