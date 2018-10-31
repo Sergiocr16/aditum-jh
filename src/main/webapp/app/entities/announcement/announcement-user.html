@@ -1,3 +1,4 @@
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
@@ -7,8 +8,9 @@
      style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady">
+<h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600 " style="color: #00b19d">Anuncios</h3>
 
+<div ng-if="vm.isReady" class="margin-top-20">
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
 

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company','SaveImageCloudinary','PadronElectoral'];
+    OfficerDialogController.$inject = ['$rootScope','$state','Principal','$timeout', 'CommonMethods','$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company','SaveImageCloudinary','PadronElectoral','globalCompany'];
 
-    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary,PadronElectoral) {
+    function OfficerDialogController ($rootScope,$state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary,PadronElectoral,globalCompany) {
         var vm = this;
         var fileImage = null;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -58,7 +58,7 @@
              CommonMethods.waitingMessage();
             if (vm.officer.id !== null) {
               if(indentification!==vm.officer.identificationnumber){
-               Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
+               Officer.getByCompanyAndIdentification({companyId:globalCompany.getId(),identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
                 function alreadyExist(data){
                  toastr["error"]("La cédula ingresada ya existe.");
                   bootbox.hideAll();
@@ -70,7 +70,7 @@
                 updateOfficer();
               }
             } else {
-                Officer.getByCompanyAndIdentification({companyId:$rootScope.companyId,identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
+                Officer.getByCompanyAndIdentification({companyId:globalCompany.getId(),identificationID:vm.officer.identificationnumber},alreadyExist,allClear)
                     function alreadyExist(data){
                     toastr["error"]("La cédula ingresada ya existe.");
                      bootbox.hideAll();
@@ -81,7 +81,7 @@
                         vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
                         Principal.identity().then(function(account){
                         if(account.authorities[0]!="ROLE_RH"){
-                         vm.officer.companyId = $rootScope.companyId;
+                         vm.officer.companyId = globalCompany.getId();
                         }
                         insertOfficer();
                         })

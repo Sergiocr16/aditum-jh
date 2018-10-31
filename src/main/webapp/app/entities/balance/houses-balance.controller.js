@@ -19,6 +19,8 @@
         $rootScope.mainTitle = "Saldo de filiales";
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
+        vm.deudas = "2";
+        vm.status = "2";
         vm.ocultarACondos = false;
         loadAll();
         if (globalCompany.getId() > 2) {
@@ -42,6 +44,20 @@
                 id: encryptedId
             })
         }
+        vm.filterByState = function () {
+            if(vm.status=="2"){
+                vm.estado = "";
+            }else{
+                vm.estado = vm.status;
+            }
+        };
+        vm.filterByDeuda = function () {
+            if(vm.deudas=="2"){
+                vm.deudaFilter = "";
+            }else{
+                vm.deudaFilter = vm.deudas ;
+            }
+        };
 
         function loadAll() {
             Balance.queryBalances({

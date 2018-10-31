@@ -1,60 +1,58 @@
-<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<a>Contabilidad</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a >Egresos</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right" style="padding-top:10px;">-->
-            <!--<i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+<div class="col-md-12 no-padding  margin-bottom-20" ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
+    <div class="">
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.search">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+        </div>
+    </div>
+</div>
+
+    <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+        <!--<div class="col-md-7 col-lg-7"></div>-->
+        <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+
+        <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
+            <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  "  ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()">Mostrar todos</button>
+        </div>
+        <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
+                <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                <input ng-model="vm.dates.final_time"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
+            </div>
+            <button ng-disabled="vm.isDisableButton()"  ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar</button>
+        </div>
+
+
+    </div>
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" class="row fade-in">
     <div class="col-md-12">
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d" >{{vm.title}}
-            <div ng-show="vm.isConsulting==true">
-                <h4>{{vm.titleConsult}}</h4>
-            </div>
-        </h3>
-        <div class="col-md-7 col-lg-7"></div>
-        <div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>
-        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Mostrar todos</button>
-        <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input ng-model="vm.dates.initial_time" style="border-radius: 0px!important;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input ng-model="vm.dates.final_time" style="border-radius: 0px!important;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-disabled="vm.isDisableButton()" style="border-radius: 0px!important;" ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
-        </div>
 
-        <div class="form-group no-padding col-md-offset-3  col-lg-offset-3  col-sm-offset-3 col-md-9 col-sm-9 col-xs-12" id="index-search-bar">
-            <div class="col-lg-3 col-md-3 col-sm-3"></div>
-            <button type="button" class="btn green-button-oficial  col-md-2  col-lg-2 col-sm-2 col-xs-12" ui-sref="egress-report" name="button" >Generar reporte</button>
-
-            <div class="input-icon col-md-4   col-lg-4  col-md-4 col-xs-12">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control" placeholder="Buscar" ng-model="vm.search">
-            </div>
-            <button type="button" class="btn orange-button-oficial col-md-3  col-lg-3 col-sm-3 col-xs-12" ui-sref="egress.new" name="button">Capturar gasto</button>
-
-        </div>
         <div class="portlet-body ">
             <no-content ng-if="vm.egresses.length == 0" icon="call_received" text="No hay egresos registrados"></no-content>
 
-            <div class="table-scrollable hidden-xs   " ng-show="vm.egresses.length>0" style="border: 0px!important;">
+            <div class="table-scrollable    " ng-show="vm.egresses.length>0" style="border: 0px!important;">
                 <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
                     <thead style="background-color: #fafafa;" >
 
@@ -91,7 +89,7 @@
                         <td >{{egress.reference}}</td>
                         <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
 
-                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)">Detalle</a></td>
+                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>
                         <td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>
                         <td  class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2" ng-click="vm.detailEgress(egress.id)" class=" label label-success horizontal-padding-15" style=""  aria-hidden="false">Registrar pago</span></td>
 
@@ -112,4 +110,9 @@
         </div>
 
     </div>
+    <md-button ui-sref="egress-tabs.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Capturar egreso</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

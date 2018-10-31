@@ -66,7 +66,6 @@
             House.query({ companyId: globalCompany.getId()}, onSuccess, onError);
         }
         function onSuccess(data) {
-            console.log('fds')
             vm.houseQuantity = data.length;
             vm.isReady = true;
         }
@@ -79,7 +78,15 @@
           vm.button = "Registrar";
         }
 
+        vm.insert = function () {
+            for (var i = 24; i < 200; i++) {
+                var item = {housenumber:i,companyId:2,desocupationinitialtime:new Date(),desocupationfinaltime:new Date(),codeStatus:0,isdesocupated:0}
+                House.save(item, onSaveSuccess, onSaveError);
 
+            }
+            Modal.toast("Listo amo Diego");
+
+        }
 
         function save () {
 
@@ -145,7 +152,7 @@
 
 
             WSHouse.sendActivity(result);
-            $state.go('house');
+            $state.go('houses-tabs.house');
             Modal.hideLoadingBar();
                if(vm.house.id !== null){
                    Modal.toast("Se editó la casa correctamente");

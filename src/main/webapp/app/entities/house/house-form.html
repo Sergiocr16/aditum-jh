@@ -35,7 +35,7 @@
 
                 </div>
                 <div class="portlet-body form " >
-                    <form role="form" ng-submit="vm.save()">
+                    <form role="form" ng-submit="vm.insert()">
                         <div class="form-body">
                             <div class="col-md-6">
                                 <div class="form-group form-md-line-input">
@@ -81,7 +81,7 @@
                                     <option value="0">Habitada</option>
                                     <option value="1">Deshabitada</option>
                                 </select>
-                                <label for="register_edit_form" class="font-15">Estado</label>
+                                <label class="font-15">Estado</label>
                                 </div>
                             </div>
                           <div class="col-lg-6 col-md-6"></div>
@@ -89,7 +89,7 @@
                             <div class="form-actions noborder">
                                 <h3 class="text-right">
                                     <button type="submit" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i> {{vm.button}}</button>
-                                    <button type="button"  ui-sref="house()" class="btn red default">Cancelar</button>
+                                    <button type="button"  ui-sref="houses-tabs.house()" class="btn red default">Cancelar</button>
                                 </h3>
                             </div>
                         </div>

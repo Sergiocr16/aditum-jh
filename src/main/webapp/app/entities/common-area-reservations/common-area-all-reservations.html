@@ -1,3 +1,48 @@
+<div class="col-md-12 no-padding  margin-bottom-20" ng-if="vm.finalListReservations.length> 0 ">
+    <div class="">
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.search">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+        </div>
+    </div>
+</div>
+
+<div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+    <!--<div class="col-md-7 col-lg-7"></div>-->
+    <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+
+    <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
+        <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  "  ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()">Mostrar todos</button>
+    </div>
+    <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
+            <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                   type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <input ng-model="vm.dates.final_time"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                   class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
+        </div>
+        <button ng-disabled="vm.isDisableButton()"  ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar</button>
+    </div>
+
+
+</div>
+
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
@@ -5,10 +50,7 @@
 <div ng-if="vm.isReady" class="row fade-in" >
 
     <div class="col-lg-12 col-md-12 " id="tableDatas">
-        <div class="form-group no-padding col-md-offset-6  col-lg-offset-6  col-sm-offset-6 col-md-6 col-sm-6 col-xs-12" id="index-search-bar">
 
-            <button type="button" class="btn green default col-md-offset-7 col-lg-offset-7 col-sm-offset-7 col-md-5  col-lg-5 col-sm-5 col-xs-12" ui-sref="common-area-administration.newReservation" name="button">Crear nueva reservación</button>
-        </div>
         <div class="portlet-body">
 
             <no-content ng-if="vm.finalListReservations.length == 0" icon="local_florist" text="No hay reservaciones registradas"></no-content>
@@ -49,4 +91,9 @@
             </div>
         </div>
     </div>
+    <md-button ui-sref="common-area-administration.newReservation" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nueva reservación</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

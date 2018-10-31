@@ -192,7 +192,7 @@
         function onSaveReport(result) {
             Modal.hideLoadingBar();
             $scope.$emit('aditumApp:egressUpdate', result);
-            $state.go('egress');
+            $state.go('egress-tabs.egress');
             Modal.toast("Se reportó el pago correctamente");
             vm.isSaving = false;
 
@@ -206,7 +206,7 @@
                     vm.egressfolioSerie = admin.egressfolioSerie;
                     Modal.hideLoadingBar();
                     $scope.$emit('aditumApp:egressUpdate', result);
-                    $state.go('egress');
+                    $state.go('egress-tabs.egress');
                     Modal.toast("Se registró el gasto correctamente");
                     vm.isSaving = false;
                 })
@@ -215,7 +215,7 @@
                 $scope.$emit('aditumApp:egressUpdate', result);
                 Modal.hideLoadingBar();
                 Modal.toast("Se registró el gasto correctamente");
-                $state.go('egress');
+                $state.go('egress-tabs.egress');
 
                 vm.isSaving = false;
             }

@@ -9,6 +9,20 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+            .state('houses-tabs', {
+                parent: 'entity',
+                url: '/houses',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/house/houses-tabs.html',
+                        controller: 'HouseDetailController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
         .state('houseAdministration', {
             parent: 'entity',
             url: '/contabilidad-filiales',
@@ -287,19 +301,14 @@
                    }]
                }
                     })
-            .state('house', {
-                parent: 'entity',
+            .state('houses-tabs.house', {
                 url: '/house?page&sort&search',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/house/house-index.html',
-                        controller: 'HouseController',
-                        controllerAs: 'vm'
-                    }
-                },
+                templateUrl: 'app/entities/house/house-index.html',
+                controller: 'HouseController',
+                controllerAs: 'vm',
                 params: {
                     page: {
                         value: '1',
@@ -414,8 +423,8 @@
                     }]
                 }
             })
-            .state('house.new', {
-                parent: 'house',
+            .state('houses-tabs.new', {
+                parent: 'entity',
                 url: '/new',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']

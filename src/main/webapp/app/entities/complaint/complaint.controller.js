@@ -20,6 +20,7 @@
         vm.loadAllByStatus = loadAllByStatus;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
+        vm.showFilterDiv = false;
         vm.links = {
             last: 0
         };

@@ -20,7 +20,7 @@
         vm.transition = transition;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.consult = consult;
         loadAll();
 
         function onError(error) {
@@ -56,6 +56,33 @@
             }
         }
 
+        function consult() {
+            vm.isReady = false;
+            Egress.findBetweenDatesByCompany({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                companyId: globalCompany.getId(),
+                page: pagingParams.page - 1,
+                size: vm.itemsPerPage,
+            }, onSuccess, onError);
+
+            function onSuccess(data, headers) {
+                moment.locale('es');
+                vm.egresses = data;
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                vm.page = pagingParams.page;
+                vm.title = 'Egresos entre:';
+                vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
+                vm.isConsulting = true;
+                formatEgresos(vm.egresses);
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
 
         function loadInfoByReservation(data){
             angular.forEach(data,function(value){

@@ -60,9 +60,9 @@
         <div ui-view="menu" ng-if="showContent" id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
         <md-progress-linear md-mode="indeterminate"class="loading-bar" ng-if="isShowingLoadingBar"></md-progress-linear>
-        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content">
+        <md-content flex layout="row" style="overflow-x: hidden;background:white; margin-bottom: 15px;" class="all-content " id="content">
                 <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
+                <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true"  >
 
                 </div>
         </md-content>
@@ -546,6 +546,8 @@
 
 <script src="app/entities/egress/generate-report.controller.js"></script>
 
+<script src="app/entities/egress/egress-tabs.controller.js"></script>
+
 <script src="app/entities/egress/egress-dialog.controller.js"></script>
 
 <script src="app/entities/egress/egress-detail.controller.js"></script>
@@ -876,6 +878,8 @@
 
 <script src="app/components/util/sort.directive.js"></script>
 
+<script src="app/components/util/slideable-component.js"></script>
+
 <script src="app/components/util/parse-links.service.js"></script>
 
 <script src="app/components/util/pagination-util.service.js"></script>
@@ -899,6 +903,8 @@
 <script src="app/components/util/data-util.service.js"></script>
 
 <script src="app/components/util/common-methods.js"></script>
+
+<script src="app/components/util/cards-component.js"></script>
 
 <script src="app/components/util/capitalize.filter.js"></script>
 
