@@ -177,7 +177,7 @@
 
 
             WSHouse.sendActivity(result);
-            $state.go('house');
+            $state.go('houses-tabs.house');
             Modal.hideLoadingBar();
             if (vm.house.id !== null) {
                 Modal.toast("Se editó la casa correctamente");

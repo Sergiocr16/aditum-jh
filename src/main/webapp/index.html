@@ -1,5 +1,5 @@
 <!doctype html>
-<html >
+<html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -43,7 +43,7 @@
     <link rel="stylesheet" href="content/css/colorpicker.css">
     <link rel="stylesheet" href="content/css/summernote-bs4.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
-    <link  rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons" >
+    <link rel="preload" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!-- endbuild -->
 </head>
@@ -53,24 +53,29 @@
     <span class="spinner spinner-large"></span>
 </div>
 
-<div ui-view="reset"  >
+<div ui-view="reset">
 </div>
-<div ui-view="login"  ng-hide="vm.isAuthenticated() || !showLogin">
+<div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
 </div>
 
 
-<div layout="row" flex ng-cloak="" >
-    <div ui-view="navbar"   has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
-    <section layout="row" flex="" >
-        <div ui-view="menu"  id="menu-side-bar"  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+<div layout="row" flex ng-cloak="">
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
+    <section layout="row" flex="">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
-        <div ui-view="access_door"  has-authority="ROLE_OFFICER"></div>
+ 
+        <div ui-view="access_door" has-authority="ROLE_OFFICER"></div>
 
-        <md-progress-linear  md-mode="indeterminate"class="loading-bar md-warn" ng-if="isShowingLoadingBar"></md-progress-linear>
-        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
-            <div ui-view="content"  flex layout="column" style="background-color: white!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" >
+        <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
+                            ng-if="isShowingLoadingBar"></md-progress-linear>
+        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
+                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+            <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
+                 ng-if="vm.isAuthenticated() !=true">
 
-                </div>
+
+            </div>
         </md-content>
     </section>
 </div>
@@ -112,7 +117,8 @@
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
-<script src="bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
+<script
+    src="bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
 <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -557,6 +563,8 @@
 
 <script src="app/entities/egress/generate-report.controller.js"></script>
 
+<script src="app/entities/egress/egress-tabs.controller.js"></script>
+
 <script src="app/entities/egress/egress-dialog.controller.js"></script>
 
 <script src="app/entities/egress/egress-detail.controller.js"></script>
@@ -681,7 +689,8 @@
 
 <script src="app/entities/common-area-reservations/reservation-calendar-accepted-reservations.controller.js"></script>
 
-<script src="app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.controller.js"></script>
+<script
+    src="app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.controller.js"></script>
 
 <script src="app/entities/common-area-reservations/common-area-reservations-dialog.controller.js"></script>
 
@@ -835,7 +844,8 @@
 
 <script src="app/entities/administration-configuration/administration-configuration-detail.controller.js"></script>
 
-<script src="app/entities/administration-configuration/administration-configuration-delete-dialog.controller.js"></script>
+<script
+    src="app/entities/administration-configuration/administration-configuration-delete-dialog.controller.js"></script>
 
 <script src="app/entities/administration-configuration/administration-configuration.state.js"></script>
 
@@ -887,6 +897,8 @@
 
 <script src="app/components/util/sort.directive.js"></script>
 
+<script src="app/components/util/slideable-component.js"></script>
+
 <script src="app/components/util/parse-links.service.js"></script>
 
 <script src="app/components/util/pagination-util.service.js"></script>
@@ -910,6 +922,8 @@
 <script src="app/components/util/data-util.service.js"></script>
 
 <script src="app/components/util/common-methods.js"></script>
+
+<script src="app/components/util/cards-component.js"></script>
 
 <script src="app/components/util/capitalize.filter.js"></script>
 
@@ -1059,11 +1073,11 @@
 <!-- endbuild -->
 
 <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {
-      setTimeout(function(){
-          $('#page-loading')
-              .fadeOut(0);
-      },500)
+    document.addEventListener("DOMContentLoaded", function (event) {
+        setTimeout(function () {
+            $('#page-loading')
+                .fadeOut(0);
+        }, 500)
     });
 </script>
 </body>

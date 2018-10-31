@@ -10,60 +10,60 @@
     <md-content layout-padding class="form-content">
         <form name="form" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                <div layout="row" layout-xs="column" class="marging-top-20 ">
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-                        <md-input-container class="md-block">
-                            <label>Número de filial</label>
-                            <input required  ng-model="vm.house.housenumber" type="text" ng-disabled="vm.resident.found==1"
-                                   class="uppercase" required>
-                        </md-input-container>
-                        <md-input-container class="md-block">
-                            <label>Estado</label>
-                            <md-select ng-model="vm.house.isdesocupated" ng-required='vm.required==1'>
-                                <md-option value="0">
-                                    Habitada
-                                </md-option>
-                                <md-option value="1">
-                                    Deshabitada
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
-                        <md-input-container class="md-block no-margin-bottom">
-                            <label>Extensión o teléfono de filial</label>
-                            <input  maxlength="20"  ng-model="vm.house.extension">
-                        </md-input-container>
-                    </div>
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
-                        <md-input-container class="md-block">
-                            <label>Clave de seguridad</label>
-                            <input  ng-model="vm.house.securityKey" type="text"
-                                   maxlength="20" class="">
-                        </md-input-container>
-                        <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
-                            <label>Clave de emergencia</label>
-                            <input ng-model="vm.house.emergencyKey">
-                        </md-input-container>
-                        <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
-                            <label>Cuota</label>
-                            <input format="currency" ng-model="vm.house.due"
-                                   maxlength="20" class="">
-                        </md-input-container>
-                        <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
-                            <label>Metros cuadrados</label>
-                            <input  ng-model="vm.house.squareMeters" type="number" min="0" class="">
-                        </md-input-container>
-
-                    </div>
+            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block">
+                        <label>Número de filial</label>
+                        <input required  ng-model="vm.house.housenumber" type="text" ng-disabled="vm.resident.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Estado</label>
+                        <md-select ng-model="vm.house.isdesocupated" ng-required='vm.required==1'>
+                            <md-option value="0">
+                                Habitada
+                            </md-option>
+                            <md-option value="1">
+                                Deshabitada
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Extensión o teléfono de filial</label>
+                        <input  maxlength="20"  ng-model="vm.house.extension">
+                    </md-input-container>
                 </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <md-input-container class="md-block">
+                        <label>Clave de seguridad</label>
+                        <input  ng-model="vm.house.securityKey" type="text"
+                                maxlength="20" class="">
+                    </md-input-container>
+                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Clave de emergencia</label>
+                        <input ng-model="vm.house.emergencyKey">
+                    </md-input-container>
+                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Cuota</label>
+                        <input format="currency" ng-model="vm.house.due"
+                               maxlength="20" class="">
+                    </md-input-container>
+                    <md-input-container class="md-block"  ng-show="vm.companyConfiguration.hasContability==1">
+                        <label>Metros cuadrados</label>
+                        <input  ng-model="vm.house.squareMeters" type="number" min="0" class="">
+                    </md-input-container>
 
-                <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                    <md-button type="button" ng-click="back()"
-                               class="md-warn md-raised">Cancelar
-                    </md-button>
-                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
-                        {{vm.button}}
-                    </md-button>
                 </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    {{vm.button}}
+                </md-button>
+            </div>
         </form>
     </md-content>
 </div>

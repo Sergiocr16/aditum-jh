@@ -33,6 +33,9 @@ body {
     color: #333;
 }
 
+.carddemoBasicUsage .card-media {
+    background-color: #999999; }
+
 @-webkit-keyframes loginBackground {
     0% {
         background-position: 0% 4%
@@ -1393,9 +1396,14 @@ div.scrollmenu a:hover {
 
 .orange-button-oficial:hover {
     background-color: #e57461 !important;
-    color: white;
+    color: white !important;
 }
-
+.orange-button-oficial:active {
+    color: white !important;
+}
+.green-button-oficial:active {
+    color: white !important;
+}
 .green-button-oficial:hover {
     background-color: #00a492 !important;
     color: white;
@@ -1446,10 +1454,7 @@ div.scrollmenu a:hover {
 
 .object-fit_scale-down-resident-index {
     object-fit: scale-down;
-    height: 100px;
-    width: 100px;
-    background-color: #ebedf0;
-    border-radius: 50% !important;
+    background-color: #e4e6e9;
 }
 
 .object-fit_scale-down {
@@ -1674,6 +1679,14 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     padding: 15px;
 }
 
+.all-content:not(#tab-bar-material) {
+    padding: 15px;
+}
+
+.padding-left-10 {
+    padding-left: 10px !important;
+}
+
 .loading-bar {
     position: fixed;
     z-index: 100;
@@ -1684,6 +1697,13 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     margin-left: -15px;
     margin-top: -15px;
     width: 100%;
+}
+
+.slide-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .content-ui-view {
@@ -1704,6 +1724,16 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     justify-content: center;
     height: 100%;
     z-index: 9980;
+}
+
+.filter-button {
+    min-height: 0 !important;
+    min-width: 0 !important;
+    line-height: 0 !important;
+    margin: 0 10px;
+    height: 34px;
+    padding: 7px;
+    border-radius: 4px;
 }
 
 .spinner {
@@ -1807,6 +1837,10 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 #sidebar ul li.collapse.active > a, a[aria-expanded="true"] {
     background-color: white;
     text-decoration: none;
+}
+
+.background-white {
+    background-color: white !Important;
 }
 
 .activeSubmenu a {

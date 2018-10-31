@@ -29,33 +29,59 @@
     <!--</div>-->
 <!--</div>-->
 
-<div class="row " id="tableData">
-    <div class="col-md-12 no-padding" >
-        <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
+<!--<div class="row " id="tableData">-->
+    <!--<div class="col-md-12 no-padding" >-->
+        <!--<div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">-->
 
-            <div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">
-                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.new') || $state.includes('common-area-administration.reservation-calendar') || $state.includes('common-area-administration.editCommonArea')} " ui-sref="common-area-administration.common-area" >
-                    Administrar áreas comunes
-                </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.general-reservation-calendar')}" ui-sref="common-area-administration.general-reservation-calendar" >
-                    Calendario general
-                </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-reservations') || $state.includes('common-area-administration.newReservation')|| $state.includes('common-area-administration.edit')}" ui-sref="common-area-administration.common-area-reservations" >
-                    Reservaciones pendientes
-                </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-all-reservations')}" ui-sref="common-area-administration.common-area-all-reservations" >
-                    Administrar reservaciones
-                </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-all-reservations')}" ui-sref="common-area-administration.reservation-charge-devolution" >
-                    Devoluciones de dinero
-                </a>
+            <!--<div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">-->
+                <!--<a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area') || $state.includes('common-area-administration.new') || $state.includes('common-area-administration.reservation-calendar') || $state.includes('common-area-administration.editCommonArea')} " ui-sref="common-area-administration.common-area" >-->
+                    <!--Administrar áreas comunes-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.general-reservation-calendar')}" ui-sref="common-area-administration.general-reservation-calendar" >-->
+                    <!---->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-reservations') || $state.includes('common-area-administration.newReservation')|| $state.includes('common-area-administration.edit')}" ui-sref="common-area-administration.common-area-reservations" >-->
+                    <!--Reservaciones pendientes-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-all-reservations')}" ui-sref="common-area-administration.common-area-all-reservations" >-->
+                    <!--Administrar reservaciones-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('common-area-administration.common-area-all-reservations')}" ui-sref="common-area-administration.reservation-charge-devolution" >-->
+                    <!--Devoluciones de dinero-->
+                <!--</a>-->
 
-            </div>
+            <!--</div>-->
 
-        </div>
+        <!--</div>-->
 
-        <div ui-view class="col-md-12 ">
-        </div>
-    </div>
+        <!--<div ui-view class="col-md-12 ">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+
+<div class="row" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+            <md-tab ui-sref="common-area-administration.common-area"  label="Administrar áreas comunes">
+            </md-tab>
+            <md-tab ui-sref="common-area-administration.general-reservation-calendar" label="Calendario general" class="md-active" >
+            </md-tab>
+            <md-tab ui-sref="common-area-administration.common-area-reservations" label="Reservaciones pendientes" class="md-active" >
+            </md-tab>
+            <md-tab  ui-sref="common-area-administration.common-area-all-reservations" label="Administrar reservaciónes" class="md-active" >
+            </md-tab>
+            <md-tab ui-sref="common-area-administration.reservation-charge-devolution" label="Devoluciones de dinero" class="md-active" >
+            </md-tab>
+            <md-tab ui-sref="common-area-administration.reservation-charge-devolution" label="Devoluciones de dinero" class="md-active" >
+            </md-tab>
+
+        </md-tabs>
+
+    </md-content>
 </div>
+
+<div ui-view class="row" style="padding: 20px;">
 </div>

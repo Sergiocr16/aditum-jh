@@ -1,25 +1,8 @@
-<div class="page-bar route-title">
-    <ul ng-if="companyUser.id !== vm.resident.id" class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-
-        <li has-authority="ROLE_USER">
-            <a href="" ui-sref="residentByHouse()">Finanzas</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Configuración general</a>
-        </li>
-    </ul>
-
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-
-<div class="col-md-12">
+<div class=" fade-in" ng-if="vm.isReady">
     <!-- BEGIN Portlet PORTLET-->
     <div class="portlet light col-md-12">
         <div class="portlet-title">

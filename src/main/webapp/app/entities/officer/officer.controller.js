@@ -8,10 +8,13 @@
     OfficerController.$inject = ['User', '$state', 'CommonMethods', 'DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany', 'companyUser','Modal'];
 
     function OfficerController(User, $state, CommonMethods, DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany, companyUser, Modal) {
+
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
+        $rootScope.mainTitle = "Oficiales de seguridad";
+        vm.isReady = false;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
@@ -34,15 +37,13 @@
         vm.switchEnabledResidents = function () {
             enabledOptions = true;
             vm.radiostatus = true;
-            $("#radio18").prop("checked", "checked")
-            vm.isReady = false;
 
+            vm.isReady = false;
             loadAll();
         }
         vm.switchDisabledResidents = function () {
             enabledOptions = false;
             vm.radiostatus = false;
-            $("#radio19").prop("checked", "checked")
             vm.isReady = false;
 
             loadAll();
@@ -107,7 +108,6 @@
 
 
         vm.deleteOfficer = function (officer) {
-
             Modal.confirmDialog("¿Está seguro que desea eliminar al oficial " + officer.name + " " + officer.lastname + "?","",function(){
                 vm.login = officer.userLogin;
                 Officer.delete({
@@ -135,8 +135,8 @@
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al oficial " + officerInfo.name + "?";
             }
-
             Modal.confirmDialog(correctMessage,"",function(){
+                Modal.showLoadingBar();
                 Officer.get({id: officerInfo.id}).$promise.then(onSuccessGetOfficer);
 
             });

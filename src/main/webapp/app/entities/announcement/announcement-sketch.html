@@ -31,10 +31,8 @@
                 <th>Título</th>
                 <th class="text-center">Fecha de publicación</th>
                 <th class="text-center">Estado</th>
-                <th class="text-center">Acción</th>
                 <th class="text-center">Detalle</th>
-                <th class="text-center">Editar</th>
-                <th class="text-center">Eliminar</th>
+                <th class="text-center">Opciones</th>
             </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
@@ -44,18 +42,54 @@
                 <td class="text-center">
                     <span class="bold" style="font-size:13px;">Borrador</span>
                 </td>
-                <td class="text-center">
-                    <a ng-if="announcement.status==1" ng-click="vm.publish(announcement)">Publicar</a>
+
+                <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>
+
+                <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                    <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >
+                        <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
+                            <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                    <div layout="row" flex>
+                                        <p flex>Editar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item  ng-if="announcement.status==2">
+                                <md-button ng-click="vm.unPublish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Retirar noticia</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item  ng-if="announcement.status==3">
+                                <md-button ng-click="vm.publish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Publicar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.delete(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Eliminar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                 </td>
-                <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})">Detalle</a></td>
-                <td class="text-center"><a ui-sref="announcements.edit({id:announcement.id})">Editar</a></td>
-                <td class="text-center"><a ng-click="vm.delete(announcement)">Eliminar</a></td>
             </tr>
             </tbody>
         </table>
     </div>
 </div>
-<md-button ui-sref="announcements.new" class="md-fab md-fab-bottom-right" aria-label="Add new">
-    <md-tooltip md-direction="left">Crear borrador</md-tooltip>
-    <md-icon>add</md-icon>
+
+
+<md-button ui-sref="announcements.new" class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;"  aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Crear borrador</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
 </md-button>

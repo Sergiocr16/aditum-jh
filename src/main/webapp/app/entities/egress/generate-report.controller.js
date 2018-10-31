@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressGenerateReportController', EgressGenerateReportController);
 
-    EgressGenerateReportController.$inject = ['$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressGenerateReportController.$inject = ['$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressGenerateReportController($scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressGenerateReportController($scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "reporteGastos";
         var vm = this;
         vm.datePickerOpenStatus = {};

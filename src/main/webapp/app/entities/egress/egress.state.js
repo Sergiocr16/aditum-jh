@@ -9,20 +9,36 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('egress', {
-            parent: 'entity',
-            url: '/egress?page&sort&search',
+            .state('egress-tabs', {
+                parent: 'entity',
+                url: '/egresos',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.egress.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/egress/egress-tabs.html',
+                        controller: 'EgressTabsController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('egress');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            }).state('egress-tabs.egress', {
+            url: '/todos',
             data: {
                  authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.egress.home.title'
             },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/egress/egresses.html',
-                    controller: 'EgressController',
-                    controllerAs: 'vm'
-                }
-            },
+            templateUrl: 'app/entities/egress/egresses.html',
+            controller: 'EgressController',
+            controllerAs: 'vm',
             params: {
                 page: {
                     value: '1',
@@ -50,20 +66,15 @@
                     return $translate.refresh();
                 }]
             }
-        }).state('egress-report', {
-              parent: 'egress',
+        }).state('egress-tabs.egress-report', {
               url: '/report',
               data: {
                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                   pageTitle: 'Aditum'
               },
-              views: {
-                  'content@': {
-                      templateUrl: 'app/entities/egress/generateReport.html',
-                      controller: 'EgressGenerateReportController',
-                      controllerAs: 'vm'
-                  }
-              },
+            templateUrl: 'app/entities/egress/generateReport.html',
+            controller: 'EgressGenerateReportController',
+            controllerAs: 'vm',
               resolve: {
                   translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                       $translatePartialLoader.addPart('egress');
@@ -73,7 +84,7 @@
               }
           })
         .state('egress-detail', {
-            parent: 'egress',
+            parent: 'entity',
             url: '/{id}',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
@@ -130,7 +141,7 @@
                 });
             }]
         })
-          .state('egress.new', {
+          .state('egress-tabs.new', {
                   parent: 'entity',
                     url: '/egresses/new',
                     data: {

@@ -53,53 +53,51 @@
 
 
         function save() {
-            var wordOnModal = vm.officer.id == undefined ? "registrar" : "modificar"
-            Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el oficial?", "",function(){
-                Modal.showLoadingBar();
-                if (vm.officer.id !== null) {
-                    if (indentification !== vm.officer.identificationnumber) {
-                        Officer.getByCompanyAndIdentification({
-                            companyId: globalCompany.getId(),
-                            identificationID: vm.officer.identificationnumber
-                        }, alreadyExist, allClear)
-
-                        function alreadyExist(data) {
-                            Modal.toast("La cédula ingresada ya existe.");
-                            Modal.hideLoadingBar();
-                        }
-
-                        function allClear(data) {
-                            updateOfficer();
-                        }
-                    } else {
-                        updateOfficer();
-                    }
-                } else {
+            vm.isSaving = true;
+            CommonMethods.waitingMessage();
+            if (vm.officer.id !== null) {
+                if (indentification !== vm.officer.identificationnumber) {
                     Officer.getByCompanyAndIdentification({
                         companyId: globalCompany.getId(),
                         identificationID: vm.officer.identificationnumber
                     }, alreadyExist, allClear)
 
                     function alreadyExist(data) {
-                        Modal.toast("La cédula ingresada ya existe.");
-                        Modal.hideLoadingBar();
+                        toastr["error"]("La cédula ingresada ya existe.");
+                        bootbox.hideAll();
                     }
 
                     function allClear(data) {
-                        vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
-                        vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
-                        vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
-                        Principal.identity().then(function (account) {
-                            if (account.authorities[0] != "ROLE_RH") {
-                                vm.officer.companyId = globalCompany.getId();
-                            }
-                            insertOfficer();
-                        })
-
+                        updateOfficer();
                     }
+                } else {
+                    updateOfficer();
                 }
-            })
+            } else {
+                Officer.getByCompanyAndIdentification({
+                    companyId: globalCompany.getId(),
+                    identificationID: vm.officer.identificationnumber
+                }, alreadyExist, allClear)
 
+                function alreadyExist(data) {
+                    toastr["error"]("La cédula ingresada ya existe.");
+                    bootbox.hideAll();
+                }
+
+                function allClear(data) {
+                    vm.officer.name = CommonMethods.capitalizeFirstLetter(vm.officer.name);
+                    vm.officer.lastname = CommonMethods.capitalizeFirstLetter(vm.officer.lastname);
+                    vm.officer.secondlastname = CommonMethods.capitalizeFirstLetter(vm.officer.secondlastname);
+                    Principal.identity().then(function (account) {
+                        if (account.authorities[0] != "ROLE_RH") {
+                            vm.officer.companyId = globalCompany.getId();
+                        }
+                        insertOfficer();
+
+                    })
+
+                }
+            }
         }
 
         function haswhiteCedula(s) {
@@ -287,7 +285,6 @@
             })
             vm.isSaving = false;
         }
-
 
 
         vm.setImage = function ($file) {

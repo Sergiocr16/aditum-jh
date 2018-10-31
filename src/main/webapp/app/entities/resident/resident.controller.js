@@ -13,11 +13,11 @@
         var enabledOptions = true;
         var vm = this;
         vm.radiostatus = true;
-        $rootScope.mainTitle = vm.title;
+        $rootScope.mainTitle = "Usuarios autorizados";
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
-
-
+        vm.showFilterDiv = false;
+        vm.house = "-1";
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident.edit', {
@@ -38,7 +38,7 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
-        vm.filterAuthorized = "2";
+        vm.filterAuthorized = "";
         vm.setAuthorizedView = function (val) {
             vm.filterAuthorized = val;
         }
@@ -152,17 +152,16 @@
             enabledOptions = true;
             vm.radiostatus = true;
             vm.findResidentsByHouse(vm.house);
-            $("#radio18").prop("checked", "checked")
         }
         vm.switchDisabledResidents = function () {
             enabledOptions = false;
             vm.findResidentsByHouse(vm.house);
-            $("#radio19").prop("checked", "checked")
         }
         vm.findResidentsByHouse = function (house) {
+            console.log(house)
             vm.isReady = false;
             vm.house = house;
-            if (house == undefined) {
+            if (house == undefined || house=='-1') {
                 loadResidents();
             } else {
                 loadResidents(1);

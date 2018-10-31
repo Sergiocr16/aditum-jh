@@ -1,32 +1,12 @@
 <div flex layout="column">
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" flex layout="column">
-    <!--<div class="col-md-12 no-padding">-->
-        <!--<h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list oficial-title-index">Noticias</h3>-->
 
-    <!--</div>-->
-
-    <!--<div class="form-group col-md-offset-8 col-md-2" style="margin-bottom: 0px;">-->
-        <!--<button type="button" class="btn green-button-oficial col-md-12  col-lg-12 col-sm-12 col-xs-12"-->
-                <!--ui-sref="announcement-sketch" name="button">Borradores-->
-        <!--</button>-->
-    <!--</div>-->
-    <!--<div class="form-group col-md-2 no-padding" id="index-search-bar" style="margin-bottom: 0px;">-->
-        <!--<button type="button" class="btn orange-button-oficial col-md-12  col-lg-12 col-sm-12 col-xs-12"-->
-                <!--ui-sref="announcement.new" name="button">Crear nuevo anuncio-->
-        <!--</button>-->
-
-    <!--</div>-->
-
-    <!--<br/>-->
-    <!--<div class="container-fluid no-padding">-->
-
-    <!--</div>-->
-    <!--<br/>-->
-    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias" text2="subtitulo aqui"></no-content>
+    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay noticias" ></no-content>
 
     <div class="table-responsive" style="border: 0px!important;">
         <table class=" table table-hover   font-13 tableMaterialDesign" ng-if="vm.announcements != 0">
@@ -35,17 +15,14 @@
                 <th>Título</th>
                 <th class="text-center">Fecha de publicación</th>
                 <th class="text-center">Estado</th>
-                <th class="text-center">Acción</th>
                 <th class="text-center">Detalle</th>
-                <th class="text-center">Editar</th>
-                <th class="text-center">Eliminar</th>
+                <th class="text-center">Opciones</th>
             </tr>
             </thead>
             <tbody infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']">
             <tr ng-repeat="announcement in vm.announcements track by $index">
                 <td>{{announcement.title}}</td>
-                <td class="text-center" ng-if="announcement.status==2">{{announcement.publishingDate | date:'dd MMM yyyy
-                    hh:mm a'}}
+                <td class="text-center" ng-if="announcement.status==2">{{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}
                 </td>
                 <td class="text-center" ng-if="announcement.status==3">No publicado</td>
                 <td class="text-center">
@@ -54,22 +31,56 @@
                     <span class="bold" style="font-size:13px; padding:10px; color:#FF3D00;"
                           ng-if="announcement.status==3">No publicado</span>
                 </td>
-                <td class="text-center">
-                    <a ng-if="announcement.status==3" ng-click="vm.publish(announcement)">Publicar</a>
-                    <a ng-if="announcement.status==2" ng-click="vm.unPublish(announcement)">Retirar noticia</a>
+
+                <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>
+
+
+                <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                    <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >
+                        <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
+                            <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                    <div layout="row" flex>
+                                        <p flex>Editar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item  ng-if="announcement.status==2">
+                                <md-button ng-click="vm.unPublish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Retirar noticia</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item  ng-if="announcement.status==3">
+                                <md-button ng-click="vm.publish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Publicar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.delete(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Eliminar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                 </td>
-                <td class="text-center"><a ui-sref="announcement-detail({id:announcement.id})">Detalle</a></td>
-                <td class="text-center"><a ui-sref="announcements.edit({id:announcement.id})">Editar</a></td>
-                <td class="text-center"><a ng-click="vm.delete(announcement)">Eliminar</a></td>
             </tr>
             </tbody>
         </table>
     </div>
-    <md-button ui-sref="announcements.new" class="md-fab md-fab-bottom-right" aria-label="Add new">
-        <md-tooltip md-direction="left">Crear noticia</md-tooltip>
-        <md-icon>add</md-icon>
-    </md-button>
-</div>
 
+</div>
+    <md-button ui-sref="announcements.new" class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;"  aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear noticia</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>
 

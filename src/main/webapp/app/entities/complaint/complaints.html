@@ -1,61 +1,86 @@
-<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a>Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a>Gestionar quejas y sugerencias</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right" style="padding-top:10px;">-->
-            <!--<i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+
+<h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600  " style="color: #00b19d">Quejas y sugerencias</h3>
+
+<div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.complaints.length> 0">
+    <div class="">
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.query">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+        <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
+                            ng-if="vm.complaints.length> 0 ">
+
+            <md-select ng-model="vm.status" ng-change="vm.changeStatus()">
+                <md-option ng-value="-1" selected="true">Todas las casas</md-option>
+                <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                           ng-model="vm.house" ng-value="house">
+                    {{house.housenumber}}
+                </md-option>
+                <md-select ng-model="vm.estado" >
+                    <md-option value="-1">Todos</md-option>
+                    <md-option value="1">Pendiente</md-option>
+                    <md-option value="2">Activo</md-option>
+                    <md-option value="3">Resuelto</md-option>
+                </md-select>
+            </md-select>
+        </md-input-container>
+
+    </div>
+</div>
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 
-<div ng-if="vm.isReady" class="row fade-in" >
-    <div class="col-md-6">
-        <h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600  " style="color: #00b19d">Quejas y sugerencias</h3>
+<div ng-if="vm.isReady" class="col-md-12 fade-in" >
+    <!--<div class="col-md-6 no-padding" style="margin-bottom: 20px;">-->
+        <!--<div class="col-md-7 no-padding">-->
+            <!--<div class="col-md-4 no-padding">-->
+                <!--<span>Filtrar por estado: </span>-->
+            <!--</div>-->
+            <!--<div class="col-md-8">-->
+                <!--<select class="form-control gray-font" ng-model="vm.status" ng-change="vm.changeStatus()" required>-->
+                    <!--<option value="-1">Todos</option>-->
+                    <!--<option value="1">Pendiente</option>-->
+                    <!--<option value="2">Activo</option>-->
+                    <!--<option value="3">Resuelto</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-md-5">-->
+            <!--<button class="btn green" ui-sref="complaint.new">-->
+                    <!--<span>-->
+                       <!--Registrar queja o sugerencia-->
+                    <!--</span>-->
+            <!--</button>-->
+        <!--</div>-->
 
-    </div>
-    <div class="col-md-6 no-padding" style="margin-bottom: 20px;">
-        <div class="col-md-7 no-padding">
-            <div class="col-md-4 no-padding">
-                <span>Filtrar por estado: </span>
-            </div>
-            <div class="col-md-8">
-                <select class="form-control gray-font" ng-model="vm.status" ng-change="vm.changeStatus()" required>
-                    <option value="-1">Todos</option>
-                    <option value="1">Pendiente</option>
-                    <option value="2">Activo</option>
-                    <option value="3">Resuelto</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-md-5">
-            <button class="btn green" ui-sref="complaint.new">
-                    <span>
-                       Registrar queja o sugerencia
-                    </span>
-            </button>
-        </div>
-
-    </div>
+    <!--</div>-->
     <br/>
-    <div style="margin:25px 10px;">
+    <div style="">
 
         <no-content ng-if="vm.complaints.length == 0" icon="sentiment_very_dissatisfied" text="No hay quejas o sugerencias registradas"></no-content>
 
 
         <div infinite-scroll="vm.loadPage(vm.page + 1)"
-             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-top-15">
+             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-bottom-15">
             <div ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id" class="portlet light bordered col-md-12"
                  style="box-shadow: none!important">
                 <div class="portlet-title">
@@ -101,4 +126,9 @@
             </div>
         </div>
     </div>
+
 </div>
+<md-button ui-sref="complaint.new" class="md-fab md-fab-bottom-right orange-button-oficial"   aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar queja o sugerencia</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

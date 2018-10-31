@@ -297,7 +297,7 @@
                         hover: false,
                         thirdItems: [
                             {
-                                title: "Residentes",
+                                title: "Usuarios",
                                 icon: "group",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "residents",
@@ -312,7 +312,7 @@
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "houses",
                                 collapsable: false,
-                                uisref: "house",
+                                uisref: "houses-tabs.house",
                                 menuId: "",
                                 hover: false,
                             },
@@ -406,7 +406,7 @@
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "egress",
                                 collapsable: false,
-                                uisref: "egress",
+                                uisref: "egress-tabs.egress",
                                 menuId: "",
                                 hover: false
                             },
@@ -416,7 +416,7 @@
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "newEgress",
                                 collapsable: false,
-                                uisref: "egress.new",
+                                uisref: "egress-tabs.new",
                                 menuId: "",
                                 hover: false
                             },
@@ -545,18 +545,6 @@
 
                     },
                     {
-                        title: "Configuración",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "administrationConfiguration",
-                        collapsable: false,
-                        uisref: "administration-configuration-detail",
-                        menuId: "",
-                        hover: false,
-                        thirdItems: []
-
-                    },
-                    {
                         title: "Reportes",
                         icon: "pie_chart",
                         authoritites: "ROLE_MANAGER",
@@ -582,7 +570,7 @@
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "reporteGastos",
                                 collapsable: false,
-                                uisref: "egress-report",
+                                uisref: "egress-tabs.egress-report",
                                 menuId: "",
                                 hover: false,
                             },
@@ -651,6 +639,16 @@
                         menuId: "configMenu",
                         hover: false,
                         thirdItems: [
+                            {
+                                title: "General",
+                                icon: "build",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "administrationConfiguration",
+                                collapsable: false,
+                                uisref: "administration-configuration-detail",
+                                menuId: "",
+                                hover: false
+                            },
                             {
                                 title: "Proveedores",
                                 icon: "store_mall_directory",

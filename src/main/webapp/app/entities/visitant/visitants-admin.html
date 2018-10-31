@@ -1,120 +1,90 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Visitantes</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Consultar</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+
+
+<div class="col-md-12 no-padding  " ng-if="vm.visitants.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
+    <div class="" >
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d">{{vm.title}}</h3>
+        <div ng-show="vm.isConsulting==true">
+            <h3 style="color: #00b19d">{{vm.titleConsult}}</h3>
+        </div>
+
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="smrgin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.search">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
 
         </div>
     </div>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
+
+<div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+    <!--<div class="col-md-7 col-lg-7"></div>-->
+    <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+
+    <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
+        <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  "  ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()">Mostrar todos</button>
     </div>
+    <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
+            <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
+                   type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+            <input ng-model="vm.dates.final_time"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
+                   class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
+        </div>
+        <button ng-disabled="vm.isDisableButton()"  ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar</button>
+    </div>
+
+
 </div>
-<div class="row display-none" id="all">
-    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-        <h3 class="page-title col-md-4 col-lg-4 col-xs-12 col-sm-12 no-list">{{vm.title}}
-            <div ng-show="vm.isConsulting==true">
-                <h4>{{vm.titleConsult}}</h4>
-            </div>
-        </h3>
-        <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 no-padding">
-            <div class="col-lg-12 col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn green col-md-2 col-sm-2 col-xs-12  small-margin-bottom">Consultar</button>
-        </div>
-        <div>
-            <div class="form-group col-md-12 col-sm-12 col-xs-12" id="index-search-bar">
-                <div class="col-md-5" ng-show="vm.isConsulting==false"></div>
-                <button type="button" class="btn btn-primary col-md-offset-2 col-md-3 col-sm-6 col-xs-12" ng-show="vm.isConsulting==true" ng-click="vm.stopConsulting()" name="button">Consultar visitantes del mes</button>
-                <div class="form-group no-padding col-md-3 col-sm-6 col-xs-12">
-                    <label class="col-md-6 col-sm-6 col-xs-6 control-label  gray-font">Filtrar por casa</label>
-                    <div class="col-md-6 col-sm-6 col-xs-6">
-                        <select class="form-control gray-font" ng-change="vm.findVisitorByHouse(house)" data-ng-model="house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
-                            <option value="">Todas</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="input-icon col-md-4 col-sm-6 col-xs-12 no-padding">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control" placeholder="Buscar visitante en la consulta actual" ng-model="search">
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div ng-show="vm.visitants.length == 0">
-                    <h2 class="text-center gray-font">No hay visitantes registrados</h2>
-                </div>
-                <div ng-repeat="visitor in vm.visitants | filter:vm.search " class="col-xs-12 hidden-lg hidden-md hidden-sm" style="padding:5px">
-                    <hr class="col-xs-12 no-padding" style="background-color:#1caf9a!important;opacity:0.3!important">
-                    <div class="col-xs-12" style="margin-bottom:5px!important">
-                        <b>{{visitor.fullName}}</b>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="col-xs-12 no-padding">
-                            Cédula: {{visitor.identificationnumber}}
-                        </div>
-                        <div class="col-xs-12 no-padding">
-                            <span ng-show="visitor.licenseplate!=''">Número de placa: {{visitor.licenseplate}}</span>
-                            <span ng-show="visitor.licenseplate==''">Número de placa: No se registró</span>
-                        </div>
-                    </div>
-                    <div class="col-xs-6">
-                        <div class="col-xs-12 no-padding">
-                            <span class="col-xs-12 no-padding">Fecha y hora de ingreso:</span>
-                            <span>{{visitor.arrivaltime | formatDate}}</span>
-                        </div>
-                    </div>
 
-                </div>
-                <div class="table-scrollable hidden-xs"  ng-show="vm.visitants.length > 0">
-                    <table class="table table-striped table-hover font-12">
-                        <thead>
-                        <tr>
-                            <th>Nombre completo</th>
-                            <th>Cédula</th>
-                            <th>Número de placa</th>
-                            <th>Fecha y Hora</th>
-                            <th>Número de Casa</th>
-                        </tr>
-                        </thead>
-                        <tbody>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class="row fade-in">
+    <div class="col-md-12">
 
-                        <tr ng-repeat="visitor in vm.visitants | filter:search ">
-                            <td>{{visitor.fullName}}</td>
-                            <td>{{visitor.identificationnumber}}</td>
-                            <td ng-show="visitor.licenseplate!=''"><span style="text-transform: uppercase;">{{visitor.licenseplate}}</span></td>
-                            <td ng-show="visitor.licenseplate==''">No se registró</td>
-                            <td>{{visitor.arrivaltime | formatDate}}</td>
-                            <td>{{visitor.houseNumber}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <div class="portlet-body ">
+            <no-content ng-if="vm.visitants.length == 0" icon="group_add" text="No hay visitantes registrados"></no-content>
+
+            <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;">
+                <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
+                    <thead style="background-color: #fafafa;" >
+
+                    <tr>
+                        <th>Nombre completo</th>
+                        <th>Cédula</th>
+                        <th>Número de placa</th>
+                        <th>Fecha y Hora</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                        <td>{{visitor.fullName}}</td>
+                        <td>{{visitor.identificationnumber}}</td>
+                        <td ng-show="visitor.licenseplate!=''">{{visitor.licenseplate}}</td>
+                        <td ng-show="visitor.licenseplate==''">No se registró</td>
+                        <td>{{visitor.arrivaltime | formatDate}}</td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="text-center">
-                <span>Mostrando {{vm.queryCount}} visitantes</span>
-            </div>
+
         </div>
+
     </div>
+
 </div>

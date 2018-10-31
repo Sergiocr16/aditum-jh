@@ -10,7 +10,7 @@
     function EgressController($scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
-        $rootScope.mainTitle =  vm.title;
+        $rootScope.mainTitle =  "Egresos";
         vm.isReady = false;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -22,6 +22,7 @@
         vm.propertyName = 'id';
         vm.reverse = true;
         vm.consult = consult;
+        vm.showFilterDiv = false;
         vm.dates = {
             initial_time: undefined,
             final_time: undefined

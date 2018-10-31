@@ -26,23 +26,41 @@
 <!--<div class="double-bounce2"></div>-->
 <!--</div>-->
 <!--</div>-->
-<div class="row " id="tableData">
-    <div class="col-md-12 no-padding" >
-        <div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">
+<!--<div class="row " id="tableData">-->
+    <!--<div class="col-md-12 no-padding" >-->
+        <!--<div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">-->
 
-            <div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">
-                <a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.mensualReport')}" ui-sref="budgetExecution.mensualReport" >
-                    Reporte mensual
-                </a>
-                <a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.anualReport')}" ui-sref="budgetExecution.anualReport" >
-                    Reporte anual
-                </a>
-            </div>
+            <!--<div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">-->
+                <!--<a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.mensualReport')}" ui-sref="" >-->
+                    <!--Reporte mensual-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('budgetExecution.anualReport')}" ui-sref="budgetExecution.anualReport" >-->
+                    <!--Reporte anual-->
+                <!--</a>-->
+            <!--</div>-->
 
-        </div>
-        <div ui-view class="col-md-12 margin-top-10">
-        </div>
+        <!--</div>-->
+        <!--<div ui-view class="col-md-12 margin-top-10">-->
+        <!--</div>-->
 
-    </div>
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<div class="row" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10" ui-sref="budgetExecution.mensualReport">
+            <md-tab  label="Reporte mensual">
+            </md-tab>
+            <md-tab label="Reporte anual" class="md-active" ui-sref="budgetExecution.anualReport" >
+            </md-tab>
+
+        </md-tabs>
+
+    </md-content>
 </div>
+
+<div ui-view class="row" style="padding: 20px;">
 </div>
+

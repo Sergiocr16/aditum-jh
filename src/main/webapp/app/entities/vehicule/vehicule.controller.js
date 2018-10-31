@@ -13,11 +13,13 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
+        vm.showFilterDiv = false;
+        vm.house = "-1";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.radioEnablestatus = true;
         vm.transition = transition;
-        $rootScope.mainTitle = vm.title;
+        $rootScope.mainTitle = "Vehículos";
         vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.editVehicle = function (id) {
@@ -134,7 +136,7 @@
             vm.isReady = false;
             vm.house = house;
 
-            if (house == undefined) {
+            if (house == undefined || house=='-1') {
                 loadVehicules();
             } else {
                 loadVehicules(1);

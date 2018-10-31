@@ -5,17 +5,9 @@
         .module('aditumApp')
         .controller('HouseDetailController', HouseDetailController);
 
-    HouseDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'House', 'Vehicule', 'Visitant', 'Note', 'Resident', 'Emergency', 'Company','Principal'];
+    HouseDetailController.$inject = [];
 
-    function HouseDetailController($scope, $rootScope, $stateParams, previousState, entity, House, Vehicule, Visitant, Note, Resident, Emergency, Company,Principal) {
-        var vm = this;
-       vm.isAuthenticated = Principal.isAuthenticated;
-        vm.house = entity;
-        vm.previousState = previousState.name;
+    function HouseDetailController() {
 
-        var unsubscribe = $rootScope.$on('aditumApp:houseUpdate', function(event, result) {
-            vm.house = result;
-        });
-        $scope.$on('$destroy', unsubscribe);
     }
 })();
