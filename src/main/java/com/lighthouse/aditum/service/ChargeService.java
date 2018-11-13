@@ -487,7 +487,7 @@ public class ChargeService {
 
 
     public List<ChargeDTO> findBeforeDateAndHouseAndTypeAndState(ZonedDateTime initialDate, Long houseId, int type, int state) {
-        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findBeforeDateAndHouseAndTypeAndState(initialDate, houseId, type, state))
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findBeforeDateAndHouseAndTypeAndStateAndDeleted(initialDate, houseId, type, state,0))
             .map(chargeMapper::toDto);
         return this.formatCharges(chargeDTOS).getContent();
     }

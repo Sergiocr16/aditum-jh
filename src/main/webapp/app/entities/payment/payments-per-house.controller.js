@@ -18,11 +18,11 @@
         vm.loadAll = loadAll;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.initialTime = {
-            date: undefined,
+            date: '',
             openCalendar: false
         }
         vm.finalTime = {
-            date: undefined,
+            date: '',
             openCalendar: false
         }
         vm.exportActions = {

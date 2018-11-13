@@ -1,96 +1,137 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class=" fade-in" >
-
-    <div class="col-md-12 no-padding " style="">
-        <h2 class="bold uppercase" style="font-size:15px; margin-top: 0px!important; padding-top: 0px!important;">Deudas vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
-    </div>
-    <div class="col-md-12 no-padding margin-bottom-10">
-        <div class="col-md-6"></div>
-        <div class="col-md-2" ng-show="vm.charges.length==0"></div>
-        <div class="col-md-2 no-padding" ng-show="vm.isEditing == false">
-            <button class="btn btn-success red col-md-12" ui-sref="generatePayment" style="margin-right:5px;"><i class="fa fa-money"></i> Realizar pago</button>
-
-        </div>
-        <div class="col-md-2 no-padding-right" ng-show="vm.isEditing == false">
-            <button class="btn green-button-oficial col-md-12" ng-click="vm.createCharge()"><i class="fa fa-plus"></i> Agregar cuotas</button>
-
-        </div>
-        <div class=" btn-group col-md-2 no-padding-right" ng-show="vm.isEditing == false">
-            <button class="btn btn-primary col-md-12" ng-show="vm.charges.length!=0" ng-click="vm.editing()"><i class="fa fa-pencil"></i> Editar cuotas</button>
-        </div>
-
-    </div>
-    <hr>
+<div ng-if="vm.isReady" class=" fade-in">
     <div class="portlet-body">
-
-
-        <no-content ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes" ></no-content>
-
-        <div  ng-show="vm.charges.length!=0">
-            <form ng-submit="vm.edit()">
-                <table class="table  table-hover font-13 tableMaterialDesign">
-                    <thead  style="background-color: #fafafa;" >
-                <tr>
-                    <th class="text-center">
-                        Fecha de cobro
-                    </th>
-                    <th>
-                        Concepto
-                    </th>
-                    <th>
-                        Categoría
-                    </th>
-                    <th class="text-center">
-                        Total
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-
-                 <tr ng-repeat="charge in vm.charges | orderBy: 'date'" ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-                     <td class="text-center" ng-show="vm.isEditing==false">
-                         <span ng-show="charge.definedFirstDatePassed" style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
-                         {{charge.date | date}}
-                     </td>
-                     <td ng-show="vm.isEditing==false">{{charge.concept}}</td>
-                     <td ng-show="vm.isEditing==false">{{vm.getCategory(charge.type)}}</td>
-                     <td class="text-center" ng-show="vm.isEditing==false">₡ {{charge.ammount | currency : "" : 0}}</td>
-
-                     <td class="text-center" ng-hide="vm.isEditing==false">
-                         <div class="col-lg-12">
-                             <input ng-model="charge.date" ng-click="vm.openCalendar(charge)"  enable-time="false" datetime-picker="dd MMMM yyyy" is-open="charge.openDate"
-                                    type="text" class="form-control letters gray-font text-center dating" placeholder="Seleccione una fecha de vencimiento" required>
-                         </div>
-                     </td>
-                     <td ng-hide="vm.isEditing==false"><input class="form-control letters gray-font" type="text" ng-model="charge.concept"></td>
-                     <td ng-hide="vm.isEditing==false">
-                         <select class="form-control gray-font" ng-model="charge.type" required>
-                         <option value="1">Mantenimiento</option>
-                         <option value="2">Extraordinaria</option>
-                         <option value="3">Áreas comunes</option>
-                     </select></td>
-                     <td ng-hide="vm.isEditing==false">
-                         <div class="cl-md-12">
-                         <div class="input-group form-group col-lg-10" style="float:left">
-                             <span class="input-group-addon">₡</span>
-                             <input ng-class="{redBorder: charge.valida==false}" type="text" class="form-control numbers" placeholder="0.00" name="total"  ng-model="charge.ammount" ng-change="vm.validate(charge)" required />
-                         </div>
-                         <div class="col-lg-2">
-                         <span style="cursor:pointer;padding: 2px 7px" ng-click="vm.deleteCharge(charge)" class="label-danger"> <i  class="fa fa-trash" style="color:white"></i></span>
-                         </div>
-                         </div>
-                     </td>
-                 </tr>
-
-                </tbody>
-            </table>
-            <div ng-hide="vm.isEditing == false" class="btn-group pull-right" style="padding:5px">
-                <button class="btn btn-danger" type="button" ng-click="vm.cancel()" style="margin:5px">Cancelar</button>
-                <button type="submit" class="btn btn-success" style="margin:5px">Aceptar</button>
+        <no-content ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
+        <div ng-show="vm.charges.length!=0">
+            <div class="col-md-12 no-padding">
+                <h2 class="bold uppercase" style="font-size:15px;">Deudas
+                    vigentes <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right"
+                                template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>"
+                                mode="mouseover"></i></h2>
             </div>
+            <form ng-submit="vm.edit()" name="form">
+                <table class="table  table-hover font-13 tableMaterialDesign">
+                    <thead style="background-color: #fafafa;">
+                    <tr>
+                        <th class="text-center">
+                            Fecha de cobro
+                        </th>
+                        <th>
+                            Concepto
+                        </th>
+                        <th>
+                            Categoría
+                        </th>
+                        <th>
+                            Monto
+                        </th>
+                        <th ng-if="!vm.isEditing" class="fade-in">
+                            Recargo
+                        </th>
+                        <th ng-if="!vm.isEditing" class="fade-in">
+                            Total
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
+                        ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
+                        <td class="text-center" ng-if="!vm.isEditing">
+                            <span ng-if="charge.definedFirstDatePassed" class="fade-in"
+                                  style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover
+                                  direction="right"
+                                  template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>"
+                                  mode="mouseover"><i class="fa fa-info-circle"
+                                                      style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+                            {{charge.date | date}}
+                        </td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">{{vm.getCategory(charge.type)}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.ammount | currency : "" : 0}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.subcharge | currency : "" : 0}}</td>
+                        <td ng-if="!vm.isEditing" class="fade-in">₡ {{charge.total | currency : "" : 0}}</td>
+
+                        <td class="text-center" ng-hide="vm.isEditing==false">
+                            <div class="col-lg-12">
+                                <md-input-container class="md-block no-margin">
+                                    <md-datepicker md-hide-icons="calendar" required ng-model="charge.date"
+                                                   md-placeholder="Seleccione una fecha de vencimiento"
+                                                   md-open-on-focus></md-datepicker>
+                                </md-input-container>
+                            </div>
+                        </td>
+                        <td ng-hide="vm.isEditing==false">
+                            <md-input-container class="md-block no-margin">
+                                <input ng-model="charge.concept" type="text">
+                            </md-input-container>
+                        </td>
+                        <td ng-hide="vm.isEditing==false">
+                            <md-input-container class="md-block no-margin">
+                                <md-select ng-model="charge.type" required>
+                                    <md-option value="1">
+                                        Mantenimiento
+                                    </md-option>
+                                    <md-option value="2">
+                                        Extraordinaria
+                                    </md-option>
+                                    <md-option value="3">
+                                        Áreas comunes
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                        </td>
+                        <td ng-hide="vm.isEditing==false">
+                            <md-input-container class="md-block no-margin">
+                                <input ng-model="charge.ammount" type="text" format="currency">
+                                <md-icon class="red-icon-button-oficial" ng-click="vm.deleteCharge(charge)">
+                                    delete_forever
+                                </md-icon>
+                            </md-input-container>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div ng-hide="vm.isEditing == false" layout="row" class="white-bg" layout-align="end center" hide-sm
+                     hide-xs>
+                    <md-button type="button" ng-click="vm.cancel()"
+                               class="md-warn md-raised">Cancelar
+                    </md-button>
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid || !vm.validCharges()"
+                               type="submit">
+                        Aceptar
+                    </md-button>
+                </div>
             </form>
         </div>
     </div>
 </div>
+
+</div>
+<div ng-show="vm.isEditing == false">
+    <md-fab-speed-dial ng-hide="vm.hidden" md-direction="up" style="position: fixed;"
+                       class="md-fab md-fab-bottom-right md-fling">
+        <md-fab-trigger>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button class="md-fab md-raised md-mini red-button-oficial" ui-sref="generatePayment">
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Realizar pago</md-tooltip>
+                <md-icon style="color:white!important">payment</md-icon>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini green-button-oficial" md-colors="indigo"
+                       ng-show="vm.charges.length!=0" ng-click="vm.editing()">
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Editar cuotas</md-tooltip>
+                <md-icon style="color:white!important">create</md-icon>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini orange-button-oficial" ng-click="vm.createCharge()">
+                <md-tooltip md-direction="left" md-visible="tooltipVisible">Agregar cuotas</md-tooltip>
+                <md-icon style="color:white!important">add</md-icon>
+            </md-button>
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</div>
+

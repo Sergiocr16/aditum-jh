@@ -1,88 +1,86 @@
-
-<!--<div class="page-bar route-title">-->
-    <!--<ul class="page-breadcrumb">-->
-        <!--<li>-->
-            <!--<i class="fa fa-home"></i>-->
-            <!--<a ui-sref="home()">Condominio</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Contabilidad</a>-->
-            <!--<i class="fa fa-angle-right"></i>-->
-        <!--</li>-->
-        <!--<li>-->
-            <!--<a ui-sref="residentes()">Configurar cuotas</a>-->
-        <!--</li>-->
-    <!--</ul>-->
-    <!--<div class="page-toolbar">-->
-        <!--<div class="btn-group pull-right">-->
-
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
+<no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+            text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
 
-<div ng-if="vm.isReady" class=" fade-in" >
-
-
-
-    <no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas" text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
-
-
-    <div class="row" ng-if="vm.houses.length!==0">
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-    <div class="portlet light  col-md-12 col-lg-12 col-sm-12 col-xs-12">
-        <div class="portlet-title">
-            <div class="caption font-green-haze col-lg-9">
-                <span class="caption-subject bold uppercase">Configurar cuotas y Área metros cuadrados</span>
-            </div>
-            <div class="col-lg-3">
-                <button class="btn orange-button-oficial col-lg-12"  ng-hide="vm.houses.length==0" ui-sref="configureCharges.global">Modificar todas las cuotas</button>
-            </div>
-        </div>
-        <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
-                <form ng-submit="vm.verificarCargos()">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="table-scrollable hidden-xs   " ng-if="vm.houses.length>0" style="border: 0px!important;">
-                            <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
-                                <thead style="background-color: #fafafa;" >
-
-                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                    <th class="text-center"><b>Casa</b></th>
-                                    <th class="text-center"><b>Cuota</b></th>
-                                    <th class="text-center"><b>Área metros cuadrados</b></th>
-                                    <th class="text-center"><b>Habitada</b></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
-                                    <td class="text-center">
-                                       {{house.housenumber}}
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="form-group input-group">
-                                        <span class="input-group-addon">₡</span>  <input ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)" ng-change="vm.validate(house,house.due,1)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="house.due" required>
-                                        </div>
-                                    </td>
-                                    <td  class="text-center">
-                                        <div class="form-group input-group">
-                                        <input ng-class="{redBorder: house.validSquare==false}" ng-blur="vm.saveHouse(house,2)" ng-change="vm.validate(house,house.squareMeters,2)" class="form-control number gray-font text-center dating"type="text" fcsa-number  ng-model="house.squareMeters" required> <span class="input-group-addon">m²</span>
-                                        </div>
-                                    </td>
-                                    <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0" class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span style="padding:5px" ng-if="house.isdesocupated == 1" class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span></td>
-
-                                </tr>
-                                </tbody>
-                            </table>
+<div ng-cloak layout="column" ng-if="vm.isReady && vm.houses.length!=0"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="vm.verificando==false">
+            <div class="col-md-12 margin-top-20 margin-bottom-20" ng-if="vm.houses.length> 0 ">
+                <div class="">
+                    <div class="form-group col-md-12 col-sm-12 col-xs-12 no-padding" style="margin-bottom: 0px;"
+                         id="index-search-bar">
+                        <div class="input-icon" style="color:#484848!important;">
+                            <i class="fa fa-search"></i>
+                            <input type="text" class="form-control "
+                                   style="background-color: #f5f5f5; border:0px!important; "
+                                   placeholder="Buscar casa" ng-model="vm.query.housenumber">
                         </div>
                     </div>
-                </form>
+
+                </div>
             </div>
+            <form ng-submit="vm.verificarCargos()">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="table-scrollable" ng-if="vm.houses.length>0"
+                         style="border: 0px!important;">
+                        <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                            <thead style="background-color: #fafafa;">
+
+                            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                <th class="text-center"><b>Casa</b></th>
+                                <th class="text-center"><b>Cuota</b></th>
+                                <th class="text-center"><b>Área metros cuadrados</b></th>
+                                <th class="text-center"><b>Habitada</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="house in vm.houses | orderBy:'housenumber' | filter:vm.query">
+                                <td class="text-center">
+                                    {{house.housenumber}}
+                                </td>
+                                <td class="text-center">
+                                    <div class="form-group input-group" style="width: 100%">
+                                        <input format="currency"
+                                        ng-class="{redBorder: house.validDue==false}" ng-blur="vm.saveHouse(house,1)"
+                                        ng-change="vm.validate(house,house.due,1)"
+                                        class="form-control number gray-font text-center dating" type="text" fcsa-number
+                                        ng-model="house.due" required>
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <div class="form-group input-group">
+                                        <input ng-class="{redBorder: house.validSquare==false}"
+                                               ng-blur="vm.saveHouse(house,2)"
+                                               ng-change="vm.validate(house,house.squareMeters,2)"
+                                               class="form-control number gray-font text-center dating" type="text"
+                                               fcsa-number ng-model="house.squareMeters" required> <span
+                                        class="input-group-addon">m²</span>
+                                    </div>
+                                </td>
+                                <td class="text-center"><span style="padding:5px" ng-if="house.isdesocupated == 0"
+                                                              class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Si </span><span
+                                    style="padding:5px" ng-if="house.isdesocupated == 1"
+                                    class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">No</span>
+                                </td>
+
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
         </div>
-    </div>
-    </div>
-    </div>
+    </md-content>
+    <md-button ng-hide="vm.houses.length==0" ui-sref="configureCharges.global"
+               class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Modificar todas las cuotas</md-tooltip>
+        <md-icon class="white-color">create</md-icon>
+    </md-button>
 </div>

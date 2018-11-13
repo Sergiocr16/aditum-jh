@@ -13,13 +13,14 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
-        $rootScope.mainTitle = "Reporte de gastos";
+        $rootScope.mainTitle = "Reporte de egresos";
         vm.isReady = false;
         vm.isReady2 = false;
         vm.reverse = true;
         vm.gastosQuantity = 0;
         vm.showNoResults = false;
         vm.hideReportForm = false;
+        vm.loadingReport = false;
         vm.selectedProveedores = [];
         vm.selectedCampos = [];
         vm.translationCampos = {
@@ -171,6 +172,8 @@
         vm.generateReport = function () {
             vm.gastosQuantity = 0;
             vm.isReady2 = false;
+            vm.loadingReport = true;
+
             Egress.findBetweenCobroDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -229,6 +232,8 @@
             })
 
             vm.isReady2 = true;
+            vm.loadingReport = false;
+
             if (vm.gastosQuantity > 0) {
                 vm.showNoResults = false
                 vm.hideReportForm = true;

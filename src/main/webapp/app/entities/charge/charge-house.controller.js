@@ -1,13 +1,13 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('HouseChargeController', HouseChargeController);
 
-    HouseChargeController.$inject = ['entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance'];
+    HouseChargeController.$inject = ['entity', '$state', 'House', 'ParseLinks', 'AlertService', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$uibModalInstance', 'Modal'];
 
-    function HouseChargeController(entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance) {
+    function HouseChargeController(entity, $state, House, ParseLinks, AlertService, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $uibModalInstance, Modal) {
         var vm = this;
         vm.loadPage = loadPage;
 
@@ -15,7 +15,7 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.house = entity;
-        console.log(vm.house)
+        $rootScope.mainTitle = "Crear cuota individual filial " + vm.house.housenumber;
         vm.clear = clear;
         vm.minDate = new Date();
         vm.charge = {
@@ -28,23 +28,23 @@
             deleted: 0
         }
         moment.locale("es");
-        vm.autoConcept = function() {
-        if(vm.charge.type=="1"){
-        vm.charge.concept = "";
-            String.prototype.capitalize = function() {
-                return this.replace(/(?:^|\s)\S/g, function(a) {
-                    return a.toUpperCase();
-                });
-            };
-            vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
-}
+        vm.autoConcept = function () {
+            if (vm.charge.type == "1") {
+                vm.charge.concept = "";
+                String.prototype.capitalize = function () {
+                    return this.replace(/(?:^|\s)\S/g, function (a) {
+                        return a.toUpperCase();
+                    });
+                };
+                vm.charge.concept = "Mantenimiento " + moment(vm.charge.date).format("MMMM").capitalize() + " " + moment(vm.charge.date).format("YYYY");
+            }
         }
-        vm.validate = function(cuota) {
+        vm.validate = function (cuota) {
             var s = cuota.ammount;
-                                                         var caracteres = ['{','}','[',']','"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
+            var caracteres = ['{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
 
             var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
+            angular.forEach(caracteres, function (val, index) {
                 if (s != undefined) {
                     for (var i = 0; i < s.length; i++) {
                         if (s.charAt(i).toUpperCase() == val.toUpperCase()) {
@@ -62,8 +62,8 @@
         }
 
 
-        angular.element(document).ready(function() {
-            $('.dating').keydown(function() {
+        angular.element(document).ready(function () {
+            $('.dating').keydown(function () {
                 return false;
             });
         });
@@ -74,53 +74,27 @@
             charge.deleted = 0;
             return charge;
         }
-        vm.formatearNumero = function(nStr) {
 
-            var x = nStr.split('.');
-            var x1 = x[0];
-            var x2 = x.length > 1 ? ',' + x[1] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        }
 
-        vm.crearCuota = function() {
+        vm.crearCuota = function () {
             if (vm.charge.valida) {
                 if (vm.charge.ammount != 0) {
-                    bootbox.confirm({
-                        message: "¿Está seguro que generar una cuota por ₡" + vm.formatearNumero(vm.charge.ammount) + " a la filial " + vm.house.housenumber + "?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function(result) {
-                            if (result) {
-                                vm.isSaving = true;
-                                vm.charge = buildCharge(vm.charge)
-                                CommonMethods.waitingMessage();
-                                Charge.save(vm.charge, function(result) {
-                                    vm.isSaving = false;
-
-                                    $uibModalInstance.close(result);
-                                    bootbox.hideAll();
-                                    toastr["success"]("Se ha generado la cuota correctamente.")
-                                })
-                            }
-                        }
-                    });
+                    Modal.confirmDialog("¿Está seguro que desea generar una cuota a la filial " + vm.house.housenumber + "?","",function(){
+                        vm.charge = buildCharge(vm.charge);
+                        console.log(vm.charge)
+                        Modal.showLoadingBar();
+                        Charge.save(vm.charge, function (result) {
+                            vm.isSaving = false;
+                            $uibModalInstance.close(result);
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se ha generado la cuota correctamente.")
+                        })
+                    })
                 } else {
-                    toastr["error"]("Para generar una cuota su monto debe de ser mayor a ₡ 0.00")
+                    Modal.toast("Para generar una cuota su monto debe de ser mayor a ₡ 0.00")
                 }
             } else {
-                toastr["error"]("Debe de ingresar un monto de solo números.")
+                Modal.toast("Debe de ingresar un monto de solo números.")
             }
         }
 

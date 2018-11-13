@@ -10,9 +10,16 @@
 <div class="row" ng-if="true">
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
         <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
-            <md-tab ui-sref="announcements.announcement" label="Noticias publicadas">
+            <md-tab md-active-nc="$state.includes('announcements.announcement')" ui-sref="announcements.announcement" label="Noticias publicadas">
             </md-tab>
-            <md-tab ui-sref="announcements.announcement-sketch" label="Borradores" class="md-active" ng-click="vm.switchDisabledResidents()">
+            <md-tab  md-active-nc="$state.includes('announcements.announcement-sketch')" ui-sref="announcements.announcement-sketch" label="Borradores" class="md-active" ng-click="vm.switchDisabledResidents()">
+            </md-tab>
+
+        </md-tabs>
+        <md-tabs hide-lg hide-xl  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+            <md-tab  md-active-nc="$state.includes('announcements.announcement')" ui-sref="announcements.announcement" label="Publicadas">
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('announcements.announcement-sketch')" ui-sref="announcements.announcement-sketch" label="Borradores" class="md-active" ng-click="vm.switchDisabledResidents()">
             </md-tab>
 
         </md-tabs>

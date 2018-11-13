@@ -1,93 +1,57 @@
-
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="caption-subject bold uppercase font-green-haze" id="myProveedorLabel">Registrar cuenta</h4>
-    </div>
-    <div class="modal-body">
-
-        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-            <div class="form-group">
-                <label  class="control-label bold font-13" style="font-size:13px;"  for="field_beneficiario">Nombre *</label>
-                <input type="text" class="form-control" name="beneficiario" id="field_beneficiario"
-                ng-model="vm.banco.beneficiario"
-                required />
+<div class="row">
+    <div class="col-md-12">
+        <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
+            <div ng-cloak layout="column">
+                <md-toolbar class="form-title">
+                    <h2>{{mainTitle}}</h2>
+                </md-toolbar>
             </div>
-            <div class="form-group" ng-show="vm.banco.id == null">
-                <label class="control-label bold font-13" style="font-size:13px;"  for="field_fechaCapitalInicia">Fecha capital inicial*</label>
-
-                <input ng-model="vm.banco.fechaCapitalInicial" id="field_fechaCapitalInicia" name="fechaCapitalInicial" ng-click="vm.openCalendar('fechaCapitalInicial')" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker.datepickerOptions" is-open="vm.datePickerOpenStatus.fechaCapitalInicial"
-                       type="text" class="form-control letters gray-font  dating" placeholder="Seleccione una fecha" required>
-
-
-
-            </div>
-
-
         </div>
-        <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-            <div class="form-group">
-                <label class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCorriente" for="field_cuentaCorriente">Cuenta Corriente</label>
-                <input type="text" class="form-control" name="cuentaCorriente" id="field_cuentaCorriente"
-                       ng-model="vm.banco.cuentaCorriente"
-                       />
+        <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <md-content layout-padding class="form-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <form name="form" ng-submit="vm.save()">
+                        <div layout="row" layout-xs="column" class="marging-top-20 ">
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                <md-input-container class="md-block" >
+                                    <label>Nombre</label>
+                                    <input  ng-model="vm.banco.beneficiario" type="text" required>
+                                </md-input-container>
+                                <md-input-container class="md-block" ng-if="vm.banco.id == null">
+                                    <label>Fecha capital inicial</label>
+                                    <md-datepicker md-hide-icons="calendar" required ng-model="vm.banco.fechaCapitalInicial"
+                                                   md-placeholder="Introduzca una fecha" md-open-on-focus required></md-datepicker>
+                                </md-input-container>
+                                <md-input-container class="md-block" ng-if="vm.banco.id == null">
+                                    <label>Saldo inicial</label>
+                                    <input ng-model="vm.banco.capitalInicial" type="text" required format="currency" required>
+                                </md-input-container>
 
-            </div>
-            <div class="form-group" ng-show="vm.banco.id == null">
-                <label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
-                <input type="text" class="form-control" name="cuentaCliente" id="field_cuentaCliente"
-                       ng-model="vm.banco.cuentaCliente"
-                       />
+                            </div>
 
-            </div>
-
-        </div>
-        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  no-padding" ng-show="vm.banco.id !== null">
-            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                <div class="form-group" >
-                    <label  class="control-label bold font-13" style="font-size:13px;" data-translate="aditumApp.banco.cuentaCliente" for="field_cuentaCliente">Cuenta Cliente</label>
-                    <input type="text" class="form-control" name="cuentaCliente"
-                           ng-model="vm.banco.cuentaCliente"
-                    />
-
+                            <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                <md-input-container class="md-block" >
+                                    <label>Cuenta corriente</label>
+                                    <input ng-model="vm.banco.cuentaCorriente" type="text" >
+                                </md-input-container>
+                                <md-input-container class="md-block">
+                                    <label>Cuenta cliente</label>
+                                    <input ng-model="vm.banco.cuentaCliente" type="text">
+                                </md-input-container>
+                            </div>
+                        </div>
+                        <div layout="row" class="white-bg" layout-align="end center">
+                            <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
+                                Cancelar
+                            </md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                                Aceptar
+                            </md-button>
+                        </div>
+                    </form>
                 </div>
-            </div>
-
+            </md-content>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12 col-lg-12  no-padding" ng-show="vm.banco.id == null">
-            <div class="col-md-6 col-xs-6 col-sm-6 col-lg-6">
-                <div class=" form-group">
-                    <label class="control-label bold"  style="font-size:13px;"  for="field_capitalInicial">Saldo Inicial *</label>
-                    <div class="input-group form-group">
-                        <span class="input-group-addon">₡</span>
-                        <input type="number" class="form-control numbers" name="capitalInicial" id="field_capitalInicial"
-                               ng-model="vm.banco.capitalInicial"
-                               required />
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-
-
-        <div class="form-actions noborder" style="padding-bottom:0px;">
-            <h3 class="text-right">
-
-                <button type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" class="btn blue"><i class="fa fa-pencil" ng-show="vm.button=='Editar'"></i>Aceptar</button>
-                <button type="button" class="btn red btn-default" data-dismiss="modal" ng-click="vm.clear()">Cancelar</button>
-
-            </h3>
-        </div>
-
-        <!--<div ng-show="editForm.company.$invalid">-->
-        <!--<p class="help-block"-->
-        <!--ng-show="editForm.company.$error.required" data-translate="entity.validation.required">-->
-        <!--This field is required.-->
-        <!--</p>-->
-        <!--</div>-->
     </div>
+</div>
 
-</form>

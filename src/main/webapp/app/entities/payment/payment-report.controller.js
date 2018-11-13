@@ -23,9 +23,9 @@
         vm.propertyName = 'id';
         vm.reverse = true;
         vm.consulting = false;
-        vm.banco = "";
-        vm.paymentMethod = "empty",
-            vm.houseId = "";
+        vm.banco = "empty";
+        vm.paymentMethod = "empty";
+        vm.houseId = "empty";
         vm.category = "empty";
         var date = new Date(),
             y = date.getFullYear(),
@@ -42,11 +42,12 @@
             sendingEmail: false,
         }
         vm.consultAgain = function () {
-            vm.banco = "";
-            vm.paymentMethod = "empty",
-                vm.houseId = "";
+            vm.banco = "empty";
+            vm.paymentMethod = "empty";
+            vm.houseId = "empty";
             vm.category = "empty";
             vm.consulting = false;
+            vm.isReady2 = false;
         }
         vm.updatePicker = function () {
             vm.picker1 = {
@@ -131,10 +132,10 @@
                 })
             }, 6000)
         }
-            vm.loadHouses();
+        vm.loadHouses();
         vm.sendEmail = function (payment) {
-            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + payment.houseNumber + "?","",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + payment.houseNumber + "?", "",
+                function () {
                     vm.exportActions.sendingEmail = true;
                     Resident.findResidentesEnabledByHouseId({
                         houseId: parseInt(payment.houseId),
@@ -178,7 +179,6 @@
                 });
 
 
-
         }
 
         function formatearNumero(nStr) {
@@ -201,6 +201,7 @@
         vm.generateReport = function () {
             vm.isReady2 = false;
             vm.consulting = true;
+            vm.showLoading = true;
             if (vm.banco == "" || vm.banco == null) {
                 vm.banco = "empty"
             }
@@ -225,6 +226,7 @@
                     payment.isShowingCharges = false;
                 })
                 vm.isReady2 = true;
+                vm.showLoading = false;
             }
 
             function onError(error) {

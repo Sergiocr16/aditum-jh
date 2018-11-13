@@ -21,7 +21,7 @@
         vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
-        vm.payment = {}
+        vm.payment = {ammount:"0"}
         vm.openCalendar = openCalendar;
         vm.residents = [];
         angular.element(document).ready(function () {
@@ -212,23 +212,25 @@
                     }, function (result) {
                         $localStorage.houseSelected = result
                         vm.house = $localStorage.houseSelected;
+                        vm.houseId = vm.house.id;
                         $rootScope.houseSelected = $localStorage.houseSelected;
                     })
                 } else {
                     if (vm.houses.length > 0) {
                         $rootScope.houseSelected = vm.houses[0]
                         $localStorage.houseSelected = vm.houses[0]
-                        vm.house = $rootScope.houseSelected;
+                        vm.house = vm.houses[0];
+                        vm.houseId = vm.house.id;
                     }
                 }
                 vm.page = pagingParams.page;
                 loadCharges($localStorage.houseSelected.id)
                 loadResidentsForEmail($localStorage.houseSelected.id)
                 loadBancos()
-
                 vm.payment = {
                     paymentMethod: "DEPOSITO BANCO",
                     transaction: "1",
+                    ammount:0,
                     companyId: globalCompany.getId(),
                     concept: 'Abono a cuotas Filial ' + $localStorage.houseSelected.housenumber,
                 };
@@ -391,9 +393,9 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function (house) {
+        vm.changeHouse = function (houseId) {
             House.get({
-                id: house.id
+                id: houseId
             }, function (result) {
                 clear();
                 $localStorage.houseSelected = result

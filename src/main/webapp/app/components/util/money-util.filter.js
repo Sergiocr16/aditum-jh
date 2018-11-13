@@ -6,8 +6,10 @@ angular
             if (!ctrl) return;
             ctrl.$formatters.unshift(function (a) {
                 var colon = attrs.format == "currency" ? '₡' : "";
-                var money = $filter(attrs.format)(ctrl.$modelValue)
-                return colon + money.substring(0, money.length-1)
+                if(ctrl.$modelValue!=undefined) {
+                    var money = $filter(attrs.format)(ctrl.$modelValue)
+                    return colon + money.substring(0, money.length - 1)
+                }
             });
             ctrl.$parsers.unshift(function (viewValue) {
                 elem.priceFormat({

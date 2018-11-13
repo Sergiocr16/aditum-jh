@@ -84,7 +84,7 @@
               }
           })
         .state('egress-detail', {
-            parent: 'entity',
+            parent: 'egress-tabs',
             url: '/{id}',
             data: {
                 authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
