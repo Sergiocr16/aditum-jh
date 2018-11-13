@@ -53,7 +53,7 @@
 
         vm.showNextYear = function () {
 
-            vm.isReady = true;
+            vm.isReady = false;
 
             vm.year = parseInt(vm.year) + 1;
             loadAll(vm.year);

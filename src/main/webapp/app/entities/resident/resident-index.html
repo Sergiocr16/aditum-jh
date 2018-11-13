@@ -18,68 +18,100 @@
         </md-tabs>
     </md-content>
 </div>
+<div class="col-md-12 col-xs-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.residents.length> 0 ">
+    <div class="">
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.query">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+        <md-input-container  class=" no-margin" has-authority="ROLE_MANAGER"
+                             ng-if="vm.residents.length> 0 || vm.house!='-1'">
+
+            <md-select ng-model="vm.house"  ng-change="vm.findResidentsByHouse(vm.house)">
+                <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
+                <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                           ng-model="vm.house" ng-value="house">
+                    {{house.housenumber}}
+                </md-option>
+
+            </md-select>
+
+        </md-input-container>
+        <md-input-container  class=" no-margin" has-authority="ROLE_MANAGER"
+                             ng-if="vm.residents.length> 0 || vm.house!='-1'">
+            <md-select  ng-model="vm.filterAuthorized"  ng-change="vm.setAuthorizedView(vm.filterAuthorized)" >
+                <md-option value="2">Con y sin cuenta en sistema</md-option>
+                <md-option value="1">Con cuenta en sistema</md-option>
+                <md-option value="0">Sin cuenta en sistema</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+</div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
 
 <div class="row fade-in">
     <div class="col-lg-12 col-md-12 col-xs-12 ">
-        <div class="col-md-12 col-xs-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.residents.length> 0 ">
-            <div class="">
-                <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
-                     id="index-search-bar">
-                    <div class="input-icon" style="color:#484848!important;">
-                        <i class="fa fa-search"></i>
-                        <input type="text" class="form-control "
-                               style="background-color: #f5f5f5; border:0px!important; "
-                               placeholder="Buscar" ng-model="vm.query">
-                    </div>
-                </div>
-                <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                    <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
-                            class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                            style="height: 34px!important; padding-top: 5px!important;">
-                        <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                        <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
 
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+        <!--<div class="col-md-12 no-padding">-->
+        <!--<div class="form-group col-md-4 col-sm-4 col-xs-7 no-padding">-->
+        <!--<label class="col-md-6 col-sm-6  col-xs-4 control-label no-padding gray-font text-right" style="padding-top: 5px!important;"> Cuenta en Aditum</label>-->
+        <!--<div class="col-md-6 col-sm-6 col-xs-8 no-padding-right">-->
+        <!--<select class="form-control gray-font" ng-model="vm.filterAuthorized" ng-change="vm.setAuthorizedView(vm.filterAuthorized)" required>-->
+        <!--<option value="2">Todos</option>-->
+        <!--<option value="1">Si tiene</option>-->
+        <!--<option value="0">No tiene</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group col-md-4  col-sm-4 col-xs-7 no-padding">-->
+        <!--<label class="col-md-4 col-sm-4  col-xs-4 control-label no-padding gray-font text-right" style="padding-top: 5px!important;">Filtrar por filial</label>-->
+        <!--<div class="col-md-8 col-sm-8 col-xs-8 no-padding-right">-->
+        <!--<select class="form-control gray-font" ng-change="vm.findResidentsByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>-->
+        <!--<option value="">Todas</option>-->
+        <!--</select>-->
+        <!--</div>-->
+        <!--</div>-->
 
-                <md-input-container  class=" no-margin" has-authority="ROLE_MANAGER"
-                                     ng-if="vm.residents.length> 0 || vm.house!='-1'">
+        <!--<div class="form-group col-md-2 col-sm-2 col-xs-5 no-padding-" id="index-search-bar">-->
+        <!--<div class="input-icon">-->
+        <!--<i class="fa fa-search"></i>-->
+        <!--<input type="text" class="form-control " placeholder="Buscar" ng-model="vm.query">-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<button type="submit" class="btn green-button-oficial col-md-2 col-sm-3 col-xs-12 small-margin-bottom orange-button-oficial" ui-sref="resident.new()" >Registrar usuario</button>-->
 
-                    <md-select ng-model="vm.house"  ng-change="vm.findResidentsByHouse(vm.house)">
-                        <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                        <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
-                                   ng-model="vm.house" ng-value="house">
-                            {{house.housenumber}}
-                        </md-option>
+        <!--</div>-->
 
-                    </md-select>
-
-                </md-input-container>
-                <md-input-container  class=" no-margin" has-authority="ROLE_MANAGER"
-                                     ng-if="vm.residents.length> 0 || vm.house!='-1'">
-                    <md-select  ng-model="vm.filterAuthorized"  ng-change="vm.setAuthorizedView(vm.filterAuthorized)" >
-                        <md-option value="2">Con y sin cuenta en sistema</md-option>
-                        <md-option value="1">Con cuenta en sistema</md-option>
-                        <md-option value="0">Sin cuenta en sistema</md-option>
-                    </md-select>
-                </md-input-container>
-            </div>
-        </div>
-
-
-        <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-             layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-        </div>
+        <!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill-->
+             <!--layout-align="space-around center">-->
+            <!--<md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>-->
+        <!--</div>-->
         <!--<no-content ng-if="vm.residents.length == 0" icon="group" text="No hay usuarios registrados"></no-content>-->
 
         <div class="col-md-12 col-xs-12 no-padding fade-in" ng-if="vm.isReady">
             <no-content ng-if="vm.residents.length == 0" icon="group" text="No hay usuarios registrados"></no-content>
 
-            <div class="col-md-4 no-padding " ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' " ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
+            <div class="col-md-4 no-padding " ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' " ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1" >
                 <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
                          md-theme-watch>
                     <md-card-title>
@@ -165,6 +197,7 @@
 
                     </md-card-actions>
                 </md-card>
+
             </div>
         </div>
 

@@ -244,7 +244,6 @@
 
             };
          function save (){
-
            if(vm.presupuesto.anno==undefined){
                 Modal.toast("Debe seleccionar el año a presupuestar");
            }else{
@@ -257,6 +256,7 @@
                   var date = new Date();
                   date.setDate(1);
                   date.setMonth(0);
+                  console.log(vm.presupuesto)
                   date.setYear(vm.presupuesto.anno.year);
                   vm.presupuesto.date = date;
                   vm.presupuesto.anno = vm.presupuesto.anno.year;

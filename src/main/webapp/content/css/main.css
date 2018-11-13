@@ -32,6 +32,9 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
     color: #333;
 }
+.outline-none{
+    outline: none;
+}
 
 .carddemoBasicUsage .card-media {
     background-color: #999999;
@@ -1477,6 +1480,11 @@ div.scrollmenu a:hover {
 .object-fit_scale-down-resident-index {
     object-fit: scale-down;
     background-color: #e4e6e9;
+}
+
+.detailLabelMD{
+    margin-bottom: 24px!important;
+    font-size: 14px!important;
 }
 
 .object-fit_scale-down {

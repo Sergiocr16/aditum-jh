@@ -27,7 +27,7 @@
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
-                    $state.go('house.edit', {
+                    $state.go('houses-tabs.edit', {
                         id: encryptedId
                     })
         }

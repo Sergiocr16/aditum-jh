@@ -39,14 +39,22 @@
                 <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. <span class="bold">(SÓLO NÚMEROS Ej. 15000)</span> </span>
             </div>
 
-            <div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2  col-md-2 col-sm-2 col-xs-2 no-padding">
-                <select class="form-control gray-font" data-ng-model="vm.presupuesto.anno" ng-options="item.year for item in vm.budgetYearsToSelect | orderBy: 'year' track by item.year" required>
-                    <option value="">Seleccione un año</option>
-                </select>
+            <div class="col-md-offset-3 col-sm-offset-3 col-xs-offset-3  col-md-3 col-sm-3 col-xs-3 no-padding">
+                <!--<select class="form-control gray-font" data-ng-model="vm.presupuesto.anno" ng-options="item.year for item in vm.budgetYearsToSelect | orderBy: 'year' track by item.year" required>-->
+                    <!--<option value="">Seleccione un año</option>-->
+                <!--</select>-->
+                <md-input-container class="md-block">
+                    <label>Seleccione un año</label>
+                    <md-select ng-model="vm.presupuesto.anno">
+                        <md-option ng-repeat="item in vm.budgetYearsToSelect " ng-value="item">
+                            {{item.year}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
             </div>
-            <div class="no-padding-right col-md-2 col-sm-2 col-xs-2 ">
-              <button class="btn btn-primary col-md-12 orange-button-oficial" ng-click="vm.confirmSave()">Guardar presupuesto</button>
-            </div>
+            <!--<div class="no-padding-right col-md-2 col-sm-2 col-xs-2 ">-->
+              <!--<button class="btn btn-primary col-md-12 orange-button-oficial" ng-click="vm.confirmSave()">Guardar presupuesto</button>-->
+            <!--</div>-->
         </div>
     </div>
     <div class="col-md-12">
@@ -163,11 +171,12 @@
             </tr>
             </tbody>
         </table>
-        <div class="col-md-12 text-center">
-            <h5 class="gray-font text-center">
-                <button class="btn orange-button-oficial" style="text-align:center;width:300px" ng-click="vm.confirmSave()">Guardar presupuesto</button>
-            </h5>
-        </div>
+
     </div>
     </div>
+    <md-button ng-click="vm.confirmSave()" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Guardar presupuesto</md-tooltip>
+        <md-icon class="white-color">save</md-icon>
+    </md-button>
 </div>

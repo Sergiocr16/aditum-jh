@@ -127,7 +127,7 @@
                 vm.egress.billNumber = 'Sin Registrar'
             }
         } else {
-            vm.title = "Capturar gasto";
+            vm.title = "Capturar egreso";
             vm.button = "Registrar";
         }
         $rootScope.mainTitle = vm.title;

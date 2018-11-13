@@ -401,7 +401,7 @@
                         hover: false,
                         thirdItems: [
                             {
-                                title: "Ver gastos",
+                                title: "Ver egresos",
                                 icon: "remove_red_eye",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "egress",
@@ -411,7 +411,7 @@
                                 hover: false
                             },
                             {
-                                title: "Capturar gasto",
+                                title: "Capturar egresos",
                                 icon: "plus_one",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "newEgress",
@@ -456,8 +456,8 @@
                         ]
                     },
                     {
-                        title: "Cuotas",
-                        icon: "bookmarks",
+                        title: "Generar cuotas",
+                        icon: "turned_in",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "mensual,extraordinary,individual",
                         collapsable: true,
@@ -466,8 +466,8 @@
                         hover: false,
                         thirdItems: [
                             {
-                                title: "Generar cuotas mensuales",
-                                icon: "remove_red_eye",
+                                title: "Mensuales",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "mensual",
                                 collapsable: false,
@@ -476,8 +476,8 @@
                                 hover: false
                             },
                             {
-                                title: "Generar cuotas extraordinarias",
-                                icon: "remove_red_eye",
+                                title: "Extraordinarias",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "extraordinary",
                                 collapsable: false,
@@ -486,8 +486,8 @@
                                 hover: false
                             },
                             {
-                                title: "Generar cuota individual",
-                                icon: "remove_red_eye",
+                                title: "Individual",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "individual",
                                 collapsable: false,
@@ -661,7 +661,7 @@
                             },
                             {
                                 title: "Cuotas",
-                                icon: "bookmarks",
+                                icon: "turned_in",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "configureCharges",
                                 collapsable: false,
