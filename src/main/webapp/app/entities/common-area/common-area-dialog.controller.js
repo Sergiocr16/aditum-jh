@@ -12,20 +12,11 @@
         $rootScope.active = "reservationAdministration";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.commonArea = entity;
-        vm.isReady = true;
+        vm.isReady = false;
         $rootScope.mainTitle = "Registrar área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.save = save;
-        vm.paymentRequired=false;
-        vm.commonArea.reservationChargeValida=true;
-        vm.commonArea.devolutionAmmountValida=true;
-        if (vm.commonArea.id == null) {
-            vm.commonArea.devolutionAmmount = 0;
-        }
-
-
-        CommonMethods.validateNumbers();
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -57,17 +48,20 @@
                 }else{
                     vm.paymentRequiredUpdate=2;
                 }
-                if( vm.commonArea.reservationWithDebt==1){
-                    vm.reservationWithDebts = 1;
-
-                }else{
-                    vm.reservationWithDebts = 2;
-                }
+                // if( vm.commonArea.reservationWithDebt==1){
+                //     vm.reservationWithDebts = 1;
+                //
+                // }else{
+                //     vm.reservationWithDebts = 2;
+                // }
                 loadSchedule();
             } else {
-                vm.paymentRequiredUpdate=3;
-                vm.reservationWithDebts = 3;
+                vm.isReady = true;
                 vm.button="Registrar";
+                vm.commonArea.reservationWithDebt = 2;
+                vm.commonArea.reservationCharge = 0;
+                vm.commonArea.devolutionAmmount = 0;
+                vm.commonArea.chargeRequired = 0;
             }
         }
 
@@ -134,6 +128,7 @@
                 vm.daysOfWeek[6].initialTime = parseInt(times[0]);
                 vm.daysOfWeek[6].finalTime =  parseInt(times[1]);
             }
+            vm.isReady = true;
         }
 
         vm.selectDay = function(index){
@@ -145,7 +140,7 @@
             }
         }
         vm.validateDaysHours =function (index,item) {
-
+console.log(item)
             if(item.initialTime!==undefined && item.finalTime!==undefined){
                 if(parseInt(item.initialTime)>=parseInt(item.finalTime)){
                     setTimeout(function () {
@@ -167,27 +162,7 @@
         };
 
         function validateForm () {
-            if(vm.commonArea.reservationChargeValida && vm.commonArea.devolutionAmmountValida){
-                if(vm.commonArea.chargeRequired==null || vm.commonArea.reservationWithDebt==null){
-                    if(vm.commonArea.chargeRequired==null){
-                        setTimeout(function () {
-                            $scope.$apply(function () {
-                                vm.spaceInvalid1=true;
-                            });
-                        }, 200);
-
-                    }
-                    if(vm.commonArea.reservationWithDebt==null){
-                        setTimeout(function () {
-                            $scope.$apply(function () {
-                                vm.spaceInvalid2=true;
-                            });
-                        }, 200);
-
-                    }
-                    Modal.toast("Debe completar los campos obligatorios");
-
-                }else if(!vm.isAnyDaySelected()){
+              if(!vm.isAnyDaySelected()){
                     setTimeout(function () {
                         $scope.$apply(function () {
                             vm.spaceInvalid3=true;
@@ -203,10 +178,7 @@
                         save();
                     }
                 }
-            }else{
-                Modal.toast("No se permite agregar carácteres especiales");
 
-            }
 
         }
 
@@ -312,59 +284,6 @@
                 });
             }
         };
-
-        vm.changeChargeRequired = function(option){
-            vm.spaceInvalid1=false;
-            if(option){
-                vm.paymentRequired=true; vm.commonArea.chargeRequired=1
-            }else{
-                vm.paymentRequired=false;  vm.commonArea.chargeRequired=0
-            }
-
-
-        }
-
-        vm.validateReservationCharge = function(commonArea) {
-            var s = commonArea.reservationCharge;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if(invalido==0) {
-                commonArea.reservationChargeValida = true;
-            } else {
-                commonArea.reservationChargeValida = false
-            }
-        }
-
-        vm.validateDevolutionAmmount = function(commonArea) {
-            var s = commonArea.devolutionAmmount;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if (invalido == 0) {
-                commonArea.devolutionAmmountValida = true;
-            } else {
-                commonArea.devolutionAmmountValida = false
-            }
-        }
         vm.confirmMessage = function() {
 
             Modal.confirmDialog("¿Está seguro que desea registrar el área común?","",

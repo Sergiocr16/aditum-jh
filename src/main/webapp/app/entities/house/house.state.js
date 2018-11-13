@@ -301,6 +301,7 @@
                    }]
                }
                     })
+
             .state('houses-tabs.house', {
                 url: '/house?page&sort&search',
                 data: {
@@ -461,9 +462,9 @@
                 }
 
             })
-            .state('house.edit', {
-                   parent: 'house',
-                        url: '/{id}/edit',
+            .state('houses-tabs.edit', {
+                   parent: 'entity',
+                        url: '/houses/{id}/edit',
                         data: {
                          authorities: ['ROLE_ADMIN','ROLE_MANAGER']
                         },

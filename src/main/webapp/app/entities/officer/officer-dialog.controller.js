@@ -54,7 +54,7 @@
 
         function save() {
             vm.isSaving = true;
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             if (vm.officer.id !== null) {
                 if (indentification !== vm.officer.identificationnumber) {
                     Officer.getByCompanyAndIdentification({

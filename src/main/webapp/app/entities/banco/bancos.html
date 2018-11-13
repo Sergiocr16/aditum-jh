@@ -66,8 +66,10 @@
                         <td>{{banco.cuentaCliente}}</td>
 
                         <td ng-class="{'greenBalance':banco.saldo>0,'redBalance':banco.saldo<0}" class="bold text-center">₡{{vm.formatearNumero(banco.saldo+"")}}</td>
-                        <td class="text-center"> <a class="light-gray-font"  ui-sref="banco-detail({id:banco.id})">Consultar movimientos</a></td>
-
+                        <td class="text-center"><a class="light-gray-font" ui-sref="banco-detail({id:banco.id})"><i
+                            class="material-icons">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Consultar movimientos</md-tooltip>
+                            remove_red_eye</i></a></td>
                     </tr>
                     </tbody>
                 </table>

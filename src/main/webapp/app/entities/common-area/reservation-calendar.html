@@ -3,7 +3,7 @@
     <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12 no-padding margin-bottom-10">
         <div class="col-md-8 col-lg-8 col-sm-12 col-xs-12 no-padding" style="padding-right:20px!important;">
             <p>{{vm.commonArea.description}}</p>
-            <span ng-if="vm.commonArea.reservationCharge!=null">Costo por reservación: ₡<span class="bold">{{vm.formatearNumero(vm.commonArea.reservationCharge+"")}}</span></span>
+            <span >Costo por reservación: <span ng-if="vm.commonArea.chargeRequired==1">₡<b>{{vm.formatearNumero(vm.commonArea.reservationCharge+"")}}</b> </span> <span class="bold" ng-if="vm.commonArea.chargeRequired==0">No requiere</span></span>
         </div>
         <div class="col-md-4 col-lg-4 col-sm-12 col-xs-12 no-padding bold" style="color:white; font-size:13px;">
             <span   style="padding:5px; background-color: #ef5350" class=" col-md-6 col-sm-6 col-xs-12 text-center">Eventos sin aprobar</span>

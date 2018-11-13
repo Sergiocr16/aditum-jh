@@ -15,6 +15,7 @@
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
+        vm.isReady = false;
 
         if (vm.resident.isOwner == 1) {
             vm.authorizer = "SI";
@@ -25,7 +26,7 @@
             vm.resident.email = "No registrado";
         }
         if(vm.resident.userLogin== "" || vm.resident.userLogin == null){
-            vm.resident.userLogin = "No hay";
+            vm.resident.userLogin = "No registrado";
         }
         if(vm.resident.type==1){
             vm.resident.type = "Residente propietario";
@@ -33,6 +34,9 @@
             vm.resident.type = "Residente inquilino";
         }else if(vm.resident.type==3){
             vm.resident.type = "Visitante autorizado";
+        }
+        if(vm.resident.phonenumber== "" || vm.resident.phonenumber == null){
+            vm.resident.phonenumber = "No registrado";
         }
         House.get({id:vm.resident.houseId},onSuccessHouses);
         function onSuccessHouses(house, headers) {
@@ -51,6 +55,7 @@
           } else {
               vm.emergencykey = house.emergencyKey;
           }
+          vm.isReady = true;
         }
 
 
