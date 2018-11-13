@@ -83,7 +83,39 @@
                   }]
               }
           })
-
+        .state('egress-detail', {
+            parent: 'egress-tabs',
+            url: '/{id}',
+            data: {
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                pageTitle: 'aditumApp.egress.detail.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/egress/egress-detail.html',
+                    controller: 'EgressDetailController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('egress');
+                    return $translate.refresh();
+                }],
+                 entity: ['$stateParams', 'Egress','CommonMethods', function($stateParams, Egress, CommonMethods) {
+                 var id = CommonMethods.decryptIdUrl($stateParams.id)
+                       return Egress.get({id : id}).$promise;
+                   }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'egress',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+        })
         .state('egress-detail.edit', {
             parent: 'egress-detail',
             url: '/detail/edit',
@@ -150,39 +182,6 @@
                         }]
                     }
                 })
-            .state('egress-detail', {
-                parent: 'entity',
-                url: '/egressDetail/{id}',
-                data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
-                    pageTitle: 'aditumApp.egress.detail.title'
-                },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/egress/egress-detail.html',
-                        controller: 'EgressDetailController',
-                        controllerAs: 'vm'
-                    }
-                },
-                resolve: {
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('egress');
-                        return $translate.refresh();
-                    }],
-                    entity: ['$stateParams', 'Egress','CommonMethods', function($stateParams, Egress, CommonMethods) {
-                        var id = CommonMethods.decryptIdUrl($stateParams.id)
-                        return Egress.get({id : id}).$promise;
-                    }],
-                    previousState: ["$state", function ($state) {
-                        var currentStateData = {
-                            name: $state.current.name || 'egress',
-                            params: $state.params,
-                            url: $state.href($state.current.name, $state.params)
-                        };
-                        return currentStateData;
-                    }]
-                }
-            })
         .state('egress.edit', {
             parent: 'egress',
             url: '/{id}/reportPayment',
@@ -211,7 +210,24 @@
                         return currentStateData;
                     }]
                 }
-
+//            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+//                $uibModal.open({
+//                    templateUrl: 'app/entities/egress/egress-dialog.html',
+//                    controller: 'EgressDialogController',
+//                    controllerAs: 'vm',
+//                    backdrop: 'static',
+//                    size: 'lg',
+//                    resolve: {
+//                        entity: ['Egress', function(Egress) {
+//                            return Egress.get({id : $stateParams.id}).$promise;
+//                        }]
+//                    }
+//                }).result.then(function() {
+//                    $state.go('egress', null, { reload: 'egress' });
+//                }, function() {
+//                    $state.go('^');
+//                });
+//            }]
         })
         .state('egress.delete', {
             parent: 'egress',

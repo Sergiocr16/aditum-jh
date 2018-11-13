@@ -16,7 +16,7 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.radiostatus = true;
-        $rootScope.mainTitle = "Configuración";
+        $rootScope.mainTitle = "Configurar cuotas y Área metros cuadrados";
         vm.isReady = false;
         vm.cuotaFija = true;
         vm.datePickerOpenStatus = {};

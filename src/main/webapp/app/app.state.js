@@ -9,7 +9,7 @@
 
     function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider) {
         $mdDateLocaleProvider.formatDate = function(date) {
-            return moment(date).format('DD-MM-YYYY');
+            return date ? moment(date).format('DD-MM-YYYY'): '';
         };
         $mdThemingProvider.theme('default')
             .primaryPalette('teal')

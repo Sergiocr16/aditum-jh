@@ -17,7 +17,7 @@
         vm.radiostatus = true;
         vm.cuotaFija = true;
         vm.isReady = false;
-        $rootScope.mainTitle = "Cuota mensual";
+        $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -225,7 +225,6 @@
         vm.deleteDue = function (id) {
             Modal.confirmDialog( "¿Está seguro que desea eliminar esta columna?","",
                 function(){
-                    $scope.$apply(function () {
                         angular.forEach(vm.globalConcept, function (value, key) {
                             if (value.id == id) {
                                 vm.globalConcept.splice(key, 1);
@@ -239,7 +238,7 @@
                                 }
                             })
                         })
-                    }, 10)
+
                 });
 
 

@@ -21,9 +21,9 @@
                     </md-input-container>
                 </div>
                 <div layout="row" layout-align="end center" hide-sm hide-xs>
+                    <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
                     <md-button class="md-raised md-primary" ng-click="vm.saveAsSketch()" ng-disabled="form.$invalid">Guardar borrador</md-button>
                     <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Publicar</md-button>
-                    <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
                 </div>
                 </div>
             </form>

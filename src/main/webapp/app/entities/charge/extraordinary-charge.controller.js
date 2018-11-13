@@ -16,7 +16,7 @@
         vm.transition = transition;
         vm.datePickerOpenStatus = false;
         vm.isReady = false;
-        $rootScope.mainTitle = "Cuota extraordinaria";
+        $rootScope.mainTitle = "Generar Cuota extraordinaria";
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;

@@ -13,6 +13,7 @@
         vm.clear = clear;
         vm.isReady = false;
         vm.isSaving = false;
+        $rootScope.mainTitle = "Configurar cuota global"
         vm.formatearNumero = function (nStr) {
 
             var x = nStr.split('.');
@@ -34,24 +35,9 @@
         }
 
         vm.confirm = function () {
-            bootbox.confirm({
-                message: "¿Está seguro que desea cambiar la cuota de manera global a ₡" + vm.formatearNumero(vm.ammount + "") + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        vm.save();
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea cambiar la cuota de manera global?","",function(){
+                vm.save();
+            })
         }
 
         function loadAll() {
@@ -70,6 +56,7 @@
             }
 
             function onSuccess(data, headers) {
+                Modal.showLoadingBar()
                 vm.houses = data;
                 vm.cont = 0;
                 angular.forEach(vm.houses, (function (house, key) {
@@ -80,7 +67,8 @@
                             $scope.$emit('aditumApp:globaChargeUpdate', result);
                             $uibModalInstance.close(result);
                             vm.isSaving = false;
-                          Modal.toast("Se modificó la cuota global correctamente.")
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se modificó la cuota global correctamente.")
                         }
                     })
                 }))

@@ -37,7 +37,8 @@ body {
 }
 
 .carddemoBasicUsage .card-media {
-    background-color: #999999; }
+    background-color: #999999;
+}
 
 @-webkit-keyframes loginBackground {
     0% {
@@ -1394,19 +1395,40 @@ div.scrollmenu a:hover {
 
 .orange-button-oficial {
     background-color: #f37960 !important;
-    color: white;
+    color: white !important;
+}
+
+.red-button-oficial {
+    background-color: #cb5a5e !important;
+    color: white !important;
+}
+
+.red-button-oficial:hover {
+    background-color: #af4d50 !important;
+    color: white !important;
+}
+
+.red-icon-button-oficial {
+    color: #cb5a5e !important;
+}
+
+.red-icon-button-oficial:hover {
+    color: #af4d50 !important;
 }
 
 .orange-button-oficial:hover {
     background-color: #e57461 !important;
     color: white !important;
 }
+
 .orange-button-oficial:active {
     color: white !important;
 }
+
 .green-button-oficial:active {
     color: white !important;
 }
+
 .green-button-oficial:hover {
     background-color: #00a492 !important;
     color: white;
@@ -1608,6 +1630,13 @@ div.scrollmenu a:hover {
         height: 3px;
     }
 
+    md-tabs-wrapper.md-stretch-tabs md-pagination-wrapper {
+        background: rgb(0, 150, 136) !important;
+    }
+
+    md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
+        color: white !important;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -1666,6 +1695,11 @@ div.scrollmenu a:hover {
         margin-left: 235px;
     }
 
+}
+
+md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
+    color: #f37960 !important;
+    background: #f37960 !important;
 }
 
 .md-nav-item .md-active {
@@ -1896,6 +1930,10 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     opacity: 0.6;
 }
 
+.fade-in {
+    /*min-height: 500px !important;*/
+}
+
 /* The starting CSS styles for the enter animation */
 .fade-in.ng-enter {
     transition: 0.5s linear all;
@@ -1972,7 +2010,7 @@ a
     color: rgb(0, 150, 136) !important;;
     font-weight: bold !important;
     padding-left: 15px;
-    text-transform: uppercase!important;
+    text-transform: uppercase !important;
 
 }
 
@@ -2072,6 +2110,7 @@ md-input-container > md-select {
 
 .md-datepicker-input-container {
     width: 100% !important;
+    min-width: 150px !important;
 }
 
 md-input-container.md-input-focused label:not(.md-no-float), md-input-container.md-input-has-placeholder label:not(.md-no-float), md-input-container.md-input-has-value label:not(.md-no-float) {
@@ -2092,3 +2131,58 @@ md-input-container.md-input-focused label:not(.md-no-float), md-input-container.
     right: 43px !important;
 }
 
+md-input-container:not(.md-input-has-value) input:not(:focus), md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-ampm-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-day-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-hour-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-millisecond-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-minute-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-month-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-second-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-text, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-week-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-year-field {
+    border-color: rgba(0, 0, 0, 0.2) !important;
+}
+
+md-select.md-default-theme .md-select-value, md-select .md-select-value {
+    border-color: rgba(0, 0, 0, 0.2);
+}
+
+md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.md-select-value > span:not(.md-select-icon) {
+    font-size: 14px !important;
+}
+
+.concept-charge .md-errors-spacer {
+    display: none;
+}
+
+.modal-backdrop {
+    z-index: 79 !important;
+}
+
+.modal-open .modal {
+    z-index: 80 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    align-content: center !important;
+    display: flex !important;
+}
+
+.thin-btn {
+    height: 28px;
+    min-height: 0px !important;
+    line-height: 20px !important;
+}
+
+.display-inline {
+    display: inline !important;
+}
+
+.multiselect-parent {
+    width: 100%;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.multiselect-parent .dropdown-toggle {
+    width: 100%;
+}
+.dropdown-menu-form{
+    width: 100%;
+    position: inherit!important;
+}

@@ -5,13 +5,21 @@
         .module('aditumApp')
         .controller('BancoDialogController', BancoDialogController);
 
-    BancoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$state', 'Banco', 'Company', '$rootScope', 'CommonMethods','globalCompany','Modal'];
+    BancoDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', '$state', 'Banco', 'Company', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function BancoDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, $state, Banco, Company, $rootScope, CommonMethods,globalCompany,Modal) {
+    function BancoDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, $state, Banco, Company, $rootScope, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = "bancoConfiguration";
         CommonMethods.validateNumbers();
         vm.banco = entity;
+
+        if (vm.banco.id == null) {
+            $rootScope.mainTitle="Registrar cuenta";
+        } else {
+            $rootScope.mainTitle="Editar cuenta";
+        }
+
+
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -29,21 +37,29 @@
         }
 
         function save() {
-            vm.isSaving = true;
-            if (vm.banco.id !== null) {
-                Banco.update(vm.banco, onUpdateSuccess, onSaveError);
+            var action;
+            if (vm.banco.id == null) {
+                action = "registrar";
             } else {
-                if (vm.banco.cuentaCorriente == null) {
-                    vm.banco.cuentaCorriente = 'No registrado'
-                }
-                if (vm.banco.cuentaCliente == null) {
-                    vm.banco.cuentaCliente = 'No registrado'
-                }
-                vm.banco.companyId = globalCompany.getId();
-                vm.banco.saldo = vm.banco.capitalInicial;
-                vm.banco.deleted = 1;
-                Banco.save(vm.banco, onSaveSuccess, onSaveError);
+                action = "editar";
             }
+            Modal.confirmDialog("¿Está seguro que desea "+action+" esta cuenta?","",function(){
+                vm.isSaving = true;
+                if (vm.banco.id !== null) {
+                    Banco.update(vm.banco, onUpdateSuccess, onSaveError);
+                } else {
+                    if (vm.banco.cuentaCorriente == null) {
+                        vm.banco.cuentaCorriente = 'No registrado'
+                    }
+                    if (vm.banco.cuentaCliente == null) {
+                        vm.banco.cuentaCliente = 'No registrado'
+                    }
+                    vm.banco.companyId = globalCompany.getId();
+                    vm.banco.saldo = vm.banco.capitalInicial;
+                    vm.banco.deleted = 1;
+                    Banco.save(vm.banco, onSaveSuccess, onSaveError);
+                }
+            })
         }
 
         function onSaveSuccess(result) {
@@ -53,6 +69,7 @@
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
+
         function onUpdateSuccess(result) {
             $scope.$emit('aditumApp:bancoUpdate', result);
             Modal.toast("Se ha editado la cuenta de banco correctamente");
@@ -60,6 +77,7 @@
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
+
         function onSaveError() {
             vm.isSaving = false;
         }
