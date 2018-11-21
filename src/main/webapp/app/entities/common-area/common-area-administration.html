@@ -65,18 +65,17 @@
 <div class="row" ng-if="true">
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
         <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
-            <md-tab ui-sref="common-area-administration.common-area"  label="Administrar áreas comunes">
+            <md-tab md-active-nc="$state.includes('common-area-administration.common-area')" ui-sref="common-area-administration.common-area"  label="Áreas comunes">
             </md-tab>
-            <md-tab ui-sref="common-area-administration.general-reservation-calendar" label="Calendario general" class="md-active" >
+            <md-tab md-active-nc="$state.includes('common-area-administration.general-reservation-calendar')" ui-sref="common-area-administration.general-reservation-calendar" label="Calendario general" class="md-active" >
             </md-tab>
-            <md-tab ui-sref="common-area-administration.common-area-reservations" label="Reservaciones pendientes" class="md-active" >
+            <md-tab md-active-nc="$state.includes('common-area-administration.common-area-reservations')" ui-sref="common-area-administration.common-area-reservations" label="Reservas pendientes" class="md-active" >
             </md-tab>
-            <md-tab  ui-sref="common-area-administration.common-area-all-reservations" label="Administrar reservaciónes" class="md-active" >
+            <md-tab  md-active-nc="$state.includes('common-area-administration.common-area-all-reservations') || $state.includes('common-area-administration.newReservation')" ui-sref="common-area-administration.common-area-all-reservations" label="Administrar reservas" class="md-active" >
             </md-tab>
-            <md-tab ui-sref="common-area-administration.reservation-charge-devolution" label="Devoluciones de dinero" class="md-active" >
+            <md-tab md-active-nc="$state.includes('common-area-administration.reservation-charge-devolution') " ui-sref="common-area-administration.reservation-charge-devolution" label="Devoluciones de dinero" class="md-active" >
             </md-tab>
-            <md-tab ui-sref="common-area-administration.reservation-charge-devolution" label="Devoluciones de dinero" class="md-active" >
-            </md-tab>
+
 
         </md-tabs>
 

@@ -25,18 +25,44 @@
                 <!--<h4 class="caption-subject font-green-sharp font-weight-600">{{vm.titleConsult}}</h4>-->
             <!--</div>-->
         <!--</h3>-->
-        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
-        <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input ng-model="vm.dates.initial_time" style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input ng-model="vm.dates.final_time"  style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+
+        <div layout="row" class="pull-right">
+
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos del mes
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
         </div>
+
+        <!--<button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>-->
+        <!--<div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">-->
+                <!--<input ng-model="vm.dates.initial_time" style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"-->
+                       <!--type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>-->
+            <!--</div>-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">-->
+                <!--<input ng-model="vm.dates.final_time"  style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                       <!--class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>-->
+            <!--</div>-->
+            <!--<button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>-->
+        <!--</div>-->
 
         <div class="portlet-body ">
             <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">

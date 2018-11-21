@@ -21,23 +21,29 @@
 </div>
 
     <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+        <div layout="row" class="">
 
-        <!--<div class="col-md-7 col-lg-7"></div>-->
-        <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos todos
+            </md-button>
 
-        <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
-            <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  "  ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()">Mostrar todos</button>
-        </div>
-        <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
-                <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                <input ng-model="vm.dates.final_time"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-disabled="vm.isDisableButton()"  ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar</button>
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
         </div>
 
 

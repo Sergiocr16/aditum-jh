@@ -53,9 +53,10 @@
 
         }
 
-        vm.switchSendEmail = function(){
-            vm.sendEmail = !vm.sendEmail;
-        }
+        vm.switchSendEmail = function(type){
+             vm.sendEmail = type;
+
+        };
 
         function formatScheduleTime(initialTime, finalTime){
             var times = [];

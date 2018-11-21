@@ -30,7 +30,7 @@
 <div ng-if="true">
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;" >
         <md-tabs  md-dynamic-height="" md-border-bottom="" class="padding-left-10">
-            <md-tab ng-repeat="house in vm.houses | filter:vm.query" ng-click="vm.changeHouse(house)" label="{{house.housenumber}}">
+            <md-tab   ng-repeat="house in vm.houses | filter:vm.query" ng-click="vm.changeHouse(house)" label="{{house.housenumber}}">
             </md-tab>
 
 

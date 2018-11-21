@@ -17,7 +17,7 @@
             <div has-any-authority="ROLE_MANAGER,ROLE_ADMIN"
                  layout="row" layout-align="center center">
                 <div>
-                    <span class="material-gray">Cuenta en Aditum </span>
+                    <span class="material-gray" style="margin-right: 5px;">Cuenta en Aditum </span>
                     <md-checkbox ng-model="vm.resident.isOwner" aria-label="Checkbox 1">
                     </md-checkbox>
                 </div>
@@ -50,7 +50,7 @@
                     </md-button>
                 </h3>
                 <div layout="row" layout-xs="column" class="marging-top-20 ">
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                         <md-input-container class="md-block">
                             <label>Nacionalidad</label>
                             <md-select ng-model="vm.resident.nationality" ng-required='vm.required==1'>
@@ -91,7 +91,7 @@
                         </md-input-container>
                     </div>
 
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                         <md-input-container class="md-block" has-authority="ROLE_USER">
                             <label>Segundo Apellido</label>
                             <input ng-model="vm.resident.secondlastname" ng-disabled="vm.resident.found==1"

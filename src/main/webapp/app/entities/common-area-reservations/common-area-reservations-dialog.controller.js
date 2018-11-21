@@ -22,7 +22,7 @@
         vm.required = 1;
         vm.hours = [];
         vm.schedule = [];
-
+        vm.today = new Date();
         vm.allDaySchedule = 1;
         vm.scheduleIsAvailable = false;
         vm.diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', ''];
@@ -30,6 +30,7 @@
         vm.timeSelected = {};
         vm.dateNotPermited = false;
         vm.commonarea.devolutionAmmount = 0;
+        vm.houseWithDebts = false;
         setTimeout(function() {
             loadHouses();
         }, 1500)
@@ -521,6 +522,9 @@
                 }
                 vm.commonAreaReservations.status = 1;
                 vm.commonAreaReservations.companyId = globalCompany.getId();
+                if(vm.commonarea.chargeRequired==0){
+                    vm.commonAreaReservations.reservationCharge = null;
+                }
                 CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
@@ -579,7 +583,13 @@
                     callback: function(result) {
 
                         if (result) {
-                            createReservation()
+                            if(vm.houseSelected.balance.total<0 && vm.commonarea.reservationWithDebt==2){
+                                vm.houseWithDebts = true;
+                                Modal.toast("Esta filial cuenta con deudas pendientes por lo que no puede crear reservaciones.")
+                            }else{
+                                createReservation()
+                            }
+
 
                         } else {
                             vm.isSaving = false;
@@ -601,50 +611,6 @@
             }
 
         };
-        vm.validateReservationCharge = function(commonArea) {
-            var s = commonArea.reservationCharge;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if (invalido == 0) {
-                commonArea.reservationChargeValida = true;
-            } else {
-                commonArea.reservationChargeValida = false
-            }
-        }
-
-        vm.validateDevolutionAmmount = function(commonArea) {
-            var s = commonArea.devolutionAmmount;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if (invalido == 0) {
-                commonArea.devolutionAmmountValida = true;
-            } else {
-                commonArea.devolutionAmmountValida = false
-            }
-        }
-        vm.datePickerOpenStatus.date = false;
-        vm.datePickerOpenStatus.paymentDate = false;
-        vm.datePickerOpenStatus.expirationDate = false;
 
 
     }

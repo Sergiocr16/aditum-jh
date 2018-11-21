@@ -133,7 +133,7 @@
         }
 
         vm.findVehiculesByHouse = function (house) {
-            vm.isReady = false;
+
             vm.house = house;
 
             if (house == undefined || house=='-1') {

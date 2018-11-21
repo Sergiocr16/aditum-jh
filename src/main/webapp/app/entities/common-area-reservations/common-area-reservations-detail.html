@@ -59,7 +59,7 @@
                         <div class="margin-bottom-10 control-label" style="font-weight: 600">Cantidad</div>
                         <div class="input-group ">
                             <span class="input-group-addon">₡</span>
-                            <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control numbers" name="reservationCharge" id="field_reservationCharge"
+                            <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control" format="currency" name="reservationCharge" id="field_reservationCharge"
                                    ng-model="vm.charge.ammount"  placeholder="0.00" required
                             />
                         </div>
@@ -68,7 +68,7 @@
                         <div class="margin-bottom-10 " style="font-weight: 600">Devolución</div>
                         <div class="input-group ">
                             <span class="input-group-addon">₡</span>
-                            <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" class="form-control numbers" name="devolutionCharge" id="field_devolutionCharge"
+                            <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" format="currency" type="text" class="form-control" name="devolutionCharge" id="field_devolutionCharge"
                                    ng-model="vm.commonAreaReservations.devolutionAmmount"  placeholder="0.00"
                             />
                         </div>
@@ -81,7 +81,7 @@
                     <div class="no-padding pull-right">
                         <div class="md-radio-inline no-padding no-margin" >
                             <div class="md-radio" >
-                                <input type="radio" id="radio18" name="radio2"   class="md-radiobtn"  ng-click="vm.switchSendEmail()">
+                                <input type="radio" id="radio18" name="radio2"   class="md-radiobtn"  ng-click="vm.switchSendEmail(true)">
                                 <label for="radio18" style="color:#45B6AF">
                                     <span class="inc"></span>
                                     <span class="inc"></span>
@@ -90,7 +90,7 @@
                                     Si </label>
                             </div>
                             <div class="md-radio has-error">
-                                <input type="radio" id="radio19" name="radio2" ng-checked="true" class="md-radiobtn" ng-click="vm.switchSendEmail()">
+                                <input type="radio" id="radio19" name="radio2" ng-checked="true" class="md-radiobtn" ng-click="vm.switchSendEmail(false)">
                                 <label for="radio19">
                                     <span class="inc"></span>
                                     <span class="check"></span>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDetailController', ResidentDetailController);
 
-    ResidentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
+    ResidentDetailController.$inject = ['Modal','$state','$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
 
-    function ResidentDetailController($scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
+    function ResidentDetailController(Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -16,6 +16,11 @@
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         vm.isReady = false;
+        $rootScope.mainTitle = 'Detalle de usuario';
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
 
         if (vm.resident.isOwner == 1) {
             vm.authorizer = "SI";

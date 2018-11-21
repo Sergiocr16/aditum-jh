@@ -5,25 +5,48 @@
     <div class="col-md-12 no-padding">
             <h2 class="bold uppercase" style="font-size:15px">Estado de cuenta <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
 
-        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
         <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
             <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
             <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
             <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
             <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
         </div>
+        <div layout="row" class="pull-right">
 
-        <div class=" col-md-5 col-md-offset-1 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font" >
-                <input  name="initialDate" style=" border: 1px solid #f2f2f2 !important; border-radius: 0px!Important;" ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                       type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha"  required >
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input  name="finalDate" style=" border: 1px solid #f2f2f2 !important; border-radius: 0px!Important;" ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                       class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-click="vm.consult()" style="border-radius: 0px!Important;" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true"> Mostrar
+                todos
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
         </div>
+        <!--<div class=" col-md-5 col-md-offset-1 col-lg-5 col-sm-12 col-xs-12 no-padding-right">-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font" >-->
+                <!--<input  name="initialDate" style=" border: 1px solid #f2f2f2 !important; border-radius: 0px!Important;" ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"-->
+                       <!--type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha"  required >-->
+            <!--</div>-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">-->
+                <!--<input  name="finalDate" style=" border: 1px solid #f2f2f2 !important; border-radius: 0px!Important;" ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                       <!--class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>-->
+            <!--</div>-->
+            <!--<button ng-click="vm.consult()" style="border-radius: 0px!Important;" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>-->
+        <!--</div>-->
 
     </div>
     <div class="portlet-body" id="accountStatusContainer" style="margin-bottom:50px; ">
