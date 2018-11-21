@@ -50,8 +50,8 @@
 
         }
 
-        vm.switchSendEmail = function(){
-            vm.sendEmail = !vm.sendEmail;
+        vm.switchSendEmail = function(type){
+            vm.sendEmail = type;
         }
 
         function formatScheduleTime(initialTime, finalTime){
@@ -174,6 +174,7 @@
                 Charge.save(vm.charge, function (result) {
                     vm.commonAreaReservations.status = 2;
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
+                    vm.commonAreaReservations.chargeIdId = result.id;
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
 

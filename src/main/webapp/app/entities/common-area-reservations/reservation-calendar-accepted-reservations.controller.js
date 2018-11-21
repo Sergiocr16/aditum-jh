@@ -56,7 +56,7 @@
         }
 
         vm.switchSendEmail = function(){
-            vm.sendEmail = !vm.sendEmail;
+            vm.sendEmail = type;
         }
 
         function formatScheduleTime(initialTime, finalTime){

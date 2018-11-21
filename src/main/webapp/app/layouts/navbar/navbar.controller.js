@@ -434,7 +434,7 @@
                         thirdItems: [
                             {
                                 title: "Capturar ingreso",
-                                icon: "plus_one",
+                                icon: "payment",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "generatePayment",
                                 collapsable: false,
@@ -565,7 +565,7 @@
                                 hover: false,
                             },
                             {
-                                title: "Reporte de gastos",
+                                title: "Reporte de egresos",
                                 icon: "keyboard_backspace",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "reporteGastos",
@@ -590,7 +590,7 @@
                         title: "Áreas comunes",
                         icon: "local_florist",
                         authoritites: "ROLE_MANAGER",
-                        activeOn: "common-area-resident-account,reservationAdministration,reporteIngresos",
+                        activeOn: "reservationAdministration,generaCalendar,createReservation",
                         collapsable: true,
                         uisref: "",
                         menuId: "areasComunesMenu",

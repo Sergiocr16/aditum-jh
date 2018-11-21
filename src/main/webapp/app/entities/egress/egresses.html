@@ -1,5 +1,4 @@
-<div class="col-md-12 no-padding  margin-bottom-20"
-     ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
+<div class="col-md-12 no-padding  margin-bottom-20" ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
     <div class="">
         <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
              id="index-search-bar">
@@ -22,115 +21,87 @@
 </div>
 
 <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+    <div layout="row" class="">
 
-    <!--<div class="col-md-7 col-lg-7"></div>-->
-    <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+        <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos todos
+        </md-button>
 
-    <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
-        <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  " ng-disabled="vm.isConsulting!=true"
-                ng-click="vm.stopConsulting()">Mostrar todos
-        </button>
-    </div>
-    <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
-            <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')"
-                   ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy"
-                   datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                   type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha"
-                   required>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <input ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()"
-                   enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions"
-                   is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                   class="form-control letters gray-font text-center dating" placeholder="Hasta la fecha" required>
-        </div>
-        <button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()"
-                class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar
-        </button>
+        <md-input-container class="md-block no-margin">
+            <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                           md-hide-icons="calendar"
+                           md-placeholder="Fecha de inicio" md-open-on-focus
+                           required></md-datepicker>
+        </md-input-container>
+
+        <md-input-container class="md-block no-margin">
+            <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                           md-hide-icons="calendar"
+                           md-placeholder="Fecha final" md-open-on-focus
+                           required></md-datepicker>
+        </md-input-container>
+
+        <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                   ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+            Consultar
+        </md-button>
     </div>
 
 
 </div>
 
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" class="row fade-in">
     <div class="col-md-12">
 
         <div class="portlet-body ">
-            <no-content ng-if="vm.egresses.length == 0" icon="call_received"
-                        text="No hay egresos registrados"></no-content>
+            <no-content ng-if="vm.egresses.length == 0" icon="call_received" text="No hay egresos registrados"></no-content>
 
             <div class="table-scrollable    " ng-show="vm.egresses.length>0" style="border: 0px!important;">
-                <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
-                    <thead style="background-color: #fafafa;">
+                <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
+                    <thead style="background-color: #fafafa;" >
 
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                        <th ng-click="vm.sortBy('concept')"><span>Concepto </span> <span class="fa fa-sort"
-                                                                                         style="color:#D8D8D8; "></span>
-                        </th>
+                        <th  ng-click="vm.sortBy('concept')"><span >Concepto </span> <span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
 
-                        <th ng-click="vm.sortBy('folio')"><span data-translate="aditumApp.egress.folio">Folio</span>
-                            <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
-                        <th ng-click="vm.sortBy('category')">Categoría <span class="fa fa-sort"
-                                                                             style="color:#D8D8D8"></span></th>
-                        <th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"
-                                                                               style="color:#D8D8D8"></span></th>
-                        <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span
-                            class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('folio')"><span data-translate="aditumApp.egress.folio">Folio</span> <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('category')">Categoría <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
 
-                        <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span
-                            class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        <th ng-click="vm.sortBy('reference')">Referencia <span class="fa fa-sort"  style="color:#D8D8D8"></span></th>
 
+                        <th  ng-click="vm.sortBy('total')" ><span data-translate="aditumApp.egress.total">Total </span> <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
 
-                        <th ng-click="vm.sortBy('total')"><span data-translate="aditumApp.egress.total">Total </span>
-                            <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        <th  class="text-center"><span>Detalle </span> </th>
 
-                        <th class="text-center"><span>Detalle </span></th>
-
-                        <th class="text-center" ng-click="vm.sortBy('state')"><span>Estado </span><span
-                            class="fa fa-sort" style="color:#D8D8D8; "></span></th>
-                        <th class="text-center"><span>Registrar pago </span></th>
+                        <th class="text-center"  ng-click="vm.sortBy('state')"><span>Estado </span><span class="fa fa-sort"  style="color:#D8D8D8; "></span></th>
+                        <th class="text-center"><span>Registrar pago </span> </th>
 
                     </tr>
                     </thead>
                     <tbody>
 
 
-                    <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
+                    <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"  >
                         <td> {{egress.concept}}</td>
                         <td>{{egress.folio}}</td>
                         <td>{{egress.category}}</td>
                         <td>{{egress.proveedor}}</td>
                         <td>{{egress.expirationDate | date:'mediumDate'}}</td>
                         <td>{{egress.paymentDate | date:'mediumDate'}}</td>
+                        <td >{{egress.reference}}</td>
                         <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
 
-                        <td class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i
-                            class="material-icons">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                            remove_red_eye</i></a></td>
+                        <td  class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>remove_red_eye</i></a></td>
 
-                        <td class="text-center"><a><i class="material-icons" style="color:#FF3D00; font-size: 20px;"
-                                                      ng-if="egress.state==3">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>
-                            lens</i><i class="material-icons" style="color:#26A69A; font-size: 20px;"
-                                       ng-if="egress.state==2">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Pagado</md-tooltip>
-                            lens</i><i class="material-icons" style="color:#FDD835; font-size: 20px;"
-                                       ng-if="egress.state==1">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
-                            lens</i></a></td>
+                        <td  class="text-center"><a><i class="material-icons"  style="color:#FF3D00; font-size: 20px;" ng-if="egress.state==3" ><md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>lens</i><i class="material-icons"  style="color:#26A69A; font-size: 20px;" ng-if="egress.state==2" ><md-tooltip md-direction="left" class="font-13 bold white-color">Pagado</md-tooltip>lens</i><i class="material-icons"  style="color:#FDD835; font-size: 20px;" ng-if="egress.state==1" ><md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>lens</i></a></td>
 
                         <!--<td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>-->
-                        <td class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2"
-                                                                                 ng-click="vm.detailEgress(egress.id)"
-                                                                                 class=" label label-success horizontal-padding-15"
-                                                                                 style="" aria-hidden="false">Registrar pago</span>
-                        </td>
+                        <td  class="text-center"><a class="text-center"></a><span ng-show="egress.state!==2" ng-click="vm.detailEgress(egress.id)" class=" label label-success horizontal-padding-15" style=""  aria-hidden="false">Registrar pago</span></td>
+
 
 
                     </tr>
@@ -144,8 +115,7 @@
             <div class="text-center" ng-show="vm.egresses.length>0">
                 <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
             </div>
-            <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"
-                       ng-show="vm.egresses.length>0"></uib-pager>
+            <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-show="vm.egresses.length>0"></uib-pager>
         </div>
 
     </div>

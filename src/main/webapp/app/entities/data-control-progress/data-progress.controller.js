@@ -10,7 +10,7 @@
     function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
 
         var vm = this;
-        $rootScope.active = "dataprogress";
+        $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house ='-1';
         vm.filterStateTemporal = "-1";

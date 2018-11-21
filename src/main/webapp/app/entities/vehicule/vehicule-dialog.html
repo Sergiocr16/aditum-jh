@@ -10,8 +10,8 @@
     <md-content layout-padding class="form-content">
         <form name="form" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-            <div layout="row" layout-xs="column" class="marging-top-20 ">
-                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+            <div layout="row" layout-xs="column" class=" ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                         <label>Número de filial</label>
                         <md-select ng-model="vm.vehicule.houseId" required>
@@ -42,7 +42,7 @@
                     </md-input-container>
                 </div>
 
-                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block">
                         <label>Número de placa</label>
                         <input class="uppercase" ng-model="vm.vehicule.licenseplate"

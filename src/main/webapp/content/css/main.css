@@ -2111,7 +2111,9 @@ md-input-container > md-select {
 .no-margin-bottom {
     margin-bottom: 0 !important;
 }
-
+.no-margin-right {
+    margin-right: 0 !important;
+}
 .md-datepicker-input {
     min-width: 0 !important;
     max-width: 10000px !important;
@@ -2211,4 +2213,16 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
 
 .font-green-sharp {
     color: rgb(0, 150, 136) !important;
+}
+.outline {
+    border-radius: 60px;
+    /*box-shadow: 0px 0px 2px #888;*/
+    padding: 0.6em 0.2em;
+    background-color: #F5F5F5;
+}
+.outline-car {
+    border-radius: 60px;
+    /*box-shadow: 0px 0px 2px #888;*/
+    padding: 0.7em 0.3em;
+    background-color: #F5F5F5;
 }

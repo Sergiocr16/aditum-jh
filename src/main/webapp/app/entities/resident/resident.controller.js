@@ -56,7 +56,10 @@
                 id: encryptedId
             })
         }
+        vm.changeFilterShowing = function(){
+            vm.showFilterDiv=!vm.showFilterDiv;
 
+        }
         vm.changesTitles = function () {
             if (enabledOptions) {
                 vm.title = "Usuarios autorizados";
@@ -159,7 +162,7 @@
         }
         vm.findResidentsByHouse = function (house) {
             console.log(house)
-            vm.isReady = false;
+
             vm.house = house;
             if (house == undefined || house=='-1') {
                 loadResidents();

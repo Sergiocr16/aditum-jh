@@ -119,16 +119,16 @@
         </md-fab-trigger>
         <md-fab-actions>
             <md-button class="md-fab md-raised md-mini red-button-oficial" ui-sref="generatePayment">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible">Realizar pago</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Realizar pago</md-tooltip>
                 <md-icon style="color:white!important">payment</md-icon>
             </md-button>
             <md-button class="md-fab md-raised md-mini green-button-oficial" md-colors="indigo"
                        ng-show="vm.charges.length!=0" ng-click="vm.editing()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible">Editar cuotas</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Editar cuotas</md-tooltip>
                 <md-icon style="color:white!important">create</md-icon>
             </md-button>
             <md-button class="md-fab md-raised md-mini orange-button-oficial" ng-click="vm.createCharge()">
-                <md-tooltip md-direction="left" md-visible="tooltipVisible">Agregar cuotas</md-tooltip>
+                <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Agregar cuotas</md-tooltip>
                 <md-icon style="color:white!important">add</md-icon>
             </md-button>
         </md-fab-actions>

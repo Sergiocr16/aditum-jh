@@ -29,8 +29,7 @@
                         <th>Nombre</th>
                         <th>Cuota por reservación</th>
                         <th class="text-center">Ver calendario</th>
-                        <th class="text-center">Editar</th>
-                        <th class="text-center">Eliminar</th>
+                        <th class="text-center">Opciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -39,9 +38,35 @@
                         <td ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</td>
                         <td ng-if="commonArea.chargeRequired==0">No requiere</td>
 
-                        <td class="text-center"><a class="light-gray-font"   ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})" >Ver calendario</a></td>
-                        <td class="text-center"> <a class="light-gray-font" ui-sref="common-area-administration.editCommonArea({id:commonArea.id})">Editar</a></td>
-                        <td class="text-center"> <a class="light-gray-font"   ng-click="vm.deleteReservation(commonArea)">Eliminar</a></td>
+
+
+
+                        <td  class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})" ><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver calendario</md-tooltip>remove_red_eye</i></a></td>
+
+
+                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                            <md-menu md-position-mode="target-right target" >
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
+                                    <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ui-sref="common-area-administration.editCommonArea({id:commonArea.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.deleteReservation(commonArea)" >
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaAllReservationsController', CommonAreaAllReservationsController);
 
-    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany'];
+    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany','Modal'];
 
-    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany) {
+    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
 
         var vm = this
         $rootScope.active = "reservationAdministration";
@@ -18,6 +18,7 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.consult = consult;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.consult = consult;
@@ -41,7 +42,6 @@
                 return result;
             }
             function onSuccess(data, headers) {
-                console.log(data)
                 vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -49,16 +49,26 @@
                 vm.finalListReservations = data;
                 vm.page = pagingParams.page;
                 loadInfoByReservation(data);
-                vm.isReady = true;
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-
+        vm.stopConsulting = function () {
+            vm.isReady = false;
+            vm.dates = {
+                initial_time: undefined,
+                final_time: undefined
+            };
+            pagingParams.page = 1;
+            pagingParams.search = null;
+            vm.isConsulting = false;
+            loadAll();
+        }
         function consult() {
             vm.isReady = false;
-            Egress.findBetweenDatesByCompany({
+            CommonAreaReservations.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
@@ -67,16 +77,14 @@
             }, onSuccess, onError);
 
             function onSuccess(data, headers) {
-                moment.locale('es');
-                vm.egresses = data;
+                vm.isConsulting = true;
+                vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
+                vm.finalListReservations = data;
                 vm.page = pagingParams.page;
-                vm.title = 'Egresos entre:';
-                vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
-                vm.isConsulting = true;
-                formatEgresos(vm.egresses);
+                loadInfoByReservation(data);
             }
 
             function onError(error) {
@@ -107,6 +115,7 @@
                 //     vm.finalListReservations.push(value)
                 // }
             });
+            vm.isReady = true;
         }
 
         function formatScheduleTime(initialTime, finalTime){
