@@ -8,14 +8,15 @@ angular
                 var colon = attrs.format == "currency" ? '₡' : "";
                 if(ctrl.$modelValue!=undefined) {
                     var money = $filter(attrs.format)(ctrl.$modelValue)
-                    return colon + money.substring(0, money.length - 1)
+                    return colon + money.substring(0, money.length - 5)
                 }
             });
             ctrl.$parsers.unshift(function (viewValue) {
                 elem.priceFormat({
                     prefix: attrs.format == "currency" ? '₡' : " ",
                     centsSeparator: ',',
-                    thousandsSeparator: '.'
+                    thousandsSeparator: '.',
+                    centsLimit: 0,
                 });
                 return accounting.unformat(elem.val(), ",");
             });
@@ -31,7 +32,7 @@ angular
             centsSeparator: '.',
             thousandsSeparator: ',',
             limit: false,
-            centsLimit: 2,
+            centsLimit: 0,
             clearPrefix: false,
             clearSufix: false,
             allowNegative: false,

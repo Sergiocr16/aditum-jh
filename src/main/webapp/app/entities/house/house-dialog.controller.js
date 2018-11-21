@@ -87,11 +87,11 @@
         }
 
         if (vm.house.id !== null) {
-            vm.title = "Editar casa";
+            vm.title = "Editar filial";
             vm.button = "Editar";
 
         } else {
-            vm.title = "Registrar casa";
+            vm.title = "Registrar filial";
             vm.button = "Registrar";
         }
 
@@ -124,7 +124,7 @@
 
                 } else {
                     if (vm.companyConfiguration.quantityhouses <= vm.houseQuantity) {
-                        Modal.toast("Ha excedido la cantidad de casas permitidas para registrar, contacte el encargado de soporte.");
+                        Modal.toast("Ha excedido la cantidad de filiales permitidas para registrar, contacte el encargado de soporte.");
                         Modal.hideLoadingBar();
                     } else {
                         Modal.showLoadingBar();
@@ -147,7 +147,7 @@
                 Modal.hideLoadingBar();
                 if (vm.house.id !== data.id) {
 
-                    Modal.toast("El número de casa o de extensión ingresado ya existe.");
+                    Modal.toast("El número de filial o de extensión ingresado ya existe.");
                 } else {
                     House.update(vm.house, onSaveSuccess, onSaveError);
                 }
@@ -159,7 +159,7 @@
 
             function onSuccess(data) {
                 Modal.hideLoadingBar();
-                Modal.toast("El número de casa o de extensión ingresado ya existe.");
+                Modal.toast("El número de filial o de extensión ingresado ya existe.");
 
             }
 
@@ -180,9 +180,9 @@
             $state.go('houses-tabs.house');
             Modal.hideLoadingBar();
             if (vm.house.id !== null) {
-                Modal.toast("Se editó la casa correctamente");
+                Modal.toast("Se editó la filial correctamente");
             } else {
-                Modal.toast("Se registró la casa correctamente");
+                Modal.toast("Se registró la filial correctamente");
 
             }
 

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ComplaintUserDialogController', ComplaintUserDialogController);
 
-    ComplaintUserDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$rootScope', '$state', 'companyUser', 'Complaint', 'globalCompany'];
+    ComplaintUserDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$rootScope', '$state', 'companyUser', 'Complaint', 'globalCompany', 'Modal'];
 
-    function ComplaintUserDialogController($timeout, $scope, $stateParams, $rootScope, $state, companyUser, Complaint, globalCompany) {
+    function ComplaintUserDialogController($timeout, $scope, $stateParams, $rootScope, $state, companyUser, Complaint, globalCompany, Modal) {
         var vm = this;
 
         vm.complaint = {complaintType: "Vigilancia"};
@@ -16,19 +16,18 @@
         vm.openCalendar = openCalendar;
         vm.save = save;
         vm.loadResidentsByHouse = loadResidentsByHouse;
-
-        $timeout(function () {
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 700)
-        }, 1000);
-
+        vm.isReady = false;
+        $rootScope.mainTitle = "Registrar queja o sugerencia";
+        vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         function clear() {
             history.back();
         }
+
+        vm.isReady = true;
 
         function loadResidentsByHouse(houseId) {
             vm.residents = [];
@@ -40,7 +39,7 @@
                     }
                     console.log(vm.residents)
                 }, function () {
-                    toastr["error"]("Ah ocurrido un error cargando los residentes de la filial.")
+                    Modal.toast("Ah ocurrido un error cargando los residentes de la filial.")
                 })
         }
 
@@ -76,20 +75,8 @@
 
 
         function save() {
-            bootbox.confirm({
-                message: "¿Está seguro que desea registrar la queja o sugerencia?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
+            Modal.confirmDialog("¿Está seguro que desea registrar la queja o sugerencia?","",
+                function(){
                         vm.isSaving = true;
                         vm.complaint.creationDate = moment(new Date).format();
                         vm.complaint.companyId = companyUser.companyId;
@@ -102,14 +89,12 @@
                         } else {
                             Complaint.save(vm.complaint, onSaveSuccess, onSaveError);
                         }
-                    }
-                }
             });
 
         }
 
         function onSaveSuccess(result) {
-            toastr["success"]("Se registró la queja o sugerencia exitosamente.")
+            Modal.toast("Se registró la queja o sugerencia exitosamente.")
             $state.go('complaint-user');
             vm.isSaving = false;
         }

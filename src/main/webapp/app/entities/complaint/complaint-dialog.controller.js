@@ -16,6 +16,10 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.loadResidentsByHouse = loadResidentsByHouse;
         vm.houses = House.query();
         vm.companies = Company.query();

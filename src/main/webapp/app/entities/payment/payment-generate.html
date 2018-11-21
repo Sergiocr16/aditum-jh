@@ -83,7 +83,7 @@
                                                     <md-datepicker md-min-date="vm.egress.date" required
                                                                    md-hide-icons="calendar"
                                                                    ng-model="vm.payment.date"
-                                                                   md-placeholder="Introduzca una fecha"
+
                                                                    md-open-on-focus
                                                                    required></md-datepicker>
                                                 </md-input-container>
@@ -318,11 +318,11 @@
                                             </div>
                                             <div layout="row" class="white-bg" layout-align="end center" hide-sm
                                                  hide-xs>
+                                                <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
+                                                </md-button>
                                                 <md-button class="md-raised md-primary" type="submit"
                                                            ng-disabled="form.$invalid || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0">
                                                     Realizar pago
-                                                </md-button>
-                                                <md-button class="md-raised  md-warn" ng-click="back()">Cancelar
                                                 </md-button>
                                             </div>
                                         </div>

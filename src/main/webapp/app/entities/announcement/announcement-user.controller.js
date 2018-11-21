@@ -217,6 +217,8 @@
         }
 
         function showActionEdit(comment) {
+            console.log(comment)
+            console.log(companyUser)
             return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
         }
 

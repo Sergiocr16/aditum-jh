@@ -73,20 +73,15 @@
             angular.forEach(vm.bancos, function (banco, key) {
                 if (banco.id == vm.egress.account) {
                     banco.saldo = banco.saldo - vm.egress.total;
-                    console.log(banco)
                     Banco.update(banco, onAccountBalanceSuccess, onSaveError);
-
                 }
-
             })
-
-
+            vm.egress = result;
         }
 
         function onAccountBalanceSuccess(result) {
-            $scope.$emit('aditumApp:egressUpdate', result);
-            $state.go('egress');
             Modal.toast("Se reportó el pago correctamente");
+            Proveedor.get({id: vm.egress.proveedor}, onSuccessProovedor)
             Modal.hideLoadingBar();
             vm.isSaving = false;
         }
@@ -99,7 +94,6 @@
         function onSuccessProovedor(proovedor, headers) {
             vm.egress.empresa = proovedor.empresa;
             Banco.query({companyId: globalCompany.getId()}).$promise.then(onSuccessBancos);
-
         }
 
         function onSuccessBancos(data, headers) {

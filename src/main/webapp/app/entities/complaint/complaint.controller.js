@@ -33,10 +33,10 @@
 
         vm.changeStatus = function () {
             vm.page = 0;
+            vm.complaints = []
+
             vm.loadAllByStatus();
-            setTimeout(function () {
-                vm.complaints = []
-            }, 400)
+
         }
 
         function loadAllByStatus() {

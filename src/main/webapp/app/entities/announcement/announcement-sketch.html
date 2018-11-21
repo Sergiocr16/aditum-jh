@@ -3,33 +3,89 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" id="content">
-    <!--<div class="col-md-12 no-padding">-->
-        <!--<h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 no-list oficial-title-index">Borradores</h3>-->
+    <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay borradores"></no-content>
 
-    <!--</div>-->
+    <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
+         hide-xl>
+        <md-card ng-repeat="announcement in vm.announcements track by $index"
+                 md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                 md-theme-watch>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline font-15 font-green-sharp">{{announcement.title}}</span>
+                </md-card-title-text>
+                <md-card-title-media>
+                    <a><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:14px;"
+                          >
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Borrador</md-tooltip>
+                        lens</i></a>
 
-    <!--<div class="form-group col-md-offset-8 col-md-2" style="margin-bottom: 0px;">-->
-        <!--<button type="button" class="btn green-button-oficial col-md-12  col-lg-12 col-sm-12 col-xs-12" ui-sref="announcement"-->
-                <!--name="button">Anuncios-->
-        <!--</button>    </div>-->
-    <!--<div class="form-group col-md-2 no-padding" id="index-search-bar" style="margin-bottom: 0px;">-->
-        <!--<button type="button" class="btn orange-button-oficial col-md-12  col-lg-12 col-sm-12 col-xs-12" ui-sref="announcement.new"  name="button">Crear nuevo anuncio</button>-->
-    <!--</div>-->
+                </md-card-title-media>
 
-    <!--<br/>-->
-    <!--<div class="container-fluid no-padding">-->
+            </md-card-title>
+            <md-card-actions layout="row" layout-align="space-between center">
+                <div style="margin-left: 9px">
+                    <div >
+                        <div>
+                            {{announcement.publishingDate | date:'dd MMM yyyy hh:mm a'}}
+                        </div>
+                        <div style="font-size:12px;color:gray">Fecha de creación</div>
+                    </div>
+                </div>
+                <div layout="row" layout-align="end center">
+                    <i class="material-icons" style="color:#999;cursor: pointer"
+                       ui-sref="announcement-detail({id:announcement.id})">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                        </md-tooltip>
+                        remove_red_eye</i>
 
-    <!--</div>-->
-    <!--<br/>-->
-    <div class="table-responsive" style="border: 0px!important;">
 
-      <no-content ng-if="vm.announcements == 0" icon="picture_in_picture" text="No hay borradores"></no-content>
+                    <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER"
+                             style=" margin-top: 6px;margin-right: 0!important;">
+                        <md-button aria-label="Open demo menu" class="md-icon-button no-padding" style="margin-right: 0!important;"
+                                   ng-click="$mdMenu.open($event)">
+                            <i class="material-icons" style="color:#999">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                </md-tooltip>
+                                more_vert</i>
+                        </md-button>
+                        <md-menu-content width="4">
+                            <md-menu-item>
+                                <md-button ui-sref="announcements.edit({id:announcement.id})">
+                                    <div layout="row" flex>
+                                        <p flex>Editar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item >
+                                <md-button ng-click="vm.publish(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Publicar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button ng-click="vm.delete(announcement)">
+                                    <div layout="row" flex>
+                                        <p flex>Eliminar</p>
+                                    </div>
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </div>
+            </md-card-actions>
+        </md-card>
+    </div>
+    <div class="table-responsive" style="border: 0px!important;" hide-xs
+         hide-sm hide-md>
+
 
         <table ng-if="vm.announcements != 0"  class=" table table-hover   font-13 tableMaterialDesign" >
             <thead style="background-color: #fafafa;">
             <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.reset()">
                 <th>Título</th>
-                <th class="text-center">Fecha de publicación</th>
+                <th class="text-center">Fecha de creación</th>
                 <th class="text-center">Estado</th>
                 <th class="text-center">Detalle</th>
                 <th class="text-center">Opciones</th>
@@ -58,14 +114,7 @@
                                     </div>
                                 </md-button>
                             </md-menu-item>
-                            <md-menu-item  ng-if="announcement.status==2">
-                                <md-button ng-click="vm.unPublish(announcement)">
-                                    <div layout="row" flex>
-                                        <p flex>Retirar noticia</p>
-                                    </div>
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item  ng-if="announcement.status==3">
+                            <md-menu-item >
                                 <md-button ng-click="vm.publish(announcement)">
                                     <div layout="row" flex>
                                         <p flex>Publicar</p>

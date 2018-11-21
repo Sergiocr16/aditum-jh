@@ -1,69 +1,49 @@
-<!--<div class="vm.announcement col-md-12">-->
-    <!--<h2 class="col-md-9">-->
-        <!--{{vm.vm.announcement.title}} <span-->
-        <!--style="font-size: 11px;background-color: #af8c38; padding: 4px;margin-right: 15px!important;color: white;float: left;"-->
-        <!--ng-if="vm.vm.announcement.status==1">Borrador</span>-->
-    <!--</h2>-->
-    <!--<h3 class="col-md-3">-->
-        <!--<h3 class="text-right">-->
-            <!--<button type="submit" has-authority="ROLE_MANAGER"-->
-                    <!--ui-sref="{{ vm.previousState }}"-->
-                    <!--class="btn btn-info">-->
-                <!--<span class="glyphicon glyphicon-arrow-left"></span><span> Atrás</span>-->
-            <!--</button>-->
-            <!--<button has-authority="ROLE_MANAGER" type="button" ui-sref="vm.announcement.edit({id:vm.vm.announcement.id})"-->
-                    <!--class="btn btn-primary">-->
-                <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                <!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
-            <!--</button>-->
-        <!--</h3>-->
-    <!--</h3>-->
-    <!--<hr class="col-md-12 col-xs-12 col-lg-12">-->
-    <!--<div class="col-md-12 col-xs-12 col-lg-12">-->
-        <!--<div ng-bind-html="vm.vm.announcement.description"></div>-->
-    <!--</div>-->
-<!--</div>-->
-
-<md-card  style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
+<md-card style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
     <md-card-title layout-align="space-between center">
         <md-card-title-text>
-            <span class="md-headline">
-                <i class="material-icons material-icons-with-text" hide-sm hide-xs
-                   ng-click="back()">arrow_back</i> {{vm.announcement.title}}</span>
+
+            <span class="md-headline font-15 hidden-sm hidden-md hidden-lg font-green-sharp">
+                 <i
+                     class="material-icons material-icons-with-text" hide-sm hide-xs hide-md
+                     ng-click="back()">arrow_back</i>
+
+                {{vm.announcement.title}}</span>
+            <span class="md-headline font-20 hidden-xs font-green-sharp">
+                 <i
+                     class="material-icons material-icons-with-text" hide-sm hide-xs hide-md
+                     ng-click="back()">arrow_back</i>
+                {{vm.announcement.title}}</span>
+
         </md-card-title-text>
-        <div>
+        <div layout-align="end center">
             <span class="md-subhead" style="font-size: 12px">
-                <span ng-if="vm.announcement.status==1">Borrador |</span>
-                   <span class="bold" style="font-size:13px;  color: #26A69A;"
-                         ng-if="vm.announcement.status==2 && vm.announcement.status!=1">Publicada </span>
-                    <span class="bold" style="font-size:13px; padding:10px; color:#FF3D00;"
-                          ng-if="vm.announcement.status==3 && vm.announcement.status!=1">No publicada </span>
                 {{vm.announcement.showDate}}</span>
             <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
                 <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
                     <i class="material-icons" style="color:#999">more_vert</i>
                 </md-button>
-                <md-menu-content width="4" >
+                <md-menu-content width="4">
                     <md-menu-item>
                         <md-button ng-if="vm.announcement.status==2" ng-click="vm.unPublish(vm.announcement)">
                             <div layout="row" flex>
                                 <p flex>Retirar noticia</p>
                             </div>
                         </md-button>
-                        <md-button ng-if="vm.announcement.status==3 || vm.announcement.status==1 " ng-click="vm.publish(vm.announcement)">
+                        <md-button ng-if="vm.announcement.status==3 || vm.announcement.status==1 "
+                                   ng-click="vm.publish(vm.announcement)">
                             <div layout="row" flex>
                                 <p flex>Publicar noticia</p>
                             </div>
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item >
+                    <md-menu-item>
                         <md-button ui-sref="announcements.edit({id:vm.announcement.id})">
                             <div layout="row" flex>
                                 <p flex>Editar</p>
                             </div>
                         </md-button>
                     </md-menu-item>
-                    <md-menu-item >
+                    <md-menu-item>
                         <md-button ng-click="vm.delete(vm.announcement)">
                             <div layout="row" flex>
                                 <p flex>Eliminar</p>
@@ -72,6 +52,19 @@
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
+            <a><i class="material-icons"
+                  style="color:#FF3D00; font-size: 23px;margin-top:9px;float:right"
+                  ng-if="vm.announcement.status==3">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">No publicada</md-tooltip>
+                lens</i>
+                <i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:9px;float:right"
+                   ng-if="vm.announcement.status==1">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Borrador</md-tooltip>
+                    lens</i>
+                <i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:9px;float:right"
+                           ng-if="vm.announcement.status==2">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Publicada</md-tooltip>
+                lens</i></a>
         </div>
     </md-card-title>
     <md-card-content>
@@ -81,8 +74,10 @@
     <md-card-actions layout="row" class="no-margin" layout-align="space-between center">
         <div class="create-comment md-3-line" ng-class="{'white-bg': vm.announcement.showingComments==true}">
             <div class="row" style="padding: 0 16px">
-                <div class="comments-button text-center" style="background-color: transparent!important" ng-click="vm.loadComments(vm.announcement)" ng-if="vm.announcement.commentsQuantity!=0">
-                    <i class="material-icons material-icons-with-text" style="margin:0">comment</i> Comentarios {{vm.announcement.commentsQuantity}}
+                <div class="comments-button text-center" style="background-color: transparent!important"
+                     ng-click="vm.loadComments(vm.announcement)" ng-if="vm.announcement.commentsQuantity!=0">
+                    <i class="material-icons material-icons-with-text" style="margin:0">comment</i> Comentarios
+                    {{vm.announcement.commentsQuantity}}
                 </div>
                 <div class="comments-container" ng-if="vm.announcement.showingComments==true">
                     <md-list flex>
@@ -102,26 +97,28 @@
                                         <h3 style="font-size: 13px;font-weight: bold">
                                             {{comment.resident.name +" "+ comment.resident.lastname +" "+
                                             comment.resident.secondlastname}}</h3>
-                                        <h4 class="inline"  style="font-size: 12px">
+                                        <h4 class="inline" style="font-size: 12px">
                                             {{comment.showingDate}}
                                             <span style="color: #90949c;cursor: pointer;font-size: 11px;"
-                                                  ng-if="comment.editedDate!=undefined" title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                                  ng-if="comment.editedDate!=undefined"
+                                                  title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
                                         </h4>
                                     </div>
                                     <div ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
-                                        <md-menu md-position-mode="target-right target" >
-                                            <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
                                                 <i class="material-icons">more_vert</i>
                                             </md-button>
-                                            <md-menu-content width="4" >
-                                                <md-menu-item  ng-if="vm.showActionDelete(comment)">
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
                                                     <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
                                                         <div layout="row" flex>
                                                             <p flex>Eliminar comentario</p>
                                                         </div>
                                                     </md-button>
                                                 </md-menu-item>
-                                                <md-menu-item  ng-if="vm.showActionEdit(comment)">
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
                                                     <md-button ng-click="vm.editComment(comment)">
                                                         <div layout="row" flex>
                                                             <p flex>Editar</p>
@@ -137,13 +134,16 @@
                                 </p>
                                 <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
                                     <div flex="100" class="inline" ng-if="comment.editing===true">
-                                        <textarea   style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment" class="input-no-decoration" style="margin-left: 5px" type="text"
-                                                    placeholder="Actualizar comentario.." required>
+                                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment"
+                                                  class="input-no-decoration" style="margin-left: 5px" type="text"
+                                                  placeholder="Actualizar comentario.." required>
                                         </textarea>
                                     </div>
                                     <div layout="row" layout-align="end center" ng-if="comment.editing===true">
                                         <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
-                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">Actualizar</md-button>
+                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
+                                            Actualizar
+                                        </md-button>
                                     </div>
                                 </form>
                             </div>
@@ -151,17 +151,18 @@
                     </md-list>
                 </div>
             </div>
-            <form flex action="" name="form" class="md-list-item" ng-submit="vm.saveComment(vm.announcement)">
+            <form flex name="form" class="md-list-item" ng-submit="vm.saveComment(vm.announcement)">
                 <div layout="row">
                     <img class="circle-material-image" ng-hide="currentUserImage"
                          src="content/images/nobody-image.jpg"/>
                     <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
                          class="circle-material-image"/>
-                    <div flex="100" >
-                        <textarea  style="margin:15px 0 0 0;width:100%;" ng-model="vm.announcement.currentComment.comment"
-                                   ng-click="vm.showCommentForm(vm.announcement)" class="input-no-decoration"
-                                   style="margin-left: 5px" type="text"
-                                   placeholder="Añadir un comentario.." required>
+                    <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;"
+                                  ng-model="vm.announcement.currentComment.comment"
+                                  ng-click="vm.showCommentForm(vm.announcement)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Añadir un comentario..." required>
                         </textarea>
                     </div>
                 </div>

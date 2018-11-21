@@ -27,19 +27,18 @@
         <!--</div>-->
     <!--</div>-->
 <!--</div>-->
-<div ng-if="true">
-    <md-content class="no-padding row background-white" style="margin-top: -15px!important;" >
-        <md-tabs  md-dynamic-height="" md-border-bottom="" class="padding-left-10">
-            <md-tab ng-repeat="house in vm.houses | filter:vm.query" ng-click="vm.changeHouse(house)" label="{{house.housenumber}}">
+<div>
+<div ng-if="true" style="position:fixed;width:100%;z-index:1" class="background-white">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important" >
+        <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+            <md-tab  ng-repeat="house in vm.houses | filter:vm.query track by $index" ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
             </md-tab>
-
-
         </md-tabs>
 
     </md-content>
 </div>
 
-<div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.houses.length> 0 ">
+<div class="col-md-12 no-padding margin-bottom-20" ng-if="vm.houses.length> 0 " style="margin-top: 45px !important">
     <div class="">
         <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
              id="index-search-bar">
@@ -134,9 +133,10 @@
                 <label ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}" ui-sref="houseAdministration.vehiculesByHouse"><i class="fa fa-car" ></i> <span>Vehículos</span></label>
             </div>
         </div>
-        <div ui-view class="col-md-12" >
+        <div ui-view class="col-md-12" style="overflow-y: auto">
             <!-- First Level -->
         </div>
     </div>
+</div>
 </div>
 </div>

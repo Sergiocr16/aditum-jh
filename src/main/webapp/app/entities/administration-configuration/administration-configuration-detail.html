@@ -2,39 +2,19 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class=" fade-in" ng-if="vm.isReady">
-    <!-- BEGIN Portlet PORTLET-->
-    <div class="portlet light col-md-12">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-cog font-green-haze"></i>
-                <span class="caption-subject bold font-green-haze uppercase">
-								Panel de configuración</span>
-                <!--<span class="caption-helper">more samples...</span>-->
-            </div>
-            <div class="inputs">
-                <div class="portlet-input input-inline input-medium">
-                    <!--<div class="input-group">-->
-                    <!--<input type="text" class="form-control input-circle-left" placeholder="search...">-->
-                    <!--<span class="input-group-btn">-->
-                    <!--<button class="btn btn-circle-right btn-default" type="submit">Go!</button>-->
-                    <!--</span>-->
-                    <!--</div>-->
-                </div>
-            </div>
-        </div>
-        <div class="portlet-body">
-            <!--<h4>Heading text goes here...</h4>-->
-            <!--<p>-->
-            <!--Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.-->
-            <!--</p>-->
-
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in"
+     ng-if="vm.isReady">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Panel de configuración</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form ng-submit="vm.save()" name="form">
 
             <div class="portlet light col-md-12 no-padding" style="box-shadow:none!important;">
                 <div class="portlet-title">
                     <div class="caption">
                         <!--<i class="icon-puzzle font-grey-gallery"></i>-->
-                        <span class="caption-subject bold font-grey-gallery uppercase font-14 font-green-haze">
+                        <span class="caption-subject bold uppercase font-14 font-green-haze font-green-sharp">
 								Configuración de finanzas </span>
                         <!--<span class="caption-helper">more samples...</span>-->
                     </div>
@@ -42,115 +22,210 @@
                     </div>
                 </div>
                 <div class="portlet-body col-md-12 ">
-                    <form ng-submit="vm.save()">
-                        <div class="col-md-12 padding-bottom-15" style="border-bottom: 1px solid #eee">
-                            <div class="col-md-12" style="border-bottom: 1px solid #eee">
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
-                                    <h5 class="bold">Configuración de folios internos</h5>
-                                    Esto configura el incremento automático de los folios al capturar ingresos.
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  no-padding-right form-group">
-                                        <div
-                                            class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                            <span class="font-13 bold">Serie *</span>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                            <input ng-model="vm.administrationConfiguration.folioSerie" type="text"
-                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
-                                                   placeholder="Serie" required="" aria-invalid="false">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12  no-padding-right form-group">
-                                        <div
-                                            class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                            <span class="font-13 bold">Folio inicial *</span>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                            <input ng-model="vm.administrationConfiguration.folioNumber" type="text"
-                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
-                                                   placeholder="Número de folio" required="" aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
+                    <div layout="column">
+                        <div layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de folios internos de ingresos</h5>
+                                Esto configura el incremento automático de los folios al capturar ingresos.
                             </div>
-                            <div class="col-md-12">
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.incomeFolio" flex>
+                                      <span ng-if="!vm.administrationConfiguration.incomeFolio">
+                                      Manual
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.incomeFolio">
+                                      Automático
+                                    </span>
+                                </md-switch>
+                                <md-input-container class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.incomeFolio" flex>
+                                    <label>Serie</label>
+                                    <input ng-model="vm.administrationConfiguration.folioSerie" required>
+                                </md-input-container>
 
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right">
-                                    <h5 class="bold">Configuración de precio por mts2</h5>
-                                    Esto configura el precio por metro cuadrado de las cuotas.
-                                </div>
-                                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6  no-padding-right margin-top-10">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                        <div
-                                            class="col-lg-8 col-md-8  col-sm-8 col-xs-8 no-padding-right margin-top-10">
-                                            <span class="font-13 bold">Precio por metro cuadrado *</span>
-                                        </div>
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4  form-group">
-                                            <input ng-model="vm.administrationConfiguration.squareMetersPrice"
-                                                   type="text"
-                                                   class="form-control letters gray-font  ng-pristine ng-not-empty ng-valid ng-valid-required ng-touched"
-                                                   placeholder="Serie" required="" aria-invalid="false">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <button class="btn btn-success float-right" type="submit">Guardar cambios</button>
-                            </div>
+                                <md-input-container class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.incomeFolio" flex>
+                                    <label>Folio inicial</label>
+                                    <input ng-model="vm.administrationConfiguration.folioNumber" required>
+                                </md-input-container>
 
+                            </div>
                         </div>
-                    </form>
-<div class="col-md-12">
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Configuración de folios internos de egresos</h5>
+                                Esto configura el incremento automático de los folios al capturar egresos.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.egressFolio" flex>
+                                    <span ng-if="!vm.administrationConfiguration.egressFolio">
+                                       Manual
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.egressFolio">
+                                      Automático
+                                    </span>
+                                </md-switch>
+                                <md-input-container class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.egressFolio" flex>
+                                    <label>Serie</label>
+                                    <input ng-model="vm.administrationConfiguration.egressFolioSerie" required>
+                                </md-input-container>
 
-    <div class="inset switchdemoBasicUsage"  ng-cloak="">
-        <md-switch ng-model="vm.data.cb1" aria-label="Switch 1">
-            Switch 1: {{ vm.data.cb1 }}
-        </md-switch>
-    </div>
+                                <md-input-container class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.egressFolio" flex>
+                                    <label>Folio inicial</label>
+                                    <input ng-model="vm.administrationConfiguration.egressFolioNumber" required>
+                                </md-input-container>
 
-</div>
+                            </div>
+                        </div>
+                        <md-divider></md-divider>
+                        <div class="margin-top-20" layout="row" layout-align="start center">
+                            <div flex>
+                                <h5 class="bold">Configuración de recargos</h5>
+                                Esto configura los recargos de una filial al ser morosa.
+                            </div>
+                            <md-switch flex ng-model="vm.administrationConfiguration.hasSubcharges">
+                                    <span ng-if="!vm.administrationConfiguration.hasSubcharges">
+                                        Sin recargos
+                                    </span>
+                                <span ng-if="vm.administrationConfiguration.hasSubcharges">
+                                      Con recargos
+                                    </span>
+                            </md-switch>
+                        </div>
+                        <div layout="column" ng-if="vm.administrationConfiguration.hasSubcharges"
+                             class="fade-in margin-top-15">
+                            <div flex layout="row" layout-align="center center">
+                                <md-radio-group flex layout="column"
+                                                ng-model="vm.administrationConfiguration.usingSubchargePercentage">
+                                    <md-radio-button value="0" class="md-primary">Recargo por monto fijo
+                                    </md-radio-button>
+                                    <md-radio-button value="1" class="md-primary">Recargo por porcentaje de
+                                        cuota
+                                    </md-radio-button>
+                                </md-radio-group>
+                                <md-input-container flex class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==0"
+                                                    flex>
+                                    <label>Cuota fija de recargo</label>
+                                    <input format="currency" ng-model="vm.administrationConfiguration.subchargeAmmount"
+                                           required>
+                                </md-input-container>
+                                <md-input-container flex class="fade-in md-block"
+                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==1"
+                                                    flex>
+                                    <label>Porcentaje de recargo en base a la cuota morosa</label>
+                                    <input type="number" min="1"
+                                           ng-model="vm.administrationConfiguration.subchargePercentage" required>
+                                </md-input-container>
+                            </div>
+                            <div flex layout="column">
+                                <div layout="row">
+                                    <md-input-container class="fade-in md-block"
+                                                        flex>
+                                        <label>Días para considerar a una filial morosa</label>
+                                        <input ng-model="vm.administrationConfiguration.daysTobeDefaulter" type="number"
+                                               min="0" required>
+                                    </md-input-container>
+                                    <md-input-container class="fade-in md-block" flex>
+                                        <label>Días antes para recordar al condónimo de morosidad</label>
+                                        <input type="number" min="0"
+                                               ng-model="vm.administrationConfiguration.daysToSendEmailBeforeBeDefaulter"
+                                               required>
+                                    </md-input-container>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
+                <div class="portlet-title">
+                    <div class="caption">
+                        <!--<i class="icon-puzzle font-grey-gallery"></i>-->
+                        <span class="caption-subject bold  uppercase font-14 font-green-haze font-green-sharp">
+								Plataforma de condóminos </span>
+                        <!--<span class="caption-helper">more samples...</span>-->
+                    </div>
+                    <div class="tools">
+                    </div>
+                </div>
+                <div class="portlet-body col-md-12 ">
+                    <div layout="column">
+                        <div layout="row">
+                            <div flex>
+                                <h5 class="bold">Reservar áreas comunes</h5>
+                                Esto define si los usuarios podrán realizar cualquier tipo de reservación de las áreas
+                                comunes.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.bookCommonArea" flex>
+                                      <span ng-if="!vm.administrationConfiguration.bookCommonArea">
+                                      NO
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.bookCommonArea">
+                                      SI
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Estado de resultados</h5>
+                                Esto define si los usuarios podrán visualizar el estado de resultados.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.incomeStatement" flex>
+                                    <span ng-if="!vm.administrationConfiguration.incomeStatement">
+                                       NO
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.incomeStatement">
+                                      SI
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
+                        <div class="margin-top-15" layout="row">
+                            <div flex>
+                                <h5 class="bold">Mostrar mes actual en estado de resultados</h5>
+                                Esto define si los usuarios podrán visualizar los movimientos del mes vigente.
+                            </div>
+                            <div layout="row" flex>
+                                <md-switch ng-model="vm.administrationConfiguration.monthlyIncomeStatement" flex>
+                                    <span ng-if="!vm.administrationConfiguration.monthlyIncomeStatement">
+                                       NO
+                                    </span>
+                                    <span ng-if="vm.administrationConfiguration.monthlyIncomeStatement">
+                                      SI
+                                    </span>
+                                </md-switch>
+                            </div>
+                        </div>
+                    </div>
+                    <div layout="row">
+                        <div flex>
+                            <h5 class="bold">Configuración de precio por mts2</h5>
+                            Esto configura el precio por metro cuadrado de las cuotas.
+                        </div>
+
+                        <md-input-container class="fade-in md-block"
+                                            ng-if="vm.administrationConfiguration.incomeFolio" flex>
+                            <label>Precio por metro cuadrado </label>
+                            <input format="currency" ng-model="vm.administrationConfiguration.squareMetersPrice" required>
+                        </md-input-container>
+                    </div>
+                </div>
+                <md-button type="submit" style="position: fixed" ng-disabled="form.$invalid "
+                           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Guardar cambios
+                    </md-tooltip>
+                    <md-icon class="white-color">save</md-icon>
+                </md-button>
             </div>
-        </div>
-    </div>
+
+        </form>
+
+    </md-content>
 </div>
-<!-- END Portlet PORTLET-->
-</div>
 
-
-<!--<div>-->
-<!--<h2><span vm.data-translate="aditumApp.administrationConfiguration.detail.title">Administration Configuration</span> {{vm.administrationConfiguration.id}}</h2>-->
-<!--<hr>-->
-<!--<jhi-alert-error></jhi-alert-error>-->
-<!--<dl class="dl-horizontal jh-entity-details">-->
-<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.squareMetersPrice">Square Meters Price</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.administrationConfiguration.squareMetersPrice}}</span>-->
-<!--</dd>-->
-<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioSerie">Folio Serie</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.administrationConfiguration.folioSerie}}</span>-->
-<!--</dd>-->
-<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.folioNumber">Folio Number</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.administrationConfiguration.folioNumber}}</span>-->
-<!--</dd>-->
-<!--<dt><span vm.data-translate="aditumApp.administrationConfiguration.company">Company</span></dt>-->
-<!--<dd>-->
-<!--<a ui-sref="company-detail({id:vm.administrationConfiguration.companyId})">{{vm.administrationConfiguration.companyId}}</a>-->
-<!--</dd>-->
-<!--</dl>-->
-
-<!--<button type="submit"-->
-<!--ui-sref="{{ vm.previousState }}"-->
-<!--class="btn btn-info">-->
-<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span vm.data-translate="entity.action.back"> Back</span>-->
-<!--</button>-->
-
-<!--<button type="button" ui-sref="administration-configuration-detail.edit({id:vm.administrationConfiguration.id})" class="btn btn-primary">-->
-<!--<span class="glyphicon glyphicon-pencil"></span>-->
-<!--<span class="hidden-sm-down" vm.data-translate="entity.action.edit"> Edit</span>-->
-<!--</button>-->
-<!--</div>-->

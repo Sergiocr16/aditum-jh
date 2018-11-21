@@ -64,6 +64,7 @@
         }
 
         function onError(error) {
+            Modal.hideLoadingBar();
             Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
@@ -250,6 +251,7 @@
         }
 
         function showActionEdit(comment) {
+
             return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
         }
 

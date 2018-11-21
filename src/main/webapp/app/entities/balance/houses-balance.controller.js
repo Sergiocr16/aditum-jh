@@ -85,7 +85,11 @@
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
-                    value.debit = value.balance.debit;
+                    if(value.balance.total<0){
+                        value.debit = 1;
+                    }else{
+                        value.debit = 0;
+                    }
                 })
                 vm.houses = data;
                 vm.page = pagingParams.page;

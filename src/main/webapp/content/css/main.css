@@ -32,7 +32,8 @@ body {
     font-family: 'Roboto Condensed', sans-serif;
     color: #333;
 }
-.outline-none{
+
+.outline-none {
     outline: none;
 }
 
@@ -1482,9 +1483,9 @@ div.scrollmenu a:hover {
     background-color: #e4e6e9;
 }
 
-.detailLabelMD{
-    margin-bottom: 24px!important;
-    font-size: 14px!important;
+.detailLabelMD {
+    margin-bottom: 24px !important;
+    font-size: 14px !important;
 }
 
 .object-fit_scale-down {
@@ -1636,6 +1637,10 @@ div.scrollmenu a:hover {
 
     md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
         color: white !important;
+    }
+
+    md-tabs.md-default-theme .md-tab, md-tabs .md-tab {
+        color: rgba(255, 255, 255, 0.4) !important;
     }
 }
 
@@ -2011,7 +2016,11 @@ a
     font-weight: bold !important;
     padding-left: 15px;
     text-transform: uppercase !important;
+    z-index: 0 !important;
+}
 
+.note-toolbar {
+    z-index: 0 !important;
 }
 
 .form-title h2 {
@@ -2131,16 +2140,24 @@ md-input-container.md-input-focused label:not(.md-no-float), md-input-container.
     right: 43px !important;
 }
 
-md-input-container:not(.md-input-has-value) input:not(:focus), md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-ampm-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-day-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-hour-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-millisecond-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-minute-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-month-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-second-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-text, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-week-field, md-input-container:not(.md-input-has-value) input:not(:focus)::-webkit-datetime-edit-year-field {
-    border-color: rgba(0, 0, 0, 0.2) !important;
+.md-placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
 }
 
-md-select.md-default-theme .md-select-value, md-select .md-select-value {
-    border-color: rgba(0, 0, 0, 0.2);
+.md-select-placeholder {
+    color: rgba(0, 0, 0, 0.6) !important;
 }
 
 md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder, md-input-container.md-default-theme label, md-input-container label {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.6);
+}
+
+md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-default-theme .md-select-value, md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-select-value, md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-default-theme .md-select-value.md-select-placeholder, md-input-container.md-input-focused:not(.md-input-has-value) md-select .md-select-value.md-select-placeholder {
+    color: rgb(0, 150, 136) !important;
+}
+
+.hint {
+    color: rgb(0, 150, 136) !important;
 }
 
 .md-select-value > span:not(.md-select-icon) {
@@ -2157,10 +2174,14 @@ md-input-container.md-default-theme .md-placeholder, md-input-container .md-plac
 
 .modal-open .modal {
     z-index: 80 !important;
-    justify-content: center !important;
-    align-items: center !important;
-    align-content: center !important;
-    display: flex !important;
+    /*justify-content: center !important;*/
+    /*align-items: center !important;*/
+    /*align-content: center !important;*/
+    /*display: flex !important;*/
+}
+
+.input-icon > i {
+    z-index: 0 !important;
 }
 
 .thin-btn {
@@ -2182,7 +2203,12 @@ md-input-container.md-default-theme .md-placeholder, md-input-container .md-plac
 .multiselect-parent .dropdown-toggle {
     width: 100%;
 }
-.dropdown-menu-form{
+
+.dropdown-menu-form {
     width: 100%;
-    position: inherit!important;
+    position: inherit !important;
+}
+
+.font-green-sharp {
+    color: rgb(0, 150, 136) !important;
 }

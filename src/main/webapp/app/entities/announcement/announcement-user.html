@@ -7,8 +7,8 @@
      style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600 " style="color: #00b19d">
-    Anuncios</h3>
+<h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600 " hide-xs style="color: #00b19d">
+    Noticias</h3>
 
 <div ng-if="vm.isReady" class="margin-top-20">
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
@@ -20,7 +20,8 @@
              ng-repeat="announcement in vm.announcements track by announcement.id">
         <md-card-title layout-align="space-between center">
             <md-card-title-text>
-                <span class="md-headline">{{announcement.title}}</span>
+                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{announcement.title}}</span>
+                <span class="md-headline font-15 hidden-xs">{{announcement.title}}</span>
             </md-card-title-text>
             <div>
                 <span class="md-subhead" style="font-size: 12px">{{announcement.showDate}}</span>
@@ -128,7 +129,7 @@
                                                   placeholder="Actualizar comentario.." required>
                                         </textarea>
                                         </div>
-                                        <div layout="row" layout-align="end center" ng-if="comment.editing===true">
+                                        <div layout="row" layout-align="end center" ng-show="comment.editing===true">
                                             <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
                                             <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
                                                 Actualizar
@@ -140,7 +141,7 @@
                         </md-list>
                     </div>
                 </div>
-                <form flex action="" name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
+                <form flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
                     <div layout="row">
                         <img class="circle-material-image" ng-hide="currentUserImage"
                              src="content/images/nobody-image.jpg"/>

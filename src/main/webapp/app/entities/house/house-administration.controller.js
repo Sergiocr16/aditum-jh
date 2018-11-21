@@ -48,6 +48,11 @@
                         value.housenumber = "Oficina"
                     }
                     value.debit = value.balance.debit;
+                    if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+                        if(value.id == $localStorage.houseSelected.id ){
+                            vm.selectedIndex = key;
+                        }
+                    }
                 })
                 vm.houses = data;
                 if (vm.houses.length > 0 && $localStorage.houseSelected == null || $localStorage.houseSelected == undefined) {
@@ -121,14 +126,14 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function (house) {
+        vm.changeHouse = function (house,i) {
             House.get({
                 id: house.id
             }, function (result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
-                console.log(result);
+                vm.selectedIndex = i;
             })
 
         }

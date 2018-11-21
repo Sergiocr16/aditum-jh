@@ -133,7 +133,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.house | filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
                             <td class="text-center">{{house.housenumber}}</td>
                             <td class="text-center">{{house.loginCode}}</td>
                             <td class="text-center">

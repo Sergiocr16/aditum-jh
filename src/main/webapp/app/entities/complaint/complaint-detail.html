@@ -1,129 +1,91 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Quejas y sugerencias</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Ver detalle</a>
-
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div id="tableData" class="display-none">
-<div class="portlet light bordered col-md-12"
-     style="box-shadow: none!important">
-    <div class="portlet-title">
-        <div class="caption font-yellow-crusta">
-            <i class="fa fa-arrow-left complaint-detail" has-authority="ROLE_MANAGER" ui-sref="complaint"
-               style="margin-right: 20px;font-size: 20px;"></i>
-            <i class="fa fa-arrow-left complaint-detail" has-authority="ROLE_USER" ui-sref="complaint-user"
-               style="margin-right: 20px;font-size: 20px;"></i>
-            <div class="image-navbar">
-                <img ng-if="vm.complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
-                     class="object-fit_scale-down-navbar"/>
-                <img ng-if="vm.complaint.resident.image_url!==null" src="{{vm.complaint.resident.image_url}}"
-                     class="object-fit_scale-down-navbar"/>
-            </div>
-            <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"> {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</span>
-            <span class="caption-helper">
-                    <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+<div class="col-md-12 fade-in">
+    <md-card style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
+        <md-card-title layout-align="space-between center">
+            <md-card-title-text flex="70">
+                  <span class="md-headline" layout-align="start start" layout="column" layout-gt-sm="row">
+                     <div layout-align="center center" layout="row">
+                          <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                             ng-click="back()">arrow_back</i>
+                        <div class="image-navbar">
+                           <img ng-if="vm.complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                class="object-fit_scale-down-navbar"/>
+                           <img ng-if="vm.complaint.resident.image_url!==null" src="{{vm.complaint.resident.image_url}}"
+                                class="object-fit_scale-down-navbar"/>
+                        </div>
+                                   <div class="caption-subject bold font-green-sharp margin-right-10"
+                                        style="font-size:14px!important"> {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</div>
+                     </div>
+                     <div style="font-size: 13px;">
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
                         Ticket # {{vm.complaint.id}}
-                    </span>
-                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Categoría {{vm.complaint.complaintType}}
-                    </span>
-                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                       Filial {{vm.complaint.houseNumber}}
-                    </span>
-                     <span style="padding:0px 4px">
-                       {{vm.complaint.showingCreationDate}}
-                    </span>
-                 </span>
-        </div>
-        <div class="actions">
-                    <span class="item-status"
-                          style="border-right:1px solid #e1e1e1;margin-left: 4px;padding:0px 8px;margin-right: 8px">
-                         <span ng-if="vm.complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
-                         <span ng-if="vm.complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
-                         <span ng-if="vm.complaint.status===3"><span class="badge badge-empty badge-success"></span> Resuelto</span>
-                                 </span>
-            <div class="form-group form-md-radios" style="display: inline-block;" has-authority="ROLE_MANAGER">
-                <div class="md-radio-inline">
-                    <div class="md-radio has-error" ng-if="vm.complaint.status!==1" angular-popover direction="bottom"
-                         template="<div style='width:100px;'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como pendiente.<h5></div>"
-                         mode="mouseover">
-                        <input type="radio" id="radio18" name="radio2"
-                               class="md-radiobtn"
-                               ng-click="vm.setStatus(1)">
-                        <label for="radio18" style="color:#45B6AF">
-                            <span class="inc"></span>
-                            <span class="inc"></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                        </label>
-                    </div>
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{vm.complaint.vm.complaintType}}
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Filial {{vm.complaint.houseNumber}}
+                        </span>
+                        <span style="padding:0px 4px">
+                        {{vm.complaint.showingCreationDate}}
+                        </span>
+                     </div>
+                  </span>
+            </md-card-title-text>
+            <div layout="row" flex="30" layout-align="end center">
+                <a style="margin:0px 25px"><i class="material-icons"
+                                              style="color:#FF3D00; font-size: 23px;margin-top:4px;"
+                                              ng-if="vm.complaint.status==1">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==2">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==3">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
+                    lens</i></a>
 
-                    <div class="md-radio has-warning" ng-if="vm.complaint.status!==2" angular-popover direction="bottom"
-                         template="<div style='width:100px;padding:0px 4px'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como activo.<h5></div>"
-                         mode="mouseover">
-                        <input type="radio" id="radio19" name="radio2" class="md-radiobtn"
-                               ng-click="vm.setStatus(2)">
-                        <label for="radio19">
-                            <span class="inc"></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                        </label>
-                    </div>
-                    <div class="md-radio has-success" ng-if="vm.complaint.status!==3" angular-popover direction="bottom"
-                         template="<div style='width:100px;'><h5 style='font-size:11px;text-align:center;color:#9eacb4'>Marcar como resuelto.<h5></div>"
-                         mode="mouseover">
-                        <input type="radio" id="radio20" name="radio2"
-                               class="md-radiobtn"
-                               ng-click="vm.setStatus(3)">
-                        <label for="radio20" style="color:#45B6AF">
-                            <span class="inc"></span>
-                            <span class="inc"></span>
-                            <span class="check"></span>
-                            <span class="box"></span>
-                        </label>
-                    </div>
-                </div>
+                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                        <i class="material-icons" style="color:#999">more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-if="vm.complaint.status!==1">
+                            <md-button
+                                ng-click="vm.setStatus(1)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como pendiente</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="vm.complaint.status!==2">
+
+                            <md-button
+                                ng-click="vm.setStatus(2)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como activo</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="vm.complaint.status!==3">
+                            <md-button
+                                ng-click="vm.setStatus(3)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como resuelto</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content>
+            <div class="margin-top-10" ng-bind-html="vm.complaint.description"></div>
 
-        </div>
-    </div>
-    <div class="portlet-body">
 
-        <p>
-            {{vm.complaint.description}}
-        </p>
-
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <!-- BEGIN Portlet PORTLET-->
-        <div class="portlet light col-md-12 bordered " style="box-shadow: none!important;">
-            <div class="portlet-title">
-                <div class="caption font-green-sharp">
+            <div>
+                <div class="caption font-green-sharp form-title" style="padding: 15px;margin: 40px -16px 10px -16px;">
                     <i class="fa fa-eye" style="color:#4DB3A2 !important"></i>
                     <span class="caption-subject"> Seguimiento</span>
                     <span class="caption-helper">
@@ -131,141 +93,96 @@
                         Ticket # {{vm.complaint.id}}
                     </span>({{vm.complaint.complaintComments.content.length}}) respuestas</span>
                 </div>
-            </div>
-            <div class="portlet-body col-md-12">
-                <div class="col-md-12  no-padding" style="margin-bottom:10px;padding-right: 15px!important"
-                     ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id ">
-                    <div class="col-md-1">
-                        <div class="image" style="float: right">
-                            <img ng-hide="comment.resident.image_url" class="object-fit_scale-down"
-                                 src="content/images/nobody-image.jpg"/>
-                            <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
-                                 class="object-fit_scale-down"/>
-                        </div>
-                    </div>
-                    <div ng-class="{'announcement-comment-description' : comment.editing===false}"
-                         class="col-md-11">
-                        <span style="color:#365899; font-weight: bold;" ng-if="comment.editing===false">{{comment.resident.name +" "+ comment.resident.lastname +" "+ comment.resident.secondlastname}} <span has-authority="ROLE_USER" ng-if="comment.adminInfoId!==null">(Administrador)</span></span>
-                        <p style="display: inline" ng-if="comment.editing===false">{{comment.description}}</p>
-                        <textarea ng-if="comment.editing===true" class="comment-input col-md-12 textarea"
-                                  type="text"
-                                  ng-model="comment.newComment"
-                                  placeholder="Editar comentario..." required></textarea>
-                    </div>
-                    <div class="col-md-offset-1 col-md-11 no-padding">
-                        <button
-                            style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;cursor:default"
-                            class="comments-button" ng-if="comment.editing===false">{{comment.showingDate}}
-                        </button>
-                        <span style="color: #90949c;cursor: pointer;font-size: 11px;"
-                              ng-if="comment.editedDate!=undefined" title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
-                        <button
-                            style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                            class="comment-actions float-right"
-                            ng-if="vm.showActionEdit(comment) && comment.editing===false"
-                            ng-click="vm.deleteComment(comment, announcement)">Eliminar
-                        </button>
-                        <button
-                            style="border: none;background-color: #f7f7f738;color: #616770;font-size: 11px;margin:5px"
-                            class="comment-actions float-right" ng-click="vm.editComment(comment)"
-                            ng-if="vm.showActionEdit(comment)  && comment.editing===false">Editar
-                        </button>
-                        <button
-                            style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                            class="comment-actions float-right" ng-click="vm.cancelEditing(comment)"
-                            ng-if="comment.editing===true">Cancelar
-                        </button>
-                        <button
-                            style="border: none;background-color: #f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                            class="comment-actions float-right"
-                            ng-click="vm.submitEditComment(comment)"
-                            ng-if="comment.editing===true">Editar comentario <i class="fa fa-paper-plane"
-                                                                                aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-md-12 no-padding">
-                    <hr ng-if="vm.complaint.complaintComments.content.length>0" style="margin-top:0px!important">
-                    <form ng-submit="vm.saveComment()">
-                        <div class="col-md-1">
-                            <div class="image" style="float: right">
-                                <img ng-hide="currentUserImage" src="content/images/nobody-image.jpg"
-                                     class="object-fit_scale-down"/>
-                                <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
-                                     class="object-fit_scale-down"/>
+                <div class="comments-container">
+                    <md-list flex>
+                        <md-list-item class="md-3-line"
+                                      ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id "
+                        ">
+                        <img class="md-avatar" ng-hide="comment.resident.image_url"
+                             src="content/images/nobody-image.jpg"/>
+                        <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
+                             class="md-avatar"/>
+                        <div class="md-list-item-text" layout="column">
+                            <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
+                                <div>
+                                    <h3 style="font-size: 13px;font-weight: bold">
+                                        {{comment.resident.name +" "+ comment.resident.lastname +" "+
+                                        comment.resident.secondlastname}}</h3>
+                                    <h4 class="inline" style="font-size: 12px">
+                                        {{comment.showingDate}}
+                                        <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                              ng-if="comment.editedDate!=undefined"
+                                              title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                    </h4>
+                                </div>
+                                <div ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                    <md-menu md-position-mode="target-right target">
+                                        <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                   ng-click="$mdMenu.open($event)">
+                                            <i class="material-icons">more_vert</i>
+                                        </md-button>
+                                        <md-menu-content width="4">
+                                            <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                    <div layout="row" flex>
+                                                        <p flex>Eliminar comentario</p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                            <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                <md-button ng-click="vm.editComment(comment)">
+                                                    <div layout="row" flex>
+                                                        <p flex>Editar</p>
+                                                    </div>
+                                                </md-button>
+                                            </md-menu-item>
+                                        </md-menu-content>
+                                    </md-menu>
+                                </div>
                             </div>
+                            <p style="font-size: 13px" ng-if="comment.editing===false">
+                                {{comment.description}}
+                            </p>
+                            <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
+                                <div flex="100" class="inline" ng-if="comment.editing===true">
+                                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment"
+                                                  class="input-no-decoration" style="margin-left: 5px" type="text"
+                                                  placeholder="Actualizar comentario.." required>
+                                        </textarea>
+                                </div>
+                                <div layout="row" layout-align="end center" ng-show="comment.editing===true">
+                                    <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
+                                    <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
+                                        Actualizar
+                                    </md-button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="col-md-11">
-                     <textarea class="comment-input col-md-12 textarea" type="text"
-                               ng-model="vm.newComment.description"
-                               placeholder="Responder a este servicio..." required></textarea>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <div>
+                <form flex name="form" class="md-list-item" ng-submit="vm.saveComment()">
+                    <div layout="row">
+                        <img class="circle-material-image" ng-hide="currentUserImage"
+                             src="content/images/nobody-image.jpg"/>
+                        <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                             class="circle-material-image"/>
+                        <div flex="100" >
+                        <textarea  style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                   ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                   style="margin-left: 5px" type="text"
+                                   placeholder="Responder..." required>
+                        </textarea>
                         </div>
-                        <div class="col-md-11 col-md-offset-1">
-                            <button type="submit"
-                                    style="border: none;background-color:#f7f7f738;;color: #616770;font-size: 11px;margin:5px"
-                                    class="comments-button float-right">
-                                Enviar respuesta <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                    </form>
+                    </div>
+                    <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                        <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                        <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta</md-button>
+                    </div>
+                </form>
                 </div>
             </div>
-        </div>
-        <!-- END Portlet PORTLET-->
-    </div>
+        </md-card-content>
+    </md-card>
 </div>
-</div>
-<!--<div>-->
-<!--<h2><span data-translate="aditumApp.complaint.detail.title">Complaint</span> {{vm.complaint.id}}</h2>-->
-<!--<hr>-->
-<!--<jhi-alert-error></jhi-alert-error>-->
-<!--<dl class="dl-horizontal jh-entity-details">-->
-<!--<dt><span data-translate="aditumApp.complaint.description">Description</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.description}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.complaintType">Complaint Type</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.complaintType}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.status">Status</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.status}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.deleted">Deleted</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.deleted}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.creationDate">Creation Date</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.creationDate | date:'medium'}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.resolutionDate">Resolution Date</span></dt>-->
-<!--<dd>-->
-<!--<span>{{vm.complaint.resolutionDate | date:'medium'}}</span>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.house">House</span></dt>-->
-<!--<dd>-->
-<!--<a ui-sref="house-detail({id:vm.complaint.houseId})">{{vm.complaint.houseId}}</a>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.company">Company</span></dt>-->
-<!--<dd>-->
-<!--<a ui-sref="company-detail({id:vm.complaint.companyId})">{{vm.complaint.companyId}}</a>-->
-<!--</dd>-->
-<!--<dt><span data-translate="aditumApp.complaint.resident">Resident</span></dt>-->
-<!--<dd>-->
-<!--<a ui-sref="resident-detail({id:vm.complaint.residentId})">{{vm.complaint.residentId}}</a>-->
-<!--</dd>-->
-<!--</dl>-->
-
-<!--<button type="submit"-->
-<!--ui-sref="{{ vm.previousState }}"-->
-<!--class="btn btn-info">-->
-<!--<span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>-->
-<!--</button>-->
-
-<!--<button type="button" ui-sref="complaint-detail.edit({id:vm.complaint.id})" class="btn btn-primary">-->
-<!--<span class="glyphicon glyphicon-pencil"></span>-->
-<!--<span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>-->
-<!--</button>-->
-<!--</div>-->

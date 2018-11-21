@@ -59,7 +59,7 @@
                         <div class="margin-bottom-10 control-label" style="font-weight: 600">Cantidad</div>
                         <div class="input-group ">
                             <span class="input-group-addon">₡</span>
-                            <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control numbers" name="reservationCharge" id="field_reservationCharge"
+                            <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" format="currency" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control numbers" name="reservationCharge" id="field_reservationCharge"
                                    ng-model="vm.charge.ammount"  placeholder="0.00" required
                             />
                         </div>
@@ -68,7 +68,7 @@
                         <div class="margin-bottom-10 " style="font-weight: 600">Devolución</div>
                         <div class="input-group ">
                             <span class="input-group-addon">₡</span>
-                            <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" class="form-control numbers" name="devolutionCharge" id="field_devolutionCharge"
+                            <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" format="currency" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" class="form-control numbers" name="devolutionCharge" id="field_devolutionCharge"
                                    ng-model="vm.commonAreaReservations.devolutionAmmount"  placeholder="0.00"
                             />
                         </div>

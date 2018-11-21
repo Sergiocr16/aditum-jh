@@ -11,11 +11,15 @@
 
         var vm = this;
         $rootScope.active = 'complaint-user';
+        $rootScope.mainTitle = "Quejas y sugerencias";
+
         vm.status = "-1";
         moment.locale("es");
         vm.complaints = [];
         vm.loadPage = loadPage;
         vm.loadAllByStatus = loadAllByStatus;
+        vm.isReady = false;
+
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.page = 0;
         vm.links = {
@@ -37,12 +41,11 @@
         }
 
         function loadAllByStatus() {
-            $("#tableData").fadeOut();
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn();
+
+            vm.isReady = false;
 
 
-                if(vm.status!=="-1") {
+            if(vm.status!=="-1") {
                     Complaint.queryByStatus({
                         companyId: globalCompany.getId(),
                         status: parseInt(vm.status),
@@ -53,7 +56,6 @@
                 }else{
                     loadAll();
                 }
-            }, 400);
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'creationDate') {
@@ -69,13 +71,8 @@
                     data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
                     vm.complaints.push(data[i]);
                 }
-                console.log(vm.complaints)
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400);
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900);
+                vm.isReady = true;
+
             }
 
             function onError(error) {
@@ -105,13 +102,8 @@
                     data[i].showingCreationDate = moment(data[i].creationDate).fromNow()
                     vm.complaints.push(data[i]);
                 }
-                console.log(vm.complaints)
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400);
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900);
+                vm.isReady = true;
+
             }
 
             function onError(error) {
