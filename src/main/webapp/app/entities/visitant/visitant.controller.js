@@ -80,6 +80,7 @@
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
                 vm.isReady = true;
+                vm.showFilterDiv = false;
             }
 
             function onError(error) {
@@ -92,6 +93,7 @@
             vm.dates.initial_time = undefined;
             vm.dates.final_time = undefined;
             vm.isConsulting = false;
+            vm.showFilterDiv = false;
             loadAll();
             vm.titleConsult = "";
         }

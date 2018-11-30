@@ -1010,7 +1010,7 @@
             $('body').addClass("gray");
         });
         vm.viewWatch = function () {
-            var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyId)
+            var encryptedId = CommonMethods.encryptIdUrl(globalCompany.getId())
             $state.go('turno', {companyId: encryptedId})
         }
 
@@ -1081,7 +1081,7 @@
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
-                                Company.get({id: parseInt($rootScope.companyId)}, function (condo) {
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     if (condo.active == 0 || data.enabled == 0) {

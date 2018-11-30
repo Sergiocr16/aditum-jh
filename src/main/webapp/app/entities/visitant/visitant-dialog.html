@@ -1,276 +1,134 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Reportar</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Visitante</a>
+<div ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            Reportar visitante</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Nacionalidad</label>
+                        <md-select ng-model="vm.visitor.type" ng-required='vm.required==1'>
+                            <md-option value="9">
+                                Costarricense
+                            </md-option>
+                            <md-option value="20">
+                                Extranjero
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Número de cédula</label>
+                        <input required ng-class="{redBorder: vm.visitor.validIdentification == 0}"
+                               class="uppercase" ng-change="vm.findInPadron(vm.visitor)"
+                               maxlength="{{vm.visitor.nationality}}" ng-model="vm.visitor.identificationnumber">
+                        <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                    </md-input-container>
 
-        </li>
+                    <md-input-container class="md-block">
+                        <label>Nombre</label>
+                        <input required ng-model="vm.visitor.name" type="text" ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
 
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="row display-none" id="all">
-    <div class="col-md-12">
-        <form ng-submit="vm.save()">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-user font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Reportar visitante</span>
-                    </div>
+                    <md-input-container class="md-block">
+                        <label>Primer Apellido</label>
+                        <input required ng-model="vm.visitor.lastname" type="text"
+                               ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Segundo Apellido</label>
+                        <input required ng-model="vm.visitor.secondlastname" type="text"
+                               ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
                 </div>
-                <div class="portlet-body form">
-                    <div class="col-md-6 col-sm-6">
-                        <div class="form-group form-md-line-input">
-                            <label class="font-15" style="color:#888888!important">Nacionalidad</label>
-                            <select class="form-control gray-font" name="type" ng-model="vm.visitor.type" ng-required='vm.required==1'>
-                                <option value="9">Costarricense</option>
-                                <option value="20">Extranjero</option>
-                            </select>
-                        </div>
-                        <div class="form-group form-md-line-input">
-                            <input id="focusMe" ng-class="{redBorder: vm.visitor.validIdentification == 0}" maxlength="{{vm.visitor.type}}" ng-model="vm.visitor.identificationnumber"  ng-change="vm.findInPadron(vm.visitor)" type="text" class="form-control gray-font"  style='text-transform:uppercase'>
-                            <label class="font-15">Número de cédula (opcional)</label>
-                            <span class="help-block">Escriba el número de cédula sin guiones ni espacios.</span>
-                        </div>
-                        <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.licenseplate" ng-class="{redBorder: vm.visitor.validPlateNumber == 0}" ng-change="vm.validPlate(vm.visitor)" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
-                            <label class="font-15">Número de placa (opcional)</label>
-                            <span class="help-block">Sin guiones</span>
-                        </div>
-                        <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.name" ng-disabled="vm.visitor.found==1"  ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.visitor.name)}"   type="text" style="text-transform: uppercase" class="form-control letters gray-font" required>
-                            <label class="font-15">Nombre</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 ">
-                        <div style="margin-top:45px" class="col-md-12 hidden-xs hidden-sm"></div>
-                        <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.lastname" ng-disabled="vm.visitor.found==1" type="text"  ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.visitor.lastname)}"  style="text-transform: uppercase" class="form-control letters gray-font" required>
-                            <label class="font-15 hidden-xs hidden-sm" style="margin-top:24px">Primer Apellido</label>
-                            <label class="font-15 hidden-lg hidden-md">Primer Apellido</label>
-                        </div>
-                        <div class="form-group form-md-line-input">
-                            <input ng-model="vm.visitor.secondlastname" ng-disabled="vm.visitor.found==1" ng-class="{redBorder: vm.hasNumbersOrSpecial(vm.visitor.secondlastname)}"  style="text-transform: uppercase" type="text" class="form-control letters gray-font">
-                            <label class="font-15">Segundo Apellido</label>
-                        </div>
 
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block" has-authority="ROLE_USER">
+                        <label>Segundo Apellido</label>
+                        <input ng-model="vm.visitor.secondlastname" ng-disabled="vm.visitor.found==1"
+                               type="text" class="uppercase" required
+                               required>
+                    </md-input-container>
 
+                    <md-input-container class="md-block" ng-class="{'md-input-invalid': vm.visitor.validPlateNumber == 0}">
+                        <label>Número de placa (Opcional)</label>
+                        <input ng-focus="expression==1" ng-model="vm.visitor.licenseplate" type="text"
+                               ng-change="vm.validPlate(vm.visitor)"
+                               maxlength="20" class="uppercase">
+                        <div class="hint">Escriba el número de placa sin guiones.</div>
+                    </md-input-container>
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
+                        <h3 class="font-15 text-center">Fecha desde la cual puede ingresar:</h3>
                         <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
-                            <h3  class="font-15 text-center">Fecha desde la cual puede ingresar:</h3>
-                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
 
-                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                    <!--class="form-control letters gray-font text-center dating" required>-->
-                                    <input ng-change="vm.updateDatePicker()" ng-model="vm.dates.initial_date" type="date" min="{{vm.minInitialDate}}"  class="form-control gray-font text-center" required>
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <md-input-container  class="md-block no-margin">
+                                    <md-datepicker md-min-date="vm.minInitialDate"
+                                                   md-max-date="vm.dates.final_date"
+                                                   required ng-model="vm.dates.initial_date"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha inicial" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
 
-                                </div>
-                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                    <!--class="form-control letters gray-font text-center dating" required>-->
-                                    <input id="la" type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.initial_time"    class="form-control letters gray-font text-center dating" required>
-                                </div>
+                                <!--&lt;!&ndash;<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"&ndash;&gt;-->
+                                <!--&lt;!&ndash;class="form-control letters gray-font text-center dating" required>&ndash;&gt;-->
+                                <!--<input ng-change="vm.updateDatePicker()" ng-model="vm.dates.initial_date" type="date"-->
+                                       <!--min="{{vm.minInitialDate}}" class="form-control gray-font text-center" required>-->
+
                             </div>
-                            <h3  class="font-15 text-center">Fecha hasta la cual puede ingresar:</h3>
-
-                            <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
-
-                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                           <!--class="form-control letters gray-font text-center dating" required>-->
-                                    <input id="lala" ng-change="vm.updateDatePicker()" ng-model="vm.dates.final_date" type="date" class="form-control gray-font text-center" required>
-
-                                </div>
-                                <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                    <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                    <!--class="form-control letters gray-font text-center dating" required>-->
-                                    <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time " class="form-control gray-font text-center" required>
-                                </div>
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                <!--class="form-control letters gray-font text-center dating" required>-->
+                                <input id="la" type="time" ng-change="vm.updateTimePicker()"
+                                       ng-model="vm.dates.initial_time"
+                                       class="form-control letters gray-font text-center dating" required>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-actions noborder">
-                        <h3 class="text-right">
-                            <button type="submit" class="btn blue">Reportar</button>
-                            <button type="button" ui-sref="visitant-invited-user" class=" btn btn-danger">Cancelar</button>
-                        </h3>
+                        <h3 class="font-15 text-center">Fecha hasta la cual puede ingresar:</h3>
+
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <md-input-container  class="md-block no-margin">
+                                    <md-datepicker md-min-date="vm.dates.initial_date" required ng-model="vm.dates.final_date"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha final" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+                                <!--&lt;!&ndash;<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"&ndash;&gt;-->
+                                <!--&lt;!&ndash;class="form-control letters gray-font text-center dating" required>&ndash;&gt;-->
+                                <!--<input id="lala" ng-change="vm.updateDatePicker()" ng-model="vm.dates.final_date"-->
+                                       <!--type="date" class="form-control gray-font text-center" required>-->
+
+                            </div>
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                                <!--class="form-control letters gray-font text-center dating" required>-->
+                                <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time "
+                                       class="form-control gray-font text-center" required>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                    Reportar visitante
+                </md-button>
+            </div>
         </form>
-    </div>
+    </md-content>
+
 </div>
-
-
-
-
-
-
-
-
-
-
-<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
-
-<!--<div class="modal-header">-->
-<!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
-<!--ng-click="vm.clear()">&times;</button>-->
-<!--<h4 class="modal-title" id="myVisitantLabel" data-translate="aditumApp.visitant.home.createOrEditLabel">Create or edit a Visitant</h4>-->
-<!--</div>-->
-<!--<div class="modal-body">-->
-<!--<jhi-alert-error></jhi-alert-error>-->
-<!--<div class="form-group" ng-show="vm.visitant.id">-->
-<!--<label for="id" data-translate="global.field.id">ID</label>-->
-<!--<input type="text" class="form-control" id="id" name="id"-->
-<!--ng-model="vm.visitant.id" readonly />-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.name" for="field_name">Name</label>-->
-<!--<input type="text" class="form-control" name="name" id="field_name"-->
-<!--ng-model="vm.visitant.name"-->
-<!--required/>-->
-<!--<div ng-show="editForm.name.$invalid">-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.name.$error.required" data-translate="entity.validation.required">-->
-<!--This field is required.-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.lastname" for="field_lastname">Lastname</label>-->
-<!--<input type="text" class="form-control" name="lastname" id="field_lastname"-->
-<!--ng-model="vm.visitant.lastname"-->
-<!--required/>-->
-<!--<div ng-show="editForm.lastname.$invalid">-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.lastname.$error.required" data-translate="entity.validation.required">-->
-<!--This field is required.-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.secondlastname" for="field_secondlastname">Secondlastname</label>-->
-<!--<input type="text" class="form-control" name="secondlastname" id="field_secondlastname"-->
-<!--ng-model="vm.visitant.secondlastname"-->
-<!--required/>-->
-<!--<div ng-show="editForm.secondlastname.$invalid">-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.secondlastname.$error.required" data-translate="entity.validation.required">-->
-<!--This field is required.-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.identificationnumber" for="field_identificationnumber">Identificationnumber</label>-->
-<!--<input type="text" class="form-control" name="identificationnumber" id="field_identificationnumber"-->
-<!--ng-model="vm.visitant.identificationnumber"-->
-<!--required/>-->
-<!--<div ng-show="editForm.identificationnumber.$invalid">-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.identificationnumber.$error.required" data-translate="entity.validation.required">-->
-<!--This field is required.-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.arrivaltime" for="field_arrivaltime">Arrivaltime</label>-->
-<!--<div class="input-group">-->
-<!--<input id="field_arrivaltime" type="text" class="form-control" name="arrivaltime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.arrivaltime" is-open="vm.datePickerOpenStatus.arrivaltime"-->
-<!--/>-->
-<!--<span class="input-group-btn">-->
-<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('arrivaltime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
-<!--</span>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.invitationstaringtime" for="field_invitationstaringtime">Invitationstaringtime</label>-->
-<!--<div class="input-group">-->
-<!--<input id="field_invitationstaringtime" type="text" class="form-control" name="invitationstaringtime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationstaringtime" is-open="vm.datePickerOpenStatus.invitationstaringtime"-->
-<!--/>-->
-<!--<span class="input-group-btn">-->
-<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationstaringtime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
-<!--</span>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.invitationlimittime" for="field_invitationlimittime">Invitationlimittime</label>-->
-<!--<div class="input-group">-->
-<!--<input id="field_invitationlimittime" type="text" class="form-control" name="invitationlimittime" datetime-picker="{{dateformat}}" ng-model="vm.visitant.invitationlimittime" is-open="vm.datePickerOpenStatus.invitationlimittime"-->
-<!--/>-->
-<!--<span class="input-group-btn">-->
-<!--<button type="button" class="btn btn-default" ng-click="vm.openCalendar('invitationlimittime')"><i class="glyphicon glyphicon-calendar"></i></button>-->
-<!--</span>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.licenseplate" for="field_licenseplate">Licenseplate</label>-->
-<!--<input type="text" class="form-control" name="licenseplate" id="field_licenseplate"-->
-<!--ng-model="vm.visitant.licenseplate"-->
-<!--/>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.isinvited" for="field_isinvited">Isinvited</label>-->
-<!--<input type="number" class="form-control" name="isinvited" id="field_isinvited"-->
-<!--ng-model="vm.visitant.isinvited"-->
-<!--required min="0" max="1"/>-->
-<!--<div ng-show="editForm.isinvited.$invalid">-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.isinvited.$error.required" data-translate="entity.validation.required">-->
-<!--This field is required.-->
-<!--</p>-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.isinvited.$error.min" data-translate="entity.validation.min" translate-value-min="0">-->
-<!--This field should be at least 0.-->
-<!--</p>-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.isinvited.$error.max" data-translate="entity.validation.max" translate-value-max="1">-->
-<!--This field cannot be more than 1.-->
-<!--</p>-->
-<!--<p class="help-block"-->
-<!--ng-show="editForm.isinvited.$error.number" data-translate="entity.validation.number">-->
-<!--This field should be a number.-->
-<!--</p>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label class="control-label" data-translate="aditumApp.visitant.responsableofficer" for="field_responsableofficer">Responsableofficer</label>-->
-<!--<input type="text" class="form-control" name="responsableofficer" id="field_responsableofficer"-->
-<!--ng-model="vm.visitant.responsableofficer"-->
-<!--/>-->
-<!--</div>-->
-
-<!--<div class="form-group">-->
-<!--<label data-translate="aditumApp.visitant.house" for="field_house">House</label>-->
-<!--<select class="form-control" id="field_house" name="house" ng-model="vm.visitant.houseId" ng-options="house.id as house.id for house in vm.houses"            >-->
-<!--<option value=""></option>-->
-<!--</select>-->
-<!--</div>-->
-<!--<div class="form-group">-->
-<!--<label data-translate="aditumApp.visitant.company" for="field_company">Company</label>-->
-<!--<select class="form-control" id="field_company" name="company" ng-model="vm.visitant.companyId" ng-options="company.id as company.id for company in vm.companies"            >-->
-<!--<option value=""></option>-->
-<!--</select>-->
-<!--</div>-->
-<!--</div>-->
-<!--<div class="modal-footer">-->
-<!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-<!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-<!--</button>-->
-<!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
-<!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
-<!--</button>-->
-<!--</div>-->
-<!--</form>-->

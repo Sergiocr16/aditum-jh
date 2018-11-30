@@ -65,7 +65,7 @@
         <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
  
-        <div ui-view="access_door" has-authority="ROLE_OFFICER"></div>
+        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
 
         <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>

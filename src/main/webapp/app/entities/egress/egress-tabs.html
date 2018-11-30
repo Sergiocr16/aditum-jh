@@ -7,7 +7,13 @@
             </md-tab>
 
         </md-tabs>
+        <md-tabs hide-lg hide-xl hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+            <md-tab   ui-sref="egress-tabs.egress"  md-active-nc="$state.includes('egress-tabs.egress')" label="Todos los egresos">
+            </md-tab>
+            <md-tab   ui-sref="egress-tabs.egress-report"   md-active-nc="$state.includes('egress-tabs.egress-report')" label="Reporte de egresos" class="md-active">
+            </md-tab>
 
+        </md-tabs>
     </md-content>
 </div>
 

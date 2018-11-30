@@ -12,7 +12,7 @@
         $rootScope.active = "adminVisitors";
         var vm = this;
         vm.Principal;
-        $rootScope.mainTitle = vm.title;
+        $rootScope.mainTitle = "Visitantes"
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.consult = consult;
@@ -68,6 +68,8 @@
                 vm.queryCount = data.length;
                 vm.page = pagingParams.page;
                 vm.title = 'Visitantes del mes';
+                $rootScope.mainTitle = vm.title;
+
                 vm.isConsulting = false;
                 formatVisitors(vm.visitants);
                 vm.isReady = true;
@@ -102,7 +104,7 @@
         }
 
         vm.findVisitorByHouse = function (house) {
-            if (house == undefined) {
+            if (house == undefined || house == '-1') {
                 loadAll();
             } else {
                 if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) {
@@ -175,7 +177,7 @@
         }
 
         vm.stopConsulting = function () {
-
+            vm.showFilterDiv = false;
             vm.dates.initial_time = undefined;
             vm.dates.final_time = undefined;
             vm.isConsulting = false;

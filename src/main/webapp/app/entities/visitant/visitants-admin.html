@@ -1,9 +1,8 @@
-
-
-<div class="col-md-12 no-padding  " ng-if="vm.visitants.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
-    <div class="" >
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d">{{vm.title}}</h3>
-        <div ng-show="vm.isConsulting==true">
+<div class="col-md-12 no-padding">
+    <div class="">
+        <h3 hide-xs hide-sm  class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+            style="color: #00b19d">{{vm.title}}</h3>
+        <div hide-xs hide-sm ng-show="vm.isConsulting==true">
             <h3 style="color: #00b19d">{{vm.titleConsult}}</h3>
         </div>
 
@@ -27,47 +26,73 @@
     </div>
 </div>
 
-<div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+<div class="slide-box slide-toggle-js no-padding fade-in row" ng-if="vm.showFilterDiv" layout="row" layout-xs="column">
 
-    <!--<div class="col-md-7 col-lg-7"></div>-->
-    <!--<div class="col-md-5 col-lg-5" ng-if="vm.isConsulting==true"></div>-->
+    <md-input-container  class="md-block no-margin" has-authority="ROLE_MANAGER">
+        <md-select ng-model="vm.house" ng-change="vm.findVisitorByHouse(vm.house)">
+            <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
+            <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                       ng-model="vm.house" ng-value="house">
+                {{house.housenumber}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+    <md-input-container  class="md-block no-margin">
+        <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                       md-hide-icons="calendar"
+                       md-placeholder="Fecha de inicio" md-open-on-focus
+                       required></md-datepicker>
+    </md-input-container>
 
-    <div class=" col-md-2 col-lg-2 col-sm-12 col-xs-12 no-padding">
-        <button class="btn green-button-oficial col-md-12 col-sm-12 col-xs-12  "  ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()">Mostrar todos</button>
-    </div>
-    <div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding">
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding-right gray-font">
-            <input ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                   type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-            <input ng-model="vm.dates.final_time"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                   class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-        </div>
-        <button ng-disabled="vm.isDisableButton()"  ng-click="vm.consult()" class="btn green-button-oficial col-md-4 col-sm-4 col-xs-12  ">Consultar</button>
-    </div>
+    <md-input-container  class="md-block no-margin">
+        <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                       md-hide-icons="calendar"
+                       md-placeholder="Fecha final" md-open-on-focus
+                       required></md-datepicker>
+    </md-input-container>
 
-
+    <md-button  style="margin-top: -15px" hide-sm hide-xs class="md-raised  md-warn thin-btn no-margin-right"
+               ng-click="vm.consult()"
+               ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+        Consultar
+    </md-button>
+    <md-button  style="margin-top: -15px" hide-sm hide-xs class="md-raised md-primary thin-btn"
+               ng-disabled="vm.isConsulting!=true" ng-click="vm.stopConsulting()"
+               ng-show="vm.isConsulting==true"> Mostrar
+        todos
+    </md-button>
+    <md-button  class="md-raised  md-warn thin-btn no-margin-right" hide-lg hide-xl hide-md ng-click="vm.consult()"
+               ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+        Consultar
+    </md-button>
+    <md-button  class="md-raised md-primary thin-btn" hide-lg hide-xl hide-md ng-disabled="vm.isConsulting!=true"
+               ng-click="vm.stopConsulting()"
+               ng-show="vm.isConsulting==true"> Mostrar
+        todos
+    </md-button>
 </div>
 
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class="row fade-in">
+<div ng-if="vm.isReady" class="row fade-in col-md-12 margin-top-20 ">
     <div class="col-md-12">
-
         <div class="portlet-body ">
-            <no-content ng-if="vm.visitants.length == 0" icon="group_add" text="No hay visitantes registrados"></no-content>
+            <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                        text="No hay visitantes registrados"></no-content>
 
-            <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;">
-                <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
-                    <thead style="background-color: #fafafa;" >
+            <div class="table-scrollable " ng-if="vm.visitants.length>0" style="border: 0px!important;" hide-xs hide-sm
+                 hide-md>
+                <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                    <thead style="background-color: #fafafa;">
 
                     <tr>
                         <th>Nombre completo</th>
                         <th>Cédula</th>
                         <th>Número de placa</th>
                         <th>Fecha y Hora</th>
+                        <th>Número de Casa</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -78,11 +103,37 @@
                         <td ng-show="visitor.licenseplate!=''">{{visitor.licenseplate}}</td>
                         <td ng-show="visitor.licenseplate==''">No se registró</td>
                         <td>{{visitor.arrivaltime | formatDate}}</td>
+                        <td>{{visitor.houseNumber}}</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl
+                 ng-repeat="visitor in vm.visitants | filter:vm.search ">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-15">{{visitor.fullName.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead">Filial que visitó: <b>{{visitor.houseNumber}}</b></span>
+                            <span class="md-subhead">Número de placa: <span ng-show="visitor.licenseplate!=''"><b>{{visitor.licenseplate}}</b></span><span
+                            ng-show="visitor.licenseplate==''">No se registró</span></span>
+                            <span class="md-subhead">Fecha y Hora: {{visitor.arrivaltime | formatDate}}</span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div style="width: 60px;height: 60px;">
+                                <img src="content/images/nobody-image.jpg" height="60"
+                                     width="60"/>
+                            </div>
+                        </md-card-title-media>
 
+                    </md-card-title>
+
+                </md-card>
+
+            </div>
         </div>
 
     </div>

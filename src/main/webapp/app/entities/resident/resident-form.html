@@ -69,7 +69,6 @@
                                    maxlength="{{vm.resident.nationality}}" ng-model="vm.resident.identificationnumber">
                             <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
                         </md-input-container>
-
                         <md-input-container class="md-block">
                             <label>Nombre</label>
                             <input required ng-model="vm.resident.name" type="text" ng-disabled="vm.resident.found==1"
@@ -140,10 +139,8 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-
                     </div>
                 </div>
-
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
                     <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="resident()"
                                class="md-warn md-raised">Cancelar
@@ -158,5 +155,4 @@
             </div>
         </form>
     </md-content>
-
 </div>

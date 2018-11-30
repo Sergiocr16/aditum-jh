@@ -161,7 +161,6 @@
             vm.findResidentsByHouse(vm.house);
         }
         vm.findResidentsByHouse = function (house) {
-            console.log(house)
 
             vm.house = house;
             if (house == undefined || house=='-1') {
