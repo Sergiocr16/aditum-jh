@@ -237,9 +237,11 @@
                     },
                 ]
             },
+
+
             {
-                title: "",
-                activeOn: "dashboard",
+                title: "Condominio",
+                activeOn: "",
                 authoritites: "ROLE_MANAGER",
                 secondaryItems: [
                     {
@@ -285,6 +287,7 @@
                             },
                         ]
                     },
+
 
                     {
                         title: "Administración",
@@ -371,6 +374,17 @@
                                 thirdItems: []
                             },
                         ]
+                    },
+                    {
+                        title: "Gestionar quejas",
+                        icon: "sentiment_very_dissatisfied",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "complaint",
+                        collapsable: false,
+                        uisref: "complaint",
+                        menuId: "",
+                        hover: false,
+                        secondaryItems: []
                     },
                 ]
             },
@@ -521,7 +535,7 @@
                         thirdItems: []
                     },
                     {
-                        title: "Saldos",
+                        title: "Saldo de filiales",
                         icon: "library_books",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "balance",
@@ -543,165 +557,150 @@
                         hover: false,
                         thirdItems: []
 
-                    },
+                    }
+                ]
+            },
+            {
+                title: "Áreas comunes",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                secondaryItems: [
                     {
-                        title: "Reportes",
-                        icon: "pie_chart",
+                        title: "Administrar",
+                        icon: "view_agenda",
                         authoritites: "ROLE_MANAGER",
-                        activeOn: "estadoResultados,reporteGastos,reporteIngresos",
-                        collapsable: true,
-                        uisref: "",
-                        menuId: "reportesMenu",
-                        hover: false,
-                        thirdItems: [
-                            {
-                                title: "Estado de resultados",
-                                icon: "equalizer",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "estadoResultados",
-                                collapsable: false,
-                                uisref: "budgetExecution.mensualReport",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Reporte de egresos",
-                                icon: "keyboard_backspace",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "reporteGastos",
-                                collapsable: false,
-                                uisref: "egress-tabs.egress-report",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Reporte de ingresos",
-                                icon: "trending_flat",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "reporteIngresos",
-                                collapsable: false,
-                                uisref: "payment-report",
-                                menuId: "",
-                                hover: false,
-                            },
-                        ]
-                    },
-                    {
-                        title: "Áreas comunes",
-                        icon: "local_florist",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "reservationAdministration,generaCalendar,createReservation",
-                        collapsable: true,
-                        uisref: "",
-                        menuId: "areasComunesMenu",
-                        hover: false,
-                        thirdItems: [
-                            {
-                                title: "Administrar",
-                                icon: "view_agenda",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "reservationAdministration",
-                                collapsable: false,
-                                uisref: "common-area-administration.common-area",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Ver calendario",
-                                icon: "event_note",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "generaCalendar",
-                                collapsable: false,
-                                uisref: "common-area-administration.general-reservation-calendar",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Reservar",
-                                icon: "event_available",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "createReservation",
-                                collapsable: false,
-                                uisref: "common-area-administration.newReservation",
-                                menuId: "",
-                                hover: false,
-                            },
-
-                        ]
-                    },
-                    {
-                        title: "Configuración",
-                        icon: "settings",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "proovedor,configureCharges,bancoConfiguration,egressCategories,proovedores",
-                        collapsable: true,
-                        uisref: "",
-                        menuId: "configMenu",
-                        hover: false,
-                        thirdItems: [
-                            {
-                                title: "General",
-                                icon: "build",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "administrationConfiguration",
-                                collapsable: false,
-                                uisref: "administration-configuration-detail",
-                                menuId: "",
-                                hover: false
-                            },
-                            {
-                                title: "Proveedores",
-                                icon: "store_mall_directory",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "proovedores",
-                                collapsable: false,
-                                uisref: "proveedor",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Cuotas",
-                                icon: "turned_in",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "configureCharges",
-                                collapsable: false,
-                                uisref: "configureCharges",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Cuentas de banco",
-                                icon: "account_balance",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "bancoConfiguration",
-                                collapsable: false,
-                                uisref: "banco-configuration",
-                                menuId: "",
-                                hover: false,
-                            },
-                            {
-                                title: "Categoría de egresos",
-                                icon: "call_received",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "egressCategories",
-                                collapsable: false,
-                                uisref: "egress-category",
-                                menuId: "",
-                                hover: false,
-                            },
-                        ]
-                    },
-                    {
-                        title: "Gestionar quejas",
-                        icon: "sentiment_very_dissatisfied",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "complaint",
+                        activeOn: "reservationAdministration",
                         collapsable: false,
-                        uisref: "complaint",
+                        uisref: "common-area-administration.common-area",
                         menuId: "",
                         hover: false,
-                        secondaryItems: []
                     },
+                    {
+                        title: "Reservaciones",
+                        icon: "view_comfy",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reservations",
+                        collapsable: false,
+                        uisref: "common-area-administration.common-area-reservations",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Ver calendario",
+                        icon: "event_note",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "generaCalendar",
+                        collapsable: false,
+                        uisref: "common-area-administration.general-reservation-calendar",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Reservar",
+                        icon: "event_available",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "createReservation",
+                        collapsable: false,
+                        uisref: "common-area-administration.newReservation",
+                        menuId: "",
+                        hover: false,
+                    },
+
+                ]
+            },
+            {
+                title: "Reportes",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                secondaryItems: [
+                    {
+                        title: "Estado de resultados",
+                        icon: "equalizer",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "estadoResultados",
+                        collapsable: false,
+                        uisref: "budgetExecution.mensualReport",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Reporte de egresos",
+                        icon: "keyboard_backspace",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reporteGastos",
+                        collapsable: false,
+                        uisref: "egress-tabs.egress-report",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Reporte de ingresos",
+                        icon: "trending_flat",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reporteIngresos",
+                        collapsable: false,
+                        uisref: "payment-report",
+                        menuId: "",
+                        hover: false,
+                    },
+                ]
+            },
+            {
+                title: "Configuración",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                secondaryItems: [
+                    {
+                        title: "General",
+                        icon: "build",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "administrationConfiguration",
+                        collapsable: false,
+                        uisref: "administration-configuration-detail",
+                        menuId: "",
+                        hover: false
+                    },
+                    {
+                        title: "Proveedores",
+                        icon: "store_mall_directory",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "proovedores",
+                        collapsable: false,
+                        uisref: "proveedor",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Cuotas",
+                        icon: "turned_in",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "configureCharges",
+                        collapsable: false,
+                        uisref: "configureCharges",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Cuentas de banco",
+                        icon: "account_balance",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "bancoConfiguration",
+                        collapsable: false,
+                        uisref: "banco-configuration",
+                        menuId: "",
+                        hover: false,
+                    },
+                    {
+                        title: "Categoría de egresos",
+                        icon: "call_received",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "egressCategories",
+                        collapsable: false,
+                        uisref: "egress-category",
+                        menuId: "",
+                        hover: false,
+                    },
+
                 ]
             },
             {

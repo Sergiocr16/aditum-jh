@@ -90,13 +90,13 @@
 
 
 
-            <div class="col-md-3 no-padding col-sm-6 col-xs-12 hidden-lg  hidden-md" ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">
+            <div class="col-md-4 no-padding col-sm-6 col-xs-12   " ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
                 <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10 residentCardContainer"
                          md-theme-watch>
                     <md-card-title class="no-padding-bottom">
                         <md-card-title-text>
-                            <span class="md-headline font-20">{{vehicule.brand.toUpperCase()}}</span>
-                            <span class="md-subhead" style="padding-top: 15px!important;">Placa: {{vehicule.licenseplate.toUpperCase()}}</span>
+                            <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
                             <span class="md-subhead">Filial: {{vehicule.house_id}}</span>
 
                         </md-card-title-text>
@@ -154,60 +154,60 @@
                 </md-card>
 
             </div>
-            <div class="table-scrollable hidden-xs hidden-sm"  ng-show="vm.vehicules.length>0" style="border: 0px!important;">
-                <table  class="table  table-hover gray-font font-13 tableMaterialDesign ">
-                    <thead style="background-color: #fafafa;" >
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Placa</th>
-                        <th>Marca</th>
-                        <th class="text-center">Número de filial</th>
-                        <th class="text-center">Opciones</th>
+            <!--<div class="table-scrollable hidden-xs hidden-sm hidden-md hidden-lg"  ng-show="vm.vehicules.length>0" style="border: 0px!important;">-->
+                <!--<table  class="table  table-hover gray-font font-13 tableMaterialDesign ">-->
+                    <!--<thead style="background-color: #fafafa;" >-->
+                    <!--<tr>-->
+                        <!--<th>Tipo</th>-->
+                        <!--<th>Placa</th>-->
+                        <!--<th>Marca</th>-->
+                        <!--<th class="text-center">Número de filial</th>-->
+                        <!--<th class="text-center">Opciones</th>-->
 
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">
-                        <td>{{vehicule.type}}</td>
-                        <td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>
-                        <td>{{vehicule.brand}}</td>
-                        <td class="text-center">{{vehicule.house_id}}</td>
+                    <!--</tr>-->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                    <!--<tr ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">-->
+                        <!--<td>{{vehicule.type}}</td>-->
+                        <!--<td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>-->
+                        <!--<td>{{vehicule.brand}}</td>-->
+                        <!--<td class="text-center">{{vehicule.house_id}}</td>-->
 
-                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                            <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >
-                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
-                                    <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
-                                </md-button>
-                                <md-menu-content width="4">
-                                    <md-menu-item>
-                                        <md-button ng-click="vm.editVehicle(vehicule.id)">
-                                            <div layout="row" flex>
-                                                <p flex>Editar</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="vm.disableEnabledVehicule(vehicule)">
-                                            <div layout="row" flex>
-                                                <p flex>{{vm.actionButtonTitle}}</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">
-                                            <div layout="row" flex>
-                                                <p flex>Eliminar</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
-                                </md-menu-content>
-                            </md-menu>
-                        </td>
+                        <!--<td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">-->
+                            <!--<md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >-->
+                                <!--<md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">-->
+                                    <!--<i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>-->
+                                <!--</md-button>-->
+                                <!--<md-menu-content width="4">-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.editVehicle(vehicule.id)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Editar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.disableEnabledVehicule(vehicule)">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>{{vm.actionButtonTitle}}</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                    <!--<md-menu-item>-->
+                                        <!--<md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">-->
+                                            <!--<div layout="row" flex>-->
+                                                <!--<p flex>Eliminar</p>-->
+                                            <!--</div>-->
+                                        <!--</md-button>-->
+                                    <!--</md-menu-item>-->
+                                <!--</md-menu-content>-->
+                            <!--</md-menu>-->
+                        <!--</td>-->
 
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+                    <!--</tr>-->
+                    <!--</tbody>-->
+                <!--</table>-->
+            <!--</div>-->
         </div>
 
     </div>

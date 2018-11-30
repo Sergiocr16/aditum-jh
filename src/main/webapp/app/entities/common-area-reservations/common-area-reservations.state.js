@@ -219,7 +219,76 @@
                     return currentStateData;
                 }]
             }
-        })    .state('common-area-administration.common-area-reservations.reservationDetail', {
+        })
+            .state('common-area-administration.newCommonAreaReservation', {
+                url: '/{date}/{commonAreaId}/new',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                controller: 'CommonAreaReservationsDialogController',
+                controllerAs: 'vm',
+                resolve: {
+                    entity: function () {
+                        return {
+                            houseId: null,
+                            residentId: null,
+                            initalDate: null,
+                            finalDate: null,
+                            initialTime: null,
+                            finalTime: null,
+                            comments: null,
+                            id: null
+                        };
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('common-area-administration.newCommonAreaReservationDate', {
+                url: '/{date}/new',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                templateUrl: 'app/entities/common-area-reservations/common-area-reservations-dialog.html',
+                controller: 'CommonAreaReservationsDialogController',
+                controllerAs: 'vm',
+                resolve: {
+                    entity: function () {
+                        return {
+                            houseId: null,
+                            residentId: null,
+                            initalDate: null,
+                            finalDate: null,
+                            initialTime: null,
+                            finalTime: null,
+                            comments: null,
+                            id: null
+                        };
+                    },
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+            .state('common-area-administration.common-area-reservations.reservationDetail', {
             parent: 'common-area-administration.common-area-reservations',
             url: '/{id}/detail',
             data: {

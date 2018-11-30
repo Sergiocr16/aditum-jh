@@ -10,11 +10,11 @@
 <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600 " hide-xs style="color: #00b19d">
     Noticias</h3>
 
-<div ng-if="vm.isReady" class="margin-top-20">
+<div ng-if="vm.isReady" class="">
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
 
-    <md-card ng-show="vm.announcements.length != 0" style="margin-bottom: 40px!important" md-theme-watch
+    <md-card ng-show="vm.announcements.length != 0" style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
              class="form-wrapper" infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']" class="row"
              ng-repeat="announcement in vm.announcements track by announcement.id">

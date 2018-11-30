@@ -19,7 +19,7 @@
         }
 
         vm.isReady = false;
-        $rootScope.mainTitle = "Areas comunes";
+        $rootScope.mainTitle = "Áreas comunes";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;

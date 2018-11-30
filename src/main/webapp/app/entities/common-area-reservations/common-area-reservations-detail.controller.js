@@ -203,35 +203,19 @@
         }
 
         vm.cancelReservation = function() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-12"><h3 style="margin-bottom:10px;">¿Está seguro que desea <span class="bold">rechazar</span> la reservación?</h3></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
 
-                    if (result) {
-                        Modal.showLoadingBar()
-                        vm.commonAreaReservations.status = 3;
-                        vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
-                        vm.commonAreaReservations.initalDate.setHours(0);
-                        vm.commonAreaReservations.initalDate.setMinutes(0);
-                        CommonAreaReservations.update(vm.commonAreaReservations, onCancelSuccess, onSaveError);
+            Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    vm.commonAreaReservations.status = 3;
+                    vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
+                    vm.commonAreaReservations.initalDate.setHours(0);
+                    vm.commonAreaReservations.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(vm.commonAreaReservations, onCancelSuccess, onSaveError);
+
+                });
 
 
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         };
         function onCancelSuccess(result) {
                 Modal.hideLoadingBar()
@@ -240,29 +224,14 @@
 
         }
         vm.acceptReservation = function() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-12"><h3 style="margin-bottom:10px;">¿Está seguro que desea <span class="bold">aprobar</span> la reservación?</h3></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
 
-                    if (result) {
-                        createCharge()
+            Modal.confirmDialog("¿Está seguro que desea aceptar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    createCharge()
 
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
             });
+
+
         }
     }
 })();

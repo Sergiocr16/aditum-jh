@@ -5,37 +5,40 @@
             <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
                     ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
         </div>
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  font-14" style="color: #5f6368">
+        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding font-14" style="color: #5f6368">
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
                 <span style="font-weight: 600">Información de la reservación</span>
-                <div class=" pull-right no-padding">
+                <div class=" pull-right no-padding hidden-xs">
                     <span>Estado: <span style="font-weight: 600">pendiente</span></span>
                 </div>
             </div>
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #e7e7e7; ">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #e7e7e7;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
                     <div class="margin-bottom-5 " style="font-weight: 600">Área común</div>
                     <span>{{ vm.commonAreaReservations.commonAreaName}}</span>
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-10" style="border-right: 1px solid #e7e7e7;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
                     <div class="margin-bottom-5" style="font-weight: 600">Fecha de reservación</div>
                     <span>{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
                 </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-10" style="border-right: 1px solid #e7e7e7;">
+                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
                     <div class="margin-bottom-5" style="font-weight: 600">Horario</div>
                     <span>{{vm.commonAreaReservations.schedule}}</span>
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-10" >
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-10 " >
                     <div class="margin-bottom-5" style="font-weight: 600">Responsable</div>
                     <span>{{vm.commonAreaReservations.residentName}} - Filial {{vm.commonAreaReservations.houseNumber}}</span>
                 </div>
-
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-10 hidden-sm hidden-lg hidden-md " >
+                    <div class="margin-bottom-5" style="font-weight: 600">Estado</div>
+                    <span>pendiente</span>
+                </div>
             </div>
             <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
                 <span style="font-weight: 600">Generar costo por reservación</span>
             </div>
             <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #e7e7e7;">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 form-group" style="border-right: 1px solid #e7e7e7;  padding-bottom: 10px!important;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;  padding-bottom: 10px!important;">
                     <div class="margin-bottom-10 control-label" style="font-weight: 600">Fecha del cargo</div>
                     <input ng-model="vm.charge.date" id="field_chargeDate"
                            name="chargeDate" ng-click="vm.openCalendar('chargeDate')"
@@ -47,13 +50,13 @@
                            placeholder="Seleccione una fecha"
                            required>
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-4 padding-20 form-group" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
                     <div class="margin-bottom-10 control-label" style="font-weight: 600">Concepto</div>
                     <input  type="text" class="form-control numbers" name="chargeConcept" id="field_chargeConcept"
                             ng-model="vm.charge.concept" required
                     />
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 padding-20 form-group" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
                     <div class="margin-bottom-10 control-label" style="font-weight: 600">Cantidad</div>
                     <div class="input-group ">
                         <span class="input-group-addon">₡</span>
@@ -62,7 +65,7 @@
                         />
                     </div>
                 </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-2 padding-20" >
+                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-20 reservation-detail-info-div" >
                     <div class="margin-bottom-10 " style="font-weight: 600">Devolución</div>
                     <div class="input-group ">
                         <span class="input-group-addon">₡</span>
@@ -74,7 +77,7 @@
 
             </div>
             <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10" style="border: 1px solid #e7e7e7; background-color: #f7f7f7; ">
-                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-9 no-padding"> <span style="font-weight: 600">Enviar por correo</span></div>
+                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-6 no-padding"> <span style="font-weight: 600">Enviar por correo</span></div>
 
                 <div class="no-padding pull-right">
                     <div class="md-radio-inline no-padding no-margin" >
@@ -99,21 +102,32 @@
                 </div>
             </div>
             <div ng-if="vm.sendEmail" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #e7e7e7; border-top:0px;">
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20 form-group" style="padding-bottom: 10px!important;">
-                    <div class="margin-bottom-10  control-label" style="font-weight: 600">Correo electrónico *</div>
-                    <input type="text" class="form-control numbers col-md-12 col-sm-12 col-lg-12 col-sm-12" name="devolutionCharge" id="field_email"
-                           ng-model="vm.commonAreaReservations.chargeEmail"  placeholder="Correo electrónico" required
-                    />
-
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  form-group" style="padding-top: 10px!important;">
+                    <!--<div class="margin-bottom-10  control-label" style="font-weight: 600">Correo electrónico *</div>-->
+                    <!--<input type="text" class="form-control numbers col-md-12 col-sm-12 col-lg-12 col-sm-12" name="devolutionCharge" id="field_email"-->
+                           <!--ng-model="vm.commonAreaReservations.chargeEmail"  placeholder="Correo electrónico" required-->
+                    <!--/>-->
+                    <md-input-container class="md-block" style="margin-bottom: 0">
+                        <label>Correo electrónico</label>
+                        <input required ng-model="vm.commonAreaReservations.chargeEmail" type="email" class="">
+                    </md-input-container>
                 </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 padding-20" >
-                    <div class="margin-bottom-10 " style="font-weight: 600">Comentarios</div>
-                    <textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"
-                              class="form-control col-md-12" name="comments" id="field_comments">
-                         </textarea>
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 " >
+                    <!--<div class="margin-bottom-10 " style="font-weight: 600">Comentarios</div>-->
+                    <!--<textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"-->
+                              <!--class="form-control col-md-12" name="comments" id="field_comments">-->
+                         <!--</textarea>-->
+
+                    <md-input-container class="md-block">
+                        <label>Comentarios</label>
+                        <textarea  ng-model="vm.commonAreaReservations.comments"  rows="3"
+                                  md-select-on-focus></textarea>
+                    </md-input-container>
                 </div>
 
             </div>
+
+
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-bottom-20" ></div>
             <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 no-padding-left">
                 <button type="button" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" style="background-color: white; border:1px solid red; color:red" data-dismiss="modal" ng-click="vm.cancelReservation()">

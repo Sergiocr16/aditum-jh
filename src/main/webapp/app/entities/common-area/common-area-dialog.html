@@ -5,16 +5,16 @@
 
 <div ng-if="vm.isReady" ng-cloak layout="column"
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
-    <md-toolbar class="form-title" layout-align="space-between center" layout="row">
-        <h2 hide-sm hide-xs>{{vm.button}} área común</h2>
+    <md-toolbar class="form-title" hide-sm hide-xs layout-align="space-between center" layout="row">
+        <h2>{{vm.button}} área común</h2>
 
     </md-toolbar>
     <md-content layout-padding class="form-content">
         <div>
             <form name="form" ng-submit=" vm.confirmMessage()">
                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                <div layout="row" layout-xs="column" class="marging-top-20 ">
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                <div layout="row" layout-xs="column" >
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                         <md-input-container class="md-block">
                             <label>Nombre del área común</label>
                             <input type="text" class="form-control" name="name" id="field_common_area"
@@ -30,33 +30,69 @@
                                 </md-option>
                             </md-select>
                         </md-input-container>
-                        <md-input-container class="md-block" flex >
+                        <md-input-container class="md-block" flex hide-xs>
                             <div style="margin-bottom: 25px;">
                                 <label>Días permitidos para reservar</label>
                             </div>
                             <div>
 
-                            <md-checkbox  ng-model="vm.lunesSelected"  ng-click="vm.selectDay(0)" class="col-md-6">
+                            <md-checkbox  ng-model="vm.lunesSelected"  ng-click="vm.selectDay(0)" class="col-md-6 col-xs-6">
                                 Lunes
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.viernesSelected"  ng-click="vm.selectDay(4)" class="col-md-6">
+                            <md-checkbox ng-model="vm.viernesSelected"  ng-click="vm.selectDay(4)" class="col-md-6 col-xs-6">
                                 Viernes
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.martesSelected"  ng-click="vm.selectDay(1)" class="col-md-6">
+                            <md-checkbox ng-model="vm.martesSelected"  ng-click="vm.selectDay(1)" class="col-md-6 col-xs-6">
                                 Martes
                             </md-checkbox>
-                            <md-checkbox  ng-model="vm.sabadoSelected"  ng-click="vm.selectDay(5)" class="col-md-6">
+                            <md-checkbox  ng-model="vm.sabadoSelected"  ng-click="vm.selectDay(5)" class="col-md-6 col-xs-6">
                                 Sábado
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.miercolesSelected"  ng-click="vm.selectDay(2)" class="col-md-6">
+                            <md-checkbox ng-model="vm.miercolesSelected"  ng-click="vm.selectDay(2)" class="col-md-6 col-xs-6">
                                 Miercoles
                             </md-checkbox>
-                            <md-checkbox  ng-model="vm.domingoSelected"  ng-click="vm.selectDay(6)" class="col-md-6">
+                            <md-checkbox  ng-model="vm.domingoSelected"  ng-click="vm.selectDay(6)" class="col-md-6 col-xs-6">
                                 Domingo
                             </md-checkbox>
-                            <md-checkbox ng-model="vm.juevesSelected"  ng-click="vm.selectDay(3)" class="col-md-6">
+                            <md-checkbox ng-model="vm.juevesSelected"  ng-click="vm.selectDay(3)" class="col-md-6 col-xs-6">
                                 Jueves
                             </md-checkbox>
+
+
+
+
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block hidden-sm hidden-lg hidden-md" flex hide-md hide-sm hide-lg>
+                            <div style="margin-bottom: 25px;">
+                                <label>Días permitidos para reservar</label>
+                            </div>
+                            <div>
+
+                                <md-checkbox  ng-model="vm.lunesSelected"  ng-click="vm.selectDay(0)" class="col-md-6 col-xs-6">
+                                    Lunes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.martesSelected"  ng-click="vm.selectDay(1)" class="col-md-6 col-xs-6">
+                                    Martes
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.miercolesSelected"  ng-click="vm.selectDay(2)" class="col-md-6 col-xs-6">
+                                    Miercoles
+                                </md-checkbox>
+                                <md-checkbox ng-model="vm.juevesSelected"  ng-click="vm.selectDay(3)" class="col-md-6 col-xs-6">
+                                    Jueves
+                                </md-checkbox>
+
+                                <md-checkbox ng-model="vm.viernesSelected"  ng-click="vm.selectDay(4)" class="col-md-6 col-xs-6">
+                                    Viernes
+                                </md-checkbox>
+                                <md-checkbox  ng-model="vm.sabadoSelected"  ng-click="vm.selectDay(5)" class="col-md-6 col-xs-6">
+                                    Sábado
+                                </md-checkbox>
+
+                                <md-checkbox  ng-model="vm.domingoSelected"  ng-click="vm.selectDay(6)" class="col-md-6 col-xs-6">
+                                    Domingo
+                                </md-checkbox>
 
 
 
@@ -95,7 +131,7 @@
                             </div>
                         </div>
                     </div>
-                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                         <md-input-container class="md-block">
                             <label>Descripción</label>
                             <textarea name="description" id="field_description" ng-model="vm.commonArea.description"
@@ -109,8 +145,8 @@
                             <div class="col-md-12 no-padding" style="margin-top: 13px;">
                                 <md-radio-group style="padding-top: 25px!important;" ng-model="vm.commonArea.chargeRequired" >
 
-                                    <md-radio-button value="1"  class="col-md-2 outline-none md-primary" value="Apple" >Si</md-radio-button>
-                                    <md-radio-button value="0" class="col-md-2 outline-none"  value="Banana"> No </md-radio-button>
+                                    <md-radio-button value="1"  class="col-md-2 col-xs-4 outline-none md-primary" value="Apple" >Si</md-radio-button>
+                                    <md-radio-button value="0" class="col-md-2 col-xs-4 outline-none"  value="Banana"> No </md-radio-button>
 
                                 </md-radio-group>
 
@@ -123,8 +159,8 @@
                             </div>
                             <div class="col-md-12 no-padding" style="margin-top: 13px;">
                                 <md-radio-group style="padding-top: 25px!important;" ng-model="vm.commonArea.reservationWithDebt" >
-                                    <md-radio-button value="1" class="col-md-2 outline-none md-primary" ">Si</md-radio-button>
-                                    <md-radio-button value="2" class="col-md-2 outline-none"> No </md-radio-button>
+                                    <md-radio-button value="1" class="col-md-2 col-xs-4  outline-none md-primary" ">Si</md-radio-button>
+                                    <md-radio-button value="2" class="col-md-2 col-xs-4  outline-none"> No </md-radio-button>
                                     <!--<md-radio-button ng-click="vm.commonArea.reservationWithDebt=1; vm.spaceInvalid2=false " ng-checked="true" class="col-md-2 outline-none md-primary" value="true" >Si</md-radio-button>-->
                                     <!--<md-radio-button  ng-click="vm.commonArea.reservationWithDebt=0; vm.spaceInvalid2=false "  class="col-md-2 outline-none md-"  value="false"> No </md-radio-button>-->
 
@@ -158,7 +194,7 @@
                         <div class="margin-top-10">
                         <img
                         data-ng-src="{{'data:' + vm.commonArea.pictureContentType + ';base64,' + vm.commonArea.picture}}"
-                        style="max-height: 400px;" ng-if="vm.commonArea.picture"
+                        style="width: 100%;" ng-if="vm.commonArea.picture"
                         alt="commonArea image"/>
 
 
