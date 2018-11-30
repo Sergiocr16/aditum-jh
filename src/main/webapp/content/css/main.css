@@ -1380,7 +1380,18 @@ div.scrollmenu a:hover {
     background-color: #ebedf0;
     border-radius: 50% !important;
 }
-
+.object-fit_scale-down-index {
+    object-fit: scale-down;
+    height: 80px;
+    width: 80px;
+    background-color: #ebedf0;
+}
+.object-fit_scale-down-index-xs {
+    object-fit: scale-down;
+    height: 112px;
+    width: 112px;
+    background-color: #ebedf0;
+}
 .font-weight-600 {
     font-weight: 600 !important;
 }
@@ -2107,7 +2118,9 @@ md-input-container > md-select {
 .md-color-picker-container .md-color-picker-preview .md-color-picker-result > div {
     cursor: default;
 }
-
+.no-margin-top {
+    margin-top: 0 !important;
+}
 .no-margin-bottom {
     margin-bottom: 0 !important;
 }
@@ -2217,7 +2230,7 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
 .outline {
     border-radius: 60px;
     /*box-shadow: 0px 0px 2px #888;*/
-    padding: 0.6em 0.2em;
+    padding: 0.7em 0.3em;
     background-color: #F5F5F5;
 }
 .outline-car {

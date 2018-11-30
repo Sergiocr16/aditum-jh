@@ -10,7 +10,7 @@
         <div infinite-scroll="vm.loadPage(vm.page + 1)" infinite-scroll-disabled="vm.page >= vm.links['last']" hide-lg
              hide-xl>
             <md-card ng-repeat="announcement in vm.announcements track by $index"
-                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20" style="margin-right: 0; margin-left: 0;"
                      md-theme-watch>
                 <md-card-title>
                     <md-card-title-text>

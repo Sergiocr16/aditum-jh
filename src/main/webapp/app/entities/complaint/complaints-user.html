@@ -1,7 +1,7 @@
 <h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600" hide-sm hide-xs style="color: #00b19d">Quejas y
     sugerencias
 </h3>
-<div class="col-md-12 no-padding margin-top-20 margin-bottom-20">
+<div class="col-md-12 no-padding margin-top-20" style="margin-bottom: 8px!important;">
     <div class="">
         <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
              id="index-search-bar">
@@ -45,7 +45,7 @@
                     text="No hay quejas o sugerencias registradas"></no-content>
         <div infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-bottom-15">
-            <md-card style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper"
+            <md-card style="margin-bottom: 20px!important; margin-left: 0; margin-right: 0;" md-theme-watch class="form-wrapper"
                      ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id">
                 <md-card-title layout-align="space-between center">
                     <md-card-title-text>

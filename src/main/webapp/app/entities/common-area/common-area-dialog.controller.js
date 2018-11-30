@@ -21,8 +21,13 @@
             angular.element('.form-group:eq(1)>input').focus();
         });
         vm.daysOfWeek = [{day:'Lunes',selected:false,initialTime:"",finalTime:""},{day:'Martes',selected:false,initialTime:"",finalTime:""},{day:'Miercoles',selected:false,initialTime:"",finalTime:""},{day:'Jueves',selected:false,initialTime:"",finalTime:""},{day:'Viernes',selected:false,initialTime:"",finalTime:""},{day:'Sábado',selected:false,initialTime:"",finalTime:""},{day:'Domingo',selected:false,initialTime:"",finalTime:""}];
-        vm.bloques = [{value:1,hour:"1 hora"},{value:2,hour:"2 horas"},{value:3,hour:"3 horas"},{value:4,hour:"4 horas"},{value:5,hour:"5 horas"},{value:6,hour:"6 horas"},{value:7,hour:"7 horas"},{value:8,hour:"8 horas"}]
+        vm.bloques = [{value:"-1",hour:"Todo el día"},{value:1,hour:"1 hora"},{value:2,hour:"2 horas"},{value:3,hour:"3 horas"},{value:4,hour:"4 horas"},{value:5,hour:"5 horas"},{value:6,hour:"6 horas"},{value:7,hour:"7 horas"},{value:8,hour:"8 horas"}]
         vm.hours = [];
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
+
         addHourseToSelect();
         function addHourseToSelect(){
             var item = {value:'0',time:'12:00AM'};
@@ -39,6 +44,9 @@
             }
 
             if (vm.commonArea.id !== null) {
+                if(vm.commonArea.maximunHours == 0){
+                    vm.commonArea.maximunHours= -1;
+                }
                 vm.button="Editar";
                 var autorizadorStatus = vm.commonArea.chargeRequired;
                 if( vm.commonArea.chargeRequired==1){
@@ -140,7 +148,6 @@
             }
         }
         vm.validateDaysHours =function (index,item) {
-console.log(item)
             if(item.initialTime!==undefined && item.finalTime!==undefined){
                 if(parseInt(item.initialTime)>=parseInt(item.finalTime)){
                     setTimeout(function () {
@@ -184,6 +191,9 @@ console.log(item)
 
         function save() {
             Modal.showLoadingBar();
+            if(vm.commonArea.maximunHours == -1){
+                vm.commonArea.maximunHours=0;
+            }
             if (vm.commonArea.id !== null) {
                 if(vm.commonArea.maximunHours==null ||vm.commonArea.maximunHours===""){
                     vm.commonArea.maximunHours = 0;
@@ -195,6 +205,7 @@ console.log(item)
                 }
                 vm.commonArea.companyId = globalCompany.getId();
                 vm.commonArea.deleted = 0;
+
                 CommonArea.save(vm.commonArea, onSaveSuccess, onSaveError);
 
 

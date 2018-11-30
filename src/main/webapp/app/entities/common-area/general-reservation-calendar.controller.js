@@ -5,13 +5,13 @@
         .module('aditumApp')
         .controller('GeneralReservationCalendarController', GeneralReservationCalendarController);
 
-    GeneralReservationCalendarController.$inject = ['$compile','uiCalendarConfig','CommonAreaReservations','AlertService','Resident','$state','$rootScope','globalCompany'];
+    GeneralReservationCalendarController.$inject = ['$compile','uiCalendarConfig','CommonAreaReservations','AlertService','Resident','$state','$rootScope','globalCompany','Modal'];
 
-    function GeneralReservationCalendarController($compile,uiCalendarConfig,CommonAreaReservations,AlertService,Resident,$state,$rootScope,globalCompany) {
+    function GeneralReservationCalendarController($compile,uiCalendarConfig,CommonAreaReservations,AlertService,Resident,$state,$rootScope,globalCompany,Modal) {
         var vm = this;
         $rootScope.active = "generaCalendar";
         vm.reservations = [];
-        $rootScope.mainTitle = "Calendario general";
+        $rootScope.mainTitle = "Áreas comunes";
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -84,12 +84,10 @@
         function alertOnEventClick( date, jsEvent, view){
             console.log (date.status + ' was clicked ');
             if(date.status==1){
-                console.log('adfadf')
                 $state.go('common-area-administration.general-reservation-calendar.reservationDetail', {
                     id: date.id
                 });
             }else if(date.status==2){
-                console.log('adf22adf')
                 $state.go('common-area-administration.general-reservation-calendar.acceptedReservationsDetail', {
                     id: date.id
                 });
@@ -136,7 +134,6 @@
 
         /* Change View */
         vm.renderCalender = function(calendar) {
-            console.log('adfad')
             if(uiCalendarConfig.calendars[calendar]){
                 uiCalendarConfig.calendars[calendar].fullCalendar('render');
             }
@@ -167,7 +164,6 @@
                         CommonAreaReservations.getPendingAndAcceptedReservations({
                             companyId: globalCompany.getId()
                         }, function(data) {
-                            console.log(data)
                             angular.forEach(data,function(value){
 
                                 var color;
@@ -204,7 +200,7 @@
                 header:{
                     left: '',
                     center: 'title',
-                    right: 'today prev,next'
+                    right: ' prev,next'
                 },
 
                 eventClick: vm.alertOnEventClick,
@@ -213,39 +209,87 @@
                 eventRender: vm.eventRender,
                 defaultView: 'month',
                 default: 'bootstrap3'
+            },
+            calendar1:{
+                events: function(start, end, timezone, callback) {
+                    var events = [];
+                    CommonAreaReservations.getPendingAndAcceptedReservations({
+                        companyId: globalCompany.getId()
+                    }, function(data) {
+                        angular.forEach(data,function(value){
+
+                            var color;
+                            if(value.status==1){
+                                color = '#ef5350'
+                            }else if(value.status==2){
+                                color = '#42a5f5'
+                            }
+                            events.push({
+                                id:value.id,
+                                commonAreaId:value.commonAreaId,
+                                title: value.commonArea.name + " - " + value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber  ,
+
+                                start:new Date(value.initalDate),
+
+                                end:new Date(value.finalDate),
+                                description: 'This is a cool eventdfdsafasdfasdf',
+                                color:color,
+                                status:value.status
+
+                            })
+
+                        });
+
+                        callback(events);
+
+                    });
+
+
+                },
+                height: 600,
+                dayClick: vm.onDayClick,
+                editable: false,
+                header:{
+                    left: 'title',
+                    center: '',
+                    right: ' prev,next'
+                },
+
+                eventClick: vm.alertOnEventClick,
+                eventDrop: vm.alertOnDrop,
+                eventResize: vm.alertOnResize,
+                eventRender: vm.eventRender,
+                defaultView: 'listWeek',
+                default: 'bootstrap3'
             }
         };
 
+
         vm.confirmMessage = function(date) {
-            var dateSelected = new Date(date);
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h4 style="margin-bottom:10px; font-size: 17px;">¿Desea realizar una reservación el día <span class="" id="dateSelected"></span>?</h4></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-
-                    if (result) {
-                        createReservation()
-
-                    } else {
-                        vm.isSaving = false;
+            var today = new Date();
+            var datePlus1 = moment(date, "DD-MM-YYYY").add(1, 'days');
+            var dateSelected = datePlus1.toDate();
+            dateSelected.setHours(23);
+            dateSelected.setMinutes(59);
+            Modal.confirmDialog("¿Desea realizar una reservación el día " + date.format("DD-MM-YYYY") + "?", " ",
+                function () {
+                    if(today.getTime()>dateSelected.getTime()){
+                        Modal.toast("No puede realizar reservaciones en una fecha pasada")
+                    }else{
+                        $state.go('common-area-administration.newCommonAreaReservationDate', {
+                            date: dateSelected
+                        })
 
                     }
-                }
-            });
-            document.getElementById("dateSelected").innerHTML = dateSelected.getDate() + "-" + dateSelected.getMonth()+"-"+dateSelected.getFullYear();
+
+
+
+                });
 
 
 
         };
+
         function onDayClick(date , jsEvent , view){
             vm.confirmMessage(date);
 

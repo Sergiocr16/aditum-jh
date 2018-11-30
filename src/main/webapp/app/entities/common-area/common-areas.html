@@ -3,8 +3,8 @@
 </div>
 
 <div ng-if="vm.isReady" class="row fade-in" >
-    <div class="col-lg-12 col-md-12">
-        <div class="col-md-12 no-padding  margin-bottom-20" ng-if="vm.commonAreas.length> 0 ">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-md-12 col-sm-12 col-xs-12 no-padding  " style="margin-bottom: 8px;" ng-if="vm.commonAreas.length> 0 ">
             <div class="">
                 <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
                      id="index-search-bar">
@@ -12,7 +12,7 @@
                         <i class="fa fa-search"></i>
                         <input type="text" class="form-control "
                                style="background-color: #f5f5f5; border:0px!important; "
-                               placeholder="Buscar" ng-model="vm.search">
+                               placeholder="Buscar" ng-model="vm.search.name">
                     </div>
                 </div>
 
@@ -22,32 +22,55 @@
 
             <no-content ng-if="vm.commonAreas.length == 0" icon="local_florist" text="No hay áreas comunes registradas"></no-content>
 
-            <div class="table-scrollable hidden-xs gray-font" ng-if="vm.commonAreas.length>0" style="border: 0px!important;">
-                <table class=" table table-hover   font-13 tableMaterialDesign" >
-                    <thead style="background-color: #fafafa;">
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Cuota por reservación</th>
-                        <th class="text-center">Ver calendario</th>
-                        <th class="text-center">Opciones</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="commonArea in vm.commonAreas  | filter:vm.search | orderBy:'name'">
-                        <td >{{commonArea.name}}</td>
-                        <td ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</td>
-                        <td ng-if="commonArea.chargeRequired==0">No requiere</td>
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                 ng-repeat="commonArea in vm.commonAreas  | filter:vm.search | orderBy:'name'">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{commonArea.name}}</span>
+                            <span class="md-headline font-15 hidden-xs">{{commonArea.name}}</span>
+                            <span class="md-subhead">Costo: <span ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</span><span ng-if="commonArea.chargeRequired==0">No requiere</span> </span>
+                            <span class="md-subhead">Bloques de: <span ng-if="commonArea.maximunHours==0">Todo el día</span><span ng-if="commonArea.maximunHours>0">{{commonArea.maximunHours}} horas</span></span>
 
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <!--<div class="md-media-md card-media  hidden-md hidden-lg"-->
+                                 <!--style="padding-top: 10px!important;">-->
+                                <!--<img ng-if="commonArea.picture==null" src="content/images/noCommonArea-image.jpg" height="112"-->
+                                     <!--width="112"/>-->
+                                <!--<img ng-if="commonArea.picture" data-ng-src="{{'data:' + commonArea.pictureContentType + ';base64,' + commonArea.picture}}"-->
+                                     <!--class="object-fit_scale-down-index-xs"/>-->
+                            <!--</div>-->
+                            <div class="md-media-sm card-media"
+                                 style="padding-top: 10px!important;">
+                                <img ng-if="commonArea.picture==null" src="content/images/noCommonArea-image.jpg" height="80"
+                                     width="80"/>
+                                <img ng-if="commonArea.picture" data-ng-src="{{'data:' + commonArea.pictureContentType + ';base64,' + commonArea.picture}}"
+                                     class="object-fit_scale-down-index"/>
+                            </div>
 
+                        </md-card-title-media>
+                    </md-card-title>
 
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
 
-                        <td  class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})" ><i class="material-icons"><md-tooltip md-direction="left" class="font-13 bold white-color">Ver calendario</md-tooltip>remove_red_eye</i></a></td>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <i class="material-icons" style="color:#999; cursor: pointer" ui-sref="common-area-administration.reservation-calendar({id:commonArea.id})">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver calendario
+                                </md-tooltip>
+                                remove_red_eye</i>
 
-
-                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                            <md-menu md-position-mode="target-right target" >
-                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">
-                                    <i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>
+                            <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
                                 </md-button>
                                 <md-menu-content width="4">
                                     <md-menu-item>
@@ -66,10 +89,11 @@
                                     </md-menu-item>
                                 </md-menu-content>
                             </md-menu>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                        </div>
+
+                    </md-card-actions>
+                </md-card>
+
             </div>
         </div>
     </div>

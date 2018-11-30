@@ -241,5 +241,13 @@
         margin-left: 0;
         margin-right: 0;
     }
-
+    .reservation-detail-info-div{
+        border-right: 0!important;
+    }
+    .reservation-calendar-container{
+        padding-top:-20px!important;
+    }
+    #timeSelectCommonAreaReservation{
+        padding:0px;
+    }
 }

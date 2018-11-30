@@ -14,7 +14,7 @@
         vm.reverse = true;
         vm.loadPage = loadPage;
         vm.isReady = false;
-        $rootScope.mainTitle = "Administrar reservaciones";
+        $rootScope.mainTitle = "Reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
@@ -108,14 +108,18 @@
                         }, function(result) {
                             value.commonAreaName = result.name ;
                             value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-
+                            value.commonAreaPicture = result.picture;
+                            value.commonAreapictureContentType = result.pictureContentType;
                         })
                     })
                 });
                 //     vm.finalListReservations.push(value)
                 // }
             });
-            vm.isReady = true;
+            setTimeout(function () {
+                vm.isReady = true;
+            },500);
+
         }
 
         function formatScheduleTime(initialTime, finalTime){
