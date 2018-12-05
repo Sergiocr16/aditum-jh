@@ -1,222 +1,219 @@
-
-
-
-<div class="row" ng-if="true">
-    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-        <md-tabs hide-xs  md-stretch-tabs='always'  md-dynamic-height="" md-border-bottom="" class="padding-left-10 hidden-xs">
-            <md-tab  ng-click="vm.switchEnabledVehicules()" label="VEHÍCULOS HABILITADOS">
-            </md-tab>
-            <md-tab  label="VEHÍCULOS DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">
-            </md-tab>
-
-        </md-tabs>
-        <md-tabs hide-lg hide-md hide-sm  md-stretch-tabs='always'  md-dynamic-height="" md-border-bottom="" class="padding-left-10 hidden-md hidden-lg hidden-sm">
-            <md-tab  ng-click="vm.switchEnabledVehicules()" label="HABILITADOS">
-            </md-tab>
-            <md-tab label="DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">
-            </md-tab>
-
-        </md-tabs>
-    </md-content>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div class="row fade-in">
-    <div class="col-lg-12 col-md-12">
+<div class="fade-in" ng-if="vm.isReady">
+    <div class="row" ng-if="true">
+        <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+            <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                     class="padding-left-10 hidden-xs">
+                <md-tab ng-click="vm.switchEnabledVehicules()" label="VEHÍCULOS HABILITADOS">
+                </md-tab>
+                <md-tab label="VEHÍCULOS DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">
+                </md-tab>
 
-        <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.vehicules.length> 0 || vm.house!='-1'">
+            </md-tabs>
+            <md-tabs hide-lg hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                     class="padding-left-10 hidden-md hidden-lg hidden-sm">
+                <md-tab ng-click="vm.switchEnabledVehicules()" label="HABILITADOS">
+                </md-tab>
+                <md-tab label="DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">
+                </md-tab>
 
-            <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
-                 id="index-search-bar">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar" ng-model="vm.query">
-                </div>
-            </div>
-            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                <button ng-click="vm.showFilterDiv=!vm.showFilterDiv;" type="button"
-                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                        style="height: 34px!important; padding-top: 5px!important;">
-                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
-
-            </div>
-
-        </div>
-        <div class="slide-box slide-toggle-js no-padding fade-in row " style="margin-right: 0px!important;" ng-if="vm.showFilterDiv">
-            <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
-                                ng-if="vm.vehicules.length> 0 || vm.house!='-1'">
-
-                <md-select ng-model="vm.house" ng-change="vm.findVehiculesByHouse(vm.house)">
-                    <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                    <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
-                               ng-model="vm.house" ng-value="house">
-                        {{house.housenumber}}
-                    </md-option>
-
-                </md-select>
-            </md-input-container>
-
-        </div>
-
-        <!--<div class="col-md-12">-->
-            <!--<div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">-->
-
-                <!--<md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"-->
-                                    <!--ng-if="vm.vehicules.length> 0 || vm.house!='-1'">-->
-
-                    <!--<md-select ng-model="vm.house" ng-change="vm.findVehiculesByHouse(vm.house)">-->
-                        <!--<md-option ng-value="-1" selected="true">Todas las filiales</md-option>-->
-                        <!--<md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"-->
-                                   <!--ng-model="vm.house" ng-value="house">-->
-                            <!--{{house.housenumber}}-->
-                        <!--</md-option>-->
-
-                    <!--</md-select>-->
-                <!--</md-input-container>-->
-
-            <!--</div>-->
-        <!--</div>-->
-
-        <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-             layout-align="space-around center">
-            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-        </div>
-        <div class="portlet-body fade-in " ng-if="vm.isReady">
-
-            <no-content ng-if="vm.vehicules.length == 0" icon="directions_car" text="No hay vehículos registrados"></no-content>
-
-
-
-
-            <div class="col-md-4 no-padding col-sm-6 col-xs-12   " ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
-                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10 residentCardContainer"
-                         md-theme-watch>
-                    <md-card-title class="no-padding-bottom">
-                        <md-card-title-text>
-                            <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
-                            <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
-                            <span class="md-subhead">Filial: {{vehicule.house_id}}</span>
-
-                        </md-card-title-text>
-                        <md-card-title-media>
-                            <div class="md-media-sm card-media">
-                                <i ng-show="vehicule.type=='Automóvil'" class=" text-center fa fa-car outline-car " style="color: {{vehicule.color}};font-size:45px!important;padding-top: 30px;" aria-hidden="true ">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Automóvil
-                                    </md-tooltip>
-
-                                </i>
-                                <i ng-show="vehicule.type=='Motocicleta'" class=" text-center fa fa-motorcycle outline " style="color: {{vehicule.color}}; font-size:45px!important;padding-top: 30px;" aria-hidden="true ">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Motocicleta
-                                    </md-tooltip>
-
-                                </i>
-
-
-                            </div>
-                        </md-card-title-media>
-                    </md-card-title>
-                    <md-card-actions layout="row" layout-align="end center">
-                        <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
-                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                       ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
-                                <i class="material-icons" style="color:#999;">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                    </md-tooltip>
-                                    more_vert</i>
-                            </md-button>
-                            <md-menu-content width="4">
-                                <md-menu-item>
-                                    <md-button ng-click="vm.editVehicle(vehicule.id)">
-                                        <div layout="row" flex>
-                                            <p flex>Editar</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button ng-click="vm.disableEnabledVehicule(vehicule)">
-                                        <div layout="row" flex>
-                                            <p flex>{{vm.actionButtonTitle}}</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                                <md-menu-item>
-                                    <md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">
-                                        <div layout="row" flex>
-                                            <p flex>Eliminar</p>
-                                        </div>
-                                    </md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </md-card-actions>
-                </md-card>
-
-            </div>
-            <!--<div class="table-scrollable hidden-xs hidden-sm hidden-md hidden-lg"  ng-show="vm.vehicules.length>0" style="border: 0px!important;">-->
-                <!--<table  class="table  table-hover gray-font font-13 tableMaterialDesign ">-->
-                    <!--<thead style="background-color: #fafafa;" >-->
-                    <!--<tr>-->
-                        <!--<th>Tipo</th>-->
-                        <!--<th>Placa</th>-->
-                        <!--<th>Marca</th>-->
-                        <!--<th class="text-center">Número de filial</th>-->
-                        <!--<th class="text-center">Opciones</th>-->
-
-                    <!--</tr>-->
-                    <!--</thead>-->
-                    <!--<tbody>-->
-                    <!--<tr ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">-->
-                        <!--<td>{{vehicule.type}}</td>-->
-                        <!--<td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>-->
-                        <!--<td>{{vehicule.brand}}</td>-->
-                        <!--<td class="text-center">{{vehicule.house_id}}</td>-->
-
-                        <!--<td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">-->
-                            <!--<md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >-->
-                                <!--<md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">-->
-                                    <!--<i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>-->
-                                <!--</md-button>-->
-                                <!--<md-menu-content width="4">-->
-                                    <!--<md-menu-item>-->
-                                        <!--<md-button ng-click="vm.editVehicle(vehicule.id)">-->
-                                            <!--<div layout="row" flex>-->
-                                                <!--<p flex>Editar</p>-->
-                                            <!--</div>-->
-                                        <!--</md-button>-->
-                                    <!--</md-menu-item>-->
-                                    <!--<md-menu-item>-->
-                                        <!--<md-button ng-click="vm.disableEnabledVehicule(vehicule)">-->
-                                            <!--<div layout="row" flex>-->
-                                                <!--<p flex>{{vm.actionButtonTitle}}</p>-->
-                                            <!--</div>-->
-                                        <!--</md-button>-->
-                                    <!--</md-menu-item>-->
-                                    <!--<md-menu-item>-->
-                                        <!--<md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">-->
-                                            <!--<div layout="row" flex>-->
-                                                <!--<p flex>Eliminar</p>-->
-                                            <!--</div>-->
-                                        <!--</md-button>-->
-                                    <!--</md-menu-item>-->
-                                <!--</md-menu-content>-->
-                            <!--</md-menu>-->
-                        <!--</td>-->
-
-                    <!--</tr>-->
-                    <!--</tbody>-->
-                <!--</table>-->
-            <!--</div>-->
-        </div>
-
+            </md-tabs>
+        </md-content>
     </div>
-    <md-button ui-sref="vehicule.new" style="position: fixed"  class="md-fab md-fab-bottom-right orange-button-oficial"   aria-label="Add new">
-        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
-        <md-icon class="white-color">add</md-icon>
-    </md-button>
-</div>
 
+    <div class="row fade-in">
+        <div class="col-lg-12 col-md-12">
+
+            <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;"
+                 ng-if="vm.vehicules.length> 0 || vm.house!='-1'">
+
+                <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.query">
+                    </div>
+                </div>
+                <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                    <button ng-click="vm.showFilterDiv=!vm.showFilterDiv;" type="button"
+                            class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                            style="height: 34px!important; padding-top: 5px!important;">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                        <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+                </div>
+
+            </div>
+            <div class="slide-box slide-toggle-js no-padding fade-in row " style="margin-right: 0px!important;"
+                 ng-if="vm.showFilterDiv">
+                <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
+                                    ng-if="vm.vehicules.length> 0 || vm.house!='-1'">
+
+                    <md-select ng-model="vm.house" ng-change="vm.findVehiculesByHouse(vm.house)">
+                        <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
+                        <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                                   ng-model="vm.house" ng-value="house">
+                            {{house.housenumber}}
+                        </md-option>
+
+                    </md-select>
+                </md-input-container>
+
+            </div>
+
+            <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
+                 layout-align="space-around center">
+                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            </div>
+            <div class="portlet-body fade-in " ng-if="vm.isReady2">
+
+                <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
+                            text="No hay vehículos registrados"></no-content>
+
+
+                <div class="col-md-4 no-padding col-sm-6 col-xs-12   "
+                     ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title class="no-padding-bottom">
+                            <md-card-title-text>
+                                <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
+                                <span class="md-subhead">Filial: {{vehicule.house_id}}</span>
+
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-sm card-media">
+                                    <i ng-show="vehicule.type=='Automóvil'" class=" text-center fa fa-car outline-car "
+                                       style="color: {{vehicule.color}};font-size:45px!important;padding-top: 30px;"
+                                       aria-hidden="true ">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Automóvil
+                                        </md-tooltip>
+
+                                    </i>
+                                    <i ng-show="vehicule.type=='Motocicleta'"
+                                       class=" text-center fa fa-motorcycle outline "
+                                       style="color: {{vehicule.color}}; font-size:45px!important;padding-top: 30px;"
+                                       aria-hidden="true ">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Motocicleta
+                                        </md-tooltip>
+
+                                    </i>
+
+
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+                        <md-card-actions layout="row" layout-align="end center">
+                            <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.editVehicle(vehicule.id)">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.disableEnabledVehicule(vehicule)">
+                                            <div layout="row" flex>
+                                                <p flex>{{vm.actionButtonTitle}}</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button
+                                            ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </md-card-actions>
+                    </md-card>
+
+                </div>
+                <!--<div class="table-scrollable hidden-xs hidden-sm hidden-md hidden-lg"  ng-show="vm.vehicules.length>0" style="border: 0px!important;">-->
+                <!--<table  class="table  table-hover gray-font font-13 tableMaterialDesign ">-->
+                <!--<thead style="background-color: #fafafa;" >-->
+                <!--<tr>-->
+                <!--<th>Tipo</th>-->
+                <!--<th>Placa</th>-->
+                <!--<th>Marca</th>-->
+                <!--<th class="text-center">Número de filial</th>-->
+                <!--<th class="text-center">Opciones</th>-->
+
+                <!--</tr>-->
+                <!--</thead>-->
+                <!--<tbody>-->
+                <!--<tr ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">-->
+                <!--<td>{{vehicule.type}}</td>-->
+                <!--<td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>-->
+                <!--<td>{{vehicule.brand}}</td>-->
+                <!--<td class="text-center">{{vehicule.house_id}}</td>-->
+
+                <!--<td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">-->
+                <!--<md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >-->
+                <!--<md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">-->
+                <!--<i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>-->
+                <!--</md-button>-->
+                <!--<md-menu-content width="4">-->
+                <!--<md-menu-item>-->
+                <!--<md-button ng-click="vm.editVehicle(vehicule.id)">-->
+                <!--<div layout="row" flex>-->
+                <!--<p flex>Editar</p>-->
+                <!--</div>-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
+                <!--<md-menu-item>-->
+                <!--<md-button ng-click="vm.disableEnabledVehicule(vehicule)">-->
+                <!--<div layout="row" flex>-->
+                <!--<p flex>{{vm.actionButtonTitle}}</p>-->
+                <!--</div>-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
+                <!--<md-menu-item>-->
+                <!--<md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">-->
+                <!--<div layout="row" flex>-->
+                <!--<p flex>Eliminar</p>-->
+                <!--</div>-->
+                <!--</md-button>-->
+                <!--</md-menu-item>-->
+                <!--</md-menu-content>-->
+                <!--</md-menu>-->
+                <!--</td>-->
+
+                <!--</tr>-->
+                <!--</tbody>-->
+                <!--</table>-->
+                <!--</div>-->
+            </div>
+
+        </div>
+        <md-button ui-sref="vehicule.new" style="position: fixed"
+                   class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
+            <md-icon class="white-color">add</md-icon>
+        </md-button>
+    </div>
+
+</div>
 
 
 

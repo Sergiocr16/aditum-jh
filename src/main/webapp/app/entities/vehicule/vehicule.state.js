@@ -88,6 +88,9 @@
                             $translatePartialLoader.addPart('vehicule');
                             $translatePartialLoader.addPart('global');
                             return $translate.refresh();
+                        }],
+                        companyUser: ['MultiCompany', function (MultiCompany) {
+                            return MultiCompany.getCurrentUserCompany()
                         }]
                     }
                 })

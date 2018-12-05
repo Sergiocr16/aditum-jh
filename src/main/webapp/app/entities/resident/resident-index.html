@@ -69,12 +69,11 @@
 
     </div>
 
-
-    <!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">-->
-    <!--<md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>-->
-    <!--</div>-->
-
-    <div class="row ">
+    <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div class="portlet-body fade-in " ng-if="vm.isReady2">
         <div class="col-lg-12 col-md-12 col-xs-12 ">
 
             <div class="col-md-12 col-xs-12 no-padding fade-in">
@@ -136,12 +135,12 @@
                                     assignment_ind</i>
                             </div>
                             <div layout="row" layout-align="space-between center">
-                                <i class="material-icons" style="color:#999;" ng-click="vm.detailResident(resident.id)">
+                                <i class="material-icons outline-none" style="color:#999;" ng-click="vm.detailResident(resident.id)">
                                     <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                                     </md-tooltip>
                                     remove_red_eye</i>
 
-                                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                                <md-menu md-position-mode="target-right target " has-any-authority="ROLE_MANAGER">
                                     <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                                ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
                                         <i class="material-icons" style="color:#999;">

@@ -81,7 +81,7 @@
             parent: 'resident',
             url: '/resident/{id}',
             data: {
-               authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+               authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER'],
             },
             views: {
                 'content@': {
@@ -319,6 +319,9 @@
                          ascending: PaginationUtil.parseAscending($stateParams.sort),
                          search: $stateParams.search
                      };
+                 }],
+                 companyUser: ['MultiCompany', function (MultiCompany) {
+                     return MultiCompany.getCurrentUserCompany()
                  }]
               }
           })

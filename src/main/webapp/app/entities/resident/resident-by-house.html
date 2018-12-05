@@ -1,88 +1,219 @@
 
-
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Administrar</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a> Residentes</a>
-        </li>
-
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
+
+<div class="fade-in" ng-if="vm.isReady">
+    <div class="row" ng-if="true">
+        <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+            <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                     class="padding-left-10 hidden-xs hidden-sm">
+                <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="USUARIOS HABILITADOS">
+                </md-tab>
+                <md-tab label="USUARIOS DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
+                </md-tab>
+
+            </md-tabs>
+            <md-tabs hide-lg hide-md  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                     class="padding-left-10 hidden-md hidden-lg ">
+                <md-tab ng-click="vm.switchEnabledDisabledResidents()" label="HABILITADOS">
+                </md-tab>
+                <md-tab label="DESHABILITADOS" ng-click="vm.switchEnabledDisabledResidents()">
+                </md-tab>
+
+            </md-tabs>
+        </md-content>
     </div>
-</div>
-<div class="row display-none" id="residents_container">
-    <div class="col-lg-12 col-md-12 gray-font ">
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
 
-        <div>
-            <h3 class="page-title col-md-6 col-lg-5 col-xs-12 col-sm-6">{{vm.titleCondominosIndex}}</h3>
+        <div class=" no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.query">
+            </div>
         </div>
-        <div>
-                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">
-                    <!--<button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>-->
-                    <div class="form-group form-md-radios">
-                        <div class="md-radio-inline">
 
-                            <div class="md-radio" >
-                                <input type="radio" id="radio34" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">
-                                <label for="radio34" style="color:#45B6AF">
-                                    <span class="inc"></span>
-                                    <span class="check"></span>
-                                    <span class="box"></span>
-                                    Habilitados </label>
+
+    </div>
+
+
+
+    <!--<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">-->
+    <!--<md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>-->
+    <!--</div>-->
+    <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div class="row" ng-if="vm.isReady2">
+
+
+        <div class="col-lg-12 col-md-12 col-xs-12 ">
+
+            <div class="col-md-12 col-xs-12 no-padding fade-in">
+                <no-content ng-if="vm.residents.length == 0" icon="group"
+                            text="No hay usuarios registrados"></no-content>
+
+                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                     ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' "
+                     >
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{resident.name.toUpperCase()}}</span>
+                                <span class="md-headline font-15 hidden-xs">{{resident.name.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead">Filial: {{resident.house_id}}</span>
+                                <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-md card-media  hidden-md hidden-lg"
+                                     style="padding-top: 10px!important;">
+                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="112"
+                                         width="112"/>
+                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                         class="object-fit_scale-down-index-xs"/>
+                                </div>
+                                <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                     style="padding-top: 10px!important;">
+                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="80"
+                                         width="80"/>
+                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                         class="object-fit_scale-down-index"/>
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+
+                        <md-card-actions layout="row" layout-align="space-between center">
+                            <div>
+
+                                <i class="material-icons greenBalance"
+                                   style="color: #999; padding-left: 5px!important;"
+                                   ng-if="resident.principalContact==1">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Contacto principal
+                                        de la filial
+                                    </md-tooltip>
+                                    assignment_ind</i>
                             </div>
-                            <div class="md-radio has-error">
-                                <input type="radio" id="radio35" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">
-                                <label for="radio35">
-                                    <span class="inc"></span>
-                                    <span class="check"></span>
-                                    <span class="box"></span>
-                                    Deshabilitados </label>
+                            <div layout="row" layout-align="space-between center">
+                                <i class="material-icons outline-none" style="color:#999;" ng-click="vm.detailResident(resident.id)">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+
+                                <md-menu md-position-mode="target-right target" >
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                        <i class="material-icons" style="color:#999;">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.editResident(resident.id)">
+                                                <div layout="row" flex>
+                                                    <p flex>Editar</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-hide="resident.id== vm.userId || resident.isOwner == 1" >
+                                            <md-button ng-click="vm.disableEnabledResident(resident)">
+                                                <div layout="row" flex>
+                                                    <p flex>{{vm.actionButtonTitle}}</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+
+                                    </md-menu-content>
+                                </md-menu>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 col-sm-6 col-xs-12 col-lg-3 ">
-                    <button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="residentByHouse.new()">Registrar residente</button>
-                </div>
-                <div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                    <h2  class="text-center gray-font ">No tienes residentes registrados</h2>
-                </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <div class="col-md-6 col-sm-6 col-xs-12 col-lg-3"  ng-repeat="resident in vm.residents  | orderBy:'name'">
-                    <div class="portlet light bordered  text-center  col-sm-12 col-xs-12 " id="">
-<span style="z-index:-1!important;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>
 
-                            <h3 class="text-center " style="cursor: pointer;" ui-sref="residentByHouse.residentDetail({id2:resident.id})">
-                                <img ng-show="resident.image_url==null" width="150" height="150" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="resident.image_url==null" src="{{resident.image_url}}" width="160" height="160" class="object-fit_scale-down-resident-by-house"/>
-                            </h3>
+                        </md-card-actions>
+                    </md-card>
 
-
-
-                        <h3 style="text-transform: capitalize;" class="no-padding text-center font-20">{{resident.name}} {{resident.lastname}}</h3>
-                        <h5 class="no-padding text-center font-17">{{resident.identificationnumber.toUpperCase()}}</h5>
-
-                        <div class="col-lg-12 col-md-12 small-margin-top">
-                            <button type="submit" ng-click="vm.editResident(resident.id)"class="btn blue" title="Editar residente"><i class="fa fa-pencil " ></i></button>
-                            <button type="submit" id="disabledButton" ng-click="vm.disableEnabledResident(resident)" ng-hide="resident.id== vm.userId || resident.isOwner == 1" class="btn {{vm.color}}" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>
-                        </div>
-                    </div>
                 </div>
-                </div>
+            </div>
         </div>
+
+        <md-button ui-sref="residentByHouse.new()" style="position: fixed"
+                   class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar usuario</md-tooltip>
+            <md-icon class="white-color">add</md-icon>
+        </md-button>
     </div>
 </div>
+
+
+
+
+
+
+<!--<div class="row " id="residents_container">-->
+    <!--<div class="col-lg-12 col-md-12 gray-font ">-->
+
+        <!--<div>-->
+            <!--<h3 class="page-title col-md-6 col-lg-5 col-xs-12 col-sm-6">{{vm.titleCondominosIndex}}</h3>-->
+        <!--</div>-->
+        <!--<div>-->
+                <!--<div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">-->
+                    <!--&lt;!&ndash;<button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>&ndash;&gt;-->
+                    <!--<div class="form-group form-md-radios">-->
+                        <!--<div class="md-radio-inline">-->
+
+                            <!--<div class="md-radio" >-->
+                                <!--<input type="radio" id="radio34" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">-->
+                                <!--<label for="radio34" style="color:#45B6AF">-->
+                                    <!--<span class="inc"></span>-->
+                                    <!--<span class="check"></span>-->
+                                    <!--<span class="box"></span>-->
+                                    <!--Habilitados </label>-->
+                            <!--</div>-->
+                            <!--<div class="md-radio has-error">-->
+                                <!--<input type="radio" id="radio35" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">-->
+                                <!--<label for="radio35">-->
+                                    <!--<span class="inc"></span>-->
+                                    <!--<span class="check"></span>-->
+                                    <!--<span class="box"></span>-->
+                                    <!--Deshabilitados </label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="col-md-4 col-sm-6 col-xs-12 col-lg-3 ">-->
+                    <!--<button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="residentByHouse.new()">Registrar residente</button>-->
+                <!--</div>-->
+                <!--<div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">-->
+                    <!--<h2  class="text-center gray-font ">No tienes residentes registrados</h2>-->
+                <!--</div>-->
+                <!--<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">-->
+                <!--<div class="col-md-6 col-sm-6 col-xs-12 col-lg-3"  ng-repeat="resident in vm.residents  | orderBy:'name'">-->
+                    <!--<div class="portlet light bordered  text-center  col-sm-12 col-xs-12 " id="">-->
+<!--<span style="z-index:-1!important;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>-->
+
+                            <!--<h3 class="text-center " style="cursor: pointer;" ui-sref="residentByHouse.residentDetail({id2:resident.id})">-->
+                                <!--<img ng-show="resident.image_url==null" width="150" height="150" class="img-circle" src="content/images/nobody-image.jpg"/>-->
+                                <!--<img ng-hide="resident.image_url==null" src="{{resident.image_url}}" width="160" height="160" class="object-fit_scale-down-resident-by-house"/>-->
+                            <!--</h3>-->
+
+
+
+                        <!--<h3 style="text-transform: capitalize;" class="no-padding text-center font-20">{{resident.name}} {{resident.lastname}}</h3>-->
+                        <!--<h5 class="no-padding text-center font-17">{{resident.identificationnumber.toUpperCase()}}</h5>-->
+
+                        <!--<div class="col-lg-12 col-md-12 small-margin-top">-->
+                            <!--<button type="submit" ng-click="vm.editResident(resident.id)"class="btn blue" title="Editar residente"><i class="fa fa-pencil " ></i></button>-->
+                            <!--<button type="submit" id="disabledButton" ng-click="vm.disableEnabledResident(resident)" ng-hide="resident.id== vm.userId || resident.isOwner == 1" class="btn {{vm.color}}" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

@@ -15,6 +15,7 @@
         vm.radiostatus = true;
         $rootScope.mainTitle = "Usuarios autorizados";
         vm.isReady = false;
+        vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
         vm.house = "-1";
@@ -144,6 +145,7 @@
                     vm.residents = formatResidents(residentsByHouse);
                 }
                 vm.isReady = true;
+                vm.isReady2 = true;
             }
 
             function onError(error) {
@@ -152,11 +154,13 @@
         }
 
         vm.switchEnabledResidents = function () {
+            vm.isReady2 = false;
             enabledOptions = true;
             vm.radiostatus = true;
             vm.findResidentsByHouse(vm.house);
         }
         vm.switchDisabledResidents = function () {
+            vm.isReady2 = false;
             enabledOptions = false;
             vm.findResidentsByHouse(vm.house);
         }
@@ -289,8 +293,7 @@
                 }, onSuccessGetEnabledUser);
 
             } else {
-                Modal.hideLoadingBar();
-                Modal.toast("Se ha habilitado el residente correctamente.");
+    ``
                 loadResidents();
             }
         }
