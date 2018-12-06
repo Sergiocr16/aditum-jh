@@ -720,9 +720,9 @@
                     },
                     {
                         title: "Administrar",
-                        icon: "picture_in_picture",
+                        icon: "location_city",
                         authoritites: "ROLE_USER",
-                        activeOn: "reportInvitation,reportInvitationList,reportHomeService",
+                        activeOn: "residentsHouses,vehiculesHouses,reportHomeService",
                         collapsable: true,
                         uisref: "",
                         menuId: "administrarMenuUser",
@@ -730,21 +730,21 @@
                         thirdItems: [
                             {
                                 title: "Residentes",
-                                icon: "remove_red_eye",
+                                icon: "group",
                                 authoritites: "ROLE_USER",
-                                activeOn: "reportInvitation",
+                                activeOn: "residentsHouses",
                                 collapsable: false,
-                                uisref: "visitant-invited-user.new",
+                                uisref: "residentByHouse",
                                 menuId: "",
                                 hover: false,
                             },
                             {
                                 title: "Véhiculos",
-                                icon: "build",
+                                icon: "directions_car",
                                 authoritites: "ROLE_USER",
-                                activeOn: "reportInvitationList",
+                                activeOn: "vehiculesHouses",
                                 collapsable: false,
-                                uisref: "visitant-invited-user.new-list",
+                                uisref: "vehiculeByHouse",
                                 menuId: "",
                                 hover: false,
                             },
@@ -792,7 +792,7 @@
                     },
                     {
                         title: "Reportar emergencia",
-                        icon: "picture_in_picture",
+                        icon: "local_hospital",
                         authoritites: "ROLE_USER",
                         activeOn: "reportemergencyactive",
                         collapsable: false,
@@ -823,7 +823,7 @@
                         thirdItems: [
                             {
                                 title: "Visitante",
-                                icon: "remove_red_eye",
+                                icon: "perm_identity",
                                 authoritites: "ROLE_USER",
                                 activeOn: "reportInvitation",
                                 collapsable: false,
@@ -833,7 +833,7 @@
                             },
                             {
                                 title: "Reunión o fiesta",
-                                icon: "build",
+                                icon: "group_add",
                                 authoritites: "ROLE_USER",
                                 activeOn: "reportInvitationList",
                                 collapsable: false,
@@ -843,7 +843,7 @@
                             },
                             {
                                 title: "Servicio a domicilio",
-                                icon: "build",
+                                icon: "restaurant",
                                 authoritites: "ROLE_USER",
                                 activeOn: "reportHomeService",
                                 collapsable: false,
@@ -856,7 +856,7 @@
                     },
                     {
                         title: "Quejas y sugerencias",
-                        icon: "picture_in_picture",
+                        icon: "sentiment_very_dissatisfied",
                         authoritites: "ROLE_USER",
                         activeOn: "complaint-user",
                         collapsable: false,

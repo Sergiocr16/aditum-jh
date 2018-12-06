@@ -21,6 +21,7 @@
         vm.transition = transition;
         $rootScope.mainTitle = "Vehículos";
         vm.isReady = false;
+        vm.isReady2 = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.editVehicle = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -109,6 +110,7 @@
                     vm.vehicules = formatVehicules(vehiculesByHouse);
                 }
                 vm.isReady = true;
+                vm.isReady2 = true;
             }
 
             function onError(error) {
@@ -119,12 +121,15 @@
 
 
         vm.switchEnabledVehicules = function () {
+            vm.isReady2 = false;
+
             enabledOptions = true;
             vm.radioEnablestatus = true;
             vm.radioDisablestatus = false;
             vm.findVehiculesByHouse(vm.house);
         }
         vm.switchDisabledVehicules = function () {
+            vm.isReady2 = false;
             enabledOptions = false;
             vm.radioEnablestatus = false;
             vm.radioDisablestatus = true;

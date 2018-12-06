@@ -17,6 +17,7 @@
             entity.image_url = null;
         }
         vm.resident = entity;
+        vm.resident.houseId = 0;
         vm.resident.nationality = "9";
         vm.resident.principalContact = vm.resident.principalContact + "";
 
