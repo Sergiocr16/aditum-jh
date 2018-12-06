@@ -83,17 +83,9 @@
             var currentTime = new Date().getTime();
             var intiTime = new Date(visitor.invitationstaringtime).getTime();
             var finalTime = new Date(visitor.invitationlimittime).getTime();
-            console.log(intiTime)
-            console.log(currentTime)
-
-            console.log(finalTime)
-
             if (intiTime <= currentTime && currentTime <= finalTime) {
-                console.log(true)
                 return true;
             }else{
-                console.log(false)
-
                 return false
             }
         }

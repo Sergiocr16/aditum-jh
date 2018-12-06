@@ -490,9 +490,9 @@
                             }]
                         }
             })
-             .state('keysConguration', {
-                    parent: 'house',
-                    url: '/keysConguration',
+             .state('keysConfiguration', {
+                    parent: 'entity',
+                    url: '/keysConfiguration',
                     data: {
                         authorities: ['ROLE_USER']
                     },

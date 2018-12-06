@@ -9,7 +9,7 @@
 
     function KeyConfigurationController (CommonMethods,$state,$rootScope, Principal,$scope, $stateParams,  entity, House, Resident, WSHouse) {
         var vm = this;
-        $rootScope.active = "keysConguration";
+        $rootScope.active = "keysConfiguration";
         vm.isAuthenticated = Principal.isAuthenticated;
      CommonMethods.validateSpecialCharacters();
         vm.save = save;

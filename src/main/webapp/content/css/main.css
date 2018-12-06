@@ -1380,18 +1380,21 @@ div.scrollmenu a:hover {
     background-color: #ebedf0;
     border-radius: 50% !important;
 }
+
 .object-fit_scale-down-index {
     object-fit: scale-down;
     height: 80px;
     width: 80px;
     background-color: #ebedf0;
 }
+
 .object-fit_scale-down-index-xs {
     object-fit: scale-down;
     height: 112px;
     width: 112px;
     background-color: #ebedf0;
 }
+
 .font-weight-600 {
     font-weight: 600 !important;
 }
@@ -1626,8 +1629,9 @@ div.scrollmenu a:hover {
     .nav-bar-top {
         background-color: rgb(0, 150, 136) !important;
     }
-    .green-bg-on-xs{
-        background: rgb(0,150,136)!important;
+
+    .green-bg-on-xs {
+        background: rgb(0, 150, 136) !important;
     }
 
     .md-nav-item .md-active {
@@ -2032,14 +2036,19 @@ a
     text-transform: uppercase !important;
     z-index: 0 !important;
 }
-.disabled
-{
+
+.disabled {
     pointer-events: none;
     /* for "disabled" effect */
     opacity: 0.5;
 }
+
 .note-toolbar {
     z-index: 0 !important;
+}
+
+.margin-top-56{
+    margin-top: 56px;
 }
 
 .form-title h2 {
@@ -2126,15 +2135,19 @@ md-input-container > md-select {
 .md-color-picker-container .md-color-picker-preview .md-color-picker-result > div {
     cursor: default;
 }
+
 .no-margin-top {
     margin-top: 0 !important;
 }
+
 .no-margin-bottom {
     margin-bottom: 0 !important;
 }
+
 .no-margin-right {
     margin-right: 0 !important;
 }
+
 .md-datepicker-input {
     min-width: 0 !important;
     max-width: 10000px !important;
@@ -2235,18 +2248,21 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
 .font-green-sharp {
     color: rgb(0, 150, 136) !important;
 }
+
 .outline {
     border-radius: 60px;
     /*box-shadow: 0px 0px 2px #888;*/
     padding: 0.7em 0.3em;
     background-color: #F5F5F5;
 }
+
 .outline-car {
     border-radius: 60px;
     /*box-shadow: 0px 0px 2px #888;*/
     padding: 0.7em 0.3em;
     background-color: #F5F5F5;
 }
+
 .outline-none {
-outline: none;
+    outline: none;
 }

@@ -31,27 +31,30 @@
 
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
-                   bootbox.confirm({
-                       message: '<div class="gray-font font-15">Sus claves de seguridad aún no han sido definidas, recuerde que el tener las claves establecidas le provee mayor seguridad.</div>',
-                       closeButton: false,
-
-                       buttons: {
-                           confirm: {
-                               label: 'Establecer ahora',
-                               className: 'btn-success'
-                           },
-                           cancel: {
-                               label: 'Recordármelo luego',
-                               className: 'btn-danger'
-                           }
-                       },
-                       callback: function(result) {
-                           if (result) {
-                               $state.go('keysConguration');
-                           }
-
-                       }
-                   })
+                  Modal.actionToast("Sus claves de seguridad aún no han sido definidas.","Establecer ahora",function(){
+                      $state.go('keysConfiguration');
+                  })
+                   // bootbox.confirm({
+                   //     message: '<div class="gray-font font-15">Sus claves de seguridad aún no han sido definidas, recuerde que el tener las claves establecidas le provee mayor seguridad.</div>',
+                   //     closeButton: false,
+                   //
+                   //     buttons: {
+                   //         confirm: {
+                   //             label: 'Establecer ahora',
+                   //             className: 'btn-success'
+                   //         },
+                   //         cancel: {
+                   //             label: 'Recordármelo luego',
+                   //             className: 'btn-danger'
+                   //         }
+                   //     },
+                   //     callback: function(result) {
+                   //         if (result) {
+                   //             $state.go('keysConguration');
+                   //         }
+                   //
+                   //     }
+                   // })
                }
             }
         },500)

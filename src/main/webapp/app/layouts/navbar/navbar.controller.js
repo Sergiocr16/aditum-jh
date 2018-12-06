@@ -11,7 +11,6 @@
         var vm = this;
 
 
-
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.colorsMenu = {
@@ -58,6 +57,7 @@
                 title: "",
                 activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
                 authoritites: "ROLE_ADMIN",
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Administración",
@@ -68,6 +68,8 @@
                         uisref: "",
                         menuId: "administracionSuperAdminMenu",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Condominios",
@@ -78,7 +80,9 @@
                                 uisref: "company",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true,
+
                             },
                             {
                                 title: "Administradores",
@@ -89,7 +93,9 @@
                                 uisref: "admin-info",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true,
+
                             },
                             {
                                 title: "Recursos humanos",
@@ -100,7 +106,9 @@
                                 uisref: "rh-account",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true,
+
                             },
                             {
                                 title: "Marcas vehículos",
@@ -111,7 +119,9 @@
                                 uisref: "brand",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true,
+
                             },
                             {
                                 title: "Destinos puerta acceso",
@@ -121,7 +131,9 @@
                                 collapsable: false,
                                 uisref: "destinies",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: true,
+
                             },
                             {
                                 title: "Progreso ingreso de datos",
@@ -131,7 +143,8 @@
                                 collapsable: false,
                                 uisref: "data-progress",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: true
                             },
                         ]
                     },
@@ -144,6 +157,8 @@
                         uisref: "",
                         menuId: "aditumJhipsterMenu",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Gestión de usuarios",
@@ -154,7 +169,8 @@
                                 uisref: "user-management",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Tracker",
@@ -165,7 +181,8 @@
                                 uisref: "jhi-tracker",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Métricas",
@@ -176,7 +193,8 @@
                                 uisref: "jhi-metrics",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Salud",
@@ -187,7 +205,8 @@
                                 uisref: "jhi-health",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Configuración",
@@ -198,7 +217,8 @@
                                 uisref: "jhi-configuration",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Auditorías",
@@ -209,7 +229,8 @@
                                 uisref: "audits",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Logs",
@@ -220,7 +241,8 @@
                                 uisref: "logs",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "API",
@@ -231,18 +253,18 @@
                                 uisref: "docs",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                         ]
                     },
                 ]
             },
-
-
             {
                 title: "Condominio",
                 activeOn: "",
                 authoritites: "ROLE_MANAGER",
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Dashboard",
@@ -253,7 +275,9 @@
                         uisref: "dashboard",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Noticias",
@@ -264,6 +288,8 @@
                         uisref: "",
                         menuId: "noticiasMenu",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Ver noticias",
@@ -274,6 +300,7 @@
                                 uisref: "announcement-user",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Administrar noticias",
@@ -284,11 +311,10 @@
                                 uisref: "announcements.announcement",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                         ]
                     },
-
-
                     {
                         title: "Administración",
                         icon: "location_city",
@@ -298,6 +324,8 @@
                         uisref: "",
                         menuId: "administracionMenu",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Usuarios",
@@ -308,6 +336,7 @@
                                 uisref: "resident",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Filiales",
@@ -318,6 +347,7 @@
                                 uisref: "houses-tabs.house",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Vehículos",
@@ -328,6 +358,7 @@
                                 uisref: "vehicule",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Visitantes",
@@ -338,6 +369,7 @@
                                 uisref: "visitant-admin",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                         ]
                     },
@@ -350,6 +382,8 @@
                         uisref: "",
                         menuId: "seguridadMenu",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Oficiales",
@@ -360,7 +394,8 @@
                                 uisref: "officer",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                             {
                                 title: "Turnos",
@@ -371,7 +406,8 @@
                                 uisref: "turno",
                                 menuId: "",
                                 hover: false,
-                                thirdItems: []
+                                thirdItems: [],
+                                showXs: true
                             },
                         ]
                     },
@@ -384,7 +420,9 @@
                         uisref: "complaint",
                         menuId: "",
                         hover: false,
-                        secondaryItems: []
+                        secondaryItems: [],
+                        showXs: true,
+                        showLg: true,
                     },
                 ]
             },
@@ -392,6 +430,7 @@
                 title: "Finanzas",
                 activeOn: "",
                 authoritites: "ROLE_MANAGER",
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Contabilidad filiales",
@@ -402,7 +441,22 @@
                         uisref: "houseAdministration.accountStatus",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Ver egresos",
+                        icon: "remove_red_eye",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "egress",
+                        collapsable: false,
+                        uisref: "egress-tabs.egress",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: false,
                     },
                     {
                         title: "Egresos",
@@ -413,6 +467,8 @@
                         uisref: "",
                         menuId: "egresosMenu",
                         hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Ver egresos",
@@ -432,7 +488,8 @@
                                 collapsable: false,
                                 uisref: "egress-tabs.new",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: false
                             },
                         ]
                     },
@@ -445,6 +502,8 @@
                         uisref: "",
                         menuId: "ingresosMenu",
                         hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Capturar ingreso",
@@ -454,7 +513,8 @@
                                 collapsable: false,
                                 uisref: "generatePayment",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: false
                             },
                             {
                                 title: "Capturar adelanto",
@@ -464,7 +524,8 @@
                                 collapsable: false,
                                 uisref: "advancePayment",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: false
                             },
 
                         ]
@@ -478,6 +539,8 @@
                         uisref: "",
                         menuId: "cuotasMenu",
                         hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Mensuales",
@@ -487,7 +550,8 @@
                                 collapsable: false,
                                 uisref: "mensualCharge",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Extraordinarias",
@@ -497,7 +561,8 @@
                                 collapsable: false,
                                 uisref: "extraordinaryCharge",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Individual",
@@ -507,7 +572,8 @@
                                 collapsable: false,
                                 uisref: "individualCharge",
                                 menuId: "",
-                                hover: false
+                                hover: false,
+                                showXs: true
                             },
 
                         ]
@@ -521,7 +587,9 @@
                         uisref: "presupuesto",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
                     },
                     {
                         title: "Bancos",
@@ -532,7 +600,9 @@
                         uisref: "banco",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
                     },
                     {
                         title: "Saldo de filiales",
@@ -543,7 +613,9 @@
                         uisref: "houses-balance",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
 
                     },
                     {
@@ -555,7 +627,9 @@
                         uisref: "collection-table",
                         menuId: "",
                         hover: false,
-                        thirdItems: []
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
 
                     }
                 ]
@@ -564,6 +638,7 @@
                 title: "Áreas comunes",
                 activeOn: "",
                 authoritites: "ROLE_MANAGER",
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Administrar",
@@ -574,6 +649,8 @@
                         uisref: "common-area-administration.common-area",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reservaciones",
@@ -584,6 +661,8 @@
                         uisref: "common-area-administration.common-area-reservations",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Ver calendario",
@@ -594,6 +673,8 @@
                         uisref: "common-area-administration.general-reservation-calendar",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reservar",
@@ -604,6 +685,8 @@
                         uisref: "common-area-administration.newReservation",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
 
                 ]
@@ -612,6 +695,7 @@
                 title: "Reportes",
                 activeOn: "",
                 authoritites: "ROLE_MANAGER",
+                showXs: false,
                 secondaryItems: [
                     {
                         title: "Estado de resultados",
@@ -622,6 +706,8 @@
                         uisref: "budgetExecution.mensualReport",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reporte de egresos",
@@ -632,6 +718,8 @@
                         uisref: "egress-tabs.egress-report",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reporte de ingresos",
@@ -642,6 +730,8 @@
                         uisref: "payment-report",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                 ]
             },
@@ -649,6 +739,7 @@
                 title: "Configuración",
                 activeOn: "",
                 authoritites: "ROLE_MANAGER",
+                showXs: false,
                 secondaryItems: [
                     {
                         title: "General",
@@ -658,7 +749,9 @@
                         collapsable: false,
                         uisref: "administration-configuration-detail",
                         menuId: "",
-                        hover: false
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Proveedores",
@@ -669,6 +762,8 @@
                         uisref: "proveedor",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Cuotas",
@@ -679,6 +774,8 @@
                         uisref: "configureCharges",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Cuentas de banco",
@@ -689,6 +786,8 @@
                         uisref: "banco-configuration",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Categoría de egresos",
@@ -699,6 +798,8 @@
                         uisref: "egress-category",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
 
                 ]
@@ -707,6 +808,7 @@
                 title: "",
                 activeOn: "",
                 authoritites: "ROLE_USER",
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Noticias",
@@ -717,16 +819,20 @@
                         uisref: "announcement-user",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Administrar",
                         icon: "location_city",
                         authoritites: "ROLE_USER",
-                        activeOn: "residentsHouses,vehiculesHouses,reportHomeService",
+                        activeOn: "residentsHouses,vehiculesHouses,reportHomeService,residentsVisitors,residentsInvitedVisitors,keysConfiguration",
                         collapsable: true,
                         uisref: "",
                         menuId: "administrarMenuUser",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Residentes",
@@ -737,6 +843,7 @@
                                 uisref: "residentByHouse",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Véhiculos",
@@ -747,6 +854,7 @@
                                 uisref: "vehiculeByHouse",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Bitácora de visitantes",
@@ -757,26 +865,29 @@
                                 uisref: "visitant",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Visitantes invitados",
-                                icon: "build",
-                                authoritites: "ROLE_MANAGER",
+                                icon: "account_circle",
+                                authoritites: "ROLE_USER",
                                 activeOn: "residentsInvitedVisitors",
                                 collapsable: false,
                                 uisref: "visitant-invited-user",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Clave de seguridad",
-                                icon: "build",
-                                authoritites: "ROLE_MANAGER",
-                                activeOn: "keysConguration",
+                                icon: "vpn_key",
+                                authoritites: "ROLE_USER",
+                                activeOn: "keysConfiguration",
                                 collapsable: false,
-                                uisref: "keysConguration",
+                                uisref: "keysConfiguration",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                         ]
                     },
@@ -789,6 +900,8 @@
                         uisref: "finanzasPorCasa",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reportar emergencia",
@@ -799,6 +912,8 @@
                         uisref: "emergency.new",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     // {
                     //     title: "Manual de usuario",
@@ -820,6 +935,8 @@
                         uisref: "",
                         menuId: "reportarMenuUser",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Visitante",
@@ -830,6 +947,7 @@
                                 uisref: "visitant-invited-user.new",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Reunión o fiesta",
@@ -840,6 +958,7 @@
                                 uisref: "visitant-invited-user.new-list",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
                             {
                                 title: "Servicio a domicilio",
@@ -850,6 +969,7 @@
                                 uisref: "note.new",
                                 menuId: "",
                                 hover: false,
+                                showXs: true
                             },
 
                         ]
@@ -863,6 +983,8 @@
                         uisref: "complaint-user",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
 
                     {
@@ -874,6 +996,8 @@
                         uisref: "soporte",
                         menuId: "",
                         hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                 ]
             },
