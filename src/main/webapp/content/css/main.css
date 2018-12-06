@@ -2032,7 +2032,12 @@ a
     text-transform: uppercase !important;
     z-index: 0 !important;
 }
-
+.disabled
+{
+    pointer-events: none;
+    /* for "disabled" effect */
+    opacity: 0.5;
+}
 .note-toolbar {
     z-index: 0 !important;
 }

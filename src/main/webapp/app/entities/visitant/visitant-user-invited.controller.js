@@ -5,23 +5,26 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'companyUser', 'globalCompany'];
+    VisitantInvitedUserController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
 
-    function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitor, WSDeleteEntity, companyUser, globalCompany) {
+    function VisitantInvitedUserController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitor, WSDeleteEntity, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.Principal;
         $rootScope.active = "residentsInvitedVisitors";
+        $rootScope.mainTitle = "Visitantes invitados";
+        vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        setTimeout(function () {
-            loadAll();
-        }, 1000)
+
+        loadAll();
 
         function loadAll() {
+            vm.isReady = false;
+
             Visitant.findInvitedByHouse({
                 companyId: globalCompany.getId(),
                 houseId: companyUser.houseId
@@ -45,10 +48,8 @@
                 })
                 vm.visitants = data;
                 vm.page = pagingParams.page;
-                $("#loadingIcon").fadeOut(300);
-                setTimeout(function () {
-                    $("#all").fadeIn("slow");
-                }, 900)
+                vm.isReady = true;
+
             }
 
             function onError(error) {
@@ -70,14 +71,30 @@
         }
 
         vm.hasPermission = function (visitor) {
-            var currentTime = new Date();
-            var intiTime = new Date(visitor.invitationstaringtime);
-            var finalTime = new Date(visitor.invitationlimittime);
+
+
             if (visitor.isinvited == 2) {
                 return false;
             }
-            if (currentTime <= finalTime) {
+          return vm.isBetweenDate(visitor)
+        }
+
+        vm.isBetweenDate = function(visitor){
+            var currentTime = new Date().getTime();
+            var intiTime = new Date(visitor.invitationstaringtime).getTime();
+            var finalTime = new Date(visitor.invitationlimittime).getTime();
+            console.log(intiTime)
+            console.log(currentTime)
+
+            console.log(finalTime)
+
+            if (intiTime <= currentTime && currentTime <= finalTime) {
+                console.log(true)
                 return true;
+            }else{
+                console.log(false)
+
+                return false
             }
         }
 
@@ -89,36 +106,20 @@
         }
 
         vm.deleteInvitedVisitor = function (visitor) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar el registro?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        $("#all").fadeOut();
-                        Visitant.delete({
-                            id: visitor.id
-                        }, success);
+            Modal.confirmDialog("¿Está seguro que desea eliminar el registro?", "", function () {
+                Modal.showLoadingBar();
 
+                Visitant.delete({
+                    id: visitor.id
+                }, success);
 
-                    }
-                }
+            })
 
-            });
 
             function success(data) {
                 loadAll();
-                $("#all").fadeIn();
-                toastr["success"]("Se ha eliminado el registro correctamente");
-                bootbox.hideAll();
+                Modal.toast("Se ha eliminado el registro correctamente");
+                Modal.hideLoadingBar();
                 WSDeleteEntity.sendActivity({type: 'visitor', id: visitor.id})
 
             }
@@ -126,33 +127,17 @@
 
 
         vm.cancelInvitation = function (visitor) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea revocar el permiso de acceso a " + visitor.name + " " + visitor.lastname + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        visitor.isinvited = 2;
-                        Visitant.update(visitor, success)
-
-
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea revocar el permiso de acceso a " + visitor.name + " " + visitor.lastname + "?", "", function () {
+                Modal.showLoadingBar();
+                visitor.isinvited = 2;
+                Visitant.update(visitor, success)
+            })
         }
 
         function success(data) {
             WSVisitor.sendActivity(data);
-            bootbox.hideAll();
-            toastr["success"]("Se ha cancelado la invitación correctamente");
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha cancelado la invitación correctamente");
         }
 
     }

@@ -385,7 +385,7 @@
             $scope.$emit('aditumApp:visitorUpdate', result);
             $state.go('visitant-invited-user')
             Modal.hideLoadingBar()
-            Modal.toast("Se ha reportado como visitore invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+            Modal.toast("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }
 

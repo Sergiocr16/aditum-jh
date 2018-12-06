@@ -50,12 +50,7 @@
                 </div>
 
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-                    <md-input-container class="md-block" has-authority="ROLE_USER">
-                        <label>Segundo Apellido</label>
-                        <input ng-model="vm.visitor.secondlastname" ng-disabled="vm.visitor.found==1"
-                               type="text" class="uppercase" required
-                               required>
-                    </md-input-container>
+
 
                     <md-input-container class="md-block" ng-class="{'md-input-invalid': vm.visitor.validPlateNumber == 0}">
                         <label>Número de placa (Opcional)</label>
@@ -124,7 +119,7 @@
                 <md-button type="button" ng-click="back()"
                            class="md-warn md-raised">Cancelar
                 </md-button>
-                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving ||  vm.visitor.validPlateNumber == 0" type="submit">
                     Reportar visitante
                 </md-button>
             </div>

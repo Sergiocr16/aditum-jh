@@ -43,6 +43,9 @@
                             search: $stateParams.search
                         };
                     }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('visitant');
                         $translatePartialLoader.addPart('global');
@@ -127,6 +130,9 @@
                             search: $stateParams.search
                         };
                     }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('visitant');
                         $translatePartialLoader.addPart('global');
@@ -194,7 +200,7 @@
                         });
                     }, function() {
                         $state.go('^', {}, {
-                            reload: true
+                            reload: false
                         });
                     });
                 }]
