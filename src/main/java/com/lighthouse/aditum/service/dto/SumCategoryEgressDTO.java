@@ -6,11 +6,11 @@ public class SumCategoryEgressDTO {
     private Long id;
     private String category;
     private List<SumEgressDTO> egressList;
-    private int total;
+    private double total;
     private double percentage;
     private boolean showDetail;
-    private int budget = 0;
-    private int budgetDiference = 0;
+    private double budget = 0;
+    private double budgetDiference = 0;
 
     public String getCategory() {
         return category;
@@ -20,11 +20,11 @@ public class SumCategoryEgressDTO {
         this.category = concept;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
@@ -81,19 +81,19 @@ public class SumCategoryEgressDTO {
         this.id = id;
     }
 
-    public int getBudget() {
+    public double getBudget() {
         return budget;
     }
 
-    public void setBudget(int budget) {
+    public void setBudget(double budget) {
         this.budget = budget;
     }
 
-    public int getBudgetDiference() {
+    public double getBudgetDiference() {
         return budgetDiference;
     }
 
-    public void setBudgetDiference(int budgetDiference) {
+    public void setBudgetDiference(double budgetDiference) {
         this.budgetDiference = budgetDiference;
     }
 }

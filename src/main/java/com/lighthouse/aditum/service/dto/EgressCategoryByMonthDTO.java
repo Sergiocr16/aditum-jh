@@ -7,9 +7,9 @@ public class EgressCategoryByMonthDTO {
     private List<String> totalByMonth;
     private List<String> budgetByMonth;
     private List<String> diferenceByMonth;
-    private int acumulado = 0;
-    private int budgetAcumulado = 0;
-    private int diferenceAcumulado = 0;
+    private double acumulado = 0;
+    private double budgetAcumulado = 0;
+    private double diferenceAcumulado = 0;
     private boolean showDetail = false;
 
     public EgressCategoryByMonthDTO(String name){
@@ -33,11 +33,11 @@ public class EgressCategoryByMonthDTO {
         this.totalByMonth = totalByMonth;
     }
 
-    public int getAcumulado() {
+    public double getAcumulado() {
         return acumulado;
     }
 
-    public void setAcumulado(int acumulado) {
+    public void setAcumulado(double acumulado) {
         this.acumulado = this.acumulado + acumulado;
     }
 
@@ -57,19 +57,19 @@ public class EgressCategoryByMonthDTO {
         this.diferenceByMonth = diferenceByMonth;
     }
 
-    public int getBudgetAcumulado() {
+    public double getBudgetAcumulado() {
         return budgetAcumulado;
     }
 
-    public void setBudgetAcumulado(int budgetAcumulado) {
+    public void setBudgetAcumulado(double budgetAcumulado) {
         this.budgetAcumulado =   this.budgetAcumulado + budgetAcumulado;
     }
 
-    public int getDiferenceAcumulado() {
+    public double getDiferenceAcumulado() {
         return diferenceAcumulado;
     }
 
-    public void setDiferenceAcumulado(int diferenceAcumulado) {
+    public void setDiferenceAcumulado(double diferenceAcumulado) {
         this.diferenceAcumulado =   this.diferenceAcumulado + diferenceAcumulado;
     }
 

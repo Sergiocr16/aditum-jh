@@ -53,7 +53,7 @@ public class MensualAndAnualReportResource {
 
         mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(first_month_day,final_balance_time,companyId));
         mensualReportDTO.setTotalInitialBalance(mensualReportDTO.getMensualAndAnualAccount());
-        int flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
+        double flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
         mensualReportDTO.setFlujo(flujo);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(mensualReportDTO));
     }

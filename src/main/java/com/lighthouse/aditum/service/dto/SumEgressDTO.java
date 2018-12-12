@@ -2,7 +2,7 @@ package com.lighthouse.aditum.service.dto;
 
 public class SumEgressDTO {
     private String concept;
-    private int total;
+    private double total;
     private double percentage;
 
 
@@ -14,11 +14,11 @@ public class SumEgressDTO {
         this.concept = concept;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 

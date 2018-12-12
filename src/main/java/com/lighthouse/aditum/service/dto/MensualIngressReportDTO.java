@@ -14,37 +14,37 @@ public class MensualIngressReportDTO implements Serializable {
     private List<SumChargeDTO> commonAreasIngress;
     private List<SumChargeDTO> otherIngress;
 
-    private int maintenanceIngressTotal = 0;
-    private int extraordinaryIngressTotal = 0;
-    private int commonAreasIngressTotal = 0;
-    private int otherIngressTotal = 0;
+    private double maintenanceIngressTotal = 0;
+    private double extraordinaryIngressTotal = 0;
+    private double commonAreasIngressTotal = 0;
+    private double otherIngressTotal = 0;
 
     private double maintenanceIngressPercentage = 0;
     private double extraordinaryIngressPercentage = 0;
     private double commonAreasIngressPercentage = 0;
     private double otherIngressPercentage = 0;
 
-    private int maintenanceBudget = 0;
-    private int extraordinaryBudget = 0;
-    private int commonAreasBudget = 0;
-    private int otherBudget = 0;
+    private double maintenanceBudget = 0;
+    private double extraordinaryBudget = 0;
+    private double commonAreasBudget = 0;
+    private double otherBudget = 0;
 
-    private int totalBudget = 0;
+    private double totalBudget = 0;
 
-    private int maintenanceBudgetDiference = 0;
-    private int extraordinaryBudgetDiference = 0;
-    private int commonAreasBudgetDiference = 0;
-    private int otherBudgetDiference = 0;
-    private int totalBudgetDiference = 0;
+    private double maintenanceBudgetDiference = 0;
+    private double extraordinaryBudgetDiference = 0;
+    private double commonAreasBudgetDiference = 0;
+    private double otherBudgetDiference = 0;
+    private double totalBudgetDiference = 0;
 
-    private int allIngressCategoriesTotal = 0;
+    private double allIngressCategoriesTotal = 0;
 
     public List<SumChargeDTO> getSumChargeIngress(List<ChargeDTO> ingress) {
         List<SumChargeDTO> finalList = new ArrayList<>();
 
         for (int i =0;ingress.size()>i;i++) {
             ChargeDTO item = ingress.get(i);
-            int total =  ingress.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
+            double total =  ingress.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
             SumChargeDTO object = new SumChargeDTO(ingress.get(i).getConcept(), total);
             if(finalList.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).count()==0){
                 finalList.add(object);
@@ -87,52 +87,52 @@ public class MensualIngressReportDTO implements Serializable {
         this.otherIngress = otherIngress;
     }
 
-    public int getMaintenanceIngressTotal() {
+    public double getMaintenanceIngressTotal() {
         return maintenanceIngressTotal;
     }
 
-    public void setMaintenanceIngressTotal(int maintenanceIngressTotal) {
+    public void setMaintenanceIngressTotal(double maintenanceIngressTotal) {
         this.maintenanceIngressTotal = maintenanceIngressTotal;
     }
 
-    public int getExtraordinaryIngressTotal() {
+    public double getExtraordinaryIngressTotal() {
         return extraordinaryIngressTotal;
     }
 
-    public void setExtraordinaryIngressTotal(int extraordinaryIngressTotal) {
+    public void setExtraordinaryIngressTotal(double extraordinaryIngressTotal) {
         this.extraordinaryIngressTotal = extraordinaryIngressTotal;
     }
 
-    public int getCommonAreasIngressTotal() {
+    public double getCommonAreasIngressTotal() {
         return commonAreasIngressTotal;
     }
 
-    public void setCommonAreasIngressTotal(int commonAreasIngressTotal) {
+    public void setCommonAreasIngressTotal(double commonAreasIngressTotal) {
         this.commonAreasIngressTotal = commonAreasIngressTotal;
     }
 
-    public int getOtherIngressTotal() {
+    public double getOtherIngressTotal() {
         return otherIngressTotal;
     }
 
-    public void setOtherIngressTotal(int otherIngressTotal) {
+    public void setOtherIngressTotal(double otherIngressTotal) {
         this.otherIngressTotal = otherIngressTotal;
     }
 
 
 
 
-    public int getAllIngressCategoriesTotal() {
+    public double getAllIngressCategoriesTotal() {
         return allIngressCategoriesTotal;
     }
 
     public void setAllIngressCategoriesTotal() {
-        int totalIngress = this.getMaintenanceIngressTotal() + this.getExtraordinaryIngressTotal() + this.getCommonAreasIngressTotal() + this.getOtherIngressTotal();
+        double totalIngress = this.getMaintenanceIngressTotal() + this.getExtraordinaryIngressTotal() + this.getCommonAreasIngressTotal() + this.getOtherIngressTotal();
         this.allIngressCategoriesTotal = totalIngress;
     }
 
     public void setIngressCategoryTotal(List<SumChargeDTO> list, int type) {
-        int total = 0;
+        double total = 0;
         for(int i=0;i<list.size();i++){
             total = total + list.get(i).getTotal();
         }
@@ -178,35 +178,35 @@ public class MensualIngressReportDTO implements Serializable {
 
     }
 
-    public int getMaintenanceBudget() {
+    public double getMaintenanceBudget() {
         return maintenanceBudget;
     }
 
-    public void setMaintenanceBudget(int maintenanceBudget) {
+    public void setMaintenanceBudget(double maintenanceBudget) {
         this.maintenanceBudget = maintenanceBudget;
     }
 
-    public int getExtraordinaryBudget() {
+    public double getExtraordinaryBudget() {
         return extraordinaryBudget;
     }
 
-    public void setExtraordinaryBudget(int extraordinaryBudget) {
+    public void setExtraordinaryBudget(double extraordinaryBudget) {
         this.extraordinaryBudget = extraordinaryBudget;
     }
 
-    public int getCommonAreasBudget() {
+    public double getCommonAreasBudget() {
         return commonAreasBudget;
     }
 
-    public void setCommonAreasBudget(int commonAreasBudget) {
+    public void setCommonAreasBudget(double commonAreasBudget) {
         this.commonAreasBudget = commonAreasBudget;
     }
 
-    public int getOtherBudget() {
+    public double getOtherBudget() {
         return otherBudget;
     }
 
-    public void setOtherBudget(int otherBudget) {
+    public void setOtherBudget(double otherBudget) {
         this.otherBudget = otherBudget;
     }
 
@@ -242,7 +242,7 @@ public class MensualIngressReportDTO implements Serializable {
         this.otherIngressPercentage += percentage;
     }
 
-    public int getTotalBudget() {
+    public double getTotalBudget() {
         return totalBudget;
     }
 
@@ -258,43 +258,43 @@ public class MensualIngressReportDTO implements Serializable {
         this.setTotalBudgetDiference( this.getAllIngressCategoriesTotal() - this.getTotalBudget());
     }
 
-    public int getMaintenanceBudgetDiference() {
+    public double getMaintenanceBudgetDiference() {
         return maintenanceBudgetDiference;
     }
 
-    public void setMaintenanceBudgetDiference(int maintenanceBudgetDiference) {
+    public void setMaintenanceBudgetDiference(double maintenanceBudgetDiference) {
         this.maintenanceBudgetDiference = maintenanceBudgetDiference;
     }
 
-    public int getExtraordinaryBudgetDiference() {
+    public double getExtraordinaryBudgetDiference() {
         return extraordinaryBudgetDiference;
     }
 
-    public void setExtraordinaryBudgetDiference(int extraordinaryBudgetDiference) {
+    public void setExtraordinaryBudgetDiference(double extraordinaryBudgetDiference) {
         this.extraordinaryBudgetDiference = extraordinaryBudgetDiference;
     }
 
-    public int getCommonAreasBudgetDiference() {
+    public double getCommonAreasBudgetDiference() {
         return commonAreasBudgetDiference;
     }
 
-    public void setCommonAreasBudgetDiference(int commonAreasBudgetDiference) {
+    public void setCommonAreasBudgetDiference(double commonAreasBudgetDiference) {
         this.commonAreasBudgetDiference = commonAreasBudgetDiference;
     }
 
-    public int getOtherBudgetDiference() {
+    public double getOtherBudgetDiference() {
         return otherBudgetDiference;
     }
 
-    public void setOtherBudgetDiference(int otherBudgetDiference) {
+    public void setOtherBudgetDiference(double otherBudgetDiference) {
         this.otherBudgetDiference = otherBudgetDiference;
     }
 
-    public int getTotalBudgetDiference() {
+    public double getTotalBudgetDiference() {
         return totalBudgetDiference;
     }
 
-    public void setTotalBudgetDiference(int totalBudgetDiference) {
+    public void setTotalBudgetDiference(double totalBudgetDiference) {
         this.totalBudgetDiference = totalBudgetDiference;
     }
 }
