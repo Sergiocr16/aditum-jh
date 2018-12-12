@@ -897,7 +897,7 @@
                         authoritites: "ROLE_USER",
                         activeOn: "financesResidentAccount",
                         collapsable: false,
-                        uisref: "finanzasPorCasa",
+                        uisref: "finanzasPorCasa.accountStatus",
                         menuId: "",
                         hover: false,
                         showXs: true,

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentsPerHouseController', PaymentsPerHouseController);
 
-    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal'];
+    PaymentsPerHouseController.$inject = ['$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$localStorage', '$scope', 'Resident','Modal','Principal'];
 
-    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal) {
+    function PaymentsPerHouseController($state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $localStorage, $scope, Resident,Modal,Principal) {
 
         var vm = this;
         vm.loadPage = loadPage;
@@ -16,6 +16,17 @@
         vm.isReady = false;
         vm.transition = transition;
         vm.loadAll = loadAll;
+        Principal.identity().then(function (account) {
+            vm.account = account;
+            switch (account.authorities[0]) {
+                case "ROLE_MANAGER":
+                    $rootScope.mainTitle = "Contabilidad filiales";
+                    break;
+                case "ROLE_USER":
+                    $rootScope.mainTitle = "Pagos";
+                    break;
+            }
+        })
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.initialTime = {
             date: '',

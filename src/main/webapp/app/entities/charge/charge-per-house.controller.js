@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ChargePerHouseController', ChargePerHouseController);
 
-    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout'];
+    ChargePerHouseController.$inject = ['$rootScope', '$scope', '$state', 'Charge', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage', 'Modal', '$timeout', 'Principal'];
 
-    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout) {
+    function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal) {
 
         var vm = this;
 
@@ -19,6 +19,17 @@
         vm.loadAll = loadAll;
         vm.isEditing = false;
         vm.isReady = false;
+        Principal.identity().then(function (account) {
+            vm.account = account;
+            switch (account.authorities[0]) {
+                case "ROLE_MANAGER":
+                    $rootScope.mainTitle = "Contabilidad filiales";
+                    break;
+                case "ROLE_USER":
+                    $rootScope.mainTitle = "Deudas vigentes";
+                    break;
+            }
+        })
         loadAll();
 
         vm.createPayment = function () {
@@ -114,16 +125,16 @@
 
             var invalido = 0;
             angular.forEach(vm.charges, function (val, index) {
-                    for (var i = 0; i < vm.charges.length; i++) {
-                        if (val.ammount == 0) {
-                            invalido++;
-                        }
+                for (var i = 0; i < vm.charges.length; i++) {
+                    if (val.ammount == 0) {
+                        invalido++;
                     }
+                }
             })
             if (invalido == 0) {
                 return true;
             } else {
-               return false
+                return false
             }
         }
         vm.editing = function () {
@@ -179,7 +190,7 @@
         }
 
         function loadAll() {
-
+            $localStorage.houseSelected.id
             Charge.queryByHouse({
                 houseId: $localStorage.houseSelected.id,
                 sort: sort()

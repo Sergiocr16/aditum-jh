@@ -1614,6 +1614,13 @@ div.scrollmenu a:hover {
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
+    .finanzes-menu {
+        position: fixed;
+        width: 100%;
+        margin: 0px;
+        z-index: 1;
+    }
+
     .all-content {
         margin-top: 56px;
     }
@@ -1733,7 +1740,12 @@ md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
 .md-unselected {
 
 }
-
+.finanzes-menu {
+    margin: 0px;
+    position: fixed;
+    width: 100%;
+    z-index: 1;
+}
 md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     background-color: #f37960;
     color: #f37960;
@@ -2037,6 +2049,12 @@ a
     z-index: 0 !important;
 }
 
+.icon-finanzes {
+    font-size: 18px !important;
+    margin-right: 2px;
+    margin-top: -2px;
+}
+
 .disabled {
     pointer-events: none;
     /* for "disabled" effect */
@@ -2047,7 +2065,7 @@ a
     z-index: 0 !important;
 }
 
-.margin-top-56{
+.margin-top-56 {
     margin-top: 56px;
 }
 

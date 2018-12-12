@@ -13,10 +13,14 @@
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m - 6, 1);
         var lastDay = new Date(y, m + 1, 0);
+        vm.isReady = false;
         vm.searchType = 1;
         vm.openCalendar = openCalendar;
         vm.loadAll = loadAll;
+        $rootScope.mainTitle = "Estado de cuenta";
         vm.datePickerOpenStatus = {};
+        vm.isReady = false;
+
         vm.dates = {
             initial_time: firstDay,
             final_time: lastDay
@@ -90,7 +94,6 @@
                 vm.final_time = vm.dates.final_time
                 var countPassedDate = 0;
                 angular.forEach(data.listaAccountStatusItems, function (item, i) {
-
                     var rightNow = new Date();
                     var chargeDate = new Date(moment(item.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
@@ -101,16 +104,9 @@
                         }
                     }
                 })
-                console.log(data)
                 vm.accountStatusItems = data;
-                $("#loading").fadeOut(300);
-                $("#loading2").fadeOut(300);
-                setTimeout(function () {
-                    $("#data").fadeIn("slow");
-                    $("#accountStatusContainer").fadeIn("slow");
+               vm.isReady = true;
 
-
-                }, 900)
             }
 
             vm.formatearNumero = function (nStr) {

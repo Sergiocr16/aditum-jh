@@ -102,15 +102,8 @@
                         }
                     }
                 })
-                console.log(data)
                 vm.accountStatusItems = data;
-                $("#loading").fadeOut(300);
-                $("#loading2").fadeOut(300);
-                setTimeout(function () {
-                    $("#data").fadeIn("slow");
-                    $("#accountStatusContainer").fadeIn("slow");
-
-                }, 900)
+                vm.isReady = true;
             }
 
             vm.formatearNumero = function (nStr) {
