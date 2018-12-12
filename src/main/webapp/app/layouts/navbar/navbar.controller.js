@@ -444,7 +444,6 @@
                         thirdItems: [],
                         showXs: true,
                         showLg: true,
-                        showLg: true,
                     },
                     {
                         title: "Ver egresos",
@@ -858,7 +857,7 @@
                             },
                             {
                                 title: "Bitácora de visitantes",
-                                icon: "build",
+                                icon: "group_add",
                                 authoritites: "ROLE_USER",
                                 activeOn: "residentsVisitors",
                                 collapsable: false,
@@ -893,7 +892,7 @@
                     },
                     {
                         title: "Finanzas",
-                        icon: "picture_in_picture",
+                        icon: "dvr",
                         authoritites: "ROLE_USER",
                         activeOn: "financesResidentAccount",
                         collapsable: false,
@@ -915,17 +914,56 @@
                         showXs: true,
                         showLg: true,
                     },
-                    // {
-                    //     title: "Manual de usuario",
-                    //     icon: "picture_in_picture",
-                    //     authoritites: "ROLE_USER,ROLE_RH",
-                    //     activeOn: "soporte",
-                    //     collapsable: false,
-                    //     uisref: "soporte",
-                    //     menuId: "",
-                    //     hover:false,
-                    //     secondaryItems: [ ]
-                    // },
+                        {
+                            title: "Áreas comunes",
+                            icon: "local_florist",
+                            authoritites: "ROLE_USER",
+                            activeOn: "common-area-resident-account,reservationCalendarResidentView,allReservationsResidentsView,reservationDialogResidentView",
+                            collapsable: true,
+                            uisref: "",
+                            menuId: "reportarMenuUser",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: [
+                                {
+                                    title: "Ver todas",
+                                    icon: "view_agenda",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "common-area-resident-account,reservationCalendarResidentView",
+                                    collapsable: false,
+                                    uisref: "common-area-resident-account",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
+                                {
+                                    title: "Reservar",
+                                    icon: "event_available",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "reservationDialogResidentView",
+                                    collapsable: false,
+                                    uisref: "common-area-reservation-resident-view",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
+                                {
+                                    title: "Mis reservaciones",
+                                    icon: "view_comfy",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "allReservationsResidentsView",
+                                    collapsable: false,
+                                    uisref: "common-area-all-reservations-resident-view",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
+
+                            ]
+                        },
+
+
                     {
                         title: "Reportar",
                         icon: "picture_in_picture",

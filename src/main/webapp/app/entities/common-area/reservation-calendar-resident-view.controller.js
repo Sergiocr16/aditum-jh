@@ -5,18 +5,66 @@
         .module('aditumApp')
         .controller('ReservationCalendarResidentViewController', ReservationCalendarResidentViewController);
 
-    ReservationCalendarResidentViewController.$inject = ['$compile','uiCalendarConfig','entity','CommonAreaReservations','AlertService','Resident','$state','$rootScope'];
+    ReservationCalendarResidentViewController.$inject = ['$scope','CommonAreaSchedule','$compile','uiCalendarConfig','entity','CommonAreaReservations','AlertService','Resident','$state','$rootScope','Modal'];
 
-    function ReservationCalendarResidentViewController($compile,uiCalendarConfig,entity,CommonAreaReservations,AlertService,Resident,$state,$rootScope) {
+    function ReservationCalendarResidentViewController($scope,CommonAreaSchedule,$compile,uiCalendarConfig,entity,CommonAreaReservations,AlertService,Resident,$state,$rootScope,Modal) {
         var vm = this;
         vm.commonArea = entity;
+        $rootScope.mainTitle = vm.commonArea.name;
         $rootScope.active = "reservationCalendarResidentView";
         vm.reservations = [];
+        vm.diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', ''];
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
         var y = date.getFullYear();
         vm.onDayClick = onDayClick;
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
+
+        CommonAreaSchedule.findSchedulesByCommonArea({
+            commonAreaId: vm.commonArea.id
+        }, onSuccessSchedule, onErrorSchedule);
+
+        function onSuccessSchedule(data, headers) {
+            vm.schedule = [];
+            console.log(data)
+            if (data[0].lunes !== "-") {
+                vm.lunes = true;
+                vm.schedule.push(1)
+            }
+            if (data[0].martes !== "-") {
+                vm.martes = true;
+                vm.schedule.push(2)
+            }
+            if (data[0].miercoles !== "-") {
+                vm.miercoles = true;
+                vm.schedule.push(3)
+            }
+            if (data[0].jueves !== "-") {
+                vm.jueves = true;
+                vm.schedule.push(4)
+            }
+            if (data[0].viernes !== "-") {
+                vm.viernes = true;
+                vm.schedule.push(5)
+            }
+            if (data[0].sabado !== "-") {
+                vm.sabado = true;
+                vm.schedule.push(6)
+            }
+            if (data[0].domingo !== "-") {
+                vm.domingo = true;
+                vm.schedule.push(0)
+            }
+        }
+
+        function onErrorSchedule(error) {
+            AlertService.error(error.data.message);
+
+        }
 
         vm.searchType = 1;
         vm.searchByType = function(type){
@@ -180,13 +228,13 @@
 
 
                 },
-                height: 700,
+                height: 1000,
                 dayClick: vm.onDayClick,
                 editable: false,
                 header:{
                     left: '',
                     center: 'title',
-                    right: 'today prev,next'
+                    right: ' prev,next'
                 },
 
                 // eventClick: vm.alertOnEventClick,
@@ -195,39 +243,110 @@
                 eventRender: vm.eventRender,
                 defaultView: 'month',
                 default: 'bootstrap3'
+            },
+            calendar1:{
+                events: function(start, end, timezone, callback) {
+                    var events = [];
+                    CommonAreaReservations.getReservationsByCommonArea({
+                        commonAreaId: vm.commonArea.id
+                    }, function(data) {
+                        console.log(data)
+                        angular.forEach(data,function(value){
+                            var message ="";
+                            var color;
+                            if(value.status==1){
+                                color = '#ef5350';
+                                message = "Pendiente de aprobar"
+                            }else if(value.status==2){
+                                color = '#42a5f5'
+                                message = "No disponible"
+                            }
+                            events.push({
+                                id:value.id,
+
+                                title: message,
+
+                                start:new Date(value.initalDate),
+
+                                end:new Date(value.finalDate),
+                                description: 'This is a cool eventdfdsafasdfasdf',
+                                color:color,
+                                status:value.status
+
+                            })
+
+                        });
+
+                        callback(events);
+                    });
+
+
+                },
+                height: 700,
+                dayClick: vm.onDayClick,
+                editable: false,
+                header:{
+                    left: '',
+                    center: 'title',
+                    right: ' prev,next'
+                },
+
+                // eventClick: vm.alertOnEventClick,
+                eventDrop: vm.alertOnDrop,
+                eventResize: vm.alertOnResize,
+                eventRender: vm.eventRender,
+                defaultView: 'listWeek',
+                default: 'bootstrap3'
             }
         };
 
-        vm.confirmMessage = function(date) {
-            var dateSelected = new Date(date);
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h4 style="margin-bottom:10px; font-size: 17px;">¿Desea realizar una reservación el día <span class="" id="dateSelected"></span>?</h4></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-
-                    if (result) {
-                        createReservation()
-
+        vm.confirmMessage = function (date) {
+            var today = new Date();
+            var datePlus1 = moment(date, "DD-MM-YYYY").add(1, 'days');
+            var dateSelected = datePlus1.toDate();
+            dateSelected.setHours(23);
+            dateSelected.setMinutes(59);
+            console.log(dateSelected);
+            Modal.confirmDialog("¿Desea realizar una reservación el día " + date.format("DD-MM-YYYY") + "?", " ",
+                function () {
+                    if (today.getTime() > dateSelected.getTime()) {
+                        Modal.toast("No puede realizar reservaciones en una fecha pasada")
                     } else {
-                        vm.isSaving = false;
+                        if (isTheDayInSchedule(dateSelected)) {
+                            $state.go('common-area-new-reservation-resident-view-date', {
+                               id: vm.commonArea.id, date: dateSelected
+                            })
+                        } else {
+                            Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[dateSelected.getDay()] + " en esta área común")
+                        }
 
                     }
-                }
-            });
-            document.getElementById("dateSelected").innerHTML = dateSelected.getDate() + "-" + dateSelected.getMonth()+"-"+dateSelected.getFullYear();
 
+
+                });
 
 
         };
+
+        function isTheDayInSchedule(day) {
+            console.log(vm.schedule)
+            console.log(day.getDay())
+            var isContained = false;
+
+            angular.forEach(vm.schedule, function (item, key) {
+
+                if (item == day.getDay()) {
+                    isContained = true;
+                }
+            });
+            if (isContained) {
+                return true;
+            } else {
+                return false;
+            }
+
+        }
+
         function onDayClick(date , jsEvent , view){
             vm.confirmMessage(date);
 
