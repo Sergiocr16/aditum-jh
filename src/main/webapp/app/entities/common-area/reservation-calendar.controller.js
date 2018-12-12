@@ -274,7 +274,7 @@
                                 start: new Date(value.initalDate),
 
                                 end: new Date(value.finalDate),
-                                description: 'This is a cool eventdfdsafasdfasdf',
+                                description: 'This is a cool ',
                                 color: color,
                                 status: value.status
 
@@ -384,9 +384,11 @@
 
 
         };
+
+
         vm.createReservationWithOutDate = function () {
             $state.go('common-area-administration.newCommonAreaReservation', {
-                date: new Date(), commonAreaId: vm.commonArea.id
+                date: 0, commonAreaId: vm.commonArea.id
             })
         };
 

@@ -70,7 +70,10 @@
             }else if($state.params.commonAreaId!==undefined){
                 vm.commonarea.id = $state.params.commonAreaId;
                 loadSchedule();
-                vm.commonAreaReservations.initalDate = new Date($state.params.date)
+                if($state.params.date!=='0'){
+                    vm.commonAreaReservations.initalDate = new Date($state.params.date)
+                }
+
             }
 
         }
@@ -85,11 +88,11 @@
         }
         function loadSchedule() {
 
-            if (vm.commonAreaReservations.id == null && $state.params.commonAreaId===undefined) {
-                vm.commonAreaReservations.initalDate = null;
-            }
+            // if (vm.commonAreaReservations.id == null && $state.params.commonAreaId===undefined) {
+            //     vm.commonAreaReservations.initalDate = null;
+            // }
 
-            if($state.params.date!==undefined){
+            if($state.params.date!=='0'){
                 vm.commonAreaReservations.initalDate = new Date($state.params.date)
 
             }
