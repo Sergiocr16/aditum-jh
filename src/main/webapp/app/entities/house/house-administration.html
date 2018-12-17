@@ -97,8 +97,8 @@
                     <span ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
                 </div>
             </div>
-            <div class="tab_container" flex layout="row">
-                <label flex hide-xs hide-sm hide-md ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"  ui-sref="houseAdministration.accountStatus"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i> <span hide-xs hide-sm hide-md>Estado de cuenta</span></label>
+            <div style="padding-top: 0 !important"class="tab_container" flex layout="row">
+                <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"  ui-sref="houseAdministration.accountStatus"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i> <span hide-xs hide-sm hide-md>Estado de cuenta</span></label>
                 <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.chargePerHouse')}" ui-sref="houseAdministration.chargePerHouse"><i class="material-icons material-icons-with-text icon-finanzes">list_alt</i> <span hide-xs hide-sm hide-md>Cuotas</span></label>
                 <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.paymentsPerHouse')}" ui-sref="houseAdministration.paymentsPerHouse"><i class="material-icons material-icons-with-text icon-finanzes">payment</i> <span hide-xs hide-sm hide-md>Pagos</span></label>
                 <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.residentsByHouse')}" ui-sref="houseAdministration.residentsByHouse"><i class="material-icons material-icons-with-text icon-finanzes">people</i> <span hide-xs hide-sm hide-md>Residentes</span></label>

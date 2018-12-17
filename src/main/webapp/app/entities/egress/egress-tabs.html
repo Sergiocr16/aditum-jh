@@ -1,13 +1,13 @@
-<div class="row" ng-if="true">
+<div class="row fixed-tabs" ng-if="true" hide-sm hide-xs>
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
             <md-tab ui-sref="egress-tabs.egress"  md-active-nc="$state.includes('egress-tabs.egress')" label="Todos los egresos">
             </md-tab>
             <md-tab ui-sref="egress-tabs.egress-report"   md-active-nc="$state.includes('egress-tabs.egress-report')" label="Reporte de egresos" class="md-active" >
             </md-tab>
 
         </md-tabs>
-        <md-tabs hide-lg hide-xl hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+        <md-tabs hide-lg hide-xl hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
             <md-tab   ui-sref="egress-tabs.egress"  md-active-nc="$state.includes('egress-tabs.egress')" label="Todos los egresos">
             </md-tab>
             <md-tab   ui-sref="egress-tabs.egress-report"   md-active-nc="$state.includes('egress-tabs.egress-report')" label="Reporte de egresos" class="md-active">
@@ -17,5 +17,5 @@
     </md-content>
 </div>
 
-<div ui-view class="row" style="padding: 20px;">
+<div ui-view class="row marging-top-40" style="padding: 20px;">
 </div>

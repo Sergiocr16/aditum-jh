@@ -20,6 +20,8 @@
         $rootScope.mainTitle = "Estado de cuenta";
         vm.datePickerOpenStatus = {};
         vm.isReady = false;
+        vm.expading = false;
+        vm.house = $localStorage.houseSelected;
 
         vm.dates = {
             initial_time: firstDay,
@@ -120,7 +122,45 @@
                 }
                 return x1 + x2;
             }
+            vm.findBootstrapEnvironment = function () {
+                var envs = ['xs', 'sm', 'md', 'lg'];
 
+                var $el = $('<div>');
+                $el.appendTo($('body'));
+
+                for (var i = envs.length - 1; i >= 0; i--) {
+                    var env = envs[i];
+
+                    $el.addClass('hidden-' + env);
+                    if ($el.is(':hidden')) {
+                        $el.remove();
+                        return env;
+                    }
+                }
+            }
+
+            vm.isScreenSizeSmall = function () {
+                var envs = ['xs', 'sm', 'md'];
+                var e = 0;
+                for (var i = 0; i < envs.length; i++) {
+                    if (envs[i] === vm.findBootstrapEnvironment()) {
+                        e++;
+                    }
+                }
+                if (e > 0) {
+                    return true;
+                }
+                return false;
+            }
+            vm.expand = function () {
+
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.expanding = !vm.expanding;
+                    });
+                }, 200);
+
+            }
             vm.updatePicker = function () {
                 vm.picker1 = {
                     datepickerOptions: {

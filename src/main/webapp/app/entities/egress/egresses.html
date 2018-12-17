@@ -116,7 +116,7 @@
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                                 </md-tooltip>
                                 remove_red_eye</i>
-                            <md-menu ng-if="egress.state!=2" md-position-mode="target-right target" has-any-authority="ROLE_MANAGER"
+                            <md-menu hide-xs hide-sm ng-if="egress.state!=2" md-position-mode="target-right target" has-any-authority="ROLE_MANAGER"
                                      style=" margin-top: 6px;margin-right: 0!important;">
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            style="margin-right: 0!important;"
@@ -126,7 +126,7 @@
                                         </md-tooltip>
                                         more_vert</i>
                                 </md-button>
-                                <md-menu-content width="4">
+                                <md-menu-content width="4"  >
                                     <md-menu-item >
                                         <md-button ng-click="vm.detailEgress(egress.id)">
                                             <div layout="row" flex>

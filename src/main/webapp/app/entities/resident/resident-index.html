@@ -2,11 +2,11 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class="fade-in" ng-if="vm.isReady">
-    <div class="row" ng-if="true">
+<div class="fade-in">
+    <div class="row fixed-tabs" ng-if="true">
         <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-            <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 hidden-xs hidden-sm">
+            <md-tabs  hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                     class="md-fixed-tabs hidden-xs hidden-sm">
                 <md-tab ng-click="vm.switchEnabledResidents()" label="USUARIOS HABILITADOS">
                 </md-tab>
                 <md-tab label="USUARIOS DESHABILITADOS" ng-click="vm.switchDisabledResidents()">
@@ -14,16 +14,15 @@
 
             </md-tabs>
             <md-tabs hide-lg hide-md  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 hidden-md hidden-lg ">
+                     class="md-fixed-tabs hidden-md hidden-lg ">
                 <md-tab ng-click="vm.switchEnabledResidents()" label="HABILITADOS">
                 </md-tab>
                 <md-tab label="DESHABILITADOS" ng-click="vm.switchDisabledResidents()">
                 </md-tab>
-
             </md-tabs>
         </md-content>
     </div>
-    <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding marging-top-40" style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
 
         <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
              id="index-search-bar">
