@@ -16,6 +16,6 @@
         </md-tabs>
     </md-content>
 </div>
-
-<div ui-view class="row marging-top-40" style="padding: 20px;">
+<div ui-view class="row " ng-class="{'margin-top-40':vm.isScreenSizeSmall()===false}" style="padding: 20px;">
 </div>
+
