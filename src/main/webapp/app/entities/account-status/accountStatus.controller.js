@@ -15,7 +15,9 @@
         var lastDay = new Date(y, m + 2, 0);
         vm.searchType = 1;
         vm.isReady = false;
+        vm.expading = false;
         vm.openCalendar = openCalendar;
+        vm.house = $localStorage.houseSelected;
         vm.loadAll = loadAll;
         vm.datePickerOpenStatus = {};
         vm.dates = {
@@ -24,7 +26,45 @@
         };
 
         loadAll();
+        vm.findBootstrapEnvironment = function () {
+            var envs = ['xs', 'sm', 'md', 'lg'];
 
+            var $el = $('<div>');
+            $el.appendTo($('body'));
+
+            for (var i = envs.length - 1; i >= 0; i--) {
+                var env = envs[i];
+
+                $el.addClass('hidden-' + env);
+                if ($el.is(':hidden')) {
+                    $el.remove();
+                    return env;
+                }
+            }
+        }
+
+        vm.isScreenSizeSmall = function () {
+            var envs = ['xs', 'sm', 'md'];
+            var e = 0;
+            for (var i = 0; i < envs.length; i++) {
+                if (envs[i] === vm.findBootstrapEnvironment()) {
+                    e++;
+                }
+            }
+            if (e > 0) {
+                return true;
+            }
+            return false;
+        }
+        vm.expand = function () {
+
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.expanding = !vm.expanding;
+                });
+            }, 200);
+
+        }
 
         function openCalendar(date) {
             vm.datePickerOpenStatus[date] = true;

@@ -921,7 +921,7 @@
                             activeOn: "common-area-resident-account,reservationCalendarResidentView,allReservationsResidentsView,reservationDialogResidentView",
                             collapsable: true,
                             uisref: "",
-                            menuId: "reportarMenuUser",
+                            menuId: "areasComunesMenuUser",
                             hover: false,
                             showXs: true,
                             showLg: true,
@@ -1024,11 +1024,25 @@
                         showXs: true,
                         showLg: true,
                     },
+                ],
 
+            },
+            {
+                title: "",
+                icon: "contact_support",
+                authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
+                activeOn: "soporte",
+                collapsable: false,
+                uisref: "soporte",
+                menuId: "",
+                hover: false,
+                showXs: true,
+                showLg: true,
+                secondaryItems:[
                     {
                         title: "Soporte",
-                        icon: "picture_in_picture",
-                        authoritites: "ROLE_USER,ROLE_RH,ROLE_MANAGER",
+                        icon: "contact_support",
+                        authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
                         activeOn: "soporte",
                         collapsable: false,
                         uisref: "soporte",
@@ -1036,6 +1050,9 @@
                         hover: false,
                         showXs: true,
                         showLg: true,
+                        secondItems:[
+
+                        ]
                     },
                 ]
             },
