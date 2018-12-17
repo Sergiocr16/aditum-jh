@@ -66,8 +66,7 @@
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{resident.name.toUpperCase()}}</span>
-                                <span class="md-headline font-15 hidden-xs">{{resident.name.toUpperCase()}}</span>
+                                <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}  {{resident.lastname.toUpperCase()}} </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Filial: {{resident.house_id}}</span>
                                 <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
@@ -75,8 +74,8 @@
                             <md-card-title-media>
                                 <div class="md-media-md card-media  hidden-md hidden-lg"
                                      style="padding-top: 10px!important;">
-                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="112"
-                                         width="112"/>
+                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="100"
+                                         width="100"/>
                                     <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index-xs"/>
                                 </div>

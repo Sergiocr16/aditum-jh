@@ -15,7 +15,7 @@
                mode="mouseover"></i>
         </div>
 
-        <div layout="row" ng-hide="vm.payments.length==0 && vm.filtering==false">
+        <div layout="row" layout-xs="column" ng-hide="vm.payments.length==0 && vm.filtering==false">
 
             <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">
                 Mostrar

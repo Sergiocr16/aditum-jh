@@ -12,6 +12,7 @@
         var vm = this;
         $rootScope.mainTitle =  "Egresos";
         vm.isReady = false;
+        vm.isReady2 = false;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.loadPage = loadPage;
@@ -103,6 +104,7 @@
                 })
             });
             vm.isReady = true;
+            vm.isReady2 = true;
         }
 
 
@@ -153,7 +155,7 @@
         vm.updatePicker();
 
         function consult() {
-            vm.isReady = false;
+            vm.isReady2 = false;
             Egress.findBetweenDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -189,7 +191,7 @@
 
 
         vm.stopConsulting = function () {
-            vm.isReady = false;
+            vm.isReady2 = true;
             vm.dates = {
                 initial_time: undefined,
                 final_time: undefined

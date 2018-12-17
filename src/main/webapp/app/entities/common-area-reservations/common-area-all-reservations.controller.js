@@ -24,6 +24,8 @@
         vm.consult = consult;
         loadAll();
 
+
+
         function onError(error) {
             AlertService.error(error.data.message);
         }
@@ -118,7 +120,7 @@
             });
             setTimeout(function () {
                 vm.isReady = true;
-            },500);
+            },600);
 
         }
 

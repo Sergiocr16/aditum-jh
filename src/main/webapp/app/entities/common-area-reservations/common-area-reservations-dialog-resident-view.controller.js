@@ -447,7 +447,7 @@
             Modal.hideLoadingBar()
 
             $state.go('common-area-resident-account');
-            toastr["success"]("Se ha enviado la reservación correctamente para su respectiva aprobación")
+            Modal.toast("Se ha enviado la reservación correctamente para su respectiva aprobación")
             vm.isSaving = false;
         }
 

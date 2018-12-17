@@ -44,8 +44,8 @@
 
     </div>
 
-    <div class="slide-box slide-toggle-js no-padding fade-in row " style="margin-right: 0px!important;" ng-if="vm.showFilterDiv">
-        <md-input-container class="md-block no-margin col-md-4 col-xs-5 col-sm-4 " has-authority="ROLE_MANAGER"
+    <div class="slide-box slide-toggle-js no-padding fade-in row " layout-xs="column" style="margin-right: 0px!important;" ng-if="vm.showFilterDiv">
+        <md-input-container class="md-block no-margin col-md-4  " has-authority="ROLE_MANAGER"
                             ng-if="vm.residents.length> 0 || vm.house!='-1'">
 
             <md-select ng-model="vm.house" ng-change="vm.findResidentsByHouse(vm.house)">
@@ -57,7 +57,7 @@
 
             </md-select>
         </md-input-container>
-        <md-input-container class="md-block no-margin col-md-4 col-xs-5 col-sm-4 no-padding-right" has-authority="ROLE_MANAGER"
+        <md-input-container class="md-block no-margin col-md-4 no-padding-right" has-authority="ROLE_MANAGER"
                             ng-if="vm.residents.length> 0 || vm.house!='-1'">
             <md-select ng-model="vm.filterAuthorized" ng-change="vm.setAuthorizedView(vm.filterAuthorized)">
                 <md-option value="2">Con y sin cuenta en sistema</md-option>
@@ -73,7 +73,7 @@
         <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
     </div>
     <div class="portlet-body fade-in " ng-if="vm.isReady2">
-        <div class="col-lg-12 col-md-12 col-xs-12 ">
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding ">
 
             <div class="col-md-12 col-xs-12 no-padding fade-in">
                 <no-content ng-if="vm.residents.length == 0" icon="group"
@@ -87,8 +87,7 @@
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{resident.name.toUpperCase()}}</span>
-                                <span class="md-headline font-15 hidden-xs">{{resident.name.toUpperCase()}}</span>
+                                <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Filial: {{resident.house_id}}</span>
                                 <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>

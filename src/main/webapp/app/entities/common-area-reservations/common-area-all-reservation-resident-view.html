@@ -80,7 +80,12 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="finalListReservations in vm.finalListReservations"  >
-                        <td class="text-center"  style="padding: 5px!important; padding-top: 7px!important;"><button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==1" ui-sref="common-area-all-reservations-resident-view.reservationsDetail({id:finalListReservations.id})" name="button">Ver</button> <button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==2" ui-sref="common-area-all-reservations-resident-view.reservationsDetail({id:finalListReservations.id})"name="button">Ver</button></td>
+
+                        <td class="text-center"><a class="light-gray-font" ng-if="finalListReservations.status==1" ui-sref="common-area-all-reservations-resident-view.reservationsDetail({id:finalListReservations.id})" ><i
+                            class="material-icons">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                            remove_red_eye</i></a></td>
+
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td >{{finalListReservations.schedule}}</td>
                         <td>{{finalListReservations.residentName}}</td>
