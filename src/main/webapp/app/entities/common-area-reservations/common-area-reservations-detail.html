@@ -38,41 +38,41 @@
                 <span style="font-weight: 600">Generar costo por reservación</span>
             </div>
             <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #e7e7e7;">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;  padding-bottom: 10px!important;">
-                    <div class="margin-bottom-10 control-label" style="font-weight: 600">Fecha del cargo</div>
-                    <input ng-model="vm.charge.date" id="field_chargeDate"
-                           name="chargeDate" ng-click="vm.openCalendar('chargeDate')"
-                           enable-time="false"
-                           datetime-picker="mediumDate"
-                           datepicker-options="vm.picker.datepickerOptions"
-                           is-open="vm.datePickerOpenStatus.chargeDate"
-                           type="text" class="form-control letters gray-font dating"
-                           placeholder="Seleccione una fecha"
-                           required>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7;  padding-bottom: 10px!important;">
+
+
+                    <md-input-container class="md-block  no-margin-bottom">
+                        <label>Fecha del cargo</label>
+                        <md-datepicker md-min-date="vm.egress.date" required ng-model="vm.charge.date" md-hide-icons="calendar"
+                                       md-open-on-focus
+                                       required></md-datepicker>
+                    </md-input-container>
+
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
-                    <div class="margin-bottom-10 control-label" style="font-weight: 600">Concepto</div>
-                    <input  type="text" class="form-control numbers" name="chargeConcept" id="field_chargeConcept"
-                            ng-model="vm.charge.concept" required
-                    />
+                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
+                    <!--<div class="margin-bottom-10 control-label" style="font-weight: 600">Concepto</div>-->
+                    <!--<input  type="text" class="form-control numbers" name="chargeConcept" id="field_chargeConcept"-->
+                             <!--required-->
+                    <!--/>-->
+                    <md-input-container class="md-block" style="margin-bottom: 0">
+                        <label>Concepto</label>
+                        <input required ng-model="vm.charge.concept" type="text" class="">
+                    </md-input-container>
                 </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
-                    <div class="margin-bottom-10 control-label" style="font-weight: 600">Cantidad</div>
-                    <div class="input-group ">
-                        <span class="input-group-addon">₡</span>
-                        <input ng-class="{redBorder: vm.charge.reservationChargeValida==false}" ng-change="vm.validateReservationCharge(vm.charge)" type="text" class="form-control" format="currency" name="reservationCharge" id="field_reservationCharge"
-                               ng-model="vm.charge.ammount"  placeholder="0.00" required
-                        />
-                    </div>
+                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
+
+                    <md-input-container class="md-block" style="margin-bottom: 0">
+                        <label>Cantidad</label>
+                        <input required ng-model="vm.charge.ammount" format="currency" type="text" placeholder="0.00" class="">
+                    </md-input-container>
                 </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-20 reservation-detail-info-div" >
-                    <div class="margin-bottom-10 " style="font-weight: 600">Devolución</div>
-                    <div class="input-group ">
-                        <span class="input-group-addon">₡</span>
-                        <input ng-class="{redBorder: vm.commonAreaReservations.devolutionAmmountValida==false}" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" format="currency" type="text" class="form-control" name="devolutionCharge" id="field_devolutionCharge"
-                               ng-model="vm.commonAreaReservations.devolutionAmmount"  placeholder="0.00"
-                        />
-                    </div>
+                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-20 reservation-detail-info-div text-left" >
+
+                    <md-input-container class="md-block" style="margin-bottom: 0">
+                        <label>Devolución</label>
+                        <input required ng-model="vm.commonAreaReservations.devolutionAmmount" format="currency" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" placeholder="0.00" class="">
+                    </md-input-container>
+
                 </div>
 
             </div>

@@ -58,6 +58,8 @@
                                 id: value.commonAreaId
                             }, function(result) {
                                 value.commonAreaName = result.name ;
+                                value.commonAreaPicture = result.picture;
+                                value.commonAreapictureContentType = result.pictureContentType;
                                 value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
 
                             })
@@ -66,6 +68,7 @@
                     //     vm.finalListReservations.push(value)
                     // }
                 });
+                console.log(vm.finalListReservations)
                 setTimeout(function () {
                     vm.isReady = true;
                 },500);

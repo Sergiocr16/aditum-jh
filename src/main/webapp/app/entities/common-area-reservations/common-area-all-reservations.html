@@ -28,7 +28,7 @@
 
 <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding" ng-if="vm.showFilterDiv">
 
-    <div layout="row" class="">
+    <div layout="row"  layout-xs="column" class="">
 
         <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos todos
         </md-button>
@@ -79,7 +79,13 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="finalListReservations in vm.finalListReservations"  >
-                        <td class="text-center"  style="padding: 5px!important; padding-top: 7px!important;"><button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==1" ui-sref="common-area-administration.common-area-all-reservations.reservationDetail({id:finalListReservations.id})" name="button">Ver</button> <button type="button" class="btn " style=" background-color: #45b6af; color: white; " ng-if="finalListReservations.status==2" ui-sref="common-area-administration.common-area-all-reservations.acceptedReservationsDetail({id:finalListReservations.id})" name="button">Ver</button></td>
+
+
+                        <td class="text-center"><a class="light-gray-font" ng-if="finalListReservations.status==1" ui-sref="common-area-administration.common-area-all-reservations.reservationDetail({id:finalListReservations.id})"><i
+                            class="material-icons">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                            remove_red_eye</i></a></td>
+
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td >{{finalListReservations.schedule}}</td>
                         <td class="text-center">{{finalListReservations.houseNumber}}</td>

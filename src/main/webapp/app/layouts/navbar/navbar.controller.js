@@ -481,7 +481,7 @@
                             },
                             {
                                 title: "Capturar egresos",
-                                icon: "plus_one",
+                                icon: "payment",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "newEgress",
                                 collapsable: false,

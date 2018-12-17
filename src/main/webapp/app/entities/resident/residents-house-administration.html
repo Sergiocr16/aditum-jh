@@ -40,12 +40,11 @@
 
 
                 <div class="col-md-4 no-padding " ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' " >
-                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 "
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
-                                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{resident.name.toUpperCase()}}</span>
-                                <span class="md-headline font-15 hidden-xs">{{resident.name.toUpperCase()}}</span>
+                                <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}</span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
                             </md-card-title-text>
@@ -55,14 +54,14 @@
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="112"
                                          width="112"/>
                                     <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
-                                         class="object-fit_scale-down-resident-index"/>
+                                         class="object-fit_scale-down-index-xs"/>
                                 </div>
                                 <div class="md-media-sm card-media hidden-xs hidden-sm"
                                      style="padding-top: 10px!important;">
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="80"
                                          width="80"/>
                                     <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
-                                         class="object-fit_scale-down-resident-index-xs"/>
+                                         class="object-fit_scale-down-index"/>
                                 </div>
                             </md-card-title-media>
                         </md-card-title>

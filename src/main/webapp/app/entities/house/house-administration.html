@@ -46,7 +46,7 @@
             <!--</div>-->
 
         </div>
-        <div class="col-md-12">
+        <div class="col-md-12 no-padding">
             <h3 hide-xs hide-sm hide-md class="caption-subject font-green-sharp bold ">Filial {{vm.house.housenumber}}
                 <div class="btn-group pull-right">
                     <span style="padding:5px 10px; margin-right:13px;" ng-show="vm.house.isdesocupated == 1" class="label label-sm label-danger bold">
@@ -105,7 +105,7 @@
                 <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}" ui-sref="houseAdministration.vehiculesByHouse"><i class="material-icons material-icons-with-text icon-finanzes" >directions_car</i> <span hide-xs hide-sm hide-md>Vehículos</span></label>
             </div>
         </div>
-        <div ui-view class="col-md-12" style="overflow-y: auto" layout="column">
+        <div ui-view class="col-md-12 no-padding" style="overflow-y: auto" layout="column">
             <!-- First Level -->
         </div>
     </div>
