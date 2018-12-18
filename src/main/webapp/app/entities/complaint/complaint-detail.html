@@ -96,8 +96,7 @@
                 <div class="comments-container">
                     <md-list flex>
                         <md-list-item class="md-3-line"
-                                      ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id "
-                        ">
+                                      ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id">
                         <img class="md-avatar" ng-hide="comment.resident.image_url"
                              src="content/images/nobody-image.jpg"/>
                         <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
