@@ -49,6 +49,7 @@ public class AnnouncementService {
         }
         Announcement announcement = announcementMapper.toEntity(announcementDTO);
         announcement.setDeleted(0);
+        announcement.setCompany(announcementMapper.companyFromId(announcementDTO.getCompanyId()));
         announcement = announcementRepository.save(announcement);
         return announcementMapper.toDto(announcement);
     }
@@ -101,7 +102,9 @@ public class AnnouncementService {
     public AnnouncementDTO findOne(Long id) {
         log.debug("Request to get Announcement : {}", id);
         Announcement announcement = announcementRepository.findOne(id);
-        return announcementMapper.toDto(announcement);
+        AnnouncementDTO announcementDTO = announcementMapper.toDto(announcement);
+        announcementDTO.setCommentsQuantity(announcementCommentService.countByAnnouncement(announcement.getId()));
+        return announcementDTO;
     }
 
     /**

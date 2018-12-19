@@ -1,79 +1,67 @@
 
-    <div class="row">
-        <form ng-submit="vm.crearCuota()">
+<div class="row">
         <div class="col-md-12">
-            <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-money font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Generar cuota para Filial {{vm.house.housenumber}}</span>
-                    </div>
+            <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
+                <div ng-cloak layout="column">
+                    <md-toolbar class="form-title">
+                        <h2>{{mainTitle}}</h2>
+                    </md-toolbar>
+                </div>
                 </div>
                 <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                        <span class="font-13 bold">Tipo de cuota *</span>
+                    <md-content layout-padding class="form-content">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <form name="form" ng-submit="vm.crearCuota()">
+                                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <md-input-container class="md-block">
+                                            <label>Tipo de cuota</label>
+                                            <md-select ng-model="vm.charge.type" required>
+                                                <md-option value="1">Mantenimiento
+                                                </md-option>
+                                                <md-option value="2">Extraordinaria
+                                                </md-option>
+                                                <md-option value="3">Áreas comunes
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                        <md-input-container class="md-block">
+                                            <label>Fecha de cobro</label>
+                                            <md-datepicker ng-change="vm.autoConcept()" md-hide-icons="calendar" required
+                                                           ng-model="vm.charge.date" md-min-date="vm.minDate"
+                                                           md-placeholder="Introduzca una fecha" md-open-on-focus></md-datepicker>
+                                        </md-input-container>
+
                                     </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <select class="form-control gray-font" ng-model="vm.charge.type" required>
-                                            <option value="1">Mantenimiento</option>
-                                            <option value="2">Extraordinaria</option>
-                                            <option value="3">Áreas comunes</option>
-                                        </select>
+
+                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <md-input-container class="md-block">
+                                            <label>Concepto</label>
+                                            <textarea ng-model="vm.charge.concept" style="margin-top: -5px;" rows="3"
+                                                      md-select-on-focus required></textarea>
+                                        </md-input-container>
+                                        <md-input-container class="md-block">
+                                            <label>Total</label>
+                                            <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                                   ng-model="vm.charge.ammount"
+                                                   required
+                                            />
+                                        </md-input-container>
                                     </div>
                                 </div>
-
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding-right form-group">
-                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                        <span class="font-13 bold">Fecha de cobro*</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8  form-group">
-                                        <input ng-model="vm.charge.date" id="field_contable_date" ng-change="vm.autoConcept()" name="date" ng-click="vm.openCalendar('date')" min="vm.minDate" enable-time="false" datetime-picker="longDate" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus" type="text" class="form-control letters gray-font dating" placeholder="Seleccione una fecha" required>
-                                    </div>
+                                <div layout="row" class="white-bg" layout-align="end center" >
+                                    <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()" >
+                                       Cancelar
+                                    </md-button>
+                                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.charge.ammount==0" type="submit">
+                                        Generar cuota
+                                    </md-button>
                                 </div>
-
-                            </div>
-                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding-right form-group">
-                                    <div class=" col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                        <span class="font-13 bold control-label">Concepto *</span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 form-group">
-                                        <textarea required rows="4" ng-model="vm.charge.concept" cols="50" type="text" class="form-control" name="comments" id="field_comments">
-                                         </textarea>
-
-                                    </div>
-                                </div>
-                                <div class="col-lg-12 col-md-12  col-sm-12 col-xs-12 no-padding-right form-group">
-                                    <div class="col-lg-4 col-md-4  col-sm-4 col-xs-4 no-padding-right margin-top-10">
-                                        <span class="font-13 bold control-label ">Total * </span>
-                                    </div>
-                                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8">
-                                        <div class="input-group form-group">
-                                            <span class="input-group-addon">₡</span>
-                                            <input ng-class="{redBorder: vm.charge.valida==false}" type="text" class="form-control numbers" placeholder="0.00" name="total" id="field_total" ng-model="vm.charge.ammount" ng-change="vm.validate(vm.charge)" required />
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                    </div>
+                            </form>
+                        </div>
+                    </md-content>
                 </div>
-                <div class="modal-footer">
-                    <div class="form-actions noborder col-lg-12 col-md-12 col-sm-12 col-xs-12" style="padding-bottom:0px;">
-                        <h3 class="text-right">
-                            <button type="submit" ng-disabled="vm.isSaving" class="btn blue">Generar Cuota</button>
-                            <button type="button" ng-click="vm.clear()" class="btn red default">Cancelar</button>
-                        </h3>
-                    </div>
-                </div>
+
             </div>
-        </div>
-        </form>
     </div>
 

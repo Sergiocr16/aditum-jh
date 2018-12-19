@@ -1,19 +1,24 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ResidentsHouseAdministrationController', ResidentsHouseAdministrationController);
 
-    ResidentsHouseAdministrationController.$inject = ['$state','$scope','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','$localStorage'];
+    ResidentsHouseAdministrationController.$inject = ['$state', '$scope', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', '$localStorage'];
 
-    function ResidentsHouseAdministrationController($state,$scope,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,$localStorage) {
+    function ResidentsHouseAdministrationController($state, $scope, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, $localStorage) {
 
 
         var vm = this;
         var enabledOptions = true;
+        vm.isReady = false;
+        vm.radiostatus = true;
         vm.isAuthenticated = Principal.isAuthenticated;
-        setTimeout(function(){ loadResidents();},100)
+        setTimeout(function () {
+            loadResidents();
+        }, 100)
+
         function loadResidents() {
 
             if (enabledOptions) {
@@ -26,35 +31,35 @@
                 vm.changesTitles();
 
                 Resident.findResidentesDisabledByHouseId({
-                    houseId:$localStorage.houseSelected.id
+                    houseId: $localStorage.houseSelected.id
                 }).$promise.then(onSuccess, onError);
             }
 
             function onSuccess(data) {
-                vm.residents = data;
-                console.log(data)
 
-                setTimeout(function() {
-                    $("#loadingIcon4").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#residents_container").fadeIn('slow');
-                },700 )
+                vm.residents = data;
+                vm.residents = formatResidents(data);
+                vm.isReady = true;
+
             }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-        vm.switchEnabledDisabledResidents = function() {
-            $("#residents_container").fadeOut(0);
-            setTimeout(function() {
-                $("#loadingIcon4").fadeIn(100);
-            }, 200)
+        vm.detailResident = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('resident-detail', {
+                id: encryptedId
+            })
+        }
+        vm.switchEnabledDisabledResidents = function () {
+            vm.isReady = false;
+            vm.radiostatus = !vm.radiostatus;
             enabledOptions = !enabledOptions;
             loadResidents();
         }
-        vm.changesTitles = function() {
+        vm.changesTitles = function () {
             if (enabledOptions) {
                 vm.titleCondominosIndex = "Residentes de la filial ";
                 vm.buttonTitle = "Ver residentes deshabilitados";
@@ -68,13 +73,25 @@
                 vm.iconDisabled = "fa fa-undo";
                 vm.color = "green";
             }
+        };
+
+        function formatResidents(residents) {
+            for (var i = 0; i < residents.length; i++) {
+
+                residents[i].name = residents[i].name + " " + residents[i].lastname;
+                if (residents[i].phonenumber == null) {
+                    residents[i].phonenumber = "No registrado"
+                }
+                ;
+
+            }
+            return residents;
         }
 
-        $scope.$watch(function() {
+        $scope.$watch(function () {
             return $rootScope.houseSelected;
-        }, function() {
-            $("#residents_container").fadeOut(0);
-            $("#loadingIcon4").fadeIn("slow");
+        }, function () {
+
             loadResidents();
             vm.isEditing = false;
         });

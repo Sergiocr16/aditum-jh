@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
+    CommonAreaReservationsDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
+    function CommonAreaReservationsDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -53,9 +53,10 @@
 
         }
 
-        vm.switchSendEmail = function(){
-            vm.sendEmail = !vm.sendEmail;
-        }
+        vm.switchSendEmail = function(type){
+             vm.sendEmail = type;
+
+        };
 
         function formatScheduleTime(initialTime, finalTime){
             var times = [];
@@ -162,7 +163,7 @@
             }
         };
         function createCharge () {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar()
             vm.isSaving = true;
             vm.charge.houseId = vm.commonAreaReservations.houseId;
             vm.charge.companyId = $rootScope.companyId;
@@ -196,72 +197,41 @@
 
             function onSaveSuccess(result) {
                 $state.go('common-area-administration.common-area-reservations')
-                toastr["success"]("Se ha aprobado la reservación correctamente.")
-                bootbox.hideAll();
+                Modal.toast("Se ha aprobado la reservación correctamente.")
+                Modal.hideLoadingBar()
             }
         }
 
         vm.cancelReservation = function() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-12"><h3 style="margin-bottom:10px;">¿Está seguro que desea <span class="bold">rechazar</span> la reservación?</h3></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
 
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        vm.commonAreaReservations.status = 3;
-                        vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
-                        vm.commonAreaReservations.initalDate.setHours(0);
-                        vm.commonAreaReservations.initalDate.setMinutes(0);
-                        CommonAreaReservations.update(vm.commonAreaReservations, onCancelSuccess, onSaveError);
+            Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    vm.commonAreaReservations.status = 3;
+                    vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
+                    vm.commonAreaReservations.initalDate.setHours(0);
+                    vm.commonAreaReservations.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(vm.commonAreaReservations, onCancelSuccess, onSaveError);
+
+                });
 
 
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         };
         function onCancelSuccess(result) {
-                bootbox.hideAll();
-                toastr["success"]("Se ha rechazado la reservación correctamente.")
+                Modal.hideLoadingBar()
+               Modal.toast("Se ha rechazado la reservación correctamente.")
                 $state.go('common-area-administration.common-area-reservations')
 
         }
         vm.acceptReservation = function() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-12"><h3 style="margin-bottom:10px;">¿Está seguro que desea <span class="bold">aprobar</span> la reservación?</h3></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
 
-                    if (result) {
-                        createCharge()
+            Modal.confirmDialog("¿Está seguro que desea aceptar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    createCharge()
 
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
             });
+
+
         }
     }
 })();

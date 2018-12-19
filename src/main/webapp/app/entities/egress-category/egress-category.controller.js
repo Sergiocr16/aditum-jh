@@ -5,12 +5,15 @@
         .module('aditumApp')
         .controller('EgressCategoryController', EgressCategoryController);
 
-    EgressCategoryController.$inject = ['EgressCategory', '$rootScope', 'globalCompany'];
+    EgressCategoryController.$inject = ['EgressCategory', '$rootScope', 'globalCompany','Modal'];
 
-    function EgressCategoryController(EgressCategory, $rootScope, globalCompany) {
+    function EgressCategoryController(EgressCategory, $rootScope, globalCompany,Modal) {
 
         $rootScope.active = "egressCategories";
+        $rootScope.mainTitle ="Categoría de egresos";
+
         var vm = this;
+        vm.isReady = false;
         vm.groups = [{
             id: 1,
             name: 'Gastos fijos'
@@ -78,18 +81,18 @@
 
                     })
                     if (vm.repitedCategories > 0) {
-                        toastr["error"]("No puede haber dos categorías con el mismo nombre en el mismo grupo.")
+                        Modal.toast("No puede haber dos categorías con el mismo nombre en el mismo grupo.")
                     } else {
                         if (egressCategory.id !== null) {
                             if (egressCategory.categoryIsEmpty == false) {
                                 EgressCategory.update(egressCategory, function (result) {
-                                    toastr["success"]("Guardado.")
+                                    Modal.toast("Guardado.")
                                 })
                             }
 
                         } else {
                             EgressCategory.save(egressCategory, function (result) {
-                                toastr["success"]("Guardado.")
+                                Modal.toast("Guardado.")
                             })
 
                         }
@@ -98,30 +101,19 @@
 
                 })
             } else {
-                toastr["error"]("No puede dejar el campo vacio")
+                Modal.toast("No puede dejar el campo vacio")
             }
         };
 
         vm.confirmDeleteCategory = function (index, egressCategory) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar esta categoría de gastos " + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        toastr["success"]("Eliminado.")
-                        vm.deleteCategory(index, egressCategory)
-                    }
-                }
-            });
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar esta categoría de gastos " + "?","Una vez eliminado no podrá recuperar los datos",
+                function(){
+                    Modal.toast("Eliminado")
+                    vm.deleteCategory(index, egressCategory)
+                });
+
+
 
         };
 
@@ -138,9 +130,9 @@
             }
         }
 
-        setTimeout(function () {
+
             loadAll()
-        }, 1000)
+
 
         function loadAll() {
 
@@ -156,12 +148,7 @@
                 })
 
                 vm.egressCategories = data;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
         }

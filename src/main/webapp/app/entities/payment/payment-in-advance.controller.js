@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AdvancePaymentController', AdvancePaymentController);
 
-    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany'];
+    AdvancePaymentController.$inject = ['$scope', '$localStorage', '$state', 'Balance', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'CommonMethods', 'House', 'Charge', 'Banco', 'Payment', 'AdministrationConfiguration', 'Resident', 'globalCompany','Modal'];
 
-    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany) {
+    function AdvancePaymentController($scope, $localStorage, $state, Balance, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, House, Charge, Banco, Payment, AdministrationConfiguration, Resident, globalCompany,Modal) {
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -15,6 +15,8 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Capturar adelanto";
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "capturarAdelanto";
         vm.printReceipt = false;
@@ -22,6 +24,12 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.residents = [];
+
+vm.save = createPayment;
+        Modal.enteringForm(createPayment);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')
         });
@@ -134,12 +142,7 @@
                         vm.residents.push(resident);
                     }
                 });
-                setTimeout(function () {
-                    $("#loadingTable").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableContent").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
 
             }
 
@@ -192,8 +195,7 @@
 
         function loadCharges(houseId) {
 
-            $("#loadingTable").fadeIn(10);
-            $("#tableContent").fadeOut(10);
+            vm.isReady = false;
 
             Charge.queryByHouse({
                 houseId: houseId,
@@ -276,9 +278,6 @@
             return x1 + x2;
         }
         vm.changeHouse = function (houseId) {
-            $("#loadingTable").fadeIn(10);
-            $("#tableContent").fadeOut(10);
-
             House.get({
                 id: houseId
             }, function (result) {
@@ -318,20 +317,7 @@
             function onSuccess(data, headers) {
                 vm.bancos = data;
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingTable").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableContent").fadeIn('slow');
-                }, 700)
-
-
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -340,9 +326,9 @@
         }
 
 
-        vm.createPayment = function () {
+        function createPayment () {
             if (vm.selectedHouse.balance.total < 0) {
-                toastr["error"]("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
+                Modal.toast("La filial no puede realizar un adelanto porque aún tiene cuotas pendientes. *")
             } else {
                 adelantoCondomino();
             }
@@ -356,24 +342,11 @@
         }
 
         function adelantoCondomino() {
-            bootbox.confirm({
-                message: "¿Está seguro que desea capturar este adelanto de condómino?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        registrarAdelantoCondomino()
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea capturar este adelanto de condómino?","",
+                function(){
+                    registrarAdelantoCondomino()
+                });
+
         }
 
         function clear() {
@@ -386,7 +359,7 @@
         }
 
         function registrarAdelantoCondomino() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             vm.payment.transaction = "2",
                 vm.payment.account = vm.account.beneficiario + ";" + vm.account.id;
             vm.payment.houseId = parseInt(vm.house);
@@ -407,34 +380,30 @@
                         modalMessage: "Obteniendo comprobante de pago"
                     })
                     setTimeout(function () {
-                        bootbox.hideAll();
+                        Modal.hideLoadingBar();
                         clear();
-                        toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                        Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
                         vm.printReceipt = false;
                         increaseFolioNumber(function () {
                         });
-                        loadAll();
-                        loadAdminConfig();
-                    }, 5000)
-
-
+                        $state.go("houseAdministration.paymentsPerHouse")
+                    }, 7000)
                 } else {
-                    bootbox.hideAll();
+                    Modal.hideLoadingBar();
                     clear();
-                    toastr["success"]("Se ha capturado el adelanto del condómino correctamente.")
+                    Modal.toast("Se ha capturado el adelanto del condómino correctamente.")
                     increaseFolioNumber(function () {
                     });
-                    loadAll();
-                    loadAdminConfig();
+                    $state.go("houseAdministration.paymentsPerHouse")
                 }
 
 
             }
 
             function onError() {
-                bootbox.hideAll();
+                Modal.hideLoadingBar();
                 clear()
-                toastr["error"]("Ups. No fue posible capturar el adelanto del condómino.")
+                Modal.toast("Ups. No fue posible capturar el adelanto del condómino.")
 
             }
         }
@@ -448,7 +417,7 @@
                 house.balance.maintenance = parseInt(house.balance.maintenance) + parseInt(ammount);
                 console.log(house.balance)
                 Balance.update(house.balance, function () {
-                    bootbox.hideAll();
+                    Modal.hideLoadingBar();
                     loadAll();
                 })
 

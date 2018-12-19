@@ -20,6 +20,8 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         $rootScope.active = "officer-rh";
+        $rootScope.mainTitle = "Oficiales";
+
         vm.moveToCompany = function (officer) {
             Officer.update(officer, onUpdateSuccess, onSaveError);
 

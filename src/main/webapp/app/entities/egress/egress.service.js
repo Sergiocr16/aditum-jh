@@ -13,7 +13,7 @@
             'query': { method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
-                 isArray: false,
+                isArray: false,
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);

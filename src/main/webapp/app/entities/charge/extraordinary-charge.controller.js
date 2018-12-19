@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany'];
+    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
 
-    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany) {
+    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
         var vm = this;
         $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;
@@ -15,6 +15,8 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.datePickerOpenStatus = false;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Generar Cuota extraordinaria";
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
@@ -41,60 +43,33 @@
         }
         vm.globalCuotaSelected = function () {
             if (vm.globalConcept.cuota.ammount != undefined && vm.globalConcept.cuota.valida == true) {
-                bootbox.confirm({
-                    message: "¿Está seguro que desea modificar la cuota de todas las cuotas?",
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            $scope.$apply(function () {
-                                angular.forEach(vm.houses, function (house, i) {
+                Modal.confirmDialog( "¿Está seguro que desea modificar la cuota de todas las cuotas?","",
+                    function(){
 
-                                    house.cuota.ammount = vm.globalConcept.cuota.ammount;
+                            angular.forEach(vm.houses, function (house, i) {
 
-                                })
+                                house.cuota.ammount = vm.globalConcept.cuota.ammount;
+
                             })
 
-                        }
-                    }
-                });
+                    });
+
+
             }
         }
         vm.globalConceptSelected = function () {
             if (vm.globalConcept.text != undefined) {
-                bootbox.confirm({
-                    message: "¿Está seguro que desea modificar el concepto de todas las cuotas?",
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            $scope.$apply(function () {
-                                angular.forEach(vm.houses, function (house, i) {
 
-                                    house.cuota.concept = vm.globalConcept.text;
+                Modal.confirmDialog( "¿Está seguro que desea modificar el concepto de todas las cuotas?","",
+                    function(){
+                        angular.forEach(vm.houses, function (house, i) {
 
-                                })
-                            })
+                            house.cuota.concept = vm.globalConcept.text;
 
-                        }
-                    }
-                });
+                        })
+
+                    });
+
             }
         }
         vm.validate = function (cuota) {
@@ -134,12 +109,12 @@
             })
 
             if (vm.selectedHouses.length == 0) {
-                toastr["error"]("Debe de seleccionar almenos una casa para realizar una cuota.")
+                Modal.toast("Debe de seleccionar almenos una casa para realizar una cuota.")
             } else {
                 if (invalid == 0) {
                     vm.verificando = true;
                 } else {
-                    toastr["error"]("Porfavor verifica las cuotas ingresadas")
+                    Modal.toast("Porfavor verifica las cuotas ingresadas")
                 }
             }
         }
@@ -159,15 +134,15 @@
 
         vm.createDues = function () {
             var allReady = 0;
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             angular.forEach(vm.selectedHouses, function (house, i) {
                 if (house.cuota.ammount != 0) {
                     Charge.save(buildCharge(house), function (result) {
                         allReady++;
                         if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
-                            bootbox.hideAll();
+                            Modal.hideLoadingBar();
 
-                            toastr["success"]("Se generaron las cuotas extraordinarias correctamente.")
+                            Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
                             $state.go('extraordinaryCharge', null, {
                                 reload: true
                             })
@@ -239,12 +214,7 @@
                 vm.houses = data;
 
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

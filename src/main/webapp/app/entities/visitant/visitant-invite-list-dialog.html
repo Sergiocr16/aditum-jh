@@ -1,141 +1,151 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Reportar</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Reunión o fiesta</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="row display-none" id="all">
-    <div class="col-md-12">
-        <form ng-submit="vm.save()">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <i class="fa fa-group font-green-haze"></i>
-                        <span class="caption-subject bold uppercase">Reportar reunión o fiesta</span>
+<form name="form" ng-submit="vm.save()">
+    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+
+    <div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>{{mainTitle}}</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div>
+                <div layout="row" layout-xs="column" layout-sm="column">
+                    <div class="col-lg-6 col-sm-12 col-md-12 col-xs-12  no-padding">
+                        <h6 class="font-15">Fecha desde la cual pueden ingresar:</h6>
+                        <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <md-input-container class="md-block no-margin">
+                                <md-datepicker md-min-date="vm.minInitialDate"
+                                               md-max-date="vm.dates.final_date"
+                                               required ng-model="vm.dates.initial_date"
+                                               md-hide-icons="calendar"
+                                               md-placeholder="Fecha inicial" md-open-on-focus
+                                               required></md-datepicker>
+                            </md-input-container>
+                        </div>
+                        <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                            <!--class="form-control letters gray-font text-center dating" required>-->
+                            <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.initial_time"
+                                   class="form-control letters gray-font text-center dating" required>
+                        </div>
                     </div>
-                </div>
-                <div class="portlet-body form">
-                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
-                        <div class="col-lg-6 col-sm-12 col-md-12 col-xs-12  no-padding">
-                            <h6 class="font-15">Fecha desde la cual pueden ingresar:</h6>
-                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                <!--class="form-control letters gray-font text-center dating" required>-->
-                                <input ng-change="vm.updateDatePicker()" ng-model="vm.dates.initial_date" type="date" min="{{vm.minInitialDate}}"  class="form-control gray-font text-center" required>
-                            </div>
-                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                <!--class="form-control letters gray-font text-center dating" required>-->
-                                <input id="la" type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.initial_time"    class="form-control letters gray-font text-center dating" required>
-                            </div>
+                    <div class="col-lg-6 col-sm-12 col-md-12 col-xs-12 no-padding">
+                        <h6 class="font-15">Fecha hasta la cual pueden ingresar:</h6>
+
+                        <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <md-input-container class="md-block no-margin">
+                                <md-datepicker md-min-date="vm.dates.initial_date" required
+                                               ng-model="vm.dates.final_date"
+                                               md-hide-icons="calendar"
+                                               md-placeholder="Fecha final" md-open-on-focus
+                                               required></md-datepicker>
+                            </md-input-container>
                         </div>
-                        <div class="col-lg-6 col-sm-12 col-md-12 col-xs-12 no-padding">
-                            <h6  class="font-15">Fecha hasta la cual pueden ingresar:</h6>
-
-                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                <!--class="form-control letters gray-font text-center dating" required>-->
-                                <input  ng-change="vm.updateDatePicker()" ng-model="vm.dates.final_date" type="date" class="form-control gray-font text-center" required>
-
-                            </div>
-                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
-                                <!--class="form-control letters gray-font text-center dating" required>-->
-                                <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time " class="form-control gray-font text-center" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <div class="col-md-7 col-lg-7 col-sm-8 col-xs-12 no-padding">
-                                <h3 class="head text-center hidden-sm hidden-md hidden-lg">Lista de invitados</h3>
-                                <h3 class="head text-right hidden-xs">Lista de invitados</h3>
-                            </div>
-                            <div class="col-lg-offset-3 col-lg-2 col-md-offset-3 col-md-2 col-sm-offset-1 col-sm-2 col-xs-12 no-padding">
-                                <button type="button" ng-click="vm.addVisitor()" class="btn btn-info blue margin-top-15 col-xs-12 hidden-xs">Agregar invitado <i class="fa fa-plus "></i></button>
-                            </div>
-                            <button type="button" ng-click="vm.addVisitor()" class="btn btn-info blue margin-bottom-15 col-xs-12 hidden-sm hidden-md hidden-lg">Agregar invitado <i class="fa fa-plus "></i></button>
-
-                        </div>
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="overflow-x: visible; color:rgba(71,71,71,0.76);margin:10px 0;">
-                        <div style="border: 1px solid rgba(220,217,217,0.97) " class=" hidden-xs hidden-sm row font-14 padding-5 bold text-center">
-                            <span class="col-md-2 col-sm-2">Nacionalidad</span>
-                            <span class="col-md-2 col-sm-2">Cédula (Opcional)</span>
-                            <span class="col-md-2 col-sm-2">Nombre</span>
-                            <span class="col-md-2 col-sm-2">Primer Apellido</span>
-                            <span class="col-md-2 col-sm-2">Segundo Apellido</span>
-                            <span class="col-md-2 col-sm-2">Número de placa (Opcional)</span>
-                        </div>
-                        <div style="border: 1px solid rgba(220,217,217,0.97); background-color: rgba(220,217,217,0.10);padding-top:15px" class="row font-15 padding-top-15">
-                            <div ng-repeat="visitor in vm.visitors">
-                                <h3 class="horizontal-padding-15 hidden-sm hidden-md hidden-lg ">Invitado {{$index+1}}</h3>
-                                <div class="form-group has-info col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Nacionalidad</label>
-                                    <select class="form-control gray-font" name="vehicule" ng-model="visitor.type" ng-required='vm.required==1'>
-                                        <option value="9">Costarricense</option>
-                                        <option value="20">Extranjero</option>
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Número de cédula (opcional)</label>
-                                    <input  ng-class="{redBorder: visitor.validIdentification == 0}" maxlength="{{visitor.type}}" ng-model="visitor.identificationnumber" ng-change="vm.findInPadron(visitor)" type="text" class="form-control gray-font letters"  style='text-transform:uppercase'>
-                                    <!--<span class="help-block" style="font-size:10px">Escriba el número de cédula sin guiones ni espacios.</span>-->
-                                </div>
-                                <div class="form-group has-info col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Nombre</label>
-
-                                    <input ng-model="visitor.name"  ng-class="{redBorder: vm.hasNumbersOrSpecial(visitor.name)}" ng-disabled="visitor.found==1" type="text" style="text-transform: uppercase" class="form-control letters gray-font" required>
-                                </div>
-                                <div class="form-group has-info col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Primer Apellido</label>
-
-                                    <input ng-model="visitor.lastname"  ng-class="{redBorder: vm.hasNumbersOrSpecial(visitor.lastname)}" ng-disabled="visitor.found==1" type="text" style="text-transform: uppercase" class="form-control letters gray-font" required>
-                                </div>
-                                <div class="form-group  has-info col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Segundo Apellido</label>
-
-                                    <input ng-model="visitor.secondlastname"  ng-class="{redBorder: vm.hasNumbersOrSpecial(visitor.secondlastname)}"  ng-disabled="visitor.found==1" style="text-transform: uppercase" type="text" class="form-control letters gray-font">
-                                </div>
-                                <div class="form-group has-info col-md-2 col-sm-2">
-                                    <label class="font-15 hidden-lg hidden-md">Número de placa (Opcional)</label>
-                                    <div class="col-lg-8 no-padding">
-                                        <input ng-class="{redBorder: visitor.validPlateNumber == 0}" ng-change="vm.validPlate(visitor)" ng-model="visitor.licenseplate" type="text" style="text-transform:uppercase" class="form-control specialCharacters gray-font">
-                                    </div>
-                                    <div class="col-lg-2 hidden-md hidden-lg no-padding" style="margin-top:10px">
-                                    <button type="button" ng-disabled="vm.visitors.length==1"ng-click="vm.deleteVisitor($index)" class="btn btn-info red margin-bottom-15 col-xs-12 ">Eliminar</button>
-                                    </div>
-                                  <div class="col-lg-2 hidden-xs hidden-sm">
-                                    <button  ng-disabled="vm.visitors.length==1" ng-click="vm.deleteVisitor($index)"   class="red-font" style="background-color:transparent;border:none"><i class="fa fa-minus font-20 padding-top-10"></i></button>
-                                  </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12  hidden-md hidden-lg">
-                                <hr>
-                                </div>
-                            </div>
+                        <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <!--<input ng-model="vm.dates.final_time" ng-click="vm.openCalendarFinal('finaltime')" ng-change="vm.updatePicker()" datetime-picker="dd-MM-yyyy    /    HH:mm" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                            <!--class="form-control letters gray-font text-center dating" required>-->
+                            <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time "
+                                   class="form-control gray-font text-center" required>
                         </div>
                     </div>
                 </div>
-                    <div class="form-actions noborder">
-                        <h3 class="text-right">
-                            <button type="submit" class="btn blue"> Reportar</button>
-                            <button type="button" ui-sref="visitant-invited-user" class=" btn btn-danger">Cancelar</button>
-                        </h3>
-                    </div>
+                <div layout="row" style="margin: 0 -16px;">
+                    <md-toolbar class="form-title">
+                        <h2>Lista de invitados</h2>
+                    </md-toolbar>
                 </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 no-padding residentDivContainerXs"
+                     ng-repeat="visitor in vm.visitors">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title layout="column" style="padding-bottom: 0px">
+                            <md-card-title-media layout="row" layout-align="space-between center"
+                                                 style="margin:-25px -16px 0 -16px;">
+                                <h3 class="bold" style=" color: rgb(0, 150, 136) !important;margin: 15px;
+    font-size: 16px;">Invitado {{$index+1}}</h3>
+                                <div ng-class="{'disabled':vm.visitors.length==1}">
+                                    <md-icon class="red-icon-button-oficial"
+                                             ng-click="vm.deleteVisitor($index)">
+                                        delete_forever
+                                    </md-icon>
+                                </div>
+                            </md-card-title-media>
+                            <md-card-title-text layout="row" layout-xs="column" layout-sm="column"
+                                                layout-align-gt-xs="start center" layout-align-gt-sm="start center"
+                                                layout-align-gt-md="start center"
+                                                layout-align-gt-lg="space-between center">
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Nacionalidad</label>
+                                    <md-select ng-model="visitor.type" ng-required='vm.required==1'>
+                                        <md-option value="9">
+                                            Costarricense
+                                        </md-option>
+                                        <md-option value="20">
+                                            Extranjero
+                                        </md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container class="md-block no-margin-bottom"
+                                                    ng-class="{'md-input-invalid': visitor.validIdentification == 0}">
+                                    <label>Número de cédula (opcional)</label>
+                                    <input class="uppercase" ng-change="vm.findInPadron(visitor)"
+                                           ng-model="visitor.identificationnumber">
+                                </md-input-container>
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Nombre</label>
+                                    <input required ng-model="visitor.name" type="text"
+                                           ng-disabled="visitor.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Primer Apellido</label>
+                                    <input required ng-model="visitor.lastname" type="text"
+                                           ng-disabled="visitor.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                                <md-input-container class="md-block no-margin-bottom">
+                                    <label>Segundo Apellido</label>
+                                    <input required ng-model="visitor.secondlastname" type="text"
+                                           ng-disabled="visitor.found==1"
+                                           class="uppercase" required>
+                                </md-input-container>
+
+                            </md-card-title-text>
+
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
             </div>
-        </form>
+
+        </md-content>
+
     </div>
-</div>
+
+    <div>
+        <md-fab-speed-dial md-direction="up" style="position: fixed;"
+                           class="md-fab md-fab-bottom-right md-fling">
+            <md-fab-trigger>
+            </md-fab-trigger>
+            <md-fab-actions>
+                <md-button hide-xs hide-sm class="md-fab md-raised md-mini green-button-oficial" type="submit"
+                           ng-class="{'disabled':form.$invalid}" ng-disabled="form.$invalid">
+                    <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">
+                        Reportar invitados
+                    </md-tooltip>
+                    <md-icon style="color:white!important">check</md-icon>
+                </md-button>
+                <md-button class="md-fab md-raised md-mini orange-button-oficial" md-colors="indigo"
+                           ng-show="vm.charges.length!=0" ng-click="vm.addVisitor()">
+                    <md-tooltip md-direction="left" md-visible="tooltipVisible" class="font-13 bold white-color">Agregar
+                        invitado
+                    </md-tooltip>
+                    <md-icon style="color:white!important">add</md-icon>
+                </md-button>
+            </md-fab-actions>
+        </md-fab-speed-dial>
+    </div>
+</form>

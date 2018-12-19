@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDetailController', ResidentDetailController);
 
-    ResidentDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
+    ResidentDetailController.$inject = ['Modal','$state','$scope', '$rootScope', '$stateParams', 'previousState', 'DataUtils', 'entity', 'Resident', 'User', 'Company', 'House','Principal'];
 
-    function ResidentDetailController($scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
+    function ResidentDetailController(Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
@@ -15,6 +15,12 @@
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
+        vm.isReady = false;
+        $rootScope.mainTitle = 'Detalle de usuario';
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
 
         if (vm.resident.isOwner == 1) {
             vm.authorizer = "SI";
@@ -25,7 +31,7 @@
             vm.resident.email = "No registrado";
         }
         if(vm.resident.userLogin== "" || vm.resident.userLogin == null){
-            vm.resident.userLogin = "No hay";
+            vm.resident.userLogin = "No registrado";
         }
         if(vm.resident.type==1){
             vm.resident.type = "Residente propietario";
@@ -33,6 +39,9 @@
             vm.resident.type = "Residente inquilino";
         }else if(vm.resident.type==3){
             vm.resident.type = "Visitante autorizado";
+        }
+        if(vm.resident.phonenumber== "" || vm.resident.phonenumber == null){
+            vm.resident.phonenumber = "No registrado";
         }
         House.get({id:vm.resident.houseId},onSuccessHouses);
         function onSuccessHouses(house, headers) {
@@ -51,6 +60,7 @@
           } else {
               vm.emergencykey = house.emergencyKey;
           }
+          vm.isReady = true;
         }
 
 

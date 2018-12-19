@@ -1,42 +1,51 @@
 <!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <a>Configuración</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a >Proveedores</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
+<!--<div class="page-bar route-title">-->
+    <!--<ul class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<a>Configuración</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a >Proveedores</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right" style="padding-top:10px;">-->
+            <!--<i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div  class="row display-none" id="tableData">
+
+<div ng-if="vm.isReady" class="row fade-in" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12">
     <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12  font-green-sharp font-weight-600  " style="color: #00b19d">Proveedores
 
     </h3>
-        <div class="input-icon col-md-offset-6  col-lg-offset-6 margin-bottom-20 col-sm-offset-6  col-md-3   col-lg-3  col-md-3 col-xs-12">
-            <i class="fa fa-search"></i>
-            <input type="text" class="form-control" placeholder="Buscar" ng-model="search">
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.proveedorsQuantity> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
+            </div>
         </div>
-        <button type="button" class="btn orange-button-oficial margin-bottom-20 col-md-3  col-lg-3 col-sm-3 col-xs-12" ui-sref="proveedor.new" name="button">Registrar proveedor</button>
 
     <br/>
     <div class="portlet-body ">
-        <div ng-show="vm.proveedorsQuantity == 0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 marging-top-100">
-            <h2 class="text-center gray-font font-24">No hay proveedores registrados</h2>
-        </div>
+
+
+        <no-content ng-if="vm.proveedorsQuantity == 0" icon="store_mall_directory" text="No hay proveedores registrados"></no-content>
+
         <div class="table-scrollable hidden-xs   " ng-show="vm.proveedorsQuantity>0" style="border: 0px!important;">
             <table  class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign" >
                 <thead style="background-color: #fafafa;" >
@@ -52,7 +61,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="proveedor in vm.proveedors | filter:search  | orderBy:'empresa'">
+                <tr ng-repeat="proveedor in vm.proveedors | filter:vm.search  | orderBy:'empresa'">
                     <td>{{proveedor.empresa}}</td>
                     <td>{{proveedor.responsable}}</td>
                     <td>{{proveedor.telefono}}</td>
@@ -92,4 +101,9 @@
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
     </div>
     <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-show="vm.proveedorsQuantity>0"></uib-pager>
+    <md-button ui-sref="proveedor.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar proveedor</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

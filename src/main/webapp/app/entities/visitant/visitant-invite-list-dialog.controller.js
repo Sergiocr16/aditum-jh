@@ -5,17 +5,22 @@
         .module('aditumApp')
         .controller('VisitantInviteListDialogController', VisitantInviteListDialogController);
 
-    VisitantInviteListDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser','globalCompany'];
+    VisitantInviteListDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
 
-    function VisitantInviteListDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral,companyUser,globalCompany) {
+    function VisitantInviteListDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.clear = clear;
         $rootScope.active = "reportInvitationList";
+        $rootScope.mainTitle = "Reportar reunión o fiesta";
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.visitors = [];
@@ -26,19 +31,11 @@
             final_time: new Date()
         };
         angular.element(document).ready(function () {
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#all").fadeIn('slow');
-            }, 900)
-            vm.formatInitPickers();
-            setTimeout(function () {
-                $scope.$apply(function () {
 
-                    vm.addVisitor();
-                })
-            }, 600)
+            vm.formatInitPickers();
+
+            vm.addVisitor();
+
             CommonMethods.validateLetters();
             CommonMethods.validateNumbers();
         });
@@ -264,18 +261,18 @@
         }
 
         vm.showMessageIntitial = function () {
-            toastr["info"]("La fecha y hora inicial debe ser en el futuro, y no puede ser mayor a la fecha final", "Toma en consideración");
+            Modal.toast("La fecha y hora inicial debe ser en el futuro, y no puede ser mayor a la fecha final", "Toma en consideración");
         }
         vm.showMessageFinal = function () {
-            toastr["info"]("La fecha y hora final debe de ser en el futuro, y no puede ser menor a la fecha inicial", "Toma en consideración");
+            Modal.toast("La fecha y hora final debe de ser en el futuro, y no puede ser menor a la fecha inicial", "Toma en consideración");
         }
 
         function isValidDates() {
 
             function invalidDates() {
-                toastr["error"]("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
+                Modal.toast("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
                 vm.formatInitPickers()
-                bootbox.hideAll();
+                Modal.hideLoadingBar();
                 return false;
             }
 
@@ -336,19 +333,19 @@
                 }
             })
             if (errorCedula > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
+                Modal.toast("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
 
             }
             if (errorPlaca > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en el número de placa");
+                Modal.toast("No puede ingresar ningún caracter especial o espacio en blanco en el número de placa");
 
             }
             if (nombreError > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o número en el nombre.");
+                Modal.toast("No puede ingresar ningún caracter especial o número en el nombre.");
 
             }
             if (errorCedLength > 0) {
-                toastr["error"]("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
+                Modal.toast("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
             }
 
             if (errorCedula == 0 && errorPlaca == 0 && nombreError == 0 && errorCedLength == 0) {
@@ -361,12 +358,15 @@
 
         function save() {
             if (vm.validArray()) {
-                CommonMethods.waitingMessage();
+
                 if (isValidDates()) {
-                    angular.forEach(vm.visitors, function (val, i) {
-                        var newVisitor = formatVisitor(val);
-                        vm.isSaving = true;
-                        Visitant.save(newVisitor, onSaveSuccess, onSaveError);
+                    Modal.confirmDialog("¿Está seguro que desea reportar a todos estos visitantes?", "", function () {
+                        Modal.showLoadingBar();
+                        angular.forEach(vm.visitors, function (val, i) {
+                            var newVisitor = formatVisitor(val);
+                            vm.isSaving = true;
+                            Visitant.save(newVisitor, onSaveSuccess, onSaveError);
+                        })
                     })
                 }
             }
@@ -377,10 +377,10 @@
             $scope.$emit('aditumApp:visitantUpdate', result);
             $state.go('visitant-invited-user')
             vm.countSaved++;
-            bootbox.hideAll();
+            Modal.hideLoadingBar();
 
             if (vm.countSaved == vm.visitors.length) {
-                toastr["success"]("Se han reportado todos los invitados correctamente");
+                Modal.toast("Se han reportado todos los invitados correctamente");
                 vm.isSaving = false;
             }
         }

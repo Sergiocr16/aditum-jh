@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('CollectionTableController', CollectionTableController);
 
-    CollectionTableController.$inject = ['$timeout', 'ExcelExport', '$scope', '$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope', 'globalCompany'];
+    CollectionTableController.$inject = ['$timeout', 'ExcelExport', '$scope', '$state', 'Collection', 'ParseLinks', 'AlertService', '$rootScope', 'globalCompany','Modal'];
 
-    function CollectionTableController($timeout, ExcelExport, $scope, $state, Collection, ParseLinks, AlertService, $rootScope, globalCompany) {
+    function CollectionTableController($timeout, ExcelExport, $scope, $state, Collection, ParseLinks, AlertService, $rootScope, globalCompany,Modal) {
         var vm = this;
 //        vm.exportToExcel=function(tableId){ // ex: '#my-table'
 //                    var exportHref=ExcelExport.tableToExcel(tableId,'sheet name');
 //                    $timeout(function(){location.href=exportHref;},100); // trigger download
 //                }
+        vm.isReady = false;
+        $rootScope.mainTitle = "Tabla de cobranza";
         $rootScope.active = "collectionTable";
         vm.year = moment(new Date()).format("YYYY")
         vm.exportActions = {
@@ -51,19 +53,14 @@
 
         vm.showNextYear = function () {
 
-            $("#tableData").fadeOut(0);
-
-            $("#loadingIcon").fadeIn('slow');
+            vm.isReady = false;
 
             vm.year = parseInt(vm.year) + 1;
             loadAll(vm.year);
         }
         vm.showBackYear = function () {
 
-            $("#tableData").fadeOut(0);
-
-
-            $("#loadingIcon").fadeIn('slow');
+            vm.isReady = false;
 
             vm.year = parseInt(vm.year) - 1;
             loadAll(vm.year);
@@ -92,22 +89,12 @@
                 angular.forEach(vm.collections, function (collection, i) {
                     collection.houseNumber = parseInt(collection.houseNumber)
                 })
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
-                toastr["error"]("Hubo un problema obteniendo la tabla de cobranza")
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                Modal.toast("Hubo un problema obteniendo la tabla de cobranza")
+                vm.isReady = true;
             }
         }
 

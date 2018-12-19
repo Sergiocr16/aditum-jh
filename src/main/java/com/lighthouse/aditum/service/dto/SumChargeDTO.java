@@ -12,7 +12,7 @@ public class SumChargeDTO implements Serializable {
 
     @NotNull
     private String concept;
-    private int total;
+    private double total;
     private double percentage;
 
     public String getConcept() {
@@ -23,15 +23,15 @@ public class SumChargeDTO implements Serializable {
         this.concept = concept;
     }
 
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(double total) {
         this.total = total;
     }
 
-    public SumChargeDTO(String concept,int total ) {
+    public SumChargeDTO(String concept,double total ) {
 
         this.concept = concept;
         this.setTotal(total);

@@ -1,341 +1,472 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <a>Contabilidad</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="egress()">Ingresos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Generar reporte</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIconAll">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="display-none" id="data">
-    <div class="row">
-        <div class="col-md-12 ">
-            <div class="portlet light bordered">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content ">
+        <div>
+            <form name="form" role="form" novalidate ng-submit="vm.generateReport()" show-validation
+                  ng-if="!vm.consulting">
 
-                        <span class="caption-subject bold uppercase">Reporte de ingresos</span>
+                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block">
+                            <label>Fecha inicio</label>
+                            <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                            <label>Cuenta</label>
+                            <md-select ng-model="vm.banco" required>
+                                <md-option value="empty">
+                                    Todas
+                                </md-option>
+                                <md-option ng-repeat="banco in vm.bancos" ng-value="banco.beneficiario">
+                                    {{banco.beneficiario}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Categoría</label>
+                            <md-select ng-model="vm.category" required>
+                                <md-option value="empty">Todas
+                                </md-option>
+                                <md-option value="Mantenimiento">Mantenimiento
+                                </md-option>
+                                <md-option value="Extraordinaria">Extraordinaria
+                                </md-option>
+                                <md-option value="Áreas Comunes">Áreas Comunes
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
                     </div>
-                    <div class="caption font-green-haze pull-right" style="padding-top:10px;">
-                        <button ng-show="vm.consulting==true" ng-click="vm.consultAgain()" class="btn btn-success green">Generar nuevo reporte</button>
 
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block  no-margin-bottom">
+                            <label>Fecha final</label>
+                            <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Método de pago</label>
+                            <md-select ng-model="vm.paymentMethod" required>
+                                <md-option value="empty">Todos
+                                </md-option>
+                                <md-option value="DEPOSITO BANCO">DEPOSITO BANCO
+                                </md-option>
+                                <md-option value="EFECTIVO">EFECTIVO
+                                </md-option>
+                                <md-option value="TARJETA DEBITO">TARJETA DEBITO
+                                </md-option>
+                                <md-option value="TARJETA CREDITO">TARJETA CREDITO
+                                </md-option>
+                                <md-option value="TRANSFERENCIA">TRANSFERENCIA
+                                </md-option>
+                                <md-option value="CHEQUE">CHEQUE
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block" has-authority="ROLE_MANAGER">
+                            <label>Filial</label>
+                            <md-select ng-model="vm.houseId" required>
+                                <md-option value="empty">
+                                    Todas
+                                </md-option>
+                                <md-option ng-repeat="house in vm.houses" ng-value="house.id">
+                                    {{house.housenumber}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
                     </div>
                 </div>
-                <div class="portlet-body form" id="register_edit_form">
-                    <form name="editForm" role="form" ng-submit="vm.generateReport()">
-                        <div class="form-body col-md-12 col-lg-12 col-sm-12 col-xs-12" ng-show="vm.consulting==false">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Fecha inicio:</label>
-                                    <div class="col-md-7">
-                                        <input id="initial_time" name="initialDate" ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime" type="text" class="form-control letters gray-font text-center dating" placeholder="Seleccione una fecha" required>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Fecha final:</label>
-                                    <div class="col-md-7">
-                                        <input id="final_time" name="finalDate" ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text" class="form-control letters gray-font text-center dating" placeholder="Seleccione una fecha" required>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6" style="margin-top:20px">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Cuenta:</label>
-                                    <div class="col-md-7">
-                                        <select class="form-control gray-font" ng-model="vm.banco" ng-options="banco.beneficiario as banco.beneficiario for banco in vm.bancos">
-                                            <option value="">Todas</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6" style="margin-top:20px">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Método de pago:</label>
-                                    <div class="col-md-7">
-                                        <select class="form-control gray-font" ng-model="vm.paymentMethod" ng-required="vm.charges.length>0">
-                                            <option value="empty">Todos</option>
-                                            <option value="DEPOSITO BANCO">DEPOSITO BANCO</option>
-                                            <option value="EFECTIVO">EFECTIVO</option>
-                                            <option value="TARJETA DEBITO">TARJETA DEBITO</option>
-                                            <option value="TARJETA CREDITO">TARJETA CREDITO</option>
-                                            <option value="TRANSFERENCIA">TRANSFERENCIA</option>
-                                            <option value="CHEQUE">CHEQUE</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6" style="margin-top:20px">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Categoría:</label>
-                                    <div class="col-md-7">
-                                        <select class="form-control gray-font" ng-model="vm.category" ng-required="vm.charges.length>0">
-                                            <option value="empty">Todas</option>
-                                            <option value="Mantenimiento">Mantenimiento</option>
-                                            <option value="Extraordinaria">Extraordinaria</option>
-                                            <option value="Áreas Comunes">Áreas Comunes</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6" style="margin-top:20px">
-                                <div class="form-group">
-                                    <label class="col-md-3 control-label">Filial:</label>
-                                    <div class="col-md-7">
-                                        <select class="form-control gray-font" id="field_house" ng-model="vm.houseId" ng-options="house.id as house.housenumber for house in vm.houses | orderBy: 'housenumber'" ng-required='vm.required==1'>
-                                            <option value="">Todas</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12" style="margin-top:20px">
-                                <h1 class="text-right">
-                                    <button ng-click="vm.hideReportForm=false" class="btn btn-info blue">Generar reporte</button>
-
-                                </h1>
-                            </div>
-
-                        </div>
-
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <hr ng-show="vm.consulting==false">
-                            <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loading">
-                                <div class="spinnerLoading" style="margin:70px auto!important;margin-bottom:100px!important">
-                                    <div class="double-bounce1"></div>
-                                    <div class="double-bounce2"></div>
-                                </div>
-                            </div>
-                            <div ng-if="vm.consulting==true" class="display-none" id="reportResults">
-
-                                <div ng-if="vm.payments.length>0"  class="col-md-offset-8 col-md-4 col-xs-12 no-padding action-export-payment" style="margin-bottom:10px">
-                                    <a class="col-md-6" ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>
-                                        <h6 class="text-center no-margin">
-                                            <span style="display:block;margin-top:4px;font-weight:bold">Descargar <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                        </h6>
-                                    </a>
-                                    <a class="col-md-6" ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.print()">
-                                        <h6 class="text-center no-margin">
-                                            <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print"></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                        </h6>
-                                    </a>
-                                </div>
-                                <h4 ng-if="vm.payments.length==0" class="text-center  gray-font margin-top-20">No se encontraron resultados con el filtro realizado</h4>
-
-                                <div ng-if="vm.payments.length>0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
-                                    <div class="col-md-6">
-                                        <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">{{vm.companyName}}</h5>
-                                        <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE INGRESOS</h5>
-                                        <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                                            <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
-                                                <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
-                                                <h5 class="text-center  bold">₡ {{vm.incomeReport.totalMaintenance | currency : "" : 0}}</h5>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
-                                                <h5 class="text-center  bold">₡ {{vm.incomeReport.totalExtraordinary | currency : "" : 0}}</h5>
-                                            </div>
-                                            <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">
-                                                <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
-                                                <h5 class="text-center  bold">₡ {{vm.incomeReport.totalCommonArea | currency : "" : 0}}</h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                        <div class="table-scrollable">
-                                            <table class="jh-table table table-bordered table-condensed flip-content" style="font-size:12px;">
-                                                <thead  style="background-color:#EEEEEE; ">
-                                                <tr>
-                                                    <th>
-                                                        Filial
-                                                    </th>
-                                                    <th>
-                                                        Número de recibo
-                                                    </th>
-                                                    <th>
-                                                        Fecha de pago
-                                                    </th>
-                                                    <th>
-                                                        Cuenta
-                                                    </th>
-                                                    <th>
-                                                        Categoría
-                                                    </th>
-                                                    <th>
-                                                        Concepto
-                                                    </th>
-                                                    <th>
-                                                        Cantidad
-                                                    </th>
-                                                </tr>
-                                                </thead>
-
-                                                <tbody style="outline: none; border-top:0px; " ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id" ng-class="{'selected-payment':payment.isShowingCharges==true}">
-                                                <tr>
-                                                    <td class="text-center">{{payment.houseNumber}}</td>
-                                                    <td style="outline: none;" ng-click="vm.showCharges(payment)"><i ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11" style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true" class="fa fa-chevron-down bold font-11" style="float:left" aria-hidden="true"></i> <span class="text-center" style="display:block">{{payment.receiptNumber}}</span></td>
-                                                    <td>{{payment.date | date}}</td>
-                                                    <td>{{payment.account}}</td>
-                                                    <td>{{payment.categories}}</td>
-                                                    <td ng-show="payment.transaction==1">Abono a cuotas</td>
-                                                    <td ng-show="payment.transaction==2">Adelanto de condómino</td>
-                                                    <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
-                                                </tr>
-                                                <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
-                                                    <td style="background-color:white!important;position:relative" colspan="4">
-                                                        <div class="note note-info" style="margin:0">
-                                                            <div>
-                                                                <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
-                                                            </div>
-                                                            <div>
-                                                                <h5 style="font-weight:bold">Comentarios:</h5>
-                                                            </div>
-                                                            <div>
-                                                                <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
-                                                                <p ng-hide="payment.comments!=undefined">Ninguno</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12" ng-if="payment.ammountLeft>0" style="margin-bottom:30px">
-                                                            <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px"> ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray; '><h5 >Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
-                                                        </div>
-                                                        <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
-                                                            <hr style="margin:5px">
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/payments/file/{{payment.id}}" download>
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Descargar <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.printPayment(payment.id)">
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print"></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.printPayment(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td class="note note-info" colspan="3">
-                                                        <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>" mode="mouseover"></i></h5>
-
-                                                        <h5 class="text-center" style="font-weight:bold!important;margin-top:20px">
-                                                            No existen cuotas canceladas con este adelanto de condómino aún
-                                                        </h5>
-                                                    </td>
-                                                </tr>
-                                                <tr   ng-repeat="charge in payment.charges track by charge.id" ng-show="payment.isShowingCharges==true">
-                                                    <td  style="background-color:white!important;position:relative" colspan="4" ng-if="charge.id == payment.charges[0].id">
-                                                        <div class="note note-info col-md-12" style="margin-bottom:30px">
-                                                            <div>
-                                                                <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
-                                                            </div>
-                                                            <div>
-                                                                <h5 style="font-weight:bold">Comentarios:</h5>
-                                                            </div>
-                                                            <div>
-                                                                <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
-                                                                <p ng-hide="payment.comments!=undefined">Ninguno</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-12" ng-if="payment.ammountLeft>0" style="margin-bottom:30px">
-                                                            <h6 class="bold uppercase text-center" style="color:gray">Dinero disponible para cancelar futuras cuotas: <span class="greenBalance" style="font-weight:bold;font-size:15px"> ₡ {{payment.ammountLeft | currency : "" : 0}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:400px;color:gray;'><h5>Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>" mode="mouseover"></i></h6>
-                                                        </div>
-                                                        <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
-                                                            <hr style="margin:5px">
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()" style="display:block" href="/api/payments/file/{{payment.id}}" download>
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Descargar <i ng-show="vm.exportActions.downloading==false" style="color:#00968;font-size:20px" class="fa fa-cloud-download" aria-hidden="true"></i><i ng-show="vm.exportActions.downloading==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.printing==true}" style="display:block" ng-click="vm.printPayment(payment.id)">
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i ng-show="vm.exportActions.printing==false" style="font-size:20px" class="fa fa-print"></i><i ng-show="vm.exportActions.printing==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-md-4 col-xs-12 no-padding action-export-payment">
-                                                                <a ng-class="{disabled: vm.exportActions.sendingEmail==true}" style="display:block" ng-click="vm.sendEmail(payment)">
-                                                                    <h6 class="text-center no-margin">
-                                                                        <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i ng-show="vm.exportActions.sendingEmail==false" style="font-size:18px" class="fa fa-envelope" ng-click="vm.printPayment(payment.id)"></i><i ng-show="vm.exportActions.sendingEmail==true" style="font-size:18px;color:#5b9bd1!important" class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
-                                                                    </h6>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td rowspan="{{payment.charges.length+1}}" class="note note-info" colspan="3" ng-if="charge.id == payment.charges[0].id">
-                                                        <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="down" template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>" mode="mouseover"></i></h5>
-                                                        <table class="table table-bordered">
-                                                            <h6 ng-show="payment.charges.length>0 && payment.transaction==2">Fecha de cancelación <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>" mode="mouseover"></i></h6>
-                                                            <tbody>
-                                                            <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
-                                                                <td class="text-center" ng-show="payment.transaction==2">{{chargeIn.paymentDate | date}} </td>
-                                                                <td class="text-center" style="padding-top:14px">{{chargeIn.concept}}</td>
-                                                                <td class="text-center">
-                                                                    {{chargeIn.date | date}}
-                                                                    <span style="color:gray;font-size:10px;display:block" class="text-center">Fecha de cobro</span>
-                                                                </td>
-                                                                <td class="text-center" style="padding-top:14px">₡ {{chargeIn.ammount | currency : "" : 0}}</td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                                <tbody style="border-top:0px!important;">
-                                                <tr >
-                                                    <td colspan="6" style="border-top:0px!important;" class="bold text-right">Total</td>
-                                                    <td class="bold" style="border-top:0px!important;" >₡ {{vm.incomeReport.total | currency : "" : 0}}</td>
-                                                </tr>
-                                                </tbody>
-
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.incomeReport.filter}}</span></h6>
-                            </div>
-                        </div>
-                        <div class="form-actions noborder gray-font">
-
-                        </div>
-                    </form>
+                <div layout="row" class="white-bg margin-top-15" layout-align="end center">
+                    <md-button class="md-primary md-raised"
+                               ng-disabled="form.$invalid" ng-click="vm.hideReportForm=false"
+                               type="submit">
+                        Generar reporte
+                    </md-button>
+                </div>
+            </form>
+            <div ng-if="vm.showLoading" layout="row" class="white-bg" layout-align="end center">
+                <div layout="row" class="content-loader" layout-sm="column" layout-fill
+                     layout-align="space-around center">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
                 </div>
             </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+
+                <div class="fade-in" ng-if="vm.isReady2 && !vm.showLoading" id="reportResults">
+                    <div class="fade-in" ng-if="vm.payments.length==0">
+                        <no-content icon="assignment" text="No se encontraron
+                        resultados con el filtro realizado"></no-content>
+                    </div>
+                    <div ng-if="vm.payments.length>0"
+                         class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding">
+                        <div class="col-md-6">
+                            <h5 class=" bold gray-font uppercase font-green-haze" style="font-size:14px;">
+                                {{vm.companyName}}</h5>
+                            <h5 class="bold gray-font" style="font-size:14px;">REPORTE DE INGRESOS</h5>
+                            <h5 class="bold gray-font">Del {{vm.dates.initial_time | date:'longDate'}} al
+                                {{vm.dates.final_time | date:'longDate'}}</h5>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="col-md-12 no-padding"
+                                 style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                                <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                                    <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalMaintenance | currency : "" :
+                                        0}}</h5>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalExtraordinary | currency : ""
+                                        : 0}}</h5>
+                                </div>
+                                <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                    <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalCommonArea | currency : "" :
+                                        0}}</h5>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                            <div class="table-scrollable">
+                                <table class="jh-table table table-bordered table-condensed flip-content"
+                                       style="font-size:12px;">
+                                    <thead style="background-color:#EEEEEE; ">
+                                    <tr>
+                                        <th>
+                                            Filial
+                                        </th>
+                                        <th>
+                                            Número de recibo
+                                        </th>
+                                        <th>
+                                            Fecha de pago
+                                        </th>
+                                        <th>
+                                            Cuenta
+                                        </th>
+                                        <th>
+                                            Categoría
+                                        </th>
+                                        <th>
+                                            Concepto
+                                        </th>
+                                        <th>
+                                            Cantidad
+                                        </th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody style="outline: none; border-top:0px; "
+                                           ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id"
+                                           ng-class="{'selected-payment':payment.isShowingCharges==true}">
+                                    <tr>
+                                        <td class="text-center">{{payment.houseNumber}}</td>
+                                        <td style="outline: none;" ng-click="vm.showCharges(payment)"><i
+                                            ng-show="payment.isShowingCharges==true"
+                                            class="fa fa-chevron-up bold font-11" style="float:left"
+                                            aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true"
+                                                                      class="fa fa-chevron-down bold font-11"
+                                                                      style="float:left" aria-hidden="true"></i> <span
+                                            class="text-center" style="display:block">{{payment.receiptNumber}}</span>
+                                        </td>
+                                        <td>{{payment.date | date}}</td>
+                                        <td>{{payment.account}}</td>
+                                        <td>{{payment.categories}}</td>
+                                        <td ng-show="payment.transaction==1">Abono a cuotas</td>
+                                        <td ng-show="payment.transaction==2">Adelanto de condómino</td>
+                                        <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
+                                    </tr>
+                                    <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
+                                        <td style="background-color:white!important;position:relative" colspan="4">
+                                            <div class="note note-info" style="margin:0">
+                                                <div>
+                                                    <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
+                                                </div>
+                                                <div>
+                                                    <h5 style="font-weight:bold">Comentarios:</h5>
+                                                </div>
+                                                <div>
+                                                    <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
+                                                    <p ng-hide="payment.comments!=undefined">Ninguno</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" ng-if="payment.ammountLeft>0"
+                                                 style="margin-bottom:30px">
+                                                <h6 class="bold uppercase text-center" style="color:gray">Dinero
+                                                    disponible para cancelar futuras cuotas: <span class="greenBalance"
+                                                                                                   style="font-weight:bold;font-size:15px"> ₡ {{payment.ammountLeft | currency : "" : 0}}</span>
+                                                    <i class="fa fa-info-circle" style="color:#2a6496" angular-popover
+                                                       direction="right"
+                                                       template="<div style='padding:10px;width:400px;color:gray; '><h5 >Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>"
+                                                       mode="mouseover"></i></h6>
+                                            </div>
+                                            <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
+                                                <hr style="margin:5px">
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.downloading==true}"
+                                                       ng-click="vm.download()" style="display:block"
+                                                       href="/api/payments/file/{{payment.id}}" download>
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Descargar <i
+                                                                ng-show="vm.exportActions.downloading==false"
+                                                                style="color:#00968;font-size:20px"
+                                                                class="fa fa-cloud-download" aria-hidden="true"></i><i
+                                                                ng-show="vm.exportActions.downloading==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.printing==true}"
+                                                       style="display:block" ng-click="vm.printPayment(payment.id)">
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i
+                                                                ng-show="vm.exportActions.printing==false"
+                                                                style="font-size:20px" class="fa fa-print"></i><i
+                                                                ng-show="vm.exportActions.printing==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.sendingEmail==true}"
+                                                       style="display:block" ng-click="vm.sendEmail(payment)">
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i
+                                                                ng-show="vm.exportActions.sendingEmail==false"
+                                                                style="font-size:18px" class="fa fa-envelope"
+                                                                ng-click="vm.printPayment(payment.id)"></i><i
+                                                                ng-show="vm.exportActions.sendingEmail==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="note note-info" colspan="3">
+                                            <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i
+                                                class="fa fa-info-circle" style="color:#2a6496" angular-popover
+                                                direction="right"
+                                                template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>"
+                                                mode="mouseover"></i></h5>
+
+                                            <h5 class="text-center" style="font-weight:bold!important;margin-top:20px">
+                                                No existen cuotas canceladas con este adelanto de condómino aún
+                                            </h5>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="charge in payment.charges track by charge.id"
+                                        ng-show="payment.isShowingCharges==true">
+                                        <td style="background-color:white!important;position:relative" colspan="4"
+                                            ng-if="charge.id == payment.charges[0].id">
+                                            <div class="note note-info col-md-12" style="margin-bottom:30px">
+                                                <div>
+                                                    <h6><b>Metodo de pago:</b> {{payment.paymentMethod}}</h6>
+                                                </div>
+                                                <div>
+                                                    <h5 style="font-weight:bold">Comentarios:</h5>
+                                                </div>
+                                                <div>
+                                                    <p ng-show="payment.comments!=undefined">{{payment.comments}}</p>
+                                                    <p ng-hide="payment.comments!=undefined">Ninguno</p>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12" ng-if="payment.ammountLeft>0"
+                                                 style="margin-bottom:30px">
+                                                <h6 class="bold uppercase text-center" style="color:gray">Dinero
+                                                    disponible para cancelar futuras cuotas: <span class="greenBalance"
+                                                                                                   style="font-weight:bold;font-size:15px"> ₡ {{payment.ammountLeft | currency : "" : 0}}</span>
+                                                    <i class="fa fa-info-circle" style="color:#2a6496" angular-popover
+                                                       direction="right"
+                                                       template="<div style='padding:10px;width:400px;color:gray;'><h5>Este es el restante del pago del adelanto del condómino, será utilizado automaticamente para cancelar futuras cuotas.<h5></div>"
+                                                       mode="mouseover"></i></h6>
+                                            </div>
+                                            <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
+                                                <hr style="margin:5px">
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.downloading==true}"
+                                                       ng-click="vm.download()" style="display:block"
+                                                       href="/api/payments/file/{{payment.id}}" download>
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Descargar <i
+                                                                ng-show="vm.exportActions.downloading==false"
+                                                                style="color:#00968;font-size:20px"
+                                                                class="fa fa-cloud-download" aria-hidden="true"></i><i
+                                                                ng-show="vm.exportActions.downloading==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.printing==true}"
+                                                       style="display:block" ng-click="vm.printPayment(payment.id)">
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Imprimir <i
+                                                                ng-show="vm.exportActions.printing==false"
+                                                                style="font-size:20px" class="fa fa-print"></i><i
+                                                                ng-show="vm.exportActions.printing==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                    <a ng-class="{disabled: vm.exportActions.sendingEmail==true}"
+                                                       style="display:block" ng-click="vm.sendEmail(payment)">
+                                                        <h6 class="text-center no-margin">
+                                                            <span style="display:block;margin-top:4px;font-weight:bold">Enviar por correo <i
+                                                                ng-show="vm.exportActions.sendingEmail==false"
+                                                                style="font-size:18px" class="fa fa-envelope"
+                                                                ng-click="vm.printPayment(payment.id)"></i><i
+                                                                ng-show="vm.exportActions.sendingEmail==true"
+                                                                style="font-size:18px;color:#5b9bd1!important"
+                                                                class="fa fa-circle-o-notch fa-spin"
+                                                                aria-hidden="true"></i></span>
+                                                        </h6>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td rowspan="{{payment.charges.length+1}}" class="note note-info" colspan="3"
+                                            ng-if="charge.id == payment.charges[0].id">
+                                            <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i
+                                                class="fa fa-info-circle" style="color:#2a6496" angular-popover
+                                                direction="down"
+                                                template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>"
+                                                mode="mouseover"></i></h5>
+                                            <table class="table table-bordered">
+                                                <h6 ng-show="payment.charges.length>0 && payment.transaction==2">Fecha
+                                                    de cancelación <i class="fa fa-info-circle" style="color:#2a6496"
+                                                                      angular-popover direction="right"
+                                                                      template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>"
+                                                                      mode="mouseover"></i></h6>
+                                                <tbody>
+                                                <tr ng-repeat="chargeIn in payment.charges track by chargeIn.id">
+                                                    <td class="text-center" ng-show="payment.transaction==2">
+                                                        {{chargeIn.paymentDate | date}}
+                                                        <span style="color:gray;font-size:10px;display:block"
+                                                              class="text-center">Cancelación <i
+                                                            class="fa fa-info-circle"
+                                                            style="color:#2a6496;font-size:12px" angular-popover
+                                                            direction="right"
+                                                            template="<div style='padding:10px;width:250px;color:gray'><h5>Esta es la fecha en que las cuotas fueron canceladas utilizando el dinero del adelanto del condómino<h5></div>"
+                                                            mode="mouseover"></i></span>
+                                                    </td>
+                                                    <td class="text-center" style="padding:14px 4px">
+                                                        {{chargeIn.concept}}
+                                                    </td>
+                                                    <td class="text-center" style="padding:14px 4px">
+                                                        {{chargeIn.date | date}}
+                                                        <span style="color:gray;font-size:10px;display:block"
+                                                              class="text-center">Fecha de cobro</span>
+                                                    </td>
+                                                    <td class="text-center" style="padding:14px 4px">₡
+                                                        {{chargeIn.ammount | currency : "" :
+                                                        0}}
+                                                        <span style="color:gray;font-size:10px;display:block"
+                                                              class="text-center">Cargo</span></td>
+                                                    <td class="text-center" style="padding:14px 4px">₡
+                                                        {{chargeIn.subcharge | currency : ""
+                                                        : 0}}
+                                                        <span style="color:gray;font-size:10px;display:block"
+                                                              class="text-center">Recargo</span></td>
+                                                    <td class="text-center" style="padding:14px 4px">₡ {{chargeIn.total
+                                                        | currency : "" :
+                                                        0}}
+                                                        <span style="color:gray;font-size:10px;display:block"
+                                                              class="text-center">Total</span></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tbody style="border-top:0px!important;">
+                                    <tr>
+                                        <td colspan="6" style="border-top:0px!important;" class="bold text-right">
+                                            Total
+                                        </td>
+                                        <td class="bold" style="border-top:0px!important;">₡ {{vm.incomeReport.total |
+                                            currency : "" : 0}}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <h6 class="gray-font text-center" style="font-size:12px"><span ng-if="vm.consulting==true">{{vm.incomeReport.filter}}</span>
+                    </h6>
+                </div>
+            </div>
+
+
         </div>
-    </div>
+
+        <div ng-if="vm.consulting==true">
+            <md-fab-speed-dial md-direction="up" style="position: fixed;"
+                               class="md-fab md-fab-bottom-right md-fling">
+                <md-fab-trigger>
+                </md-fab-trigger>
+                <md-fab-actions>
+                    <md-button class="md-fab md-raised orange-button-oficial " ng-click="vm.consultAgain()"
+                               style="margin:5px 0;">
+                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Generar nuevo reporte</md-tooltip>
+                        <md-icon style="color:white!important">assignment</md-icon>
+                    </md-button>
+                    <md-button ng-disabled="vm.exportActions.printing" ng-if="vm.payments.length>0"
+                               class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+                        <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+                           class="fa fa-print"></i>
+                        <i ng-if="vm.exportActions.printing"
+                           style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                           class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+                    </md-button>
+
+                    <md-button ng-disabled="vm.exportActions.downloading" ng-if="vm.payments.length>0"
+                               class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                               ng-click="vm.download()">
+                        <a ng-click="vm.download()" style="display:block" href="{{vm.urlToDownload()}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+                        </a>
+                        <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+                    </md-button>
+
+                </md-fab-actions>
+            </md-fab-speed-dial>
+        </div>
+    </md-content>
+</div>
+
 </div>

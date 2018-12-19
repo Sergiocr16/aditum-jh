@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('PresupuestoDetailController', PresupuestoDetailController);
 
-    PresupuestoDetailController.$inject = ['$state', 'DetallePresupuesto', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Presupuesto', '$localStorage'];
+    PresupuestoDetailController.$inject = ['$state', 'DetallePresupuesto', '$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Presupuesto', '$localStorage','Modal'];
 
-    function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage) {
+    function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage,Modal) {
         var vm = this;
         $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
         vm.previousState = previousState.name;
         vm.ingressCategories = [];
+        vm.isReady = false;
+        $rootScope.mainTitle = "PRESUPUESTO " + vm.presupuesto.anno;
         vm.egressCategories = [];
         var invalidInputs = 0;
         var inputsFullQuantity = 0;
@@ -60,12 +62,7 @@
             } else {
                 vm.budgetAction = 2;
             }
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#budgetContainer").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
         };
         vm.expand = function () {
 
@@ -143,17 +140,15 @@
 
             getValuesPerMonth();
             if (invalidInputs > 0) {
-                toastr["error"]("No puede ingresar letras ni carácteres especiales");
+                Modal.toast("No puede ingresar letras ni carácteres especiales");
             } else if (inputsFullQuantity == 0) {
-                toastr["error"]("Debe ingresar al menos un valor en algún campo");
+                Modal.toast("Debe ingresar al menos un valor en algún campo");
             }
             else {
                 vm.presupuesto.modificationDate = moment(new Date(), 'DD/MM/YYYY').toDate();
 
-                $("#budgetContainer").fadeOut(0);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeIn(100);
-                }, 200)
+
+                vm.isReady= false;
                 Presupuesto.update(vm.presupuesto, updateBudgetCategories, onError);
             }
         }
@@ -180,14 +175,9 @@
                 })
                 vm.totalEgressValue = vm.totalEgressValue + item.total;
             })
-            toastr["success"]("Se ha actualizado el presupuesto correctamente");
+            Modal.toast("Se ha actualizado el presupuesto correctamente");
 
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#budgetContainer").fadeIn('slow');
-            }, 900)
+            vm.isReady= true;
             vm.budgetAction = 1;
 
 

@@ -5,12 +5,17 @@
         .module('aditumApp')
         .controller('ProveedorDialogController', ProveedorDialogController);
 
-    ProveedorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company', '$rootScope', 'CommonMethods', 'globalCompany'];
+    ProveedorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Proveedor', 'Company', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function ProveedorDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company, $rootScope, CommonMethods, globalCompany) {
+    function ProveedorDialogController($timeout, $scope, $stateParams, $uibModalInstance, entity, Proveedor, Company, $rootScope, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = "proovedores";
         vm.proveedor = entity;
+        if (vm.proveedor.id == null) {
+            $rootScope.mainTitle = "Crear proveedor";
+        } else {
+            $rootScope.mainTitle = "Editar proveedor";
+        }
         vm.clear = clear;
         vm.save = save;
         vm.companies = Company.query();
@@ -27,26 +32,37 @@
         CommonMethods.validateNumbers();
 
         function save() {
-            vm.isSaving = true;
-            if (vm.proveedor.id !== null) {
-                Proveedor.update(vm.proveedor, onUpdateSuccess, onSaveError);
+            var action;
+            if (vm.proveedor.id == null) {
+                action = "registrar";
             } else {
-                vm.proveedor.deleted = 0;
-                vm.proveedor.companyId = globalCompany.getId();
-                Proveedor.save(vm.proveedor, onSaveSuccess, onSaveError);
+                action = "editar";
             }
+            Modal.confirmDialog("¿Está seguro que desea "+action+" este proveedor?","",function(){
+                Modal.showLoadingBar();
+                vm.isSaving = true;
+                if (vm.proveedor.id !== null) {
+                    Proveedor.update(vm.proveedor, onUpdateSuccess, onSaveError);
+                } else {
+                    vm.proveedor.deleted = 0;
+                    vm.proveedor.companyId = globalCompany.getId();
+                    Proveedor.save(vm.proveedor, onSaveSuccess, onSaveError);
+                }
+            })
+
         }
 
         function onSaveSuccess(result) {
-            toastr["success"]("Se registró el proveedor correctamente");
-
+            Modal.toast("Se registró el proveedor correctamente");
+            Modal.hideLoadingBar();
             $scope.$emit('aditumApp:proveedorUpdate', result);
             $uibModalInstance.close(result);
             vm.isSaving = false;
         }
 
         function onUpdateSuccess(result) {
-            toastr["success"]("Se modificó el proveedor correctamente");
+            Modal.toast("Se modificó el proveedor correctamente");
+            Modal.hideLoadingBar();
 
             $scope.$emit('aditumApp:proveedorUpdate', result);
             $uibModalInstance.close(result);

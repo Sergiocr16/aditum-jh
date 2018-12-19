@@ -1,29 +1,30 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ResetFinishController', ResetFinishController);
 
-    ResetFinishController.$inject = ['$stateParams','$rootScope', '$timeout', 'Auth', 'LoginService','Principal','$state'];
+    ResetFinishController.$inject = ['$stateParams', '$rootScope', '$timeout', 'Auth', 'LoginService', 'Principal', '$state'];
 
-    function ResetFinishController ($stateParams,$rootScope, $timeout, Auth, LoginService,Principal,$state) {
-       angular.element(document).ready(function () {
+    function ResetFinishController($stateParams, $rootScope, $timeout, Auth, LoginService, Principal, $state) {
+        angular.element(document).ready(function () {
 
-                       $('#page-content').hide();
-                  });
+            $('#page-content').hide();
+        });
+        $rootScope.showLogin = false;
         var vm = this;
- $rootScope.menu = false;
-        vm.signIn = function(){
-                     Auth.logout();
-                      $('#page-content').show();
+        $rootScope.menu = false;
+        vm.signIn = function () {
+            Auth.logout();
+            $('#page-content').show();
 
-                     $rootScope.companyUser = undefined;
-                     $state.go('home');
-                    $rootScope.menu = false;
-                     $rootScope.companyId = undefined;
-                      $rootScope.showLogin = true;
-                      $rootScope.inicieSesion = false;
+            $rootScope.companyUser = undefined;
+            $state.go('home');
+            $rootScope.menu = false;
+            $rootScope.companyId = undefined;
+            $rootScope.showLogin = true;
+            $rootScope.inicieSesion = false;
         }
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.keyMissing = angular.isUndefined($stateParams.key);
@@ -35,7 +36,9 @@
         vm.resetAccount = {};
         vm.success = null;
 
-        $timeout(function (){angular.element('#password').focus();});
+        $timeout(function () {
+            angular.element('#password').focus();
+        });
 
         function finishReset() {
             vm.doNotMatch = null;
@@ -43,9 +46,12 @@
             if (vm.resetAccount.password !== vm.confirmPassword) {
                 vm.doNotMatch = 'ERROR';
             } else {
-                Auth.resetPasswordFinish({key: $stateParams.key, newPassword: vm.resetAccount.password}).then(function () {
+                Auth.resetPasswordFinish({
+                    key: $stateParams.key,
+                    newPassword: vm.resetAccount.password
+                }).then(function () {
                     vm.success = 'OK';
-                      Auth.logout();
+                    Auth.logout();
                 }).catch(function () {
                     vm.success = null;
                     vm.error = 'ERROR';

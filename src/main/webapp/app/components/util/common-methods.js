@@ -22,8 +22,17 @@
                 validateSpecialCharacters: validateSpecialCharacters,
                 getCarBrands: getCarBrands,
                 validateSpecialCharactersAndVocals: validateSpecialCharactersAndVocals,
-                formatCurrencyInputs: formatCurrencyInputs
+                formatCurrencyInputs: formatCurrencyInputs,
+                deleteFromArray:deleteFromArray
             };
+
+            function deleteFromArray(item,array){
+                var index = array.indexOf(item);
+                if (index > -1) {
+                    array.splice(index, 1);
+                }
+
+            }
             function validateName (items, name) {
                 var condition = true;
                    angular.forEach(items, function(item, index) {

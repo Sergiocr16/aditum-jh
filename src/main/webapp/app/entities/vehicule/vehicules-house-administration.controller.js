@@ -12,7 +12,8 @@
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
-
+        vm.isReady = false;
+        vm.radiostatus = true;
 
         vm.changesTitles = function() {
             if (enabledOptions) {
@@ -49,12 +50,7 @@
             function onSuccess(data) {
 
                 vm.vehicules = data;
-                setTimeout(function() {
-                    $("#loadingIcon5").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#vehicules_container").fadeIn('slow');
-                },900 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -63,10 +59,8 @@
         }
 
         vm.swithEnabledDisabledVehicules = function() {
-            $("#vehicules_container").fadeOut(0);
-            setTimeout(function() {
-                $("#loadingIcon5").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
+            vm.radiostatus = !vm.radiostatus;
             enabledOptions = !enabledOptions;
             loadVehicules();
         };
@@ -74,8 +68,7 @@
         $scope.$watch(function() {
             return $rootScope.houseSelected;
         }, function() {
-            $("#vehicules_container").fadeOut(0);
-            $("#loadingIcon5").fadeIn("slow");
+            vm.isReady = false;
             loadVehicules();
             vm.isEditing = false;
         });

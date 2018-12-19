@@ -13,46 +13,46 @@ public class AnualReportDTO {
     private List<String> initialBalanceByMonth;
     private List<String> realBalanceByMonth;
 
-    private int fixedCostsAcumulado = 0;
+    private double fixedCostsAcumulado = 0;
     private List<Double> fixedCostsBudgetTotal = new ArrayList<>();
     private List<Double> fixedCostsBudgetDiference = new ArrayList<>();
     private double fixedCostsBudgetAcumulado = 0;
     private double fixedCostsBudgetDiferenceAcumulado = 0;
 
-    private int variableCostsAcumulado = 0;
+    private double variableCostsAcumulado = 0;
     private List<Double> variableCostsBudgetTotal = new ArrayList<>();
     private List<Double> variableCostsBudgetDiference = new ArrayList<>();
     private double variableCostsBudgetAcumulado = 0;
     private double variableCostsBudgetDiferenceAcumulado = 0;
 
-    private int otherCostsAcumulado = 0;
+    private double otherCostsAcumulado = 0;
 
     private List<Double> otherCostsBudgetTotal = new ArrayList<>();
     private List<Double> otherCostsBudgetDiference = new ArrayList<>();
     private double otherCostsBudgetAcumulado = 0;
     private double otherCostsBudgetDiferenceAcumulado = 0;
 
-    private int maintenanceIngressAcumulado = 0;
-    private int maintenanceBudgetAcumulado = 0;
-    private int maintenanceBudgetDiferenceAcumulado = 0;
+    private double maintenanceIngressAcumulado = 0;
+    private double maintenanceBudgetAcumulado = 0;
+    private double maintenanceBudgetDiferenceAcumulado = 0;
 
-    private int extraordinaryIngressAcumulado = 0;
-    private int extraordinaryIngressBudgetAcumulado = 0;
-    private int extraordinaryIngressBudgetDiferenceAcumulado = 0;
+    private double extraordinaryIngressAcumulado = 0;
+    private double extraordinaryIngressBudgetAcumulado = 0;
+    private double extraordinaryIngressBudgetDiferenceAcumulado = 0;
 
-    private int commonAreasAcumulado = 0;
-    private int commonAreasBudgetAcumulado = 0;
-    private int commonAreasBudgetDiferenceAcumulado = 0;
+    private double commonAreasAcumulado = 0;
+    private double commonAreasBudgetAcumulado = 0;
+    private double commonAreasBudgetDiferenceAcumulado = 0;
 
-    private int otherIngressAcumulado = 0;
-    private int otherIngressBudgetAcumulado = 0;
-    private int otherIngressBudgetDiferenceAcumulado = 0;
+    private double otherIngressAcumulado = 0;
+    private double otherIngressBudgetAcumulado = 0;
+    private double otherIngressBudgetDiferenceAcumulado = 0;
 
-    private int totalIngressBudget = 0;
-    private int totalIngressBudgetDiference = 0;
+    private double totalIngressBudget = 0;
+    private double totalIngressBudgetDiference = 0;
 
-    private int allEgressAcumulado = 0;
-    private int allIngressAcumulado = 0;
+    private double allEgressAcumulado = 0;
+    private double allIngressAcumulado = 0;
 
     private List<Double> allEgressBudgetByMonth;
     private List<Double> allEgressDiferenceByMonth;
@@ -99,31 +99,31 @@ public class AnualReportDTO {
         this.otherCostEgress = otherCostEgress;
     }
 
-    public int getFixedCostsAcumulado() {
+    public double getFixedCostsAcumulado() {
         return fixedCostsAcumulado;
     }
 
-    public void setFixedCostsAcumulado(int fixedCostsAcumulado) {
+    public void setFixedCostsAcumulado(double fixedCostsAcumulado) {
         this.fixedCostsAcumulado =  this.fixedCostsAcumulado + fixedCostsAcumulado;
     }
 
-    public int getVariableCostsAcumulado() {
+    public double getVariableCostsAcumulado() {
         return variableCostsAcumulado;
     }
 
-    public void setVariableCostsAcumulado(int variableCostsAcumulado) {
+    public void setVariableCostsAcumulado(double variableCostsAcumulado) {
         this.variableCostsAcumulado = this.variableCostsAcumulado + variableCostsAcumulado;
     }
 
-    public int getOtherCostsAcumulado() {
+    public double getOtherCostsAcumulado() {
         return otherCostsAcumulado;
     }
 
-    public void setOtherCostsAcumulado(int otherCostsAcumulado) {
+    public void setOtherCostsAcumulado(double otherCostsAcumulado) {
         this.otherCostsAcumulado = this.otherCostsAcumulado + otherCostsAcumulado;
     }
 
-    public int getAllEgressAcumulado() {
+    public double getAllEgressAcumulado() {
         return allEgressAcumulado;
     }
 
@@ -139,43 +139,43 @@ public class AnualReportDTO {
         this.flujoByMonth = flujoByMonth;
     }
 
-    public int getAllIngressAcumulado() {
+    public double getAllIngressAcumulado() {
         return allIngressAcumulado;
     }
 
-    public void setAllIngressAcumulado(int allIngressAcumulado) {
+    public void setAllIngressAcumulado(double allIngressAcumulado) {
         this.allIngressAcumulado = allIngressAcumulado;
     }
 
-    public int getMaintenanceIngressAcumulado() {
+    public double getMaintenanceIngressAcumulado() {
         return maintenanceIngressAcumulado;
     }
 
-    public void setMaintenanceIngressAcumulado(int maintenanceIngressAcumulado) {
+    public void setMaintenanceIngressAcumulado(double maintenanceIngressAcumulado) {
         this.maintenanceIngressAcumulado = this.maintenanceIngressAcumulado + maintenanceIngressAcumulado;
     }
 
-    public int getExtraordinaryIngressAcumulado() {
+    public double getExtraordinaryIngressAcumulado() {
         return extraordinaryIngressAcumulado;
     }
 
-    public void setExtraordinaryIngressAcumulado(int extraordinaryIngressAcumulado) {
+    public void setExtraordinaryIngressAcumulado(double extraordinaryIngressAcumulado) {
         this.extraordinaryIngressAcumulado = this.extraordinaryIngressAcumulado + extraordinaryIngressAcumulado;
     }
 
-    public int getCommonAreasAcumulado() {
+    public double getCommonAreasAcumulado() {
         return commonAreasAcumulado;
     }
 
-    public void setCommonAreasAcumulado(int commonAreasAcumulado) {
+    public void setCommonAreasAcumulado(double commonAreasAcumulado) {
         this.commonAreasAcumulado = this.commonAreasAcumulado + commonAreasAcumulado;
     }
 
-    public int getOtherIngressAcumulado() {
+    public double getOtherIngressAcumulado() {
         return otherIngressAcumulado;
     }
 
-    public void setOtherIngressAcumulado(int otherIngressAcumulado) {
+    public void setOtherIngressAcumulado(double otherIngressAcumulado) {
         this.otherIngressAcumulado =  this.otherIngressAcumulado + otherIngressAcumulado;
     }
 
@@ -195,83 +195,83 @@ public class AnualReportDTO {
         this.realBalanceByMonth = realBalanceByMonth;
     }
 
-    public int getMaintenanceBudgetAcumulado() {
+    public double getMaintenanceBudgetAcumulado() {
         return maintenanceBudgetAcumulado;
     }
 
-    public void setMaintenanceBudgetAcumulado(int maintenanceBudgetAcumulado) {
+    public void setMaintenanceBudgetAcumulado(double maintenanceBudgetAcumulado) {
         this.maintenanceBudgetAcumulado = this.maintenanceBudgetAcumulado + maintenanceBudgetAcumulado;
     }
 
-    public int getExtraordinaryIngressBudgetAcumulado() {
+    public double getExtraordinaryIngressBudgetAcumulado() {
         return extraordinaryIngressBudgetAcumulado;
     }
 
-    public void setExtraordinaryIngressBudgetAcumulado(int extraordinaryIngressBudgetAcumulado) {
+    public void setExtraordinaryIngressBudgetAcumulado(double extraordinaryIngressBudgetAcumulado) {
         this.extraordinaryIngressBudgetAcumulado =   this.extraordinaryIngressBudgetAcumulado + extraordinaryIngressBudgetAcumulado;
     }
 
-    public int getCommonAreasBudgetAcumulado() {
+    public double getCommonAreasBudgetAcumulado() {
         return commonAreasBudgetAcumulado;
     }
 
-    public void setCommonAreasBudgetAcumulado(int commonAreasBudgetAcumulado) {
+    public void setCommonAreasBudgetAcumulado(double commonAreasBudgetAcumulado) {
         this.commonAreasBudgetAcumulado =  this.commonAreasBudgetAcumulado + commonAreasBudgetAcumulado;
     }
 
-    public int getOtherIngressBudgetAcumulado() {
+    public double getOtherIngressBudgetAcumulado() {
         return otherIngressBudgetAcumulado;
     }
 
-    public void setOtherIngressBudgetAcumulado(int otherIngressBudgetAcumulado) {
+    public void setOtherIngressBudgetAcumulado(double otherIngressBudgetAcumulado) {
         this.otherIngressBudgetAcumulado =  this.otherIngressBudgetAcumulado + otherIngressBudgetAcumulado;
     }
 
-    public int getMaintenanceBudgetDiferenceAcumulado() {
+    public double getMaintenanceBudgetDiferenceAcumulado() {
         return maintenanceBudgetDiferenceAcumulado;
     }
 
-    public void setMaintenanceBudgetDiferenceAcumulado(int maintenanceBudgetDiferenceAcumulado) {
+    public void setMaintenanceBudgetDiferenceAcumulado(double maintenanceBudgetDiferenceAcumulado) {
         this.maintenanceBudgetDiferenceAcumulado = this.maintenanceBudgetDiferenceAcumulado + maintenanceBudgetDiferenceAcumulado;
     }
 
-    public int getExtraordinaryIngressBudgetDiferenceAcumulado() {
+    public double getExtraordinaryIngressBudgetDiferenceAcumulado() {
         return extraordinaryIngressBudgetDiferenceAcumulado;
     }
 
-    public void setExtraordinaryIngressBudgetDiferenceAcumulado(int extraordinaryIngressBudgetDiferenceAcumulado) {
+    public void setExtraordinaryIngressBudgetDiferenceAcumulado(double extraordinaryIngressBudgetDiferenceAcumulado) {
         this.extraordinaryIngressBudgetDiferenceAcumulado = this.extraordinaryIngressBudgetDiferenceAcumulado + extraordinaryIngressBudgetDiferenceAcumulado;
     }
 
-    public int getCommonAreasBudgetDiferenceAcumulado() {
+    public double getCommonAreasBudgetDiferenceAcumulado() {
         return commonAreasBudgetDiferenceAcumulado;
     }
 
-    public void setCommonAreasBudgetDiferenceAcumulado(int commonAreasBudgetDiferenceAcumulado) {
+    public void setCommonAreasBudgetDiferenceAcumulado(double commonAreasBudgetDiferenceAcumulado) {
         this.commonAreasBudgetDiferenceAcumulado = this.commonAreasBudgetDiferenceAcumulado +commonAreasBudgetDiferenceAcumulado;
     }
 
-    public int getOtherIngressBudgetDiferenceAcumulado() {
+    public double getOtherIngressBudgetDiferenceAcumulado() {
         return otherIngressBudgetDiferenceAcumulado;
     }
 
-    public void setOtherIngressBudgetDiferenceAcumulado(int otherIngressBudgetDiferenceAcumulado) {
+    public void setOtherIngressBudgetDiferenceAcumulado(double otherIngressBudgetDiferenceAcumulado) {
         this.otherIngressBudgetDiferenceAcumulado = this.otherIngressBudgetDiferenceAcumulado + otherIngressBudgetDiferenceAcumulado;
     }
 
-    public int getTotalIngressBudget() {
+    public double getTotalIngressBudget() {
         return totalIngressBudget;
     }
 
-    public void setTotalIngressBudget(int totalIngressBudget) {
+    public void setTotalIngressBudget(double totalIngressBudget) {
         this.totalIngressBudget =  this.totalIngressBudget + totalIngressBudget;
     }
 
-    public int getTotalIngressBudgetDiference() {
+    public double getTotalIngressBudgetDiference() {
         return totalIngressBudgetDiference;
     }
 
-    public void setTotalIngressBudgetDiference(int totalIngressBudgetDiference) {
+    public void setTotalIngressBudgetDiference(double totalIngressBudgetDiference) {
         this.totalIngressBudgetDiference = this.totalIngressBudgetDiference + totalIngressBudgetDiference;
     }
 

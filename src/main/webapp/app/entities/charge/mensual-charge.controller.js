@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany'];
+    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
 
-    function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany) {
+    function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
@@ -16,6 +16,8 @@
         vm.transition = transition;
         vm.radiostatus = true;
         vm.cuotaFija = true;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Generar Cuota mensual";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -58,7 +60,7 @@
             if (invalid == 0) {
                 vm.verificando = true;
             } else {
-                toastr["error"]("Porfavor verifica las cuotas ingresadas")
+                Modal.toast("Porfavor verifica las cuotas ingresadas")
             }
         }
         vm.cancelar = function () {
@@ -158,7 +160,7 @@
         }
 
         vm.createDues = function () {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
 
             function createCharge(houseNumber, cuotaNumber) {
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
@@ -175,13 +177,13 @@
                                 $state.go('mensualCharge', null, {
                                     reload: true
                                 })
-                                bootbox.hideAll();
-                                toastr["success"]("Se generaron las cuotas correctamente.")
+                                Modal.hideLoadingBar();
+                                Modal.toast("Se generaron las cuotas correctamente.")
                             }
                         }
                     }, function () {
-                        bootbox.hideAll();
-                        toastr["error"]("Hubo un error al crear las cuotas mensuales, por favor verificar los datos ingresados.")
+                        Modal.hideLoadingBar();
+                        Modal.toast("Hubo un error al crear las cuotas mensuales, por favor verificar los datos ingresados.")
                     })
                 } else {
                     if (house.cuotas.length - 1 > cuotaNumber) {
@@ -193,8 +195,8 @@
                             $state.go('mensualCharge', null, {
                                 reload: true
                             })
-                            bootbox.hideAll();
-                            toastr["success"]("Se generaron las cuotas correctamente.")
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se generaron las cuotas correctamente.")
                         }
                     }
 
@@ -221,39 +223,24 @@
 
         }
         vm.deleteDue = function (id) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar esta columna?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        $scope.$apply(function () {
-                            angular.forEach(vm.globalConcept, function (value, key) {
-                                if (value.id == id) {
-                                    vm.globalConcept.splice(key, 1);
+            Modal.confirmDialog( "¿Está seguro que desea eliminar esta columna?","",
+                function(){
+                        angular.forEach(vm.globalConcept, function (value, key) {
+                            if (value.id == id) {
+                                vm.globalConcept.splice(key, 1);
+                            }
+                        })
+
+                        angular.forEach(vm.houses, function (value, key) {
+                            angular.forEach(value.cuotas, function (cuota, key) {
+                                if (cuota.globalConcept == id) {
+                                    value.cuotas.splice(key, 1);
                                 }
                             })
+                        })
 
-                            angular.forEach(vm.houses, function (value, key) {
-                                angular.forEach(value.cuotas, function (cuota, key) {
-                                    if (cuota.globalConcept == id) {
-                                        value.cuotas.splice(key, 1);
-                                    }
-                                })
-                            })
-                        }, 10)
+                });
 
-                    }
-                }
-            });
 
         }
 
@@ -327,12 +314,7 @@
                 vm.houses = data;
 
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

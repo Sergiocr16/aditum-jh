@@ -117,6 +117,7 @@ public class EgressResource {
     public ResponseEntity<EgressDTO> getEgress(@PathVariable Long id) {
         log.debug("REST request to get Egress : {}", id);
         EgressDTO egressDTO = egressService.findOne(id);
+        String a = ";";
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressDTO));
     }
     @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}")

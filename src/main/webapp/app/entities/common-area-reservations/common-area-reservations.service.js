@@ -46,6 +46,16 @@
                     reservation_id: '@reservation_id'
             }
         },
+            'findBetweenDatesByCompany':{
+                method: 'GET',
+                url: 'api/common-area-reservations/between/:initial_time/:final_time/byCompany/:companyId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                }
+            },
             'getPendingReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getPendingReservations/:companyId',

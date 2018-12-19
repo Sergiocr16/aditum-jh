@@ -5,25 +5,28 @@
         .module('aditumApp')
         .controller('ComplaintDialogController', ComplaintDialogController);
 
-    ComplaintDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope','$state', 'globalCompany'];
+    ComplaintDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Complaint', 'House', 'Company', 'Resident', '$rootScope','$state', 'globalCompany','Modal'];
 
-    function ComplaintDialogController ($timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany) {
+    function ComplaintDialogController ($timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany,Modal) {
         var vm = this;
-
+        $rootScope.mainTitle = "Registrar queja o sugerencia";
+        vm.isReady = false;
         vm.complaint = {complaintType:"Vigilancia"};
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.loadResidentsByHouse = loadResidentsByHouse;
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.residents = Resident.query();
 
-
-        // $timeout(function (){
             loadAll()
-        // },1000);
+
 
         function clear () {
          history.back();
@@ -39,7 +42,7 @@
                    }
                    console.log(vm.residents)
                },function(){
-                 toastr["error"]("Ah ocurrido un error cargando los residentes de la filial.")
+                 Modal.toast("Ah ocurrido un error cargando los residentes de la filial.")
                })
        }
 
@@ -65,12 +68,7 @@
                     }
                 });
                 vm.houses = data;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -80,43 +78,33 @@
 
 
         function save () {
-            bootbox.confirm({
-                message: "¿Está seguro que desea registrar la queja o sugerencia?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
+            Modal.confirmDialog("¿Está seguro que desea registrar la queja o sugerencia?","",
+                function(){
+                    vm.isSaving = true;
+                    vm.complaint.creationDate = moment(new Date).format();
+                    vm.complaint.companyId = globalCompany.getId();
+                    vm.complaint.status = 1;
+                    vm.complaint.deleted = 0;
+                    Modal.showLoadingBar();
+                    if (vm.complaint.id !== null) {
+                        Complaint.update(vm.complaint, onSaveSuccess, onSaveError);
+                    } else {
+                        Complaint.save(vm.complaint, onSaveSuccess, onSaveError);
                     }
-                },
-                callback: function (result) {
-                    if (result) {
-                        vm.isSaving = true;
-                        vm.complaint.creationDate = moment(new Date).format();
-                        vm.complaint.companyId = globalCompany.getId();
-                        vm.complaint.status = 1;
-                        vm.complaint.deleted = 0;
-                        if (vm.complaint.id !== null) {
-                            Complaint.update(vm.complaint, onSaveSuccess, onSaveError);
-                        } else {
-                            Complaint.save(vm.complaint, onSaveSuccess, onSaveError);
-                        }
-                    }
-                }
-            });
+                });
+
 
         }
 
         function onSaveSuccess (result) {
-            toastr["success"]("Se registró la queja o sugerencia exitosamente.")
+            Modal.hideLoadingBar();
+            Modal.toast("Se registró la queja o sugerencia exitosamente.")
             $state.go('complaint');
             vm.isSaving = false;
         }
 
         function onSaveError () {
+            Modal.hideLoadingBar();
             vm.isSaving = false;
         }
 

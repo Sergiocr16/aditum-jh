@@ -5,21 +5,26 @@
         .module('aditumApp')
         .controller('CommonAreaAllReservationsController', CommonAreaAllReservationsController);
 
-    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods'];
+    CommonAreaAllReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany','Modal'];
 
-    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods) {
+    function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
 
         var vm = this
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
         vm.loadPage = loadPage;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.consult = consult;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.consult = consult;
+        loadAll();
 
-        setTimeout(function(){loadAll();},1000)
+
 
         function onError(error) {
             AlertService.error(error.data.message);
@@ -29,7 +34,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [];
@@ -39,7 +44,6 @@
                 return result;
             }
             function onSuccess(data, headers) {
-                console.log(data)
                 vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -47,18 +51,48 @@
                 vm.finalListReservations = data;
                 vm.page = pagingParams.page;
                 loadInfoByReservation(data);
-                setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#tableDatas").fadeIn(300);
-                },1000 )
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+        vm.stopConsulting = function () {
+            vm.isReady = false;
+            vm.dates = {
+                initial_time: undefined,
+                final_time: undefined
+            };
+            pagingParams.page = 1;
+            pagingParams.search = null;
+            vm.isConsulting = false;
+            loadAll();
+        }
+        function consult() {
+            vm.isReady = false;
+            CommonAreaReservations.findBetweenDatesByCompany({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                companyId: globalCompany.getId(),
+                page: pagingParams.page - 1,
+                size: vm.itemsPerPage,
+            }, onSuccess, onError);
 
+            function onSuccess(data, headers) {
+                vm.isConsulting = true;
+                vm.finalListReservations = [];
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                vm.finalListReservations = data;
+                vm.page = pagingParams.page;
+                loadInfoByReservation(data);
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
 
         function loadInfoByReservation(data){
             angular.forEach(data,function(value){
@@ -76,13 +110,18 @@
                         }, function(result) {
                             value.commonAreaName = result.name ;
                             value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-
+                            value.commonAreaPicture = result.picture;
+                            value.commonAreapictureContentType = result.pictureContentType;
                         })
                     })
                 });
                 //     vm.finalListReservations.push(value)
                 // }
             });
+            setTimeout(function () {
+                vm.isReady = true;
+            },600);
+
         }
 
         function formatScheduleTime(initialTime, finalTime){
@@ -109,46 +148,30 @@
             vm.transition();
         }
         vm.deleteReservation = function(commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
+                function(){
+                    commonArea.initalDate = new Date(commonArea.initalDate)
+                    commonArea.initalDate.setHours(0);
+                    commonArea.initalDate.setMinutes(0);
+                    Modal.showLoadingBar();
+                    commonArea.status = 4;
+                    CommonAreaReservations.update(commonArea, onDeleteSuccess, onSaveError);
 
-            bootbox.confirm({
+                });
 
-                message: "¿Está seguro que desea eliminar la solicitud de reservación?",
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        commonArea.initalDate = new Date(commonArea.initalDate)
-                        commonArea.initalDate.setHours(0);
-                        commonArea.initalDate.setMinutes(0);
-                        CommonMethods.waitingMessage();
-                        commonArea.status = 4;
-                        CommonAreaReservations.update(commonArea, onDeleteSuccess, onSaveError);
-
-                    }
-                }
-            });
         };
 
         function onDeleteSuccess (result) {
 
             loadAll();
-            toastr["success"]("Se eliminó la solicitud de reservación correctamente");
-            bootbox.hideAll()
+            Modal.toast("Se eliminó la solicitud de reservación correctamente");
+            Modal.hideLoadingBar();
             // $state.go('common-area-administration.common-area-all-reservations');
             //
         }
         function onSaveError(error) {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
         }
 

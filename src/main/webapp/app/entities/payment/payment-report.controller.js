@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('PaymentReportController', PaymentReportController);
 
-    PaymentReportController.$inject = ['Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    PaymentReportController.$inject = ['Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany', 'Modal'];
 
-    function PaymentReportController(Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function PaymentReportController(Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany, Modal) {
         $rootScope.active = "reporteIngresos";
         var vm = this;
         vm.exportActions = {
@@ -15,14 +15,17 @@
             printing: false,
             sendingEmail: false,
         }
+        $rootScope.mainTitle = "Reporte de ingresos";
+        vm.isReady = false;
+        vm.isReady2 = false;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
         vm.reverse = true;
         vm.consulting = false;
-        vm.banco = "";
-        vm.paymentMethod = "empty",
-            vm.houseId = "";
+        vm.banco = "empty";
+        vm.paymentMethod = "empty";
+        vm.houseId = "empty";
         vm.category = "empty";
         var date = new Date(),
             y = date.getFullYear(),
@@ -39,11 +42,12 @@
             sendingEmail: false,
         }
         vm.consultAgain = function () {
-            vm.banco = "";
-            vm.paymentMethod = "empty",
-                vm.houseId = "";
+            vm.banco = "empty";
+            vm.paymentMethod = "empty";
+            vm.houseId = "empty";
             vm.category = "empty";
             vm.consulting = false;
+            vm.isReady2 = false;
         }
         vm.updatePicker = function () {
             vm.picker1 = {
@@ -84,10 +88,7 @@
                 companyId: globalCompany.getId()
             }, function (data, headers) {
                 vm.bancos = data;
-                $("#loadingIconAll").fadeOut(300);
-                setTimeout(function () {
-                    $("#data").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
             });
         }
 
@@ -131,64 +132,51 @@
                 })
             }, 6000)
         }
-            vm.loadHouses();
+        vm.loadHouses();
         vm.sendEmail = function (payment) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + payment.houseNumber + "?",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        vm.exportActions.sendingEmail = true;
-                        Resident.findResidentesEnabledByHouseId({
-                            houseId: parseInt(payment.houseId),
-                        }).$promise.then(onSuccessResident, onError);
+            Modal.confirmDialog("¿Está seguro que desea enviarle el comprobante del pago " + payment.receiptNumber + " al contacto principal de la filial " + payment.houseNumber + "?", "",
+                function () {
+                    vm.exportActions.sendingEmail = true;
+                    Resident.findResidentesEnabledByHouseId({
+                        houseId: parseInt(payment.houseId),
+                    }).$promise.then(onSuccessResident, onError);
 
-                        function onSuccessResident(data, headers) {
-                            var thereIs = false;
-                            angular.forEach(data, function (resident, i) {
-                                if (resident.email != undefined && resident.email != "" && resident.email != null) {
-                                    resident.selected = false;
-                                    if (resident.principalContact == 1) {
-                                        thereIs = true;
-                                    }
+                    function onSuccessResident(data, headers) {
+                        var thereIs = false;
+                        angular.forEach(data, function (resident, i) {
+                            if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                                resident.selected = false;
+                                if (resident.principalContact == 1) {
+                                    thereIs = true;
                                 }
-                            });
-                            if (thereIs == true) {
-                                Payment.sendPaymentEmail({
-                                    paymentId: payment.id
-                                })
-                                $timeout(function () {
-                                    $scope.$apply(function () {
-                                        vm.exportActions.sendingEmail = false;
-                                    })
-                                    toastr["success"]("Se ha enviado el comprobante por correo al contacto principal.")
-
-                                }, 6000)
-                            } else {
-
-                                vm.exportActions.sendingEmail = false;
-
-                                toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
-
                             }
-                        }
+                        });
+                        if (thereIs == true) {
+                            Payment.sendPaymentEmail({
+                                paymentId: payment.id
+                            })
+                            $timeout(function () {
+                                $scope.$apply(function () {
+                                    vm.exportActions.sendingEmail = false;
+                                })
+                                Modal.toast("Se ha enviado el comprobante por correo al contacto principal.")
 
-                        function onError() {
-                            toastr["error"]("Esta filial no tiene un contacto principal para enviarle el correo.")
+                            }, 6000)
+                        } else {
+
+                            vm.exportActions.sendingEmail = false;
+
+                            Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
 
                         }
                     }
-                }
-            });
+
+                    function onError() {
+                        Modal.toast("Esta filial no tiene un contacto principal para enviarle el correo.")
+
+                    }
+
+                });
 
 
         }
@@ -211,9 +199,9 @@
         }
 
         vm.generateReport = function () {
-            $("#reportResults").fadeOut(0);
-            $("#loading").fadeIn(100);
+            vm.isReady2 = false;
             vm.consulting = true;
+            vm.showLoading = true;
             if (vm.banco == "" || vm.banco == null) {
                 vm.banco = "empty"
             }
@@ -237,18 +225,13 @@
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
                 })
-                $("#loading").fadeOut(297);
-                $timeout(function () {
-                    $("#reportResults").fadeIn("slow");
-                }, 300)
+                vm.isReady2 = true;
+                vm.showLoading = false;
             }
 
             function onError(error) {
-                $("#loading").fadeOut(300);
-                $timeout(function () {
-                    $("#reportResults").fadeIn("slow");
-                }, 900)
-                toastr["error"]("Ha ocurrido un error al generar el reporte de ingresos.")
+                vm.isReady2 = true;
+                Modal.toast("Ha ocurrido un error al generar el reporte de ingresos.")
                 AlertService.error(error.data.message);
             }
         }

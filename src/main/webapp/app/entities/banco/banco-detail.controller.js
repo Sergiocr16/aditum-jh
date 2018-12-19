@@ -21,6 +21,7 @@
         var saldoActual = 0;
         vm.totalIngress = 0;
         vm.totalEgress = 0;
+        vm.isReady = false;
         vm.isConsulting = false;
         var unsubscribe = $rootScope.$on('aditumApp:bancoUpdate', function (event, result) {
             vm.banco = result;
@@ -51,10 +52,7 @@
             vm.totalEgress = 0;
             vm.initialDate = vm.dates.initial_time;
             getInitialBalanceBetweenDatesConsulting(vm.firstDayConsulting);
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
 
         }
 
@@ -81,10 +79,7 @@
                 final_time: lastDay
             };
             getInitialBalance();
-            $("#tableData").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
 
 
         }
@@ -369,13 +364,7 @@
             } else {
                 vm.balanceColor = 'red';
             }
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 900)
-
+            vm.isReady = true;
         }
 
         vm.updatePicker = function () {

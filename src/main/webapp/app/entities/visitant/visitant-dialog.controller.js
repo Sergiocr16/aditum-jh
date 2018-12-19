@@ -5,18 +5,23 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany'];
+    VisitantDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany) {
+    function VisitantDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = {};
         vm.clear = clear;
         $rootScope.active = "reportInvitation";
+        $rootScope.mainTitle = "Reportar visitante"
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.dates = {
@@ -103,7 +108,7 @@
 //            FECHAS
             vm.dates.initial_date = new Date();
             vm.dates.final_date = new Date();
-            vm.minInitialDate = moment(currentDate).format("YYYY-MM-DD")
+            vm.minInitialDate = currentDate;
 
 //            HORAS
             vm.dates.initial_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)
@@ -240,19 +245,19 @@
                 }
             })
             if (errorCedula > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
+                Modal.toast("No puede ingresar ningún caracter especial o espacio en blanco en la cédula.");
 
             }
             if (errorPlaca > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o espacio en blanco en el número de placa");
+                Modal.toast("No puede ingresar ningún caracter especial o espacio en blanco en el número de placa");
 
             }
             if (nombreError > 0) {
-                toastr["error"]("No puede ingresar ningún caracter especial o número en el nombre.");
+                Modal.toast("No puede ingresar ningún caracter especial o número en el nombre.");
 
             }
             if (errorCedLength > 0) {
-                toastr["error"]("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
+                Modal.toast("Si la nacionalidad es costarricense, debe ingresar el número de cédula igual que aparece en la cédula de identidad para obtener la información del padrón electoral de Costa Rica. Ejemplo: 10110111.");
             }
 
             if (errorCedula == 0 && errorPlaca == 0 && nombreError == 0 && errorCedLength == 0) {
@@ -276,19 +281,17 @@
         }
 
         vm.showMessageIntitial = function () {
-            toastr["info"]("La fecha y hora inicial debe ser en el futuro, y no puede ser mayor a la fecha final", "Toma en consideración");
+            Modal.toast("La fecha y hora inicial debe ser en el futuro, y no puede ser mayor a la fecha final");
         }
         vm.showMessageFinal = function () {
-            toastr["info"]("La fecha y hora final debe de ser en el futuro, y no puede ser menor a la fecha inicial", "Toma en consideración");
+            Modal.toast("La fecha y hora final debe de ser en el futuro, y no puede ser menor a la fecha inicial");
         }
 
         function isValidDates() {
-            console.log(vm.dates.final_date)
-
             function invalidDates() {
-                toastr["error"]("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
+                Modal.toast("Tus fechas no tienen el formato adecuado, intenta nuevamente");
                 vm.formatInitPickers()
-                bootbox.hideAll();
+                Modal.hideLoadingBar()
                 return false;
             }
 
@@ -331,58 +334,48 @@
             var arrayVisitor = []
             arrayVisitor.push(vm.visitor)
             if (vm.validArray(arrayVisitor)) {
-                CommonMethods.waitingMessage();
-                if (isValidDates()) {
-                    Visitant.findInvitedByHouseAndIdentificationNumber({
-                        identificationNumber: vm.visitor.identificationnumber,
-                        houseId: $rootScope.companyUser.houseId,
-                        companyId: globalCompany.getId(),
-                    }, success, error)
-                }
+                Modal.confirmDialog("¿Está seguro que desea reportar este visitante?","", function () {
+                    if (isValidDates()) {
+                        Visitant.findInvitedByHouseAndIdentificationNumber({
+                            identificationNumber: vm.visitor.identificationnumber,
+                            houseId: $rootScope.companyUser.houseId,
+                            companyId: globalCompany.getId(),
+                        }, success, error)
+                    }
 
-                function success(data) {
-                    bootbox.confirm({
-                        message: "Un visitore con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad, ¿Desea renovar su invitación y actualizar sus datos?",
-                        buttons: {
-                            confirm: {
-                                label: 'Aceptar',
-                                className: 'btn-success'
-                            },
-                            cancel: {
-                                label: 'Cancelar',
-                                className: 'btn-danger'
-                            }
-                        },
-                        callback: function (result) {
-                            if (result) {
-                                vm.visitor.id = data.id;
-                                formatVisitor(vm.visitor);
-                                Visitant.update(vm.visitor, onSuccess, onSaveError);
-                                bootbox.hideAll();
-                            } else {
-                                bootbox.hideAll();
-                            }
+                    function success(data) {
 
+                        Modal.confirmDialog("Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad.", " ¿Desea renovar su invitación y actualizar sus datos?", function () {
+                            Modal.showLoadingBar()
+
+                            vm.visitor.id = data.id;
+                            formatVisitor(vm.visitor);
+                            Visitant.update(vm.visitor, onSuccess, onSaveError);
                             function onSuccess(data) {
                                 WSVisitor.sendActivity(data);
-                                bootbox.hideAll();
+                                Modal.hideLoadingBar()
                                 $state.go('visitant-invited-user')
-                                toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                                Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                             }
-                        }
-                    });
-                }
 
-                function error() {
-                    formatVisitor(vm.visitor);
-                    vm.isSaving = true;
-                    console.log(vm.visitor)
-                    vm.visitor.name = CommonMethods.capitalizeFirstLetter(vm.visitor.name);
-                    vm.visitor.lastname = CommonMethods.capitalizeFirstLetter(vm.visitor.lastname);
-                    vm.visitor.secondlastname = CommonMethods.capitalizeFirstLetter(vm.visitor.secondlastname);
-                    Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
+                        })
+                    }
 
-                }
+                    function error() {
+                        Modal.showLoadingBar()
+
+                        formatVisitor(vm.visitor);
+                        vm.isSaving = true;
+                        console.log(vm.visitor)
+                        vm.visitor.name = CommonMethods.capitalizeFirstLetter(vm.visitor.name);
+                        vm.visitor.lastname = CommonMethods.capitalizeFirstLetter(vm.visitor.lastname);
+                        vm.visitor.secondlastname = CommonMethods.capitalizeFirstLetter(vm.visitor.secondlastname);
+                        Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
+
+                    }
+
+
+                })
             }
         }
 
@@ -391,13 +384,14 @@
             WSVisitor.sendActivity(result);
             $scope.$emit('aditumApp:visitorUpdate', result);
             $state.go('visitant-invited-user')
-            bootbox.hideAll();
-            toastr["success"]("Se ha reportado como visitore invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+            Modal.hideLoadingBar()
+            Modal.toast("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }
 
         function onSaveError() {
             vm.isSaving = false;
+            Modal.hideLoadingBar();
         }
 
 

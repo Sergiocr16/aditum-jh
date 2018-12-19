@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('BancoController', BancoController);
 
-    BancoController.$inject = ['CommonMethods', '$state', '$location', 'Banco', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', 'globalCompany'];
+    BancoController.$inject = ['CommonMethods', '$state', '$location', 'Banco', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', 'globalCompany','Modal'];
 
-    function BancoController(CommonMethods, $state, $location, Banco, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, globalCompany) {
+    function BancoController(CommonMethods, $state, $location, Banco, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, globalCompany,Modal) {
 
         var vm = this;
         vm.location = $location.path();
@@ -17,7 +17,8 @@
         } else {
             $rootScope.active = "bancoConfiguration";
         }
-
+        vm.isReady = false;
+        $rootScope.mainTitle = "Cuentas";
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -49,12 +50,7 @@
                 vm.queryCount = vm.totalItems;
                 vm.bancos = data;
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
                 angular.forEach(data, function (value, key) {
 
 //                   if(value.deleted==0){
@@ -91,43 +87,27 @@
         }
 
         vm.deleteBanco = function (banco) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la cuenta " + banco.beneficiario + "?","",
+                function(){
+                    Modal.showLoadingBar();
+                    banco.deleted = 0;
+                    Banco.update(banco, onDeleteSuccess, onSaveError);
 
-            bootbox.confirm({
+                });
 
-                message: "¿Está seguro que desea eliminar la cuenta " + banco.beneficiario + "?",
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        CommonMethods.waitingMessage();
-                        banco.deleted = 0;
-                        Banco.update(banco, onDeleteSuccess, onSaveError);
-
-                    }
-                }
-            });
         };
 
         function onDeleteSuccess(result) {
-            bootbox.hideAll()
+            Modal.hideLoadingBar();
             loadAll();
-            toastr["success"]("Se eliminó la cuenta correctamente");
+            Modal.toast("Se eliminó la cuenta correctamente");
             $state.go('banco-configuration');
             vm.isSaving = false;
         }
 
         function onSaveError(error) {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             AlertService.error(error.data.message);
         }
 

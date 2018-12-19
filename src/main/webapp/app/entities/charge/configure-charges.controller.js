@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ConfigureChargesController', ConfigureChargesController);
 
-    ConfigureChargesController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany'];
+    ConfigureChargesController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
 
-    function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany) {
+    function ConfigureChargesController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
         var vm = this;
 
         $rootScope.active = "configureCharges";
@@ -16,6 +16,8 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.radiostatus = true;
+        $rootScope.mainTitle = "Configurar cuotas y Área metros cuadrados";
+        vm.isReady = false;
         vm.cuotaFija = true;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -63,21 +65,21 @@
                 if (t == 1) {
                     if (house.dirtyDue == true) {
                         House.update(house, function (result) {
-                            toastr["success"]("Guardado.")
+                          Modal.toast("Guardado.")
                             house.dirtyDue = false;
                         })
                     }
                 } else {
                     if (house.dirtySquare == true) {
                         House.update(house, function (result) {
-                            toastr["success"]("Guardado.")
+                          Modal.toast("Guardado.")
                             house.dirtySquare = false;
                         })
                     }
                 }
 
             } else {
-                toastr["error"]("Debe de ingresar solo números.")
+              Modal.toast("Debe de ingresar solo números.")
             }
         }
 
@@ -127,12 +129,7 @@
                 vm.houses = data;
 
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

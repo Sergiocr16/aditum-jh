@@ -1,212 +1,234 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="residentes()">Contabilidad</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="residentes()">Generar cuota extraordinaria</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="display-none" id="tableData">
-    <div ng-if="vm.houses.length==0">
-        <h2 class="text-center"  style="margin-top:60px">No hay filiales registradas.</h2>
-        <h4 class="text-center gray-font">Proceda a registrar filiales para utilizar esta funcionalidad.</h4>
-    </div>
-    <div class="row" ng-if="vm.houses.length!==0">
-        <div class="col-md-12">
-            <div class="portlet light bordered col-md-12 col-lg-12 col-sm-12 col-xs-12">
-                <div class="portlet-title">
-                    <div class="caption font-green-haze">
-                        <span class="caption-subject bold uppercase">Generar cuota extraordinaria</span>
-                    </div>
-                </div>
-                <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
-                        <form ng-submit="vm.verificarCargos()">
-                            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                                <div class="no-padding" style="display:inline">
-                                    <!--<div style="margin-bottom:5px" class="col-lg-4 col-sm-4 col-xs-4 col-md-4 no-padding">-->
-                                        <!--<label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font margin-top-10">Fecha de cobro *</label>-->
-                                        <!--<div class="col-md-7 col-sm-7 col-xs-8 ">-->
-                                            <!--<input ng-model="vm.globalConcept.date" placeholder="Seleccione una fecha" ng-click="vm.openCalendar($index)" datetime-picker="mediumDate" is-open="vm.datePickerOpenStatus" type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="form-group col-lg-6 col-sm-6 col-xs-6 col-md-6 no-padding">-->
-                                        <!--<label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font margin-top-10">Tipo de cuota</label>-->
-                                        <!--<div class="col-md-7 col-sm-7 col-xs-8 ">-->
-                                            <!--<select class="form-control gray-font" ng-model="vm.globalConcept.type" required>-->
-                                                <!--<option value="2">Extraordinaria</option>-->
-                                                <!--<option value="3">Áreas comunes</option>-->
-                                            <!--</select>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                    <!--<div class="col-lg-offset-2 col-lg-4 col-sm-4 col-xs-6 col-md-4">-->
-                                        <!--<input ng-model="vm.globalConcept.text" ng-blur="vm.globalConceptSelected()" class="form-control letters gray-font text-center" type="text" placeholder="Concepto Global">-->
-                                    <!--</div>-->
-                                    <!--<div class="col-lg-4 col-sm-4 col-xs-6 col-md-4">-->
-                                        <!--<input ng-model="vm.globalConcept.cuota.ammount" ng-class="{redBorder: vm.globalConcept.cuota.valida==false}" ng-blur="vm.globalCuotaSelected()" ng-change="vm.validate(vm.globalConcept.cuota)" class="form-control letters gray-font text-center" type="text" placeholder="Cuota Global">-->
-                                    <!--</div>-->
-                                </div>
-                                <div ng-show="vm.globalConcept.length>1" style="width:150px">
-                                    <button type="button" ng-click="vm.deleteDue(globalConcept.id)" class="btn btn-danger col-md-12" style="padding:3px 7px!important"><b>Eliminar</b></button>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+<div ng-if="vm.isReady" class=" fade-in">
 
-                                <div class="table-scrollable" style="border: 0px!important;">
-                                    <table table ng-if="vm.houses.length>0" id="tableToExport" class="table font-13 gray-font tableMaterialDesign">
-                                        <thead >
-                                        <tr >
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+    <no-content ng-if="vm.houses.length==0" icon="bookmarks" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
 
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                                <label class="control-label no-padding gray-font margin-top-10">Fecha de cobro *</label>
-                                                <input ng-model="vm.globalConcept.date" placeholder="Seleccione una fecha" ng-click="vm.openCalendar($index)" datetime-picker="mediumDate" is-open="vm.datePickerOpenStatus" type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                                <label class="control-label no-padding gray-font margin-top-10">Tipo de cuota</label>
-                                                <select class="form-control gray-font" ng-model="vm.globalConcept.type" required>
-                                                    <option value="2">Extraordinaria</option>
-                                                    <option value="3">Áreas comunes</option>
-                                                </select>
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
-                                        </tr>
-                                        </thead>
-                                        <thead >
-                                        <tr >
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
 
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                                <input ng-model="vm.globalConcept.text" ng-blur="vm.globalConceptSelected()" class="form-control letters gray-font text-center" type="text" placeholder="Concepto Global">
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                                <input ng-model="vm.globalConcept.cuota.ammount" ng-class="{redBorder: vm.globalConcept.cuota.valida==false}" ng-blur="vm.globalCuotaSelected()" ng-change="vm.validate(vm.globalConcept.cuota)" class="form-control letters gray-font text-center" type="text" placeholder="Cuota Global">
-
-                                            </th>
-                                            <th class="text-center" style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
-                                        </tr>
-                                        </thead>
-                                        <thead  style="background-color: #fafafa;" class="">
-                                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                            <th class="text-center">
-                                                <div class="md-checkbox" style="margin:0 auto">
-                                                    <input type="checkbox" ng-model="vm.selectedAll" ng-change="vm.selectAll()" id="checkbox1" class="md-check">
-                                                    <label for="checkbox1">
-                                                        <span style="margin-left: 33%"></span>
-                                                        <span class="check" style="margin-left: 33%"></span>
-                                                        <span class="box" style="margin-left: 33%"></span>
-                                                    </label>
-                                                </div>
-                                            </th>
-                                            <th class="text-center"><b>Casa</b></th>
-                                            <th class="text-center"><b>Concepto</b></th>
-                                            <th class="text-center"><b>Cuota</b></th>
-                                            <th class="text-center"><b>Habitada</b></th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}">
-                                                <h5 class="text-center">
-                                                    <input ng-disabled="house.isdesocupated == 1" type="checkbox" ng-model="house.isIncluded">
-                                                </h5>
-                                            </td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">{{house.housenumber}}</td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency : "" : 0}}</td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}</td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
-                                                <input ng-disabled="house.isdesocupated == 1" class="form-control number gray-font text-center dating" type="text" fcsa-number ng-model="house.cuota.concept" placeholder="Concepto" ng-required="house.isIncluded==true">
-                                            </td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
-                                                <input ng-disabled="house.isdesocupated == 1" ng-class="{redBorder: house.cuota.valida==false}" ng-change="vm.validate(house.cuota)" class="form-control number gray-font text-center " type="text" fcsa-number ng-model="house.cuota.ammount" required>
-                                            </td>
-                                            <td  ng-class="{tdDisabled:house.isdesocupated == 1}" ng-if="house.isdesocupated == 1" class="text-center"><span class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6" style="padding: 5px 15px;margin-top:5px" aria-hidden="false">No</span></td>
-                                            <td ng-class="{tdDisabled:house.isdesocupated == 1}"  ng-if="house.isdesocupated == 0" class="text-center"><span class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6" style="padding: 5px 15px;margin-top:5px"  aria-hidden="false">Si</span></td>
-
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <button ng-show="vm.houses.length!=0" class="btn orange-button-oficial col-md-12 col-xs-12 col-sm-12 col-lg-12" type="submit">Verificar cargos</button>
-                        </form>
-                    </div>
-
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
-                        <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes cargos?</b></h3>
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <h3 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales registradas.</h3>
-                            <div class="table-scrollable" style="border: 0px!important;">
-                                <table ng-show="vm.houses.length>0"  class="table font-13 gray-font tableMaterialDesign">
-                                    <thead  style="background-color: #fafafa;" class="">
-                                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                        <th class="text-center"><b>Casa</b></th>
-                                        <th class="text-center"><b>Concepto</b></th>
-                                        <th>
-                                            <div class="col-md-12 no-padding">
-                                                <div class="no-padding" style="display:inline">
-                                                    <div style="margin-bottom:5px">
-                                                        <h5 class="text-center" style="width:150px">{{vm.globalConcept.date | date}}</h5>
-                                                        <h6 class="text-center" style="font-size:11px"><b>Fecha de cobro</b></h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr ng-repeat="house in vm.selectedHouses | orderBy:'housenumber'">
-                                        <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
-                                            <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
-                                            <span ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important" class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span>
-                                        </td>
-                                        <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
-                                            <span>{{house.cuota.concept}}</span>
-                                        </td>
-                                        <td ng-class="{noCharge:house.cuota.ammount == 0}" class="text-center" style="width:150px">
-                                            <span ng-show="house.cuota.ammount==0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover direction="left" template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>" mode="mouseover">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
-                                            <span ng-show="house.cuota.ammount!=0" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" >
-                                <div class="col-lg-6 no-padding">
-                                    <button class="btn btn-danger col-md-12" ng-click="vm.cancelar()">Cancelar</button>
-                                </div>
-                                <div class="col-lg-6 no-padding-right">
-                                    <button class="btn btn-success col-md-12" ng-click="vm.createDues()">Aceptar</button>
-                                </div>
-                            </div>
-
+    <div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in"
+         ng-if="vm.houses.length!==0">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>{{mainTitle}}</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==false">
+                <form ng-submit="vm.verificarCargos()" name="form">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+                        <div class="no-padding" style="display:inline">
                         </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+
+                        <div class="table-scrollable" style="border: 0px!important;">
+                            <table table ng-if="vm.houses.length>0" id="tableToExport"
+                                   class="table font-13 gray-font tableMaterialDesign">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+
+                                    </th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                    <th
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+                                        <md-input-container class="md-block no-margin-bottom">
+                                            <md-datepicker ng-change="vm.autoConcept(globalConcept)"
+                                                           md-hide-icons="all" required
+                                                           ng-model="vm.globalConcept.date"
+                                                           md-placeholder="Fecha de cobro"
+                                                           md-open-on-focus></md-datepicker>
+                                        </md-input-container>
+
+                                    </th>
+                                    <th
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+                                        <md-input-container class="md-block no-margin-bottom">
+                                            <label>Tipo de cuota</label>
+                                            <md-select ng-model="vm.globalConcept.type" required="">
+                                                <md-option value="2">
+                                                    Extraordinaria
+                                                </md-option>
+                                                <md-option value="3">
+                                                    Áreas comunes
+                                                </md-option>
+                                            </md-select>
+                                        </md-input-container>
+                                    </th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                </tr>
+                                </thead>
+                                <thead>
+                                <tr>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+
+                                    </th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+                                        <input ng-model="vm.globalConcept.text" ng-blur="vm.globalConceptSelected()"
+                                               class="form-control letters gray-font text-center" type="text"
+                                               placeholder="Concepto Global">
+                                    </th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+                                        <input ng-model="vm.globalConcept.cuota.ammount"
+                                               ng-class="{redBorder: vm.globalConcept.cuota.valida==false}"
+                                               ng-blur="vm.globalCuotaSelected()"
+                                               ng-change="vm.validate(vm.globalConcept.cuota)"
+                                               class="form-control letters gray-font text-center" type="text"
+                                               format="currency"
+                                               placeholder="Cuota Global">
+
+                                    </th>
+                                    <th class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                </tr>
+                                </thead>
+                                <thead style="background-color: #fafafa;" class="">
+                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                    <th class="text-center">
+                                        <div class="md-checkbox" style="margin:0 auto">
+                                            <input type="checkbox" ng-model="vm.selectedAll"
+                                                   ng-change="vm.selectAll()" id="checkbox1" class="md-check">
+                                            <label for="checkbox1">
+                                                <span style="margin-left: 33%"></span>
+                                                <span class="check" style="margin-left: 33%"></span>
+                                                <span class="box" style="margin-left: 33%"></span>
+                                            </label>
+                                        </div>
+                                    </th>
+                                    <th class="text-center"><b>Casa</b></th>
+                                    <th class="text-center"><b>Concepto</b></th>
+                                    <th class="text-center"><b>Cuota</b></th>
+                                    <th class="text-center"><b>Habitada</b></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="house in vm.houses | orderBy:'housenumber'">
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}">
+                                        <h5 class="text-center">
+                                            <input ng-disabled="house.isdesocupated == 1" type="checkbox"
+                                                   ng-model="house.isIncluded">
+                                        </h5>
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
+                                        {{house.housenumber}}
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"
+                                        ng-show="vm.cuotaFija==true" class="text-center">₡{{house.due | currency :
+                                        "" : 0}}
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"
+                                        ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
+                                        <input ng-disabled="house.isdesocupated == 1"
+                                               class="form-control number gray-font text-center dating" type="text"
+                                               fcsa-number ng-model="house.cuota.concept" placeholder="Concepto"
+                                               ng-required="house.isIncluded==true">
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
+                                        <input ng-disabled="house.isdesocupated == 1"
+                                               ng-class="{redBorder: house.cuota.valida==false}"
+                                               ng-change="vm.validate(house.cuota)"
+                                               class="form-control number gray-font text-center " type="text"
+                                               format="currency"
+                                               fcsa-number ng-model="house.cuota.ammount" required>
+                                    </td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"
+                                        ng-if="house.isdesocupated == 1" class="text-center"><span
+                                        class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6"
+                                        style="padding: 5px 15px;margin-top:5px" aria-hidden="false">No</span></td>
+                                    <td ng-class="{tdDisabled:house.isdesocupated == 1}"
+                                        ng-if="house.isdesocupated == 0" class="text-center"><span
+                                        class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6"
+                                        style="padding: 5px 15px;margin-top:5px" aria-hidden="false">Si</span></td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <md-button flex="100" style="width: 100%;" ng-show="vm.houses.length!=0"
+                                   class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Verificar
+                            cargos
+                        </md-button>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
+                <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
+                    cargos?</b></h3>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h3 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales
+                        registradas.</h3>
+                    <div class="table-scrollable" style="border: 0px!important;">
+                        <table ng-show="vm.houses.length>0" class="table font-13 gray-font tableMaterialDesign">
+                            <thead style="background-color: #fafafa;" class="">
+                            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                <th class="text-center"><b>Casa</b></th>
+                                <th class="text-center"><b>Concepto</b></th>
+                                <th>
+                                    <div class="col-md-12 no-padding">
+                                        <div class="no-padding" style="display:inline">
+                                            <div style="margin-bottom:5px">
+                                                <h5 class="text-center" style="width:150px">{{vm.globalConcept.date
+                                                    | date}}</h5>
+                                                <h6 class="text-center" style="font-size:11px"><b>Fecha de cobro</b>
+                                                </h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="house in vm.selectedHouses | orderBy:'housenumber'">
+                                <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
+                                    <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
+                                    <span ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"
+                                          class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span>
+                                </td>
+                                <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
+                                    <span>{{house.cuota.concept}}</span>
+                                </td>
+                                <td ng-class="{noCharge:house.cuota.ammount == 0}" class="text-center"
+                                    style="width:150px">
+                                        <span ng-show="house.cuota.ammount==0"
+                                              class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover
+                                              direction="left"
+                                              template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>"
+                                              mode="mouseover">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
+                                    <span ng-show="house.cuota.ammount!=0"
+                                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
+                         layout-align="end center">
+                        <md-button type="button" ng-click="vm.cancelar()"
+                                   class="md-warn md-raised">Cancelar
+                        </md-button>
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid " ng-click="vm.createDues()">
+                            Aceptar
+                        </md-button>
                     </div>
                 </div>
             </div>
-        </div>
+        </md-content>
     </div>
+
 </div>
+

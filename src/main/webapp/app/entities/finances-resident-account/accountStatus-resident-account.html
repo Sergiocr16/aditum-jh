@@ -1,46 +1,59 @@
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loading">
-    <div class="spinnerLoading" style="margin:70px auto!important;margin-bottom:100px!important">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="col-md-12 display-none" id="data">
-    <div class="col-md-12 no-padding">
-        <h2 class="bold uppercase" style="font-size:15px">Estado de cuenta <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
+<div  hide-xl hide-lg>
+    <h2 class="bold uppercase" style="font-size:15px">
+        <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl
+           ng-click="vm.expand()">arrow_back</i>
+        Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Este es el estado de cuenta actual de la unidad la unidad.<h5></div>" mode="mouseover"></i></h2>
 
-        <button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>
-        <div class=" col-md-6 col-lg-56 col-sm-12 col-xs-12 no-padding">
-            <button  ng-click="vm.searchByType(1)" style="" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
-            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
-            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
-            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
+    <md-button class="md-primary md-raised col-xs-12 " style="margin-top: 50px" flex-align="strech" ng-click="vm.expand()"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>  Visualizar estado de cuenta </md-button>
+
+</div>
+<div ng-if="vm.isReady" hide-sm hide-xs hide-md class="fade-in" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen-xs':vm.expanding }">
+    <div class="col-md-12 no-padding status-account">
+        <h2 class="bold uppercase" style="font-size:15px">
+            <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl
+               ng-click="vm.expand()">arrow_back</i>
+            Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Este es el estado de cuenta actual de la unidad la unidad.<h5></div>" mode="mouseover"></i></h2>
+
+        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
+            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
+            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
+            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
+            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
         </div>
+        <div layout="row" class="pull-right">
 
-        <div class=" col-md-5 col-md-offset-1 col-lg-5 col-sm-12 col-xs-12 no-padding-right">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">
-                <input  name="initialDate"  ng-model="vm.dates.initial_time" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"
-                        type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>
-            </div>
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">
-                <input  name="finalDate"  ng-model="vm.dates.final_time" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"
-                        class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>
-            </div>
-            <button ng-click="vm.consult()" class="btn btn-primary col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true"> Mostrar
+                todos
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
         </div>
-
     </div>
-    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 display-none" id="loading2">
-        <div class="spinnerLoading" style="margin:70px auto!important;margin-bottom:100px!important">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-    <div class="portlet-body display-none" id="accountStatusContainer" style="margin-bottom:50px;">
-
-        <div class="table-scrollable" style="overflow-x: hidden!important">
+    <div class="portlet-body status-account" id="accountStatusContainer" style="margin-bottom:50px;">
+        <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
             <h3 class="text-center" ng-show="vm.accountStatusItems.length==0" style="margin-top:30px!important">La filial no tiene deudas vigentes ni pagos realizados</h3>
-            <table class="jh-table table table-bordered  table-condensed flip-content" style="font-size:12px;">
-                <thead >
+            <table class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                <thead  style="background-color: #fafafa;" class="">
 
                 <tr >
                     <th class="text-center">Fecha </th>
@@ -87,10 +100,114 @@
                 <tbody style="border-top:0px;">
                 <tr >
                     <td  colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
-                    <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}</td>
-                    <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}</td>
-                    <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}</td>
-                    <td class="text-center bold" style="color:green;">₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}</td>
+                    <td class="text-center bold" ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">₡{{vm.formatearNumero(vm.accountStatusItems.saldo+"")}}</td>
+                </tr>
+                </tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<div ng-if="vm.isReady && vm.isScreenSizeSmall() && vm.expanding" class="fade-in" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen-xs':vm.expanding }">
+    <div class="col-md-12 no-padding status-account">
+        <h2 class="bold uppercase" style="font-size:15px">
+            <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl hide-md
+               ng-click="vm.expand()">arrow_back</i>
+            Estado de cuenta <span hide-xl hide-md hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
+
+        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
+            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
+            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
+            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
+            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
+        </div>
+        <div layout="row" class="pull-right">
+
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true"> Mostrar
+                todos
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+        </div>
+    </div>
+    <div class="portlet-body status-account" id="accountStatusContainer" style="margin-bottom:50px;">
+        <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
+            <h3 class="text-center" ng-show="vm.accountStatusItems.length==0" style="margin-top:30px!important">La filial no tiene deudas vigentes ni pagos realizados</h3>
+            <table class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                <thead  style="background-color: #fafafa;" class="">
+
+                <tr >
+                    <th class="text-center">Fecha </th>
+
+                    <th>Concepto </th>
+
+                    <th class="text-center">Cargo</th>
+
+
+                    <th class="text-center">Recargo</th>
+                    <th class="text-center">Total deuda</th>
+                    <th class="text-center">Abono</th>
+                    <th class="text-center">Saldo</th>
+
+
+                </tr>
+
+                </thead>
+                <tbody>
+
+                <tr>  <td  colspan="6"><span class=" bold" style="font-size:11px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initial_time | date:'longDate'}}</span></td> <td class="bold text-center">₡{{vm.formatearNumero(vm.accountStatusItems.saldoInicial+"")}}</td></tr>
+                <tbody ng-repeat="item in vm.accountStatusItems.listaAccountStatusItems " style="border-top:0px;" >
+                <tr ng-class="{'datePassed': item.datePassed==true,'firstPassed': item.definedFirstDatePassed}" class="maintenanceReportField" ng-click="vm.showDetail(item)">
+                    <td class="text-center "><span ng-show="item.definedFirstDatePassed" style="float:left;margin-top:-13px;margin-left:-5px;z-index:9999" angular-popover direction="right" template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>" mode="mouseover"><i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+
+                        {{item.date | date:'mediumDate'}}</td>
+                    <td ng-class="{'bold':item.abono>0}"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-if="item.abono>0" aria-hidden="true"></i> {{item.concept}}</td>
+                    <td  style="color:red; text-align:center;"><span ng-if="item.charge>0" >₡{{vm.formatearNumero(item.charge+"")}}</span></td>
+                    <td style="color:red; text-align:center;"><span ng-if="item.recharge>0 || item.recharge==0 && item.abono==0">₡{{vm.formatearNumero(item.recharge+"")}}</span></td>
+                    <td style="color:red; text-align:center;"><span ng-if="item.total>0">₡{{vm.formatearNumero(item.total+"")}}</span></td>
+                    <td class="text-center greenBalance"  ><span ng-if="item.abono>0"> ₡{{vm.formatearNumero(item.abono+"")}}</span></td>
+                    <td class="text-center bold"   ng-class="{'greenBalance':item.saldo>0,'redBalance':item.saldo<0}">₡{{vm.formatearNumero(item.saldo+"")}}</td>
+                </tr>
+                <tr  ng-if="item.showDetail" ng-repeat="item2 in item.charges"  >
+                    <td></td>
+                    <td ><span style="margin-left:30px;">- {{item2.concept}}</span> </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td class="text-center "  style="color:green" >₡{{vm.formatearNumero(item2.ammount+"")}}</td>
+                    <td></td>
+                </tr>
+                </tbody>
+                <tbody style="border-top:0px;">
+                <tr >
+                    <td  colspan="2"><span class=" bold" style="font-size:11px; border-top:0px;">TOTAL</span></td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalCharge+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalRecharge+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalTotal+"")}}</td>
+                    <td class="text-center bold redBalance" >₡{{vm.formatearNumero(vm.accountStatusItems.totalAbono+"")}}</td>
                     <td class="text-center bold" ng-class="{'greenBalance':vm.accountStatusItems.saldo>0,'redBalance':vm.accountStatusItems.saldo<0}">₡{{vm.formatearNumero(vm.accountStatusItems.saldo+"")}}</td>
                 </tr>
                 </tbody>

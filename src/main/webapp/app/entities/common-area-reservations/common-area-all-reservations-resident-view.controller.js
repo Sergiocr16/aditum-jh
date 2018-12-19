@@ -13,10 +13,12 @@
         $rootScope.active = "allReservationsResidentsView";
         vm.reverse = true;
         vm.loadPage = loadPage;
+        $rootScope.mainTitle = "Mis reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.finalListReservations = [];
+        vm.isReady = false
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
         setTimeout(function(){loadAll();},1000)
@@ -32,14 +34,13 @@
                 houseId: companyUser.houseId
             }, onSuccess, onError);
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'initalDate') {
+                    result.push('initalDate,desc');
                 }
                 return result;
             }
             function onSuccess(data, headers) {
-                console.log(data)
                 vm.finalListReservations = [];
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
@@ -57,6 +58,8 @@
                                 id: value.commonAreaId
                             }, function(result) {
                                 value.commonAreaName = result.name ;
+                                value.commonAreaPicture = result.picture;
+                                value.commonAreapictureContentType = result.pictureContentType;
                                 value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
 
                             })
@@ -65,12 +68,10 @@
                     //     vm.finalListReservations.push(value)
                     // }
                 });
-                setTimeout(function() {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function() {
-                    $("#tableDatas").fadeIn(300);
-                },900 )
+                console.log(vm.finalListReservations)
+                setTimeout(function () {
+                    vm.isReady = true;
+                },500);
             }
             function onError(error) {
                 AlertService.error(error.data.message);

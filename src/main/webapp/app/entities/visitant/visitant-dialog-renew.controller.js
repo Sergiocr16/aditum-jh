@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitor'];
+    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitor', 'Modal'];
 
-    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitor) {
+    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitor, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
@@ -55,6 +55,43 @@
             vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
             console.log(moment("Init " + vm.dates.final_time).format('HH:mm'))
         }
+        vm.validPlate = function (visitor) {
+            if (hasCaracterEspecial(visitor.licenseplate) || hasWhiteSpace(visitor.licenseplate)) {
+                visitor.validPlateNumber = 0;
+            } else {
+                visitor.validPlateNumber = 1;
+            }
+        }
+
+        function hasCaracterEspecial(s) {
+            var caracteres = [, ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
+            var invalido = 0;
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i) == val) {
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        function hasWhiteSpace(s) {
+            function tiene(s) {
+                return /\s/g.test(s);
+            }
+
+            if (tiene(s) || s == undefined) {
+                return true
+            }
+            return false;
+        }
 
         vm.validate = function () {
             var invalido = 0;
@@ -94,11 +131,11 @@
             }
 
             if (vm.visitor.name == undefined || vm.visitor.lastname == undefined || vm.visitor.secondlastname == undefined || haswhiteCedula(vm.visitor.licenseplate)) {
-                toastr["error"]("No puede ingresar espacios en blanco.");
+                Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
             } else if (hasCaracterEspecial(vm.visitor.name) || hasCaracterEspecial(vm.visitor.lastname) || hasCaracterEspecial(vm.visitor.secondlastname) || hasCaracterEspecial(vm.visitor.identificationnumber) || hasCaracterEspecial(vm.visitor.licenseplate)) {
                 invalido++;
-                toastr["error"]("No puede ingresar ningún caracter especial.");
+                Modal.toast("No puede ingresar ningún caracter especial.");
             }
             if (invalido == 0) {
                 return true;
@@ -129,7 +166,7 @@
             console.log(vm.dates.final_date)
 
             function invalidDates() {
-                toastr["error"]("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
+                Modal.toast("Tus fechas no tienen el formato adecuado, intenta nuevamente", "Ups!");
                 vm.formatInitPickers()
                 bootbox.hideAll();
                 return false;
@@ -165,18 +202,23 @@
 
         function save() {
             if (vm.validate()) {
-                CommonMethods.waitingMessage();
+               
                 if (isValidDates()) {
-                    formatVisitor();
-                    Visitant.update(vm.visitor, onSuccess, onSaveError);
+                    Modal.confirmDialog("¿Está seguro que desea renovar la invitación?","",function(){
+                        Modal.showLoadingBar();
+                        formatVisitor();
+                        Visitant.update(vm.visitor, onSuccess, onSaveError);
+                    })
+                   
 
 
                 }
 
                 function onSuccess(result) {
                     WSVisitor.sendActivity(result);
-                    bootbox.hideAll();
-                    toastr["success"]("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                    Modal.hideLoadingBar();
+
+                    Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
                     $scope.$emit('aditumApp:visitantUpdate', result);
                     $state.reload();
                     $uibModalInstance.close(result);

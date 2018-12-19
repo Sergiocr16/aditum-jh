@@ -15,8 +15,9 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
-        $localStorage.houseSelected = {};
-        $rootScope.houseSelected = {};
+
+        $rootScope.mainTitle = "Contabilidad filiales";
+        vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         $rootScope.active = "houseAdministration";
         vm.expanding = false;
@@ -47,12 +48,18 @@
                         value.housenumber = "Oficina"
                     }
                     value.debit = value.balance.debit;
+                    if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+                        if(value.id == $localStorage.houseSelected.id ){
+                            vm.selectedIndex = key;
+                        }
+                    }
                 })
                 vm.houses = data;
-                if (vm.houses.length > 0) {
+                if (vm.houses.length > 0 && $localStorage.houseSelected == null || $localStorage.houseSelected == undefined) {
                     $localStorage.houseSelected = vm.houses[0]
                 }
                 if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+
                     House.get({
                         id: $localStorage.houseSelected.id
                     }, function (result) {
@@ -68,12 +75,7 @@
                     }
                 }
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -124,14 +126,14 @@
             }
             return x1 + x2;
         }
-        vm.changeHouse = function (house) {
+        vm.changeHouse = function (house,i) {
             House.get({
                 id: house.id
             }, function (result) {
                 $localStorage.houseSelected = result
                 $rootScope.houseSelected = result;
                 vm.house = result;
-                console.log(result);
+                vm.selectedIndex = i;
             })
 
         }

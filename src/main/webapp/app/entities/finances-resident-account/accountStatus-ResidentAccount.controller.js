@@ -13,10 +13,16 @@
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m - 6, 1);
         var lastDay = new Date(y, m + 1, 0);
+        vm.isReady = false;
         vm.searchType = 1;
         vm.openCalendar = openCalendar;
         vm.loadAll = loadAll;
+        $rootScope.mainTitle = "Estado de cuenta";
         vm.datePickerOpenStatus = {};
+        vm.isReady = false;
+        vm.expading = false;
+        vm.house = $localStorage.houseSelected;
+
         vm.dates = {
             initial_time: firstDay,
             final_time: lastDay
@@ -90,7 +96,6 @@
                 vm.final_time = vm.dates.final_time
                 var countPassedDate = 0;
                 angular.forEach(data.listaAccountStatusItems, function (item, i) {
-
                     var rightNow = new Date();
                     var chargeDate = new Date(moment(item.date))
                     if (chargeDate.getTime() > rightNow.getTime()) {
@@ -101,16 +106,9 @@
                         }
                     }
                 })
-                console.log(data)
                 vm.accountStatusItems = data;
-                $("#loading").fadeOut(300);
-                $("#loading2").fadeOut(300);
-                setTimeout(function () {
-                    $("#data").fadeIn("slow");
-                    $("#accountStatusContainer").fadeIn("slow");
+               vm.isReady = true;
 
-
-                }, 900)
             }
 
             vm.formatearNumero = function (nStr) {
@@ -124,7 +122,45 @@
                 }
                 return x1 + x2;
             }
+            vm.findBootstrapEnvironment = function () {
+                var envs = ['xs', 'sm', 'md', 'lg'];
 
+                var $el = $('<div>');
+                $el.appendTo($('body'));
+
+                for (var i = envs.length - 1; i >= 0; i--) {
+                    var env = envs[i];
+
+                    $el.addClass('hidden-' + env);
+                    if ($el.is(':hidden')) {
+                        $el.remove();
+                        return env;
+                    }
+                }
+            }
+
+            vm.isScreenSizeSmall = function () {
+                var envs = ['xs', 'sm', 'md'];
+                var e = 0;
+                for (var i = 0; i < envs.length; i++) {
+                    if (envs[i] === vm.findBootstrapEnvironment()) {
+                        e++;
+                    }
+                }
+                if (e > 0) {
+                    return true;
+                }
+                return false;
+            }
+            vm.expand = function () {
+
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.expanding = !vm.expanding;
+                    });
+                }, 200);
+
+            }
             vm.updatePicker = function () {
                 vm.picker1 = {
                     datepickerOptions: {

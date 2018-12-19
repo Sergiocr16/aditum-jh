@@ -9,6 +9,20 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+            .state('houses-tabs', {
+                parent: 'entity',
+                url: '/houses',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/house/houses-tabs.html',
+                        controller: 'HouseDetailController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
         .state('houseAdministration', {
             parent: 'entity',
             url: '/contabilidad-filiales',
@@ -287,19 +301,15 @@
                    }]
                }
                     })
-            .state('house', {
-                parent: 'entity',
+
+            .state('houses-tabs.house', {
                 url: '/house?page&sort&search',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
-                views: {
-                    'content@': {
-                        templateUrl: 'app/entities/house/house-index.html',
-                        controller: 'HouseController',
-                        controllerAs: 'vm'
-                    }
-                },
+                templateUrl: 'app/entities/house/house-index.html',
+                controller: 'HouseController',
+                controllerAs: 'vm',
                 params: {
                     page: {
                         value: '1',
@@ -414,8 +424,8 @@
                     }]
                 }
             })
-            .state('house.new', {
-                parent: 'house',
+            .state('houses-tabs.new', {
+                parent: 'entity',
                 url: '/new',
                 data: {
                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
@@ -452,9 +462,9 @@
                 }
 
             })
-            .state('house.edit', {
-                   parent: 'house',
-                        url: '/{id}/edit',
+            .state('houses-tabs.edit', {
+                   parent: 'entity',
+                        url: '/houses/{id}/edit',
                         data: {
                          authorities: ['ROLE_ADMIN','ROLE_MANAGER']
                         },
@@ -480,9 +490,9 @@
                             }]
                         }
             })
-             .state('keysConguration', {
-                    parent: 'house',
-                    url: '/keysConguration',
+             .state('keysConfiguration', {
+                    parent: 'entity',
+                    url: '/keysConfiguration',
                     data: {
                         authorities: ['ROLE_USER']
                     },
@@ -507,6 +517,9 @@
                                 id: null
                             };
                         },
+                        companyUser: ['MultiCompany', function (MultiCompany) {
+                            return MultiCompany.getCurrentUserCompany()
+                        }],
                         previousState: ["$state", function($state) {
                             var currentStateData = {
                                 name: $state.current.name || '',

@@ -5,21 +5,24 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav'];
+    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany'];
 
-    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav) {
+    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany) {
         var vm = this;
-        vm.colors = {primary: "#01579B", secondary: "#E1F5FE",normalColorFont:"##c3c3c3"};
+
+
+        vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
+        $rootScope.colors = vm.colors;
         vm.colorsMenu = {
             mainButton: {
-                color: 'color:' + vm.colors.normalColorFont + '!important',
+                color: 'color:' + '#37474f',
                 backgroundColor: 'background-color:white!important',
             },
             mainButtonActive: {
-                color: 'color:' + vm.colors.primary + '!important',
-                backgroundColor: 'background-color:' + vm.colors.secondary + '!important',
+                color: 'color:' + '#37474f',
+                backgroundColor: 'background-color:white!important',
             },
-            mainButtonHover:{
+            mainButtonHover: {
                 color: 'color:' + vm.colors.primary + '!important',
                 backgroundColor: 'background-color:white!important',
             },
@@ -28,11 +31,11 @@
                 backgroundColor: 'background-color:white!important',
             },
             secondButtonActive: {
-                color: 'color:black!important',
-                backgroundColor: 'background-color:white!important',
+                color: 'color:' + vm.colors.primary + '!important',
+                backgroundColor: 'background-color:' + vm.colors.secondary + '!important',
             },
-            secondButtonHover:{
-                color: 'color:black!important',
+            secondButtonHover: {
+                color: 'color:' + vm.colors.primary + '!important',
                 backgroundColor: 'background-color:white!important',
             },
             thirdButton: {
@@ -40,912 +43,1025 @@
                 backgroundColor: 'background-color:white!important',
             },
             thirdButtonActive: {
-                color: 'color:#474747!important',
+                color: 'color:' + '#f37960!important',
                 backgroundColor: 'background-color:white!important',
             },
-            thirdButtonHover:{
-                color: 'color:#474747!important',
+            thirdButtonHover: {
+                color: 'color:' + vm.colors.primary + '!important',
                 backgroundColor: 'background-color:white!important',
             }
         };
 
-        // MENU EXAMPLE STRUDCTURE
-        // vm.menu = [
-        //     {
-        //         title: "Administración",
-        //         icon: "assessment",
-        //         authoritites: "ROLE_ADMIN",
-        //         activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
-        //         collapsable: true,
-        //         uisref: "",
-        //         menuId: "administracionMenu",
-        //         secondaryItems: [
-        //             {
-        //                 title: "Condominios",
-        //                 icon: "home",
-        //                 authoritites: "ROLE_ADMIN",
-        //                 activeOn: "company",
-        //                 collapsable: true,
-        //                 uisref: "",
-        //                 menuId: "condosMenu",
-        //                 thirdItems: [
-        //                     {
-        //                         title: "Carros",
-        //                         icon: "home",
-        //                         authoritites: "ROLE_ADMIN",
-        //                         activeOn: "company",
-        //                         uisref: "admins"
-        //                     },
-        //                 ]
-        //             }
-        //         ]
-        //     }
-        // ];
-        // END MENU EXAMPLE STRUCTURE
         vm.menu = [
             {
-                title: "Administración",
-                icon: "assessment",
+                title: "",
+                activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
                 authoritites: "ROLE_ADMIN",
-                activeOn: "condons,admins,admins,recursosHumanos,brands,destinies,dataprogress",
-                collapsable: true,
-                uisref: "",
-                menuId: "administracionSuperAdminMenu",
-                hover:false,
+                showXs: true,
                 secondaryItems: [
                     {
-                        title: "Condominios",
-                        icon: "home",
+                        title: "Administración",
+                        icon: "assessment",
                         authoritites: "ROLE_ADMIN",
-                        activeOn: "condons",
-                        collapsable: false,
-                        uisref: "company",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Administradores",
-                        icon: "supervised_user_circle",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "admins",
-                        collapsable: false,
-                        uisref: "admin-info",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Recursos humanos",
-                        icon: "supervised_user_circle",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "recursosHumanos",
-                        collapsable: false,
-                        uisref: "rh-account",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Marcas vehículos",
-                        icon: "directions_car",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "brands",
-                        collapsable: false,
-                        uisref: "brand",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Destinos puerta acceso",
-                        icon: "arrow_right_alt",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "destinies",
-                        collapsable: false,
-                        uisref: "destinies",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Progreso ingreso de datos",
-                        icon: "show_chart",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "dataprogress",
-                        collapsable: false,
-                        uisref: "data-progress",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                ]
-            },
-            {
-                title: "Aditum Jhipster",
-                icon: "bar_chart",
-                authoritites: "ROLE_ADMIN",
-                activeOn: "user-management,tracker,metrics,health,configuration,audits,logs,docs",
-                collapsable: true,
-                uisref: "",
-                menuId: "aditumJhipsterMenu",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Gestión de usuarios",
-                        icon: "supervised_user_circle",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "user-management",
-                        collapsable: false,
-                        uisref: "user-management",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Tracker",
-                        icon: "remove_red_eye",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "tracker",
-                        collapsable: false,
-                        uisref: "jhi-tracker",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Métricas",
-                        icon: "pie_chart",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "metrics",
-                        collapsable: false,
-                        uisref: "jhi-metrics",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Salud",
-                        icon: "sentiment_satisfied_alt",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "health",
-                        collapsable: false,
-                        uisref: "jhi-health",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Configuración",
-                        icon: "build",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "configuration",
-                        collapsable: false,
-                        uisref: "jhi-configuration",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Auditorías",
-                        icon: "people",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "audits",
-                        collapsable: false,
-                        uisref: "audits",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Logs",
-                        icon: "pan_tool",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "logs",
-                        collapsable: false,
-                        uisref: "logs",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "API",
-                        icon: "library_books",
-                        authoritites: "ROLE_ADMIN",
-                        activeOn: "docs",
-                        collapsable: false,
-                        uisref: "docs",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                ]
-            },
-            {
-                title: "Dashboard",
-                icon: "dashboard",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "dashboard",
-                collapsable: false,
-                uisref: "dashboard",
-                menuId: "",
-                hover:false,
-                secondaryItems: []
-            },
-            {
-                title: "Noticias",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "announcements,userNews",
-                collapsable: true,
-                uisref: "",
-                menuId: "noticiasMenu",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Ver noticias",
-                        icon: "remove_red_eye",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "userNews",
-                        collapsable: false,
-                        uisref: "announcement-user",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Administrar noticias",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "announcements",
-                        collapsable: false,
-                        uisref: "announcement",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                ]
-            },
+                        activeOn: "condons,admins,admins,recursosHumanos,brands,destinies,dataprogress",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "administracionSuperAdminMenu",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Condominios",
+                                icon: "home",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "condons",
+                                collapsable: false,
+                                uisref: "company",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true,
 
-            {
-                title: "Administración",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "residents,vehicules,houses,adminVisitors",
-                collapsable: true,
-                uisref: "",
-                menuId: "administracionMenu",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Residentes",
-                        icon: "remove_red_eye",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "residents",
-                        collapsable: false,
-                        uisref: "resident",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
+                            },
+                            {
+                                title: "Administradores",
+                                icon: "supervised_user_circle",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "admins",
+                                collapsable: false,
+                                uisref: "admin-info",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true,
+
+                            },
+                            {
+                                title: "Recursos humanos",
+                                icon: "supervised_user_circle",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "recursosHumanos",
+                                collapsable: false,
+                                uisref: "rh-account",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true,
+
+                            },
+                            {
+                                title: "Marcas vehículos",
+                                icon: "directions_car",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "brands",
+                                collapsable: false,
+                                uisref: "brand",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true,
+
+                            },
+                            {
+                                title: "Destinos puerta acceso",
+                                icon: "arrow_right_alt",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "destinies",
+                                collapsable: false,
+                                uisref: "destinies",
+                                menuId: "",
+                                hover: false,
+                                showXs: true,
+
+                            },
+                            {
+                                title: "Progreso ingreso de datos",
+                                icon: "show_chart",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "dataprogress",
+                                collapsable: false,
+                                uisref: "data-progress",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                        ]
                     },
                     {
-                        title: "Filiales",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "houses",
-                        collapsable: false,
-                        uisref: "house",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Vehículos",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "vehicules",
-                        collapsable: false,
-                        uisref: "vehicule",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Visitantes",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "adminVisitors",
-                        collapsable: false,
-                        uisref: "visitant-admin",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        title: "Aditum Jhipster",
+                        icon: "bar_chart",
+                        authoritites: "ROLE_ADMIN",
+                        activeOn: "user-management,tracker,metrics,health,configuration,audits,logs,docs",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "aditumJhipsterMenu",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Gestión de usuarios",
+                                icon: "supervised_user_circle",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "user-management",
+                                collapsable: false,
+                                uisref: "user-management",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Tracker",
+                                icon: "remove_red_eye",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "tracker",
+                                collapsable: false,
+                                uisref: "jhi-tracker",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Métricas",
+                                icon: "pie_chart",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "metrics",
+                                collapsable: false,
+                                uisref: "jhi-metrics",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Salud",
+                                icon: "sentiment_satisfied_alt",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "health",
+                                collapsable: false,
+                                uisref: "jhi-health",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Configuración",
+                                icon: "build",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "configuration",
+                                collapsable: false,
+                                uisref: "jhi-configuration",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Auditorías",
+                                icon: "people",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "audits",
+                                collapsable: false,
+                                uisref: "audits",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Logs",
+                                icon: "pan_tool",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "logs",
+                                collapsable: false,
+                                uisref: "logs",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "API",
+                                icon: "library_books",
+                                authoritites: "ROLE_ADMIN",
+                                activeOn: "docs",
+                                collapsable: false,
+                                uisref: "docs",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                        ]
                     },
                 ]
             },
             {
-                title: "Seguridad",
-                icon: "picture_in_picture",
+                title: "Condominio",
+                activeOn: "",
                 authoritites: "ROLE_MANAGER",
-                activeOn: "officers,watches",
-                collapsable: true,
-                uisref: "",
-                menuId: "seguridadMenu",
-                hover:false,
+                showXs: true,
                 secondaryItems: [
                     {
-                        title: "Oficiales",
-                        icon: "remove_red_eye",
+                        title: "Dashboard",
+                        icon: "dashboard",
                         authoritites: "ROLE_MANAGER",
-                        activeOn: "officers",
+                        activeOn: "dashboard",
                         collapsable: false,
-                        uisref: "officer",
+                        uisref: "dashboard",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
                     },
                     {
-                        title: "Turnos",
-                        icon: "build",
+                        title: "Noticias",
+                        icon: "picture_in_picture",
                         authoritites: "ROLE_MANAGER",
-                        activeOn: "watches",
-                        collapsable: false,
-                        uisref: "vm.viewWatch()",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        activeOn: "announcements,userNews",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "noticiasMenu",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Ver noticias",
+                                icon: "remove_red_eye",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "userNews",
+                                collapsable: false,
+                                uisref: "announcement-user",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Administrar noticias",
+                                icon: "view_agenda",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "announcements",
+                                collapsable: false,
+                                uisref: "announcements.announcement",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                        ]
                     },
-
-
+                    {
+                        title: "Administración",
+                        icon: "location_city",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "residents,vehicules,houses,adminVisitors",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "administracionMenu",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Usuarios",
+                                icon: "group",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "residents",
+                                collapsable: false,
+                                uisref: "resident",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Filiales",
+                                icon: "home",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "houses",
+                                collapsable: false,
+                                uisref: "houses-tabs.house",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Vehículos",
+                                icon: "directions_car",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "vehicules",
+                                collapsable: false,
+                                uisref: "vehicule",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Visitantes",
+                                icon: "group_add",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "adminVisitors",
+                                collapsable: false,
+                                uisref: "visitant-admin",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                        ]
+                    },
+                    {
+                        title: "Seguridad",
+                        icon: "security",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "officers,watches",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "seguridadMenu",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Oficiales",
+                                icon: "people_outline",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "officers",
+                                collapsable: false,
+                                uisref: "officer",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Turnos",
+                                icon: "timer",
+                                authoritites: "ROLE_MANAGER",
+                                activeOn: "watches",
+                                collapsable: false,
+                                uisref: "turno",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                        ]
+                    },
+                    {
+                        title: "Gestionar quejas",
+                        icon: "sentiment_very_dissatisfied",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "complaint",
+                        collapsable: false,
+                        uisref: "complaint",
+                        menuId: "",
+                        hover: false,
+                        secondaryItems: [],
+                        showXs: true,
+                        showLg: true,
+                    },
                 ]
-            },
-            {
-                title: "Seleccionar condominio",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "selectCondominio",
-                collapsable: false,
-                uisref: "dashboard.selectCompany",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
             },
             {
                 title: "Finanzas",
-                icon: "picture_in_picture",
+                activeOn: "",
                 authoritites: "ROLE_MANAGER",
-                activeOn: "egress,newEgress,houseAdministration",
-                collapsable: true,
-                uisref: "",
-                menuId: "finanzasMenu",
-                hover:false,
+                showXs: true,
                 secondaryItems: [
                     {
                         title: "Contabilidad filiales",
-                        icon: "remove_red_eye",
+                        icon: "dvr",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "houseAdministration",
                         collapsable: false,
                         uisref: "houseAdministration.accountStatus",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Ver egresos",
+                        icon: "remove_red_eye",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "egress",
+                        collapsable: false,
+                        uisref: "egress-tabs.egress",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: false,
                     },
                     {
                         title: "Egresos",
-                        icon: "build",
+                        icon: "call_received",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "egress,newEgress",
                         collapsable: true,
                         uisref: "",
                         menuId: "egresosMenu",
-                        hover:false,
+                        hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
-                                title: "Ver gastos",
+                                title: "Ver egresos",
                                 icon: "remove_red_eye",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "egress",
                                 collapsable: false,
-                                uisref: "egress",
+                                uisref: "egress-tabs.egress",
                                 menuId: "",
-                                hover:false
+                                hover: false
                             },
                             {
-                                title: "Capturar gasto",
-                                icon: "remove_red_eye",
+                                title: "Capturar egresos",
+                                icon: "payment",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "newEgress",
                                 collapsable: false,
-                                uisref: "egress.new",
+                                uisref: "egress-tabs.new",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: false
                             },
                         ]
                     },
                     {
                         title: "Ingresos",
-                        icon: "build",
+                        icon: "call_made",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "generatePayment,capturarAdelanto",
                         collapsable: true,
                         uisref: "",
                         menuId: "ingresosMenu",
-                        hover:false,
+                        hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
                                 title: "Capturar ingreso",
-                                icon: "remove_red_eye",
+                                icon: "payment",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "generatePayment",
                                 collapsable: false,
                                 uisref: "generatePayment",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: false
                             },
                             {
                                 title: "Capturar adelanto",
-                                icon: "remove_red_eye",
+                                icon: "redo",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "capturarAdelanto",
                                 collapsable: false,
                                 uisref: "advancePayment",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: false
                             },
 
                         ]
                     },
                     {
-                        title: "Cuotas",
-                        icon: "build",
+                        title: "Generar cuotas",
+                        icon: "turned_in",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "mensual,extraordinary,individual",
                         collapsable: true,
                         uisref: "",
                         menuId: "cuotasMenu",
-                        hover:false,
+                        hover: false,
+                        showXs: false,
+                        showLg: true,
                         thirdItems: [
                             {
-                                title: "Generar cuotas mensuales",
-                                icon: "remove_red_eye",
+                                title: "Mensuales",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "mensual",
                                 collapsable: false,
                                 uisref: "mensualCharge",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: true
                             },
                             {
-                                title: "Generar cuotas extraordinarias",
-                                icon: "remove_red_eye",
+                                title: "Extraordinarias",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "extraordinary",
                                 collapsable: false,
                                 uisref: "extraordinaryCharge",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: true
                             },
                             {
-                                title: "Generar cuota individual",
-                                icon: "remove_red_eye",
+                                title: "Individual",
+                                icon: "remove",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "individual",
                                 collapsable: false,
                                 uisref: "individualCharge",
                                 menuId: "",
-                                hover:false
+                                hover: false,
+                                showXs: true
                             },
 
                         ]
                     },
                     {
                         title: "Presupuestos",
-                        icon: "build",
+                        icon: "trending_up",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "presupuestos",
                         collapsable: false,
                         uisref: "presupuesto",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
                     },
                     {
                         title: "Bancos",
-                        icon: "build",
+                        icon: "account_balance",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "bancos",
                         collapsable: false,
                         uisref: "banco",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
                     },
                     {
-                        title: "Saldos",
-                        icon: "build",
+                        title: "Saldo de filiales",
+                        icon: "library_books",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "balance",
                         collapsable: false,
                         uisref: "houses-balance",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
 
                     },
                     {
                         title: "Tabla de cobranza",
-                        icon: "build",
+                        icon: "grid_on",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "collectionTable",
                         collapsable: false,
                         uisref: "collection-table",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
 
+                    }
+                ]
+            },
+            {
+                title: "Áreas comunes",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                showXs: true,
+                secondaryItems: [
+                    {
+                        title: "Administrar",
+                        icon: "view_agenda",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reservationAdministration",
+                        collapsable: false,
+                        uisref: "common-area-administration.common-area",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
-                        title: "Configuración",
+                        title: "Reservaciones",
+                        icon: "view_comfy",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reservations",
+                        collapsable: false,
+                        uisref: "common-area-administration.common-area-reservations",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Ver calendario",
+                        icon: "event_note",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "generaCalendar",
+                        collapsable: false,
+                        uisref: "common-area-administration.general-reservation-calendar",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Reservar",
+                        icon: "event_available",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "createReservation",
+                        collapsable: false,
+                        uisref: "common-area-administration.newReservation",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+
+                ]
+            },
+            {
+                title: "Reportes",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                showXs: false,
+                secondaryItems: [
+                    {
+                        title: "Estado de resultados",
+                        icon: "equalizer",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "estadoResultados",
+                        collapsable: false,
+                        uisref: "budgetExecution.mensualReport",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Reporte de egresos",
+                        icon: "keyboard_backspace",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reporteGastos",
+                        collapsable: false,
+                        uisref: "egress-tabs.egress-report",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Reporte de ingresos",
+                        icon: "trending_flat",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "reporteIngresos",
+                        collapsable: false,
+                        uisref: "payment-report",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                ]
+            },
+            {
+                title: "Configuración",
+                activeOn: "",
+                authoritites: "ROLE_MANAGER",
+                showXs: false,
+                secondaryItems: [
+                    {
+                        title: "General",
                         icon: "build",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "administrationConfiguration",
                         collapsable: false,
                         uisref: "administration-configuration-detail",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
-
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
-                ]
-            },
-            {
-                title: "Reportes",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "estadoResultados,reporteGastos,reporteIngresos",
-                collapsable: true,
-                uisref: "",
-                menuId: "reportesMenu",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Estado de resultados",
-                        icon: "remove_red_eye",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "estadoResultados",
-                        collapsable: false,
-                        uisref: "budgetExecution.mensualReport",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Reporte de gastos",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "reporteGastos",
-                        collapsable: false,
-                        uisref: "egress-report",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Reporte de ingresos",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "reporteIngresos",
-                        collapsable: false,
-                        uisref: "payment-report",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-
-                ]
-            },
-            {
-                title: "Áreas comunes",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "estadoResultados,reporteGastos,reporteIngresos",
-                collapsable: true,
-                uisref: "",
-                menuId: "areasComunesMenu",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Administrar",
-                        icon: "remove_red_eye",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "estadoResultados",
-                        collapsable: false,
-                        uisref: "budgetExecution.mensualReport",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Ver calendario",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "reporteGastos",
-                        collapsable: false,
-                        uisref: "egress-report",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Reservar",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "reporteIngresos",
-                        collapsable: false,
-                        uisref: "payment-report",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-
-                ]
-            },
-            {
-                title: "Configuración",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "proovedor,configureCharges,bancoConfiguration,egressCategories",
-                collapsable: true,
-                uisref: "",
-                menuId: "areasComunesMenu",
-                hover:false,
-                secondaryItems: [
                     {
                         title: "Proveedores",
-                        icon: "remove_red_eye",
+                        icon: "store_mall_directory",
                         authoritites: "ROLE_MANAGER",
-                        activeOn: "proovedor",
+                        activeOn: "proovedores",
                         collapsable: false,
                         uisref: "proveedor",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Cuotas",
-                        icon: "build",
+                        icon: "turned_in",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "configureCharges",
                         collapsable: false,
                         uisref: "configureCharges",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Cuentas de banco",
-                        icon: "build",
+                        icon: "account_balance",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "bancoConfiguration",
                         collapsable: false,
                         uisref: "banco-configuration",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Categoría de egresos",
-                        icon: "build",
+                        icon: "call_received",
                         authoritites: "ROLE_MANAGER",
                         activeOn: "egressCategories",
                         collapsable: false,
                         uisref: "egress-category",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
+
                 ]
             },
             {
-                title: "Gestionar quejas",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_MANAGER",
-                activeOn: "complaint",
-                collapsable: false,
-                uisref: "complaint",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
-            },
-            {
-                title: "Noticias",
-                icon: "picture_in_picture",
+                title: "",
+                activeOn: "",
                 authoritites: "ROLE_USER",
-                activeOn: "userNews",
-                collapsable: false,
-                uisref: "announcement-user",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
-            },
-
-            {
-                title: "Administrar",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER",
-                activeOn: "reportInvitation,reportInvitationList,reportHomeService",
-                collapsable: true,
-                uisref: "",
-                menuId: "administrarMenuUser",
-                hover:false,
+                showXs: true,
                 secondaryItems: [
                     {
-                        title: "Residentes",
-                        icon: "remove_red_eye",
+                        title: "Noticias",
+                        icon: "picture_in_picture",
                         authoritites: "ROLE_USER",
-                        activeOn: "reportInvitation",
+                        activeOn: "userNews",
                         collapsable: false,
-                        uisref: "visitant-invited-user.new",
+                        uisref: "announcement-user",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
-                        title: "Véhiculos",
-                        icon: "build",
+                        title: "Administrar",
+                        icon: "location_city",
                         authoritites: "ROLE_USER",
-                        activeOn: "reportInvitationList",
-                        collapsable: false,
-                        uisref: "visitant-invited-user.new-list",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        activeOn: "residentsHouses,vehiculesHouses,reportHomeService,residentsVisitors,residentsInvitedVisitors,keysConfiguration",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "administrarMenuUser",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Residentes",
+                                icon: "group",
+                                authoritites: "ROLE_USER",
+                                activeOn: "residentsHouses",
+                                collapsable: false,
+                                uisref: "residentByHouse",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Véhiculos",
+                                icon: "directions_car",
+                                authoritites: "ROLE_USER",
+                                activeOn: "vehiculesHouses",
+                                collapsable: false,
+                                uisref: "vehiculeByHouse",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Bitácora de visitantes",
+                                icon: "group_add",
+                                authoritites: "ROLE_USER",
+                                activeOn: "residentsVisitors",
+                                collapsable: false,
+                                uisref: "visitant",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Visitantes invitados",
+                                icon: "account_circle",
+                                authoritites: "ROLE_USER",
+                                activeOn: "residentsInvitedVisitors",
+                                collapsable: false,
+                                uisref: "visitant-invited-user",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Clave de seguridad",
+                                icon: "vpn_key",
+                                authoritites: "ROLE_USER",
+                                activeOn: "keysConfiguration",
+                                collapsable: false,
+                                uisref: "keysConfiguration",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                        ]
                     },
                     {
-                        title: "Bitácora de visitantes",
-                        icon: "build",
+                        title: "Finanzas",
+                        icon: "dvr",
                         authoritites: "ROLE_USER",
-                        activeOn: "residentsVisitors",
+                        activeOn: "financesResidentAccount",
                         collapsable: false,
-                        uisref: "visitant",
+                        uisref: "finanzasPorCasa.accountStatus",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
-                        title: "Visitantes invitados",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "residentsInvitedVisitors",
-                        collapsable: false,
-                        uisref: "visitant-invited-user",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Clave de seguridad",
-                        icon: "build",
-                        authoritites: "ROLE_MANAGER",
-                        activeOn: "keysConguration",
-                        collapsable: false,
-                        uisref: "keysConguration",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                ]
-            },
-            {
-                title: "Finanzas",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER",
-                activeOn: "financesResidentAccount",
-                collapsable: false,
-                uisref: "finanzasPorCasa",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
-            },
-            {
-                title: "Reportar emergencia",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER",
-                activeOn: "reportemergencyactive",
-                collapsable: false,
-                uisref: "emergency.new",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
-            },
-            // {
-            //     title: "Manual de usuario",
-            //     icon: "picture_in_picture",
-            //     authoritites: "ROLE_USER,ROLE_RH",
-            //     activeOn: "soporte",
-            //     collapsable: false,
-            //     uisref: "soporte",
-            //     menuId: "",
-            //     hover:false,
-            //     secondaryItems: [ ]
-            // },
-            {
-                title: "Reportar",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER",
-                activeOn: "reportInvitation,reportInvitationList,reportHomeService",
-                collapsable: true,
-                uisref: "",
-                menuId: "reportarMenuUser",
-                hover:false,
-                secondaryItems: [
-                    {
-                        title: "Visitante",
-                        icon: "remove_red_eye",
+                        title: "Reportar emergencia",
+                        icon: "local_hospital",
                         authoritites: "ROLE_USER",
-                        activeOn: "reportInvitation",
+                        activeOn: "reportemergencyactive",
                         collapsable: false,
-                        uisref: "visitant-invited-user.new",
+                        uisref: "emergency.new",
                         menuId: "",
-                        hover:false,
-                        thirdItems: []
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
-                    {
-                        title: "Reunión o fiesta",
-                        icon: "build",
-                        authoritites: "ROLE_USER",
-                        activeOn: "reportInvitationList",
-                        collapsable: false,
-                        uisref: "visitant-invited-user.new-list",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
-                    {
-                        title: "Servicio a domicilio",
-                        icon: "build",
-                        authoritites: "ROLE_USER",
-                        activeOn: "reportHomeService",
-                        collapsable: false,
-                        uisref: "note.new",
-                        menuId: "",
-                        hover:false,
-                        thirdItems: []
-                    },
+                        {
+                            title: "Áreas comunes",
+                            icon: "local_florist",
+                            authoritites: "ROLE_USER",
+                            activeOn: "common-area-resident-account,reservationCalendarResidentView,allReservationsResidentsView,reservationDialogResidentView",
+                            collapsable: true,
+                            uisref: "",
+                            menuId: "areasComunesMenuUser",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: [
+                                {
+                                    title: "Ver todas",
+                                    icon: "view_agenda",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "common-area-resident-account,reservationCalendarResidentView",
+                                    collapsable: false,
+                                    uisref: "common-area-resident-account",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
+                                {
+                                    title: "Reservar",
+                                    icon: "event_available",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "reservationDialogResidentView",
+                                    collapsable: false,
+                                    uisref: "common-area-reservation-resident-view",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
+                                {
+                                    title: "Mis reservaciones",
+                                    icon: "view_comfy",
+                                    authoritites: "ROLE_USER",
+                                    activeOn: "allReservationsResidentsView",
+                                    collapsable: false,
+                                    uisref: "common-area-all-reservations-resident-view",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: true
+                                },
 
-                ]
-            },
-            {
-                title: "Quejas y sugerencias",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER",
-                activeOn: "complaint-user",
-                collapsable: false,
-                uisref: "complaint-user",
-                menuId: "",
-                hover:false,
-                secondaryItems: [ ]
-            },
+                            ]
+                        },
 
+
+                    {
+                        title: "Reportar",
+                        icon: "picture_in_picture",
+                        authoritites: "ROLE_USER",
+                        activeOn: "reportInvitation,reportInvitationList,reportHomeService",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "reportarMenuUser",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Visitante",
+                                icon: "perm_identity",
+                                authoritites: "ROLE_USER",
+                                activeOn: "reportInvitation",
+                                collapsable: false,
+                                uisref: "visitant-invited-user.new",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Reunión o fiesta",
+                                icon: "group_add",
+                                authoritites: "ROLE_USER",
+                                activeOn: "reportInvitationList",
+                                collapsable: false,
+                                uisref: "visitant-invited-user.new-list",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Servicio a domicilio",
+                                icon: "restaurant",
+                                authoritites: "ROLE_USER",
+                                activeOn: "reportHomeService",
+                                collapsable: false,
+                                uisref: "note.new",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+
+                        ]
+                    },
+                    {
+                        title: "Quejas y sugerencias",
+                        icon: "sentiment_very_dissatisfied",
+                        authoritites: "ROLE_USER",
+                        activeOn: "complaint-user",
+                        collapsable: false,
+                        uisref: "complaint-user",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                ],
+
+            },
             {
-                title: "Soporte",
-                icon: "picture_in_picture",
-                authoritites: "ROLE_USER,ROLE_RH",
+                title: "",
+                icon: "contact_support",
+                authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
                 activeOn: "soporte",
                 collapsable: false,
                 uisref: "soporte",
                 menuId: "",
-                hover:false,
-                secondaryItems: [ ]
+                hover: false,
+                showXs: true,
+                showLg: true,
+                secondaryItems:[
+                    {
+                        title: "Soporte",
+                        icon: "contact_support",
+                        authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
+                        activeOn: "soporte",
+                        collapsable: false,
+                        uisref: "soporte",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        secondItems:[
+
+                        ]
+                    },
+                ]
             },
+
         ];
 
 
-
-
         vm.defineStyleSecondButton = function (item) {
-            if(item.hover){
+            if (item.hover) {
                 return vm.colorsMenu.secondButtonHover;
             }
             if (this.defineActive(item) == true) {
@@ -955,7 +1071,7 @@
             }
         };
         vm.defineStyleThirdButton = function (item) {
-            if(item.hover){
+            if (item.hover) {
                 return vm.colorsMenu.thirdButtonHover;
             }
             if (this.defineActive(item) == true) {
@@ -965,7 +1081,7 @@
             }
         };
         vm.defineStyleMainButton = function (item) {
-            if(item.hover){
+            if (item.hover) {
                 return vm.colorsMenu.mainButtonHover;
             }
             if (this.defineActive(item) == true) {
@@ -994,19 +1110,39 @@
             $state.go(uisref)
         };
 
-        vm.collapseAllOther = function (item,fatherItem) {
-            if(fatherItem!=null) {
+        vm.collapseAllOther = function (item, fatherItem) {
+            if (fatherItem != null) {
                 $(".collapse:not(#" + item.menuId + ",#" + fatherItem.menuId + ")").collapse('hide');
-            }else{
+            } else {
                 $(".collapse:not(#" + item.menuId + ")").collapse('hide');
 
             }
         };
+        setTimeout(function () {
+            showTheOneThatsActive()
+        }, 500)
+
+        function showTheOneThatsActive() {
+            for (var i = 0; i < vm.menu.length; i++) {
+                for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
+                    var secondaryItem = vm.menu[i].secondaryItems[j];
+                    if (secondaryItem.collapsable) {
+                        for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
+                            if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
+                                $("#" + secondaryItem.menuId).collapse('show');
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
 
 
         $rootScope.isAuthenticated = Principal.isAuthenticated;
         vm.isAuthenticated = Principal.isAuthenticated;
         $rootScope.toggleLeft = buildToggler('left');
+
 
         function buildToggler(componentId) {
             return function () {
@@ -1052,7 +1188,7 @@
             $('body').addClass("gray");
         });
         vm.viewWatch = function () {
-            var encryptedId = CommonMethods.encryptIdUrl($rootScope.companyId)
+            var encryptedId = CommonMethods.encryptIdUrl(globalCompany.getId())
             $state.go('turno', {companyId: encryptedId})
         }
 
@@ -1083,35 +1219,28 @@
                         break;
                     case "ROLE_MANAGER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
-                            if (data.companies.length > 1) {
-                                $rootScope.showSelectCompany = true;
+                            if ($localStorage.companyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
                             }
-                            if (data.companies.length > 1 && $rootScope.companyId == undefined) {
-                                $state.go('dashboard.selectCompany');
-                            } else {
-                                if ($rootScope.companyId == undefined) {
-                                    $rootScope.companyUser = data;
-                                    $rootScope.companyUser.companyId = data.companies[0].id;
-                                    $rootScope.companyId = data.companies[0].id;
-
+                            Company.get({id: globalCompany.getId()}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.companyName = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = data.image_url;
+                                if (data.enabled == 0) {
+                                    logout();
                                 }
-                                Company.get({id: $rootScope.companyId}, function (condo) {
-                                    vm.contextLiving = condo.name;
-                                    $rootScope.companyName = condo.name;
-                                    $rootScope.contextLiving = vm.contextLiving;
-                                    $rootScope.currentUserImage = data.image_url;
-                                    if (data.enabled == 0) {
-                                        logout();
-                                    }
-                                })
-                            }
+                            });
+
                             $rootScope.hideFilial = true;
-                        })
+                        });
                         break;
                     case "ROLE_OFFICER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            $rootScope.companyId = data.companyId;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                             if (data != null) {
                                 vm.contextLiving = $rootScope.companyUser.name;
                                 $rootScope.contextLiving = vm.contextLiving;
@@ -1127,10 +1256,10 @@
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;
                                 $rootScope.filialNumber = house.housenumber;
-                                $rootScope.companyId = data.companyId;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
-                                Company.get({id: parseInt($rootScope.companyId)}, function (condo) {
+                                Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
                                     vm.contextLiving = condo.name;
                                     $rootScope.contextLiving = vm.contextLiving;
                                     if (condo.active == 0 || data.enabled == 0) {
@@ -1186,8 +1315,57 @@
             vm.isNavbarCollapsed = true;
         }
 
+
+        vm.selectCompany = function (company) {
+            $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.getAcount();
+                })
+            }, 300)
+            $state.reload();
+        }
+
+        vm.defineSelectCompanyColor = function (company) {
+            if (company.id == globalCompany.getId()) {
+                return vm.colorsMenu.secondButtonActive;
+            } else {
+                return vm.colorsMenu.secondButton;
+            }
+        };
 //        $scope.$on('$destroy', subChangeState);
         $scope.$on('$destroy', subLogin);
+
+        vm.findBootstrapEnvironment = function () {
+            var envs = ['xs', 'sm', 'md', 'lg'];
+
+            var $el = $('<div>');
+            $el.appendTo($('body'));
+
+            for (var i = envs.length - 1; i >= 0; i--) {
+                var env = envs[i];
+
+                $el.addClass('hidden-' + env);
+                if ($el.is(':hidden')) {
+                    $el.remove();
+                    return env;
+                }
+            }
+        }
+
+        vm.isScreenSizeSmall = function () {
+            var envs = ['xs', 'sm', 'md'];
+            var e = 0;
+            for (var i = 0; i < envs.length; i++) {
+                if (envs[i] === vm.findBootstrapEnvironment()) {
+                    e++;
+                }
+            }
+            if (e > 0) {
+                return true;
+            }
+            return false;
+        }
     }
 })
 ();

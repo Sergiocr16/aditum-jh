@@ -12,12 +12,14 @@
         $rootScope.active = "adminVisitors";
         var vm = this;
         vm.Principal;
+        $rootScope.mainTitle = "Visitantes"
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.consult = consult;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
@@ -59,24 +61,18 @@
             Visitant.findByHouseInLastMonth({
                 houseId: house.id,
             }).$promise.then(onSuccess);
-            $("#all").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = true;
 
             function onSuccess(data) {
                 vm.visitants = data;
                 vm.queryCount = data.length;
                 vm.page = pagingParams.page;
                 vm.title = 'Visitantes del mes';
+                $rootScope.mainTitle = vm.title;
+
                 vm.isConsulting = false;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -85,10 +81,7 @@
         }
 
         function consultByHouse(house) {
-            $("#all").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -102,12 +95,7 @@
                 vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -116,7 +104,7 @@
         }
 
         vm.findVisitorByHouse = function (house) {
-            if (house == undefined) {
+            if (house == undefined || house == '-1') {
                 loadAll();
             } else {
                 if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) {
@@ -180,12 +168,7 @@
                 vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {
@@ -194,10 +177,7 @@
         }
 
         vm.stopConsulting = function () {
-            $("#all").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.showFilterDiv = false;
             vm.dates.initial_time = undefined;
             vm.dates.final_time = undefined;
             vm.isConsulting = false;
@@ -218,12 +198,7 @@
                 vm.title = 'Visitantes del mes';
                 vm.isConsulting = false;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 900)
+                vm.isReady = true;
             }
 
             function onError(error) {

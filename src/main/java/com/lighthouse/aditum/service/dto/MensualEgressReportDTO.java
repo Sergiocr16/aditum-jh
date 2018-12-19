@@ -10,10 +10,10 @@ public class MensualEgressReportDTO {
     private List<SumCategoryEgressDTO> variableCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> otherCosts = new ArrayList<>();
     private List<EgressDTO> egressList;
-    private int allEgressCategoriesTotal = 0;
-    private int fixedCostsTotal = 0;
-    private int variableCostsTotal = 0;
-    private int otherCostsTotal = 0;
+    private double allEgressCategoriesTotal = 0;
+    private double fixedCostsTotal = 0;
+    private double variableCostsTotal = 0;
+    private double otherCostsTotal = 0;
     private double fixedCostsPercentage = 0.0;
     private double variableCostsPercentage = 0.0;
     private double otherCostsPercentage = 0.0;
@@ -68,7 +68,7 @@ public class MensualEgressReportDTO {
         this.fixedCosts = fixedCosts;
     }
 
-    public List<SumCategoryEgressDTO> getSumCategoryEgress( List<SumCategoryEgressDTO> sumCategoryEgress,String group,int totalIngress){
+    public List<SumCategoryEgressDTO> getSumCategoryEgress( List<SumCategoryEgressDTO> sumCategoryEgress,String group,double totalIngress){
         List<SumCategoryEgressDTO> finalList = new ArrayList<>();
         for (int i =0;sumCategoryEgress.size()>i;i++) {
             SumCategoryEgressDTO item = sumCategoryEgress.get(i);
@@ -78,18 +78,18 @@ public class MensualEgressReportDTO {
     }
 
 
-public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCategory,String group,int totalIngress){
+public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCategory,String group,double totalIngress){
     List<SumEgressDTO> sumEgreesList = new ArrayList<>();
     for (int i = 0; i < egressList.size(); i++) {
             EgressDTO egrees = egressList.get(i);
             if(egrees.getCategoryName().equals(sumCategory.getCategory()) && egrees.getGroupName().equals(group)){
-                int totalByCategory =  egressList.stream().filter(o -> o.getCategoryName().equals(sumCategory.getCategory())&&egrees.getGroupName().equals(group)).mapToInt(o -> Integer.parseInt(o.getTotal())).sum();
+                double totalByCategory =  egressList.stream().filter(o -> o.getCategoryName().equals(sumCategory.getCategory())&&egrees.getGroupName().equals(group)).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
                 SumEgressDTO sumEgressDTO = new SumEgressDTO(egrees.getConcept());
                 sumCategory.setTotal(totalByCategory);
                 double percentageByCategory = (totalByCategory * 100.0f) / totalIngress;
                 sumCategory.setPercentage(percentageByCategory);
                  if(sumEgreesList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).count()==0) {
-                     int totalbyEgress =  egressList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).mapToInt(o -> Integer.parseInt(o.getTotal())).sum();
+                     double totalbyEgress =  egressList.stream().filter(o -> o.getConcept().toUpperCase().equals(egrees.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(o.getTotal())).sum();
                      sumEgressDTO.setTotal(totalbyEgress);
                      double percentagebyEgress = (totalbyEgress * 100.0f) / totalIngress;
                      sumEgressDTO.setPercentage(percentagebyEgress);
@@ -121,8 +121,8 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     }
 
-    public void setGroupsTotal(List<SumCategoryEgressDTO> list,int type,int totalIngress){
-        int total = 0;
+    public void setGroupsTotal(List<SumCategoryEgressDTO> list,int type,double totalIngress){
+        double total = 0;
         for (int i = 0; i <list.size() ; i++) {
             total = total + list.get(i).getTotal();
         }
@@ -149,27 +149,27 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     }
 
-    public int getFixedCostsTotal() {
+    public double getFixedCostsTotal() {
         return fixedCostsTotal;
     }
 
-    public void setFixedCostsTotal(int fixedCostsTotal) {
+    public void setFixedCostsTotal(double fixedCostsTotal) {
         this.fixedCostsTotal = fixedCostsTotal;
     }
 
-    public int getVariableCostsTotal() {
+    public double getVariableCostsTotal() {
         return variableCostsTotal;
     }
 
-    public void setVariableCostsTotal(int variableCostsTotal) {
+    public void setVariableCostsTotal(double variableCostsTotal) {
         this.variableCostsTotal = variableCostsTotal;
     }
 
-    public int getOtherCostsTotal() {
+    public double getOtherCostsTotal() {
         return otherCostsTotal;
     }
 
-    public void setOtherCostsTotal(int otherCostsTotal) {
+    public void setOtherCostsTotal(double otherCostsTotal) {
         this.otherCostsTotal = otherCostsTotal;
     }
 
@@ -262,11 +262,11 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
         this.otherCostsBudgetTotal = otherCostsBudgetTotal;
     }
 
-    public int getAllEgressCategoriesTotal() {
+    public double getAllEgressCategoriesTotal() {
         return allEgressCategoriesTotal;
     }
 
-    public void setAllEgressCategoriesTotal(int allEgressCategoriesTotal) {
+    public void setAllEgressCategoriesTotal(double allEgressCategoriesTotal) {
         this.allEgressCategoriesTotal = allEgressCategoriesTotal;
     }
 }

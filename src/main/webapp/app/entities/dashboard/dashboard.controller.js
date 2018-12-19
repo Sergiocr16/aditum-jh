@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard','globalCompany'];
+    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard','globalCompany','Modal'];
 
-    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard,globalCompany) {
+    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard,globalCompany,Modal) {
         var vm = this;
         $rootScope.active = "dashboard";
         vm.isInLogin = $state.includes('home');

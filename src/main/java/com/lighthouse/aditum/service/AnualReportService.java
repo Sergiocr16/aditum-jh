@@ -94,7 +94,7 @@ public class AnualReportService {
     private void setRealBalanceByMonth(AnualReportDTO anualReportDTO){
         anualReportDTO.setRealBalanceByMonth(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getFlujoByMonth().size() ; i++) {
-            anualReportDTO.getRealBalanceByMonth().add(Integer.parseInt(anualReportDTO.getInitialBalanceByMonth().get(i))+Integer.parseInt(anualReportDTO.getFlujoByMonth().get(i))+"");
+            anualReportDTO.getRealBalanceByMonth().add(Double.parseDouble(anualReportDTO.getInitialBalanceByMonth().get(i))+Double.parseDouble(anualReportDTO.getFlujoByMonth().get(i))+"");
 
         }
     }
@@ -318,14 +318,14 @@ public class AnualReportService {
     public void setFlujoByMonth(AnualReportDTO anualReportDTO){
         anualReportDTO.setFlujoByMonth(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
-          int flujo = anualReportDTO.getAnualIngressByMonth().get(i).getAllIngressCategoriesTotal() - anualReportDTO.getAnualEgressByMonth().get(i).getAllEgressCategoriesTotal();
+            double flujo = anualReportDTO.getAnualIngressByMonth().get(i).getAllIngressCategoriesTotal() - anualReportDTO.getAnualEgressByMonth().get(i).getAllEgressCategoriesTotal();
           anualReportDTO.getFlujoByMonth().add(flujo+"");
         }
 
 
     }
     public void setAllIngressAcumulado(AnualReportDTO anualReportDTO){
-        int total = 0;
+        double total = 0;
         for (int i = 0; i <anualReportDTO.getAnualIngressByMonth().size() ; i++) {
             total = total + anualReportDTO.getAnualIngressByMonth().get(i).getAllIngressCategoriesTotal();
             anualReportDTO.setMaintenanceIngressAcumulado(anualReportDTO.getAnualIngressByMonth().get(i).getMaintenanceIngressTotal());

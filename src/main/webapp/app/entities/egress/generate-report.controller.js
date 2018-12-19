@@ -5,18 +5,22 @@
         .module('aditumApp')
         .controller('EgressGenerateReportController', EgressGenerateReportController);
 
-    EgressGenerateReportController.$inject = ['$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressGenerateReportController.$inject = ['$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressGenerateReportController($scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressGenerateReportController($scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "reporteGastos";
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
+        $rootScope.mainTitle = "Reporte de egresos";
+        vm.isReady = false;
+        vm.isReady2 = false;
         vm.reverse = true;
         vm.gastosQuantity = 0;
         vm.showNoResults = false;
         vm.hideReportForm = false;
+        vm.loadingReport = false;
         vm.selectedProveedores = [];
         vm.selectedCampos = [];
         vm.translationCampos = {
@@ -104,13 +108,7 @@
 
         function onSuccessBancos(data, headers) {
             vm.bancos = data;
-            vm.egressCategories = data;
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#new_egress_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
         }
 
         function formatEgresses() {
@@ -173,10 +171,9 @@
 
         vm.generateReport = function () {
             vm.gastosQuantity = 0;
-            $("#reportResults").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon2").fadeIn(100);
-            }, 200)
+            vm.isReady2 = false;
+            vm.loadingReport = true;
+
             Egress.findBetweenCobroDatesByCompany({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -233,13 +230,10 @@
                 })
                 vm.reportResult.push(objectProveedor)
             })
-            setTimeout(function () {
-                $("#loadingIcon2").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                console.log(vm.gastosQuantity)
-                $("#reportResults").fadeIn('slow');
-            }, 900)
+
+            vm.isReady2 = true;
+            vm.loadingReport = false;
+
             if (vm.gastosQuantity > 0) {
                 vm.showNoResults = false
                 vm.hideReportForm = true;

@@ -19,6 +19,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.datePickerOpenStatus = {};
+        vm.isReady = false;
         vm.openCalendar = openCalendar;
         vm.dates = {
             initial_time: undefined,
@@ -64,10 +65,7 @@
         vm.updatePicker();
 
         function consult() {
-            $("#all").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 200)
+            vm.isReady = false;
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -81,12 +79,8 @@
                 vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
                 vm.isConsulting = true;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
+                vm.showFilterDiv = false;
             }
 
             function onError(error) {
@@ -95,19 +89,17 @@
         }
 
         vm.stopConsulting = function () {
-            $("#loadingIcon").fadeIn();
+            vm.isReady = false;
             vm.dates.initial_time = undefined;
             vm.dates.final_time = undefined;
             vm.isConsulting = false;
+            vm.showFilterDiv = false;
             loadAll();
             vm.titleConsult = "";
         }
 
         function loadAll() {
-            $("#all").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingIcon").fadeIn(100);
-            }, 250)
+            vm.isReady = false;
             Visitant.findByHouseInLastMonth({
                 houseId: companyUser.houseId,
             }).$promise.then(onSuccess);
@@ -118,12 +110,7 @@
                 vm.title = 'Visitantes del mes';
                 vm.isConsulting = false;
                 formatVisitors(vm.visitants);
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#all").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

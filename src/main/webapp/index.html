@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="bower_components/jquery-timepicker-wvega/jquery.timepicker.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/ng-notify/src/styles/ng-notify.css">
+    <link rel="stylesheet" href="bower_components/fullcalendar/dist/fullcalendar.css">
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css">
+    <link rel="stylesheet" href="bower_components/md-color-picker/dist/mdColorPicker.min.css">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -40,29 +43,39 @@
     <link rel="stylesheet" href="content/css/colorpicker.css">
     <link rel="stylesheet" href="content/css/summernote-bs4.css">
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
     <!-- endbuild -->
 </head>
 
-<body ng-app="aditumApp" id="body" style="background-color: #fafafa!important">
-<div class="app-loading">
+<body ng-app="aditumApp" id="popupContainer" style="background-color: white!important " layout="column">
+<div class="app-loading" id="page-loading">
     <span class="spinner spinner-large"></span>
 </div>
-<div layout="column" ng-cloak="">
+
+<div ui-view="reset">
+</div>
+<div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
+</div>
+
+
+<div layout="row" flex ng-cloak="">
     <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
     <section layout="row" flex="">
-        <div ui-view="menu" id="menu-side-bar" class="display-none" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
         </div>
-        <md-content flex style="overflow-x: hidden">
-            <div ui-view="reset">
+ 
+        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
+
+        <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
+                            ng-if="isShowingLoadingBar"></md-progress-linear>
+        <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
+                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+            <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
+                 ng-if="vm.isAuthenticated() !=true">
+
+
             </div>
-                <div ui-view="login" ng-hide="vm.isAuthenticated() || !showLogin">
-                </div>
-                <div ui-view="access_door" ng-if="vm.isAuthenticated()" has-authority="ROLE_OFFICER"></div>
-                <div ui-view="content" style="background-color: #fafafa!important" ng-if="!isInManual" ng-if="vm.isAuthenticated() !=true" class="all-content">
-                </div>
-            <div flex></div>
         </md-content>
     </section>
 </div>
@@ -91,6 +104,8 @@
 <script src="bower_components/pdfjs-dist/build/pdf.worker.js"></script>
 <script src="bower_components/jquery-timepicker-wvega/jquery.timepicker.js"></script>
 <script src="bower_components/firebase/firebase.js"></script>
+<script src="bower_components/tinycolor/tinycolor.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -102,8 +117,7 @@
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
 <script src="bower_components/angular-translate/angular-translate.js"></script>
-<script
-    src="bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
+<script src="bower_components/angular-translate-interpolation-messageformat/angular-translate-interpolation-messageformat.js"></script>
 <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
@@ -115,6 +129,12 @@
 <script src="bower_components/angularfire/dist/angularfire.js"></script>
 <script src="bower_components/ng-notify/src/scripts/ng-notify.js"></script>
 <script src="bower_components/angularjs-dropdown-multiselect/src/angularjs-dropdown-multiselect.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
+<script src="bower_components/fullcalendar/dist/fullcalendar.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<script src="bower_components/md-color-picker/dist/mdColorPicker.min.js"></script>
+<script src="bower_components/angular-ui-calendar/src/calendar.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 
@@ -137,7 +157,6 @@
 <script src="app/services/multicompany/multi-company.service.js"></script>
 
 <script src="app/services/multicompany/global-company-id.service.js"></script>
-
 
 <script src="app/services/excel/excel.service.js"></script>
 
@@ -205,9 +224,9 @@
 
 <script src="app/services/customjs/_jquery.counterup.js"></script>
 
-<script src="app/services/customjs/__light.js"></script>
-
 <script src="app/services/customjs/_accounting.js"></script>
+
+<script src="app/services/customjs/__light.js"></script>
 
 <script src="app/services/cloudinary/cloudinaryURL.filter.js"></script>
 
@@ -287,6 +306,8 @@
 
 <script src="app/entities/vehicule/ws-vehicle.service.js"></script>
 
+<script src="app/entities/vehicule/vehicules-house-administration.controller.js"></script>
+
 <script src="app/entities/vehicule/vehicule-dialog.controller.js"></script>
 
 <script src="app/entities/vehicule/vehicule-detail.controller.js"></script>
@@ -321,9 +342,13 @@
 
 <script src="app/entities/resident/ws-resident-service.controller.js"></script>
 
+<script src="app/entities/resident/residents-house-administration.controller.js"></script>
+
 <script src="app/entities/resident/residentByHouse.controller.js"></script>
 
 <script src="app/entities/resident/resident-dialog.controller.js"></script>
+
+<script src="app/entities/resident/resident-detail-house-administration.controller.js"></script>
 
 <script src="app/entities/resident/resident-detail.controller.js"></script>
 
@@ -537,6 +562,8 @@
 
 <script src="app/entities/egress/generate-report.controller.js"></script>
 
+<script src="app/entities/egress/egress-tabs.controller.js"></script>
+
 <script src="app/entities/egress/egress-dialog.controller.js"></script>
 
 <script src="app/entities/egress/egress-detail.controller.js"></script>
@@ -645,6 +672,50 @@
 
 <script src="app/entities/company/company.controller.js"></script>
 
+<script src="app/entities/common-area-schedule/common-area-schedule-dialog.controller.js"></script>
+
+<script src="app/entities/common-area-schedule/common-area-schedule-detail.controller.js"></script>
+
+<script src="app/entities/common-area-schedule/common-area-schedule-delete-dialog.controller.js"></script>
+
+<script src="app/entities/common-area-schedule/common-area-schedule.state.js"></script>
+
+<script src="app/entities/common-area-schedule/common-area-schedule.service.js"></script>
+
+<script src="app/entities/common-area-schedule/common-area-schedule.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/reservation-devolution-charge.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/reservation-calendar-accepted-reservations.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations-dialog-resident-view.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations-dialog.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations-detail.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations-delete-dialog.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations.state.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations.service.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-reservations.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-all-reservations-resident-view.controller.js"></script>
+
+<script src="app/entities/common-area-reservations/common-area-all-reservations.controller.js"></script>
+
+<script src="app/entities/common-area/reservation-calendar-resident-view.controller.js"></script>
+
+<script src="app/entities/common-area/reservation-calendar-reservation-detail.controller.js"></script>
+
+<script src="app/entities/common-area/reservation-calendar.controller.js"></script>
+
+<script src="app/entities/common-area/general-reservation-calendar.controller.js"></script>
+
+<script src="app/entities/common-area/common-areas-administration.controller.js"></script>
+
 <script src="app/entities/common-area/common-area-dialog.controller.js"></script>
 
 <script src="app/entities/common-area/common-area-detail.controller.js"></script>
@@ -749,6 +820,8 @@
 
 <script src="app/entities/balance/balance.controller.js"></script>
 
+<script src="app/entities/announcement/announcements.controller.js"></script>
+
 <script src="app/entities/announcement/announcement-user.controller.js"></script>
 
 <script src="app/entities/announcement/announcement-sketch.controller.js"></script>
@@ -769,8 +842,7 @@
 
 <script src="app/entities/administration-configuration/administration-configuration-detail.controller.js"></script>
 
-<script
-    src="app/entities/administration-configuration/administration-configuration-delete-dialog.controller.js"></script>
+<script src="app/entities/administration-configuration/administration-configuration-delete-dialog.controller.js"></script>
 
 <script src="app/entities/administration-configuration/administration-configuration.state.js"></script>
 
@@ -822,11 +894,21 @@
 
 <script src="app/components/util/sort.directive.js"></script>
 
+<script src="app/components/util/slideable-component.js"></script>
+
 <script src="app/components/util/parse-links.service.js"></script>
 
 <script src="app/components/util/pagination-util.service.js"></script>
 
 <script src="app/components/util/padron-electoral.js"></script>
+
+<script src="app/components/util/no-content-component.js"></script>
+
+<script src="app/components/util/money-util.filter.js"></script>
+
+<script src="app/components/util/modal-util.js"></script>
+
+<script src="app/components/util/mdActiveNc.directive.js"></script>
 
 <script src="app/components/util/jhi-item-count.directive.js"></script>
 
@@ -840,10 +922,11 @@
 
 <script src="app/components/util/common-methods.js"></script>
 
+<script src="app/components/util/cards-component.js"></script>
+
 <script src="app/components/util/capitalize.filter.js"></script>
 
 <script src="app/components/util/base64.service.js"></script>
-<script src="app/components/util/money-util.filter.js"></script>
 
 <script src="app/components/login/login.service.js"></script>
 
@@ -985,25 +1068,16 @@
 
 <script src="app/account/account.state.js"></script>
 
-<script src="bower_components/angular-animate/angular-animate.min.js"></script>
-<script src="bower_components/angular-messages/angular-messages.min.js"></script>
-
-<!-- Angular Material Library -->
-<script src="bower_components/angular-material/angular-material.min.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
-<script>
-    document.addEventListener("DOMContentLoaded", function(event) {
+
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function (event) {
         setTimeout(function () {
-            $(".app-loading").fadeOut();
-            setTimeout(function () {
-                $("#menu-side-bar").show();
-                $("#menu-side-bar").show();
-                $("#menu-side-bar").show();
-            }, 300)
-        }, 1000)
+            $('#page-loading')
+                .fadeOut(0);
+        }, 500)
     });
 </script>
-
 </body>
 </html>

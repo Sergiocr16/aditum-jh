@@ -5,15 +5,17 @@
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany'];
+    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
 
-    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany) {
+    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'individual';
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Generar Cuota individual";
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
@@ -78,17 +80,6 @@
             return house.cuota;
         }
 
-        vm.formatearNumero = function (nStr) {
-
-            var x = nStr.split('.');
-            var x1 = x[0];
-            var x2 = x.length > 1 ? ',' + x[1] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
-        }
 
         vm.encontrarHouseNumber = function (houseId) {
             var housenumber = undefined;
@@ -96,29 +87,18 @@
                 if (house.id == houseId) {
                     housenumber = house.housenumber;
                 }
-            })
+            });
             return housenumber;
-        }
+        };
         vm.crearCuota = function () {
             if (vm.charge.ammount != 0) {
-                bootbox.confirm({
-                    message: "¿Está seguro que generar una cuota por ₡" + vm.formatearNumero(vm.charge.ammount) + " a la filial " + vm.encontrarHouseNumber(vm.selectedHouse) + "?",
-                    buttons: {
-                        confirm: {
-                            label: 'Aceptar',
-                            className: 'btn-success'
-                        },
-                        cancel: {
-                            label: 'Cancelar',
-                            className: 'btn-danger'
-                        }
-                    },
-                    callback: function (result) {
-                        if (result) {
-                            CommonMethods.waitingMessage();
+                if (vm.charge.valida) {
+                    Modal.confirmDialog("¿Está seguro que desea generar esta cuota a la filial " + vm.encontrarHouseNumber(vm.selectedHouse) + "?", "",
+                        function () {
                             vm.isSaving == true;
                             vm.charge.houseId = parseInt(vm.selectedHouse)
                             vm.charge.companyId = globalCompany.getId();
+                            Modal.showLoadingBar();
                             Charge.save(vm.charge, function (result) {
                                 vm.isSaving == false;
                                 House.get({
@@ -126,23 +106,20 @@
                                 }, onSuccess)
 
                                 function onSuccess(house) {
-                                    bootbox.hideAll();
-                                    bootbox.hideAll();
-                                    toastr["success"]("Se ha generado la cuota correctamente.")
+                                    Modal.hideLoadingBar();
+                                    Modal.toast("Se ha generado la cuota correctamente.")
                                     $state.go('houseAdministration.chargePerHouse')
                                     $rootScope.houseSelected = house;
                                     $localStorage.houseSelected = house;
-
                                 }
-
                             })
+                        });
+                } else {
+                    Modal.toast("No puede ingresar carácteres especiales")
+                }
 
-
-                        }
-                    }
-                });
             } else {
-                toastr["error"]("Para generar una cuota su monto debe de ser mayor a ₡ 0.00")
+                Modal.toast("Para generar una cuota su monto debe de ser mayor a ₡ 0.00")
             }
         }
 
@@ -184,12 +161,7 @@
 
                 })
                 vm.page = pagingParams.page;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-                }, 700)
+                vm.isReady = true;
             }
 
             function onError(error) {

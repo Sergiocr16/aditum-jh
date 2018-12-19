@@ -5,15 +5,36 @@
         .module('aditumApp')
         .controller('VehiculeDialogController', VehiculeDialogController);
 
-    VehiculeDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand','globalCompany'];
+    VehiculeDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand', 'globalCompany', 'Modal'];
 
-    function VehiculeDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand,globalCompany) {
+    function VehiculeDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand, globalCompany, Modal) {
         $rootScope.active = "vehicules";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+
+        if (vm.vehicule.id == undefined) {
+            vm.button = "Registrar";
+            vm.title = "Registrar vehículo";
+
+        } else {
+            vm.button = "Editar";
+            vm.title = "Editar vehículo";
+        }
+        vm.options = {
+            label: "",
+            icon: "",
+            default: "#ffffff",
+            openOnInput: true
+        };
+        vm.isReady = false;
+        $rootScope.mainTitle = vm.title;
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.required = 1;
         vm.required2 = 1;
         CommonMethods.validateSpecialCharacters();
@@ -27,43 +48,23 @@
         function onSuccessBrand(brands) {
             vm.brands = brands;
 
-            if (vm.vehicule.id !== null) {
-                vm.title = "Editar vehículo";
-                vm.button = "Editar";
-                angular.forEach(vm.brands, function (brand, i) {
-                    if (brand.brand === vm.vehicule.brand) {
-                        vm.vehicule.brand = brand;
-                    }
-                })
-            } else {
-                vm.title = "Registrar vehículo";
-                vm.button = "Registrar";
-            }
+
         }
 
-            House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
+        House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
-            function onSuccessHouses(data, headers) {
-                angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                })
-                vm.houses = data;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#register_edit_form").fadeIn('slow');
-                }, 900)
+        function onSuccessHouses(data, headers) {
+            angular.forEach(data, function (value, key) {
+                value.housenumber = parseInt(value.housenumber);
+                if (value.housenumber == 9999) {
+                    value.housenumber = "Oficina"
+                }
+            })
+            vm.houses = data;
+            vm.isReady = true;
 
-            }
-
-
-        vm.submitColor = function () {
-            vm.vehicule.color = $('#color').css('background-color');
         }
+
 
         vm.validate = function () {
             var invalido = 0;
@@ -99,11 +100,12 @@
             }
 
             if (vm.vehicule.licenseplate == undefined || hasWhiteSpace(vm.vehicule.licenseplate)) {
-                toastr["error"]("No puede ingresar la placa con espacios en blanco.");
+                Modal.toast("No puede ingresar la placa con espacios en blanco.");
+
                 invalido++;
             } else if (hasCaracterEspecial(vm.vehicule.licenseplate)) {
                 invalido++;
-                toastr["error"]("No puede ingresar la placa con guiones o cualquier otro carácter especial");
+                Modal.toast("No puede ingresar la placa con guiones o cualquier otro carácter especial");
             }
             if (invalido == 0) {
                 return true;
@@ -113,52 +115,53 @@
         }
 
         function save() {
+            var wordOnModal = vm.vehicule.id == undefined ? "registrar" : "modificar"
             if (vm.validate()) {
-                if (vm.vehicule.color == undefined) {
-                    vm.vehicule.color = "rgb(255, 255, 255)";
-                }
-                vm.vehicule.brand = vm.vehicule.brand.brand;
-                vm.vehicule.enabled = 1;
-                vm.vehicule.companyId = globalCompany.getId();
-                vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
-                vm.isSaving = true;
-                if (vm.vehicule.id !== null) {
-                    if (vm.myPlate !== vm.vehicule.licenseplate) {
+                Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el vehículo?", "", function () {
+                    vm.vehicule.enabled = 1;
+                    vm.vehicule.companyId = globalCompany.getId();
+                    vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
+                    if (vm.vehicule.color == null) {
+                        vm.vehicule.color = "#ffffff"
+                    }
+                    if (vm.vehicule.id !== null) {
+                        if (vm.myPlate !== vm.vehicule.licenseplate) {
+                            Vehicule.getByCompanyAndPlate({
+                                companyId: globalCompany.getId(),
+                                licensePlate: vm.vehicule.licenseplate
+                            }, alreadyExist, allClearUpdate)
+
+                            function alreadyExist(data) {
+                                Modal.toast("La placa ingresada ya existe.");
+                            }
+                        } else {
+                            Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
+                        }
+                    } else {
                         Vehicule.getByCompanyAndPlate({
                             companyId: globalCompany.getId(),
                             licensePlate: vm.vehicule.licenseplate
-                        }, alreadyExist, allClearUpdate)
+                        }, alreadyExist, allClearInsert)
 
                         function alreadyExist(data) {
-                            toastr["error"]("La placa ingresada ya existe.");
+                            Modal.toast("La placa ingresada ya existe.");
                         }
-                    } else {
-                        Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
-                    }
-                } else {
-                    Vehicule.getByCompanyAndPlate({
-                        companyId: globalCompany.getId(),
-                        licensePlate: vm.vehicule.licenseplate
-                    }, alreadyExist, allClearInsert)
 
-                    function alreadyExist(data) {
-                        toastr["error"]("La placa ingresada ya existe.");
-                    }
+                        function allClearInsert() {
+                            Modal.showLoadingBar();
+                            insertVehicule();
+                        }
 
-                    function allClearInsert() {
-                        CommonMethods.waitingMessage();
-                        insertVehicule();
+                        function insertVehicule() {
+                            console.log(vm.vehicule.type);
+                            Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
+                        }
                     }
-
-                    function insertVehicule() {
-                        console.log(vm.vehicule.type);
-                        Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
-                    }
-                }
+                })
             }
 
             function allClearUpdate(data) {
-                CommonMethods.waitingMessage();
+                Modal.showLoadingBar();
                 updateVehicule();
 
             }
@@ -170,8 +173,8 @@
             function onSaveSuccess(result) {
                 WSVehicle.sendActivity(result);
                 $state.go('vehicule');
-                bootbox.hideAll();
-                toastr["success"]("Se ha registrado el vehículo correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha registrado el vehículo correctamente.");
 
                 vm.isSaving = false;
             }
@@ -179,9 +182,8 @@
             function onEditSuccess(result) {
                 WSVehicle.sendActivity(result);
                 $state.go('vehicule');
-                bootbox.hideAll();
-
-                toastr["success"]("Se ha editado el vehículo correctamente.");
+                Modal.hideLoadingBar();
+                Modal.toast("Se ha editado el vehículo correctamente.");
 
                 vm.isSaving = false;
             }

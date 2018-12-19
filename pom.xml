@@ -97,11 +97,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.ocpsoft.prettytime</groupId>
-            <artifactId>prettytime</artifactId>
-            <version>4.0.1.Final</version>
-        </dependency>
-        <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate5</artifactId>
         </dependency>
@@ -287,6 +282,11 @@
             <version>${mapstruct.version}</version>
         </dependency>
         <dependency>
+            <groupId>org.ocpsoft.prettytime</groupId>
+            <artifactId>prettytime</artifactId>
+            <version>4.0.1.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
         </dependency>
@@ -340,12 +340,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <!-- flying saucer pdf -->
-        <dependency>
-            <groupId>org.xhtmlrenderer</groupId>
-            <artifactId>flying-saucer-pdf</artifactId>
-            <version>9.1.14</version>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -378,6 +372,12 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <!-- flying saucer pdf -->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.14</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>

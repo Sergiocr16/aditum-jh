@@ -1,0 +1,31 @@
+<!--<md-content  style="background-color: white;" flex layout="column">-->
+    <!--<md-nav-bar md-stretch-tabs='always' class="nav-bar-top" md-selected-nav-item="vm.placeIn" nav-bar-aria-label="navigation links">-->
+        <!--<md-nav-item md-nav-sref="announcements.announcement" name="announcements.announcement">Noticias publicadas</md-nav-item>-->
+        <!--<md-nav-item md-nav-sref="announcements.announcement-sketch" name="announcements.announcement-sketch">Borradores</md-nav-item>-->
+    <!--</md-nav-bar>-->
+    <!--<ui-view flex layout="column"  class="content-ui-view col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding"></ui-view>-->
+<!--</md-content>-->
+
+
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab md-active-nc="$state.includes('announcements.announcement')" ui-sref="announcements.announcement" label="Noticias publicadas">
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('announcements.announcement-sketch')" ui-sref="announcements.announcement-sketch" label="Borradores" class="md-active" ng-click="vm.switchDisabledResidents()">
+            </md-tab>
+
+        </md-tabs>
+        <md-tabs hide-lg hide-xl hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs">
+            <md-tab  md-active-nc="$state.includes('announcements.announcement')" ui-sref="announcements.announcement" label="Publicadas">
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('announcements.announcement-sketch')" ui-sref="announcements.announcement-sketch" label="Borradores" class="md-active" ng-click="vm.switchDisabledResidents()">
+            </md-tab>
+
+        </md-tabs>
+
+    </md-content>
+</div>
+
+<div ui-view class="row margin-top-30" style="padding: 20px;">
+</div>

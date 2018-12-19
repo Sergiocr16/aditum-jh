@@ -5,19 +5,22 @@
         .module('aditumApp')
         .controller('EgressDialogController', EgressDialogController);
 
-    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany', 'AdministrationConfiguration'];
+    EgressDialogController.$inject = ['CommonMethods', '$timeout', '$state', '$scope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Principal', 'Proveedor', '$rootScope', 'Banco', 'EgressCategory', 'globalCompany', 'AdministrationConfiguration', 'Modal'];
 
-    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany, AdministrationConfiguration) {
+    function EgressDialogController(CommonMethods, $timeout, $state, $scope, $stateParams, previousState, entity, Egress, Company, Principal, Proveedor, $rootScope, Banco, EgressCategory, globalCompany, AdministrationConfiguration, Modal) {
         var vm = this;
         $rootScope.active = "newEgress";
-
-
+        vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.egress = entity;
         vm.clear = clear;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        Modal.enteringForm(confirmCreateEgress);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.gastosVariables = [];
         vm.gastosFijos = [];
         vm.gastosOtros = [];
@@ -26,6 +29,7 @@
         $(function () {
 
         });
+
         function loadAdminConfig() {
             AdministrationConfiguration.get({
                 companyId: globalCompany.getId()
@@ -34,21 +38,24 @@
                 if (result.egressFolio == true) {
                     vm.egressFolioSerie = result.egressFolioSerie;
                     vm.egressFolioNumber = result.egressFolioNumber;
-                    vm.egress.folio = vm.egressFolioSerie + "-" +  vm.egressFolioNumber;
+                    vm.egress.folio = vm.egressFolioSerie + "-" + vm.egressFolioNumber;
                 }
             })
         }
 
         loadAdminConfig();
+
         function increaseFolioNumber(success) {
             vm.admingConfig.egressFolioNumber = parseInt(vm.egressFolioNumber) + 1;
             vm.admingConfig.egressFolioSerie = vm.egressFolioSerie;
             console.log(vm.admingConfig)
             AdministrationConfiguration.update(vm.admingConfig, success);
         }
+
         // setTimeout(function () {
 
         Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
+
         function onSuccessProveedores(data, headers) {
             vm.proveedores = data;
 
@@ -65,9 +72,7 @@
 
         // }, 700)
 
-        vm.hola = function(egress){
-            console.log(egress)
-        }
+
         function onSuccessEgressCategories(data, headers) {
             angular.forEach(data, function (value, key) {
                 if (value.group == 'Gastos fijos') {
@@ -83,12 +88,7 @@
 
             })
             vm.egressCategories = data;
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#new_egress_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
         }
 
 
@@ -127,17 +127,21 @@
                 vm.egress.billNumber = 'Sin Registrar'
             }
         } else {
-            vm.title = "Capturar gasto";
+            vm.title = "Capturar egreso";
             vm.button = "Registrar";
         }
+        $rootScope.mainTitle = vm.title;
+
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-        function onSuccessProovedor(proovedor, headers) {formatearNumero
+        function onSuccessProovedor(proovedor, headers) {
+            formatearNumero
             vm.egress.empresa = proovedor.empresa;
 
         }
+
         function clear() {
             $uibModalInstance.dismiss('cancel');
         }
@@ -153,59 +157,23 @@
 
 
         function confirmCreateEgress() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea registrar este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
+            Modal.confirmDialog("¿Está seguro que desea registrar este egreso?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    save();
+                });
 
-                    if (result) {
-                        save()
-
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         }
 
         function confirmReportPayment() {
-            bootbox.confirm({
-                message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea reportar el pago de este egreso?</h3><h5 class="bold">Una vez registrada esta información no se podrá editar</h5></div>',
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
+            Modal.confirmDialog("¿Está seguro que desea reportar el pago de este egreso?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    save();
+                });
 
-                    if (result) {
-                        save()
-
-                    } else {
-                        vm.isSaving = false;
-
-                    }
-                }
-            });
         }
 
         function save() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar();
             var currentTime = new Date(moment(new Date()).format("YYYY-MM-DD") + "T" + moment(new Date()).format("HH:mm:ss") + "-06:00").getTime();
             var expirationTime = new Date(vm.egress.expirationDate).getTime();
             if (currentTime <= expirationTime) {
@@ -229,12 +197,13 @@
                 Egress.save(vm.egress, onSaveSuccess, onSaveError);
             }
         }
-        vm.hola(vm.egress.total)
+
+
         function onSaveReport(result) {
-            bootbox.hideAll();
+            Modal.hideLoadingBar();
             $scope.$emit('aditumApp:egressUpdate', result);
-            $state.go('egress');
-            toastr["success"]("Se reportó el pago correctamente");
+            $state.go('egress-tabs.egress');
+            Modal.toast("Se reportó el pago correctamente");
             vm.isSaving = false;
 
         }
@@ -245,25 +214,27 @@
                     vm.admingConfig = admin;
                     vm.egressfolioSerie = admin.egressfolioSerie;
                     vm.egressfolioSerie = admin.egressfolioSerie;
-                    bootbox.hideAll();
+                    Modal.hideLoadingBar();
                     $scope.$emit('aditumApp:egressUpdate', result);
-                    $state.go('egress');
-                    toastr["success"]("Se registró el gasto correctamente");
+                    $state.go('egress-tabs.egress');
+                    Modal.toast("Se registró el gasto correctamente");
                     vm.isSaving = false;
                 })
-            }else{
-                bootbox.hideAll();
+            } else {
+                Modal.hideLoadingBar();
                 $scope.$emit('aditumApp:egressUpdate', result);
-                $state.go('egress');
-                toastr["success"]("Se registró el gasto correctamente");
+                Modal.hideLoadingBar();
+                Modal.toast("Se registró el gasto correctamente");
+                $state.go('egress-tabs.egress');
+
                 vm.isSaving = false;
             }
 
         }
 
         function onSaveError() {
-            bootbox.hideAll()
-            toastr["error"]("Un error inesperado ocurrió");
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
             vm.isSaving = false;
         }
 

@@ -1,35 +1,32 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <a>Finanzas</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="presupuesto()">Presupuestos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Capturar presupuesto</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<!--&lt;!&ndash; SE REQUIERE EN CADA VISTA &ndash;&gt;-->
+<!--<div class="page-bar route-title">-->
+    <!--<ul class="page-breadcrumb">-->
+        <!--<li>-->
+            <!--<a>Finanzas</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a ui-sref="presupuesto()">Presupuestos</a>-->
+            <!--<i class="fa fa-angle-right"></i>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a href="">Capturar presupuesto</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+    <!--<div class="page-toolbar">-->
+        <!--<div class="btn-group pull-right">-->
 
-        </div>
-    </div>
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="row display-none" id="budgetContainer">
+<div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" ng-if="vm.isReady" class="row fade-in" id="budgetContainer">
     <div class="col-md-12">
         <div style="margin-bottom:15px;" class="caption font-green-haze">
-
-            <span class="caption-subject bold uppercase font-15">Capturar presupuesto</span>
+            <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  " style="color: #00b19d">Capturar presupuestos</h3>
             <div class="btn-group pull-right">
                 <button class="btn btn-circle btn-icon-only btn-default fullscreen" style="margin-top:-5px;margin-bottom:14px;" ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
 
@@ -42,14 +39,22 @@
                 <span class=" font-13 gray-font col-md-12 col-sm-12 col-xs-12 no-padding">Ingrese cantidad presupuestada por mes/categoría. <span class="bold">(SÓLO NÚMEROS Ej. 15000)</span> </span>
             </div>
 
-            <div class="col-md-offset-2 col-sm-offset-2 col-xs-offset-2  col-md-2 col-sm-2 col-xs-2 no-padding">
-                <select class="form-control gray-font" data-ng-model="vm.presupuesto.anno" ng-options="item.year for item in vm.budgetYearsToSelect | orderBy: 'year' track by item.year" required>
-                    <option value="">Seleccione un año</option>
-                </select>
+            <div class="col-md-offset-3 col-sm-offset-3 col-xs-offset-3  col-md-3 col-sm-3 col-xs-3 no-padding">
+                <!--<select class="form-control gray-font" data-ng-model="vm.presupuesto.anno" ng-options="item.year for item in vm.budgetYearsToSelect | orderBy: 'year' track by item.year" required>-->
+                    <!--<option value="">Seleccione un año</option>-->
+                <!--</select>-->
+                <md-input-container class="md-block">
+                    <label>Seleccione un año</label>
+                    <md-select ng-model="vm.presupuesto.anno">
+                        <md-option ng-repeat="item in vm.budgetYearsToSelect " ng-value="item">
+                            {{item.year}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
             </div>
-            <div class="no-padding-right col-md-2 col-sm-2 col-xs-2 ">
-              <button class="btn btn-primary col-md-12 orange-button-oficial" ng-click="vm.confirmSave()">Guardar presupuesto</button>
-            </div>
+            <!--<div class="no-padding-right col-md-2 col-sm-2 col-xs-2 ">-->
+              <!--<button class="btn btn-primary col-md-12 orange-button-oficial" ng-click="vm.confirmSave()">Guardar presupuesto</button>-->
+            <!--</div>-->
         </div>
     </div>
     <div class="col-md-12">
@@ -83,7 +88,7 @@
                 </td>
                 <td ng-repeat="mantenimientoValue in vm.mantenimientoValues" class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{mantenimientoValue.month}}</span>-->
-                    <input ng-blur="vm.putZero(mantenimientoValue)" ng-focus="vm.eliminateZero(mantenimientoValue)" ng-change="vm.setTotalIngressByMonth($index,mantenimientoValue)" ng-class="{redBorder: mantenimientoValue.valido==false}" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(mantenimientoValue)" ng-focus="vm.eliminateZero(mantenimientoValue)" ng-change="vm.setTotalIngressByMonth($index,mantenimientoValue)" ng-class="{redBorder: mantenimientoValue.valido==false}" ng-model="mantenimientoValue.valuePerMonth" type="text" class="form-control gray-font " style="height:25px;  padding:2px!important; font-size:11px;" format="currency"  required>
                 </td>
 
 
@@ -94,7 +99,7 @@
                 </td>
                 <td ng-repeat="extraordinariaValue in vm.extraordinariaValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{extraordinariaValue.month}}</span>-->
-                    <input ng-blur="vm.putZero(extraordinariaValue)" ng-focus="vm.eliminateZero(extraordinariaValue)" ng-change="vm.setTotalIngressByMonth($index,extraordinariaValue)" ng-class="{redBorder: extraordinariaValue.valido==false}" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px;  padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(extraordinariaValue)" ng-focus="vm.eliminateZero(extraordinariaValue)" ng-change="vm.setTotalIngressByMonth($index,extraordinariaValue)" ng-class="{redBorder: extraordinariaValue.valido==false}" ng-model="extraordinariaValue.valuePerMonth" type="text" class="form-control gray-font " style="height:25px;  padding:2px!important; font-size:11px;" format="currency"  required>
                 </td>
 
 
@@ -105,7 +110,7 @@
                 </td>
                 <td ng-repeat="areasComunesValue in vm.areasComunesValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{areasComunesValue.month}}</span>-->
-                    <input  ng-blur="vm.putZero(areasComunesValue)" ng-focus="vm.eliminateZero(areasComunesValue)" ng-change="vm.setTotalIngressByMonth($index,areasComunesValue)" ng-class="{redBorder: areasComunesValue.valido==false}" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input  ng-blur="vm.putZero(areasComunesValue)" ng-focus="vm.eliminateZero(areasComunesValue)" ng-change="vm.setTotalIngressByMonth($index,areasComunesValue)" ng-class="{redBorder: areasComunesValue.valido==false}" ng-model="areasComunesValue.valuePerMonth" type="text" class="form-control gray-font " style="height:25px; padding:2px!important; font-size:11px;"  format="currency" required>
                 </td>
 
 
@@ -116,7 +121,7 @@
                 </td>
                 <td ng-repeat="otrosIngresosValue in vm.otrosIngresosValues"  class="text-center" style="padding-top:9px !Important;">
                     <!--<span class="font-11">{{otrosIngresosValue.month}}</span>-->
-                    <input ng-blur="vm.putZero(otrosIngresosValue)" ng-focus="vm.eliminateZero(otrosIngresosValue)"  ng-change="vm.setTotalIngressByMonth($index,otrosIngresosValue)" ng-class="{redBorder: otrosIngresosValue.valido==false}" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font numbers" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(otrosIngresosValue)" ng-focus="vm.eliminateZero(otrosIngresosValue)"  ng-change="vm.setTotalIngressByMonth($index,otrosIngresosValue)" ng-class="{redBorder: otrosIngresosValue.valido==false}" ng-model="otrosIngresosValue.valuePerMonth" type="text" class="form-control gray-font" format="currency"  style="height:25px; padding:2px!important; font-size:11px;" required>
                 </td>
 
             </tr>
@@ -154,7 +159,7 @@
                 </td>
                 <td ng-repeat="item in egressCategory.valuesPerMonth" class="text-center" style="padding-top:9px !Important;">
                     <!--<span style="font-size:10px">{{item.month}}</span>-->
-                    <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)" ng-change="vm.setTotalEgressByMonth($index,item)" ng-class="{redBorder: item.valido==false}" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" required>
+                    <input ng-blur="vm.putZero(item)" ng-focus="vm.eliminateZero(item)" ng-change="vm.setTotalEgressByMonth($index,item)" ng-class="{redBorder: item.valido==false}" ng-model="item.valuePerMonth" type="text" class="form-control gray-font" style="height:25px; padding:2px!important; font-size:11px;" format="currency"  required>
                 </td>
 
             </tr>
@@ -166,11 +171,12 @@
             </tr>
             </tbody>
         </table>
-        <div class="col-md-12 text-center">
-            <h5 class="gray-font text-center">
-                <button class="btn orange-button-oficial" style="text-align:center;width:300px" ng-click="vm.confirmSave()">Guardar presupuesto</button>
-            </h5>
-        </div>
+
     </div>
     </div>
+    <md-button ng-click="vm.confirmSave()" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Guardar presupuesto</md-tooltip>
+        <md-icon class="white-color">save</md-icon>
+    </md-button>
 </div>

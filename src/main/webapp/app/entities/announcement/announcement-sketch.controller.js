@@ -5,86 +5,61 @@
         .module('aditumApp')
         .controller('AnnouncementSketchController', AnnouncementSketchController);
 
-    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany'];
+    AnnouncementSketchController.$inject = ['Announcement', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'globalCompany', 'Modal','CommonMethods'];
 
-    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany) {
+    function AnnouncementSketchController(Announcement, ParseLinks, AlertService, paginationConstants, $rootScope, globalCompany, Modal,CommonMethods) {
 
         var vm = this;
 
         vm.announcements = [];
         vm.loadPage = loadPage;
+        $rootScope.mainTitle = 'Administrar noticias';
+
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.loadAll = loadAll;
         vm.page = 0;
         vm.links = {
             last: 0
         };
+        vm.isReady = false;
         vm.predicate = 'id';
         vm.reset = reset;
         vm.reverse = true;
-        // setTimeout(function () {
-            loadAll();
-        // }, 1000);
-
-
+        loadAll();
+        vm.publish = function (announcement) {
+            Modal.confirmDialog("¿Está seguro que desea publicar la noticia?",
+                "Una vez publicada será visible para los condóminos.", function () {
+                    announcement.status = 2;
+                    announcement.publishingDate = moment(new Date()).format();
+                    Modal.showLoadingBar();
+                    Announcement.update(announcement, function(){
+                        Modal.hideLoadingBar();
+                        CommonMethods.deleteFromArray(announcement,vm.announcements)
+                        Modal.toast("Se ha publicado la noticia.");
+                    }, onError);
+                });
+        };
         function onSaveSuccess() {
             bootbox.hideAll();
             loadAll();
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
-        vm.publish = function (announcement) {
-
-            bootbox.confirm({
-                message: "¿Está seguro que desea publicar la noticia? Una vez publicada será visible para los condóminos.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        announcement.status = 2;
-                        announcement.publishingDate = moment(new Date()).format();
-                        Announcement.update(announcement, onSaveSuccess, onError);
-                    }
-                }
-            });
-
-        };
 
 
         vm.delete = function (announcement) {
-            bootbox.confirm({
-                message: "¿Está seguro que desea eliminar la noticia? , una vez eliminada no podrá ser recuperada.",
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function (result) {
-                    if (result) {
-                        Announcement.delete({id: announcement.id},
-                            function () {
-                                toastr["success"]("Se ha elminado la noticia correctamente.")
-                                loadAll();
-                            });
-                    }
-                }
-            });
+            Modal.confirmDialog("¿Está seguro que desea eliminar la noticia?", "Una vez eliminada no podrá ser recuperada", function () {
+                Modal.showLoadingBar();
+                Announcement.delete({id: announcement.id},
+                    function () {
+                    Modal.hideLoadingBar()
+                        CommonMethods.deleteFromArray(announcement,vm.announcements)
+                        Modal.toast("Se ha elminado el borrador correctamente.")
+                    });
+            })
 
         };
 
@@ -96,17 +71,11 @@
             for (var i = 0; i < data.length; i++) {
                 vm.announcements.push(data[i]);
             }
-            console.log(vm.announcements)
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400);
-            setTimeout(function () {
-                $("#tableData").fadeIn('slow');
-            }, 900);
+            vm.isReady = true;
         }
 
         function onError(error) {
-            toastr["error"]("Ha ocurrido un error actualizando la noticia.")
+            Modal.toast("Ha ocurrido un error actualizando la noticia.")
         }
 
         function sort() {

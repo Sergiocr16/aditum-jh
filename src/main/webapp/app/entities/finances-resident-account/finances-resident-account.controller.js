@@ -10,7 +10,7 @@
     function FinancesResidentController(AlertService, $rootScope, Principal, $state, $localStorage, Balance, House, globalCompany) {
         var vm = this;
         $rootScope.active = "financesResidentAccount";
-        console.log($localStorage.houseSelected);
+        vm.isReady = false;
 
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -50,16 +50,8 @@
                         vm.house = $rootScope.houseSelected;
                     }
                 }
+                vm.isReady = true;
 
-
-                setTimeout(function () {
-                    $("#loadingIcon3").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData2").fadeIn('slow');
-                    $state.go('finanzasPorCasa.paymentsPerHouse');
-
-                }, 700)
             }
 
             function onError(error) {

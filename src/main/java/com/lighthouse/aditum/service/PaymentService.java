@@ -435,12 +435,12 @@ public class PaymentService {
         for (int i = 0; i < incomeReport.getPayments().size(); i++) {
             PaymentDTO payment = incomeReport.getPayments().get(i);
             if (payment.getTransaction().equals("2") && type == 1) {
-                total += Integer.parseInt(payment.getAmmount());
+                total += Double.parseDouble(payment.getAmmount());
             } else {
                 for (int j = 0; j < payment.getCharges().size(); j++) {
                     ChargeDTO charge = payment.getCharges().get(j);
                     if (charge.getType() == type) {
-                        total += Integer.parseInt(charge.getAmmount());
+                        total += Double.parseDouble(charge.getAmmount());
                     }
                 }
             }

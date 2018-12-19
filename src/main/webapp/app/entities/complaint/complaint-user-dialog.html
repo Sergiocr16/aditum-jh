@@ -1,69 +1,43 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Registrar queja o sugerencia</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="display-none" id="tableData">
-    <div class="row">
-        <div class="col-md-12">
-            <form ng-submit="vm.save()">
-                <div class="portlet light bordered col-md-12">
-                    <div class="portlet-title">
-                        <div class="caption font-green-haze">
-                            <i class="fa fa-user font-green-haze"></i>
-                            <span  class="caption-subject bold uppercase">Registrar queja o sugerencia</span>
-                        </div>
+<div ng-cloak layout="column" ng-if="vm.isReady" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div layout-gt-xs="row" layout-align="center center">
+                        <md-input-container class="md-block" flex>
+                            <label>Categoría</label>
+                            <md-select ng-model="vm.complaint.complaintType"  required>
+                                <md-option value="Vigilancia">Vigilancia</md-option>
+                                <md-option value="Mascotas">Mascotas</md-option>
+                                <md-option value="Servicios Agua, Luz, Gas ,etc">Servicios Agua, Luz, Gas ,etc</md-option>
+                                <md-option value="Vecinos">Vecinos</md-option>
+                                <md-option value="Mantenimiento">Mantenimiento</md-option>
+                                <md-option value="Áreas comunes">Áreas comunes</md-option>
+                                <md-option value="Otros">Otros</md-option>
+                            </md-select>
+                        </md-input-container>
                     </div>
-                    <div class="portlet-body form">
-                        <div class="col-lg-4 col-md-4 col-sm-4 marging-top-20">
-                            <div  class="form-group form-md-line-input has-info">
-                                <select style="border-bottom: none;margin-top:5px" class="form-control gray-font" id="complaintType" ng-model="vm.complaint.complaintType" required>
-                                    <option value="Vigilancia">Vigilancia</option>
-                                    <option value="Mascotas">Mascotas</option>
-                                    <option value="Servicios Agua, Luz, Gas ,etc">Servicios Agua, Luz, Gas ,etc</option>
-                                    <option value="Vecinos">Vecinos</option>
-                                    <option value="Mantenimiento">Mantenimiento</option>
-                                    <option value="Áreas comunes">Áreas comunes</option>
-                                    <option value="Otros">Otros</option>
-                                </select>
-                                <label class="font-15 ">Categoría</label >
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-8 col-sm-8">
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 marging-top-20 margin-bottom-15">
-                            <label class="font-15 gray-font">Queja o sugerencia *</label >
-                            <textarea class="form-control gray-font" id="" cols="30" rows="10"  ng-model="vm.complaint.description" required></textarea>
-                        </div>
-                        <div class="form-actions noborder col-md-12">
-                            <h3 class="text-right margin-top-25">
-                                <button type="submit" class="btn blue"  ng-disabled="editForm.$invalid || vm.isSaving"> Registrar</button>
-                                <button  type="button" ng-click="vm.clear()" class="btn red default">Cancelar</button>
-                            </h3>
-                        </div>
+                    <div>
+                        <label class="md-block" style="color:rgba(0,0,0,0.38)">Queja o sugerencia </label>
+                        <md-input-container class="md-block" flex-gt-xs>
+                            <summernote  lang="es-ES" height="400" ng-model="vm.complaint.description"
+                                         required></summernote>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="end center" hide-sm hide-xs>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                        <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Registrar</md-button>
                     </div>
                 </div>
             </form>
         </div>
-    </div>
+    </md-content>
 </div>

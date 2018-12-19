@@ -1,91 +1,114 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Quejas y sugerencias</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right" style="padding-top:10px;">
-            <i class="fa fa-lightbulb-o" style="font-size:20px; color:orange"></i>
-        </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="display-none" id="tableData">
-    <div class="col-md-9">
-        <h2 style="margin-top:0px!important">Quejas y sugerencias</h2>
-    </div>
-    <div class="col-md-3 no-padding" style="margin-bottom: 20px;">
-        <div class="col-md-12 no-padding">
-            <button class="btn green float-right" ui-sref="complaint-user.new">
-                    <span>
-                       Registrar queja o sugerencia
-                    </span>
-            </button>
-        </div>
-
-    </div>
-    <br/>
-    <div style="margin:25px 10px;">
-        <div ng-show="vm.complaints.length == 0" class="margin-top-25">
-            <h2 class="text-center gray-font">No existe ninguna queja o sugerencia registrada.</h2>
-        </div>
-        <div infinite-scroll="vm.loadPage(vm.page + 1)"
-             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-top-15">
-            <div ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id" class="portlet light bordered col-md-12"
-                 style="box-shadow: none!important">
-                <div class="portlet-title">
-                    <div class="caption font-yellow-crusta">
-                        <div class="image-navbar">
-                            <img ng-if="complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
-                                 class="object-fit_scale-down-navbar"/>
-                            <img ng-if="complaint.resident.image_url!==null" src="{{complaint.resident.image_url}}"
-                                 class="object-fit_scale-down-navbar"/>
-                        </div>
-                        <span class="caption-subject bold" style="color:#5194ca!important;font-size:13px!important"> {{complaint.resident.name+" "+complaint.resident.lastname+" "+complaint.resident.secondlastname}}</span>
-                        <span class="caption-helper">
-                    <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Ticket # {{complaint.id}}
-                    </span>
-                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                        Categoría {{complaint.complaintType}}
-                    </span>
-                     <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
-                       Filial {{complaint.houseNumber}}
-                    </span>
-                     <span style="padding:0px 4px">
-                       {{complaint.showingCreationDate}}
-                    </span>
-                 </span>
-                    </div>
-                    <div class="actions">
-                    <span class="item-status">
-                         <span ng-if="complaint.status===1"><span class="badge badge-empty badge-danger"></span> Pendiente</span>
-                         <span  ng-if="complaint.status===2"><span class="badge badge-empty badge-warning"></span> Activo</span>
-                         <span ng-if="complaint.status===3"><span  class="badge badge-empty badge-success"></span> Resuelto</span>
-                         <span ng-click="vm.viewDetail(complaint.id)" class="item-status complaint-detail" style="border-left:1px solid #e1e1e1;margin-left: 4px;padding:0px 4px">Ver seguimiento</span>
-                         </span>
-                    </div>
-                </div>
-                <div class="portlet-body" style="max-height: 180px;overflow-y: auto">
-
-                    <p>
-                        {{complaint.description}}
-                    </p>
-
-                </div>
+<h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600" hide-sm hide-xs style="color: #00b19d">Quejas y
+    sugerencias
+</h3>
+<div class="col-md-12 no-padding margin-top-20" style="margin-bottom: 8px!important;">
+    <div class="">
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.query">
             </div>
         </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i>
+            </button>
+        </div>
     </div>
 </div>
+<div class="col-md-12">
+    <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+        <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER">
+            <md-select ng-model="vm.status" ng-change="vm.changeStatus()">
+                <md-option value="-1">Todos</md-option>
+                <md-option value="1">Pendiente</md-option>
+                <md-option value="2">Activo</md-option>
+                <md-option value="3">Resuelto</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+</div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class="col-md-12 fade-in">
+    <br/>
+    <div style="">
+        <no-content ng-if="vm.complaints.length == 0" icon="sentiment_very_dissatisfied"
+                    text="No hay quejas o sugerencias registradas"></no-content>
+        <div infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-bottom-15">
+            <md-card style="margin-bottom: 20px!important; margin-left: 0; margin-right: 0;" md-theme-watch class="form-wrapper"
+                     ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id">
+                <md-card-title layout-align="space-between center">
+                    <md-card-title-text>
+                  <span class="md-headline" layout-align="start start" layout="column" layout-gt-sm="row">
+                     <div layout-align="center center" layout="row">
+                        <div class="image-navbar">
+                           <img ng-if="complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                class="object-fit_scale-down-navbar"/>
+                           <img ng-if="complaint.resident.image_url!==null" src="{{complaint.resident.image_url}}"
+                                class="object-fit_scale-down-navbar"/>
+                        </div>
+                                   <div class="caption-subject bold font-green-sharp margin-right-10"
+                                        style="font-size:14px!important"> {{complaint.resident.name+" "+complaint.resident.lastname+" "+complaint.resident.secondlastname}}</div>
+                     </div>
+                     <div style="font-size: 13px;">
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{complaint.id}}
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{complaint.vm.complaintType}}
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Filial {{complaint.houseNumber}}
+                        </span>
+                        <span style="padding:0px 4px">
+                        {{complaint.showingCreationDate}}
+                        </span>
+                     </div>
+                  </span>
+                    </md-card-title-text>
+                    <div layout="row">
+                        <div  style="margin: 0 6px; padding:0 6px">
+                            <a class="light-gray-font"
+                               ng-click="vm.viewDetail(complaint.id)"><i
+                                class="material-icons">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver seguimiento /
+                                    Atender
+                                </md-tooltip>
+                                remove_red_eye</i></a>
+                        </div>
+                        <div>
+                            <a><i class="material-icons" style="color:#FF3D00; font-size: 23px;"
+                                  ng-if="complaint.status==1">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                                lens</i><i class="material-icons" style="color:#FDD835; font-size: 23px;"
+                                           ng-if="complaint.status==2">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                                lens</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;"
+                                           ng-if="complaint.status==3">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
+                                lens</i></a>
+                        </div>
+                    </div>
+                </md-card-title>
+                <md-divider></md-divider>
+                <md-card-content>
+                    <div class="margin-top-10" ng-bind-html="complaint.description"></div>
+                </md-card-content>
+            </md-card>
+        </div>
+    </div>
+</div>
+<md-button  style="position: fixed!important;" ui-sref="complaint-user.new" class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+    <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar queja o sugerencia</md-tooltip>
+    <md-icon class="white-color">add</md-icon>
+</md-button>

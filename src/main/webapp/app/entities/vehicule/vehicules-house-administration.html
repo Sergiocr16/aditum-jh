@@ -1,13 +1,9 @@
-
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon5">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
-<div class="row display-none no-padding" id="vehicules_container">
-    <div class="col-lg-12 col-md-12 ">
-        <div class="col-md-12 no-padding-right">
+<div ng-if="vm.isReady" class=" fade-in no-padding">
+    <div class="col-lg-12 col-md-12 no-padding">
+        <div class="col-md-12 no-padding" layout="row" layout-align="space-between center" layout-xs="column" layout-sm="column">
             <div class="pull-left">
                 <h2 class="bold uppercase" style="font-size:15px">{{vm.titleVehiculeIndex}}</h2>
             </div>
@@ -16,7 +12,7 @@
                     <div class="md-radio-inline">
 
                         <div class="md-radio" >
-                            <input type="radio" id="radio23" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <input type="radio" id="radio23" name="radio2" class="md-radiobtn" ng-checked="vm.radiostatus"  ng-click="vm.swithEnabledDisabledVehicules()">
                             <label for="radio23" style="color:#45B6AF">
                                 <span class="inc"></span>
                                 <span class="check"></span>
@@ -24,7 +20,7 @@
                                 Habilitados </label>
                         </div>
                         <div class="md-radio has-error">
-                            <input type="radio" id="radio24" name="radio2" class="md-radiobtn"  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <input type="radio" id="radio24" name="radio2" class="md-radiobtn" ng-checked="!vm.radiostatus" ng-click="vm.swithEnabledDisabledVehicules()">
                             <label for="radio24">
                                 <span class="inc"></span>
                                 <span class="check"></span>
@@ -38,27 +34,31 @@
         </div>
 
         <div>
-            <div ng-show="vm.vehicules.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">
-                <h2  class="text-center gray-font ">No hay vehículos registrados</h2>
-            </div>
+
+            <no-content ng-if="vm.vehicules.length==0" icon="directions_car" text="Esta filial no tiene vehículos registrados" ></no-content>
 
             <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
-                <div class="col-md-3 col-sm-6 col-xs-12 col-lg-3 "  ng-repeat="vehicule in vm.vehicules">
-                    <div class="portlet    text-center  col-sm-12 col-xs-12 " id="">
 
-                        <h3 class="text-center">
-                            <h1 ng-show="vehicule.type=='Automóvil'" class="col-lg-6 text-center "><i class=" text-center fa fa-car font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>
-                            <h1 ng-show="vehicule.type=='Motocicleta'" class="col-lg-6 text-center "><i class=" text-center fa fa-motorcycle font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>
-                        </h3>
+                <div class="col-md-3 no-padding " ng-repeat="vehicule in vm.vehicules" >
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-20">{{vehicule.brand.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 10px!important; font-size: 17px">{{vehicule.licenseplate.toUpperCase()}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-sm card-media">
+                                    <i class="material-icons" style="color:{{vehicule.color}};  font-size: 80px!important;">
+                                        directions_car</i>
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
 
+                    </md-card>
 
-
-                        <h3 style="text-transform: capitalize;" class="no-padding text-center font-20 ">{{vehicule.brand.toUpperCase()}} {{resident.lastname.toUpperCase()}}</h3>
-                        <h5 class="no-padding text-center font-17">{{vehicule.licenseplate.toUpperCase()}}</h5>
-
-
-                    </div>
                 </div>
+
             </div>
 
 

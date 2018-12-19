@@ -5,22 +5,25 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDialogController', CommonAreaReservationsDialogController);
 
-    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods','companyUser'];
+    CommonAreaReservationsDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations', 'CommonArea', '$rootScope', 'House', 'Resident', 'CommonAreaSchedule', 'AlertService', '$state', 'CommonMethods','companyUser','globalCompany','Modal'];
 
-    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods,companyUser) {
+    function CommonAreaReservationsDialogController($timeout, $scope, $stateParams, entity, CommonAreaReservations, CommonArea, $rootScope, House, Resident, CommonAreaSchedule, AlertService, $state, CommonMethods,companyUser,globalCompany,Modal) {
         var vm = this;
         vm.commonarea = {};
         $rootScope.active = "createReservation";
         vm.commonAreaReservations = entity;
-        console.log(CommonAreaReservations)
+
         var initialDateTemporal;
+        vm.isReady = false;
+        $rootScope.mainTitle = "Crear reservación";
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
+        vm.loadSchedule = loadSchedule;
         vm.reservationTitle = "Crear"
         vm.required = 1;
         vm.hours = [];
         vm.schedule = [];
-
+        vm.today = new Date();
         vm.allDaySchedule = 1;
         vm.scheduleIsAvailable = false;
         vm.diasDeLaSemana = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', ''];
@@ -28,13 +31,20 @@
         vm.timeSelected = {};
         vm.dateNotPermited = false;
         vm.commonarea.devolutionAmmount = 0;
+        vm.houseWithDebts = false;
+
+        vm.confirmMessage = confirmMessage;
+        Modal.enteringForm(confirmMessage);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         setTimeout(function() {
             loadHouses();
         }, 1500)
 
         function loadHouses() {
             House.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccessHouses, onError);
 
         }
@@ -48,20 +58,22 @@
             });
             vm.houses = data;
             CommonArea.query({
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccessCommonAreas, onError);
         }
         function onSuccessCommonAreas(data, headers) {
 
             vm.commonareas = data;
-            setTimeout(function() {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function() {
-                $("#register_edit_form").fadeIn('slow');
-            }, 900)
+            vm.isReady = true;
             if (vm.commonAreaReservations.id !== null) {
                 loadInfoToUpdate();
+            }else if($state.params.commonAreaId!==undefined){
+                vm.commonarea.id = $state.params.commonAreaId;
+                loadSchedule();
+                if($state.params.date!=='0'){
+                    vm.commonAreaReservations.initalDate = new Date($state.params.date)
+                }
+
             }
 
         }
@@ -74,16 +86,22 @@
             initialDateTemporal = vm.commonAreaReservations.initalDate;
 
         }
-        vm.loadSchedule = function() {
+        function loadSchedule() {
 
-            if (vm.commonAreaReservations.id == null) {
-                vm.commonAreaReservations.initalDate = null;
+            // if (vm.commonAreaReservations.id == null && $state.params.commonAreaId===undefined) {
+            //     vm.commonAreaReservations.initalDate = null;
+            // }
+
+            if($state.params.date!=='0'){
+                vm.commonAreaReservations.initalDate = new Date($state.params.date)
+
             }
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
             CommonArea.get({
                 id: vm.commonarea.id
             }, function(result) {
+
                 vm.commonarea = result;
 
                 $("#scheduleDiv").fadeOut(50);
@@ -131,24 +149,20 @@
                 vm.maximunHours = vm.commonarea.maximunHours + " horas";
                 vm.allDaySchedule = 1;
             }
-
             $("#scheduleDiv").fadeIn('50');
             $("#loadingSchedule").fadeOut('20');
             $("#commonAreaImage").fadeIn('300');
-            if(vm.commonAreaReservations.id!=null){
+            if(vm.commonAreaReservations.id!=null || $state.params.commonAreaId!==undefined || $state.params.date!==undefined){
                 if(isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())){
-                    if (vm.commonarea.maximunHours == 0) {
+                    vm.commonAreaReservations.initalDate.setHours(0);
+                    vm.commonAreaReservations.initalDate.setMinutes(0);
+                    if (vm.commonarea.maximunHours === 0) {
                         $("#loadingAvailability").fadeIn('50');
                         var initialTime = "0";
                         var finalTime = "0";
-                        if (vm.commonarea.maximunHours !== 0) {
-                            initialTime = vm.timeSelected.initialTime.value;
-                            finalTime = vm.timeSelected.finalTime.value;
-                        }
 
                         if (vm.commonAreaReservations.id !== null) {
-                            vm.commonAreaReservations.initalDate.setHours(0);
-                            vm.commonAreaReservations.initalDate.setMinutes(0);
+
                             CommonAreaReservations.isAvailableToReserveNotNull({
                                 maximun_hours: vm.commonarea.maximunHours,
                                 reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -169,10 +183,13 @@
                             }).$promise.then(onSuccessIsAvailable, onError);
                         }
 
-
                     } else {
                         addHoursToSelect()
                     }
+                }else{
+                    $("#loadingAvailability").fadeOut('50');
+                    vm.dateNotPermited = true;
+                    Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
                 }
             }
         }
@@ -231,20 +248,24 @@
 
                 if (parseInt(vm.timeSelected.initialTime.value) >= parseInt(vm.timeSelected.finalTime.value)) {
                     vm.timeSelected.finalTime.isValid = false;
-                    toastr["error"]("Debe seleccionar una hora final posterior a la hora anterior");
+                    item.isValid = false;
+                    Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
                 } else {
 
                     if (vm.timeSelected.finalTime.value - vm.timeSelected.initialTime.value > vm.commonarea.maximunHours) {
                         vm.timeSelected.finalTime.isValid = false;
-                        toastr["error"]("No puede seleccionar más horas del máximo establecido");
+                        item.isValid = false;
+                        Modal.toast("No puede seleccionar más horas del máximo establecido");
                         vm.timeSelected.finalTime = temporalFinalTime;
 
 
                     } else {
                         vm.timeSelected.finalTime.isValid = false;
+                        item.isValid = false;
                         $("#loadingAvailability").fadeIn('50');
 
                     }
+                    vm.timeSelected.finalTime.isValid = true;
                     vm.checkAvailabilityBetweenHours();
 
                 }
@@ -253,6 +274,7 @@
         };
 
         vm.checkAvailabilityBetweenHours = function() {
+
             $("#loadingAvailability").fadeIn('0');
             if (parseInt(vm.timeSelected.initialTime.value) == parseInt(vm.timeSelected.finalTime.value)) {
                 setTimeout(function() {
@@ -261,7 +283,7 @@
                     });
                 }, 100);
 
-                toastr["error"]("Debe seleccionar al menos una hora de diferencia");
+                Modal.toast("Debe seleccionar al menos una hora de diferencia");
 
 
             } else {
@@ -315,10 +337,12 @@
             vm.hours = [];
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
-
+            vm.commonAreaReservations.initalDate.setHours(0);
+            vm.commonAreaReservations.initalDate.setMinutes(0);
+            console.log("aaa")
+console.log(vm.commonAreaReservations.initalDate.getDay())
             if (isTheDayInSchedule(vm.commonAreaReservations.initalDate.getDay())) {
-
-                if (vm.commonarea.maximunHours == 0) {
+                if (vm.commonarea.maximunHours === 0) {
                     $("#loadingAvailability").fadeIn('50');
                     var initialTime = "0";
                     var finalTime = "0";
@@ -328,8 +352,6 @@
                     }
 
                     if (vm.commonAreaReservations.id !== null) {
-                        vm.commonAreaReservations.initalDate.setHours(0);
-                        vm.commonAreaReservations.initalDate.setMinutes(0);
                         CommonAreaReservations.isAvailableToReserveNotNull({
                             maximun_hours: vm.commonarea.maximunHours,
                             reservation_date: moment(vm.commonAreaReservations.initalDate).format(),
@@ -359,7 +381,7 @@
 
                 $("#loadingAvailability").fadeOut('50');
                 vm.dateNotPermited = true;
-                toastr["error"]("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
+                Modal.toast("No se permite reservar el día " + vm.diasDeLaSemana[vm.commonAreaReservations.initalDate.getDay()] + " en esta área común")
             }
 
 
@@ -368,6 +390,7 @@
         };
 
         function onSuccessIsAvailable(data) {
+            vm.dateNotPermited = false;
             $("#loadingAvailability").fadeOut('50');
 
             if (data.available) {
@@ -376,8 +399,6 @@
                 vm.scheduleNotAvailable = false;
 
             } else {
-                console.log(initialDateTemporal)
-                console.log(vm.commonAreaReservations.initalDate)
                 if(vm.commonAreaReservations.id!=null){
 
                     if (vm.commonarea.maximunHours==0 && initialDateTemporal.getMonth() == vm.commonAreaReservations.initalDate.getMonth() && initialDateTemporal.getFullYear() == vm.commonAreaReservations.initalDate.getFullYear() && initialDateTemporal.getDate() == vm.commonAreaReservations.initalDate.getDate()) {
@@ -480,7 +501,7 @@
 
         function onError(error) {
             AlertService.error(error.data.message);
-            toastr["error"]("Ocurrio un error inesperado.")
+            Modal.toast("Ocurrio un error inesperado.")
         }
 
         function onErrorSchedule(error) {
@@ -489,13 +510,11 @@
         }
 
         function createReservation() {
-            CommonMethods.waitingMessage();
+            Modal.showLoadingBar()
             vm.isSaving = true;
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
-
-
 
             if (vm.commonarea.maximunHours == 0) {
                 vm.commonAreaReservations.initialTime = vm.daySelected.initialValue;
@@ -511,7 +530,6 @@
                 if(companyUser.companies == null){
                     vm.commonAreaReservations.sendPendingEmail = false;
                 }else{
-
                     vm.commonAreaReservations.sendPendingEmail = true ;
                 }
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
@@ -519,11 +537,14 @@
                 if(companyUser.companies == null){
                     vm.commonAreaReservations.sendPendingEmail = true;
                 }else{
-
                     vm.commonAreaReservations.sendPendingEmail = false ;
                 }
                 vm.commonAreaReservations.status = 1;
-                vm.commonAreaReservations.companyId = $rootScope.companyId;
+                vm.commonAreaReservations.companyId = globalCompany.getId();
+                if(vm.commonarea.chargeRequired==0){
+                    vm.commonAreaReservations.reservationCharge = null;
+                }
+                console.log(vm.commonAreaReservations)
                 CommonAreaReservations.save(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             }
 
@@ -531,15 +552,15 @@
         }
 
         function onSaveSuccess(result) {
-            bootbox.hideAll();
+            Modal.hideLoadingBar()
             $state.go('common-area-administration.common-area-reservations');
-            toastr["success"]("Se ha enviado la reservación correctamente para su respectiva aprobación")
+            Modal.toast("Se ha enviado la reservación correctamente para su respectiva aprobación")
             vm.isSaving = false;
         }
 
         function onSaveError() {
             vm.isSaving = false;
-            bootbox.hideAll();
+            Modal.showLoadingBar()
         }
 
         vm.datePickerOpenStatus.date = false;
@@ -558,7 +579,7 @@
             }
         }
 
-        vm.confirmMessage = function() {
+        function confirmMessage(){
 
             if (vm.scheduleIsAvailable) {
                 if (vm.commonarea.maximunHours == 0) {
@@ -566,6 +587,7 @@
                 } else {
                     vm.time = vm.timeSelected.initialTime.time + " - " + vm.timeSelected.finalTime.time;
                 }
+
                 bootbox.confirm({
                     message: '<div class="text-center gray-font font-15"><h3 style="margin-bottom:30px;">¿Está seguro que desea enviar la solicitud de reservación?</h3><h4>Área común: <span class="bold" id="commonArea"></span> </h4><h4>Día: <span class="bold" id="reservationDate"></span> </h4><h4>Hora: <span class="bold" id="time"></span> </h4></div>',
                     buttons: {
@@ -581,7 +603,13 @@
                     callback: function(result) {
 
                         if (result) {
-                            createReservation()
+                            if(vm.houseSelected.balance.total<0 && vm.commonarea.reservationWithDebt==2){
+                                vm.houseWithDebts = true;
+                                Modal.toast("Esta filial cuenta con deudas pendientes por lo que no puede crear reservaciones.")
+                            }else{
+                                createReservation()
+                            }
+
 
                         } else {
                             vm.isSaving = false;
@@ -594,59 +622,21 @@
                 document.getElementById("time").innerHTML = vm.time;
 
             } else {
-                if (vm.timeSelected.finalTime.isValid == false && vm.commonarea.maximunHours !== 0) {
-                    toastr["error"]("Debe seleccionar una hora final posterior a la hora anterior");
+
+                if (vm.commonarea.maximunHours !== 0) {
+                    if(vm.timeSelected.finalTime.isValid == false){
+                        Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+                    }else{
+                        Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
+                    }
+
                 } else {
-                    toastr["error"]("Las horas seleccionadas se encuentran ocupadas para reservar.")
+                    Modal.toast("Las horas seleccionadas se encuentran ocupadas para reservar.")
                 }
 
             }
 
         };
-        vm.validateReservationCharge = function(commonArea) {
-            var s = commonArea.reservationCharge;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if (invalido == 0) {
-                commonArea.reservationChargeValida = true;
-            } else {
-                commonArea.reservationChargeValida = false
-            }
-        }
-
-        vm.validateDevolutionAmmount = function(commonArea) {
-            var s = commonArea.devolutionAmmount;
-            var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
-
-            var invalido = 0;
-            angular.forEach(caracteres, function(val, index) {
-                if (s != undefined) {
-                    for (var i = 0; i < s.length; i++) {
-                        if (s.charAt(i).toUpperCase() == val.toUpperCase() || s == undefined) {
-                            invalido++;
-                        }
-                    }
-                }
-            })
-            if (invalido == 0) {
-                commonArea.devolutionAmmountValida = true;
-            } else {
-                commonArea.devolutionAmmountValida = false
-            }
-        }
-        vm.datePickerOpenStatus.date = false;
-        vm.datePickerOpenStatus.paymentDate = false;
-        vm.datePickerOpenStatus.expirationDate = false;
 
 
     }

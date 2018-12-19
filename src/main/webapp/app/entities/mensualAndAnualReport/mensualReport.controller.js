@@ -5,13 +5,14 @@
         .module('aditumApp')
         .controller('MensualReportController', MensualReportController);
 
-    MensualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany'];
+    MensualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function MensualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany) {
+    function MensualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
 
         var vm = this;
         vm.datePickerOpenStatus = {};
-
+        $rootScope.mainTitle = "Reporte mensual";
+        vm.isReady = false;
         vm.openCalendar = openCalendar;
         var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
         var firstMonthDay = new Date(y1, m1, 1);
@@ -81,7 +82,7 @@
                         vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
 
                     } else {
-                        toastr["error"]("No existen un presupuesto del 2018 registrado.");
+                        Modal.toast("No existen un presupuesto del 2018 registrado.");
                     }
 
                 });
@@ -94,10 +95,7 @@
             vm.allEgressPercentageQuantity = data.mensualEgressReport.fixedCostsPercentage + data.mensualEgressReport.variableCostsPercentage + data.mensualEgressReport.otherCostsPercentage
             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualEgressReport.allEgressCategoriesTotal;
             vm.superHabitPercentage = 100 - vm.allEgressPercentageQuantity;
-            $("#loadingIcon2").fadeOut(0);
-            setTimeout(function () {
-                $("#reportResults").fadeIn(500);
-            }, 200)
+            vm.isReady = true;
         }
 
         vm.expand = function () {
