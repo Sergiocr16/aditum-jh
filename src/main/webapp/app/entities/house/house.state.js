@@ -530,35 +530,7 @@
                         }]
                     }
 
-                })
-            .state('house.delete', {
-                parent: 'house',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/house/house-delete-dialog.html',
-                        controller: 'HouseDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['House', function(House) {
-                                return House.get({
-                                    id: $stateParams.id
-                                }).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('house', null, {
-                            reload: 'house'
-                        });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
-            });
+                });
     }
 
 })();

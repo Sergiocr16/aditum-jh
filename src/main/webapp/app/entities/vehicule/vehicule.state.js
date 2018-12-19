@@ -283,33 +283,7 @@
                         }]
                     }
 
-          })
-
-
-        .state('vehicule.delete', {
-            parent: 'vehicule',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_ADMIN','ROLE_MANAGER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/vehicule/vehicule-delete-dialog.html',
-                    controller: 'VehiculeDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Vehicule', function(Vehicule) {
-                            return Vehicule.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('vehicule', null, { reload: 'vehicule' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        });
+          });
     }
 
 })();

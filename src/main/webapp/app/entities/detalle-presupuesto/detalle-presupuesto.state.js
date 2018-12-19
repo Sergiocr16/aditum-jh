@@ -9,28 +9,6 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
-        .state('detalle-presupuesto', {
-            parent: 'entity',
-            url: '/detalle-presupuesto',
-            data: {
-                authorities: ['ROLE_USER'],
-                pageTitle: 'aditumApp.detallePresupuesto.home.title'
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/detalle-presupuesto/detalle-presupuestos.html',
-                    controller: 'DetallePresupuestoController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('detallePresupuesto');
-                    $translatePartialLoader.addPart('global');
-                    return $translate.refresh();
-                }]
-            }
-        })
         .state('detalle-presupuesto-detail', {
             parent: 'detalle-presupuesto',
             url: '/detalle-presupuesto/{id}',
@@ -88,9 +66,9 @@
                 });
             }]
         })
-        .state('detalle-presupuesto.new', {
-            parent: 'detalle-presupuesto',
-            url: '/new',
+        .state('nuevoPresupuesto', {
+            parent: 'entity',
+            url: '/nuevo-presupuesto',
             data: {
                 authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
             },
@@ -121,7 +99,6 @@
                     return currentStateData;
                 }]
             }
-
         })
 
 //

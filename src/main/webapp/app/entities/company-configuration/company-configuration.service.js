@@ -21,10 +21,10 @@
                 }
             }
             ,'getByCompanyId': {
-            method: 'GET',
+                method: 'GET',
                 url: 'api/getByCompanyId',
                 isArray: true
-        },
+            },
             'update': { method:'PUT' }
         });
     }
