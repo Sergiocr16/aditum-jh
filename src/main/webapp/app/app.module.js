@@ -12,24 +12,17 @@
             'ngCacheBuster',
             'ngFileUpload',
             'ui.bootstrap',
-            'ui.bootstrap.datetimepicker',
             'ui.router',
             'infinite-scroll',
-            // jhipster-needle-angularjs-add-module JHipster will add new module here
-            'angular-loading-bar',
             'cloudinary',
             'pdf',
             'firebase',
-            // 'ngNotify',
             'angularjs-dropdown-multiselect',
-            'angular-popover',
-            'ngPopover',
             'summernote',
             'ngMaterial',
             'ngMessages',
             'ngSanitize',
-            'mdColorPicker',
-            'ui.calendar'
+            'mdColorPicker'
         ])
         .run(run);
 
