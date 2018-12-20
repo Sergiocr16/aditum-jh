@@ -5,17 +5,17 @@
         .module('aditumApp')
         .config(stateConfig);
 
-    // stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
-    stateConfig.$inject = ['$stateProvider'];
+    stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
+    // stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {
-        // $mdDateLocaleProvider.formatDate = function(date) {
-        //     return date ? moment(date).format('DD-MM-YYYY'): '';
-        // };
-        // $mdThemingProvider.theme('default')
-        //     .primaryPalette('teal')
-        //     .accentPalette('orange');
-        // $mdAriaProvider.disableWarnings();
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return date ? moment(date).format('DD-MM-YYYY'): '';
+        };
+        $mdThemingProvider.theme('default')
+            .primaryPalette('teal')
+            .accentPalette('orange');
+        $mdAriaProvider.disableWarnings();
 
         $stateProvider.state('app', {
             abstract: true,

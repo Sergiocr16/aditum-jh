@@ -15,20 +15,20 @@
             'ui.router',
             'infinite-scroll',
             'cloudinary',
-            'pdf',
             'firebase',
             'angularjs-dropdown-multiselect',
             'summernote',
             'ngMaterial',
             'ngMessages',
             'ngSanitize',
-            'mdColorPicker'
+            'mdColorPicker',
+            'ui.calendar'
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope', '$window'];
+    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope'];
 
-    function run(stateHandler, translationHandler, $state, vm, $window) {
+    function run(stateHandler, translationHandler, $state, vm ) {
 
         stateHandler.initialize();
         translationHandler.initialize();
