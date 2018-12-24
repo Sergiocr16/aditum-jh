@@ -88,7 +88,7 @@
                 });
             }]
         })
-        .state('presupuesto.new', {
+        .state('presupuesto.edit', {
             parent: 'presupuesto',
             url: '/new',
             data: {
@@ -114,31 +114,6 @@
                     $state.go('presupuesto', null, { reload: 'presupuesto' });
                 }, function() {
                     $state.go('presupuesto');
-                });
-            }]
-        })
-        .state('presupuesto.edit', {
-            parent: 'presupuesto',
-            url: '/{id}/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/presupuesto/presupuesto-dialog.html',
-                    controller: 'PresupuestoDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Presupuesto', function(Presupuesto) {
-                            return Presupuesto.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('presupuesto', null, { reload: 'presupuesto' });
-                }, function() {
-                    $state.go('^');
                 });
             }]
         })

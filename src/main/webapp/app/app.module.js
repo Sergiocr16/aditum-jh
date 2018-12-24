@@ -12,18 +12,11 @@
             'ngCacheBuster',
             'ngFileUpload',
             'ui.bootstrap',
-            'ui.bootstrap.datetimepicker',
             'ui.router',
             'infinite-scroll',
-            // jhipster-needle-angularjs-add-module JHipster will add new module here
-            'angular-loading-bar',
             'cloudinary',
-            'pdf',
             'firebase',
-            // 'ngNotify',
             'angularjs-dropdown-multiselect',
-            'angular-popover',
-            'ngPopover',
             'summernote',
             'ngMaterial',
             'ngMessages',
@@ -33,9 +26,9 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope', '$window'];
+    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope'];
 
-    function run(stateHandler, translationHandler, $state, vm, $window) {
+    function run(stateHandler, translationHandler, $state, vm ) {
 
         stateHandler.initialize();
         translationHandler.initialize();

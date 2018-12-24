@@ -324,31 +324,7 @@
                      return MultiCompany.getCurrentUserCompany()
                  }]
               }
-          })
-        .state('resident.delete', {
-            parent: 'resident',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/resident/resident-delete-dialog.html',
-                    controller: 'ResidentDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Resident', function(Resident) {
-                            return Resident.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('resident', null, { reload: 'resident' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        });
+          });
     }
 
 })();

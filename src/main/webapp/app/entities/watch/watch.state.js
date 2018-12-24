@@ -200,30 +200,6 @@
                     $state.go('^');
                 });
             }]
-        })
-        .state('turno.delete', {
-            parent: 'turno',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_MANAGER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/watch/watch-delete-dialog.html',
-                    controller: 'WatchDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Watch', function(Watch) {
-                            return Watch.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('turno', null, { reload: 'turno' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
         });
     }
 

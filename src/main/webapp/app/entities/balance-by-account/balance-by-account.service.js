@@ -22,16 +22,16 @@
                 }
             },
             'update': { method:'PUT' },
-             'findBetweenDatesByAccount':{
-                     method: 'GET',
-                     url: 'api/balance-by-account/between/:initial_time/:final_time/byAccount/:accountId',
-                     isArray: true,
-                     params:{
-                          initial_time:'@initial_time',
-                          final_time: '@final_time',
-                          accountId: '@accountId'
+            'findBetweenDatesByAccount':{
+                method: 'GET',
+                url: 'api/balance-by-account/between/:initial_time/:final_time/byAccount/:accountId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    accountId: '@accountId'
                 }
-             }
+            }
         });
     }
 })();
