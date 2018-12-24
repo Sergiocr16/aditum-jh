@@ -58,21 +58,6 @@
                 companyUser: ['MultiCompany', function (MultiCompany) {
                     return MultiCompany.getCurrentUserCompany()
                 }],
-                globalCompanyId: ['CommonMethods', '$localStorage', 'Auth', '$rootScope', '$state', function (CommonMethods, $localStorage, Auth, $rootScope, $state) {
-                    if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
-                        return CommonMethods.decryptIdUrl($localStorage.companyId)
-                    } else {
-                        Auth.logout();
-                        $rootScope.companyUser = undefined;
-                        $localStorage.companyId = undefined;
-                        $state.go('home');
-                        $rootScope.menu = false;
-                        $rootScope.companyId = undefined;
-                        $rootScope.showLogin = true;
-                        $rootScope.inicieSesion = false;
-                        return null;
-                    }
-                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
                 }]
