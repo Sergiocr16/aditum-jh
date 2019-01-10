@@ -12,7 +12,7 @@
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m - 6, 1);
-        var lastDay = new Date(y, m + 2, 0);
+        var lastDay = new Date(y, m + 6, 0);
         vm.searchType = 1;
         vm.isReady = false;
         vm.expading = false;
@@ -172,6 +172,7 @@
                     }
                 });
                 vm.accountStatusItems = data;
+                console.log(data)
                 vm.isReady = true;
             }
 
