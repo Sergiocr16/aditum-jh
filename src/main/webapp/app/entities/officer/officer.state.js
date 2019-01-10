@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/officer?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD']
                 },
                 views: {
                     'content@': {
@@ -95,7 +95,7 @@
                 parent: 'officer',
                 url: '/{id}/details',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH', 'ROLE_JD']
                 },
                 views: {
                     'content@': {

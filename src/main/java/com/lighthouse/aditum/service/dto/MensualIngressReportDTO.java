@@ -4,11 +4,14 @@ import com.lighthouse.aditum.service.PresupuestoService;
 import org.springframework.data.domain.Page;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MensualIngressReportDTO implements Serializable {
-
+    private Locale locale = new Locale("es", "CR");
     private List<SumChargeDTO> maintenanceIngress;
     private List<SumChargeDTO> extraOrdinaryIngress;
     private List<SumChargeDTO> commonAreasIngress;
@@ -18,6 +21,12 @@ public class MensualIngressReportDTO implements Serializable {
     private double extraordinaryIngressTotal = 0;
     private double commonAreasIngressTotal = 0;
     private double otherIngressTotal = 0;
+
+    private String maintenanceIngressTotalFormatted = "0";
+    private String extraordinaryIngressTotalFormatted = "0";
+    private String commonAreasIngressTotalFormatted = "0";
+    private String otherIngressTotalFormatted  = "0";
+
 
     private double maintenanceIngressPercentage = 0;
     private double extraordinaryIngressPercentage = 0;
@@ -31,6 +40,13 @@ public class MensualIngressReportDTO implements Serializable {
 
     private double totalBudget = 0;
 
+    private String maintenanceBudgetFormatted = "0";
+    private String extraordinaryBudgetFormatted = "0";
+    private String commonAreasBudgetFormatted = "0";
+    private String otherBudgetFormatted = "0";
+
+    private String totalBudgetFormatted = "0";
+
     private double maintenanceBudgetDiference = 0;
     private double extraordinaryBudgetDiference = 0;
     private double commonAreasBudgetDiference = 0;
@@ -38,6 +54,18 @@ public class MensualIngressReportDTO implements Serializable {
     private double totalBudgetDiference = 0;
 
     private double allIngressCategoriesTotal = 0;
+
+    private String maintenanceBudgetDiferenceFormatted = "0";
+    private String extraordinaryBudgetDiferenceFormatted = "0";
+    private String commonAreasBudgetDiferenceFormatted = "0";
+    private String otherBudgetDiferenceFormatted = "0";
+    private String totalBudgetDiferenceFormatted = "0";
+
+    private String allIngressCategoriesTotalFormatted = "0";
+
+     public MensualIngressReportDTO(){
+
+     }
 
     public List<SumChargeDTO> getSumChargeIngress(List<ChargeDTO> ingress) {
         List<SumChargeDTO> finalList = new ArrayList<>();
@@ -93,6 +121,7 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setMaintenanceIngressTotal(double maintenanceIngressTotal) {
         this.maintenanceIngressTotal = maintenanceIngressTotal;
+        this.setMaintenanceIngressTotalFormatted(formatMoney(maintenanceIngressTotal));
     }
 
     public double getExtraordinaryIngressTotal() {
@@ -101,6 +130,7 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setExtraordinaryIngressTotal(double extraordinaryIngressTotal) {
         this.extraordinaryIngressTotal = extraordinaryIngressTotal;
+        this.setExtraordinaryIngressTotalFormatted(formatMoney(extraordinaryIngressTotal));
     }
 
     public double getCommonAreasIngressTotal() {
@@ -109,6 +139,7 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setCommonAreasIngressTotal(double commonAreasIngressTotal) {
         this.commonAreasIngressTotal = commonAreasIngressTotal;
+        this.setCommonAreasIngressTotalFormatted(formatMoney(commonAreasIngressTotal));
     }
 
     public double getOtherIngressTotal() {
@@ -116,10 +147,16 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setOtherIngressTotal(double otherIngressTotal) {
-        this.otherIngressTotal = otherIngressTotal;
+         this.otherIngressTotal = otherIngressTotal;
+        this.setOtherIngressTotalFormatted(formatMoney(otherIngressTotal));
     }
 
-
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
+    }
 
 
     public double getAllIngressCategoriesTotal() {
@@ -129,6 +166,7 @@ public class MensualIngressReportDTO implements Serializable {
     public void setAllIngressCategoriesTotal() {
         double totalIngress = this.getMaintenanceIngressTotal() + this.getExtraordinaryIngressTotal() + this.getCommonAreasIngressTotal() + this.getOtherIngressTotal();
         this.allIngressCategoriesTotal = totalIngress;
+        this.setAllIngressCategoriesTotalFormatted(formatMoney(totalIngress));
     }
 
     public void setIngressCategoryTotal(List<SumChargeDTO> list, int type) {
@@ -183,7 +221,8 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setMaintenanceBudget(double maintenanceBudget) {
-        this.maintenanceBudget = maintenanceBudget;
+         this.maintenanceBudget = maintenanceBudget;
+         this.setMaintenanceBudgetFormatted(formatMoney(maintenanceBudget));
     }
 
     public double getExtraordinaryBudget() {
@@ -191,7 +230,8 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setExtraordinaryBudget(double extraordinaryBudget) {
-        this.extraordinaryBudget = extraordinaryBudget;
+         this.extraordinaryBudget = extraordinaryBudget;
+        this.setExtraordinaryBudgetFormatted(formatMoney(extraordinaryBudget));
     }
 
     public double getCommonAreasBudget() {
@@ -199,7 +239,8 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setCommonAreasBudget(double commonAreasBudget) {
-        this.commonAreasBudget = commonAreasBudget;
+         this.commonAreasBudget = commonAreasBudget;
+         this.setCommonAreasBudgetFormatted(formatMoney(commonAreasBudget));
     }
 
     public double getOtherBudget() {
@@ -207,7 +248,8 @@ public class MensualIngressReportDTO implements Serializable {
     }
 
     public void setOtherBudget(double otherBudget) {
-        this.otherBudget = otherBudget;
+         this.otherBudget = otherBudget;
+         this.setOtherBudgetFormatted(formatMoney(otherBudget));
     }
 
     public double getMaintenanceIngressPercentage() {
@@ -248,6 +290,7 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setAllIngressCategoriesBudgetTotal() {
         this.totalBudget = this.getOtherBudget() + this.getMaintenanceBudget() + this.getCommonAreasBudget() + this.getExtraordinaryBudget();
+        this.setTotalBudgetFormatted(formatMoney(this.totalBudget));
         this.setCategoriesBudgetDiference();
     }
     public void setCategoriesBudgetDiference() {
@@ -256,6 +299,16 @@ public class MensualIngressReportDTO implements Serializable {
         this.setCommonAreasBudgetDiference(this.getCommonAreasIngressTotal() - this.getCommonAreasBudget());
         this.setOtherBudgetDiference(this.getOtherIngressTotal() - this.getOtherBudget());
         this.setTotalBudgetDiference( this.getAllIngressCategoriesTotal() - this.getTotalBudget());
+
+        this.setMaintenanceBudgetDiferenceFormatted(formatMoney(this.getMaintenanceBudgetDiference()));
+        this.setExtraordinaryBudgetDiferenceFormatted(formatMoney(this.getExtraordinaryBudgetDiference()));
+        this.setCommonAreasBudgetDiferenceFormatted(formatMoney(this.getCommonAreasBudgetDiference()));
+        this.setOtherBudgetDiferenceFormatted(formatMoney(this.getOtherBudgetDiference()));
+        this.setTotalBudgetDiferenceFormatted(formatMoney(this.getTotalBudgetDiference()));
+
+
+
+
     }
 
     public double getMaintenanceBudgetDiference() {
@@ -296,5 +349,125 @@ public class MensualIngressReportDTO implements Serializable {
 
     public void setTotalBudgetDiference(double totalBudgetDiference) {
         this.totalBudgetDiference = totalBudgetDiference;
+    }
+
+    public String getMaintenanceIngressTotalFormatted() {
+        return maintenanceIngressTotalFormatted;
+    }
+
+    public void setMaintenanceIngressTotalFormatted(String maintenanceIngressTotalFormatted) {
+        this.maintenanceIngressTotalFormatted = maintenanceIngressTotalFormatted;
+    }
+
+    public String getExtraordinaryIngressTotalFormatted() {
+        return extraordinaryIngressTotalFormatted;
+    }
+
+    public void setExtraordinaryIngressTotalFormatted(String extraordinaryIngressTotalFormatted) {
+        this.extraordinaryIngressTotalFormatted = extraordinaryIngressTotalFormatted;
+    }
+
+    public String getCommonAreasIngressTotalFormatted() {
+        return commonAreasIngressTotalFormatted;
+    }
+
+    public void setCommonAreasIngressTotalFormatted(String commonAreasIngressTotalFormatted) {
+        this.commonAreasIngressTotalFormatted = commonAreasIngressTotalFormatted;
+    }
+
+    public String getOtherIngressTotalFormatted() {
+        return otherIngressTotalFormatted;
+    }
+
+    public void setOtherIngressTotalFormatted(String otherIngressTotalFormatted) {
+        this.otherIngressTotalFormatted = otherIngressTotalFormatted;
+    }
+
+    public String getMaintenanceBudgetFormatted() {
+        return maintenanceBudgetFormatted;
+    }
+
+    public void setMaintenanceBudgetFormatted(String maintenanceBudgetFormatted) {
+        this.maintenanceBudgetFormatted = maintenanceBudgetFormatted;
+    }
+
+    public String getExtraordinaryBudgetFormatted() {
+        return extraordinaryBudgetFormatted;
+    }
+
+    public void setExtraordinaryBudgetFormatted(String extraordinaryBudgetFormatted) {
+        this.extraordinaryBudgetFormatted = extraordinaryBudgetFormatted;
+    }
+
+    public String getCommonAreasBudgetFormatted() {
+        return commonAreasBudgetFormatted;
+    }
+
+    public void setCommonAreasBudgetFormatted(String commonAreasBudgetFormatted) {
+        this.commonAreasBudgetFormatted = commonAreasBudgetFormatted;
+    }
+
+    public String getOtherBudgetFormatted() {
+        return otherBudgetFormatted;
+    }
+
+    public void setOtherBudgetFormatted(String otherBudgetFormatted) {
+        this.otherBudgetFormatted = otherBudgetFormatted;
+    }
+
+    public String getTotalBudgetFormatted() {
+        return totalBudgetFormatted;
+    }
+
+    public void setTotalBudgetFormatted(String totalBudgetFormatted) {
+        this.totalBudgetFormatted = totalBudgetFormatted;
+    }
+
+    public String getMaintenanceBudgetDiferenceFormatted() {
+        return maintenanceBudgetDiferenceFormatted;
+    }
+
+    public void setMaintenanceBudgetDiferenceFormatted(String maintenanceBudgetDiferenceFormatted) {
+        this.maintenanceBudgetDiferenceFormatted = maintenanceBudgetDiferenceFormatted;
+    }
+
+    public String getExtraordinaryBudgetDiferenceFormatted() {
+        return extraordinaryBudgetDiferenceFormatted;
+    }
+
+    public void setExtraordinaryBudgetDiferenceFormatted(String extraordinaryBudgetDiferenceFormatted) {
+        this.extraordinaryBudgetDiferenceFormatted = extraordinaryBudgetDiferenceFormatted;
+    }
+
+    public String getCommonAreasBudgetDiferenceFormatted() {
+        return commonAreasBudgetDiferenceFormatted;
+    }
+
+    public void setCommonAreasBudgetDiferenceFormatted(String commonAreasBudgetDiferenceFormatted) {
+        this.commonAreasBudgetDiferenceFormatted = commonAreasBudgetDiferenceFormatted;
+    }
+
+    public String getOtherBudgetDiferenceFormatted() {
+        return otherBudgetDiferenceFormatted;
+    }
+
+    public void setOtherBudgetDiferenceFormatted(String otherBudgetDiferenceFormatted) {
+        this.otherBudgetDiferenceFormatted = otherBudgetDiferenceFormatted;
+    }
+
+    public String getTotalBudgetDiferenceFormatted() {
+        return totalBudgetDiferenceFormatted;
+    }
+
+    public void setTotalBudgetDiferenceFormatted(String totalBudgetDiferenceFormatted) {
+        this.totalBudgetDiferenceFormatted = totalBudgetDiferenceFormatted;
+    }
+
+    public String getAllIngressCategoriesTotalFormatted() {
+        return allIngressCategoriesTotalFormatted;
+    }
+
+    public void setAllIngressCategoriesTotalFormatted(String allIngressCategoriesTotalFormatted) {
+        this.allIngressCategoriesTotalFormatted = allIngressCategoriesTotalFormatted;
     }
 }

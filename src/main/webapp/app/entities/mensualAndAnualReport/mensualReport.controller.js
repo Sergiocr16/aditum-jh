@@ -10,10 +10,9 @@
     function MensualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
 
         var vm = this;
-        vm.datePickerOpenStatus = {};
+
         $rootScope.mainTitle = "Reporte mensual";
         vm.isReady = false;
-        vm.openCalendar = openCalendar;
         var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
         var firstMonthDay = new Date(y1, m1, 1);
         vm.isShowingMaintenanceDetail = false;
@@ -32,6 +31,33 @@
         };
         vm.fechaInicio = vm.dates.initial_time;
         vm.fechaFin = vm.dates.final_time;
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false
+        };
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
+
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo estado de resultados"
+            })
+        };
 
         vm.loadAll = function () {
             if (vm.mensualReportPresupuesto) {
@@ -50,6 +76,12 @@
             final_balance_time.setYear(vm.dates.initial_time.getFullYear());
             var date = vm.dates.initial_time, y = date.getFullYear(), m = date.getMonth();
             vm.firstMonthDay = new Date(y, m, 1);
+
+            vm.firstMonthDayFormatted = moment(vm.firstMonthDay).format()+"";
+            vm.finalBalanceTimeFormatted = moment(final_balance_time).format()+"";
+            vm.initialTimeFormatted = moment(vm.dates.initial_time).format()+"";
+            vm.FinalTimeFormatted = moment(vm.dates.final_time).format()+"";
+            vm.companyId =  globalCompany.getId();
             MensualAndAnualReport.query({
                 first_month_day: moment(vm.firstMonthDay).format(),
                 final_balance_time: moment(final_balance_time).format(),
@@ -61,7 +93,7 @@
 
             }, onSuccess, onError);
 
-        }
+        };
 
         vm.isFinite = function (percentage) {
             return isFinite(percentage);
@@ -69,6 +101,8 @@
 
         function onSuccess(data, headers) {
             vm.report = data;
+            vm.superObject = vm.firstMonthDayFormatted +'}'+vm.finalBalanceTimeFormatted+'}'+vm.initialTimeFormatted+'}'+vm.FinalTimeFormatted+'}'+vm.companyId+'}'+vm.withPresupuesto;
+            vm.path = '/api/mensualReport/file/' + vm.superObject;
             vm.initialDateBalance = vm.dates.initial_time;
             vm.fechaInicio = vm.dates.initial_time;
             vm.fechaFin = vm.dates.final_time;
@@ -82,7 +116,7 @@
                         vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
 
                     } else {
-                        Modal.toast("No existen un presupuesto del 2018 registrado.");
+                        Modal.toast("No existe un presupuesto de este año registrado.");
                     }
 
                 });
@@ -96,6 +130,7 @@
             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualEgressReport.allEgressCategoriesTotal;
             vm.superHabitPercentage = 100 - vm.allEgressPercentageQuantity;
             vm.isReady = true;
+            vm.reportString = JSON.stringify(vm.report);
         }
 
         vm.expand = function () {
@@ -112,9 +147,6 @@
             AlertService.error(error.data.message);
         }
 
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
 
         vm.showBodyTableEgress = function (cost) {
 
@@ -154,29 +186,8 @@
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
             }
             return x1 + x2;
-        }
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    maxDate: vm.dates.final_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
+        };
 
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
         vm.loadAll();
 
 

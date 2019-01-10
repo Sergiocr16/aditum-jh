@@ -138,7 +138,7 @@
                         </md-list>
                     </div>
                 </div>
-                <form flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
+                <form has-authority="ROLE_MANAGER" flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
                     <div layout="row">
                         <img class="circle-material-image" ng-hide="currentUserImage"
                              src="content/images/nobody-image.jpg"/>

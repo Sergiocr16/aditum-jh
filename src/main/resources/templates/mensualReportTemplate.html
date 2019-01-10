@@ -1,10 +1,1181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
+    <title>Estado de resultados</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+            counter-increment: page;
+        }
+
+        @page {
+            @top-left {
+                content: element(header);
+            }
+        }
+
+        @page :first {
+            @top-left {
+                content: element(firstPageHeader);
+            }
+        }
+
+        div.footer {
+            position: running(footer);
+            text-align: right;
+        }
+
+        @page {
+            @bottom-right {
+                content: element(footer);
+            }
+        }
+
+        #pagenumber:before {
+            content: counter(page);
+        }
+
+        #pagecount:before {
+            content: counter(pages);
+        }
+
+        @media print {
+            .no-page-break {
+                margin-top: 25px;
+                page-break-inside: avoid;
+                -fs-keep-with-inline: keep;
+                -fs-table-paginate: paginate;
+            }
+        }
+
+        .collection-table table {
+            -fs-table-paginate: paginate;
+        }
+
+        div.header {
+            display: block;
+            text-align: left;
+            position: running(header);
+            font-size: 10px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        div.content {
+        }
+
+        div.footer {
+            counter-increment: page;
+            position: running(footer);
+            text-align: left;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        body {
+            margin: 0;
+            counter-reset: body;
+        }
+
+        .invoice-box {
+            margin: auto;
+            width: 27cm;
+            font-size: 14px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .collection-table table td {
+            border: 1px solid #EEEEEE;
+            border-spacing: 0;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eeeeee;
+            font-weight: bold;
+            font-size: 11px;
+            border-collapse: none !important;
+        }
+
+        .invoice-box table tr.bodyContent td {
+            font-size: 11px;
+            border-collapse: none !important;
+        }
+
+        .invoice-box table tr.bodyContentChild td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px;
+        }
+        .no-border-top{
+            border-top: 0px;
+        }
+        .no-border-right {
+            border-right: 0px !important;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+            width: 1000px;
+            font-size: 10px
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .condominio-name {
+            line-height: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            color: rgb(0, 150, 136);
+            margin-bottom: 0px;
+            margin-top: 35px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+
+        .font-green {
+            color: #269c4e;
+        }
+
+        .font-red {
+            color: #b42929;
+        }
+
+        .comprobante-title {
+            background-color: rgb(0, 150, 136);
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            margin-left: -5px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .padding-left-10 {
+            padding-left: 10px;
+        }
+
+        .padding-left-20 {
+            margin-left: 20px;
+        }
+    </style>
 </head>
 <body>
-$END$
+<div class='header'>
+    <span th:text="|${company.name}|" style="color: rgb(0, 150, 136);margin-left:1cm">company</span> <span> - Estado de resultados </span>
+    <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
+    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
+</div>
+<div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
+<div class="footer">
+    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
+                                                                    th:text="|${currentDate}|"></b>
+    <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
+    </h4>
+</div>
+<div class="invoice-box landscapePage content">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td>
+                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
+                                                                                  th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/>
+                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
+            </td>
+        </tr>
+        <tr class="details">
+            <td style="padding-top:12px">
+                <span class="comprobante-title">Estado de resultados</span>
+            </td>
+            <td style="padding-top:12px"></td>
+            <td style="text-align:right;padding-top:12px">
+                <span style="font-size:14px">Del <span th:text="|${initialTime}|"
+                                                       style="text-transform: lowercase"></span> al <span
+                    th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <div class="collection-table ">
+                    <table style=" border-spacing:0;border-collapse: collapse">
+                        <thead>
+                        <tr class="heading">
+                            <td width="50%">
+                                <span class="padding-left-10">INGRESOS </span>
+                            </td>
+                            <td width="12%" class="text-center">
+                                CANTIDAD
+                            </td>
+                            <td width="12%" class="text-center">
+                                %
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                PRESUPUESTO
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                DIFERENCIA
+                            </td>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:if="${showMaintenanceIngress!=false}" class="bodyContent ">
+                            <td class="no-border-right bold">
+                                <span class="padding-left-10">MANTENIMIENTO</span>
+                            </td>
+                            <td class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.maintenanceIngressTotalFormatted}|"></span>
+                            </td>
+                            <td  class="text-center bold ">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.maintenanceIngressPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.maintenanceBudgetDiference>0 and showFields!=false}"
+                                class="text-center bold  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-green"
+                                      th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualIngressReport.maintenanceBudgetDiference and showFields!=false}"
+                                class="text-center bold  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-red"
+                                      th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.maintenanceBudgetDiference==0 and showFields!=false} "
+                                class="text-center bold  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span
+                                      th:text="|${mensualDTO.mensualIngressReport.maintenanceBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tbody>
+                        <tr class="bodyContentChild"
+                            th:each="item : ${mensualDTO.mensualIngressReport.maintenanceIngress}">
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center ">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td  th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td  th:if="${showFields!=false}" ></td>
+                        </tr>
+                        </tbody>
+
+                        <tbody style="border-top: 0px;">
+                        <tr th:if="${showExtraordinaryIngress!=false}" class="bodyContentChild ">
+                            <td class="no-border-right bold">
+                                <span class="padding-left-10">EXTRAORDINARIAS</span>
+                            </td>
+                            <td class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.extraordinaryIngressTotalFormatted}|"></span>
+                            </td>
+                            <td class="text-center bold">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.extraordinaryIngressPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.extraordinaryBudgetDiference>0 and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-green"
+                                      th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualIngressReport.extraordinaryBudgetDiference and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-red"
+                                      th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.extraordinaryBudgetDiference==0 and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span
+                                      th:text="|${mensualDTO.mensualIngressReport.extraordinaryBudgetDiferenceFormatted}|"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tbody>
+                        <tr class="bodyContentChild"
+                            th:each="item : ${mensualDTO.mensualIngressReport.extraOrdinaryIngress}">
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center  ">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
+                        </tr>
+                        </tbody>
+
+                        <tbody style="border-top: 0px;">
+                        <tr th:if="${showCommonAreaIngress!=false}" class="bodyContentChild ">
+                            <td class="no-border-right bold">
+                                <span class="padding-left-10">ÁREAS COMUNES</span>
+                            </td>
+                            <td class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.commonAreasIngressTotalFormatted}|"></span>
+                            </td>
+                            <td class="text-center bold">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.commonAreasIngressPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.commonAreasBudgetDiference>0 and showFields!=false}"
+                                class="text-center bold  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-green"
+                                      th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualIngressReport.commonAreasBudgetDiference and showFields!=false}"
+                                class="text-center bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-red"
+                                      th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.commonAreasBudgetDiference==0 and showFields!=false}"
+                                class="text-center bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class=""
+                                      th:text="|${mensualDTO.mensualIngressReport.commonAreasBudgetDiferenceFormatted}|"></span>
+                            </td>
+
+                        </tr>
+                        </tbody>
+
+                        <tbody>
+                        <tr class="bodyContentChild"
+                            th:each="item : ${mensualDTO.mensualIngressReport.commonAreasIngress}">
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
+                        </tr>
+                        </tbody>
+                        <tbody style="border-top: 0px;">
+                        <tr th:if="${showOtherIngress!=false}" class="bodyContentChild ">
+                            <td class="no-border-right bold">
+                                <span class="padding-left-10">OTROS INGRESOS</span>
+                            </td>
+                            <td class="text-center bold no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.otherIngressTotalFormatted}|"></span>
+                            </td>
+                            <td class="text-center bold no-border-right">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.otherIngressPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.otherBudgetFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.otherBudgetDiference>0 and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-green"
+                                      th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualIngressReport.otherBudgetDiference and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-red"
+                                      th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.otherBudgetDiference==0 and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span
+                                      th:text="|${mensualDTO.mensualIngressReport.otherBudgetDiferenceFormatted}|"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tbody>
+                        <tr class="bodyContentChild" th:each="item : ${mensualDTO.mensualIngressReport.otherIngress}">
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center no-border-right">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td class="no-border-right"></td>
+                            <td></td>
+                        </tr>
+                        </tbody>
+                        <tbody style="border-top: 0px;">
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right bold text-right font-green">
+                                <span class="padding-left-10 text-right">TOTAL INGRESOS:</span>
+                            </td>
+                            <td class="text-center bold no-border-right font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.allIngressCategoriesTotalFormatted}|"></span>
+                            </td>
+                            <td class="text-center bold  font-green">
+                                <span>100.00%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold font-green ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.totalBudgetFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.totalBudgetDiference>0 and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-green"
+                                      th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualIngressReport.totalBudgetDiference and showFields!=false}"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span class="font-red"
+                                      th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${mensualDTO.mensualIngressReport.totalBudgetDiference==0 and showFields!=false }"
+                                class="text-center bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span
+                                      th:text="|${mensualDTO.mensualIngressReport.totalBudgetDiferenceFormatted}|"></span>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0">
+
+        <tr>
+            <td colspan="3">
+                <div class="collection-table ">
+                    <table style=" border-spacing:0;border-collapse: collapse">
+                        <thead>
+                        <tr class="heading">
+                            <td width="50%">
+                                <span class="padding-left-10">GASTOS FIJOS </span>
+                            </td>
+                            <td width="12%" class="text-center">
+                                CANTIDAD
+                            </td>
+                            <td width="12%" class="text-center">
+                                %
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                PRESUPUESTO
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                DIFERENCIA
+                            </td>
+
+                        </tr>
+                        </thead>
+                        <tbody th:each="fixedCost : ${mensualDTO.mensualEgressReport.fixedCosts}">
+                        <tr class="bodyContentChild bold">
+                            <td class="no-border-right  uppercase">
+                                <span class="padding-left-10 " th:text="|${fixedCost.category}|"></span>
+                            </td>
+
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${fixedCost.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center   ">
+                                <span th:text="${#numbers.formatDecimal(fixedCost.percentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${fixedCost.budgetFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${fixedCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>fixedCost.budgetDiference and showFields!=false}" class="text-center  font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${fixedCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${fixedCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild " th:each="item : ${fixedCost.egressList}">
+
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
+                        </tr>
+
+                        </tbody>
+                        <tbody>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
+                            <td class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsTotalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold font-red">
+                                <span
+                                    th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.fixedCostsPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetTotalFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.fixedCostsBudgetDiference>0 and showFields!=false}"
+                                class="text-center  bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualEgressReport.fixedCostsBudgetDiference and showFields!=false}"
+                                class="text-center  bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.fixedCostsBudgetDiference==0 and showFields!=false}"
+                                class="text-center  bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.fixedCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <table cellpadding="0" cellspacing="0">
+
+        <tr>
+            <td colspan="3">
+                <div class="collection-table ">
+
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-top: 10px!important;">
+                        <thead>
+                        <tr class="heading">
+                            <td width="50%">
+                                <span class="padding-left-10">GASTOS VARIABLES </span>
+                            </td>
+                            <td width="12%" class="text-center">
+                                CANTIDAD
+                            </td>
+                            <td width="12%" class="text-center">
+                                %
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                PRESUPUESTO
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                DIFERENCIA
+                            </td>
+
+                        </tr>
+                        </thead>
+                        <tbody th:each="variableCost: ${mensualDTO.mensualEgressReport.variableCosts}">
+                        <tr class="bodyContentChild bold">
+                            <td class="no-border-right  uppercase">
+                                <span class="padding-left-10 " th:text="|${variableCost.category}|"></span>
+                            </td>
+
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${variableCost.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center  ">
+                                <span th:text="${#numbers.formatDecimal(variableCost.percentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${variableCost.budgetFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${variableCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>variableCost.budgetDiference and showFields!=false}" class="text-center  font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${variableCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${variableCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild " th:each="item : ${variableCost.egressList}">
+
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
+                        </tr>
+
+                        </tbody>
+                        <tbody>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
+                            <td class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.variableCostsTotalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold font-red">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.variableCostsPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetTotalFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.variableCostsBudgetDiference>0 and showFields!=false}"
+                                class="text-center  bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualEgressReport.variableCostsBudgetDiference and showFields!=false}"
+                                class="text-center  bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.variableCostsBudgetDiference==0 and showFields!=false}"
+                                class="text-center  bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.variableCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0">
+
+        <tr>
+            <td colspan="3">
+                <div class="collection-table ">
+
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-top: 10px!important;">
+                        <thead>
+                        <tr class="heading">
+                            <td width="50%">
+                                <span class="padding-left-10">OTROS GASTOS </span>
+                            </td>
+                            <td width="12%" class="text-center">
+                                CANTIDAD
+                            </td>
+                            <td width="12%" class="text-center">
+                                %
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                PRESUPUESTO
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                DIFERENCIA
+                            </td>
+
+                        </tr>
+                        </thead>
+                        <tbody th:each="otherCost : ${mensualDTO.mensualEgressReport.otherCosts}">
+                        <tr class="bodyContentChild bold">
+                            <td class="no-border-right  uppercase">
+                                <span class="padding-left-10 " th:text="|${otherCost.category}|"></span>
+                            </td>
+
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${otherCost.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center  ">
+                                <span th:text="${#numbers.formatDecimal(otherCost.percentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${otherCost.budgetFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${otherCost.budgetDiference>0 and showFields!=false}" class="text-center  font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${0>otherCost.budgetDiference and showFields!=false}" class="text-center  font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+                            <td th:if="${otherCost.budgetDiference==0 and showFields!=false}" class="text-center  ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${otherCost.budgetDiferenceFormatted}|"></span>
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild " th:each="item : ${otherCost.egressList}">
+
+                            <td class="no-border-right"><span class="padding-left-20">- </span><span
+                                th:text="|${item.concept}|"></span></td>
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.totalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center">
+                                <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
+                        </tr>
+
+                        </tbody>
+                        <tbody>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
+                            <td class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.otherCostsTotalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold font-red">
+                                <span th:text="${#numbers.formatDecimal(mensualDTO.mensualEgressReport.otherCostsPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetTotalFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.otherCostsBudgetDiference>0 and showFields!=false}"
+                                class="text-center  bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>mensualDTO.mensualEgressReport.otherCostsBudgetDiference and showFields!=false}"
+                                class="text-center  bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${mensualDTO.mensualEgressReport.otherCostsBudgetDiference==0 and showFields!=false}"
+                                class="text-center  bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.otherCostsBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <table cellpadding="0" cellspacing="0">
+
+        <tr>
+            <td colspan="3">
+                <div class="collection-table ">
+
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-top: 10px!important;">
+                        <thead>
+                        <tr class="heading">
+                            <td width="50%">
+                                <span class="padding-left-10">RESUMEN </span>
+                            </td>
+                            <td width="12%" class="text-center">
+                                CANTIDAD
+                            </td>
+                            <td width="12%" class="text-center">
+                                %
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                PRESUPUESTO
+                            </td>
+                            <td th:if="${showFields!=false}" width="12%" class="text-center">
+                                DIFERENCIA
+                            </td>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="bodyContentChild bold">
+                            <td class="no-border-right  uppercase">
+                                <span class="padding-left-10 ">SALDO INICIAL AL <span th:text="|${initialTime}|" style="text-transform: uppercase"></span>:</span>
+                            </td>
+
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.totalInitialBalance}|"></span>
+
+                            </td>
+                            <td class="text-center "></td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right"></td>
+                            <td  th:if="${showFields!=false}" class="text-center "></td>
+
+                        </tr>
+                        <tr th:each="item : ${mensualDTO.mensualAndAnualAccount}" class="bodyContentChild ">
+                            <td class="no-border-right "><span class="padding-left-20">- </span>
+                                <span class=" " th:text="|${item.name}|"></span>
+                            </td>
+
+                            <td class="text-center no-border-right">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${item.inicialBalanceFormatted}|"></span>
+                            </td>
+                            <td class="text-center "></td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right"></td>
+                            <td  th:if="${showFields!=false}" class="text-center "></td>
+
+                        </tr>
+
+
+                        </tbody>
+                        <tbody>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right font-green bold"><span>TOTAL INGRESOS:</span></td>
+                            <td class="text-center no-border-right bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.allIngressCategoriesTotalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold">
+                                <span>100.00%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualIngressReport.totalBudgetFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${ingressBudgetDiference>0 and showFields!=false}"
+                                class="text-center  bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>ingressBudgetDiference and showFields!=false}"
+                                class="text-center  bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${ingressBudgetDiference==0 and showFields!=false}"
+                                class="text-center  bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${ingressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right font-red bold"><span>TOTAL EGRESOS:</span></td>
+                            <td class="text-center no-border-right bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.mensualEgressReport.allEgressCategoriesTotalFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold font-red">
+                                <span th:text="${#numbers.formatDecimal(allEgressPercentageQuantity, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${totalEgressBudgetFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${egressBudgetDiference>0 and showFields!=false}"
+                                class="text-center  bold font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>egressBudgetDiference and showFields!=false}"
+                                class="text-center  bold font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${egressBudgetDiference==0 and showFields!=false}"
+                                class="text-center  bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${egressBudgetDiferenceFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right  bold"><span>FLUJO <span th:if="${showFields!=false}"> / DÉFICIT-SUPERÁVIT</span>:</span></td>
+                            <td class="text-center no-border-right bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${mensualDTO.flujoFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center bold ">
+                                <span th:text="${#numbers.formatDecimal(superHabitPercentage, 0, 2)}"/><span>%</span>
+                            </td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold">
+
+                            </td>
+                            <td th:if="${superHabit>0 and showFields!=false}"
+                                class="text-center   font-green">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${superHabitFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${0>superHabit and showFields!=false}"
+                                class="text-center   font-red">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${superHabitFormatted}|"></span>
+
+                            </td>
+                            <td th:if="${superHabit==0 and showFields!=false}"
+                                class="text-center   ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${superHabitFormatted}|"></span>
+
+                            </td>
+
+                        </tr>
+                        <tr class="bodyContentChild ">
+                            <td class="no-border-right text-right  bold"><span>SALDO NETO DISPONIBLE: </span></td>
+                            <td class="text-center no-border-right bold ">
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${saldoNetoFormatted}|"></span>
+
+                            </td>
+                            <td class="text-center"></td>
+                            <td th:if="${showFields!=false}" class="text-center no-border-right bold"></td>
+                            <td th:if="${showFields!=false}"></td>
+
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

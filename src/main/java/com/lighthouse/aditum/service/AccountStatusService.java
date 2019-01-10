@@ -52,7 +52,7 @@ public class AccountStatusService {
     }
     private void setAccountStatusItem(Page<PaymentDTO> payments,Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO){
         for (int i = 0; i <charges.getContent().size() ; i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Double.parseDouble(charges.getContent().get(i).getAmmount()) ,0);
+            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Double.parseDouble(charges.getContent().get(i).getAmmount()) ,Double.parseDouble(charges.getContent().get(i).getSubcharge()) );
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i <payments.getContent().size() ; i++) {

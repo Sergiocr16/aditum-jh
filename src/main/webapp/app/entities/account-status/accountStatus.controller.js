@@ -24,7 +24,33 @@
             initial_time: firstDay,
             final_time: lastDay
         };
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false,
+        }
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
 
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo estado de resultados"
+            })
+        };
         loadAll();
         vm.findBootstrapEnvironment = function () {
             var envs = ['xs', 'sm', 'md', 'lg'];
@@ -121,12 +147,15 @@
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 resident_account: false,
-                today_time: moment(new Date()).format(),
+                today_time: moment(new Date()).format()
 
             }, onSuccess, onError);
 
 
-            function onSuccess(data, headers) {
+            function onSuccess(data) {
+                vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+false+'}'+moment(new Date()).format();
+                vm.path = '/api/accountStatus/file/' + vm.superObject;
+
                 vm.initial_time = vm.dates.initial_time
                 vm.final_time = vm.dates.final_time
                 var countPassedDate = 0;
@@ -141,7 +170,7 @@
                             countPassedDate++;
                         }
                     }
-                })
+                });
                 vm.accountStatusItems = data;
                 vm.isReady = true;
             }

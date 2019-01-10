@@ -1458,15 +1458,34 @@ div.scrollmenu a:hover {
 }
 
 .tableMaterialDesign table, .tableMaterialDesign th, .tableMaterialDesign td {
-    border: 1px solid #f2f2f2 !important;
+    border: 1px solid #f8f8f8 !important;
     padding: 15px !important;
     font-weight: 500;
     border-collapse: collapse;
 
 }
+.tableMaterialDesignResultStates table, .tableMaterialDesignResultStates th, .tableMaterialDesignResultStates td {
+    border: 1px solid #f4f4f4 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    border-collapse: collapse;
+
+}
+.tableMaterialDesignResultStatesWithPresupuestos table, .tableMaterialDesignResultStatesWithPresupuestos th, .tableMaterialDesignResultStatesWithPresupuestos td {
+    border: 1px solid #e6e6e6 !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    border-collapse: collapse;
+
+}
+
 
 .tableMaterialDesignResidents table, .tableMaterialDesignResidents th, .tableMaterialDesignResidents td {
-    border: 1px solid #f2f2f2 !important;
+    border: 1px solid #fafafa !important;
     padding-top: 15px !important;
     padding-bottom: 15px !important;
     padding-left: 5px !important;
@@ -1477,7 +1496,7 @@ div.scrollmenu a:hover {
 }
 
 .tableMaterialDesignAccountStatus table, .tableMaterialDesignAccountStatus th, .tableMaterialDesignAccountStatus td {
-    border: 1px solid #f2f2f2 !important;
+    border: 1px solid #f8f8f8 !important;
     padding: 7px !important;
     font-weight: 500;
     border-collapse: collapse;

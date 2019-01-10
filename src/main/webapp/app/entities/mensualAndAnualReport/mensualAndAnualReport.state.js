@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/budgetExecution',
             data: {
-                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_JD'],
             },
             views: {
                 'content@': {
@@ -26,7 +26,7 @@
       .state('budgetExecution.mensualReport', {
             url: '/mensualReport',
             data: {
-                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_JD'],
             },
             templateUrl: 'app/entities/mensualAndAnualReport/mensualReport.html',
             controller: 'MensualReportController',
@@ -36,7 +36,7 @@
        .state('budgetExecution.anualReport', {
                 url: '/anualReport',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_JD'],
                 },
                 templateUrl: 'app/entities/mensualAndAnualReport/anualReport.html',
                 controller: 'AnualReportController',

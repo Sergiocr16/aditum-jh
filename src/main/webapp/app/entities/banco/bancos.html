@@ -56,12 +56,9 @@
                 </table>
             </div>
         </div>
-        <div class="text-center" ng-show="vm.accountsQuantity>0" >
-            <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        </div>
-        <uib-pager ng-show="vm.accountsQuantity>0"  total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+
     </div>
-    <md-button ui-sref="banco.transferencia" style="position: fixed"
+    <md-button has-authority="ROLE_MANAGER" ui-sref="banco.transferencia" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Transferir fondos</md-tooltip>
         <md-icon class="white-color">compare_arrows</md-icon>

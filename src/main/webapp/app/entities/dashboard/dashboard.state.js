@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/dashboard',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
             views: {
                 'content@': {
@@ -27,7 +27,7 @@
             parent: 'dashboard',
             url: '/select',
             data: {
-                authorities: ['ROLE_MANAGER']
+                authorities: ['ROLE_MANAGER','ROLE_JD']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

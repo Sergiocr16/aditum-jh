@@ -39,6 +39,7 @@
 
 
         function onSaveSuccess() {
+            console.log(companyUser)
             bootbox.hideAll();
             loadAll();
         }
@@ -72,6 +73,7 @@
                 };
                 vm.announcements.push(data[i]);
             }
+            console.log(companyUser)
             vm.isReady = true;
         }
 

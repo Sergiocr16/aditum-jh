@@ -215,4 +215,39 @@
             </table>
         </div>
     </div>
+
 </div>
+
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.download()">
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>

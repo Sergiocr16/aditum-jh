@@ -60,9 +60,9 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD"></div>
     <section layout="row" flex="">
-        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
         </div>
  
         <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
@@ -70,7 +70,7 @@
         <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
-                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH">
+                    has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
             <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
                  ng-if="vm.isAuthenticated() !=true">
 
@@ -491,6 +491,18 @@
 <script src="app/entities/loginCode/insertLoginCode.controller.js"></script>
 
 <script src="app/entities/loginCode/createProfile.controller.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account-dialog.controller.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account-detail.controller.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account-delete-dialog.controller.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account.state.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account.service.js"></script>
+
+<script src="app/entities/junta-directiva-account/junta-directiva-account.controller.js"></script>
 
 <script src="app/entities/house/ws-house.service.js"></script>
 

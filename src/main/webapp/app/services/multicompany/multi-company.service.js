@@ -5,9 +5,9 @@
         .module('aditumApp')
         .service('MultiCompany', MultiCompany);
 
-    MultiCompany.$inject = ['Principal','AdminInfo','Resident','OfficerAccount','RHAccount','$rootScope'];
+    MultiCompany.$inject = ['Principal','AdminInfo','Resident','OfficerAccount','RHAccount','$rootScope','JuntaDirectivaAccount'];
 
-    function MultiCompany (Principal,AdminInfo,Resident,OfficerAccount, RHAccount, $rootScope) {
+    function MultiCompany (Principal,AdminInfo,Resident,OfficerAccount, RHAccount, $rootScope,JuntaDirectivaAccount) {
 
         var companyId;
         var service = {
@@ -39,6 +39,9 @@
                    case "ROLE_RH":
                       return isRH(account.id);
                    break;
+                    case "ROLE_JD":
+                        return isJD(account.id);
+                        break;
                 }
                 }
             })
@@ -63,6 +66,9 @@
         function isRH(accountId){
                 return RHAccount.findByUserId({id: accountId}).$promise
           }
+        function isJD(accountId){
+            return JuntaDirectivaAccount.findByUserId({id: accountId}).$promise
+        }
 
     }
 })();

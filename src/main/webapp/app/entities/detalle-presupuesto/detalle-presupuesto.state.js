@@ -92,7 +92,7 @@
             parent: 'detalle-presupuesto',
             url: '/new',
             data: {
-                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD']
             },
             views: {
                 'content@': {

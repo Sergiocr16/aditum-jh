@@ -9,7 +9,7 @@ public class AnualReportDTO {
     private List<EgressCategoryByMonthDTO> fixedCostEgress;
     private List<EgressCategoryByMonthDTO> variableCostEgress;
     private List<EgressCategoryByMonthDTO> otherCostEgress;
-    private List<String> flujoByMonth;
+    private List<Double> flujoByMonth;
     private List<String> initialBalanceByMonth;
     private List<String> realBalanceByMonth;
 
@@ -131,11 +131,11 @@ public class AnualReportDTO {
         this.allEgressAcumulado = this.getFixedCostsAcumulado() + this.getVariableCostsAcumulado() + this.getOtherCostsAcumulado();
     }
 
-    public List<String> getFlujoByMonth() {
+    public List<Double> getFlujoByMonth() {
         return flujoByMonth;
     }
 
-    public void setFlujoByMonth(List<String> flujoByMonth) {
+    public void setFlujoByMonth(List<Double> flujoByMonth) {
         this.flujoByMonth = flujoByMonth;
     }
 

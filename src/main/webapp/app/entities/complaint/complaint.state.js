@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/complaint',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.complaint.home.title'
                 },
                 views: {
@@ -60,7 +60,7 @@
                 parent: 'complaint',
                 url: '/{id}',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER'],
+                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_JD'],
                     pageTitle: 'aditumApp.complaint.detail.title'
                 },
                 views: {
