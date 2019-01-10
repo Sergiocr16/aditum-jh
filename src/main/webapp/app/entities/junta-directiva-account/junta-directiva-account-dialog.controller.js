@@ -16,7 +16,7 @@
         vm.companies = Company.query();
         vm.users = User.query();
         vm.isReady = false;
-        vm.passwordType = "password";
+        vm.class = "small-caption";
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -36,7 +36,6 @@
         function save() {
             vm.isSaving = true;
             if (vm.juntaDirectivaAccount.id !== null) {
-                vm.user.email = vm.juntaDirectivaAccount.email;
                 vm.user.login = vm.juntaDirectivaAccount.login;
                 vm.user.lastName = CommonMethods.encryptIdUrl(vm.juntaDirectivaAccount.password);
                 vm.user.contrasenna = vm.juntaDirectivaAccount.password;
@@ -49,7 +48,7 @@
                 vm.user.firstName = "Junta directiva " + vm.company.name;
                 vm.user.lastName = CommonMethods.encryptIdUrl(vm.juntaDirectivaAccount.password);
                 vm.user.contrasenna = vm.juntaDirectivaAccount.password;
-                vm.user.email = vm.juntaDirectivaAccount.email;
+                generateRandomEmail();
                 vm.user.activated = true;
                 vm.user.authorities = authorities;
                 vm.user.login = vm.juntaDirectivaAccount.login;
@@ -59,11 +58,10 @@
         }
 
         vm.showPassword = function () {
-            console.log(vm.passwordType)
-            if (vm.passwordType === "password") {
-                vm.passwordType = "text";
+            if (vm.class === "small-caption") {
+                vm.class = "";
             } else {
-                vm.passwordType = "password";
+                vm.class = "small-caption";
             }
 
         };
@@ -90,6 +88,12 @@
 
             }, onSaveError)
 
+        }
+
+        function generateRandomEmail() {
+            var number = Math.floor(Math.random() * 9000000000) + 1000000000;
+            vm.juntaDirectivaAccount.email = number + "@aditumcr.com";
+            vm.user.email = vm.juntaDirectivaAccount.email;
         }
 
         function onSaveUserSuccess(result) {

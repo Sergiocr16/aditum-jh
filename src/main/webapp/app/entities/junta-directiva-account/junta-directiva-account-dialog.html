@@ -25,26 +25,22 @@
             <div layout="row" layout-xs="column" >
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block">
-                        <label>Correo electrónico</label>
-                        <input required  ng-model="vm.juntaDirectivaAccount.email" type="email"
-                                required>
+                        <label>Usuario</label>
+                        <input required  ng-model="vm.juntaDirectivaAccount.login" type="text">
                     </md-input-container>
-                    <md-input-container class="md-block">
-                        <label>Contraseña</label>
-                        <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.juntaDirectivaAccount.password" type="{{vm.passwordType}}" autocomplete="off"
-                                maxlength="20" class="" required>
-                        <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
-                            <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
-                            </md-tooltip>
-                            remove_red_eye</i></md-icon>
-                    </md-input-container>
+
 
 
                 </div>
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block">
-                        <label>Usuario</label>
-                        <input required  ng-model="vm.juntaDirectivaAccount.login" type="text">
+                        <label>Contraseña</label>
+                        <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.juntaDirectivaAccount.password" type="text" autocomplete="off"
+                                maxlength="20" class="{{vm.class}} md-input" required>
+                        <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
+                            <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
+                            </md-tooltip>
+                            remove_red_eye</i></md-icon>
                     </md-input-container>
 
 

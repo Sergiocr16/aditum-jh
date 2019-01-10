@@ -1543,7 +1543,9 @@ div.scrollmenu a:hover {
 .note-toolbar {
     z-index: 50 !important;
 }
-
+.small-caption{
+    -webkit-text-security: disc;
+}
 .comments-button {
     outline: none;
     background-color: white;

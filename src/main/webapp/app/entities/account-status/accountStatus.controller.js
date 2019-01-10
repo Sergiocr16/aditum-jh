@@ -105,7 +105,6 @@
         $scope.$watch(function () {
             return $rootScope.houseSelected;
         }, function () {
-            vm.isReady = true;
             loadAll();
             vm.isEditing = false;
         });
@@ -172,8 +171,11 @@
                     }
                 });
                 vm.accountStatusItems = data;
-                console.log(data)
-                vm.isReady = true;
+
+                setTimeout(function () {
+                    vm.isReady = true;
+                },200);
+
             }
 
             vm.formatearNumero = function (nStr) {
