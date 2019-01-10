@@ -211,30 +211,6 @@
                         return currentStateData;
                     }]
                 }
-            })
-            .state('announcement.delete', {
-                parent: 'announcement',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_MANAGER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/announcement/announcement-delete-dialog.html',
-                        controller: 'AnnouncementDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['Announcement', function (Announcement) {
-                                return Announcement.get({id: $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function () {
-                        $state.go('announcement', null, {reload: 'announcement'});
-                    }, function () {
-                        $state.go('^');
-                    });
-                }]
             });
     }
 

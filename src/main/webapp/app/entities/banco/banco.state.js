@@ -263,30 +263,6 @@
                     $state.go('^');
                 });
             }]
-        })
-        .state('banco.delete', {
-            parent: 'banco',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/banco/banco-delete-dialog.html',
-                    controller: 'BancoDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Banco', function(Banco) {
-                            return Banco.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('banco', null, { reload: 'banco' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
         });
     }
 

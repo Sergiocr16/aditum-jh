@@ -22,10 +22,10 @@
             },
             'update': { method:'PUT' }
             ,'findSchedulesByCommonArea': {
-            method: 'GET',
+                method: 'GET',
                 url: 'api/schedules/byCommonArea/:commonAreaId',
                 isArray: true
-        }
+            }
         });
     }
 })();

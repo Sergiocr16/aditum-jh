@@ -202,30 +202,6 @@
                         $state.go('^');
                     });
                 }]
-            })
-            .state('complaint.delete', {
-                parent: 'complaint',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/complaint/complaint-delete-dialog.html',
-                        controller: 'ComplaintDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['Complaint', function (Complaint) {
-                                return Complaint.get({id: $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function () {
-                        $state.go('complaint', null, {reload: 'complaint'});
-                    }, function () {
-                        $state.go('^');
-                    });
-                }]
             });
     }
 

@@ -50,10 +50,8 @@
             if (vm.presupuestos.length >= 4) {
                 Modal.toast("Ya se crearon todos los presupuestos disponibles");
             } else {
-                $state.go('detalle-presupuesto.new');
+                $state.go('nuevoPresupuesto');
             }
-
-
         }
         vm.showBudgetEdit = function (budget) {
             $localStorage.budgetAction = 2;

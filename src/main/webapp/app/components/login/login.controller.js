@@ -5,26 +5,26 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'pdfDelegate', '$localStorage', 'CommonMethods','Modal'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods','Modal'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, pdfDelegate, $localStorage, CommonMethods, Modal) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal) {
 
-
-        angular.element(document).ready(function () {
-            $('body').removeClass("gray");
-            $('.carousel').fadeIn("slow");
-            $('.carousel').carousel({
-                intervals: 2000
-            });
-        });
+        //
+        // angular.element(document).ready(function () {
+        //     $('body').removeClass("gray");
+        //     $('.carousel').fadeIn("slow");
+        //     $('.carousel').carousel({
+        //         intervals: 2000
+        //     });
+        // });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
         vm.pdfUrl = 'content/manuals/manualusuario.pdf';
-        vm.loadNewFile = function (url) {
-            pdfDelegate
-                .$getByHandle('my-pdf-container')
-                .load(url);
-        };
+        // vm.loadNewFile = function (url) {
+        //     pdfDelegate
+        //         .$getByHandle('my-pdf-container')
+        //         .load(url);
+        // };
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;

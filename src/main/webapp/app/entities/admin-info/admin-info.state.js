@@ -183,30 +183,6 @@
                         $state.go('^');
                     });
                 }]
-            })
-            .state('admin-info.delete', {
-                parent: 'admin-info',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_ADMIN']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/admin-info/admin-info-delete-dialog.html',
-                        controller: 'AdminInfoDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['AdminInfo', function (AdminInfo) {
-                                return AdminInfo.get({id: $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function () {
-                        $state.go('admin-info', null, {reload: 'admin-info'});
-                    }, function () {
-                        $state.go('^');
-                    });
-                }]
             });
     }
 

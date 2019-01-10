@@ -345,32 +345,7 @@
 
                     });
                 }]
-            })
-
-        .state('company.delete', {
-            parent: 'company',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_ADMIN']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/company/company-delete-dialog.html',
-                    controller: 'CompanyDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['Company', function(Company) {
-                            return Company.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('^', null, { reload: '^' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        });
+            });
 
     }
 

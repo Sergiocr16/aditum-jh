@@ -222,35 +222,6 @@
                     }]
                 }
 
-            })
-
-            .state('officer.delete', {
-                parent: 'officer',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_RH']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/officer/officer-delete-dialog.html',
-                        controller: 'OfficerDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['Officer', function(Officer) {
-                                return Officer.get({
-                                    id: $stateParams.id
-                                }).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('officer', null, {
-                            reload: 'officer'
-                        });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
             });
     }
 

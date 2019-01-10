@@ -523,31 +523,7 @@
                         return currentStateData;
                     }]
                 }
-            })
-        .state('common-area-reservations.delete', {
-            parent: 'common-area-reservations',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/common-area-reservations/common-area-reservations-delete-dialog.html',
-                    controller: 'CommonAreaReservationsDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
-                    resolve: {
-                        entity: ['CommonAreaReservations', function(CommonAreaReservations) {
-                            return CommonAreaReservations.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('common-area-reservations', null, { reload: 'common-area-reservations' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        });
+            });
     }
 
 })();

@@ -5,17 +5,17 @@
         .module('aditumApp')
         .config(stateConfig);
 
-    // stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
-    stateConfig.$inject = ['$stateProvider'];
+    stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
+    // stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {
-        // $mdDateLocaleProvider.formatDate = function(date) {
-        //     return date ? moment(date).format('DD-MM-YYYY'): '';
-        // };
-        // $mdThemingProvider.theme('default')
-        //     .primaryPalette('teal')
-        //     .accentPalette('orange');
-        // $mdAriaProvider.disableWarnings();
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return date ? moment(date).format('DD-MM-YYYY'): '';
+        };
+        $mdThemingProvider.theme('default')
+            .primaryPalette('teal')
+            .accentPalette('orange');
+        $mdAriaProvider.disableWarnings();
 
         $stateProvider.state('app', {
             abstract: true,
@@ -57,21 +57,6 @@
                 ],
                 companyUser: ['MultiCompany', function (MultiCompany) {
                     return MultiCompany.getCurrentUserCompany()
-                }],
-                globalCompanyId: ['CommonMethods', '$localStorage', 'Auth', '$rootScope', '$state', function (CommonMethods, $localStorage, Auth, $rootScope, $state) {
-                    if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
-                        return CommonMethods.decryptIdUrl($localStorage.companyId)
-                    } else {
-                        Auth.logout();
-                        $rootScope.companyUser = undefined;
-                        $localStorage.companyId = undefined;
-                        $state.go('home');
-                        $rootScope.menu = false;
-                        $rootScope.companyId = undefined;
-                        $rootScope.showLogin = true;
-                        $rootScope.inicieSesion = false;
-                        return null;
-                    }
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');

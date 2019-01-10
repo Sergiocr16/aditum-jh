@@ -297,34 +297,6 @@
                         $state.go('^');
                     });
                 }]
-            })
-            .state('visitant.delete', {
-                parent: 'visitant',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/visitant/visitant-delete-dialog.html',
-                        controller: 'VisitantDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
-                        resolve: {
-                            entity: ['Visitant', function(Visitant) {
-                                return Visitant.get({
-                                    id: $stateParams.id
-                                }).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('visitant', null, {
-                            reload: 'visitant'
-                        });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
             });
     }
 })();
