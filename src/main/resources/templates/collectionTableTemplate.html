@@ -1,219 +1,260 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
     <title>Tabla de cobranza ADITUM</title>
     <style>
-         @page {
-         size: A4 landscape;
-         margin: 1cm;
-         counter-increment: page;
-         }
-         @page {
-         @top-left {
-         content: element(header);
-         }
-         }
-         @page :first {
-         @top-left {
-         content: element(firstPageHeader);
-         }
-         }
-         div.footer {
-         position: running(footer);
-         text-align: right;
-         }
-         @page {
-         @bottom-right {
-         content: element(footer);
-         }
-         }
-         #pagenumber:before {
-         content: counter(page);
-         }
-         #pagecount:before {
-         content: counter(pages);
-         }
-         @media print {
-         .no-page-break {
-         margin-top: 25px;
-         page-break-inside: avoid;
-         -fs-keep-with-inline: keep;
-         -fs-table-paginate: paginate;
-         }
-         }
-         .collection-table table {
-         -fs-table-paginate: paginate;
-         }
-         div.header {
-         display: block;
-         text-align: left;
-         position: running(header);
-         font-size: 10px;
-         line-height: 24px;
-         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-         color: #555;
-         }
-         div.content {
-         }
-         div.footer {
-         counter-increment: page;
-         position: running(footer);
-         text-align: left;
-         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-         color: #555;
-         }
-         body {
-         margin: 0;
-         counter-reset: body;
-         }
-         .invoice-box {
-         margin: auto;
-         width: 27cm;
-         font-size: 14px;
-         line-height: 24px;
-         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-         color: #555;
-         }
-         .invoice-box table {
-         width: 100%;
-         line-height: inherit;
-         text-align: left;
-         border-collapse: collapse;
-         }
-         .invoice-box table td {
-         padding: 5px;
-         vertical-align: top;
-         }
-         .collection-table table td {
-         border: 1px solid #eee;
-         border-spacing: 0;
-         }
-         .invoice-box table tr td:nth-child(2) {
-         text-align: right;
-         }
-         .invoice-box table tr.top table td {
-         padding-bottom: 20px;
-         }
-         .invoice-box table tr.top table td.title {
-         font-size: 45px;
-         line-height: 45px;
-         color: #333;
-         }
-         .invoice-box table tr.information table td {
-         padding-bottom: 40px;
-         }
-         .invoice-box table tr.heading td {
-         background: #e0e0e0;
-         border-bottom: 4px solid rgb(42, 100, 150);
-         font-weight: bold;
-         font-size: 12px;
-         border-collapse: none!important;
-         }
-         .invoice-box table tr.details td {
-         padding-bottom: 20px;
-         padding-top: 20px;
-         }
-         .invoice-box table tr.item td {
-         border-bottom: 1px solid #eee;
-         width: 1000px;
-         font-size: 10px
-         }
-         /** RTL **/
-         .rtl {
-         direction: rtl;
-         font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-         }
-         .rtl table {
-         text-align: right;
-         }
-         .rtl table tr td:nth-child(2) {
-         text-align: left;
-         }
-         .condominio-name {
-         line-height: 1em;
-         font-weight: bold;
-         font-size: 25px;
-         color: rgb(42, 100, 150);
-         margin-bottom: 0px;
-         margin-top: 35px;
-         }
-         .text-center {
-         text-align: center!important;
-         }
-         .total-ammount {
-         border-top: 3px solid rgb(42, 100, 150);
-         background: rgb(42, 100, 150);
-         border-bottom: 1px solid #ddd;
-         font-weight: bold;
-         color: white;
-         text-align: center;
-         }
-         .payment-method {
-         border-top: 3px solid rgb(42, 100, 150);
-         color: #555;
-         font-size: 15px;
-         }
-         .comprobante-title {
-         background-color: rgb(42, 100, 150);
-         color: white;
-         font-size: 18px;
-         padding: 10px;
-         margin-left: -5px;
-         border-top-right-radius: 10px;
-         border-bottom-right-radius: 10px;
-         }
-         .year-number {
-         text-align: center;
-         color: rgb(42, 100, 150);
-         font-size: 33px;
-         }
-         .text-right {
-         text-align: right!important;
-         }
-         .description {
-         font-size: 13px;
-         }
-         .green-box {
-         width: 15px;
-         height: 10px;
-         background-color: #C2FFD0;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
-         .red-box {
-         width: 15px;
-         height: 10px;
-         background-color: #FFB8B8;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
-         .yellow-box {
-         width: 15px;
-         height: 10px;
-         background-color: #FFD17A;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
-      </style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+            counter-increment: page;
+        }
+
+        @page {
+            @top-left {
+                content: element(header);
+            }
+        }
+
+        @page :first {
+            @top-left {
+                content: element(firstPageHeader);
+            }
+        }
+
+        div.footer {
+            position: running(footer);
+            text-align: right;
+        }
+
+        @page {
+            @bottom-right {
+                content: element(footer);
+            }
+        }
+
+        #pagenumber:before {
+            content: counter(page);
+        }
+
+        #pagecount:before {
+            content: counter(pages);
+        }
+
+        @media print {
+            .no-page-break {
+                margin-top: 25px;
+                page-break-inside: avoid;
+                -fs-keep-with-inline: keep;
+                -fs-table-paginate: paginate;
+            }
+        }
+
+        .collection-table table {
+            -fs-table-paginate: paginate;
+        }
+
+        div.header {
+            display: block;
+            text-align: left;
+            position: running(header);
+            font-size: 10px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        div.content {
+        }
+
+        div.footer {
+            counter-increment: page;
+            position: running(footer);
+            text-align: left;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        body {
+            margin: 0;
+            counter-reset: body;
+        }
+
+        .invoice-box {
+            margin: auto;
+            width: 27cm;
+            font-size: 14px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .collection-table table td {
+            border: 1px solid #eee;
+            border-spacing: 0;
+            border-top: 0px !important;
+            padding-top: 0px!important;
+            padding-bottom: 0px!important;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eeeeee;
+            border-bottom: 4px solid rgb(0,150,136);
+            font-weight: bold;
+            font-size: 12px;
+            border-collapse: none !important;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+            width: 1000px;
+            font-size: 10px
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .condominio-name {
+            line-height: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            color: rgb(0,150,136);
+            margin-bottom: 0px;
+            margin-top: 35px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .total-ammount {
+            border-top: 3px solid rgb(42, 100, 150);
+            background: rgb(42, 100, 150);
+            border-bottom: 1px solid #ddd;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+        }
+
+        .payment-method {
+            border-top: 3px solid rgb(42, 100, 150);
+            color: #555;
+            font-size: 15px;
+        }
+
+        .comprobante-title {
+            background-color: rgb(0,150,136);
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            margin-left: -5px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .year-number {
+            text-align: center;
+            color: rgb(0,150,136);
+            font-size: 33px;
+        }
+
+        .text-right {
+            text-align: right !important;
+        }
+
+        .description {
+            font-size: 13px;
+        }
+
+        .green-box {
+            width: 15px;
+            height: 10px;
+            background-color: #C2FFD0;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
+        }
+        .red-box {
+            width: 15px;
+            height: 10px;
+            background-color: #FFB8B8;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
+        }
+        .yellow-box {
+            width: 15px;
+            height: 10px;
+            background-color: #FFD17A;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
+        }
+    </style>
 </head>
 <body>
 <div class='header'>
-    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Tabla de cobranza del año <span th:text="|${year}|">anno</span>
+    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Tabla de cobranza
+    del año <span th:text="|${year}|">anno</span>
     <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
 <div class="footer">
-    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px" th:text="|${currentDate}|"></b>
+    <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
+                                                                    th:text="|${currentDate}|"></b>
     <h4 style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span></h4>
+            color: #555;display:inline;float:right"> Página <span id="pagenumber"></span> / <span id="pagecount"></span>
+    </h4>
 </div>
 <div class="invoice-box landscapePage content">
     <table cellpadding="0" cellspacing="0">
@@ -224,7 +265,8 @@
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"> <img width="100px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
+                                                                                  th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/>
                     <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
                 </h2>
             </td>
@@ -235,11 +277,11 @@
                 </hr>
             </td>
         </tr>
-        <tr >
+        <tr>
             <td style="padding-top:12px">
                 <span class="comprobante-title"> Tabla de cobranza</span>
             </td>
-            <td style="padding-top:12px"> </td>
+            <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
                 <span style="font-size:12px">Año: </span><span class="year-number" th:text="|${year}|">anno</span>
             </td>
@@ -265,7 +307,7 @@
                      </span>
                 </div>
             </td>
-            <td >
+            <td>
             </td>
             <td>
             </td>
@@ -318,13 +360,20 @@
                         </tr>
                         </thead>
                         <tr class="item no-page-break" th:each="itemCollection : ${collection}">
-                            <td class="text-center" th:text="|${itemCollection.houseNumber}|">
+                            <td style="border-top: 0px!important;" class="text-center"
+                                th:text="|${itemCollection.houseNumber}|">
                                 houseNumber
                             </td>
-                            <td class="text-center " th:style="|${mensualCollection.style}|"  th:each="mensualCollection : ${itemCollection.yearCollection}">
-                                <img th:if="${mensualCollection.mensualBalance!=0}" th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8" style="float: left;margin: 8px 2px;"/>
-                                <span th:if="${mensualCollection.mensualBalance!=0}" th:text="|${mensualCollection.mensualBalanceToShow}|">balanceMensual</span>
-                                <span th:if="${mensualCollection.mensualBalance==0}" style="background-color:#D4D4D475;font-size:8px;color:#969696">SIN CUOTA</span>
+                            <td style="border-top: 0px!important;" class="text-center "
+                                th:style="|${mensualCollection.style}|"
+                                th:each="mensualCollection : ${itemCollection.yearCollection}">
+                                <img th:if="${mensualCollection.mensualBalance!=0}"
+                                     th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="float: left;margin: 8px 2px;"/>
+                                <span th:if="${mensualCollection.mensualBalance!=0}"
+                                      th:text="|${mensualCollection.mensualBalanceToShow}|">balanceMensual</span>
+                                <span th:if="${mensualCollection.mensualBalance==0}"
+                                      style="background-color:#F7F7F7;font-size:8px;color:#707070">SIN CUOTA</span>
                             </td>
                         </tr>
                     </table>

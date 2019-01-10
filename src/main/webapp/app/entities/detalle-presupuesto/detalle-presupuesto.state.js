@@ -70,7 +70,7 @@
             parent: 'entity',
             url: '/nuevo-presupuesto',
             data: {
-                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD']
             },
             views: {
                 'content@': {

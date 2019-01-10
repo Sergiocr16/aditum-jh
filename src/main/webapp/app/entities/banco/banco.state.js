@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/banco?page&sort&search',
             data: {
-         authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+         authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD']
             },
             views: {
                 'content@': {
@@ -94,7 +94,7 @@
             parent: 'banco',
             url: '/banco/{id}',
             data: {
-               authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+               authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD']
             },
             views: {
                 'content@': {

@@ -136,6 +136,61 @@ public class UserResource {
                 .body(newUser);
         }
     }
+    @PostMapping("/createUserWithoutSendEmailWithPassword")
+    @Timed
+    public ResponseEntity createUserWithoutSendEmailWithPassword(@RequestBody ManagedUserVM managedUserVM) throws URISyntaxException {
+        log.debug("REST request to save User : {}", managedUserVM);
+        //Lowercase the user login before comparing with database
+        if (userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase()).isPresent()) {
+            User newUser =  new User();
+            newUser.setLogin("userexist");
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use"))
+                .body(newUser);
+        } else if (userRepository.findOneByEmail(managedUserVM.getEmail()).isPresent()) {
+            User newUser =  new User();
+            newUser.setLogin("emailexist");
+            return ResponseEntity.badRequest()
+                .headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "Email already in use"))
+                .body(newUser);
+        } else {
+            User newUser = userService.createUserWithPassword(managedUserVM);
+            return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
+                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .body(newUser);
+        }
+    }
+    /**
+     * PUT  /users : Updates an existing User.
+     *
+     * @param managedUserVM the user to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated user,
+     * or with status 400 (Bad Request) if the login or email is already in use,
+     * or with status 500 (Internal Server Error) if the user couldn't be updated
+     */
+    @PutMapping("/users/updateWithPassword")
+    @Timed
+//  @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER})
+
+    public ResponseEntity<UserDTO> updateUserWithPassword(@RequestBody ManagedUserVM managedUserVM) {
+        log.debug("REST request to update User : {}", managedUserVM);
+        Optional<User> existingUser = userRepository.findOneByEmail(managedUserVM.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
+            UserDTO newUser =  new UserDTO();
+            newUser.setLogin("userexist");
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "emailexists", "E-mail already in use")).body(newUser);
+        }
+        existingUser = userRepository.findOneByLogin(managedUserVM.getLogin().toLowerCase());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserVM.getId()))) {
+            UserDTO newUser =  new UserDTO();
+            newUser.setLogin("userexist");
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "userexists", "Login already in use")).body(newUser);
+        }
+        Optional<UserDTO> updatedUser = userService.updateUserWithPassword(managedUserVM);
+
+        return ResponseUtil.wrapOrNotFound(updatedUser,
+            HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
+    }
     /**
      * PUT  /users : Updates an existing User.
      *
@@ -167,7 +222,6 @@ public class UserResource {
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert("userManagement.updated", managedUserVM.getLogin()));
     }
-
     /**
      * GET  /users : get all users.
      *

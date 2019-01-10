@@ -97,89 +97,137 @@
                     <md-list flex>
                         <md-list-item class="md-3-line"
                                       ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id">
-                        <img class="md-avatar" ng-hide="comment.resident.image_url"
-                             src="content/images/nobody-image.jpg"/>
-                        <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
-                             class="md-avatar"/>
-                        <div class="md-list-item-text" layout="column">
-                            <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
-                                <div>
-                                    <h3 style="font-size: 13px;font-weight: bold">
-                                        {{comment.resident.name +" "+ comment.resident.lastname +" "+
-                                        comment.resident.secondlastname}}</h3>
-                                    <h4 class="inline" style="font-size: 12px">
-                                        {{comment.showingDate}}
-                                        <span style="color: #90949c;cursor: pointer;font-size: 11px;"
-                                              ng-if="comment.editedDate!=undefined"
-                                              title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
-                                    </h4>
+                            <img class="md-avatar" ng-hide="comment.resident.image_url"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
+                                 class="md-avatar"/>
+                            <div class="md-list-item-text" layout="column">
+                                <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
+                                    <div>
+                                        <h3 style="font-size: 13px;font-weight: bold">
+                                            {{comment.resident.name +" "+ comment.resident.lastname +" "+
+                                            comment.resident.secondlastname}}</h3>
+                                        <h4 class="inline" style="font-size: 12px">
+                                            {{comment.showingDate}}
+                                            <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                                  ng-if="comment.editedDate!=undefined"
+                                                  title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                        </h4>
+                                    </div>
+                                    <div has-authority="ROLE_MANAGER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar comentario</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                    <div has-authority="ROLE_USER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar comentario</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
                                 </div>
-                                <div ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
-                                    <md-menu md-position-mode="target-right target">
-                                        <md-button aria-label="Open demo menu" class="md-icon-button"
-                                                   ng-click="$mdMenu.open($event)">
-                                            <i class="material-icons">more_vert</i>
-                                        </md-button>
-                                        <md-menu-content width="4">
-                                            <md-menu-item ng-if="vm.showActionDelete(comment)">
-                                                <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
-                                                    <div layout="row" flex>
-                                                        <p flex>Eliminar comentario</p>
-                                                    </div>
-                                                </md-button>
-                                            </md-menu-item>
-                                            <md-menu-item ng-if="vm.showActionEdit(comment)">
-                                                <md-button ng-click="vm.editComment(comment)">
-                                                    <div layout="row" flex>
-                                                        <p flex>Editar</p>
-                                                    </div>
-                                                </md-button>
-                                            </md-menu-item>
-                                        </md-menu-content>
-                                    </md-menu>
-                                </div>
-                            </div>
-                            <p style="font-size: 13px" ng-if="comment.editing===false">
-                                {{comment.description}}
-                            </p>
-                            <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
-                                <div flex="100" class="inline" ng-if="comment.editing===true">
+                                <p style="font-size: 13px" ng-if="comment.editing===false">
+                                    {{comment.description}}
+                                </p>
+                                <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
+                                    <div flex="100" class="inline" ng-if="comment.editing===true">
                                         <textarea style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment"
                                                   class="input-no-decoration" style="margin-left: 5px" type="text"
                                                   placeholder="Actualizar comentario.." required>
                                         </textarea>
-                                </div>
-                                <div layout="row" layout-align="end center" ng-show="comment.editing===true">
-                                    <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
-                                    <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
-                                        Actualizar
-                                    </md-button>
-                                </div>
-                            </form>
-                        </div>
+                                    </div>
+                                    <div layout="row" layout-align="end center" ng-show="comment.editing===true">
+                                        <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
+                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
+                                            Actualizar
+                                        </md-button>
+                                    </div>
+                                </form>
+                            </div>
                         </md-list-item>
                     </md-list>
                 </div>
                 <div>
-                <form flex name="form" class="md-list-item" ng-submit="vm.saveComment()">
-                    <div layout="row">
-                        <img class="circle-material-image" ng-hide="currentUserImage"
-                             src="content/images/nobody-image.jpg"/>
-                        <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
-                             class="circle-material-image"/>
-                        <div flex="100" >
-                        <textarea  style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
-                                   ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
-                                   style="margin-left: 5px" type="text"
-                                   placeholder="Responder..." required>
+                    <form has-authority="ROLE_USER" flex name="form" class="md-list-item" ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
                         </textarea>
+                            </div>
                         </div>
-                    </div>
-                    <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
-                        <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
-                        <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta</md-button>
-                    </div>
-                </form>
+                        <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
+                    <form has-authority="ROLE_MANAGER" flex name="form" class="md-list-item"
+                          ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
+                        </textarea>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </md-card-content>

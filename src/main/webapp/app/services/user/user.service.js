@@ -31,8 +31,16 @@
             'createUserWithoutSendEmail': {
                 method: 'POST',
                 url: 'api/createUserWithoutSendEmail'
+            }
+            ,
+            'createUserWithoutSendEmailWithPassword': {
+                method: 'POST',
+                url: 'api/createUserWithoutSendEmailWithPassword'
             },
-
+            'updateWithPassword': {
+                method: 'PUT',
+                url: 'api/users/updateWithPassword'
+            },
             'save': { method:'POST' },
             'update': { method:'PUT' },
             'delete':{ method:'DELETE'}

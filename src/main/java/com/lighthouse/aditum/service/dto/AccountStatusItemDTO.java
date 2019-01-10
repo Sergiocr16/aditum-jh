@@ -7,14 +7,14 @@ public class AccountStatusItemDTO {
     private ZonedDateTime date;
     private String concept;
     private double charge;
-    private int recharge;
+    private double recharge;
     private double total;
     private double saldo;
     private int abono;
     private List<ChargeDTO> charges;
     private boolean showDetail;
 
-    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,int recharge){
+    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,double recharge){
         this.date = date;
         this.concept = concept;
         this.charge = charge;
@@ -53,11 +53,11 @@ public class AccountStatusItemDTO {
         this.charge = charge;
     }
 
-    public int getRecharge() {
+    public double getRecharge() {
         return recharge;
     }
 
-    public void setRecharge(int recharge) {
+    public void setRecharge(double recharge) {
         this.recharge = recharge;
     }
 

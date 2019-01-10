@@ -69,7 +69,7 @@
         }).state('egress-tabs.egress-report', {
               url: '/report',
               data: {
-                   authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                   authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_JD'],
                   pageTitle: 'Aditum'
               },
             templateUrl: 'app/entities/egress/generateReport.html',

@@ -1,16 +1,23 @@
 package com.lighthouse.aditum.service.dto;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class SumCategoryEgressDTO {
+    private Locale locale = new Locale("es", "CR");
     private Long id;
     private String category;
     private List<SumEgressDTO> egressList;
-    private double total;
+    private double total = 0;
+    private String totalFormatted = "0.00";
     private double percentage;
     private boolean showDetail;
     private double budget = 0;
     private double budgetDiference = 0;
+    private String budgetFormatted = "0.00";
+    private String budgetDiferenceFormatted = "0.00";
 
     public String getCategory() {
         return category;
@@ -26,8 +33,13 @@ public class SumCategoryEgressDTO {
 
     public void setTotal(double total) {
         this.total = total;
+        this.setTotalFormatted(formatMoney(total));
     }
 
+    public SumCategoryEgressDTO() {
+
+
+    }
     public SumCategoryEgressDTO(String category,int total) {
 
         this.category = category;
@@ -44,8 +56,14 @@ public class SumCategoryEgressDTO {
         this.category = category;
         this.showDetail = false;
         this.id = id;
-        this.budget = budget;
-        this.budgetDiference = budget;
+        this.setBudget(budget);
+        this.setBudgetDiference(budget);
+    }
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
     }
 
     public double getPercentage() {
@@ -87,6 +105,7 @@ public class SumCategoryEgressDTO {
 
     public void setBudget(double budget) {
         this.budget = budget;
+        this.setBudgetFormatted(formatMoney(budget));
     }
 
     public double getBudgetDiference() {
@@ -95,5 +114,30 @@ public class SumCategoryEgressDTO {
 
     public void setBudgetDiference(double budgetDiference) {
         this.budgetDiference = budgetDiference;
+        this.setBudgetDiferenceFormatted(formatMoney(budgetDiference));
+    }
+
+    public String getTotalFormatted() {
+        return totalFormatted;
+    }
+
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
+    }
+
+    public String getBudgetFormatted() {
+        return budgetFormatted;
+    }
+
+    public void setBudgetFormatted(String budgetFormatted) {
+        this.budgetFormatted = budgetFormatted;
+    }
+
+    public String getBudgetDiferenceFormatted() {
+        return budgetDiferenceFormatted;
+    }
+
+    public void setBudgetDiferenceFormatted(String budgetDiferenceFormatted) {
+        this.budgetDiferenceFormatted = budgetDiferenceFormatted;
     }
 }

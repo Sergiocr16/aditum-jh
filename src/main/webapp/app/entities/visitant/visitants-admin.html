@@ -1,4 +1,4 @@
-<div class="col-md-12 no-padding">
+<div class="col-md-12 no-padding" ng-if="vm.isReady" >
     <div class="">
         <h3 hide-xs hide-sm  class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
             style="color: #00b19d">{{vm.title}}</h3>
@@ -6,7 +6,7 @@
             <h3 style="color: #00b19d">{{vm.titleConsult}}</h3>
         </div>
 
-        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="smrgin-bottom: 0px;"
+        <div  ng-if="vm.visitants.length>0"  class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="smrgin-bottom: 0px;"
              id="index-search-bar">
             <div class="input-icon" style="color:#484848!important;">
                 <i class="fa fa-search"></i>
@@ -15,7 +15,7 @@
                        placeholder="Buscar" ng-model="vm.search">
             </div>
         </div>
-        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+        <div  ng-if="vm.visitants.length>0"  class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
             <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
                     class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
                     style="height: 34px!important; padding-top: 5px!important;">

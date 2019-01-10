@@ -26,7 +26,7 @@
     <div class="col-md-12">
         <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
 
-            <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
+            <md-input-container class="md-block col-md-3 no-margin"
                                 ng-if="vm.houses.length> 0 ">
 
                 <md-select ng-model="vm.deudas" ng-change="vm.filterByDeuda()">
@@ -36,7 +36,7 @@
                 </md-select>
             </md-input-container>
 
-            <md-input-container class="md-block col-md-3 no-margin" has-authority="ROLE_MANAGER"
+            <md-input-container class="md-block col-md-3 no-margin"
                                 ng-if="vm.houses.length> 0 ">
 
                 <md-select ng-model="vm.status" ng-change="vm.filterByState()">

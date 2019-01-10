@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/presupuesto',
             data: {
-                  authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                  authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 pageTitle: 'aditumApp.presupuesto.home.title'
             },
             views: {
@@ -35,7 +35,7 @@
             parent: 'presupuesto',
             url: '/presupuesto/{id}',
             data: {
-                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                     authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_JD'],
                 pageTitle: 'aditumApp.presupuesto.detail.title'
             },
             views: {
@@ -92,7 +92,7 @@
             parent: 'presupuesto',
             url: '/new',
             data: {
-                   authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                   authorities: ['ROLE_ADMIN', 'ROLE_MANAGER','ROLE_JD']
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 $uibModal.open({

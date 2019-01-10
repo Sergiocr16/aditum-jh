@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "juntaDirectivaAccount" : {
+            "home": {
+                "title": "Junta Directiva Accounts",
+                "createLabel": "Crear nuevo Junta Directiva Account",
+                "createOrEditLabel": "Crear o editar Junta Directiva Account"
+            },
+            "created": "Un nuevo Junta Directiva Account ha sido creado con el identificador {{ param }}",
+            "updated": "Un Junta Directiva Account ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Junta Directiva Account ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Junta Directiva Account {{ id }}?"
+            },
+            "detail": {
+                "title": "Junta Directiva Account"
+            },
+            "email": "Email",
+            "company": "Company",
+            "user": "User"
+        }
+    }
+}

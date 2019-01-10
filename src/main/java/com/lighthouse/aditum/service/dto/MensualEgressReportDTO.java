@@ -2,18 +2,29 @@ package com.lighthouse.aditum.service.dto;
 
 import org.springframework.data.domain.Page;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MensualEgressReportDTO {
+    private Locale locale = new Locale("es", "CR");
     private List<SumCategoryEgressDTO> fixedCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> variableCosts = new ArrayList<>();
     private List<SumCategoryEgressDTO> otherCosts = new ArrayList<>();
     private List<EgressDTO> egressList;
+
     private double allEgressCategoriesTotal = 0;
     private double fixedCostsTotal = 0;
     private double variableCostsTotal = 0;
     private double otherCostsTotal = 0;
+
+    private String allEgressCategoriesTotalFormatted = "0";
+    private String fixedCostsTotalFormatted = "0";
+    private String variableCostsTotalFormatted = "0";
+    private String otherCostsTotalFormatted = "0";
+
     private double fixedCostsPercentage = 0.0;
     private double variableCostsPercentage = 0.0;
     private double otherCostsPercentage = 0.0;
@@ -22,9 +33,21 @@ public class MensualEgressReportDTO {
     private double variableCostsBudgetTotal =0;
     private double otherCostsBudgetTotal =0;
 
+    private String fixedCostsBudgetTotalFormatted = "0";
+    private String variableCostsBudgetTotalFormatted ="0";
+    private String otherCostsBudgetTotalFormatted = "0";
+
     private double fixedCostsBudgetDiference = 0;
     private double variableCostsBudgetDiference  = 0;
     private double otherCostsBudgetDiference  = 0;
+
+    private String fixedCostsBudgetDiferenceFormatted = "0";
+    private String variableCostsBudgetDiferenceFormatted  = "0";
+    private String otherCostsBudgetDiferenceFormatted  = "0";
+
+    public MensualEgressReportDTO(){
+
+    }
 
 
     public void setCategoriesNames(Page<EgressDTO> egress,Page<EgressCategoryDTO> egressCategories){
@@ -77,6 +100,12 @@ public class MensualEgressReportDTO {
         return sumCategoryEgress;
     }
 
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
+    }
 
 public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCategory,String group,double totalIngress){
     List<SumEgressDTO> sumEgreesList = new ArrayList<>();
@@ -146,7 +175,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setAllEgressTotal(){
         this.allEgressCategoriesTotal = this.getFixedCostsTotal() + this.getOtherCostsTotal() + this.getVariableCostsTotal();
-
+        this.setAllEgressCategoriesTotalFormatted(formatMoney(this.allEgressCategoriesTotal));
     }
 
     public double getFixedCostsTotal() {
@@ -155,6 +184,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setFixedCostsTotal(double fixedCostsTotal) {
         this.fixedCostsTotal = fixedCostsTotal;
+        this.setFixedCostsTotalFormatted(formatMoney(fixedCostsTotal));
     }
 
     public double getVariableCostsTotal() {
@@ -163,6 +193,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setVariableCostsTotal(double variableCostsTotal) {
         this.variableCostsTotal = variableCostsTotal;
+        this.setVariableCostsTotalFormatted(formatMoney(variableCostsTotal));
     }
 
     public double getOtherCostsTotal() {
@@ -171,6 +202,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setOtherCostsTotal(double otherCostsTotal) {
         this.otherCostsTotal = otherCostsTotal;
+        this.setOtherCostsTotalFormatted(formatMoney(otherCostsTotal));
     }
 
     public List<SumCategoryEgressDTO> getVariableCosts() {
@@ -220,6 +252,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setFixedCostsBudgetDiference(double fixedCostsBudgetDiference) {
         this.fixedCostsBudgetDiference = fixedCostsBudgetDiference;
+        this.setFixedCostsBudgetDiferenceFormatted(formatMoney(fixedCostsBudgetDiference));
     }
 
     public double getVariableCostsBudgetDiference() {
@@ -228,6 +261,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setVariableCostsBudgetDiference(double variableCostsBudgetDiference) {
         this.variableCostsBudgetDiference = variableCostsBudgetDiference;
+        this.setVariableCostsBudgetDiferenceFormatted(formatMoney(variableCostsBudgetDiference));
     }
 
     public double getOtherCostsBudgetDiference() {
@@ -236,6 +270,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setOtherCostsBudgetDiference(double otherCostsBudgetDiference) {
         this.otherCostsBudgetDiference = otherCostsBudgetDiference;
+        this.setOtherCostsBudgetDiferenceFormatted(formatMoney(otherCostsBudgetDiference));
     }
 
     public double getFixedCostsBudgetTotal() {
@@ -244,6 +279,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setFixedCostsBudgetTotal(double fixedCostsBudgetTotal) {
         this.fixedCostsBudgetTotal = fixedCostsBudgetTotal;
+        this.setFixedCostsBudgetTotalFormatted(formatMoney(fixedCostsBudgetTotal));
     }
 
     public double getVariableCostsBudgetTotal() {
@@ -252,6 +288,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setVariableCostsBudgetTotal(double variableCostsBudgetTotal) {
         this.variableCostsBudgetTotal = variableCostsBudgetTotal;
+        this.setVariableCostsBudgetTotalFormatted(formatMoney(variableCostsBudgetTotal));
     }
 
     public double getOtherCostsBudgetTotal() {
@@ -260,6 +297,7 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setOtherCostsBudgetTotal(double otherCostsBudgetTotal) {
         this.otherCostsBudgetTotal = otherCostsBudgetTotal;
+        this.setOtherCostsBudgetTotalFormatted(formatMoney(otherCostsBudgetTotal));
     }
 
     public double getAllEgressCategoriesTotal() {
@@ -268,5 +306,86 @@ public void setSumEgressListPerSumCategoryEgressDTO (SumCategoryEgressDTO sumCat
 
     public void setAllEgressCategoriesTotal(double allEgressCategoriesTotal) {
         this.allEgressCategoriesTotal = allEgressCategoriesTotal;
+        this.setAllEgressCategoriesTotalFormatted(formatMoney(allEgressCategoriesTotal));
+    }
+
+    public String getAllEgressCategoriesTotalFormatted() {
+        return allEgressCategoriesTotalFormatted;
+    }
+
+    public void setAllEgressCategoriesTotalFormatted(String allEgressCategoriesTotalFormatted) {
+        this.allEgressCategoriesTotalFormatted = allEgressCategoriesTotalFormatted;
+    }
+
+    public String getFixedCostsTotalFormatted() {
+        return fixedCostsTotalFormatted;
+    }
+
+    public void setFixedCostsTotalFormatted(String fixedCostsTotalFormatted) {
+        this.fixedCostsTotalFormatted = fixedCostsTotalFormatted;
+    }
+
+    public String getVariableCostsTotalFormatted() {
+        return variableCostsTotalFormatted;
+    }
+
+    public void setVariableCostsTotalFormatted(String variableCostsTotalFormatted) {
+        this.variableCostsTotalFormatted = variableCostsTotalFormatted;
+    }
+
+    public String getOtherCostsTotalFormatted() {
+        return otherCostsTotalFormatted;
+    }
+
+    public void setOtherCostsTotalFormatted(String otherCostsTotalFormatted) {
+        this.otherCostsTotalFormatted = otherCostsTotalFormatted;
+    }
+
+    public String getFixedCostsBudgetTotalFormatted() {
+        return fixedCostsBudgetTotalFormatted;
+    }
+
+    public void setFixedCostsBudgetTotalFormatted(String fixedCostsBudgetTotalFormatted) {
+        this.fixedCostsBudgetTotalFormatted = fixedCostsBudgetTotalFormatted;
+    }
+
+    public String getVariableCostsBudgetTotalFormatted() {
+        return variableCostsBudgetTotalFormatted;
+    }
+
+    public void setVariableCostsBudgetTotalFormatted(String variableCostsBudgetTotalFormatted) {
+        this.variableCostsBudgetTotalFormatted = variableCostsBudgetTotalFormatted;
+    }
+
+    public String getOtherCostsBudgetTotalFormatted() {
+        return otherCostsBudgetTotalFormatted;
+    }
+
+    public void setOtherCostsBudgetTotalFormatted(String otherCostsBudgetTotalFormatted) {
+        this.otherCostsBudgetTotalFormatted = otherCostsBudgetTotalFormatted;
+    }
+
+    public String getFixedCostsBudgetDiferenceFormatted() {
+        return fixedCostsBudgetDiferenceFormatted;
+    }
+
+    public void setFixedCostsBudgetDiferenceFormatted(String fixedCostsBudgetDiferenceFormatted) {
+        this.fixedCostsBudgetDiferenceFormatted = fixedCostsBudgetDiferenceFormatted;
+    }
+
+    public String getVariableCostsBudgetDiferenceFormatted() {
+        return variableCostsBudgetDiferenceFormatted;
+    }
+
+    public void setVariableCostsBudgetDiferenceFormatted(String variableCostsBudgetDiferenceFormatted) {
+        this.variableCostsBudgetDiferenceFormatted = variableCostsBudgetDiferenceFormatted;
+    }
+
+    public String getOtherCostsBudgetDiferenceFormatted() {
+        return otherCostsBudgetDiferenceFormatted;
+    }
+
+    public void setOtherCostsBudgetDiferenceFormatted(String otherCostsBudgetDiferenceFormatted) {
+        this.otherCostsBudgetDiferenceFormatted = otherCostsBudgetDiferenceFormatted;
     }
 }

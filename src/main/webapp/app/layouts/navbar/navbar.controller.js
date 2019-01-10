@@ -753,6 +753,18 @@
                         showLg: true,
                     },
                     {
+                        title: "Junta directiva",
+                        icon: "record_voice_over",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "jdAccount",
+                        collapsable: false,
+                        uisref: "junta-directiva-account.new",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
                         title: "Proveedores",
                         icon: "store_mall_directory",
                         authoritites: "ROLE_MANAGER",
@@ -1028,9 +1040,213 @@
 
             },
             {
+                title: "Condominio",
+                activeOn: "",
+                authoritites: "ROLE_JD",
+                showXs: true,
+                secondaryItems: [
+                    {
+                        title: "Dashboard",
+                        icon: "dashboard",
+                        authoritites: "ROLE_JD",
+                        activeOn: "dashboard",
+                        collapsable: false,
+                        uisref: "dashboard",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Noticias",
+                        icon: "picture_in_picture",
+                        authoritites: "ROLE_JD",
+                        activeOn: "userNews",
+                        collapsable: false,
+                        uisref: "announcement-user",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: []
+                    },
+                    {
+                        title: "Visitantes",
+                        icon: "group_add",
+                        authoritites: "ROLE_JD",
+                        activeOn: "adminVisitors",
+                        collapsable: false,
+                        uisref: "visitant-admin",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: []
+                    },
+                    {
+                        title: "Seguridad",
+                        icon: "security",
+                        authoritites: "ROLE_JD",
+                        activeOn: "officers,watches",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "seguridadMenuJD",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Oficiales",
+                                icon: "people_outline",
+                                authoritites: "ROLE_JD",
+                                activeOn: "officers",
+                                collapsable: false,
+                                uisref: "officer",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                            {
+                                title: "Turnos",
+                                icon: "timer",
+                                authoritites: "ROLE_JD",
+                                activeOn: "watches",
+                                collapsable: false,
+                                uisref: "turno",
+                                menuId: "",
+                                hover: false,
+                                thirdItems: [],
+                                showXs: true
+                            },
+                        ]
+                    },
+                    {
+                        title: "Sujerencias",
+                        icon: "feedback",
+                        authoritites: "ROLE_JD",
+                        activeOn: "complaint",
+                        collapsable: false,
+                        uisref: "complaint",
+                        menuId: "",
+                        hover: false,
+                        secondaryItems: [],
+                        showXs: true,
+                        showLg: true,
+                    },
+                ]
+            },
+            {
+                title: "Finanzas",
+                activeOn: "",
+                authoritites: "ROLE_JD",
+                showXs: true,
+                secondaryItems: [
+                    {
+                        title: "Presupuestos",
+                        icon: "trending_up",
+                        authoritites: "ROLE_JD",
+                        activeOn: "presupuestos",
+                        collapsable: false,
+                        uisref: "presupuesto",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
+                    },
+                    {
+                        title: "Bancos",
+                        icon: "account_balance",
+                        authoritites: "ROLE_JD",
+                        activeOn: "bancos",
+                        collapsable: false,
+                        uisref: "banco",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
+                    },
+                    {
+                        title: "Saldo de filiales",
+                        icon: "library_books",
+                        authoritites: "ROLE_JD",
+                        activeOn: "balance",
+                        collapsable: false,
+                        uisref: "houses-balance",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
+
+                    },
+                    {
+                        title: "Tabla de cobranza",
+                        icon: "grid_on",
+                        authoritites: "ROLE_JD",
+                        activeOn: "collectionTable",
+                        collapsable: false,
+                        uisref: "collection-table",
+                        menuId: "",
+                        hover: false,
+                        thirdItems: [],
+                        showXs: false,
+                        showLg: true,
+
+                    }
+                ]
+            },
+            {
+                title: "Reportes",
+                activeOn: "",
+                authoritites: "ROLE_JD",
+                showXs: false,
+                secondaryItems: [
+                    {
+                        title: "Estado de resultados",
+                        icon: "equalizer",
+                        authoritites: "ROLE_JD",
+                        activeOn: "estadoResultados",
+                        collapsable: false,
+                        uisref: "budgetExecution.mensualReport",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Reporte de egresos",
+                        icon: "keyboard_backspace",
+                        authoritites: "ROLE_JD",
+                        activeOn: "reporteGastos",
+                        collapsable: false,
+                        uisref: "egress-tabs.egress-report",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                    {
+                        title: "Reporte de ingresos",
+                        icon: "trending_flat",
+                        authoritites: "ROLE_JD",
+                        activeOn: "reporteIngresos",
+                        collapsable: false,
+                        uisref: "payment-report",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
+                ]
+            },
+            {
                 title: "",
                 icon: "contact_support",
-                authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
+                authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
                 activeOn: "soporte",
                 collapsable: false,
                 uisref: "soporte",
@@ -1042,7 +1258,7 @@
                     {
                         title: "Soporte",
                         icon: "contact_support",
-                        authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
+                        authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
                         activeOn: "soporte",
                         collapsable: false,
                         uisref: "soporte",
@@ -1281,6 +1497,26 @@
                                 logout();
                             }
                         })
+                        break;
+                    case "ROLE_JD":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.companyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                            }
+                            Company.get({id: globalCompany.getId()}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.companyName = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                                if (data.enabled == 0) {
+                                    logout();
+                                }
+                            });
+
+                            $rootScope.hideFilial = true;
+                        });
                         break;
                 }
             })

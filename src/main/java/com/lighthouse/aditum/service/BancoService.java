@@ -81,7 +81,7 @@ public class BancoService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true)
+     @Transactional(readOnly = true)
     public BancoDTO findOne(Long id) {
         log.debug("Request to get Banco : {}", id);
         Banco banco = bancoRepository.findOne(id);

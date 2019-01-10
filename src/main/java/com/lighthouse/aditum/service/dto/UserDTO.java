@@ -47,6 +47,9 @@ public class UserDTO {
 
     private String lastModifiedBy;
 
+    private String contrasenna;
+
+
     private ZonedDateTime lastModifiedDate;
 
     private Set<String> authorities;
@@ -163,5 +166,13 @@ public class UserDTO {
             ", lastModifiedDate=" + lastModifiedDate +
             ", authorities=" + authorities +
             "}";
+    }
+
+    public String getContrasenna() {
+        return contrasenna;
+    }
+
+    public void setContrasenna(String contrasenna) {
+        this.contrasenna = contrasenna;
     }
 }

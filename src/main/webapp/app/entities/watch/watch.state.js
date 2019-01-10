@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/turno/{companyId}/?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH'],
+                authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH','ROLE_JD'],
             },
             views: {
                 'content@': {
@@ -94,7 +94,7 @@
             parent: 'turno',
             url: '/watch/{id}',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
             views: {
                 'content@': {
