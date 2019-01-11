@@ -155,8 +155,8 @@
                 vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+false+'}'+moment(new Date()).format();
                 vm.path = '/api/accountStatus/file/' + vm.superObject;
 
-                vm.initial_time = vm.dates.initial_time
-                vm.final_time = vm.dates.final_time
+                vm.initial_time = vm.dates.initial_time;
+                vm.final_time = vm.dates.final_time;
                 var countPassedDate = 0;
                 angular.forEach(data.listaAccountStatusItems, function (item, i) {
 
@@ -172,9 +172,8 @@
                 });
                 vm.accountStatusItems = data;
 
-                setTimeout(function () {
                     vm.isReady = true;
-                },200);
+
 
             }
 
