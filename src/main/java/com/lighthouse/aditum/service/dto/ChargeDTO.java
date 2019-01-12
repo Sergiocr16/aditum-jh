@@ -1,10 +1,13 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Objects;
 
@@ -12,7 +15,7 @@ import java.util.Objects;
  * A DTO for the Charge entity.
  */
 public class ChargeDTO implements Serializable {
-
+    private Locale locale = new Locale("es", "CR");
     private Long id;
 
     @NotNull
@@ -43,6 +46,8 @@ public class ChargeDTO implements Serializable {
 
     private double total;
 
+    private String totalFormatted;
+
     private Long houseId;
 
     private Long paymentId;
@@ -59,6 +64,7 @@ public class ChargeDTO implements Serializable {
     public ChargeDTO(String concept,int total ) {
         this.concept = concept;
         this.total = total;
+        this.totalFormatted = formatMoney(this.total);
 
     }
 
@@ -75,6 +81,7 @@ public class ChargeDTO implements Serializable {
         this.paymentAmmount = paymentAmmount;
         this.left = left;
         this.total = total;
+        this.totalFormatted = formatMoney(this.total);
         this.houseId = houseId;
         this.paymentId = paymentId;
         this.companyId = companyId;
@@ -85,6 +92,7 @@ public class ChargeDTO implements Serializable {
         this.ammount = ammount;
         this.paymentAmmount = ammount;
         this.total = Double.parseDouble(ammount);
+        this.totalFormatted = formatMoney(this.total);
         this.left = "0";
         this.paymentId = id;
         this.subcharge = subcharge;
@@ -97,7 +105,12 @@ public class ChargeDTO implements Serializable {
         this.houseId = houseId;
         this.deleted = 0;
     }
-
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
+    }
     public Long getId() {
         return id;
     }
@@ -236,6 +249,7 @@ public class ChargeDTO implements Serializable {
 
     public void setTotal(double total) {
         this.total = total;
+        this.totalFormatted = formatMoney(this.total);
     }
 
     public String getPaymentAmmount() {
@@ -286,4 +300,11 @@ public class ChargeDTO implements Serializable {
         return formattedType;
     }
 
+    public String getTotalFormatted() {
+        return totalFormatted;
+    }
+
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
+    }
 }

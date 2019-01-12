@@ -51,7 +51,7 @@
             <div class="table-scrollable"  style="border: 0px!important;">
                 <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
                 <table id="tableToExport" class="table   font-13 gray-font tableMaterialDesignAccountStatus">
-                    <thead class="flip-content text-center">
+                    <thead class="flip-content text-center" style="background-color:#fafafa; ">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Filial</th>
                         <th class="text-center">Enero</th>
@@ -73,7 +73,7 @@
                         <td class="text-center">{{collection.houseNumber}}</td>
                         <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
                             <span ng-if="monthCollection.mensualBalance!=0">₡ {{vm.formatearNumero(monthCollection.mensualBalance)}}</span>
-                            <span style="color:#969696;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
+                            <span style="color:#323232;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
                         </td>
                     </tr>
                     </tbody>

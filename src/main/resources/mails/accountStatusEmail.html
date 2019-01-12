@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Comprobante de Pago ADITUM</title>
     <style>
-         body {
-         max-width: 800px;
-         margin: auto;
-		 line-height:25px;
-         padding: 30px;
-         font-size: 14px;
-         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-         color: #555;
-         }
-</style>
+        body {
+            max-width: 800px;
+            margin: auto;
+            line-height:25px;
+            padding: 30px;
+            font-size: 14px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
 <h2 style="text-align:left"> <img width="100px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/></h2>
@@ -22,8 +22,8 @@
 <p style="font-size: 14px;color: #546e7a;">
     Estimado usuario,
     <br></br>
-    Se ha realizado un pago referente a su filial en <span th:text="|${company.name}|"> Condominio</span><br></br>
-    Adjunto encontrará el comprobante de pago del mismo.
+    Adjunto encontrará el estado de cuenta de la filial <span th:text="|${house}|"></span> en <span th:text="|${company.name}|"> Condominio</span>.<br></br>
+
 </p>
 <p style="font-size:10px;margin-top:40px;color:#546e7a;text-align:center"><b>CUALQUIER DUDA O ACLARACIÓN FAVOR DE COMUNICARSE CON LA ADMINISTRACIÓN.</b></p>
 <div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>

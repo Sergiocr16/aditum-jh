@@ -128,7 +128,7 @@ public class CollectionService {
             style = "background-color:#C2FFD0;";
         }
         if(ammount==0){
-            style = "background-color:#F7F7F7;";
+            style = "background-color:#e2e2e2;";
         }
 
         if(month> ZonedDateTime.now().getMonth().getValue() && ZonedDateTime.now().getYear()==year) {

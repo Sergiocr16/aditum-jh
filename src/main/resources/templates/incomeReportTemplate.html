@@ -87,8 +87,10 @@
          vertical-align: top;
          }
          .collection-table table td {
-         border: 1px solid #eee;
-         border-spacing: 0;
+             border: 1px solid #eee;
+             border-spacing: 0;
+             padding-top: 0px !important;
+             padding-bottom: 0px !important;
          }
          .invoice-box table tr td:nth-child(2) {
          text-align: right;
@@ -105,11 +107,13 @@
          padding-bottom: 40px;
          }
          .invoice-box table tr.heading td {
-         background: #e0e0e0;
-         border-bottom: 4px solid rgb(42, 100, 150);
-         font-weight: bold;
-         font-size: 12px;
-         border-collapse: none!important;
+             background: #eeeeee;
+             font-weight: bold;
+             font-size: 12px;
+             border-collapse: none !important;
+         }
+         .no-border-right {
+             border-right: 0px !important;
          }
          .invoice-box table tr.details td {
          padding-bottom: 20px;
@@ -118,7 +122,9 @@
          .invoice-box table tr.item td {
          border-bottom: 1px solid #eee;
          width: 1000px;
-         font-size: 10px
+         padding-bottom:1px!important;
+         font-size: 10px;
+
          }
          /** RTL **/
          .rtl {
@@ -135,7 +141,7 @@
          line-height: 1em;
          font-weight: bold;
          font-size: 25px;
-         color: rgb(42, 100, 150);
+             color: rgb(0, 150, 136);
          margin-bottom: 0px;
          margin-top: 35px;
          }
@@ -143,8 +149,8 @@
          text-align: center!important;
          }
          .total-ammount {
-         border-top: 4px solid rgb(42, 100, 150);
-         background: rgb(42, 100, 150);
+         border-top: 4px solid rgb(0, 150, 136);
+         background: rgb(0, 150, 136);
          border-bottom: 1px solid #eee!important;
          font-weight: bold;
          font-size:12px!important;
@@ -153,11 +159,11 @@
          }
          .payment-method {
           border: 0px solid #eee!important;
-         border-top: 3px solid rgb(42, 100, 150)!important;
+         border-top: 3px solid rgb(0, 150, 136);!important;
          color: #555;
          }
          .comprobante-title {
-         background-color: rgb(42, 100, 150);
+             background-color: rgb(0, 150, 136);
          color: white;
          font-size: 18px;
          padding: 10px;
@@ -165,44 +171,19 @@
          border-top-right-radius: 10px;
          border-bottom-right-radius: 10px;
          }
-         .year-number {
-         text-align: center;
-         color: rgb(42, 100, 150);
-         font-size: 33px;
+
+         .invoice-box table tr.bodyContent td {
+             font-size: 11px;
+             border-collapse: none !important;
+             border-top: 0px !important;
          }
-         .text-right {
-         text-align: right!important;
+
+         .invoice-box table tr.bodyContentChild td {
+             font-size: 11px;
+             border-collapse: none !important;
+             border-top: 0px !important;
          }
-         .description {
-         font-size: 13px;
-         }
-         .green-box {
-         width: 15px;
-         height: 10px;
-         background-color: #C2FFD0;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
-         .red-box {
-         width: 15px;
-         height: 10px;
-         background-color: #FFB8B8;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
-         .yellow-box {
-         width: 15px;
-         height: 10px;
-         background-color: #FFD17A;
-         border: 1px solid #eee;
-         display: inline-block;
-         float: left;
-         margin: 6px 6px 0 0;
-         }
+
          .no-padding{
          padding:0;
          }
@@ -255,8 +236,8 @@
                         <span class="comprobante-title"> Reporte de Ingresos</span>
                     </div>
                     <div style="margin-top:20px">
-                        <b th:text="|${rangoFechas}|">
-                        </b>
+                        <span th:text="|${rangoFechas}|">
+                        </span>
                     </div>
                 </div>
                 <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:50%;float:right;margin-top: -12px;">
@@ -293,11 +274,11 @@
                     <table style="border-spacing:0;border-collapse: collapse">
                     <thead>
                     <tr class="heading">
-                        <td width="7.6923%" class="text-center">
+                        <td width="5.6923%" class="text-center">
                             Filial
                         </td>
-                        <td width="7.6923%" class="text-center">
-                            Número de recibo
+                        <td width="5.6923%" class="text-center">
+                            Recibo
                         </td>
                         <td width="7.6923%" class="text-center">
                             Fecha de pago
@@ -311,7 +292,7 @@
                         <td width="7.6923%" class="text-center">
                             Categoría
                         </td>
-                        <td width="7.6923%" class="text-center">
+                        <td width="11.6923%" class="text-center">
                             Concepto
                         </td>
                         <td width="7.6923%" class="text-center">
@@ -319,34 +300,41 @@
                         </td>
                     </tr>
                     </thead>
-        <tr class="item no-page-break" th:each="payment : ${incomeReport.payments}">
-            <td class="text-center" th:text="|${payment.houseNumber}|">
+        <tr class="item no-page-break bodyContent" th:each="payment : ${incomeReport.payments}">
+            <td class="text-center no-border-right" th:text="|${payment.houseNumber}|">
             </td>
-            <td class="text-center" th:text="|${payment.receiptNumber}|">
+            <td class="text-center no-border-right" th:text="|${payment.receiptNumber}|">
             </td>
-            <td class="text-center" th:text="|${payment.stringDate}|">
+            <td class="text-center no-border-right" th:text="|${payment.stringDate}|">
             </td>
-            <td class="text-center" th:text="|${payment.account}|">
+            <td class="text-center no-border-right" th:text="|${payment.account}|">
             </td>
-            <td class="text-center" th:text="|${payment.paymentMethod}|">
+            <td class="text-center no-border-right" th:text="|${payment.paymentMethod}|">
             </td>
-            <td class="text-center" th:text="|${payment.categories}|">
+            <td class="text-center no-border-right" th:text="|${payment.categories}|">
             </td>
-            <td class="text-center" th:text="|${payment.concept}|">
+            <td class="text-center no-border-right" th:text="|${payment.concept}|">
             </td>
             <td class="text-center">
-                <img  th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8" style="margin-right:2px;margin-top:16px"/>
+                <img
+                    th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                    style="margin: 0px 0px;"/>
                 <span  th:text="|${payment.ammount}|"></span>
             </td>
         </tr>
-        <tr class="no-page-break">
-            <td colspan="7" class="payment-method"></td>
-            <td class="total-ammount payment-method text-center">
-                <div style="display:inline;float: right" >
-                    <span><span  th:text="|${incomeReport.total}|"></span></span>
-                </div>
-                <div style="display:inline;float: right;margin:3px 2px"><img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="18"/> </div>
+        <tr class="no-page-break payment-method">
+            <td colspan="6" class="payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+            <td class="total-ammount payment-method" style="text-align: right">
+
                 <div style="display:inline;float: right"><b>Total:</b></div>
+            </td>
+            <td class="total-ammount payment-method text-center">
+
+                    <span>     <img
+                        th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="10"
+                        style="margin: -1px 0px;"/>
+                        <span  th:text="|${incomeReport.total}|"></span></span>
+
             </td>
         </tr>
     </table>

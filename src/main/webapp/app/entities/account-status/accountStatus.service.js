@@ -25,6 +25,13 @@
                     return data;
                 }
             },
+            'sendPaymentEmail':{
+                url:'api/accountStatus/file/:accountStatusObject/:option',
+                params:{
+                    accountStatusObject: '@accountStatusObject',
+                    option:'@option'
+                }
+            }
 
         });
     }
