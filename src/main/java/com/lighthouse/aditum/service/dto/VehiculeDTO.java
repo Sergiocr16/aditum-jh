@@ -31,6 +31,8 @@ public class VehiculeDTO implements Serializable {
 
     private Long houseId;
 
+    private HouseDTO house;
+
     private Long companyId;
 
     public Long getId() {
@@ -123,5 +125,13 @@ public class VehiculeDTO implements Serializable {
             ", enabled='" + enabled + "'" +
             ", type='" + type + "'" +
             '}';
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

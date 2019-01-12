@@ -23,15 +23,33 @@
                 getCarBrands: getCarBrands,
                 validateSpecialCharactersAndVocals: validateSpecialCharactersAndVocals,
                 formatCurrencyInputs: formatCurrencyInputs,
-                deleteFromArray:deleteFromArray
+                deleteFromArray:deleteFromArray,
+                deleteFromArrayWithId:deleteFromArrayWithId
+
             };
 
+            function deleteFromArrayWithId(object,array){
+                var index = undefined;
+                var founded = false;
+                angular.forEach(array, function (item, i) {
+                    if (parseInt(item.id) === parseInt(object.id)) {
+                        index = i;
+                        founded = true;
+                    } else {
+                        if (founded == false) {
+                            index = -1;
+                        }
+                    }
+                })
+                if (index != -1){
+                    array.splice(index, 1);
+                }
+            }
             function deleteFromArray(item,array){
                 var index = array.indexOf(item);
                 if (index > -1) {
                     array.splice(index, 1);
                 }
-
             }
             function validateName (items, name) {
                 var condition = true;

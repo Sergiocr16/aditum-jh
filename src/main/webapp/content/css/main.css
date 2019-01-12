@@ -200,12 +200,14 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 .colorpicker:after {
     clear: both;
 }
+
 .fixed-tabs {
     margin: 0px;
     position: fixed;
-    width: 100%;
+    width: 80%;
     z-index: 1;
 }
+
 .colorpicker:before {
     content: '';
     display: inline-block;
@@ -365,8 +367,9 @@ Main page styles
 .margin-top-30 {
     margin-top: 30px;
 }
+
 .margin-top-40 {
-    margin-top: 40px!important;
+    margin-top: 40px !important;
 }
 
 .hipster {
@@ -1045,6 +1048,11 @@ ui bootstrap tweaks
     float: left;
 }
 
+.opacity-white {
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+}
+
 .custom-popover .popover-header .options {
     border-left: 1px solid #eaeaea;
     padding-top: 16px;
@@ -1143,6 +1151,16 @@ ui bootstrap tweaks
     background: #fff !important;
     box-shadow: inset 0 3px #1caf9a !important;
     color: #1caf9a !important;
+}
+
+.active-tab-charge-invert {
+    background: #fff !important;
+    box-shadow: inset 0 -3px #1caf9a !important;
+    color: #1caf9a !important;
+}
+
+.border-radius-8 {
+    border-radius: 8px !important;
 }
 
 div.scrollmenu {
@@ -1381,6 +1399,14 @@ div.scrollmenu a:hover {
     border-radius: 50% !important;
 }
 
+.object-fit_scale-down-navbar-huge {
+    object-fit: scale-down;
+    height: 180px;
+    width: 180px;
+    background-color: #ebedf0;
+    border-radius: 50% !important;
+}
+
 .object-fit_scale-down-resident-form {
     object-fit: scale-down;
     height: 170px;
@@ -1409,6 +1435,14 @@ div.scrollmenu a:hover {
 
 .oficial-background-red {
     background-color: #c00022 !important;
+}
+
+.material-green-font {
+    color: rgb(0, 150, 136) !important;
+}
+
+.material-red-font {
+    color: #af4d50 !important;
 }
 
 .green-button-oficial {
@@ -1605,6 +1639,14 @@ div.scrollmenu a:hover {
     z-index: 9;
 }
 
+.padding-30-acess-door {
+    padding: 30px !important;
+}
+
+.register-div {
+    margin-top: -40px
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 500px) {
     .all-content {
@@ -1675,6 +1717,73 @@ div.scrollmenu a:hover {
     md-tabs.md-default-theme .md-tab, md-tabs .md-tab {
         color: rgba(255, 255, 255, 0.4) !important;
     }
+
+    .opacity {
+        background: white !important;
+        margin-top: 56px !important;
+    }
+
+    .object-fit_scale-down-navbar-huge {
+        height: 120px;
+        width: 120px;
+    }
+
+    .icon-vehicule-access-door {
+        font-size: 80px;
+    }
+
+    .circle-icon-red {
+        padding: 30px !important;
+    }
+
+    .label-access-door {
+        font-size: 15px !important;
+    }
+
+    .username-access-door {
+        font-size: 15px !important;
+    }
+
+    .btn-absolute-right-bottom {
+        min-height: 1px;
+        line-height: 2;
+        width: 100%;
+        margin-bottom: 45px !important;
+        position: initial !important;
+    }
+
+    .no-border-radius-xs {
+        border-radius: 0px !important;
+    }
+
+    .padding-30-acess-door {
+        padding: 0px !important;
+    }
+
+    .register-div {
+        margin-top: 50px;
+    }
+
+    .btn-absolute-right-top {
+        position: absolute !important;
+        bottom: 39px !important;
+        right: 0 !important;
+        top: auto !important;
+    }
+
+    .btn-register-visitor {
+        width: 85% !important;
+    }
+
+    .container-acces-door-info {
+        height: auto !important;
+        overflow-y: auto;
+    }
+
+    .note-container {
+        max-height: inherit !important;
+        overflow: auto;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -1685,6 +1794,7 @@ div.scrollmenu a:hover {
         margin: 0px;
         z-index: 1;
     }
+
     .all-content {
         margin-top: 56px;
     }
@@ -1736,7 +1846,6 @@ div.scrollmenu a:hover {
 
     .loading-bar {
         margin-top: 64px;
-        margin-left: 235px;
     }
 
 }
@@ -1759,6 +1868,11 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     background-color: #f37960;
     color: #f37960;
 
+}
+
+.container-acces-door-info {
+    height: 320px;
+    overflow-y: auto;
 }
 
 .all-content:not(#nav-bar-top) {
@@ -1821,8 +1935,11 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     padding: 7px;
     border-radius: 4px;
 }
-.md-fixed-tabs{
-    border-radius:0!important;width: 100%;padding:0px!important
+
+.md-fixed-tabs {
+    border-radius: 0 !important;
+    width: 100%;
+    padding: 0px !important
 }
 
 .spinner {
@@ -1872,6 +1989,14 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 /*END LOADING SPINNER*/
 
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+.note-container {
+    max-height: 400px;
+    overflow: auto;
+}
+
+.height-264 {
+    height: 384px;
+}
 
 #sidebar {
     /* don't forget to add all the previously mentioned styles here too */
@@ -1915,8 +2040,21 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     background: white;
 }
 
+.label-access-door {
+    font-size: 25px;
+}
+
+.username-access-door {
+    font-size: 20px;
+
+}
+
 #sidebar ul li {
 
+}
+
+.icon-vehicule-access-door {
+    font-size: 150px;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
@@ -1977,6 +2115,27 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     opacity: 0.6;
 }
 
+.disabledBtn {
+    pointer-events: none;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.disabledDiv2 {
+    pointer-events: none;
+}
+
+#toast-container {
+    bottom: 45px !important;
+}
+
+.margin-10-0 {
+    margin: 10px 0 !important;
+}
+
+.outline-none {
+    outline: none;
+}
+
 .fade-in {
     /*min-height: 500px !important;*/
 }
@@ -2009,7 +2168,30 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     border-radius: 50%;
 }
 
-a
+.circle-icon-red {
+    background: #af4d50;
+    padding: 50px;
+    border-radius: 50%;
+}
+
+.btn-absolute-right-bottom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.btn-absolute-right-top {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.btn-absolute-left-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
 .material-icons.md-18 {
     font-size: 18px;
 }
@@ -2311,6 +2493,7 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
         background: #fff;
     }
 }
+
 @media screen  and (orientation: portrait) {
     .portlet.portlet-fullscreen-xs {
         transform: rotate(-90deg);
@@ -2324,9 +2507,9 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
         height: 100vw;
     }
 }
-.fixed-tabs {
-    margin: 0px;
-    position: fixed;
-    width: 80%;
-    z-index: 1;
+
+.md-tooltip {
+    font-size: 13px !important;
+    font-weight: bold !important;
+    color: white !important;
 }

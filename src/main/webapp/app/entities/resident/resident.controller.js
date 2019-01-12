@@ -226,7 +226,6 @@
         }
 
         vm.disableEnabledResident = function (residentInfo) {
-
             var correctMessage;
             if (enabledOptions) {
                 correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";

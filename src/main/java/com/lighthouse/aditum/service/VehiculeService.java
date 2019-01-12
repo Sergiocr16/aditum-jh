@@ -6,6 +6,7 @@ import com.lighthouse.aditum.service.dto.VehiculeDTO;
 import com.lighthouse.aditum.service.mapper.VehiculeMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +30,13 @@ public class VehiculeService {
 
     private final VehiculeMapper vehiculeMapper;
 
-    public VehiculeService(VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper) {
+    private final HouseService houseService;
+
+
+    public VehiculeService(VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper, @Lazy HouseService houseService) {
         this.vehiculeRepository = vehiculeRepository;
         this.vehiculeMapper = vehiculeMapper;
+        this.houseService = houseService;
     }
 
     /**
@@ -58,7 +63,11 @@ public class VehiculeService {
     public Page<VehiculeDTO> findAll(Long companyId) {
         log.debug("Request to get all Vehicules");
         List<Vehicule> result = vehiculeRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        return new PageImpl<>(result).map(vehicule -> {
+            VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+            vehiculeDTO.setHouse(houseService.findOne(vehiculeDTO.getHouseId()));
+            return vehiculeDTO;
+        });
     }
 
     /**

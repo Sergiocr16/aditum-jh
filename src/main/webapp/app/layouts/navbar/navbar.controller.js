@@ -5,12 +5,10 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany'];
+    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor'];
 
-    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany) {
+    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor) {
         var vm = this;
-
-
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.colorsMenu = {
@@ -914,54 +912,54 @@
                         showXs: true,
                         showLg: true,
                     },
-                        {
-                            title: "Áreas comunes",
-                            icon: "local_florist",
-                            authoritites: "ROLE_USER",
-                            activeOn: "common-area-resident-account,reservationCalendarResidentView,allReservationsResidentsView,reservationDialogResidentView",
-                            collapsable: true,
-                            uisref: "",
-                            menuId: "areasComunesMenuUser",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                            thirdItems: [
-                                {
-                                    title: "Ver todas",
-                                    icon: "view_agenda",
-                                    authoritites: "ROLE_USER",
-                                    activeOn: "common-area-resident-account,reservationCalendarResidentView",
-                                    collapsable: false,
-                                    uisref: "common-area-resident-account",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true
-                                },
-                                {
-                                    title: "Reservar",
-                                    icon: "event_available",
-                                    authoritites: "ROLE_USER",
-                                    activeOn: "reservationDialogResidentView",
-                                    collapsable: false,
-                                    uisref: "common-area-reservation-resident-view",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true
-                                },
-                                {
-                                    title: "Mis reservaciones",
-                                    icon: "view_comfy",
-                                    authoritites: "ROLE_USER",
-                                    activeOn: "allReservationsResidentsView",
-                                    collapsable: false,
-                                    uisref: "common-area-all-reservations-resident-view",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true
-                                },
+                    {
+                        title: "Áreas comunes",
+                        icon: "local_florist",
+                        authoritites: "ROLE_USER",
+                        activeOn: "common-area-resident-account,reservationCalendarResidentView,allReservationsResidentsView,reservationDialogResidentView",
+                        collapsable: true,
+                        uisref: "",
+                        menuId: "areasComunesMenuUser",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        thirdItems: [
+                            {
+                                title: "Ver todas",
+                                icon: "view_agenda",
+                                authoritites: "ROLE_USER",
+                                activeOn: "common-area-resident-account,reservationCalendarResidentView",
+                                collapsable: false,
+                                uisref: "common-area-resident-account",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Reservar",
+                                icon: "event_available",
+                                authoritites: "ROLE_USER",
+                                activeOn: "reservationDialogResidentView",
+                                collapsable: false,
+                                uisref: "common-area-reservation-resident-view",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
+                            {
+                                title: "Mis reservaciones",
+                                icon: "view_comfy",
+                                authoritites: "ROLE_USER",
+                                activeOn: "allReservationsResidentsView",
+                                collapsable: false,
+                                uisref: "common-area-all-reservations-resident-view",
+                                menuId: "",
+                                hover: false,
+                                showXs: true
+                            },
 
-                            ]
-                        },
+                        ]
+                    },
 
 
                     {
@@ -1004,7 +1002,7 @@
                                 authoritites: "ROLE_USER",
                                 activeOn: "reportHomeService",
                                 collapsable: false,
-                                uisref: "note.new",
+                                uisref: "noteNew",
                                 menuId: "",
                                 hover: false,
                                 showXs: true
@@ -1028,7 +1026,7 @@
 
             },
             {
-                title: "",
+                title: "Soporte",
                 icon: "contact_support",
                 authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER",
                 activeOn: "soporte",
@@ -1038,7 +1036,7 @@
                 hover: false,
                 showXs: true,
                 showLg: true,
-                secondaryItems:[
+                secondaryItems: [
                     {
                         title: "Soporte",
                         icon: "contact_support",
@@ -1050,9 +1048,20 @@
                         hover: false,
                         showXs: true,
                         showLg: true,
-                        secondItems:[
-
-                        ]
+                        secondItems: []
+                    },
+                    {
+                        title: "Manual de usuario",
+                        icon: "book",
+                        authoritites: "ROLE_USER",
+                        activeOn: "manualResidente",
+                        collapsable: false,
+                        uisref: "manualResidente",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                        secondItems: []
                     },
                 ]
             },
@@ -1150,8 +1159,25 @@
             };
         }
 
+        function unsubscribe() {
+            WSDeleteEntity.unsubscribe(globalCompany.getId());
+            WSEmergency.unsubscribe(globalCompany.getId());
+            WSHouse.unsubscribe(globalCompany.getId());
+            WSResident.unsubscribe(globalCompany.getId());
+            WSVehicle.unsubscribe(globalCompany.getId());
+            WSNote.unsubscribe(globalCompany.getId());
+            WSVisitor.unsubscribe(globalCompany.getId());
+        }
+
         function logout() {
             collapseNavbar();
+            Principal.identity().then(function (account) {
+                switch (account.authorities[0]) {
+                    case "ROLE_OFFICER":
+                        unsubscribe()
+                        break;
+                }
+            });
             Auth.logout();
             $rootScope.companyUser = undefined;
             $state.go('home');

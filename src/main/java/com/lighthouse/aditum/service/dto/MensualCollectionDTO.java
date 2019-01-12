@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class MensualCollectionDTO implements Serializable {
 
 
-    private int mensualBalance;
+    private double mensualBalance;
 
     private String mensualBalanceToShow;
 
@@ -17,11 +17,11 @@ public class MensualCollectionDTO implements Serializable {
     private String style;
 
 
-    public int getMensualBalance() {
+    public double getMensualBalance() {
         return mensualBalance;
     }
 
-    public void setMensualBalance(int mensualBalance) {
+    public void setMensualBalance(double mensualBalance) {
         this.mensualBalance = mensualBalance;
     }
 

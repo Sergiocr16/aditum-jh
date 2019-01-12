@@ -6,6 +6,8 @@ import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +32,12 @@ public class ResidentService {
 
     private final ResidentMapper residentMapper;
 
-    public ResidentService(ResidentRepository residentRepository, ResidentMapper residentMapper) {
+    private final HouseService houseService;
+
+    public ResidentService(ResidentRepository residentRepository, ResidentMapper residentMapper,@Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
+        this.houseService = houseService;
     }
 
     /**
@@ -79,7 +84,12 @@ public class ResidentService {
     public Page<ResidentDTO> findAll(Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+        return new PageImpl<>(result).map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
+            return residentDTO;
+        }
+        );
     }
 
     @Transactional(readOnly = true)
@@ -132,6 +142,7 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        residentDTO.setHouse(this.houseService.findOne(residentDTO.getHouseId()));
         return residentDTO;
     }
 
