@@ -20,6 +20,7 @@ import java.io.*;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
 
@@ -120,12 +121,12 @@ public class PaymentDocumentService {
 
     private IncomeReportDTO formatIncomeReport(IncomeReportDTO income){
         Locale locale = new Locale("es", "CR");
-        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM. yyyy", locale);
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
 
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         income.getPayments().forEach(paymentDTO -> {
                 paymentDTO.setAmmount(currencyFormatter.format(Double.parseDouble(paymentDTO.getAmmount())).substring(1));
-            paymentDTO.setStringDate(spanish.format(paymentDTO.getDate()));
+            paymentDTO.setStringDate( pattern.ofPattern("dd MMMM yyyy").format(paymentDTO.getDate()));
         });
         income.setTotal(currencyFormatter.format(Double.parseDouble(income.getTotal())).substring(1));
         income.setTotalCommonArea(currencyFormatter.format(Double.parseDouble(income.getTotalCommonArea())).substring(1));
@@ -303,7 +304,7 @@ public class PaymentDocumentService {
 
 
     private String formatRangoFechas(ZonedDateTime fechaInicial,ZonedDateTime fechaFinal){
-        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM . yyyy", new Locale("es","ES"));
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));
         return "Del "+spanish.format(fechaInicial) + " al "+ spanish.format(fechaFinal);
     }
 
@@ -323,7 +324,7 @@ public class PaymentDocumentService {
             contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
             contextTemplate.setVariable(HOUSE,house);
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
-            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("d MMMM . yyyy", new Locale("es","ES"));
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));
             Locale locale = new Locale("es", "CR");
             NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
             double subchargeTotal = 0;

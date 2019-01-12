@@ -129,7 +129,6 @@
 
         .invoice-box table tr.heading td {
             background: #eeeeee;
-            border-bottom: 4px solid rgb(0,150,136);
             font-weight: bold;
             font-size: 12px;
             border-collapse: none !important;
@@ -373,7 +372,7 @@
                                 <span th:if="${mensualCollection.mensualBalance!=0}"
                                       th:text="|${mensualCollection.mensualBalanceToShow}|">balanceMensual</span>
                                 <span th:if="${mensualCollection.mensualBalance==0}"
-                                      style="background-color:#F7F7F7;font-size:8px;color:#707070">SIN CUOTA</span>
+                                      style="background-color:#e2e2e2;font-size:8px;color:#565656">SIN CUOTA</span>
                             </td>
                         </tr>
                     </table>

@@ -11,6 +11,7 @@ package com.lighthouse.aditum.service;
     import io.github.jhipster.config.JHipsterProperties;
     import org.slf4j.Logger;
     import org.slf4j.LoggerFactory;
+    import org.springframework.scheduling.annotation.Async;
     import org.springframework.stereotype.Service;
     import org.springframework.transaction.annotation.Transactional;
     import org.thymeleaf.context.Context;
@@ -42,12 +43,15 @@ public class AccountStatusDocumentService {
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
     private final SpringTemplateEngine templateEngine;
+    private final MailService mailService;
 
-    public AccountStatusDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper){
+
+    public AccountStatusDocumentService(SpringTemplateEngine templateEngine, JHipsterProperties jHipsterProperties,CompanyService companyService, CompanyMapper companyMapper,MailService mailService){
         this.companyMapper = companyMapper;
         this.companyService = companyService;
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
+        this.mailService = mailService;
     }
     private String formatMoney(double ammount){
         DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
@@ -92,6 +96,53 @@ public class AccountStatusDocumentService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Async
+    public void sendEmail(AccountStatusDTO accountStatusDTO, HouseDTO houseDTO,String initialTime, String finalTime) {
+        Company company = companyMapper.companyDTOToCompany(companyService.findOne(houseDTO.getCompanyId()));
+        Context context = new Context();
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        context.setVariable(HOUSE,houseDTO.getHousenumber());
+        context.setVariable(COMPANY,company);
+        String content = templateEngine.process("accountStatusEmail", context);
+        String subject = "Estado de cuenta - filial " + houseDTO.getHousenumber();
+        String fileName = "Estado de cuenta - filial "+houseDTO.getHousenumber()+".pdf";
+
+        try {
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            contextTemplate.setVariable(HOUSE,houseDTO.getHousenumber());
+            contextTemplate.setVariable(COMPANY,company);
+            contextTemplate.setVariable(INITIALTIME,initialTime);
+            contextTemplate.setVariable(FINALTIME,finalTime);
+            contextTemplate.setVariable(ACCOUNTSTATUS,accountStatusDTO);
+
+
+            ZonedDateTime date = ZonedDateTime.now();
+            String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);
+            contextTemplate.setVariable(CURRENT_DATE,timeNowFormatted);
+
+            String contentTemplate = templateEngine.process("accountStatusTemplate", contextTemplate);
+            OutputStream outputStream = new FileOutputStream(fileName);
+            ITextRenderer renderer = new ITextRenderer();
+            renderer.setDocumentFromString(contentTemplate);
+            renderer.layout();
+            renderer.createPDF(outputStream);
+            outputStream.close();
+            File file = new File(fileName);
+            int emailsToSend = accountStatusDTO.getEmailTo().size();
+            for (int i = 0; i < accountStatusDTO.getEmailTo().size(); i++) {
+                this.mailService.sendEmailWithAtachment
+                    (accountStatusDTO.getEmailTo().get(i).getEmail(), subject, content, true, file,emailsToSend-1,i);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
+        }
     }
 }
 

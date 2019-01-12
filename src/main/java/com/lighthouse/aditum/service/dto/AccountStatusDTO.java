@@ -13,7 +13,7 @@ public class AccountStatusDTO {
     private double totalRecharge;
     private double totalAbono;
     private double totalTotal;
-
+    private List<ResidentDTO> emailTo;
     private String saldoInicialFormatted;
     private String saldoFormatted;
     private String totalChargeFormatted;
@@ -138,5 +138,13 @@ public class AccountStatusDTO {
 
     public void setTotalTotalFormatted(String totalTotalFormatted) {
         this.totalTotalFormatted = totalTotalFormatted;
+    }
+
+    public List<ResidentDTO> getEmailTo() {
+        return emailTo;
+    }
+
+    public void setEmailTo(List<ResidentDTO> emailTo) {
+        this.emailTo = emailTo;
     }
 }

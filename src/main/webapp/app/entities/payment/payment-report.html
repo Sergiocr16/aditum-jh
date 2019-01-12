@@ -139,11 +139,11 @@
                             </div>
                         </div>
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                            <div class="table-scrollable">
-                                <table class="jh-table table table-bordered table-condensed flip-content"
+                            <div class="table-scrollable" style="border: 0px!important;">
+                                <table class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
                                        style="font-size:12px;">
-                                    <thead style="background-color:#EEEEEE; ">
-                                    <tr>
+                                    <thead style="background-color:#fafafa; " class="text-center">
+                                    <tr class="text-center">
                                         <th>
                                             Filial
                                         </th>
@@ -171,7 +171,7 @@
                                     <tbody style="outline: none; border-top:0px; "
                                            ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id"
                                            ng-class="{'selected-payment':payment.isShowingCharges==true}">
-                                    <tr>
+                                    <tr class="text-center">
                                         <td class="text-center">{{payment.houseNumber}}</td>
                                         <td style="outline: none;" ng-click="vm.showCharges(payment)"><i
                                             ng-show="payment.isShowingCharges==true"
@@ -407,7 +407,7 @@
                                         <td colspan="6" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
-                                        <td class="bold" style="border-top:0px!important;">₡ {{vm.incomeReport.total |
+                                        <td class="bold text-center" style="border-top:0px!important;">₡ {{vm.incomeReport.total |
                                             currency : "" : 0}}
                                         </td>
                                     </tr>

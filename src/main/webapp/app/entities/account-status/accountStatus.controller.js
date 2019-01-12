@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccountStatusController', AccountStatusController);
 
-    AccountStatusController.$inject = ['$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusController.$inject = [Modal,'Resident','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
-    function AccountStatusController($rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function AccountStatusController(Modal,Resident,$rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -153,7 +153,7 @@
 
             function onSuccess(data) {
                 vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+false+'}'+moment(new Date()).format();
-                vm.path = '/api/accountStatus/file/' + vm.superObject;
+                vm.path = '/api/accountStatus/file/' + vm.superObject+'/'+1;
 
                 vm.initial_time = vm.dates.initial_time;
                 vm.final_time = vm.dates.final_time;
@@ -204,7 +204,62 @@
                         showWeeks: false,
                     }
                 }
+            };
+
+
+            vm.sendEmail = function () {
+
+                Modal.confirmDialog("¿Está seguro que desea enviar el estado de cuenta al contacto principal de la filial " + $localStorage.houseSelected.housenumber + "?","",
+                    function(){
+                        vm.exportActions.sendingEmail = true;
+                        Resident.findResidentesEnabledByHouseId({
+                            houseId: parseInt($localStorage.houseSelected.id),
+                        }).$promise.then(onSuccessResident, onError);
+
+                        function onSuccessResident(data, headers) {
+                            var thereIs = false;
+                            angular.forEach(data, function (resident, i) {
+                                if (resident.email != undefined && resident.email != "" && resident.email != null) {
+                                    resident.selected = false;
+                                    if (resident.principalContact == 1) {
+                                        thereIs = true;
+                                    }
+                                }
+                            });
+                            if (thereIs == true) {
+                                AccountStatus.sendPaymentEmail({
+                                    accountStatusObject: vm.superObject,
+                                    option: 2
+                                });
+                                setTimeout(function () {
+                                    $scope.$apply(function () {
+                                        vm.exportActions.sendingEmail = false;
+                                    });
+                                    Modal.toast("Se ha enviado el estado de cuenta al contacto principal.")
+
+
+                                }, 8000)
+                            } else {
+
+                                vm.exportActions.sendingEmail = false;
+                                Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
+
+
+                            }
+                        }
+
+                        function onError() {
+                            Modal.toast("Esta filial no tiene un contacto principal para enviar el correo.")
+
+
+                        }
+                    });
+
+
+
             }
+
+
             vm.datePickerOpenStatus.initialtime = false;
             vm.datePickerOpenStatus.finaltime = false;
 
