@@ -26,10 +26,17 @@
         ])
         .run(run);
 
-    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope'];
+    run.$inject = ['stateHandler', 'translationHandler', '$state', '$rootScope','$templateCache','$http'];
 
-    function run(stateHandler, translationHandler, $state, vm ) {
-
+    function run(stateHandler, translationHandler, $state, vm,$templateCache ,$http) {
+        preloadTemplates($state, $templateCache, $http);
+        function preloadTemplates($state, $templateCache, $http) {
+            angular.forEach($state.get(), function (state, key) {
+                if (state.templateUrl !== undefined && state.preload !== false) {
+                    $http.get(state.templateUrl, {cache: $templateCache});
+                }
+            });
+        }
         stateHandler.initialize();
         translationHandler.initialize();
 

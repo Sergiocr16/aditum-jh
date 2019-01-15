@@ -1154,10 +1154,11 @@ ui bootstrap tweaks
 }
 
 .active-tab-charge-invert {
-    background: #fff !important;
+    background: white !important;
     box-shadow: inset 0 -3px #1caf9a !important;
     color: #1caf9a !important;
 }
+
 
 .border-radius-8 {
     border-radius: 8px !important;
@@ -1784,6 +1785,9 @@ div.scrollmenu a:hover {
         max-height: inherit !important;
         overflow: auto;
     }
+    .material-icons.md-48 {
+        font-size: 35px;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -2205,7 +2209,7 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 }
 
 .material-icons.md-48 {
-    font-size: 48px;
+    font-size: 90px;
 }
 
 .material-icons.md-dark {
@@ -2511,5 +2515,18 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
 .md-tooltip {
     font-size: 13px !important;
     font-weight: bold !important;
+    color: white !important;
+}
+md-toast.md-center {
+    left: 50%;
+    transform: translate3d(-50%, 0, 0);
+}
+
+.label-tab-container-ad {
+    color: rgba(255,255,255,0.5)!important;
+    background: rgb(0,150,136)!important;
+}
+.active-tab-charge-invert-ad {
+    box-shadow: inset 0 -3px white !important;
     color: white !important;
 }

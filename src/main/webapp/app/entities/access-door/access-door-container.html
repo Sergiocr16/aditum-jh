@@ -12,7 +12,7 @@
             </div>
 
             <div layout="row" ng-if="vm.isReady && $state.current.name === 'main-access-door'"
-                 class="col-md-10 col-xs-12 fade-in register-div"
+                 class="col-md-10 col-xs-12 fade-in register-div" id="content-officer"
                  style="margin-top: -40px">
                 <div layout="row" layout-xs="column"
                      class="background-white padding-30 col-md-12 col-xs-12 border-radius-8"
@@ -146,34 +146,27 @@
 </div>
 </div>
 <div class="tab_container" layout="row" style="position:fixed;bottom:0;padding-top:0;">
-    <label class="no-margin" flex
-           ng-class="{'active-tab-charge-invert' : $state.current.name === 'main-access-door'}"
+    <label class="no-margin label-tab-container-ad" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.current.name === 'main-access-door'}"
            ui-sref="main-access-door"><i class="material-icons material-icons-with-text icon-finanzes">meeting_room</i>
         <span hide-xs hide-sm hide-md>Puerta de acceso</span></label>
-    <label class="no-margin" flex
-           ng-class="{'active-tab-charge-invert' : $state.includes('main-access-door.register-visitor')}"
+    <label class="no-margin label-tab-container-ad" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.register-visitor')}"
            ui-sref="main-access-door.register-visitor"><i
         class="material-icons material-icons-with-text icon-finanzes">face</i> <span hide-xs hide-sm hide-md>Registrar visitante</span></label>
-    <label class="no-margin" flex
-           ng-class="{'active-tab-charge-invert' : $state.includes('main-access-door.filiales-info')}"
+    <label class="no-margin label-tab-container-ad" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.filiales-info')}"
            ui-sref="main-access-door.filiales-info"><i
         class="material-icons material-icons-with-text icon-finanzes">home</i> <span hide-xs hide-sm hide-md>Información de filiales</span></label>
-    <label class="no-margin" flex
-           ng-class="{'active-tab-charge-invert' : $state.includes('main-access-door.home-service')}"
+    <label class="no-margin label-tab-container-ad" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.home-service')}"
            ui-sref="main-access-door.home-service"><i
         class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span></label>
-    <label class="no-margin" flex
-           ng-class="{'active-tab-charge-invert' : $state.includes('houseAdministration.vehiculesByHouse')}"
-           ui-sref="houseAdministration.vehiculesByHouse"><i
+    <label class="no-margin label-tab-container-ad" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.change-watch')}"
+           ui-sref="main-access-door.change-watch"><i
         class="material-icons material-icons-with-text icon-finanzes">access_time</i> <span hide-xs hide-sm hide-md>Cambio de turno</span></label>
-    <label class="no-margin" flex-xs="15" flex="5"
-           ng-class="{'active-tab-charge-invert' : $state.includes('houseAdministration.vehiculesByHouse')}"
-           ui-sref="houseAdministration.vehiculesByHouse"><i
-        class="material-icons material-icons-with-text icon-finanzes material-green-font">cached</i>
-        <md-tooltip md-direction="top">Recargar datos del sistema</md-tooltip>
-        <span hide-xs hide-sm hide-md></span></label>
 </div>
-
 <div class="intermitentRed portlet light bordered scroll-vertical portlet-fullscreen" layout="column" layout-align="center center" ng-if="vm.emergencyInProgress">
         <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
         <md-button type="submit" class="btn-default" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>

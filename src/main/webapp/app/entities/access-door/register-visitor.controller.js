@@ -38,7 +38,11 @@
             vm.getVisitor = function () {
                 if (vm.visitor_id_number !== undefined && vm.visitor_id_number.length >= 9) {
                     Modal.showLoadingBar();
-                    PadronElectoral.find(vm.visitor_id_number, personFinded, personNotFinded)
+                    if($rootScope.online) {
+                        PadronElectoral.find(vm.visitor_id_number, personFinded, personNotFinded)
+                    }else{
+                        personNotFinded();
+                    }
                 }
 
                 function personFinded(itemVisitor) {
@@ -78,15 +82,17 @@
                                 vm.founded = true;
                                 vm.showLock = true;
                             } else {
-                                toastr["info"]("Por favor ingresarlos manualmente.", "Los datos del visitante no se han encontrado")
+                                if($rootScope.online) {
+                                    toastr["info"]("Por favor ingresarlos manualmente.", "Los datos del visitante no se han encontrado")
+                                }else{
+                                    toastr["info"]("Por favor ingresarlos los datos del visitante manualmente.", "No hay conexión a internet")
+                                }
                                 vm.founded = false;
                                 vm.showLock = false;
                             }
-                            Modal.hideLoadingBar();
                         })
-
                     }, 10)
-
+                    Modal.hideLoadingBar();
                 }
 
                 function findLicensePlate(id) {
@@ -185,7 +191,6 @@
 
             function onSaveSuccess(result) {
                 result.house = vm.house;
-                console.log(result)
                 $rootScope.visitorsList.push(result);
                 toastr["success"]("Se registró la entrada del visitante correctamente.");
                 vm.clearInputs();
@@ -199,8 +204,9 @@
             }
 
             function onSaveError() {
-                toastr["error"]("Ocurrio un error registrando la entrada del visitante.");
+                toastr["info"]("Se registrará la visita una vez la conexión haya vuelto.","No hay conexión a internet");
                 Modal.hideLoadingBar();
+                vm.clearInputs();
                 setTimeout(function () {
                     $scope.$apply(function () {
                         $(".input-res").removeClass("md-input-invalid")

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['$timeout','Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal'];
+    AccessDoorController.$inject = ['$mdToast','$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal','Officer'];
 
-    function AccessDoorController($timeout,Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal) {
+    function AccessDoorController($mdToast,$timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal,Officer) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -20,6 +20,7 @@
         $rootScope.vehicules = [];
         $rootScope.invitedList = [];
         $rootScope.emergencyList = [];
+        $rootScope.officers = [];
         vm.resident = undefined;
         vm.residentFound = 0;
         vm.id_vehicule = '';
@@ -47,6 +48,7 @@
         loadHouses();
         loadDestinies();
         loadEmergencies();
+        loadOfficers();
         subscribe();
 
 
@@ -62,7 +64,16 @@
                 });
             }
         }
+        function loadOfficers() {
+            Officer.query({
+                companyId: globalCompany.getId()
+            }, onSuccessOfficer, onError);
 
+            function onSuccessOfficer(officers, headers) {
+                $rootScope.officers = officers;
+                console.log($rootScope.officers)
+            }
+        }
         function loadHouses() {
             House.query({
                 companyId: globalCompany.getId()
@@ -129,7 +140,6 @@
                         $rootScope.invitedList.push(visitor);
                     }
                 }
-                console.log($rootScope.invitedList)
                 loadNotes();
             }
         }
@@ -382,7 +392,7 @@
 
         function subscribe() {
             console.log("IGUAL CORRE")
-            $timeout(function(){
+            $timeout(function () {
                 WSEmergency.subscribe(globalCompany.getId());
                 WSHouse.subscribe(globalCompany.getId());
                 WSResident.subscribe(globalCompany.getId());
@@ -397,7 +407,7 @@
                 WSVehicle.receive().then(null, null, receiveVehicle);
                 WSNote.receive().then(null, null, receiveHomeService);
                 WSVisitor.receive().then(null, null, receiveVisitor);
-            },3000);
+            }, 3000);
         }
 
 
@@ -529,27 +539,77 @@
                     break;
             }
         }
+
         function receiveEmergency(emergency) {
-            if(emergency.isAttended==0){
+            if (emergency.isAttended == 0) {
                 vm.emergency = emergency;
                 vm.emergencyInProgress = true;
                 $rootScope.emergencyList.push(emergency)
             }
         }
-        vm.attendEmergency = function() {
+
+        vm.attendEmergency = function () {
             var codeEmegency = globalCompany.getId() + "" + vm.emergency.houseId;
             vm.emergency.isAttended = 1;
             toastr["success"]("Se ha reportado al residente que se atenderá la emergencia");
-            Emergency.update(vm.emergency,function(result){
+            Emergency.update(vm.emergency, function (result) {
                 WSEmergency.sendActivityAttended(codeEmegency, vm.emergency);
-                $timeout(function(){
+                $timeout(function () {
                     vm.emergency = undefined;
                     vm.emergencyInProgress = false;
                     console.log(vm.emergency)
                     loadEmergencies();
-                },5)
+                }, 5)
 
             })
         };
+
+        var delay = 1000;
+       $rootScope.online = true;
+        var toastOffline;
+        function unsubscribe() {
+            WSDeleteEntity.unsubscribe(globalCompany.getId());
+            WSEmergency.unsubscribe(globalCompany.getId());
+            WSHouse.unsubscribe(globalCompany.getId());
+            WSResident.unsubscribe(globalCompany.getId());
+            WSVehicle.unsubscribe(globalCompany.getId());
+            WSNote.unsubscribe(globalCompany.getId());
+            WSVisitor.unsubscribe(globalCompany.getId());
+        }
+        Offline.on('confirmed-down', function () {
+            if($rootScope.online){
+                 toastOffline = $mdToast.show(
+                    $mdToast.simple()
+                        .textContent("Tu dispositivo perdió conexión a internet.")
+                        .hideDelay(0)
+                        .position("top center")
+                );
+                $rootScope.online = false;
+            }
+        });
+
+        Offline.on('confirmed-up', function () {
+            if(!$rootScope.online){
+                $mdToast.hide();
+                $mdToast.show(
+                    $mdToast.simple()
+                        .textContent("Tu dispositivo está conectado a internet nuevamente.")
+                        .position("top center")
+                );
+                $rootScope.online = true;
+                loadAll();
+                loadHouses();
+                loadDestinies();
+                loadEmergencies();
+                loadOfficers();
+                unsubscribe();
+                subscribe();
+            }
+        });
+
+        setTimeout(function retry() {
+            Offline.check();
+            setTimeout(retry, delay);
+        }, delay);
     }
 })();
