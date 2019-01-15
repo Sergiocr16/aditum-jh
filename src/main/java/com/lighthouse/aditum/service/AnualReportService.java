@@ -38,7 +38,8 @@ public class AnualReportService {
         ZonedDateTime zd_actualMonth = ZonedDateTime.parse(actual_month);
         int finalMonth = zd_actualMonth.getMonthValue();
         for (int i = 1; i <= finalMonth; i++) {
-            ZonedDateTime initialDate = zd_actualMonth.withMonth(i).withDayOfMonth(1);
+            ZonedDateTime initialDate = zd_actualMonth.withMonth(i).withDayOfMonth(1).withMinute(0).withHour(0);
+            ZonedDateTime initialDate2 = initialDate.withHour(23).withMinute(59);
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
             MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initialDate+"",finalDate+"",companyId,withPresupuesto);
             MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initialDate+"",finalDate+"",companyId,mensualIngressReportDTO,withPresupuesto);
@@ -55,7 +56,7 @@ public class AnualReportService {
             }
             ingressByMonth.add(mensualIngressReportDTO);
             egressByMonth.add(mensualEgressReportDTO);
-            List<MensualAndAnualAccountDTO> mensualAndAnualAccount = mensualReportService.getAccountBalance(initialDate+"",initialDate+"",companyId);
+            List<MensualAndAnualAccountDTO> mensualAndAnualAccount = mensualReportService.getAccountBalance(initialDate+"",initialDate2+"",companyId);
             initialBalanceByMonth.add(this.setTotalInitialBalance(mensualAndAnualAccount)+"");
 
         }
@@ -94,7 +95,7 @@ public class AnualReportService {
     private void setRealBalanceByMonth(AnualReportDTO anualReportDTO){
         anualReportDTO.setRealBalanceByMonth(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getFlujoByMonth().size() ; i++) {
-            anualReportDTO.getRealBalanceByMonth().add(Double.parseDouble(anualReportDTO.getInitialBalanceByMonth().get(i))+Double.parseDouble(anualReportDTO.getFlujoByMonth().get(i))+"");
+            anualReportDTO.getRealBalanceByMonth().add(Double.parseDouble(anualReportDTO.getInitialBalanceByMonth().get(i))+anualReportDTO.getFlujoByMonth().get(i)+"");
 
         }
     }
@@ -319,7 +320,7 @@ public class AnualReportService {
         anualReportDTO.setFlujoByMonth(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             double flujo = anualReportDTO.getAnualIngressByMonth().get(i).getAllIngressCategoriesTotal() - anualReportDTO.getAnualEgressByMonth().get(i).getAllEgressCategoriesTotal();
-          anualReportDTO.getFlujoByMonth().add(flujo+"");
+          anualReportDTO.getFlujoByMonth().add(flujo);
         }
 
 

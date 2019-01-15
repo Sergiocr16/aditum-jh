@@ -57,7 +57,7 @@
                 parent: 'entity',
                 url: '/visitant/manage/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
 
                 },
                 views: {

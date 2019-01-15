@@ -24,8 +24,39 @@
         vm.showPresupuestoFields = false;
         var withPresupuestos = 3;
         vm.expanding = false;
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false
+        };
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        }
+
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo estado de resultados"
+            })
+        }
+
+
 
         vm.loadAll = function () {
+            vm.companyId = globalCompany.getId();
+            vm.actualMonthFormatted = moment(vm.actualMonth).format();
             MensualAndAnualReport.getAnualReport({
                 actual_month: moment(vm.actualMonth).format(),
                 companyId: globalCompany.getId(),
@@ -37,6 +68,10 @@
 
         function onSuccess(data, headers) {
             vm.report = data;
+            vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
+
+            vm.path = '/api/anualReport/file/' + vm.superObject;
+console.log(vm.path)
             vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
             vm.isReady = true;
         }
@@ -57,10 +92,10 @@
 
                     })
                     if (yearExist == 0) {
-                        Modal.toast("No existe un presupuesto del 2018 registrado.");
+                        Modal.toast("No existe un presupuesto del " +vm.actualMonth.getFullYear() + " registrado.");
                     }
                 } else {
-                    Modal.toast("No existe un presupuesto del 2018 registrado.");
+                    Modal.toast("No existe un presupuesto del " +vm.actualMonth.getFullYear() + " registrado.");
                 }
 
             });

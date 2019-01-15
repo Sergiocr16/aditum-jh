@@ -50,7 +50,10 @@
         }
 
         function loadAll() {
-            vm.canEditOfficers = companyUser.administraOficiales;
+            if(companyUser!=undefined){
+                vm.canEditOfficers = companyUser.administraOficiales;
+            }
+
             if (enabledOptions) {
                 changesTitles();
                 Officer.officersEnabled({

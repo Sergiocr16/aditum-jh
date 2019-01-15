@@ -34,7 +34,7 @@ public class AccountStatusService {
     public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time,boolean resident_account, String today_time){
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
-        int saldoInicial = this.getSaldoInicial(pageable,houseId,initial_time);
+        double saldoInicial = this.getSaldoInicial(pageable,houseId,initial_time);
         accountStatusDTO.setSaldoInicial(saldoInicial) ;
         accountStatusDTO.setSaldo(saldoInicial);
         Page<PaymentDTO> payments = this.paymentService.findByHouseFilteredByDate(pageable,houseId,initial_time,final_time);
@@ -52,7 +52,7 @@ public class AccountStatusService {
     }
     private void setAccountStatusItem(Page<PaymentDTO> payments,Page<ChargeDTO> charges, AccountStatusDTO accountStatusDTO){
         for (int i = 0; i <charges.getContent().size() ; i++) {
-            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Double.parseDouble(charges.getContent().get(i).getAmmount()) ,0);
+            AccountStatusItemDTO object = new AccountStatusItemDTO(charges.getContent().get(i).getDate(),charges.getContent().get(i).getConcept(),Double.parseDouble(charges.getContent().get(i).getAmmount()) ,Double.parseDouble(charges.getContent().get(i).getSubcharge()) );
             accountStatusDTO.getListaAccountStatusItems().add(object);
         }
         for (int i = 0; i <payments.getContent().size() ; i++) {
@@ -74,7 +74,7 @@ public class AccountStatusService {
             }else if(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal()>0){
                 double saldo = accountStatusDTO.getSaldo() - accountStatusDTO.getListaAccountStatusItems().get(i).getTotal();
                 accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getCharge());
-                accountStatusDTO.setTotalCharge(accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
+                accountStatusDTO.setTotalRecharge(accountStatusDTO.getListaAccountStatusItems().get(i).getRecharge());
                 accountStatusDTO.setTotalTotal(accountStatusDTO.getListaAccountStatusItems().get(i).getTotal());
                 accountStatusDTO.getListaAccountStatusItems().get(i).setSaldo(saldo);
                 accountStatusDTO.setSaldo(saldo);
@@ -83,17 +83,17 @@ public class AccountStatusService {
 
         }
     }
-    private int getSaldoInicial(Pageable pageable, Long houseId, String initial_time){
-        int saldoInicial = 0;
-        int totalCharges = 0;
-        int totalPayments = 0;
+    private double getSaldoInicial(Pageable pageable, Long houseId, String initial_time){
+        double saldoInicial = 0;
+        double totalCharges = 0;
+        double totalPayments = 0;
         Page<ChargeDTO> charges = this.chargeService.findAllByHouseAndUnderDate(houseId,initial_time);
         Page<PaymentDTO> payments = this.paymentService.findByHouseUnderDate(pageable,houseId,initial_time);
         for (int i = 0; i <charges.getContent().size() ; i++) {
-            totalCharges = totalCharges + Integer.parseInt(charges.getContent().get(i).getAmmount());
+            totalCharges = totalCharges + charges.getContent().get(i).getTotal();
         }
         for (int i = 0; i <payments.getContent().size() ; i++) {
-            totalPayments = totalPayments + Integer.parseInt(payments.getContent().get(i).getAmmount());
+            totalPayments = totalPayments + Double.parseDouble(payments.getContent().get(i).getAmmount());
         }
         saldoInicial = totalPayments - totalCharges;
         return saldoInicial;

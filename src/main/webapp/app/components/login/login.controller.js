@@ -116,12 +116,22 @@
                                 $state.go('company-rh');
                             }, 300);
                             break;
+                        case "ROLE_JD":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                                $rootScope.companyId = data.companies[0].id;
+                                vm.backgroundSelectCompany = true;
+                                $state.go('dashboard');
+                            });
+                            break;
                     }
                     if ($state.current.name === 'register' || $state.current.name === 'activate' ||
                         $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
                         $state.go('home');
                     }
-                })
+                });
 
 
                 $rootScope.$broadcast('authenticationSuccess');

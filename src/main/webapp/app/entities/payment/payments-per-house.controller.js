@@ -49,13 +49,13 @@
                 $scope.$apply(function () {
                     vm.exportActions.printing = false;
                 })
-            }, 8000)
+            }, 8000);
             printJS({
                 printable: '/api/payments/file/' + paymentId,
                 type: 'pdf',
                 modalMessage: "Obteniendo comprobante de pago"
             })
-        }
+        };
 
         vm.download = function () {
             vm.exportActions.downloading = true;
@@ -64,7 +64,7 @@
                     vm.exportActions.downloading = false;
                 })
             }, 8000)
-        }
+        };
 
         vm.sendEmail = function (payment) {
 

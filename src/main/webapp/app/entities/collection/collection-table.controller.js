@@ -16,6 +16,7 @@
         vm.isReady = false;
         $rootScope.mainTitle = "Tabla de cobranza";
         $rootScope.active = "collectionTable";
+        vm.companyId = globalCompany.getId();
         vm.year = moment(new Date()).format("YYYY")
         vm.exportActions = {
             downloading: false,
@@ -41,7 +42,7 @@
             printJS({
                 printable: '/api/collections/file/' + globalCompany.getId() + '/' + vm.year,
                 type: 'pdf',
-                modalMessage: "Obteniendo comprobante de pago"
+                modalMessage: "Obteniendo tabla de cobranza"
             })
         }
         vm.nextYear = function () {

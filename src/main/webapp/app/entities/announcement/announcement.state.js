@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/noticias-user',
                 data: {
-                    authorities: ['ROLE_MANAGER', 'ROLE_USER'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {

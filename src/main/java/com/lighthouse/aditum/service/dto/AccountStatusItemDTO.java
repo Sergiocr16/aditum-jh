@@ -1,25 +1,40 @@
 package com.lighthouse.aditum.service.dto;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 
 public class AccountStatusItemDTO {
+    private Locale locale = new Locale("es", "CR");
     private ZonedDateTime date;
     private String concept;
     private double charge;
-    private int recharge;
+    private double recharge;
     private double total;
     private double saldo;
-    private int abono;
+    private double abono;
+
+    private String chargeFormatted;
+    private String rechargeFormatted;
+    private String totalFormatted;
+    private String saldoFormatted;
+    private String abonoFormatted;
+
+    private String dateFormatted;
     private List<ChargeDTO> charges;
     private boolean showDetail;
 
-    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,int recharge){
+    public AccountStatusItemDTO(ZonedDateTime date,String concept, double charge,double recharge){
         this.date = date;
         this.concept = concept;
         this.charge = charge;
         this.recharge = recharge;
         this.total = charge + recharge;
+        this.chargeFormatted = formatMoney(charge);
+        this.rechargeFormatted = formatMoney(recharge);
+        this.totalFormatted = formatMoney(this.total);
         this.showDetail = false;
 
     }
@@ -34,9 +49,15 @@ public class AccountStatusItemDTO {
 
         this.abono = abono;
         this.charges = charges;
+        this.abonoFormatted = formatMoney(this.abono);
         this.showDetail = false;
     }
-
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
+    }
     public String getConcept() {
         return concept;
     }
@@ -53,11 +74,11 @@ public class AccountStatusItemDTO {
         this.charge = charge;
     }
 
-    public int getRecharge() {
+    public double getRecharge() {
         return recharge;
     }
 
-    public void setRecharge(int recharge) {
+    public void setRecharge(double recharge) {
         this.recharge = recharge;
     }
 
@@ -75,9 +96,10 @@ public class AccountStatusItemDTO {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
+        this.saldoFormatted = formatMoney(this.saldo);
     }
 
-    public int getAbono() {
+    public double getAbono() {
         return abono;
     }
 
@@ -107,5 +129,53 @@ public class AccountStatusItemDTO {
 
     public void setShowDetail(boolean showDetail) {
         this.showDetail = showDetail;
+    }
+
+    public String getDateFormatted() {
+        return dateFormatted;
+    }
+
+    public void setDateFormatted(String dateFormatted) {
+        this.dateFormatted = dateFormatted;
+    }
+
+    public String getChargeFormatted() {
+        return chargeFormatted;
+    }
+
+    public void setChargeFormatted(String chargeFormatted) {
+        this.chargeFormatted = chargeFormatted;
+    }
+
+    public String getRechargeFormatted() {
+        return this.rechargeFormatted;
+    }
+
+    public void setRechargeFormatted(String rechargeFormatted) {
+        this.rechargeFormatted = rechargeFormatted;
+    }
+
+    public String getTotalFormatted() {
+        return totalFormatted;
+    }
+
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
+    }
+
+    public String getSaldoFormatted() {
+        return saldoFormatted;
+    }
+
+    public void setSaldoFormatted(String saldoFormatted) {
+        this.saldoFormatted = saldoFormatted;
+    }
+
+    public String getAbonoFormatted() {
+        return abonoFormatted;
+    }
+
+    public void setAbonoFormatted(String abonoFormatted) {
+        this.abonoFormatted = abonoFormatted;
     }
 }

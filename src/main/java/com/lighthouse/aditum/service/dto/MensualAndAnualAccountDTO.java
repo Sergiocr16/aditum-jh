@@ -1,9 +1,15 @@
 package com.lighthouse.aditum.service.dto;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class MensualAndAnualAccountDTO {
+    private Locale locale = new Locale("es", "CR");
     private String name;
     private String balance;
     private int inicialBalance;
+    private String inicialBalanceFormatted;
 
     public String getBalance() {
         return balance;
@@ -27,5 +33,24 @@ public class MensualAndAnualAccountDTO {
 
     public void setInicialBalance(int inicialBalance) {
         this.inicialBalance = inicialBalance;
+        this.setInicialBalanceFormatted(formatMoney(Double.parseDouble(inicialBalance+"")));
+    }
+
+    public MensualAndAnualAccountDTO(){
+
+    }
+    private String formatMoney(double ammount){
+        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
+        String total = format.format(ammount);
+        return total;
+    }
+
+    public String getInicialBalanceFormatted() {
+        return inicialBalanceFormatted;
+    }
+
+    public void setInicialBalanceFormatted(String inicialBalanceFormatted) {
+        this.inicialBalanceFormatted = inicialBalanceFormatted;
     }
 }
