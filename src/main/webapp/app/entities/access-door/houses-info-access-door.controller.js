@@ -43,6 +43,7 @@
         }
         vm.selectState = function (state) {
             vm.state = state;
+            vm.query = "";
         };
         $rootScope.selectHouse = function (house) {
             if (house == "all") {

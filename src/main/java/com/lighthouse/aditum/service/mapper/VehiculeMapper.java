@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Mapper for the entity Vehicule and its DTO VehiculeDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {HouseMapper.class})
 public interface VehiculeMapper {
 
     @Mapping(source = "house.id", target = "houseId")
@@ -32,13 +32,5 @@ public interface VehiculeMapper {
         house.setId(id);
         return house;
     }
-
-    default Company companyFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Company company = new Company();
-        company.setId(id);
-        return company;
-    }
 }
+

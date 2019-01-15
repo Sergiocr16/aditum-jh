@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Mapper for the entity Note and its DTO NoteDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {HouseMapper.class})
 public interface NoteMapper {
 
     @Mapping(source = "house.id", target = "houseId")
@@ -20,6 +20,7 @@ public interface NoteMapper {
 
     @Mapping(source = "houseId", target = "house")
     @Mapping(source = "companyId", target = "company")
+
     Note noteDTOToNote(NoteDTO noteDTO);
 
     List<Note> noteDTOsToNotes(List<NoteDTO> noteDTOs);
@@ -33,12 +34,4 @@ public interface NoteMapper {
         return house;
     }
 
-    default Company companyFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Company company = new Company();
-        company.setId(id);
-        return company;
-    }
 }
