@@ -4,6 +4,7 @@ package com.lighthouse.aditum.web.websocket;
  * Created by Sergio on 04/04/2017.
  */
 
+import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.NoteService;
 import com.lighthouse.aditum.service.dto.NoteDTO;
 import org.slf4j.Logger;
@@ -52,6 +53,7 @@ public class RealTimeHomeService {
     private final SimpMessageSendingOperations messagingTemplate;
     private NoteService noteService;
 
+
     public RealTimeHomeService(SimpMessageSendingOperations messagingTemplate,
                                NoteService noteService) {
         this.messagingTemplate = messagingTemplate;
@@ -61,7 +63,8 @@ public class RealTimeHomeService {
     @SubscribeMapping("/topic/sendHomeService/{idCompany}")
     @SendTo("/topic/homeService/{idCompany}")
     public NoteDTO saveHomeService(NoteDTO noteDTO){
-          return this.noteService.save(noteDTO);
+
+        return this.noteService.save(noteDTO);
     }
 
 }

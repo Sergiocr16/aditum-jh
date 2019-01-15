@@ -11,6 +11,7 @@
             toast: toast,
             actionToast: actionToast,
             dialog: dialog,
+            customDialog:customDialog,
             confirmDialog: confirmDialog,
             confirmDialogCustom: confirmDialogCustom,
             showLoadingBar: showLoadingBar,
@@ -92,6 +93,17 @@
                     .targetEvent(ev)
             );
         }
+        function customDialog(template) {
+            var ev = new Event('build');
+            $mdDialog.show({
+                template: template,
+                parent: angular.element(document.querySelector('#popupContainer')),
+                targetEvent: ev,
+                escapeToClose: true,
+                clickOutsideToClose:true,
+
+            })
+        };
 
         function confirmDialog(title, content, ok) {
             var ev = new Event('build');
@@ -129,11 +141,14 @@
         function hideLoadingBar() {
             $rootScope.isShowingLoadingBar = false;
             $("#content").removeClass("disabledDiv");
+            $("#content-officer").removeClass("disabledDiv2");
+
         }
 
         function showLoadingBar() {
             $rootScope.isShowingLoadingBar = true;
             $("#content").addClass("disabledDiv");
+            $("#content-officer").addClass("disabledDiv2");
         }
 
         function enteringForm(f,text,f2,text2) {

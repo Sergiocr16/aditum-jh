@@ -6,9 +6,9 @@
         .module('aditumApp')
         .factory('WSEmergency', WSEmergency);
 
-    WSEmergency.$inject = ['StompManager','$rootScope'];
+    WSEmergency.$inject = ['StompManager','globalCompany'];
 
-    function WSEmergency(StompManager,$rootScope) {
+    function WSEmergency(StompManager,globalCompany) {
         var SUBSCRIBE_TRACKER_URL = '/topic/emergency/';
         var SEND_ACTIVITY_URL = '/topic/reportEmergency/';
         var SUBSCRIBE_ATTEND_TRACKER_URL = '/topic/emergencyAttended/';
@@ -30,11 +30,11 @@
         return service;
 
         function receive () {
-            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + $rootScope.companyId);
+            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + globalCompany.getId());
         }
 
         function sendActivity(entity) {
-            StompManager.send(SEND_ACTIVITY_URL + $rootScope.companyId, entity);
+            StompManager.send(SEND_ACTIVITY_URL + globalCompany.getId(), entity);
         }
 
         function subscribe (companyId) {

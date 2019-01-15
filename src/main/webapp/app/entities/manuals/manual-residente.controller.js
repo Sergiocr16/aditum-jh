@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ManualResidenteController', ManualResidenteController);
 
-    ManualResidenteController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate'];
+    ManualResidenteController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House'];
 
-    function ManualResidenteController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate) {
+    function ManualResidenteController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House) {
  angular.element(document).ready(function () {
                           $('body').removeClass("gray");
          $rootScope.showLogin = false;

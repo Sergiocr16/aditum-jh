@@ -25,7 +25,8 @@
             send: send,
             subscribe: subscribe,
             unsubscribe: unsubscribe,
-            isConnected: isConnected
+            isConnected: isConnected,
+            isSubcribed:isSubscribed
         };
 
         return service;
@@ -87,6 +88,14 @@
                 throw 'there is no subscription to url = ' + url + '.';
             }
             return value.listener.promise;
+        }
+        function isSubscribed (url) {
+            var value = subscribeMap[url];
+            if(!value) {
+                return false;
+            }else{
+                return true;
+            }
         }
 
         function send(url, payload, headers) {

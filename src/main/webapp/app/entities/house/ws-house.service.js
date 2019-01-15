@@ -6,9 +6,9 @@
         .module('aditumApp')
         .factory('WSHouse', WSHouse);
 
-    WSHouse.$inject = ['StompManager','$rootScope'];
+    WSHouse.$inject = ['StompManager','globalCompany'];
 
-    function WSHouse(StompManager,$rootScope) {
+    function WSHouse(StompManager,globalCompany) {
         var SUBSCRIBE_TRACKER_URL = '/topic/house/';
         var SEND_ACTIVITY_URL = '/topic/sendHouse/';
 
@@ -23,11 +23,11 @@
         return service;
 
         function receive () {
-            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + $rootScope.companyId);
+            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + globalCompany.getId());
         }
 
         function sendActivity(entity) {
-            StompManager.send(SEND_ACTIVITY_URL + $rootScope.companyId, entity);
+            StompManager.send(SEND_ACTIVITY_URL + globalCompany.getId(), entity);
         }
 
         function subscribe (companyId) {

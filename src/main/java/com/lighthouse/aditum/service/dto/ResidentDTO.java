@@ -57,6 +57,8 @@ public class ResidentDTO implements Serializable {
 
     private Long houseId;
 
+    private HouseDTO house;
+
     public Long getId() {
         return id;
     }
@@ -239,5 +241,13 @@ public class ResidentDTO implements Serializable {
             ", type='" + getType() + "'" +
             ", principalContact='" + getPrincipalContact() + "'" +
             "}";
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

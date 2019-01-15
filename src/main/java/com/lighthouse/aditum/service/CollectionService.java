@@ -114,10 +114,10 @@ public class CollectionService {
 
      private String defineCollectionStyle(MensualCollectionDTO mensualCollection,int month,int year,List<ChargeDTO> houseCharges){
         String style = "";
-         int ammount = mensualCollection.getMensualBalance();
-        int noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
-        int totalCharges = houseCharges.stream().mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
-        int finalAmmount = totalCharges-noPayedAmmount;
+         double ammount = mensualCollection.getMensualBalance();
+         double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+         double totalCharges = houseCharges.stream().mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+         double finalAmmount = totalCharges-noPayedAmmount;
         if(totalCharges==noPayedAmmount){
             style = "background-color:#FFB8B8;";
         }
@@ -143,11 +143,11 @@ public class CollectionService {
          return chargesPerMonth;
      }
     private MensualCollectionDTO defineAmmountPerCharge(List<ChargeDTO> houseCharges,MensualCollectionDTO mensualCollectionDTO){
-        int noPayedAmmount = 0;
-        int payedAmmount = 0;
-        noPayedAmmount= houseCharges.stream().filter(o -> o.getState() == 1).mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
-        payedAmmount= houseCharges.stream().filter(o -> o.getState() == 2).mapToInt(o -> Integer.parseInt(o.getAmmount())).sum();
-        int finalTotal = noPayedAmmount;
+        double noPayedAmmount = 0;
+        double payedAmmount = 0;
+        noPayedAmmount= houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        payedAmmount= houseCharges.stream().filter(o -> o.getState() == 2).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        double finalTotal = noPayedAmmount;
         if(noPayedAmmount>0){
             finalTotal = -finalTotal;
         }else{

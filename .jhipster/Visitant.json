@@ -38,10 +38,7 @@
         },
         {
             "fieldName": "identificationnumber",
-            "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "String"
         },
         {
             "fieldName": "arrivaltime",

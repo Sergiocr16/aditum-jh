@@ -13,7 +13,7 @@
             <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
                 <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
                    hide-xl
-                   ng-click="toggleLeft()">menu</i>
+                   ng-click="toggleLeft()" has-any-authority="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
                 <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
                 {{mainTitle}}
@@ -22,11 +22,13 @@
 
         <div layout-align="left center">
             <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
-                       class="md-no-ink md-raised md-primary" style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"
+                       class="md-no-ink md-raised md-primary"
+                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"
                        ng-click="formAction2()">{{formActionText2}}
             </md-button>
             <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
-                       class="md-no-ink md-raised md-primary" style="box-shadow:none;background-color: transparent!important;font-size: 13px;"
+                       class="md-no-ink md-raised md-primary"
+                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;"
                        ng-click="formAction()">{{formActionText}}
             </md-button>
             <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
@@ -55,8 +57,9 @@
 
                                     <div style="font-size: 13px;margin-top: 5px">
                                     <span style="color: #44b6ae;" ng-if="hideFilial==false"><i style="margin: 0 3px 4px 0px;
-    font-size: 19px;" class="material-icons material-icons-with-text">home</i> Filial 1</span> <span
-                                        ng-if="hideFilial==false">-</span> <span
+    font-size: 19px;" class="material-icons material-icons-with-text">home</i>
+                                        Filial {{companyUser.house.housenumber}}</span>
+                                        <span ng-if="hideFilial==false">-</span> <span
                                         style="color:#666">{{vm.account.login}}</span>
                                     </div>
                                 </div>

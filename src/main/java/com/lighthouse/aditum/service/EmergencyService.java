@@ -6,6 +6,7 @@ import com.lighthouse.aditum.service.dto.EmergencyDTO;
 import com.lighthouse.aditum.service.mapper.EmergencyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,9 +29,12 @@ public class EmergencyService {
 
     private final EmergencyMapper emergencyMapper;
 
-    public EmergencyService(EmergencyRepository emergencyRepository, EmergencyMapper emergencyMapper) {
+    private final HouseService houseService;
+
+    public EmergencyService(EmergencyRepository emergencyRepository, EmergencyMapper emergencyMapper,@Lazy HouseService houseService) {
         this.emergencyRepository = emergencyRepository;
         this.emergencyMapper = emergencyMapper;
+        this.houseService = houseService;
     }
 
     /**
@@ -44,6 +48,7 @@ public class EmergencyService {
         Emergency emergency = emergencyMapper.emergencyDTOToEmergency(emergencyDTO);
         emergency = emergencyRepository.save(emergency);
         EmergencyDTO result = emergencyMapper.emergencyToEmergencyDTO(emergency);
+        result.setHouseNumber(this.houseService.findOne(result.getHouseId()).getHousenumber());
         return result;
     }
 
@@ -57,7 +62,11 @@ public class EmergencyService {
     public Page<EmergencyDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Emergencies");
         Page<Emergency> result = emergencyRepository.findByCompanyIdAndIsAttended(pageable,companyId,0);
-        return result.map(emergency -> emergencyMapper.emergencyToEmergencyDTO(emergency));
+        return result.map(emergency -> {
+            EmergencyDTO emergencyDTO = emergencyMapper.emergencyToEmergencyDTO(emergency);
+            emergencyDTO.setHouseNumber(this.houseService.findOne(emergencyDTO.getHouseId()).getHousenumber());
+            return  emergencyDTO;
+        });
     }
 
     /**
