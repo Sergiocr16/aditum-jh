@@ -12,7 +12,7 @@
             </div>
 
             <div layout="row" ng-if="vm.isReady && $state.current.name === 'main-access-door'"
-                 class="col-md-10 col-xs-12 fade-in register-div" id="content-officer"
+                 class="col-md-10 col-xs-12 fade-in register-div margin-top-10-xs" id="content-officer"
                  style="margin-top: -40px">
                 <div layout="row" layout-xs="column"
                      class="background-white padding-30 col-md-12 col-xs-12 border-radius-8"
@@ -36,7 +36,6 @@
                                     highlight_off
                                 </md-icon>
                             </div>
-
                         </div>
                         <div layout="row">
                             <md-input-container flex class="md-icon-float md-block">
@@ -76,7 +75,8 @@
                                 registrados</h3>
                         </div>
                         <div class="text-center fade-in" ng-if="vm.resident">
-                            <h3 class="username-access-door  text-center bold {{vm.colorResidentRegistered}}">
+                            <h3 style="margin-bottom: 30px" class=" username-access-door margin-bottom-5-xs text-center bold {{vm.colorResidentRegistered}}">
+
                                 {{vm.residentRegisteredTitle}}</h3>
                             <div aria-haspopup="true" aria-expanded="false">
                                 <img ng-if="vm.resident.image_url==null" src="content/images/nobody-image.jpg"
@@ -112,7 +112,7 @@
                             </md-fab-speed-dial>
                         </div>
                         <div class="text-center fade-in" ng-if="vm.vehicule">
-                            <h3 class="text-center bold username-access-door {{vm.colorVehiculeRegistered}}">
+                            <h3 style="margin-bottom: 30px" class="margin-bottom-5-xs text-center bold username-access-door {{vm.colorVehiculeRegistered}}">
                                 {{vm.vehiculeRegisteredTitle}}</h3>
                             <i class="material-icons md-48 md-inactive md-dark circle-icon icon-vehicule-access-door"
                                style="color:{{vm.vehicule.color}}!important">
@@ -146,23 +146,23 @@
 </div>
 </div>
 <div class="tab_container" layout="row" style="position:fixed;bottom:0;padding-top:0;">
-    <label class="no-margin label-tab-container-ad" flex
+    <label class="no-margin label-tab-container-ad outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.current.name === 'main-access-door'}"
-           ui-sref="main-access-door"><i class="material-icons material-icons-with-text icon-finanzes">meeting_room</i>
+           ng-click="vm.accessDoor()"><i class="material-icons material-icons-with-text icon-finanzes">meeting_room</i>
         <span hide-xs hide-sm hide-md>Puerta de acceso</span></label>
-    <label class="no-margin label-tab-container-ad" flex
+    <label class="no-margin label-tab-container-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.register-visitor')}"
-           ui-sref="main-access-door.register-visitor"><i
+           ng-click="vm.registerVisitor()"><i
         class="material-icons material-icons-with-text icon-finanzes">face</i> <span hide-xs hide-sm hide-md>Registrar visitante</span></label>
-    <label class="no-margin label-tab-container-ad" flex
+    <label class="no-margin label-tab-container-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.filiales-info')}"
            ui-sref="main-access-door.filiales-info"><i
         class="material-icons material-icons-with-text icon-finanzes">home</i> <span hide-xs hide-sm hide-md>Información de filiales</span></label>
-    <label class="no-margin label-tab-container-ad" flex
+    <label class="no-margin label-tab-container-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.home-service')}"
            ui-sref="main-access-door.home-service"><i
         class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span></label>
-    <label class="no-margin label-tab-container-ad" flex
+    <label class="no-margin label-tab-container-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.change-watch')}"
            ui-sref="main-access-door.change-watch"><i
         class="material-icons material-icons-with-text icon-finanzes">access_time</i> <span hide-xs hide-sm hide-md>Cambio de turno</span></label>

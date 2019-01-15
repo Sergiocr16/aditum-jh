@@ -960,7 +960,6 @@
                         if (vm.visitorsConsultedByPlate.length > 0) {
                             vm.visitorsConsultedByPlate.reverse();
                             vm.setVisitorConsulted(vm.visitorShowing)
-
                         }
                     })
                 },500)

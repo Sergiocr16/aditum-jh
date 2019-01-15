@@ -48,6 +48,9 @@ public class VisitantService {
     public VisitantDTO save(VisitantDTO visitantDTO) {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
+        if(visitant.getLicenseplate()=="NINGUNA"){
+            visitant.setLicenseplate("");
+        }
         visitant = visitantRepository.save(visitant);
         VisitantDTO result = visitantMapper.visitantToVisitantDTO(visitant);
         return result;

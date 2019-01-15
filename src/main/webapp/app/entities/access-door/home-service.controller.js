@@ -26,6 +26,7 @@
                 "showMethod": "slideDown",
                 "hideMethod": "slideUp",
             };
+            $rootScope.mainTitle = "Notas de condóminos";
 
             vm.delete = function(note) {
                 vm.note = note;

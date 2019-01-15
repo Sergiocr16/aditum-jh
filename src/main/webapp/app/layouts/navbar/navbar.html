@@ -13,7 +13,7 @@
             <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
                 <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
                    hide-xl
-                   ng-click="toggleLeft()">menu</i>
+                   ng-click="toggleLeft()" has-any-authority="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
                 <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
                    ng-click="back()">arrow_back</i>
                 {{mainTitle}}

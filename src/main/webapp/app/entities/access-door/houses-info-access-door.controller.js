@@ -17,6 +17,7 @@
         CommonMethods.validateNumbers();
         CommonMethods.validateSpecialCharacters();
         CommonMethods.validateSpecialCharactersAndVocals();
+        $rootScope.mainTitle = "Información de filiales";
 
         $rootScope.$watchGroup(['houses', 'residents', 'vehicules', 'invitedList'], function () {
             if ($rootScope.houses.length > 0) {
@@ -188,9 +189,8 @@
                 }
 
                 function onSaveError(error) {
+                    toastr["info"]("Se registrará la visita una vez la conexión haya vuelto.", "No hay conexión a internet");
                     Modal.hideLoadingBar();
-
-                    toastr["error"]("Ocurrio un error registrando la visita");
                 }
             })
         };

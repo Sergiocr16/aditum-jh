@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['$mdToast','$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal','Officer'];
+    AccessDoorController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Officer'];
 
-    function AccessDoorController($mdToast,$timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal,Officer) {
+    function AccessDoorController($mdToast, $timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal, Officer) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -21,6 +21,8 @@
         $rootScope.invitedList = [];
         $rootScope.emergencyList = [];
         $rootScope.officers = [];
+        $rootScope.mainTitle = "Puerta de Acceso";
+
         vm.resident = undefined;
         vm.residentFound = 0;
         vm.id_vehicule = '';
@@ -64,6 +66,7 @@
                 });
             }
         }
+
         function loadOfficers() {
             Officer.query({
                 companyId: globalCompany.getId()
@@ -74,6 +77,7 @@
                 console.log($rootScope.officers)
             }
         }
+
         function loadHouses() {
             House.query({
                 companyId: globalCompany.getId()
@@ -563,10 +567,32 @@
 
             })
         };
+        vm.accessDoor = function(){
+            $rootScope.id_number = undefined;
+            $rootScope.id_vehicule = undefined;
+            $rootScope.mainTitle = "Puerta de acceso";
 
+            $state.go('main-access-door')
+        }
+        vm.registerVisitor = function () {
+            if (vm.id_number) {
+                $rootScope.id_number = vm.id_number;
+            }else{
+                $rootScope.id_number = undefined;
+
+            }
+            if (vm.id_vehicule) {
+                $rootScope.id_vehicule = vm.id_vehicule;
+            }else{
+                $rootScope.id_vehicule = undefined;
+            }
+            $state.go('main-access-door.register-visitor')
+        }
+// OFFLINE FEATURE
         var delay = 1000;
-       $rootScope.online = true;
+        $rootScope.online = true;
         var toastOffline;
+
         function unsubscribe() {
             WSDeleteEntity.unsubscribe(globalCompany.getId());
             WSEmergency.unsubscribe(globalCompany.getId());
@@ -576,9 +602,10 @@
             WSNote.unsubscribe(globalCompany.getId());
             WSVisitor.unsubscribe(globalCompany.getId());
         }
+
         Offline.on('confirmed-down', function () {
-            if($rootScope.online){
-                 toastOffline = $mdToast.show(
+            if ($rootScope.online) {
+                toastOffline = $mdToast.show(
                     $mdToast.simple()
                         .textContent("Tu dispositivo perdió conexión a internet.")
                         .hideDelay(0)
@@ -589,7 +616,7 @@
         });
 
         Offline.on('confirmed-up', function () {
-            if(!$rootScope.online){
+            if (!$rootScope.online) {
                 $mdToast.hide();
                 $mdToast.show(
                     $mdToast.simple()
@@ -607,9 +634,9 @@
             }
         });
 
-        setTimeout(function retry() {
+        $timeout(function retry() {
             Offline.check();
-            setTimeout(retry, delay);
+            $timeout(retry, delay);
         }, delay);
     }
 })();
