@@ -136,7 +136,6 @@ public class ResidentResourceIntTest {
             .enabled(DEFAULT_ENABLED)
             .image_url(DEFAULT_IMAGE_URL)
             .type(DEFAULT_TYPE)
-            .deleted(DEFAULT_DELETED);
             .principalContact(DEFAULT_PRINCIPAL_CONTACT);
         return resident;
     }
@@ -297,7 +296,7 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
             .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
-            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
             .andExpect(jsonPath("$.[*].principalContact").value(hasItem(DEFAULT_PRINCIPAL_CONTACT)));
     }
 
@@ -324,7 +323,7 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
             .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
-            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
             .andExpect(jsonPath("$.principalContact").value(DEFAULT_PRINCIPAL_CONTACT));
     }
 
@@ -358,7 +357,6 @@ public class ResidentResourceIntTest {
             .enabled(UPDATED_ENABLED)
             .image_url(UPDATED_IMAGE_URL)
             .type(UPDATED_TYPE)
-            .deleted(UPDATED_DELETED);
             .principalContact(UPDATED_PRINCIPAL_CONTACT);
         ResidentDTO residentDTO = residentMapper.toDto(updatedResident);
 

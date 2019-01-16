@@ -4,6 +4,7 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.VehiculeDTO;
 
 import org.mapstruct.*;
+
 import java.util.List;
 
 /**
@@ -14,15 +15,24 @@ public interface VehiculeMapper {
 
     @Mapping(source = "house.id", target = "houseId")
     @Mapping(source = "company.id", target = "companyId")
-    VehiculeDTO vehiculeToVehiculeDTO(Vehicule vehicule);
+    VehiculeDTO toDto(Vehicule vehicule);
 
     List<VehiculeDTO> vehiculesToVehiculeDTOs(List<Vehicule> vehicules);
 
     @Mapping(source = "houseId", target = "house")
     @Mapping(source = "companyId", target = "company")
-    Vehicule vehiculeDTOToVehicule(VehiculeDTO vehiculeDTO);
+    Vehicule toEntity(VehiculeDTO vehiculeDTO);
 
     List<Vehicule> vehiculeDTOsToVehicules(List<VehiculeDTO> vehiculeDTOs);
+
+    default Vehicule fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Vehicule vehicule = new Vehicule();
+        vehicule.setId(id);
+        return vehicule;
+    }
 
     default House houseFromId(Long id) {
         if (id == null) {

@@ -66,7 +66,7 @@ public class VehiculeService {
         List<Vehicule> result = vehiculeRepository.findByCompanyIdAndDeleted(companyId,0);
  
         return new PageImpl<>(result).map(vehicule -> {
-            VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+            VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
             vehiculeDTO.setHouse(houseService.findOne(vehiculeDTO.getHouseId()));
             return vehiculeDTO;
         });
