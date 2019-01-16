@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('aditumApp')
@@ -6,11 +6,11 @@
 
     Egress.$inject = ['$resource', 'DateUtils'];
 
-    function Egress ($resource, DateUtils) {
-        var resourceUrl =  'api/egresses/:id';
+    function Egress($resource, DateUtils) {
+        var resourceUrl = 'api/egresses/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 isArray: false,
@@ -24,38 +24,55 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' },
-            'findBetweenDatesByCompany':{
-                 method: 'GET',
-                 url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId',
-                 isArray: true,
-                 params:{
-                      initial_time:'@initial_time',
-                      final_time: '@final_time',
-                      companyId: '@companyId',
-                 }
+            'update': {method: 'PUT'},
+            'findBetweenDatesByCompany': {
+                method: 'GET',
+                url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                }
             },
-            'findBetweenDatesByCompanyAndAccount':{
-                 method: 'GET',
-                 url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId/andAccount/:accountId',
-                 isArray: true,
-                 params:{
-                      initial_time:'@initial_time',
-                      final_time: '@final_time',
-                      companyId: '@companyId',
-                      accountId: '@accountId'
-            }
+            'findBetweenDatesByCompanyAndAccount': {
+                method: 'GET',
+                url: 'api/egresses/between/:initial_time/:final_time/byCompany/:companyId/andAccount/:accountId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                    accountId: '@accountId'
+                }
             },
-           'findBetweenCobroDatesByCompany':{
-                         method: 'GET',
-                         url: 'api/egresses/betweenCobro/:initial_time/:final_time/byCompany/:companyId',
-                         isArray: true,
-                         params:{
-                              initial_time:'@initial_time',
-                              final_time: '@final_time',
-                              companyId: '@companyId',
+            'findBetweenCobroDatesByCompany': {
+                method: 'GET',
+                url: 'api/egresses/betweenCobro/:initial_time/:final_time/byCompany/:companyId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                }
+            },
+            'generateReport': {
+                method: 'GET',
+                url: 'api/egresses/egressReport/:initial_time/:final_time/:companyId/:empresas/:selectedCampos',
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                    empresas: '@empresas',
+                    selectedCampos: '@selectedCampos'
+                },
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
                     }
-                    },
+                    return data;
+                }
+            }
         });
     }
 })();

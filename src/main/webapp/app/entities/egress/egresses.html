@@ -66,7 +66,7 @@
                     text="No hay egresos registrados"></no-content>
         <div class="col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl ng-show="vm.egresses.length>0" class="margin-top-20">
             <md-card ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"
-                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10 residentCardContainer"
+                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer"
                      md-theme-watch>
                 <md-card-title class="no-padding-bottom " style="padding-top: 10px!important;">
                     <md-card-title-text >

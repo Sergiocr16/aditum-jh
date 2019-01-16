@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('AccountStatusController', AccountStatusController);
 
-    AccountStatusController.$inject = [Modal,'Resident','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusController.$inject = ['Modal','Resident','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
     function AccountStatusController(Modal,Resident,$rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
@@ -48,7 +48,7 @@
             printJS({
                 printable: vm.path,
                 type: 'pdf',
-                modalMessage: "Obteniendo estado de resultados"
+                modalMessage: "Obteniendo Estado de cuenta"
             })
         };
         loadAll();

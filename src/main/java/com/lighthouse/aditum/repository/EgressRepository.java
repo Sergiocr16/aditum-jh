@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.repository;
 
 import com.lighthouse.aditum.domain.Egress;
+import com.lighthouse.aditum.service.dto.EgressDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -36,5 +37,8 @@ public interface EgressRepository extends JpaRepository<Egress,Long> {
     @Query("select e from Egress e " +
         "where e.paymentDate >= ?1 and e.paymentDate <= ?2 and e.company.id = ?3 and e.account = ?4")
     List<Egress> findByDatesBetweenAndCompanyAndAccount(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId,String accountId);
+    @Query("select e from Egress e " +
+        "where e.expirationDate >= ?1 and e.expirationDate <= ?2 and e.company.id = ?3 and e.proveedor = ?4")
+    List<Egress> findByCobroDatesBetweenAndCompanyAndProveedor(ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId, String proveedorId);
 
 }

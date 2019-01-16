@@ -35,8 +35,12 @@
             }
             if (e > 0) {
                 return true;
+                console.log('a')
+            }else{
+                return false;
+                console.log('e')
             }
-            return false;
+
         }
 
     }

@@ -15,21 +15,18 @@ public class EgressDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     private ZonedDateTime date;
 
     private String folio;
 
-    @NotNull
     private String account;
 
-    @NotNull
+    private String accountName;
+
     private String category;
 
-    @NotNull
     private String paymentMethod;
 
-    @NotNull
     private String concept;
 
     private String total;
@@ -41,6 +38,8 @@ public class EgressDTO implements Serializable {
     private String proveedor;
 
     private ZonedDateTime paymentDate;
+
+    private boolean paymentDateSelected = false;
 
     private ZonedDateTime expirationDate;
 
@@ -55,6 +54,16 @@ public class EgressDTO implements Serializable {
     private String groupName;
 
     private Long categoryId;
+
+    private String stateFormatted;
+
+    private String totalFormatted;
+
+    private String dateFormatted;
+
+    private String paymentDateFormatted;
+
+    private String expirationDateFormatted;
 
     public Long getId() {
         return id;
@@ -194,7 +203,7 @@ public class EgressDTO implements Serializable {
         }
 
         EgressDTO egressDTO = (EgressDTO) o;
-        if(egressDTO.getId() == null || getId() == null) {
+        if (egressDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), egressDTO.getId());
@@ -248,5 +257,61 @@ public class EgressDTO implements Serializable {
 
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public boolean isPaymentDateSelected() {
+        return paymentDateSelected;
+    }
+
+    public void setPaymentDateSelected(boolean paymentDateSelected) {
+        this.paymentDateSelected = paymentDateSelected;
+    }
+
+    public String getDateFormatted() {
+        return dateFormatted;
+    }
+
+    public void setDateFormatted(String dateFormatted) {
+        this.dateFormatted = dateFormatted;
+    }
+
+    public String getPaymentDateFormatted() {
+        return paymentDateFormatted;
+    }
+
+    public void setPaymentDateFormatted(String paymentDateFormatted) {
+        this.paymentDateFormatted = paymentDateFormatted;
+    }
+
+    public String getExpirationDateFormatted() {
+        return expirationDateFormatted;
+    }
+
+    public void setExpirationDateFormatted(String expirationDateFormatted) {
+        this.expirationDateFormatted = expirationDateFormatted;
+    }
+
+    public String getTotalFormatted() {
+        return totalFormatted;
+    }
+
+    public void setTotalFormatted(String totalFormatted) {
+        this.totalFormatted = totalFormatted;
+    }
+
+    public String getStateFormatted() {
+        return stateFormatted;
+    }
+
+    public void setStateFormatted(String stateFormatted) {
+        this.stateFormatted = stateFormatted;
     }
 }

@@ -5,13 +5,12 @@
         .module('aditumApp')
         .controller('EgressGenerateReportController', EgressGenerateReportController);
 
-    EgressGenerateReportController.$inject = ['$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressGenerateReportController.$inject = ['Company','$scope', '$state', 'Banco', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressGenerateReportController($scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressGenerateReportController(Company,$scope, $state, Banco, Egress, ParseLinks, AlertService, paginationConstants, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "reporteGastos";
         var vm = this;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
+
         vm.propertyName = 'id';
         $rootScope.mainTitle = "Reporte de egresos";
         vm.isReady = false;
@@ -23,6 +22,11 @@
         vm.loadingReport = false;
         vm.selectedProveedores = [];
         vm.selectedCampos = [];
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false,
+        };
         vm.translationCampos = {
             checkAll: "Selecciona todos",
             buttonDefaultText: "Selecciona los campos",
@@ -36,35 +40,40 @@
             uncheckAll: "Deseleccionar todos",
             selectionCount: "elementos seleccionados",
             dynamicButtonTextSuffix: "elementos seleccionados"
-        }
+        };
         vm.dates = {
             initial_time: undefined,
             final_time: undefined
         };
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
 
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
-        vm.updatePicker();
+        loadProveedors();
 
-        setTimeout(function () {
-            loadProveedors();
-        }, 800)
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
+
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo reporte de egresos"
+            })
+        };
+
 
         function loadProveedors() {
-            vm.companyName = $rootScope.companyName;
+
             Proveedor.query({companyId: globalCompany.getId()}).$promise.then(onSuccessProveedores);
 
             function onSuccessProveedores(data, headers) {
@@ -75,7 +84,7 @@
                     proveedorToshow.label = proveedor.empresa;
                     proveedorToshow.id = proveedor.id;
                     vm.proveedoresMultiSelect.push(proveedorToshow)
-                })
+                });
                 loadCampos();
             }
 
@@ -108,51 +117,15 @@
 
         function onSuccessBancos(data, headers) {
             vm.bancos = data;
-            vm.isReady = true;
+            Company.get({id:  globalCompany.getId()}).$promise.then(function (result) {
+                vm.isReady = true;
+                vm.companyName = result.name;
+            });
+
+
         }
 
-        function formatEgresses() {
-            moment.locale('es');
-            angular.forEach(vm.egresses, function (value, key) {
-                if (value.paymentDate == null || value.paymentDate == undefined) {
-                    value.paymentDate = "No pagado";
-                    value.account = "No pagado"
-                } else {
-                    value.paymentDate = moment(value.paymentDate).format('LL')
-                }
-                angular.forEach(vm.bancos, function (banco, key) {
-                    if (banco.id == value.account) {
-                        value.account = banco.beneficiario;
-                    }
-
-                })
-
-                if (value.billNumber == null || value.billNumber == undefined || value.billNumber == '') {
-                    value.billNumber = 'Sin Registrar'
-                }
-                if (value.folio == null || value.folio == undefined) {
-                    value.folio = 'Sin Registrar'
-                }
-                if (value.reference == null || value.reference == undefined) {
-                    value.reference = 'Sin Registrar'
-                }
-                value.date = moment(value.date).format('LL')
-                value.expirationDate = moment(value.expirationDate).format('LL')
-                if (value.state == 1) {
-                    value.state = 'Pendiente'
-                } else if (value.state == 2) {
-                    value.state = 'Pagado'
-                } else if (value.state == 3) {
-                    value.state = 'Vencido'
-                }
-                formatearNumero
-                value.montoInt = parseInt(value.total)
-                value.total = '₡' + formatearNumero(value.total);
-            })
-            showResults()
-        }
-
-        function formatearNumero(nStr) {
+        vm.formatearNumero = function (nStr)  {
 
             var x = nStr.split('.');
             var x1 = x[0];
@@ -162,7 +135,7 @@
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
             }
             return x1 + x2;
-        }
+        };
 
 
         function onError(error) {
@@ -170,84 +143,52 @@
         }
 
         vm.generateReport = function () {
+
+            var selectedCampos = "";
+            var selectedProveedores = "";
+            angular.forEach(vm.selectedCampos, function (selectedCampo, key) {
+                selectedCampos = selectedCampos + vm.camposMultiSelect[selectedCampo.id].attr + ",";
+
+            });
+            angular.forEach(vm.selectedProveedores, function (selectedProveedor, keyProveedor) {
+                selectedProveedores = selectedProveedores + vm.proveedores[keyProveedor].id + ",";
+
+            });
+            console.log(selectedCampos)
+            console.log(selectedProveedores)
+
+            Egress.generateReport({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                companyId: globalCompany.getId(),
+                empresas: selectedProveedores,
+                selectedCampos: selectedCampos
+
+            }).$promise.then(onSuccess);
+
             vm.gastosQuantity = 0;
             vm.isReady2 = false;
             vm.loadingReport = true;
 
-            Egress.findBetweenCobroDatesByCompany({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                companyId: globalCompany.getId(),
-            }).$promise.then(onSuccess);
-
             function onSuccess(data) {
                 vm.egresses = data;
-                formatEgresses()
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
-        }
-
-
-        function showResults() {
-            vm.reportResult = []
-            vm.companyName = $rootScope.companyName;
-            vm.reportInitialtime = vm.dates.initial_time;
-            vm.reportFinaltime = vm.dates.final_time;
-            angular.forEach(vm.selectedProveedores, function (proveedorSelected, key) {
-                var objectProveedor = {};
-                angular.forEach(vm.proveedores, function (proveedor, keyProveedor) {
-                    if (proveedorSelected.id == proveedor.id) {
-                        objectProveedor = {
-                            id: vm.proveedores[keyProveedor].id,
-                            nombre: vm.proveedores[keyProveedor].empresa,
-                            gastos: [],
-                            montoTotal: 0
-                        };
-                        angular.forEach(vm.egresses, function (egress, key) {
-                            if (objectProveedor.id == egress.proveedor) {
-                                var egressInfo = {}
-                                angular.forEach(vm.selectedCampos, function (selectedCampo, key) {
-                                    egressInfo[vm.camposMultiSelect[selectedCampo.id].attr] = egress[vm.camposMultiSelect[selectedCampo.id].attr]
-
-                                })
-                                if (egressInfo.total != undefined || egressInfo.total != null) {
-                                    objectProveedor.montoTotal += egress.montoInt
-                                    console.log(egressInfo.total)
-
-                                }
-                                objectProveedor.gastos.push(egressInfo);
-                                vm.gastosQuantity = vm.gastosQuantity + 1;
-                            }
-
-                        })
-                        objectProveedor.montoTotal = objectProveedor.montoTotal + '';
-                        objectProveedor.montoTotal = formatearNumero(objectProveedor.montoTotal)
-                    }
-
-                })
-                vm.reportResult.push(objectProveedor)
-            })
-
-            vm.isReady2 = true;
-            vm.loadingReport = false;
-
-            if (vm.gastosQuantity > 0) {
-                vm.showNoResults = false
+                vm.superObject = moment(vm.dates.initial_time).format() +'}'+moment(vm.dates.final_time).format()+'}'+globalCompany.getId()+'}'+selectedProveedores+'}'+selectedCampos;
+                vm.path = '/api/egresses/file/' + vm.superObject;
+           console.log(data)
+                vm.isReady2 = true;
                 vm.hideReportForm = true;
-            } else {
-                vm.showNoResults = true
+                vm.loadingReport = false;
+                if(data.egressByProveedor.length>0){
+
+                    vm.showNoResults = false
+
+                }else{
+                    vm.showNoResults = true
+                }
+
             }
-        }
 
+        };
 
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

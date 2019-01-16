@@ -5,16 +5,16 @@
         .module('aditumApp')
         .controller('PaymentReportController', PaymentReportController);
 
-    PaymentReportController.$inject = ['Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany', 'Modal'];
+    PaymentReportController.$inject = ['Company','Resident', 'Banco', 'House', '$timeout', '$scope', '$state', 'Payment', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany', 'Modal'];
 
-    function PaymentReportController(Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany, Modal) {
+    function PaymentReportController(Company,Resident, Banco, House, $timeout, $scope, $state, Payment, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany, Modal) {
         $rootScope.active = "reporteIngresos";
         var vm = this;
         vm.exportActions = {
             downloading: false,
             printing: false,
             sendingEmail: false,
-        }
+        };
         $rootScope.mainTitle = "Reporte de ingresos";
         vm.isReady = false;
         vm.isReady2 = false;
@@ -88,7 +88,12 @@
                 companyId: globalCompany.getId()
             }, function (data, headers) {
                 vm.bancos = data;
-                vm.isReady = true;
+                Company.get({id:  globalCompany.getId()}).$promise.then(function (result) {
+                    vm.isReady = true;
+                    vm.companyName = result.name;
+                });
+
+
             });
         }
 
@@ -221,7 +226,6 @@
             function onSuccess(data, headers) {
                 vm.incomeReport = data;
                 vm.payments = vm.incomeReport.payments;
-                vm.companyName = $rootScope.companyName;
                 angular.forEach(vm.payments, function (payment, i) {
                     payment.isShowingCharges = false;
                 })

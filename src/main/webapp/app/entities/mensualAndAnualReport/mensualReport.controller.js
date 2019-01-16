@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualReportController', MensualReportController);
 
-    MensualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    MensualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function MensualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function MensualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
 
         var vm = this;
 
@@ -129,8 +129,12 @@
             vm.allEgressPercentageQuantity = data.mensualEgressReport.fixedCostsPercentage + data.mensualEgressReport.variableCostsPercentage + data.mensualEgressReport.otherCostsPercentage
             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualEgressReport.allEgressCategoriesTotal;
             vm.superHabitPercentage = 100 - vm.allEgressPercentageQuantity;
-            vm.isReady = true;
+
             vm.reportString = JSON.stringify(vm.report);
+            Company.get({id: globalCompany.getId()}).$promise.then(function (result) {
+                vm.isReady = true;
+                vm.companyName = result.name;
+            });
         }
 
         vm.expand = function () {

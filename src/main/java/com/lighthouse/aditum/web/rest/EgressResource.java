@@ -2,12 +2,15 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.EgressCategoryService;
+import com.lighthouse.aditum.service.EgressDocumentService;
+import com.lighthouse.aditum.service.dto.EgressReportDTO;
 import com.lighthouse.aditum.service.EgressService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.EgressDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -17,11 +20,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -39,9 +52,12 @@ public class EgressResource {
 
     private final EgressCategoryService egressCategoryService;
 
-    public EgressResource(EgressService egressService,EgressCategoryService egressCategoryService) {
+    private final EgressDocumentService egressDocumentService;
+
+    public EgressResource(EgressService egressService,EgressCategoryService egressCategoryService,EgressDocumentService egressDocumentService) {
         this.egressService = egressService;
         this.egressCategoryService = egressCategoryService;
+        this.egressDocumentService = egressDocumentService;
     }
 
     /**
@@ -163,6 +179,62 @@ public class EgressResource {
         Page<EgressDTO> page = egressService.findByDatesBetweenAndCompanyAndAccount(pageable,initial_time,final_time,companyId,accountId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/egresses/egressReport/{initial_time}/{final_time}/{companyId}/{empresas}/{selectedCampos}")
+    @Timed
+    public ResponseEntity<EgressReportDTO> egressReport(
+        @PathVariable (value = "initial_time")  String initial_time,
+        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "empresas")  String empresas,
+        @PathVariable(value = "selectedCampos")  String selectedCampos,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        EgressReportDTO egressReportDTO = egressService.egressReport(pageable,initial_time,final_time,companyId,empresas,selectedCampos);
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressReportDTO));
+    }
+    @GetMapping("/egresses/file/{egressObject}")
+    @Timed
+    public void getEgressFile(@PathVariable String egressObject,
+                                   HttpServletResponse response) throws URISyntaxException, IOException {
+
+        String[] parts = egressObject.split("}");
+        EgressReportDTO egressReportDTO = egressService.egressReport(null,parts[0],parts[1],Long.parseLong(parts[2]),parts[3],parts[4]);
+        Locale local = new Locale("es", "ES");
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
+        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
+
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[0]+"[America/Regina]");
+        String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[1]+"[America/Regina]");
+        String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
+
+            File file = egressDocumentService.obtainFileToPrint(egressReportDTO,initialTimeFormatted,finalTimeFormatted,Long.parseLong(parts[2]));
+            FileInputStream stream = new FileInputStream(file);
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline; filename="+file.getName());
+            IOUtils.copy(stream,response.getOutputStream());
+            stream.close();
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        this.sleep(400000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    file.delete();
+
+                }
+            }.start();
+
+
+
+
     }
     /**
      * DELETE  /egresses/:id : delete the "id" egress.

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AnualReportController', AnualReportController);
 
-    AnualReportController.$inject = ['AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    AnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function AnualReportController(AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function AnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Reporte anual";
@@ -71,9 +71,12 @@
             vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
 
             vm.path = '/api/anualReport/file/' + vm.superObject;
-console.log(vm.path)
+            Company.get({id: globalCompany.getId()}).$promise.then(function (result) {
+                vm.isReady = true;
+                vm.companyName = result.name;
+            });
             vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
-            vm.isReady = true;
+
         }
 
         vm.showWithBudget = function () {
