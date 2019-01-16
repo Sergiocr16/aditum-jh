@@ -72,6 +72,9 @@
             <column name="principal_contact" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="deleted" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="user_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>

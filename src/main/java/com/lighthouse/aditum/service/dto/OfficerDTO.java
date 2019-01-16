@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.service.dto;
 
+
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -48,6 +49,8 @@ public class OfficerDTO implements Serializable {
 
     private String direction;
 
+    private Integer deleted;
+
     private Long companyId;
 
     private CompanyDTO company;
@@ -59,6 +62,7 @@ public class OfficerDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -66,6 +70,7 @@ public class OfficerDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getLastname() {
         return lastname;
     }
@@ -73,6 +78,7 @@ public class OfficerDTO implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
     public String getSecondlastname() {
         return secondlastname;
     }
@@ -80,6 +86,7 @@ public class OfficerDTO implements Serializable {
     public void setSecondlastname(String secondlastname) {
         this.secondlastname = secondlastname;
     }
+
     public byte[] getImage() {
         return image;
     }
@@ -95,6 +102,7 @@ public class OfficerDTO implements Serializable {
     public void setImageContentType(String imageContentType) {
         this.imageContentType = imageContentType;
     }
+
     public String getIdentificationnumber() {
         return identificationnumber;
     }
@@ -102,6 +110,7 @@ public class OfficerDTO implements Serializable {
     public void setIdentificationnumber(String identificationnumber) {
         this.identificationnumber = identificationnumber;
     }
+
     public Integer getInservice() {
         return inservice;
     }
@@ -109,13 +118,15 @@ public class OfficerDTO implements Serializable {
     public void setInservice(Integer inservice) {
         this.inservice = inservice;
     }
-    public Boolean getEnable() {
+
+    public Boolean isEnable() {
         return enable;
     }
 
     public void setEnable(Boolean enable) {
         this.enable = enable;
     }
+
     public String getImage_url() {
         return image_url;
     }
@@ -123,6 +134,7 @@ public class OfficerDTO implements Serializable {
     public void setImage_url(String image_url) {
         this.image_url = image_url;
     }
+
     public Integer getAnnosexperiencia() {
         return annosexperiencia;
     }
@@ -130,6 +142,7 @@ public class OfficerDTO implements Serializable {
     public void setAnnosexperiencia(Integer annosexperiencia) {
         this.annosexperiencia = annosexperiencia;
     }
+
     public LocalDate getFechanacimiento() {
         return fechanacimiento;
     }
@@ -137,6 +150,7 @@ public class OfficerDTO implements Serializable {
     public void setFechanacimiento(LocalDate fechanacimiento) {
         this.fechanacimiento = fechanacimiento;
     }
+
     public String getPhonenumber() {
         return phonenumber;
     }
@@ -144,6 +158,7 @@ public class OfficerDTO implements Serializable {
     public void setPhonenumber(String phonenumber) {
         this.phonenumber = phonenumber;
     }
+
     public String getDirection() {
         return direction;
     }
@@ -152,7 +167,15 @@ public class OfficerDTO implements Serializable {
         this.direction = direction;
     }
 
-   public Long getCompanyId() {
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+    public Long getCompanyId() {
         return companyId;
     }
 
@@ -168,9 +191,6 @@ public class OfficerDTO implements Serializable {
         this.company = company;
     }
 
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -181,33 +201,34 @@ public class OfficerDTO implements Serializable {
         }
 
         OfficerDTO officerDTO = (OfficerDTO) o;
-
-        if ( ! Objects.equals(id, officerDTO.id)) { return false; }
-
-        return true;
+        if(officerDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), officerDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "OfficerDTO{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", lastname='" + lastname + "'" +
-            ", secondlastname='" + secondlastname + "'" +
-            ", image='" + image + "'" +
-            ", identificationnumber='" + identificationnumber + "'" +
-            ", inservice='" + inservice + "'" +
-            ", enable='" + enable + "'" +
-            ", image_url='" + image_url + "'" +
-            ", annosexperiencia='" + annosexperiencia + "'" +
-            ", fechanacimiento='" + fechanacimiento + "'" +
-            ", phonenumber='" + phonenumber + "'" +
-            ", direction='" + direction + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", image='" + getImage() + "'" +
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", inservice='" + getInservice() + "'" +
+            ", enable='" + isEnable() + "'" +
+            ", image_url='" + getImage_url() + "'" +
+            ", annosexperiencia='" + getAnnosexperiencia() + "'" +
+            ", fechanacimiento='" + getFechanacimiento() + "'" +
+            ", phonenumber='" + getPhonenumber() + "'" +
+            ", direction='" + getDirection() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }

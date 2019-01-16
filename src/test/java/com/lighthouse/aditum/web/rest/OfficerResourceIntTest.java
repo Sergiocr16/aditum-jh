@@ -81,6 +81,9 @@ public class OfficerResourceIntTest {
     private static final String DEFAULT_DIRECTION = "AAAAAAAAAA";
     private static final String UPDATED_DIRECTION = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private OfficerRepository officerRepository;
 
@@ -124,19 +127,20 @@ public class OfficerResourceIntTest {
      */
     public static Officer createEntity(EntityManager em) {
         Officer officer = new Officer()
-                .name(DEFAULT_NAME)
-                .lastname(DEFAULT_LASTNAME)
-                .secondlastname(DEFAULT_SECONDLASTNAME)
-                .image(DEFAULT_IMAGE)
-                .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
-                .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
-                .inservice(DEFAULT_INSERVICE)
-                .enable(DEFAULT_ENABLE)
-                .image_url(DEFAULT_IMAGE_URL)
-                .annosexperiencia(DEFAULT_ANNOSEXPERIENCIA)
-                .fechanacimiento(DEFAULT_FECHANACIMIENTO)
-                .phonenumber(DEFAULT_PHONENUMBER)
-                .direction(DEFAULT_DIRECTION);
+            .name(DEFAULT_NAME)
+            .lastname(DEFAULT_LASTNAME)
+            .secondlastname(DEFAULT_SECONDLASTNAME)
+            .image(DEFAULT_IMAGE)
+            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
+            .identificationnumber(DEFAULT_IDENTIFICATIONNUMBER)
+            .inservice(DEFAULT_INSERVICE)
+            .enable(DEFAULT_ENABLE)
+            .image_url(DEFAULT_IMAGE_URL)
+            .annosexperiencia(DEFAULT_ANNOSEXPERIENCIA)
+            .fechanacimiento(DEFAULT_FECHANACIMIENTO)
+            .phonenumber(DEFAULT_PHONENUMBER)
+            .direction(DEFAULT_DIRECTION)
+            .deleted(DEFAULT_DELETED);
         return officer;
     }
 
@@ -151,8 +155,7 @@ public class OfficerResourceIntTest {
         int databaseSizeBeforeCreate = officerRepository.findAll().size();
 
         // Create the Officer
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
-
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(officerDTO)))
@@ -175,6 +178,7 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getFechanacimiento()).isEqualTo(DEFAULT_FECHANACIMIENTO);
         assertThat(testOfficer.getPhonenumber()).isEqualTo(DEFAULT_PHONENUMBER);
         assertThat(testOfficer.getDirection()).isEqualTo(DEFAULT_DIRECTION);
+        assertThat(testOfficer.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -183,14 +187,13 @@ public class OfficerResourceIntTest {
         int databaseSizeBeforeCreate = officerRepository.findAll().size();
 
         // Create the Officer with an existing ID
-        Officer existingOfficer = new Officer();
-        existingOfficer.setId(1L);
-        OfficerDTO existingOfficerDTO = officerMapper.officerToOfficerDTO(existingOfficer);
+        officer.setId(1L);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingOfficerDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(officerDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -206,7 +209,7 @@ public class OfficerResourceIntTest {
         officer.setName(null);
 
         // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -225,7 +228,7 @@ public class OfficerResourceIntTest {
         officer.setLastname(null);
 
         // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -244,7 +247,7 @@ public class OfficerResourceIntTest {
         officer.setSecondlastname(null);
 
         // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -263,7 +266,7 @@ public class OfficerResourceIntTest {
         officer.setIdentificationnumber(null);
 
         // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -282,7 +285,7 @@ public class OfficerResourceIntTest {
         officer.setInservice(null);
 
         // Create the Officer, which fails.
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         restOfficerMockMvc.perform(post("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -316,7 +319,8 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.[*].annosexperiencia").value(hasItem(DEFAULT_ANNOSEXPERIENCIA)))
             .andExpect(jsonPath("$.[*].fechanacimiento").value(hasItem(DEFAULT_FECHANACIMIENTO.toString())))
             .andExpect(jsonPath("$.[*].phonenumber").value(hasItem(DEFAULT_PHONENUMBER.toString())))
-            .andExpect(jsonPath("$.[*].direction").value(hasItem(DEFAULT_DIRECTION.toString())));
+            .andExpect(jsonPath("$.[*].direction").value(hasItem(DEFAULT_DIRECTION.toString())))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -342,7 +346,8 @@ public class OfficerResourceIntTest {
             .andExpect(jsonPath("$.annosexperiencia").value(DEFAULT_ANNOSEXPERIENCIA))
             .andExpect(jsonPath("$.fechanacimiento").value(DEFAULT_FECHANACIMIENTO.toString()))
             .andExpect(jsonPath("$.phonenumber").value(DEFAULT_PHONENUMBER.toString()))
-            .andExpect(jsonPath("$.direction").value(DEFAULT_DIRECTION.toString()));
+            .andExpect(jsonPath("$.direction").value(DEFAULT_DIRECTION.toString()))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -363,20 +368,21 @@ public class OfficerResourceIntTest {
         // Update the officer
         Officer updatedOfficer = officerRepository.findOne(officer.getId());
         updatedOfficer
-                .name(UPDATED_NAME)
-                .lastname(UPDATED_LASTNAME)
-                .secondlastname(UPDATED_SECONDLASTNAME)
-                .image(UPDATED_IMAGE)
-                .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
-                .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
-                .inservice(UPDATED_INSERVICE)
-                .enable(UPDATED_ENABLE)
-                .image_url(UPDATED_IMAGE_URL)
-                .annosexperiencia(UPDATED_ANNOSEXPERIENCIA)
-                .fechanacimiento(UPDATED_FECHANACIMIENTO)
-                .phonenumber(UPDATED_PHONENUMBER)
-                .direction(UPDATED_DIRECTION);
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(updatedOfficer);
+            .name(UPDATED_NAME)
+            .lastname(UPDATED_LASTNAME)
+            .secondlastname(UPDATED_SECONDLASTNAME)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
+            .identificationnumber(UPDATED_IDENTIFICATIONNUMBER)
+            .inservice(UPDATED_INSERVICE)
+            .enable(UPDATED_ENABLE)
+            .image_url(UPDATED_IMAGE_URL)
+            .annosexperiencia(UPDATED_ANNOSEXPERIENCIA)
+            .fechanacimiento(UPDATED_FECHANACIMIENTO)
+            .phonenumber(UPDATED_PHONENUMBER)
+            .direction(UPDATED_DIRECTION)
+            .deleted(UPDATED_DELETED);
+        OfficerDTO officerDTO = officerMapper.toDto(updatedOfficer);
 
         restOfficerMockMvc.perform(put("/api/officers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -400,6 +406,7 @@ public class OfficerResourceIntTest {
         assertThat(testOfficer.getFechanacimiento()).isEqualTo(UPDATED_FECHANACIMIENTO);
         assertThat(testOfficer.getPhonenumber()).isEqualTo(UPDATED_PHONENUMBER);
         assertThat(testOfficer.getDirection()).isEqualTo(UPDATED_DIRECTION);
+        assertThat(testOfficer.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test
@@ -408,7 +415,7 @@ public class OfficerResourceIntTest {
         int databaseSizeBeforeUpdate = officerRepository.findAll().size();
 
         // Create the Officer
-        OfficerDTO officerDTO = officerMapper.officerToOfficerDTO(officer);
+        OfficerDTO officerDTO = officerMapper.toDto(officer);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restOfficerMockMvc.perform(put("/api/officers")
@@ -439,7 +446,40 @@ public class OfficerResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Officer.class);
+        Officer officer1 = new Officer();
+        officer1.setId(1L);
+        Officer officer2 = new Officer();
+        officer2.setId(officer1.getId());
+        assertThat(officer1).isEqualTo(officer2);
+        officer2.setId(2L);
+        assertThat(officer1).isNotEqualTo(officer2);
+        officer1.setId(null);
+        assertThat(officer1).isNotEqualTo(officer2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(OfficerDTO.class);
+        OfficerDTO officerDTO1 = new OfficerDTO();
+        officerDTO1.setId(1L);
+        OfficerDTO officerDTO2 = new OfficerDTO();
+        assertThat(officerDTO1).isNotEqualTo(officerDTO2);
+        officerDTO2.setId(officerDTO1.getId());
+        assertThat(officerDTO1).isEqualTo(officerDTO2);
+        officerDTO2.setId(2L);
+        assertThat(officerDTO1).isNotEqualTo(officerDTO2);
+        officerDTO1.setId(null);
+        assertThat(officerDTO1).isNotEqualTo(officerDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(officerMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(officerMapper.fromId(null)).isNull();
     }
 }

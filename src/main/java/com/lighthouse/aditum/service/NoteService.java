@@ -60,7 +60,7 @@ public class NoteService {
     @Transactional(readOnly = true)
     public Page<NoteDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Notes");
-        Page<Note> result = noteRepository.findByCompanyId(pageable, companyId);
+        Page<Note> result = noteRepository.findByCompanyIdAndDeleted(pageable, companyId, 0);
         return result.map(note -> {
             NoteDTO homeService = noteMapper.noteToNoteDTO(note);
             homeService.setHouse(this.houseService.findOne(homeService.getHouseId()));
@@ -89,6 +89,8 @@ public class NoteService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Note : {}", id);
-        noteRepository.delete(id);
+        Note note = noteMapper.toEntity(this.findOne(id));
+        note.setDeleted(1);
+        noteRepository.save(note);
     }
 }

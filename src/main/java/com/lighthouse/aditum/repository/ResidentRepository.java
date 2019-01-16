@@ -16,9 +16,9 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public interface ResidentRepository extends JpaRepository<Resident,Long> {
     Resident findOneByUserId(Long id);
-    List<Resident> findByEnabledAndCompanyId(Integer state, Long companyId);
-    List<Resident> findByCompanyId(Long companyId);
-    Resident findByCompanyIdAndIdentificationnumber(Long companyId,String identificationNumber);
-    List<Resident> findByEnabledAndHouseId(Integer state,Long houseId);
-    Integer countByEnabledAndCompanyId(Integer state,Long companyId);
+    List<Resident> findByEnabledAndCompanyIdAndDeleted(Integer state, Long companyId,Integer deleted);
+    List<Resident> findByCompanyIdAndDeleted(Long companyId,Integer deleted);
+    Resident findByCompanyIdAndIdentificationnumberAndDeleted(Long companyId,String identificationNumber,Integer deleted);
+    List<Resident> findByEnabledAndHouseIdAndDeleted(Integer state,Long houseId, Integer deleted);
+    Integer countByEnabledAndCompanyIdAndDeleted(Integer state,Long companyId,Integer deleted);
 }
