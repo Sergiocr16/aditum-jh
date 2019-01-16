@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EmergencyDialogController', EmergencyDialogController);
 
-    EmergencyDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'Principal', 'WSEmergency', '$rootScope', 'Modal'];
+    EmergencyDialogController.$inject = ['$timeout', '$scope', '$state', '$stateParams', 'Principal', 'WSEmergency', '$rootScope', 'Modal','globalCompany'];
 
-    function EmergencyDialogController($timeout, $scope, $state, $stateParams, Principal, WSEmergency, $rootScope, Modal) {
+    function EmergencyDialogController($timeout, $scope, $state, $stateParams, Principal, WSEmergency, $rootScope, Modal,globalCompany) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         $rootScope.mainTitle = "Reportar emergencia"
@@ -17,7 +17,7 @@
 
 
         setTimeout(function () {
-            var emergencyCode = $rootScope.companyId + "" + $rootScope.companyUser.houseId;
+            var emergencyCode = globalCompany.getId() + "" + $rootScope.companyUser.houseId;
             WSEmergency.subscribeAttended(emergencyCode);
             WSEmergency.receiveAttented(emergencyCode).then(null, null, emergencyAttended)
             $rootScope.$on('$stateChangeStart',
@@ -28,15 +28,15 @@
 
         function formatValidEmergency() {
             vm.emergency = {};
-            vm.emergency.companyId = $rootScope.companyId;
+            vm.emergency.companyId = globalCompany.getId();
             vm.emergency.houseId = $rootScope.companyUser.houseId;
+            vm.emergency.houseNumber = $rootScope.companyUser.house.housenumber;
             vm.emergency.isAttended = 0;
         }
 
         function save() {
             Modal.confirmDialog("¿Seguro que desea reportar una emergencia?", "", function () {
                 formatValidEmergency();
-
                 WSEmergency.sendActivity(vm.emergency);
                 Modal.toast("Se ha reportado la emergencia, enseguida será notificada a los oficiales");
                 setTimeout(function () {

@@ -10,8 +10,8 @@
     function stateConfig($stateProvider) {
         $stateProvider
 
-        .state('note.new', {
-            parent: 'note',
+        .state('noteNew', {
+            parent: 'entity',
             url: '/home-service/new',
             data: {
                 authorities: ['ROLE_USER']

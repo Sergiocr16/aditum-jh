@@ -198,6 +198,10 @@
 
                 }, 900)
                 AlertService.error(error.data.message);
+                 $("#loadingData").fadeOut(0);
+                                 setTimeout(function() {
+                                     $("#data").fadeIn(300);
+                                 }, 200)
             }
         }
 

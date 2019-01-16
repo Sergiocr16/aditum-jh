@@ -49,7 +49,7 @@ public class Officer implements Serializable {
     @Column(name = "inservice", nullable = false)
     private Integer inservice;
 
-    @Column(name = "enable")
+    @Column(name = "jhi_enable")
     private Boolean enable;
 
     @Column(name = "image_url")
@@ -66,6 +66,9 @@ public class Officer implements Serializable {
 
     @Column(name = "direction")
     private String direction;
+
+    @Column(name = "deleted")
+    private Integer deleted;
 
     @ManyToOne
     private Company company;
@@ -247,6 +250,19 @@ public class Officer implements Serializable {
         this.direction = direction;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Officer deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -269,34 +285,35 @@ public class Officer implements Serializable {
             return false;
         }
         Officer officer = (Officer) o;
-        if (officer.id == null || id == null) {
+        if (officer.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, officer.id);
+        return Objects.equals(getId(), officer.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Officer{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", lastname='" + lastname + "'" +
-            ", secondlastname='" + secondlastname + "'" +
-            ", image='" + image + "'" +
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", image='" + getImage() + "'" +
             ", imageContentType='" + imageContentType + "'" +
-            ", identificationnumber='" + identificationnumber + "'" +
-            ", inservice='" + inservice + "'" +
-            ", enable='" + enable + "'" +
-            ", image_url='" + image_url + "'" +
-            ", annosexperiencia='" + annosexperiencia + "'" +
-            ", fechanacimiento='" + fechanacimiento + "'" +
-            ", phonenumber='" + phonenumber + "'" +
-            ", direction='" + direction + "'" +
-            '}';
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", inservice='" + getInservice() + "'" +
+            ", enable='" + isEnable() + "'" +
+            ", image_url='" + getImage_url() + "'" +
+            ", annosexperiencia='" + getAnnosexperiencia() + "'" +
+            ", fechanacimiento='" + getFechanacimiento() + "'" +
+            ", phonenumber='" + getPhonenumber() + "'" +
+            ", direction='" + getDirection() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }

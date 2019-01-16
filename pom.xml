@@ -388,17 +388,6 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.1.14</version>
         </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.1</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.1.21</version>
-        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
     <build>

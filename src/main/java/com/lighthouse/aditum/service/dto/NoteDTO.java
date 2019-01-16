@@ -24,9 +24,14 @@ public class NoteDTO implements Serializable {
     @NotNull
     private ZonedDateTime creationdate;
 
+    private Integer deleted;
+
     private Long houseId;
 
     private Long companyId;
+
+    private HouseDTO house;
+
 
     public Long getId() {
         return id;
@@ -35,6 +40,7 @@ public class NoteDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getDescription() {
         return description;
     }
@@ -42,6 +48,7 @@ public class NoteDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public Integer getNotetype() {
         return notetype;
     }
@@ -49,12 +56,21 @@ public class NoteDTO implements Serializable {
     public void setNotetype(Integer notetype) {
         this.notetype = notetype;
     }
+
     public ZonedDateTime getCreationdate() {
         return creationdate;
     }
 
     public void setCreationdate(ZonedDateTime creationdate) {
         this.creationdate = creationdate;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 
     public Long getHouseId() {
@@ -83,24 +99,33 @@ public class NoteDTO implements Serializable {
         }
 
         NoteDTO noteDTO = (NoteDTO) o;
-
-        if ( ! Objects.equals(id, noteDTO.id)) { return false; }
-
-        return true;
+        if(noteDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), noteDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "NoteDTO{" +
-            "id=" + id +
-            ", description='" + description + "'" +
-            ", notetype='" + notetype + "'" +
-            ", creationdate='" + creationdate + "'" +
-            '}';
+            "id=" + getId() +
+            ", description='" + getDescription() + "'" +
+            ", notetype='" + getNotetype() + "'" +
+            ", creationdate='" + getCreationdate() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Resident and its DTO ResidentDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CompanyMapper.class, HouseMapper.class, })
+@Mapper(componentModel = "spring", uses = {UserMapper.class, CompanyMapper.class, HouseMapper.class })
 public interface ResidentMapper extends EntityMapper <ResidentDTO, Resident> {
 
     @Mapping(source = "user.id", target = "userId")

@@ -1,0 +1,173 @@
+<div class="access-back marging-top-40">
+    <div class="opacity" layout="row" layout-align="stretch">
+        <div class="no-margin no-padding  col-lg-12 col-md-12 col-xs-12 col-sm-12" layout="column"
+             layout-align="center center" layout-align-xs="start center">
+            <div layout="row" class="col-md-12 col-xs-12 fade-in" ui-view
+                 ng-if="$state.current.name !== 'main-access-door'">
+            </div>
+            <div ng-if="!vm.isReady && $state.current.name === 'main-access-door'" layout="row" class="content-loader"
+                 layout-sm="column" layout-fill
+                 layout-align="space-around center">
+                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+            </div>
+
+            <div layout="row" ng-if="vm.isReady && $state.current.name === 'main-access-door'"
+                 class="col-md-10 col-xs-12 fade-in register-div margin-top-10-xs" id="content-officer"
+                 style="margin-top: -40px">
+                <div layout="row" layout-xs="column"
+                     class="background-white padding-30 col-md-12 col-xs-12 border-radius-8"
+                     style="min-height: 412px">
+                    <div flex layout="column" layout-align="center space-between ">
+                        <div layout="row" class="margin-bottom-30">
+                            <md-input-container flex class="md-icon-float md-block">
+                                <!-- Use floating label instead of placeholder -->
+                                <label class="label-access-door">Número de placa <span
+                                    hide-xs>(Sin guiones)</span></label>
+                                <md-icon class="name" style="top: -5px;left: -12px;right:auto;font-size:35px">
+                                    directions_car
+                                </md-icon>
+                                <input class="font-30 uppercase specialCharactersAndVocals" id="vehicule_license_plate"
+                                       ng-change="vm.getVehicule()"
+                                       ng-model="vm.id_vehicule" type="text" autocomplete="off">
+                            </md-input-container>
+                            <div style="margin-left: 5px" layout="row">
+                                <md-tooltip md-direction="right" hide-xs>Borrar texto</md-tooltip>
+                                <md-icon class="name pointer" ng-click="vm.deleteVehiculeSpots()">
+                                    highlight_off
+                                </md-icon>
+                            </div>
+                        </div>
+                        <div layout="row">
+                            <md-input-container flex class="md-icon-float md-block">
+                                <!-- Use floating label instead of placeholder -->
+                                <label class="label-access-door">Número de cédula</label>
+                                <md-icon class="name" style="top: -5px;left: -12px;right:auto;font-size:35px">person
+                                </md-icon>
+                                <input ng-change="vm.getResident()" ng-model="vm.id_number" id="id_license_number"
+                                       class="font-30 uppercase specialCharacters" ng-model="user.name" type="text"
+                                       autocomplete="off">
+                            </md-input-container>
+                            <div style="margin-left: 5px" layout="row">
+                                <md-tooltip md-direction="right" hide-xs>Borrar texto</md-tooltip>
+                                <md-icon class="name pointer" ng-click="vm.deleteResidentSpots()">
+                                    highlight_off
+                                </md-icon>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div flex layout="column" layout-align="center center"
+                    ng-if="vm.residentFound == 0 && vm.id_number=='' && vm.id_vehicule==''">
+                    <div class="text-center">
+                    <i class="material-icons md-48 md-inactive md-dark circle-icon">assignment_return</i>
+                    <h4 class="text-center"
+                    style="font-weight: 400;color: rgba(0, 0, 0, 0.50);">Ingrese datos para
+                    consultar</h4>
+                    </div>
+                    </div>
+                    <div class="fade-in" flex layout="column" layout-align="center center"
+                         ng-if="vm.id_number!='' || vm.id_vehicule!=''">
+                        <div class="text-center" ng-if="vm.resident==undefined && vm.vehicule == undefined">
+                            <i class="material-icons md-48 md-inactive md-dark circle-icon-red white-font"
+                               style="font-size: 70px!important;font-weight: bold;color:white">close</i>
+                            <h3 class="text-center"
+                                style="font-weight: 400;color: rgba(0, 0, 0, 0.50);">No se encuentran datos
+                                registrados</h3>
+                        </div>
+                        <div class="text-center fade-in" ng-if="vm.resident">
+                            <h3 style="margin-bottom: 30px" class=" username-access-door margin-bottom-5-xs text-center bold {{vm.colorResidentRegistered}}">
+
+                                {{vm.residentRegisteredTitle}}</h3>
+                            <div aria-haspopup="true" aria-expanded="false">
+                                <img ng-if="vm.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                     class="object-fit_scale-down-navbar-huge"/>
+                                <img ng-if="vm.resident.image_url!==null" src="{{vm.resident.image_url}}"
+                                     class="object-fit_scale-down-navbar-huge"/>
+                            </div>
+                            <h5 class="username-access-door text-center bold gray-font">{{vm.resident.name}}
+                                {{vm.resident.lastname}}
+                                {{vm.resident.secondlastname}}</h5>
+                            <h5 class="font-20 text-center">Filial <span class="font-30 bold text-center">{{vm.resident.house.housenumber}}</span>
+                            </h5>
+                            <h5 ng-if="vm.visitorFound==1 && vm.id_number!=''" class="font-20 text-center">Placa <span
+                                class="font-25 bold text-center">{{vm.resident.licenseplate}}</span>
+                            </h5>
+                            <h5 ng-if="vm.visitorFound==1 && vm.id_vehicule!=''" class="font-20 text-center">Cédula
+                                <span class="font-25 bold text-center">{{vm.resident.identificationnumber}}</span>
+                            </h5>
+                            <md-button ng-if="vm.visitorFound==1" ng-class="{'disabledDiv':vm.savingVisitor}"
+                                       style="border-bottom-right-radius:8px"
+                                       class="red-button-oficial btn-absolute-right-bottom no-border-radius-xs"
+                                       ng-click="vm.insertVisitantInvited()">
+                                Registrar visita
+                            </md-button>
+                            <md-button ng-if="vm.visitorFound==0"
+                                       class="md-fab md-raised md-mini red-button-oficial btn-absolute-right-bottom"
+                                       ng-click="vm.showKeys(vm.resident)">
+                                <md-tooltip md-direction="left" md-visible="tooltipVisible"
+                                            class="font-13 bold white-color">Ver claves
+                                </md-tooltip>
+                                <md-icon style="color:white!important">vpn_key</md-icon>
+                            </md-button>
+                            </md-fab-speed-dial>
+                        </div>
+                        <div class="text-center fade-in" ng-if="vm.vehicule">
+                            <h3 style="margin-bottom: 30px" class="margin-bottom-5-xs text-center bold username-access-door {{vm.colorVehiculeRegistered}}">
+                                {{vm.vehiculeRegisteredTitle}}</h3>
+                            <i class="material-icons md-48 md-inactive md-dark circle-icon icon-vehicule-access-door"
+                               style="color:{{vm.vehicule.color}}!important">
+                                <span ng-if="vm.vehicule.type=='Motocicleta'">motorcycle</span>
+                                <span ng-if="vm.vehicule.type=='Automóvil'">directions_car</span>
+                                <md-tooltip md-direction="right">{{vm.vehicule.type}}</md-tooltip>
+                            </i>
+                            <b style="padding: 5px;
+                               background: rgba(0,0,0,0.05);
+                               margin-left: -50px;">{{vm.vehicule.brand}}</b>
+                            <h5 class="font-20 text-center bold gray-font">{{vm.vehicule.licenseplate}}</h5>
+                            <h5 class="font-20 text-center">Filial <span class="font-30 bold text-center">{{vm.vehicule.house.housenumber}}</span>
+                            </h5>
+                            <md-button class="md-fab md-raised md-mini red-button-oficial btn-absolute-right-bottom"
+                                       ng-click="vm.showKeys(vm.vehicule)">
+                                <md-tooltip md-direction="left" md-visible="tooltipVisible"
+                                            class="font-13 bold white-color">Ver claves
+                                </md-tooltip>
+                                <md-icon style="color:white!important">vpn_key</md-icon>
+                            </md-button>
+                            </md-fab-speed-dial>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>
+</div>
+<div class="tab_container" layout="row" style="position:fixed;bottom:0;padding-top:0;">
+    <label class="no-margin label-tab-container-ad outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.current.name === 'main-access-door'}"
+           ng-click="vm.accessDoor()"><i class="material-icons material-icons-with-text icon-finanzes">meeting_room</i>
+        <span hide-xs hide-sm hide-md>Puerta de acceso</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.register-visitor')}"
+           ng-click="vm.registerVisitor()"><i
+        class="material-icons material-icons-with-text icon-finanzes">face</i> <span hide-xs hide-sm hide-md>Registrar visitante</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.filiales-info')}"
+           ui-sref="main-access-door.filiales-info"><i
+        class="material-icons material-icons-with-text icon-finanzes">home</i> <span hide-xs hide-sm hide-md>Información de filiales</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.home-service')}"
+           ui-sref="main-access-door.home-service"><i
+        class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.change-watch')}"
+           ui-sref="main-access-door.change-watch"><i
+        class="material-icons material-icons-with-text icon-finanzes">access_time</i> <span hide-xs hide-sm hide-md>Cambio de turno</span></label>
+</div>
+<div class="intermitentRed portlet light bordered scroll-vertical portlet-fullscreen" layout="column" layout-align="center center" ng-if="vm.emergencyInProgress">
+        <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
+        <md-button type="submit" class="btn-default" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
+</div>

@@ -36,8 +36,11 @@ public class Vehicule implements Serializable {
     @Column(name = "enabled")
     private Integer enabled;
 
-    @Column(name = "type")
+    @Column(name = "jhi_type")
     private String type;
+
+    @Column(name = "deleted")
+    private Integer deleted;
 
     @ManyToOne
     private House house;
@@ -118,6 +121,19 @@ public class Vehicule implements Serializable {
         this.type = type;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Vehicule deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -153,26 +169,27 @@ public class Vehicule implements Serializable {
             return false;
         }
         Vehicule vehicule = (Vehicule) o;
-        if (vehicule.id == null || id == null) {
+        if (vehicule.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, vehicule.id);
+        return Objects.equals(getId(), vehicule.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Vehicule{" +
-            "id=" + id +
-            ", licenseplate='" + licenseplate + "'" +
-            ", brand='" + brand + "'" +
-            ", color='" + color + "'" +
-            ", enabled='" + enabled + "'" +
-            ", type='" + type + "'" +
-            '}';
+            "id=" + getId() +
+            ", licenseplate='" + getLicenseplate() + "'" +
+            ", brand='" + getBrand() + "'" +
+            ", color='" + getColor() + "'" +
+            ", enabled='" + getEnabled() + "'" +
+            ", type='" + getType() + "'" +
+            ", deleted='" + getDeleted() + "'" +
+            "}";
     }
 }

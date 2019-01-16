@@ -13,9 +13,9 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface VehiculeRepository extends JpaRepository<Vehicule,Long> {
-    List<Vehicule> findByCompanyId(Long companyId);
-    Vehicule findOneByCompanyIdAndLicenseplate(Long companyId,String licensePlate);
-    List<Vehicule> findByEnabledAndCompanyId(Integer state, Long companyId);
-    List<Vehicule> findByEnabledAndHouseId(Integer state,Long houseId);
-    Integer countByEnabledAndCompanyId(Integer state,Long companyId);
+    List<Vehicule> findByCompanyIdAndDeleted(Long companyId,Integer deleted);
+    Vehicule findOneByCompanyIdAndLicenseplateAndDeleted(Long companyId,String licensePlate,Integer deleted);
+    List<Vehicule> findByEnabledAndCompanyIdAndDeleted(Integer state, Long companyId,Integer deleted);
+    List<Vehicule> findByEnabledAndHouseIdAndDeleted(Integer state,Long houseId,Integer deleted);
+    Integer countByEnabledAndCompanyIdAndDeleted(Integer state,Long companyId,Integer deleted);
 }

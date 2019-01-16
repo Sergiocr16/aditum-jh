@@ -71,8 +71,6 @@
         }
 
         vm.hasPermission = function (visitor) {
-
-
             if (visitor.isinvited == 2) {
                 return false;
             }
@@ -100,7 +98,6 @@
         vm.deleteInvitedVisitor = function (visitor) {
             Modal.confirmDialog("¿Está seguro que desea eliminar el registro?", "", function () {
                 Modal.showLoadingBar();
-
                 Visitant.delete({
                     id: visitor.id
                 }, success);
@@ -113,7 +110,6 @@
                 Modal.toast("Se ha eliminado el registro correctamente");
                 Modal.hideLoadingBar();
                 WSDeleteEntity.sendActivity({type: 'visitor', id: visitor.id})
-
             }
         }
 

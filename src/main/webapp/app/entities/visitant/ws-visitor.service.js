@@ -6,9 +6,9 @@
         .module('aditumApp')
         .factory('WSVisitor', WSVisitor);
 
-    WSVisitor.$inject = ['StompManager','$rootScope'];
+    WSVisitor.$inject = ['StompManager','globalCompany'];
 
-    function WSVisitor(StompManager,$rootScope) {
+    function WSVisitor(StompManager,globalCompany) {
         var SUBSCRIBE_TRACKER_URL = '/topic/visitor/';
         var SEND_ACTIVITY_URL = '/topic/sendVisitor/';
 
@@ -23,11 +23,11 @@
         return service;
 
         function receive () {
-            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + $rootScope.companyId);
+            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + globalCompany.getId());
         }
 
         function sendActivity(entity) {
-            StompManager.send(SEND_ACTIVITY_URL + $rootScope.companyId, entity);
+            StompManager.send(SEND_ACTIVITY_URL + globalCompany.getId(), entity);
         }
 
         function subscribe (companyId) {

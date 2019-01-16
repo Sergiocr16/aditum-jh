@@ -25,6 +25,9 @@ public class EmergencyDTO implements Serializable {
 
     private Long houseId;
 
+    private String houseNumber;
+
+
     public Long getId() {
         return id;
     }
@@ -32,6 +35,7 @@ public class EmergencyDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Integer getIsAttended() {
         return isAttended;
     }
@@ -39,6 +43,7 @@ public class EmergencyDTO implements Serializable {
     public void setIsAttended(Integer isAttended) {
         this.isAttended = isAttended;
     }
+
     public String getObservation() {
         return observation;
     }
@@ -74,7 +79,9 @@ public class EmergencyDTO implements Serializable {
 
         EmergencyDTO emergencyDTO = (EmergencyDTO) o;
 
-        if ( ! Objects.equals(id, emergencyDTO.id)) { return false; }
+        if (!Objects.equals(id, emergencyDTO.id)) {
+            return false;
+        }
 
         return true;
     }
@@ -91,5 +98,13 @@ public class EmergencyDTO implements Serializable {
             ", isAttended='" + isAttended + "'" +
             ", observation='" + observation + "'" +
             '}';
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 }

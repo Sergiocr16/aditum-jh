@@ -63,15 +63,13 @@ public class RealTimeEmergency {
     @SubscribeMapping("/topic/reportEmergency/{idCompany}")
     @SendTo("/topic/emergency/{idCompany}")
     public EmergencyDTO reportEmergency(EmergencyDTO emergencyDTO){
-
         return this.emergencyService.save(emergencyDTO);
     }
 
     @SubscribeMapping("/topic/attendEmergency/{code}")
     @SendTo("/topic/emergencyAttended/{code}")
     public EmergencyDTO attendEmergency(EmergencyDTO emergencyDTO){
-        emergencyDTO.setIsAttended(1);
-        return this.emergencyService.save(emergencyDTO);
+        return emergencyDTO;
     }
 
 }

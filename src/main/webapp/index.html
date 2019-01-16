@@ -57,15 +57,16 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER"></div>
     <section layout="row" flex="">
         <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
         </div>
  
-        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100"></div>
+
 
         <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
+        <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100" ></div>
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
                     has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
             <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
@@ -161,6 +162,8 @@
 <script src="app/services/customjs/print.min.js"></script>
 
 <script src="app/services/customjs/p-jquery-migrate.min.js"></script>
+
+<script src="app/services/customjs/offline.js"></script>
 
 <script src="app/services/customjs/o-jquery.blockui.min.js"></script>
 
@@ -724,7 +727,17 @@
 
 <script src="app/entities/account-status/accountStatus.controller.js"></script>
 
+<script src="app/entities/access-door/register-visitor.controller.js"></script>
+
+<script src="app/entities/access-door/houses-info-access-door.controller.js"></script>
+
+<script src="app/entities/access-door/home-service.controller.js"></script>
+
 <script src="app/entities/access-door/change-watches.controller.js"></script>
+
+<script src="app/entities/access-door/change-watch.controller.js"></script>
+
+<script src="app/entities/access-door/access-door1.controller.js"></script>
 
 <script src="app/entities/access-door/access-door-invited-by-house.controller.js"></script>
 
@@ -749,6 +762,8 @@
 <script src="app/components/util/pagination-util.service.js"></script>
 
 <script src="app/components/util/padron-electoral.js"></script>
+
+<script src="app/components/util/no-content-small.component.js"></script>
 
 <script src="app/components/util/no-content-component.js"></script>
 

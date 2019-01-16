@@ -129,7 +129,6 @@
                     vm.isSaving = false;
                 } else {
                     console.log('dsaf');
-
                     vm.dates.initial_date.setHours(vm.dates.initial_time.getHours())
                     vm.dates.initial_date.setMinutes(vm.dates.initial_time.getMinutes())
                     vm.dates.final_date.setHours(vm.dates.final_time.getHours())

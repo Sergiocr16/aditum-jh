@@ -76,6 +76,8 @@ public class ResidentResourceIntTest {
     private static final Integer DEFAULT_TYPE = 1;
     private static final Integer UPDATED_TYPE = 2;
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
     private static final Integer DEFAULT_PRINCIPAL_CONTACT = 1;
     private static final Integer UPDATED_PRINCIPAL_CONTACT = 2;
 
@@ -171,6 +173,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEnabled()).isEqualTo(DEFAULT_ENABLED);
         assertThat(testResident.getImage_url()).isEqualTo(DEFAULT_IMAGE_URL);
         assertThat(testResident.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testResident.getDeleted()).isEqualTo(DEFAULT_DELETED);
         assertThat(testResident.getPrincipalContact()).isEqualTo(DEFAULT_PRINCIPAL_CONTACT);
     }
 
@@ -293,6 +296,7 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
             .andExpect(jsonPath("$.[*].image_url").value(hasItem(DEFAULT_IMAGE_URL.toString())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE)))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)))
             .andExpect(jsonPath("$.[*].principalContact").value(hasItem(DEFAULT_PRINCIPAL_CONTACT)));
     }
 
@@ -319,6 +323,7 @@ public class ResidentResourceIntTest {
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
             .andExpect(jsonPath("$.image_url").value(DEFAULT_IMAGE_URL.toString()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED))
             .andExpect(jsonPath("$.principalContact").value(DEFAULT_PRINCIPAL_CONTACT));
     }
 
@@ -376,6 +381,7 @@ public class ResidentResourceIntTest {
         assertThat(testResident.getEnabled()).isEqualTo(UPDATED_ENABLED);
         assertThat(testResident.getImage_url()).isEqualTo(UPDATED_IMAGE_URL);
         assertThat(testResident.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testResident.getDeleted()).isEqualTo(UPDATED_DELETED);
         assertThat(testResident.getPrincipalContact()).isEqualTo(UPDATED_PRINCIPAL_CONTACT);
     }
 

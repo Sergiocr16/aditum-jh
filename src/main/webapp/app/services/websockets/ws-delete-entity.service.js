@@ -6,9 +6,9 @@
         .module('aditumApp')
         .factory('WSDeleteEntity', WSDeleteEntity);
 
-    WSDeleteEntity.$inject = ['StompManager','$rootScope'];
+    WSDeleteEntity.$inject = ['StompManager','globalCompany'];
 
-    function WSDeleteEntity(StompManager,$rootScope) {
+    function WSDeleteEntity(StompManager,globalCompany) {
         var SUBSCRIBE_TRACKER_URL = '/topic/deletedEntity/';
         var SEND_ACTIVITY_URL = '/topic/deleteEntity/';
 
@@ -23,11 +23,11 @@
         return service;
 
         function receive () {
-            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + $rootScope.companyId);
+            return StompManager.getListener(SUBSCRIBE_TRACKER_URL + globalCompany.getId());
         }
 
         function sendActivity(entity) {
-            StompManager.send(SEND_ACTIVITY_URL + $rootScope.companyId, entity);
+            StompManager.send(SEND_ACTIVITY_URL + globalCompany.getId(), entity);
         }
 
         function subscribe (companyId) {

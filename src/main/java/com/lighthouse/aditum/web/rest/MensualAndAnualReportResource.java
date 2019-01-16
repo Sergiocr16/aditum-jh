@@ -1,8 +1,6 @@
 package com.lighthouse.aditum.web.rest;
 
-import com.alibaba.fastjson.JSON;
 import com.codahale.metrics.annotation.Timed;
-import com.google.gson.Gson;
 import com.lighthouse.aditum.service.AnualReportDocumentService;
 import com.lighthouse.aditum.service.AnualReportService;
 import com.lighthouse.aditum.service.MensualReportDocumentService;
@@ -160,11 +158,9 @@ public class MensualAndAnualReportResource {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 file.delete();
 
             }
         }.start();
-
     }
 }

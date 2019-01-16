@@ -6,7 +6,6 @@
         .config(stateConfig);
 
     stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
-    // stateConfig.$inject = ['$stateProvider'];
 
     function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {
         $mdDateLocaleProvider.formatDate = function(date) {
@@ -40,13 +39,6 @@
                     templateUrl: 'app/components/login/login.html',
                     controller: 'LoginController',
                     controllerAs: 'vm'
-                },
-                'access_door@': {
-                    templateUrl: 'app/entities/access-door/main-access-door.html',
-                    controller: 'AccessDoorController',
-                    controllerAs: 'vm',
-                    data: {authorities: ['ROLE_OFFICER']}
-
                 }
             },
             resolve: {
