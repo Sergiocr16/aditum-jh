@@ -33,6 +33,10 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "quantityaccessdoor", nullable = false)
     private Integer quantityaccessdoor;
 
+    @NotNull
+    @Column(name = "has_contability", nullable = false)
+    private Integer hasContability;
+
     @ManyToOne
     private Company company;
 
@@ -83,6 +87,19 @@ public class CompanyConfiguration implements Serializable {
         this.quantityaccessdoor = quantityaccessdoor;
     }
 
+    public Integer getHasContability() {
+        return hasContability;
+    }
+
+    public CompanyConfiguration hasContability(Integer hasContability) {
+        this.hasContability = hasContability;
+        return this;
+    }
+
+    public void setHasContability(Integer hasContability) {
+        this.hasContability = hasContability;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -105,24 +122,25 @@ public class CompanyConfiguration implements Serializable {
             return false;
         }
         CompanyConfiguration companyConfiguration = (CompanyConfiguration) o;
-        if (companyConfiguration.id == null || id == null) {
+        if (companyConfiguration.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, companyConfiguration.id);
+        return Objects.equals(getId(), companyConfiguration.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "CompanyConfiguration{" +
-            "id=" + id +
-            ", quantityhouses='" + quantityhouses + "'" +
-            ", quantityadmins='" + quantityadmins + "'" +
-            ", quantityaccessdoor='" + quantityaccessdoor + "'" +
-            '}';
+            "id=" + getId() +
+            ", quantityhouses='" + getQuantityhouses() + "'" +
+            ", quantityadmins='" + getQuantityadmins() + "'" +
+            ", quantityaccessdoor='" + getQuantityaccessdoor() + "'" +
+            ", hasContability='" + getHasContability() + "'" +
+            "}";
     }
 }

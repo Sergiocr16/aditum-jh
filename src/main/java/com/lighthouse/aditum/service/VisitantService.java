@@ -6,6 +6,7 @@ import com.lighthouse.aditum.service.dto.VisitantDTO;
 import com.lighthouse.aditum.service.mapper.VisitantMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +30,13 @@ public class VisitantService {
 
     private final VisitantMapper visitantMapper;
 
-    public VisitantService(VisitantRepository visitantRepository, VisitantMapper visitantMapper) {
+    private final HouseService houseService;
+
+
+    public VisitantService(VisitantRepository visitantRepository, VisitantMapper visitantMapper,@Lazy HouseService houseService) {
         this.visitantRepository = visitantRepository;
         this.visitantMapper = visitantMapper;
+        this.houseService = houseService;
     }
 
     /**
@@ -43,6 +48,9 @@ public class VisitantService {
     public VisitantDTO save(VisitantDTO visitantDTO) {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
+        if(visitant.getLicenseplate()=="NINGUNA"){
+            visitant.setLicenseplate("");
+        }
         visitant = visitantRepository.save(visitant);
         VisitantDTO result = visitantMapper.visitantToVisitantDTO(visitant);
         return result;
@@ -183,12 +191,17 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findAllInvited(Long companyId) {
         log.debug("Request to get all Visitants");
         List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrCompanyIdAndIsinvited(companyId,1,companyId,2);
         Collections.reverse(result);
-        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        return new PageImpl<Visitant>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(houseService.findOne(visitantDTO.getHouseId()).getHousenumber());
+            return visitantDTO;
+        });
     }
     /**
      *  Get one visitant by id.

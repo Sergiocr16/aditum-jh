@@ -5,14 +5,16 @@
         .module('aditumApp')
         .controller('DataProgressController', DataProgressController);
 
-    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company'];
+    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage','globalCompany'];
 
-    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company) {
+    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
 
         var vm = this;
-        $rootScope.active = "dataprogress";
+        $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
-
+        vm.house ='-1';
+        vm.filterStateTemporal = "-1";
+        vm.filterState = "";
         function loadCompanies() {
             Company.query({}).$promise.then(onSuccessCompanies);
             function onSuccessCompanies(data, headers) {
@@ -24,15 +26,15 @@
                 }
             }
         }
-        setTimeout(function(){
+        // setTimeout(function(){
                  Principal.identity().then(function(account){
                  if(account.authorities[0]=="ROLE_ADMIN"){
                       loadCompanies();
                  }else if(  account.authorities[0]=="ROLE_MANAGER"){
-                     vm.loadHouses($rootScope.companyId)
+                     vm.loadHouses(globalCompany.getId())
                  }
-                 })
-        },1000)
+                 });
+        // },1000)
         function initGraphs() {
             var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
                 var chart = AmCharts.makeChart(id, {
@@ -108,7 +110,17 @@
 
             handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);
         }
+
+        vm.changeFilterState = function(filterStateTemporal) {
+          if(filterStateTemporal=='-1'){
+              vm.filterState = "";
+          }else{
+              vm.filterState = filterStateTemporal;
+          }
+
+        };
         vm.loadHouses = function(companyId) {
+            console.log('sdfsadfsadfs')
             House.query({
                 companyId: companyId
             }).$promise.then(onSuccessHouses);
@@ -118,7 +130,9 @@
                     if (value.housenumber == 9999) {
                         value.housenumber = "Oficina"
                     }
-                })
+                });
+                console.log('adfadfda')
+                console.log(globalCompany.getId())
                 console.log(data)
                 vm.houses = data;
                initGraphs()
@@ -176,6 +190,5 @@
             saveTextAsFile(info, "Códigos de Ingreso, Condominio " + vm.company.name)
         }
 
-        loadCompanies();
     }
 })();

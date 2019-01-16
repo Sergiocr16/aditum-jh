@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('JhiHealthCheckController', JhiHealthCheckController);
 
-    JhiHealthCheckController.$inject = ['JhiHealthService', '$uibModal','Principal'];
+    JhiHealthCheckController.$inject = ['JhiHealthService', '$uibModal','Principal','$rootScope'];
 
-    function JhiHealthCheckController (JhiHealthService, $uibModal,Principal) {
+    function JhiHealthCheckController (JhiHealthService, $uibModal,Principal,$rootScope) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.updatingHealth = true;
@@ -16,7 +16,7 @@
         vm.showHealth = showHealth;
         vm.baseName = JhiHealthService.getBaseName;
         vm.subSystemName = JhiHealthService.getSubSystemName;
-
+        $rootScope.active = "health";
         vm.refresh();
 
         function getLabelClass (statusState) {

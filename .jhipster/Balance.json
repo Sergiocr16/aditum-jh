@@ -1,0 +1,44 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "one-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "housenumber",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "balance"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "extraordinary",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "commonAreas",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "maintenance",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180324001923",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "balance",
+    "pagination": "pager"
+}

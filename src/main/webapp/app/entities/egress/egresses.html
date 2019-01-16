@@ -1,0 +1,238 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div class="fade-in" ng-if="vm.isReady">
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;"
+         ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
+        <div class="">
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.search">
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="slide-box slide-toggle-js col-md-12 col-sm-12 col-xs-12 no-padding" ng-if="vm.showFilterDiv">
+        <div layout="row" layout-xs="column" class="">
+
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true">
+                Mostrar todos
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+        </div>
+
+
+    </div>
+    <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+
+    <div class="portlet-body fade-in " ng-if="vm.isReady2">
+        <no-content ng-if="vm.egresses.length == 0" icon="call_received"
+                    text="No hay egresos registrados"></no-content>
+        <div class="col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl ng-show="vm.egresses.length>0" class="margin-top-20">
+            <md-card ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"
+                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10 residentCardContainer"
+                     md-theme-watch>
+                <md-card-title class="no-padding-bottom " style="padding-top: 10px!important;">
+                    <md-card-title-text >
+
+                        <span class="md-headline font-16 font-green-sharp">{{egress.concept}}</span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <a><i class="material-icons"
+                              style="color:#FF3D00; font-size: 23px;margin-top:14px;"
+                              ng-if="egress.state==3">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido
+                            </md-tooltip>
+                            lens</i><i class="material-icons"
+                                       style="color:#26A69A ; font-size: 23px;margin-top:14px;"
+                                       ng-if="egress.state==2">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Pagado</md-tooltip>
+                            lens</i>
+                            <i class="material-icons"
+                               style="color:#FDD835; font-size: 23px;margin-top:14px;"
+                               ng-if="egress.state==1">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                                lens</i>
+                        </a>
+
+                    </md-card-title-media>
+
+                </md-card-title>
+                <md-card-actions layout="row" layout-align="space-between center">
+                    <div style="margin-left: 9px; color: rgba(0,0,0,0.54); font-size: 14px;">
+                        <div>
+                            Categoría: {{egress.category}}
+                        </div>
+                        <div ng-if="egress.state== 1 || egress.state==3" class="margin-top-10">
+                            <div>
+                                Fecha de vencimiento: {{egress.expirationDate | date:'mediumDate'}}
+                            </div>
+                        </div>
+                        <div ng-if="egress.state==2" class="margin-top-10">
+                            <div>
+                                Fecha de pagado: {{egress.paymentDate | date:'mediumDate'}}
+                            </div>
+                        </div>
+                        <div class="margin-top-10 ">
+                            Total: <b>₡{{vm.formatearNumero(egress.total+"")}}</b>
+                        </div>
+                    </div>
+                    <div layout="row" layout-align="end center">
+                        <i class="material-icons" style="color:#999;cursor: pointer;margin-right: 8px;"
+                           ng-click="vm.detailEgress(egress.id)">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                            </md-tooltip>
+                            remove_red_eye</i>
+                        <md-menu ng-if="egress.state!=2" md-position-mode="target-right target"
+                                 has-any-authority="ROLE_MANAGER"
+                                 style=" margin-top: 6px;margin-right: 0!important;">
+                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                       style="margin-right: 0!important;"
+                                       ng-click="$mdMenu.open($event)">
+                                <i class="material-icons" style="color:#999">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                    </md-tooltip>
+                                    more_vert</i>
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item>
+                                    <md-button ng-click="vm.detailEgress(egress.id)">
+                                        <div layout="row" flex>
+                                            <p flex>Registrar pago</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
+                </md-card-actions>
+            </md-card>
+        </div>
+        <div class="table-scrollable" ng-show="vm.egresses.length>0" style="border: 0px!important;" hide-xs
+             hide-sm hide-md>
+            <table class="table table-bordered  table-hover font-13 gray-font tableMaterialDesign">
+                <thead style="background-color: #fafafa;">
+
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th ng-click="vm.sortBy('concept')"><span>Concepto </span> <span class="fa fa-sort"
+                                                                                     style="color:#D8D8D8; "></span>
+                    </th>
+
+                    <th ng-click="vm.sortBy('folio')"><span data-translate="aditumApp.egress.folio">Folio</span>
+                        <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                    <th ng-click="vm.sortBy('category')">Categoría <span class="fa fa-sort"
+                                                                         style="color:#D8D8D8"></span></th>
+                    <th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"
+                                                                           style="color:#D8D8D8"></span></th>
+                    <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span
+                        class="fa fa-sort" style="color:#D8D8D8"></span></th>
+
+                    <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span
+                        class="fa fa-sort" style="color:#D8D8D8"></span></th>
+
+
+                    <th ng-click="vm.sortBy('total')"><span data-translate="aditumApp.egress.total">Total </span>
+                        <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
+
+                    <th class="text-center"><span>Detalle </span></th>
+
+                    <th class="text-center" ng-click="vm.sortBy('state')"><span>Estado </span><span
+                        class="fa fa-sort" style="color:#D8D8D8; "></span></th>
+                    <th class="text-center"><span>Pagar </span></th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+
+                <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
+                    <td> {{egress.concept}}</td>
+                    <td>{{egress.folio}}</td>
+                    <td>{{egress.category}}</td>
+                    <td>{{egress.proveedor}}</td>
+                    <td>{{egress.expirationDate | date:'mediumDate'}}</td>
+                    <td>{{egress.paymentDate | date:'mediumDate'}}</td>
+                    <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
+
+                    <td class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i
+                        class="material-icons">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                        remove_red_eye</i></a></td>
+
+                    <td class="text-center"><a><i class="material-icons" style="color:#FF3D00; font-size: 20px;"
+                                                  ng-if="egress.state==3">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>
+                        lens</i><i class="material-icons" style="color:#26A69A; font-size: 20px;"
+                                   ng-if="egress.state==2">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Pagado</md-tooltip>
+                        lens</i><i class="material-icons" style="color:#FDD835; font-size: 20px;"
+                                   ng-if="egress.state==1">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                        lens</i></a></td>
+
+                    <!--<td  class="text-center"> <span class="  col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold"  style="font-size:13px; color:#FF3D00;"  ng-show="egress.state==3" aria-hidden="false">Vencido</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12 label  bold" style="font-size:13px;  color: #26A69A;" ng-show="egress.state==2" aria-hidden="false" ui-sref="egress.detail({id:egress.id})">Pagado</span><span class="col-lg-12 col-md-12 col-sm-12 col-xs-12  label  bold" style="font-size:13px; color:#FDD835" ng-show="egress.state==1" aria-hidden="false">Pendiente</span></td>-->
+
+                    <td class="text-center"><a class="" style="color:#45b6af" ng-show="egress.state!==2"
+                                               ng-click="vm.detailEgress(egress.id)"><i
+                        class="material-icons">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Realizar pago</md-tooltip>
+                        payment</i></a></td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--<div class="bs-example">-->
+        <!--<button type="button" class="btn btn-primary" data-toggle="13" ng-click="vm.clickPopover()">Click Me</button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="text-center hidden-xs hidden-sm" ng-show="vm.egresses.length>0">
+            <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        </div>
+        <uib-pager class="hidden-xs hidden-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"
+                   ng-show="vm.egresses.length>0"></uib-pager>
+    </div>
+
+    <md-button ui-sref="egress-tabs.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Capturar egreso</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>
+</div>

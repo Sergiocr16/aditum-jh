@@ -1,307 +1,198 @@
-<!-- END CONTENT -->
-<!-- BEGIN QUICK SIDEBAR -->
+<md-sidenav id="side-nav" style="max-width:300px !important;min-width: 70px!important;"
+            class="md-sidenav-left side-nav-bar fade-in fixed" md-component-id="left"
+            md-whiteframe="4" md-disable-close-events
+            md-is-locked-open="$mdMedia('gt-md')">
+    <md-toolbar flex layout="row" class="md-theme-indigo" hide-lg hide-gt-lg hide-xl
+                style="background-color: white;position: fixed">
+        <h1 class="md-toolbar-tools" style="position: fixed">
+            <i style="color:gray" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+               ng-click="toggleLeft()">menu</i>
+            <a ui-sref="home">
+                <img src="content/images/logoAditumAzul.png" alt="logo" class="logo-default" height="22">
+            </a>
+        </h1>
+    </md-toolbar>
+    <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
+    <md-content flex style="overflow-y: auto!important" layout="column">
+        <nav id="sidebar">
+            <ul class="list-unstyled components">
+                <li ng-if="companyUser.companies.length>1">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)">
+                            <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="company in companyUser.companies">
+                                <a ng-click="vm.selectCompany(company)"
+                                   style="{{vm.defineSelectCompanyColor(company).color}}">
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
-<div has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" style="margin-top:46px;" ></div>
+                </li>
+                <li ng-repeat="mainItem in vm.menu"  hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
+                    <div ng-if="mainItem.title!=''">
+                        <md-divider></md-divider>
+                        <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
+                            <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
+                                {{mainItem.title}}
+                            </p>
+                        </a>
+                    </div>
+                    <div>
+                        <ul class="list-unstyled components">
+                            <li ng-repeat="secondItem in mainItem.secondaryItems"
+                                has-any-authority="{{secondItem.authoritites}}" ng-if="secondItem.showLg">
+                                <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}}
+                                    </p>
+                                </a>
+                                <a ng-mouseenter="secondItem.hover = true;"
+                                   has-any-authority="{{secondItem.authoritites}}"
+                                   ng-click="vm.collapseAllOther(secondItem,null)"
+                                   ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable"
+                                   href="#{{secondItem.menuId}}"
+                                   target="_self" data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}} <i class="material-icons float-right">
+                                        expand_more
+                                    </i>
+                                    </p>
+                                </a>
+                                <ul ng-if="secondItem.collapsable" class="collapse list-unstyled"
+                                    id="{{secondItem.menuId}}">
+                                    <li has-any-authority="{{thirdItem.authoritites}}"
+                                        ng-repeat="thirdItem in secondItem.thirdItems"
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" >
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-mouseleave="thirdItem.hover = false"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           data-toggle="collapse"
+                                           aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}}
+                                            </p>
+                                        </a>
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-click="vm.collapseAllOther(thirdItem,secondItem)"
+                                           ng-mouseleave="thirdItem.hover = false" ng-if="thirdItem.collapsable"
+                                           href="#{{thirdItem.menuId}}" target="_self"
+                                           data-toggle="collapse" aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}} <i class="material-icons float-right">
+                                                expand_more
+                                            </i>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" ng-class="{'margin-top-56':$index==1}">
+                    <div ng-if="mainItem.title!=''">
+                        <md-divider></md-divider>
+                        <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
+                            <p class="text-uppercase" style="{{vm.defineStyleMainButton(mainItem).backgroundColor}}">
+                                {{mainItem.title}}
+                            </p>
+                        </a>
+                    </div>
+                    <div>
+                        <ul class="list-unstyled components">
+                            <li ng-repeat="secondItem in mainItem.secondaryItems"
+                                has-any-authority="{{secondItem.authoritites}}" ng-if="secondItem.showXs">
+                                <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
+                                   ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
+                                   data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}}
+                                    </p>
+                                </a>
+                                <a ng-mouseenter="secondItem.hover = true;"
+                                   has-any-authority="{{secondItem.authoritites}}"
+                                   ng-click="vm.collapseAllOther(secondItem,null)"
+                                   ng-mouseleave="secondItem.hover = false" ng-if="secondItem.collapsable"
+                                   href="#{{secondItem.menuId+'xs'}}"
+                                   target="_self" data-toggle="collapse"
+                                   aria-expanded="false"
+                                   class="dropdown-toggle" style="{{vm.defineStyleSecondButton(secondItem).color}}">
+                                    <p style="{{vm.defineStyleSecondButton(secondItem).backgroundColor}}"><i
+                                        class="material-icons principal-icon">
+                                        {{secondItem.icon}}
+                                    </i> {{secondItem.title}} <i class="material-icons float-right">
+                                        expand_more
+                                    </i>
+                                    </p>
+                                </a>
+                                <ul ng-if="secondItem.collapsable" class="collapse list-unstyled"
+                                    id="{{secondItem.menuId+'xs'}}">
+                                    <li has-any-authority="{{thirdItem.authoritites}}"
+                                        ng-repeat="thirdItem in secondItem.thirdItems"
+                                        ng-class="{ 'activeSubmenu' : vm.defineActive(thirdItem)}" ng-if="thirdItem.showXs" >
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-mouseleave="thirdItem.hover = false"
+                                           ng-if="!thirdItem.collapsable" ng-click="vm.go(thirdItem.uisref)"
+                                           data-toggle="collapse"
+                                           aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}}
+                                            </p>
+                                        </a>
+                                        <a ng-mouseenter="thirdItem.hover = true;"
+                                           ng-click="vm.collapseAllOther(thirdItem,secondItem)"
+                                           ng-mouseleave="thirdItem.hover = false" ng-if="thirdItem.collapsable"
+                                           href="#{{thirdItem.menuId}}" target="_self"
+                                           data-toggle="collapse" aria-expanded="false"
+                                           class="dropdown-toggle"
+                                           style="{{vm.defineStyleThirdButton(thirdItem).color}};padding:0 5px;">
+                                            <p style="{{vm.defineStyleThirdButton(thirdItem).backgroundColor}}"><i
+                                                class="material-icons principal-icon">
+                                                {{thirdItem.icon}}
+                                            </i> {{thirdItem.title}} <i class="material-icons float-right">
+                                                expand_more
+                                            </i>
+                                            </p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
 
-<div ng-hideclass="page-sidebar-wrapper" ng-show="menu==true">
-
-    <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-    <!-- DOC: Change data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-    <div class="page-sidebar navbar-collapse collapse">
-        <!-- BEGIN SIDEBAR MENU -->
-        <!-- DOC: Apply "page-sidebar-menu-light" class right after "page-sidebar-menu" to enable light sidebar menu style(without borders) -->
-        <!-- DOC: Apply "page-sidebar-menu-hover-submenu" class right after "page-sidebar-menu" to enable hoverable(hover vs accordion) sub menu mode -->
-        <!-- DOC: Apply "page-sidebar-menu-closed" class right after "page-sidebar-menu" to collapse("page-sidebar-closed" class must be applied to the body element) the sidebar sub menu mode -->
-        <!-- DOC: Set data-auto-scroll="false" to disable the sidebar from auto scrolling/focusing -->
-        <!-- DOC: Set data-keep-expand="true" to keep the submenues expanded -->
-        <!-- DOC: Set data-auto-speed="200" to adjust the sub menu slide up/down speed -->
-        <ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200">
-            <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
-
-            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
-            <!--// es admin-->
-            <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'condons' || active === 'admins' || active === 'recursosHumanos' || active === 'brands' || active === 'destinies' || active === 'dataprogress' }">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i>
-                    <span class="title">Administración</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-
-
-                <ul class="sub-menu">
-                    <li ui-sref="company" ng-class="{ 'active' : active === 'condons'  }">
-                        <a ui-sref="company">
-                            <i class="glyphicon glyphicon-home" aria-hidden="true"></i> Gestión de condominios
-                        </a>
-                    </li>
-                    <li ui-sref="admin-info" ng-class="{ 'active' : active === 'admins' }">
-                        <a ui-sref="admin-info">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Administradores
-                        </a>
-                    </li>
-
-                    <li ui-sref="rh-account" ng-class="{ 'active' : active === 'recursosHumanos' }">
-                        <a ui-sref="rh-account">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Recursos Humanos
-                        </a>
-                    </li>
-                    <li ui-sref="brand" ng-class="{ 'active' : active === 'brands' }">
-                        <a ui-sref="brand">
-                            <i class="fa fa-car" aria-hidden="true"></i> Marca vehículos
-                        </a>
-                    </li>
-
-                    <li ui-sref="destinies" ng-class="{ 'active' : active === 'destinies' }">
-                        <a ui-sref="destinies">
-                            <i class="fa fa-building" aria-hidden="true"></i> Destinos Custom
-                        </a>
-                    </li>
-                    <li ui-sref="data-progress" ng-class="{ 'active' : active === 'dataprogress' }">
-                        <a ui-sref="destinies">
-                            <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Progreso ingreso datos
-                        </a>
-                    </li>
-                </ul>
-            </li>
-                    <li class="" has-authority="ROLE_ADMIN" ng-class="{ 'active' : active === 'user-managment' ||  active === 'tracker' || active === 'metrics' }">
-                        <a href="javascript:;">
-                            <i class="glyphicon glyphicon-tower" aria-hidden="true"></i>
-                            <span class="title">Aditum Jhipster</span>
-                            <span class="arrow "></span>
-                            <span class="selected "></span>
-                        </a>
-                        <ul class="sub-menu">
-                    <li ui-sref="user-management" ng-class="{ 'active' : active === 'user-managment' }">
-                        <a ui-sref="user-management">
-                            <i class="glyphicon glyphicon-user" aria-hidden="true"></i> Gestión de usuarios
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-tracker" ng-class="{ 'active' : active === 'tracker' }">
-                        <a ui-sref="jhi-tracker">
-                            <i class="glyphicon glyphicon-eye-open" aria-hidden="true"></i> Seguimiento
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-metrics" ng-class="{ 'active' : active === 'metrics'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i> Métricas
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-health" ng-class="{ 'active' : active === 'health'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-heart" aria-hidden="true"></i> Salud
-                        </a>
-                    </li>
-                    <li ui-sref="jhi-configuration" ng-class="{ 'active' : active === 'configuration'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-list-alt" aria-hidden="true"></i> Configuración
-                        </a>
-                    </li>
-                    <li ui-sref="audits" ng-class="{ 'active' : active === 'audits'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-bell" aria-hidden="true"></i> Auditorías
-                        </a>
-                    </li>
-                    <li ui-sref="logs" ng-class="{ 'active' : active === 'logs'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-tasks" aria-hidden="true"></i> Logs
-                        </a>
-                    </li>
-                    <li ui-sref="docs" ng-class="{ 'active' : active === 'api'}">
-                        <a href="">
-                            <i class="glyphicon glyphicon-book" aria-hidden="true"></i> API
-                        </a>
-                    </li>
-
-                </ul>
-            </li>
-            <li ui-sref="dashboard" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'dashboard'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i>
-                    <span class="title">Dashboard</span>
-                </a>
-            </li>
-            <li class="" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'residents' ||  active === 'houses' ||  active === 'vehicules' || active === 'adminVisitors' ||  active === 'dataprogress'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                    <span class="title">Condominio</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-
-
-                <ul class="sub-menu">
-                    <li ui-sref="resident" ng-class="{ 'active' : active === 'residents' }">
-                        <a href="">
-                            <i class="fa fa-users" aria-hidden="true"></i> Residentes
-                        </a>
-                    </li>
-                    <li ui-sref="house" ng-class="{ 'active' : active === 'houses' }">
-                        <a href="">
-                            <i class="fa fa-home fa-lg" aria-hidden="true"></i> Casas
-                        </a>
-                    </li>
-                    <li ui-sref="vehicule" ng-class="{ 'active' : active === 'vehicules'}">
-                        <a href="">
-                            <i class="fa fa-car " aria-hidden="true"></i> Vehículos
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-admin" ng-class="{ 'active' : active === 'adminVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Visitantes
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <!--//es admin-->
-
-            <li ui-sref="company-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'company-rh' || active === 'watches' || active === 'condons'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-home" aria-hidden="true"></i>
-                <span class="title"> Gestión de condominios</span>
-                </a>
-            </li>
-            <li ui-sref="officer-rh" has-any-authority="ROLE_RH" ng-class="{ 'active' : active === 'officer-rh' || active === 'officers'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-shield" aria-hidden="true"></i>
-                    <span class="title">Gestión de oficiales</span>
-                </a>
-            </li>
-            <li  class="start" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'officers' ||  active === 'watches'} ">
-
-                <a href="javascript:;">
-                    <i class="fa fa-lock" aria-hidden="true"></i>
-                    <span class="title "> Seguridad</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="officer" ng-class="{ 'active' : active === 'officers'}">
-                        <a href="">
-                            <i class="fa fa-shield" aria-hidden="true"></i> Oficiales
-                        </a>
-                    </li>
-                    <li ng-click="vm.viewWatch()" ng-class="{ 'active' : active === 'watches'}">
-                    <a href="">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i> Turnos
-                    </a>
-                    </li>
-                </ul>
-
-            </li>
-
-            <li ui-sref="dashboard.selectCompany" ng-show="showSelectCompany" has-any-authority="ROLE_MANAGER" ng-class="{ 'active' : active === 'selectCondominio'}">
-                <a href="javascript:;">
-                    <i class="glyphicon glyphicon-transfer" aria-hidden="true"></i>
-                    <span class="title">Seleccionar condominio</span>
-                </a>
-            </li>
-
-            <!--//es residente-->
-
-            <li  class="start"  has-authority="ROLE_USER" ng-class="{ 'active' : active === 'residentsHouses' ||  active === 'vehiculesHouses' || active === 'keysConguration' || active === 'residentsVisitors' || active === 'residentsInvitedVisitors'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-home" aria-hidden="true"></i>
-                    <span class="title "> Administrar</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="residentByHouse" ng-class="{ 'active' : active === 'residentsHouses'}">
-                        <a href="">
-                            <i class="fa fa-users" aria-hidden="true"></i> Residentes
-                        </a>
-                    </li>
-                    <li ui-sref="vehiculeByHouse" ng-class="{ 'active' : active === 'vehiculesHouses'}">
-                        <a href="">
-                            <i class="fa fa-car" aria-hidden="true"></i> Vehiculos
-                        </a>
-                    </li>
-                    <li ui-sref="visitant" ng-class="{'active' : active === 'residentsVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Bitácora de visitantes
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-invited-user" ng-class="{'active' : active === 'residentsInvitedVisitors'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Visitantes invitados
-                        </a>
-                    </li>
-                    <li ui-sref="keysConguration" ng-class="{ 'active' : active === 'keysConguration'}">
-                        <a href="">
-                            <i class="fa fa-key" aria-hidden="true"></i> Clave de seguridad
-                        </a>
-                    </li>
-                </ul>
-            </li>
-             <!--//es residente-->
-            <li has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportInvitation' ||  active === 'house-absence' ||  active === 'reportHomeService' || active === 'reportEmergency' || active === 'reportInvitationList'}">
-
-                <a href="javascript:;">
-                    <i class="fa fa-flag-o" aria-hidden="true"></i>
-                    <span class="title "> Reportar</span>
-                    <span class="arrow "></span>
-                    <span class="selected "></span>
-                </a>
-                <ul class="sub-menu">
-                    <li ui-sref="visitant-invited-user.new" ng-class="{'active' : active === 'reportInvitation'}">
-                        <a href="">
-                            <i class="fa fa-user" aria-hidden="true"></i> Visitante
-                        </a>
-                    </li>
-                    <li ui-sref="visitant-invited-user.new-list" ng-class="{'active' : active === 'reportInvitationList'}">
-                        <a href="">
-                            <i class="fa fa-group" aria-hidden="true"></i> Reunión o fiesta
-                        </a>
-                    </li>
-                    <li ui-sref="note.new" ng-class="{'active' : active === 'reportHomeService'}">
-                        <a href="">
-                            <i class="fa fa-cutlery" aria-hidden="true"></i> Servicio a domicilio
-                        </a>
-                    </li>
-                    <!--<li ui-sref="house.reportAbsence" ng-class="{'active' : active === 'house-absence'}">-->
-                        <!--<a href="">-->
-                            <!--<i class="fa fa-plane" aria-hidden="true "></i> Ausencia en filial-->
-                        <!--</a>-->
-                    <!--</li>-->
-                </ul>
-            </li>
-            <!--//es residente-->
-
-            <li ui-sref="emergency.new" has-authority="ROLE_USER"  class="start" ng-class="{ 'active' : active === 'reportemergencyactive'  }">
-                <a href="javascript:;">
-                    <i class="fa fa-ambulance" aria-hidden="true"></i>
-                    <span class="title "> Reportar emergencia</span>
-                    <span class="selected "></span>
-                </a>
-            </li>
-            <!--<li ui-sref="watch-in-residents" has-authority="ROLE_USER" ng-class="{ 'active' : active === 'watches-in-residents'}">-->
-                <!--<a href="">-->
-                    <!--<i class="fa fa-shield" aria-hidden="true"></i> Oficiales en servicio-->
-                <!--</a>-->
-            <!--</li>-->
-            <li has-authority="ROLE_USER">
-                <a ng-click="vm.openManual()" >
-                <i class="fa fa-book" aria-hidden="true"></i> Manual de usuario
-               </a>
-            </li>
-            <li has-any-authority="ROLE_USER,ROLE_MANAGER,ROLE_RH" ng-class="{ 'active' : active === 'soporte'}">
-                <a ui-sref="soporte">
-                    <i class="fa fa-life-ring" aria-hidden="true"></i> Soporte
-                </a>
-            </li>
-        </ul>
-        <!-- END SIDEBAR MENU -->
-    </div>
-</div>
-<script>
-    $( document ).ready(function() {
-      Metronic.init(); // init metronic core components
-    Layout.init(); // init current layout
-    QuickSidebar.init(); // init quick sidebar
-    Demo.init(); // init demo features
-    console.log( "ready!" );
-    });
-</script>
+            </ul>
+        </nav>
+    </md-content>
+</md-sidenav>

@@ -1,0 +1,191 @@
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white " hide-lg hide-xl style="margin-top: -15px!important;">
+        <md-tabs  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tab">
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.accountStatus')" ui-sref="finanzasPorCasa.accountStatus" class="md-active">
+                <md-tab-label>
+                    <md-icon class="material-icons material-icons-with-text icon-finanzes">account_balance</md-icon>
+                </md-tab-label>
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.chargePerHouse')" ui-sref="finanzasPorCasa.chargePerHouse" class="md-active">
+                <md-tab-label>
+                    <md-icon class="material-icons material-icons-with-text icon-finanzes">list_alt</md-icon>
+                </md-tab-label>
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('finanzasPorCasa.paymentsPerHouse')" ui-sref="finanzasPorCasa.paymentsPerHouse">
+                <md-tab-label>
+                    <md-icon class="material-icons material-icons-with-text icon-finanzes">payment</md-icon>
+                </md-tab-label>
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.mensualReport') || $state.includes('finanzasPorCasa.anualReport')" ui-sref="finanzasPorCasa.mensualReport"  class="md-active">
+                <md-tab-label>
+                    <md-icon class="material-icons material-icons-with-text icon-finanzes">equalizer</md-icon>
+                </md-tab-label>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+    <md-content layout="column" class="no-padding row background-white" hide-xs hide-sm hide-md  style="margin-top: -15px!important;width:90%">
+    <md-tabs style="padding:0px!important" md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="padding-left-10">
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.accountStatus')" ui-sref="finanzasPorCasa.accountStatus"  class="md-active">
+                <md-tab-label>
+                    Estado de cuenta
+                </md-tab-label>
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.chargePerHouse')" ui-sref="finanzasPorCasa.chargePerHouse" class="md-active">
+                <md-tab-label>
+                    Deudas
+                </md-tab-label>
+            </md-tab>
+            <md-tab md-active-nc="$state.includes('finanzasPorCasa.paymentsPerHouse')" ui-sref="finanzasPorCasa.paymentsPerHouse">
+                <md-tab-label>
+                    Pagos
+                </md-tab-label>
+            </md-tab>
+            <md-tab  md-active-nc="$state.includes('finanzasPorCasa.mensualReport') || $state.includes('finanzasPorCasa.anualReport')" ui-sref="finanzasPorCasa.mensualReport" class="md-active">
+                <md-tab-label>
+                    Estado de resultados
+                </md-tab-label>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+</div>
+<div>
+
+    <div ng-if="!vm.isReady && $state.includes('finanzasPorCasa.accountStatus')" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+
+    <div  ng-if="$state.includes('finanzasPorCasa.accountStatus') && vm.isReady" class="col-md-12" style="margin-top:40px">
+        <div class="col-md-9 no-padding">
+            <h5 class=""><b>Saldos generales</b></h5>
+            <div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                    <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
+                    <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡ {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
+                    <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                </div>
+                <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px;">
+                    <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
+                    <h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-3 no-padding-right">
+            <h5 class="text-center"><b>Adeudos totales</b></h5>
+            <div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
+                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+            </div>
+        </div>
+        <div class="little-container col-md-12" style="margin-top:20px">
+            <div class="col-md-4">
+                <b>Área m2:</b> {{vm.house.squareMeters}}
+            </div>
+            <div class="col-md-4">
+                <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+            </div>
+            <div class="col-md-4">
+                <b>Número de telefono: </b>
+                <span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>
+                <span ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
+            </div>
+        </div>
+        <h5 class="text-center">Esta información es solo de carácter informativo ya que los importes pueden estar sujetos a actualización. No tiene validez oficial como comprobante legal o fiscal.</h5>
+
+    </div>
+</div>
+<div ui-view class="row" style="padding:40px 20px 0px 20px;">
+</div>
+<!--<div class="row " id="tableData">-->
+    <!--<div class="col-md-12 no-padding" >-->
+        <!--<div class="form-group col-md-12  col-sm-12 col-xs-12 no-padding" style="background-color:#f7f7f7">-->
+
+            <!--<div class="scrollmenu col-md-12 margin-top-10" style="overflow-x: hidden!important;">-->
+                <!--<a style=" font-weight: 600!important;"  ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.paymentsPerHouse')}" ui-sref="finanzasPorCasa.paymentsPerHouse" >-->
+                    <!--Mis pagos-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.chargePerHouse')}" ui-sref="finanzasPorCasa.chargePerHouse" >-->
+                    <!--Deudas vigentes-->
+                <!--</a>-->
+                <!--<a style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.accountStatus')}" ui-sref="finanzasPorCasa.accountStatus" >-->
+                    <!--Estado de cuenta-->
+                <!--</a>-->
+                <!--<a  class="hidden-xs " style=" font-weight: 600!important;"   ng-class="{'active-anual-mensual-reporte': $state.includes('finanzasPorCasa.mensualReport') || $state.includes('finanzasPorCasa.anualReport')}" ui-sref="finanzasPorCasa.mensualReport" >-->
+                    <!--Estado de resultados-->
+                <!--</a>-->
+
+            <!--</div>-->
+
+        <!--</div>-->
+        <!--<div class="pull-right margin-bottom-20 no-padding">-->
+            <!--<button ng-show="$state.includes('finanzasPorCasa.mensualReport')" type="button" style="margin-left:5px!important; ; margin-right:20px;" class="btn  " ui-sref="finanzasPorCasa.anualReport">Mostrar reporte anual</button>-->
+
+            <!--<button ng-show="$state.includes('finanzasPorCasa.anualReport')" type="button" style="margin-left:5px!important; ; margin-right:20px;" class="btn  " ui-sref="finanzasPorCasa.mensualReport">Mostrar reporte mensual</button>-->
+
+        <!--</div>-->
+        <!--<div class="col-md-12" >-->
+            <!--<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon3">-->
+                <!--<div class="spinnerLoading">-->
+                    <!--<div class="double-bounce1"></div>-->
+                    <!--<div class="double-bounce2"></div>-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div ng-show="$state.includes('finanzasPorCasa.paymentsPerHouse') || $state.includes('finanzasPorCasa.chargePerHouse') || $state.includes('finanzasPorCasa.accountStatus')" class="col-md-12 display-none" id="tableData2" style="margin-bottom:10px">-->
+                <!--<h4 ng-show="$state.includes('finanzasPorCasa.paymentsPerHouse')">En esta sección podrás encontrar el detalle de tus pagos realizados.</h4>-->
+                <!--<h4 ng-show="$state.includes('finanzasPorCasa.chargePerHouse') ">En esta sección podrás encontrar el detalle de tus deudas que aún no han sido liquidadas.</h4>-->
+                <!--<h4 ng-show="$state.includes('finanzasPorCasa.accountStatus') ">En esta sección podrás encontrar el detalle de tus acciones financieras en la comunidad; tus pagos, tus deudas y tu balance general.</h4>-->
+
+
+                <!--<div class="col-md-9 no-padding">-->
+                    <!--<h5 class=""><b>Saldos generales</b></h5>-->
+                    <!--<div class="col-md-12 no-padding" style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">-->
+                        <!--<div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>-->
+                            <!--<h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡ {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>-->
+                            <!--<h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡ {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px;">-->
+                            <!--<h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>-->
+                            <!--<h5 style="font-weight:bold" class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡ {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+
+                <!--<div class="col-md-3 no-padding-right">-->
+                    <!--<h5 class="text-center"><b>Adeudos totales</b></h5>-->
+                    <!--<div class="col-md-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">-->
+                        <!--<h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡ {{houseSelected.balance.total | currency : "" : 0}}</b></h4>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="little-container col-md-12" style="margin-top:20px">-->
+                    <!--<div class="col-md-4">-->
+                        <!--<b>Área m2:</b> {{vm.house.squareMeters}}-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4">-->
+                        <!--<b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}-->
+                    <!--</div>-->
+                    <!--<div class="col-md-4">-->
+                        <!--<b>Número de telefono: </b>-->
+                        <!--<span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>-->
+                        <!--<span ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<h5 class="text-center">Esta información es solo de carácter informativo ya que los importes pueden estar sujetos a actualización. No tiene validez oficial como comprobante legal o fiscal.</h5>-->
+
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div ui-view class="col-md-12 ">-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--</div>-->

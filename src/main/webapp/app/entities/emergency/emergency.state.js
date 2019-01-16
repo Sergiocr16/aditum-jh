@@ -50,62 +50,6 @@
                 }]
             }
         })
-        .state('emergency-detail', {
-            parent: 'emergency',
-            url: '/emergency/{id}',
-            data: {
-                authorities: ['ROLE_USER'],
-            },
-            views: {
-                'content@': {
-                    templateUrl: 'app/entities/emergency/emergency-detail.html',
-                    controller: 'EmergencyDetailController',
-                    controllerAs: 'vm'
-                }
-            },
-            resolve: {
-                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                    $translatePartialLoader.addPart('emergency');
-                    return $translate.refresh();
-                }],
-                entity: ['$stateParams', 'Emergency', function($stateParams, Emergency) {
-                    return Emergency.get({id : $stateParams.id}).$promise;
-                }],
-                previousState: ["$state", function ($state) {
-                    var currentStateData = {
-                        name: $state.current.name || 'emergency',
-                        params: $state.params,
-                        url: $state.href($state.current.name, $state.params)
-                    };
-                    return currentStateData;
-                }]
-            }
-        })
-        .state('emergency-detail.edit', {
-            parent: 'emergency-detail',
-            url: '/detail/edit',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/emergency/emergency-dialog.html',
-                    controller: 'EmergencyDialogController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['Emergency', function(Emergency) {
-                            return Emergency.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('^', {}, { reload: false });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
         .state('emergency.new', {
             parent: 'emergency',
             url: '/new',
@@ -133,30 +77,6 @@
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
-                    resolve: {
-                        entity: ['Emergency', function(Emergency) {
-                            return Emergency.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('emergency', null, { reload: 'emergency' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
-        .state('emergency.delete', {
-            parent: 'emergency',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_USER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/emergency/emergency-delete-dialog.html',
-                    controller: 'EmergencyDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
                     resolve: {
                         entity: ['Emergency', function(Emergency) {
                             return Emergency.get({id : $stateParams.id}).$promise;

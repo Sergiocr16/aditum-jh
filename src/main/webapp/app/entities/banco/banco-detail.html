@@ -1,0 +1,128 @@
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+<div class="row fade-in gray-font" id="tableData">
+    <div class="col-md-12">
+        <div class="col-md-12 no-padding">
+            <md-card-title layout-align="space-between center -font">
+                <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline gray" >
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>{{vm.banco.beneficiario}}
+            </span>
+                </md-card-title-text>
+
+            </md-card-title>
+        </div>
+
+        <!--<h3 class="page-title col-md-7 col-lg-7 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" ng-hide="vm.isConsulting==true"><i class="material-icons material-icons-with-text gray-font " hide-sm hide-xs-->
+                                                                                                                                                         <!--ng-click="back()">arrow_back</i>{{vm.banco.beneficiario}}-->
+        <!--</h3>-->
+        <!--<h3 class="page-title col-md-5 col-lg-5 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600" ng-show="vm.isConsulting==true"><i class="material-icons material-icons-with-text gray-font " hide-sm hide-xs-->
+                                                                                                                                                         <!--ng-click="back()">arrow_back</i>{{vm.banco.beneficiario}}-->
+            <!--<div ng-show="vm.isConsulting==true">-->
+                <!--<h4 class="caption-subject font-green-sharp font-weight-600">{{vm.titleConsult}}</h4>-->
+            <!--</div>-->
+        <!--</h3>-->
+
+        <div layout="row" class="pull-right">
+
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true"> Movimientos del mes
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+        </div>
+
+        <!--<button type="button" class="btn btn-primary col-md-2  col-lg-2 col-sm-2 col-xs-12" style="background-color:#009688;" ng-click="vm.stopConsulting()" ng-show="vm.isConsulting==true" name="button">Movimientos del mes</button>-->
+        <!--<div class=" col-md-5 col-lg-5 col-sm-12 col-xs-12 no-padding-right">-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding gray-font">-->
+                <!--<input ng-model="vm.dates.initial_time" style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"-->
+                       <!--type="text" class="form-control letters gray-font text-center dating" placeholder="Desde la fecha" required>-->
+            <!--</div>-->
+            <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 no-padding">-->
+                <!--<input ng-model="vm.dates.final_time"  style="border: 1px #f2f2f2 solid;" ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="dd MMMM yyyy" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.finaltime" type="text"-->
+                       <!--class="form-control letters gray-font text-center dating"  placeholder="Hasta la fecha" required>-->
+            <!--</div>-->
+            <!--<button ng-disabled="vm.isDisableButton()" ng-click="vm.consult()" class="btn orange-button-oficial col-md-4 col-sm-4 col-xs-12  small-margin-bottom">Consultar</button>-->
+        <!--</div>-->
+
+        <div class="portlet-body ">
+            <div class="table-scrollable gray-font" style="overflow-x: hidden!important; border: 0px!important;">
+                <table class="table  table-hover font-13 tableMaterialDesignAccountStatus">
+                    <thead  style="background-color: #fafafa;" class="">
+
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                            <th></th>
+                            <th style="text-align:center;"><span  style="font-size:12px;" class="bold">FECHA </span></th>
+
+                            <th  style="text-align:center;"><span  style="font-size:12px;" class="bold">FOLIO</span> </th>
+
+                            <th  style="text-align:center;"><span  style="font-size:12px;" class="bold">CONCEPTO </span></th>
+
+
+                            <th style="text-align:center;"><span style="font-size:12px;" class="bold">INGRESO </span> </th>
+                            <th  style="text-align:center;"><span style="font-size:12px;" class="bold">EGRESO </span> </th>
+
+
+                            <th  style="text-align:center;"><span style="font-size:12px;" class="bold">SALDO </span></th>
+
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                    <tr>  <td  colspan="6"><span class=" bold" style="font-size:12px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.initialDate | date:'longDate'}}</span></td> <td class="bold text-center" ng-hide="vm.isConsulting">₡{{vm.formatearNumero(vm.saldoInicial+"")}}</td> <td ng-show="vm.isConsulting" class="bold text-center">₡{{vm.formatearNumero(vm.saldoInicialConsulting+"")}}</td></tr>
+                    <tr ng-repeat="movement in vm.movementsList "  data-toggle="{{egress.id}}" >
+                        <td style="text-align:center;"> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia saliente hacia {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;" ng-show="movement.movementType==4"></i> <i class="fa fa-exchange" angular-popover direction="right" template="<div style='padding:5px;width:200px;color:black'><h5 class='bold'>Transferencia entrante del {{movement.bancoEntrante}}<h5></div>" mode="mouseover" style="color:#009200; font-size:18px;" ng-show="movement.movementType==3"></i> <i class="fa fa-arrow-right" ng-show="movement.movementType==2" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Ingreso<h5></div>" mode="mouseover" style="color:#009200; font-size:18px;"></i><i class=" fa fa-arrow-left" ng-show="movement.movementType==1" angular-popover direction="right" template="<div style='padding:5px;width:100px;color:black'><h5 class='bold'>Egreso<h5></div>" mode="mouseover" style="color:#f45050; font-size:18px;"></i></td>
+                        <td style="text-align:center;"> {{movement.paymentDate | date:'mediumDate'}}</td>
+                        <td style="text-align:center;">{{movement.folio}}</td>
+                        <td>{{movement.concept}}</td>
+                        <td style="color:#009200; text-align:center;"><span ng-show="movement.ammount!==undefined">₡{{vm.formatearNumero(movement.ammount+"")}}</span></td>
+                        <td style="color:red; text-align:center;"><span ng-show="movement.total!==undefined">₡{{vm.formatearNumero(movement.total+"")}}</span></td>
+                        <td class="text-center">₡{{vm.formatearNumero(movement.balance+"")}}</td>
+
+
+                    </tr>
+                    <tr>  <td  colspan="4"><span class=" bold" style="font-size:11px; ">TOTAL</span></td>  <td class="text-center bold" style="color:#009200;">₡{{vm.formatearNumero(vm.totalIngress+"")}}</td> <td class="text-center bold" style="color:red;">₡{{vm.formatearNumero(vm.totalEgress+"")}}</td><td class="text-center bold">₡{{vm.formatearNumero(vm.totalBalance+"")}}</td></tr>
+
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 font-15" style="padding-top:10px; padding-bottom:10px; background-color:#f8f8f8"><i class="fa fa-balance-scale"></i> <span>Saldo</span>
+                    <div class="btn-group pull-right">
+                         <span style="color:{{vm.balanceColor}};" >₡<b>{{vm.formatearNumero(vm.totalBalance+"")}}</b></span>
+                    </div>
+
+                </div>
+
+        </div>
+
+    </div>
+
+
+    <md-button has-authority="ROLE_MANAGER" ui-sref="banco.transferencia" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Transferir fondos</md-tooltip>
+        <md-icon class="white-color">compare_arrows</md-icon>
+    </md-button>
+</div>

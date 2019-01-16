@@ -84,6 +84,14 @@
         {
             "fieldName": "codeStatus",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "due",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "squareMeters",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20170228214136",

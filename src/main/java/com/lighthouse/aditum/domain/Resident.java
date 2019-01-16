@@ -64,9 +64,12 @@ public class Resident implements Serializable {
     @Column(name = "jhi_type")
     private Integer type;
 
+    @Column(name = "principal_contact")
+    private Integer principalContact;
+
     @Column(name = "deleted")
     private Integer deleted;
-
+    
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -241,17 +244,17 @@ public class Resident implements Serializable {
         this.type = type;
     }
 
-    public Integer getDeleted() {
-        return deleted;
+    public Integer getPrincipalContact() {
+        return principalContact;
     }
 
-    public Resident deleted(Integer deleted) {
-        this.deleted = deleted;
+    public Resident principalContact(Integer principalContact) {
+        this.principalContact = principalContact;
         return this;
     }
 
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
+    public void setPrincipalContact(Integer principalContact) {
+        this.principalContact = principalContact;
     }
 
     public User getUser() {
@@ -329,7 +332,15 @@ public class Resident implements Serializable {
             ", enabled='" + getEnabled() + "'" +
             ", image_url='" + getImage_url() + "'" +
             ", type='" + getType() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", principalContact='" + getPrincipalContact() + "'" +
             "}";
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 }

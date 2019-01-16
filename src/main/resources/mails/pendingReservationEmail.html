@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Solicitud de reservación</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <style>
+
+        .bold {
+            font-weight: 700 !important;
+        }
+
+        .font-15{
+            font-size: 15px;
+        }
+        .font-14{
+            font-size: 14px;
+        }
+        .black{
+            color: black;
+        }
+    </style>
+</head>
+<body style="margin:0;padding:5px;background-size:700% 100%;font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
+<!--<div style="background: #4DB3A2;  /* fallback for old browsers */-->
+         <!--background: -webkit-linear-gradient(to left, #00b19d, #009987);  /* Chrome 10-25, Safari 5.1-6 */-->
+         <!--background: linear-gradient(to right, #00b19d, #009987); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */-->
+         <!--padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;-->
+         <!-- -moz-border-radius: 15px;-->
+         <!--border-radius: 15px!important;">-->
+
+<div style="background-color: #009987; padding: 5px 20px 20px 20px;" >
+    <h1 style="text-align:center;margin-bottom:1px"><img th:src="@{|${baseUrl}/content/images/logoAditum.png|}" alt="" height="40"/></h1>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-bottom:10px"></div>
+    <div style="background-color:white;border-radius:15px;padding:15px;color:#3c3e42; text-align: center">
+        <div style="color:black;">
+            <h2  class="black">Estimado(a) <span th:text="|${type}|"></span></h2>
+            <p class="font-15 black" style="margin-bottom: 50px;" th:text="|${reservation.getEmailTitle()}|"></p>
+            <p class="font-14 black" th:if="${reservation.getStatus()==1}"><span class="bold">Estado: </span><span>Pendiente</span></p>
+            <p class="font-14 black"  th:if="${reservation.getStatus()==2}"><span class="bold">Estado: </span><span>Aprobada</span></p>
+            <p class="font-14 black"  th:if="${reservation.getStatus()==3}"><span class="bold">Estado: </span><span>Rechazada</span></p>
+            <p class="font-14 black"><span class="bold">Área común: </span><span th:text="|${commonArea.getName()}|"></span></p>
+            <p class="font-14 black"><span class="bold">Fecha de reservación: </span><span th:text="|${date}|"></span></p>
+            <p class="font-14 black"><span class="bold">Horario: </span><span th:text="|${schedule}|"></span></p>
+            <p class="font-14 black"><span class="bold">Responsable: </span><span th:text="|${resident}|"></span></p>
+            <div th:if="${commonArea.getChargeRequired()==1}" >
+                <p class="font-14 black"><span class="bold">Costo por reservación: </span>₡<span th:text="|${reservationCharge}|"></span></p>
+                <p class="font-14 black"><span class="bold">Devolución: </span>₡<span th:text="|${devolutionAmount}|"></span></p>
+                <p class="font-14 black" th:if="${reservation.getStatus()==2}"><span class="bold">Fecha de cargo: </span><span th:text="|${chargeDate}|"></span></p>
+
+            </div>
+            <p class="font-14 black" style="margin-top: 30px ;" th:if="${reservation.getComments()!=null}"><span class="bold">Comentarios: </span><span th:text="|${reservation.getComments()}|"></span></p>
+            <p style="font-size:12px;margin-top:50px;color:#546e7a;text-align:center;text-transform:uppercase; " th:if="${reservation.getUserType()==1}"><b>Para aprobar o rechazar esta solicitud, dirijase a <a href="https://www.aditumcr.com">ADITUM</a> en el navegador o su dispositivo móvil.</b></p>
+            <p style="font-size:12px;margin-top:50px;color:#546e7a;text-align:center;text-transform:uppercase; " th:if="${reservation.getUserType()==2}"><b>
+                Para ver la información completa, dirijase a <a href="https://www.aditumcr.com">ADITUM</a> en el navegador o su dispositivo móvil.</b></p>
+
+        </div>
+    </div>
+    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>
+    <h1 style="text-align:right;"><a style="margin:5px" href="https://lhousecr.com/"><img th:src="@{|${baseUrl}/content/images/lhlogo.png|}" alt="" height="30"/></a></h1>
+</div>
+</body>
+</html>

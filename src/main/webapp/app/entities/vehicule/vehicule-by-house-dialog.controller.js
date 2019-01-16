@@ -5,16 +5,22 @@
         .module('aditumApp')
         .controller('VehiculeByHouseDialogController', VehiculeByHouseDialogController);
 
-    VehiculeByHouseDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle','Brand'];
+    VehiculeByHouseDialogController.$inject = ['$state','CommonMethods','$rootScope','Principal','$timeout', '$scope', '$stateParams',  'entity', 'Vehicule', 'House', 'Company','WSVehicle','Brand','globalCompany','Modal'];
 
-    function VehiculeByHouseDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle,Brand) {
+    function VehiculeByHouseDialogController ($state,CommonMethods,$rootScope,Principal,$timeout, $scope, $stateParams, entity, Vehicule, House, Company,WSVehicle,Brand, globalCompany,Modal) {
         $rootScope.active = "vehiculesHouses";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+
         vm.required = 1;
+        vm.isReady = false;
          Brand.query({}, onSuccessBrand);
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
          vm.myPlate = vm.vehicule.licenseplate;
         vm.houses = House.query();
         CommonMethods.validateSpecialCharacters();
@@ -55,11 +61,11 @@
           }
 
           if(vm.vehicule.licenseplate == undefined || hasWhiteSpace(vm.vehicule.licenseplate)){
-             toastr["error"]("No puede ingresar la placa con espacios en blanco.");
+              Modal.toast("No puede ingresar la placa con espacios en blanco");
              invalido++;
           }else if(hasCaracterEspecial(vm.vehicule.licenseplate)){
              invalido++;
-               toastr["error"]("No puede ingresar la placa con guiones o cualquier otro carácter especial");
+              Modal.toast("No puede ingresar la placa con guiones o cualquier otro carácter especial");
           }
            if(invalido==0){
            return true;
@@ -78,6 +84,8 @@
         if(vm.vehicule.id !== null){
             vm.title = "Editar vehículo";
             vm.button = "Editar";
+            $rootScope.mainTitle =  vm.title;
+            vm.mainTitle =  vm.title;
             angular.forEach(vm.brands,function(brand,i){
                if(brand.brand===vm.vehicule.brand){
                     vm.vehicule.brand = brand;
@@ -85,19 +93,16 @@
             })
         } else{
             vm.title = "Registrar vehículo";
+            $rootScope.mainTitle =  vm.title;
+            vm.mainTitle =  vm.title;
             vm.button = "Registrar";
         }
  }
 
-        House.query({companyId: $rootScope.companyId}).$promise.then(onSuccessHouses);
+        House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
-    setTimeout(function() {
-                                     $("#loadingIcon").fadeOut(300);
-                           }, 400)
-                            setTimeout(function() {
-                                $("#register_edit_form").fadeIn('slow');
-                            },900 )
+            vm.isReady = true;
 
         }
 
@@ -113,15 +118,15 @@
           vm.vehicule.color = "rgb(255, 255, 255)";
           }
            vm.vehicule.enabled = 1;
-           vm.vehicule.companyId = $rootScope.companyId;
+           vm.vehicule.companyId = globalCompany.getId();
             vm.vehicule.houseId = $rootScope.companyUser.houseId;
           vm.vehicule.licenseplate = vm.vehicule.licenseplate.toUpperCase();
             vm.isSaving = true;
             if (vm.vehicule.id !== null ) {
              if(vm.myPlate!==vm.vehicule.licenseplate){
-              Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
+              Vehicule.getByCompanyAndPlate({companyId:globalCompany.getId(),licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearUpdate)
                    function alreadyExist(data){
-                    toastr["error"]("La placa ingresada ya existe.");
+                       Modal.toast("La placa ingresada ya existe");
                    }
 
           }else{
@@ -130,9 +135,9 @@
               }
 
       } else {
-                Vehicule.getByCompanyAndPlate({companyId:$rootScope.companyId,licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearInsert)
+                Vehicule.getByCompanyAndPlate({companyId:globalCompany.getId(),licensePlate:vm.vehicule.licenseplate},alreadyExist,allClearInsert)
                function alreadyExist(data){
-                toastr["error"]("La placa ingresada ya existe.");
+                   Modal.toast("La placa ingresada ya existe");
                }
                function allClearInsert(){
                   CommonMethods.waitingMessage();
@@ -159,7 +164,7 @@
              WSVehicle.sendActivity(result);
              $state.go('vehiculeByHouse');
             bootbox.hideAll();
-            toastr["success"]("Se ha registrado el vehículo correctamente.");
+            Modal.toast("Se ha registrado el vehículo correctamente");
             vm.isSaving = false;
         }
 

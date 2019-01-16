@@ -27,6 +27,7 @@
             "image_url": "Image Url",
             "type": "Type",
             "deleted": "Deleted",
+            "principalContact": "Principal Contact",
             "user": "User",
             "company": "Company",
             "house": "House"

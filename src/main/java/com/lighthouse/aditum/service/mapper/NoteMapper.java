@@ -4,24 +4,28 @@ import com.lighthouse.aditum.domain.*;
 import com.lighthouse.aditum.service.dto.NoteDTO;
 
 import org.mapstruct.*;
+import java.util.List;
 
 /**
  * Mapper for the entity Note and its DTO NoteDTO.
  */
-@Mapper(componentModel = "spring", uses = {HouseMapper.class, CompanyMapper.class, })
-public interface NoteMapper extends EntityMapper <NoteDTO, Note> {
+@Mapper(componentModel = "spring", uses = {HouseMapper.class})
+public interface NoteMapper {
 
     @Mapping(source = "house.id", target = "houseId")
-
     @Mapping(source = "company.id", target = "companyId")
-    NoteDTO toDto(Note note);
+    NoteDTO noteToNoteDTO(Note note);
+
+    List<NoteDTO> notesToNoteDTOs(List<Note> notes);
 
     @Mapping(source = "houseId", target = "house")
-
     @Mapping(source = "companyId", target = "company")
-    Note toEntity(NoteDTO noteDTO);
 
-    default House fromHouseId(Long id) {
+    Note noteDTOToNote(NoteDTO noteDTO);
+
+    List<Note> noteDTOsToNotes(List<NoteDTO> noteDTOs);
+
+    default House houseFromId(Long id) {
         if (id == null) {
             return null;
         }
@@ -29,12 +33,5 @@ public interface NoteMapper extends EntityMapper <NoteDTO, Note> {
         house.setId(id);
         return house;
     }
-    default Note fromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Note note = new Note();
-        note.setId(id);
-        return note;
-    }
+
 }

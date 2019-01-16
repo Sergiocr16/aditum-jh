@@ -1,0 +1,130 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-cloak layout="column" ng-if="vm.isReady"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content ">
+        <div>
+            <form name="form" role="form" novalidate ng-submit="vm.generateReport()" show-validation
+                  ng-show="vm.hideReportForm==false" ng-hide="vm.showNoResults==true">
+
+                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block">
+                            <label>Fecha inicio</label>
+                            <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block margin-bottom-15">
+                            <label>Campos del reporte</label>
+                            <div ng-dropdown-multiselect="" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                                 style="width:100%!important;" translation-texts="vm.translationCampos"
+                                 options="vm.camposMultiSelect" selected-model="vm.selectedCampos"
+                                 extra-settings="vm.searchSelectAllSettings"></div>
+                        </md-input-container>
+                    </div>
+
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <md-input-container class="md-block  no-margin-bottom">
+                            <label>Fecha final</label>
+                            <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                                           md-hide-icons="calendar"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus
+                                           required></md-datepicker>
+                        </md-input-container>
+                        <md-input-container class="md-block  no-margin-bottom">
+                            <label>Proveedores</label>
+                            <div ng-dropdown-multiselect="" class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                                 style="width:100%!important;" translation-texts="vm.translation"
+                                 options="vm.proveedoresMultiSelect" selected-model="vm.selectedProveedores"
+                                 extra-settings="vm.searchSelectAllSettings"></div>
+
+                        </md-input-container>
+                    </div>
+
+                    <h3 class="text-right" ng-if="vm.proveedoresMultiSelect.length==0">
+                        <span style="font-size:13px;font-weight:bold;color:#c23f44">No es posible generar un reporte de gastos sin tener ningún proveedor registrado. *</span>
+                    </h3>
+                </div>
+                <div layout="row" class="white-bg margin-top-15" layout-align="end center">
+                    <md-button class="md-primary md-raised"
+                               ng-disabled="form.$invalid || vm.isSaving || vm.selectedProveedores.length==0 || vm.selectedCampos.length==0"
+                               type="submit">
+                        Generar reporte
+                    </md-button>
+                </div>
+            </form>
+
+            <div layout="row" class="white-bg" layout-align="end center">
+                <div ng-if="vm.loadingReport" layout="row" class="content-loader" layout-sm="column" layout-fill
+                     layout-align="space-around center">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+                </div>
+            </div>
+            <div class="fade-in" ng-show="vm.showNoResults==true && !vm.loadingReport">
+                <no-content icon="assignment" text="No se encontraron
+                        resultados con el filtro realizado"></no-content>
+            </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding fade-in"
+                     ng-if="vm.isReady2 && !vm.loadingReport" ng-show="vm.hideReportForm==true">
+
+                    <h5 ng-show="vm.gastosQuantity>0" class="text-center bold gray-font uppercase"
+                        style="font-size:14px;">{{vm.companyName}}</h5>
+                    <h5 ng-show="vm.gastosQuantity>0" class="text-center bold gray-font" style="font-size:14px;">
+                        REPORTE DE EGRESOS</h5>
+                    <h5 ng-show="vm.gastosQuantity>0" class="text-center bold gray-font">Del {{vm.reportInitialtime
+                        | date:'longDate'}} al {{vm.reportFinaltime | date:'longDate'}}</h5>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                         ng-repeat="reporte in vm.reportResult" ng-show="vm.reportResult.length>0">
+                        <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
+                        <div class="table-scrollable" ng-show="reporte.gastos.length>0"
+                             style="border: 0px!important;">
+                            <table
+                                class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+                                style="font-size:12px;">
+                                <thead style="background-color:#fafafa; " class="flip-content">
+                                <tr>
+                                    <th ng-repeat="selected in vm.selectedCampos">
+                                        {{vm.camposMultiSelect[selected.id].label}}
+                                    </th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="egress in  reporte.gastos">
+                                    <td ng-repeat="selected in vm.selectedCampos">
+                                        {{egress[vm.camposMultiSelect[selected.id].attr]}}
+                                    </td>
+
+                                </tr>
+                                <tr ng-show="reporte.montoTotal!=='0'">
+                                    <td colspan="{{vm.selectedCampos.length-1}}" class="bold">Total</td>
+                                    <td class="bold">₡{{reporte.montoTotal }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+        <md-button ng-show="vm.hideReportForm==true || vm.showNoResults==true"
+                   ng-click="vm.hideReportForm=false;vm.showNoResults=false"
+                   class="md-fab md-fab-bottom-right orange-button-oficial" style="position: fixed;"
+                   aria-label="Add new">
+            <md-tooltip md-direction="left" class="font-13 bold white-color">Generar nuevo reporte</md-tooltip>
+            <md-icon class="white-color">assignment</md-icon>
+        </md-button>
+    </md-content>
+</div>
+
+</div>
+
+

@@ -1,0 +1,59 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "reservationCharge",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "devolutionAmmount",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "chargeRequired",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "max"
+            ],
+            "fieldValidateRulesMax": "1"
+        },
+        {
+            "fieldName": "reservationWithDebt",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "picture",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
+            "fieldName": "maximunHours",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "companyId",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180724215437",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "common_area",
+    "pagination": "pagination"
+}

@@ -43,6 +43,9 @@
                             search: $stateParams.search
                         };
                     }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('visitant');
                         $translatePartialLoader.addPart('global');
@@ -54,7 +57,7 @@
                 parent: 'entity',
                 url: '/visitant/manage/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
 
                 },
                 views: {
@@ -127,6 +130,9 @@
                             search: $stateParams.search
                         };
                     }],
+                    companyUser: ['MultiCompany', function (MultiCompany) {
+                        return MultiCompany.getCurrentUserCompany()
+                    }],
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('visitant');
                         $translatePartialLoader.addPart('global');
@@ -194,7 +200,7 @@
                         });
                     }, function() {
                         $state.go('^', {}, {
-                            reload: true
+                            reload: false
                         });
                     });
                 }]
@@ -276,34 +282,6 @@
                         controllerAs: 'vm',
                         backdrop: 'static',
                         size: 'lg',
-                        resolve: {
-                            entity: ['Visitant', function(Visitant) {
-                                return Visitant.get({
-                                    id: $stateParams.id
-                                }).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('visitant', null, {
-                            reload: 'visitant'
-                        });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
-            })
-            .state('visitant.delete', {
-                parent: 'visitant',
-                url: '/{id}/delete',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/visitant/visitant-delete-dialog.html',
-                        controller: 'VisitantDeleteController',
-                        controllerAs: 'vm',
-                        size: 'md',
                         resolve: {
                             entity: ['Visitant', function(Visitant) {
                                 return Visitant.get({

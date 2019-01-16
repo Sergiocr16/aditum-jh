@@ -1,0 +1,88 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class=" fade-in no-padding">
+    <div class="col-lg-12 col-md-12 no-padding">
+        <div class="col-md-12 no-padding" layout="row" layout-align="space-between center" layout-xs="column" layout-sm="column">
+            <div class="pull-left">
+                <h2 class="bold uppercase" style="font-size:15px">{{vm.titleVehiculeIndex}}</h2>
+            </div>
+            <div  class="btn-group pull-right ">
+                <div class="form-group form-md-radios">
+                    <div class="md-radio-inline">
+
+                        <div class="md-radio" >
+                            <input type="radio" id="radio23" name="radio2" class="md-radiobtn" ng-checked="vm.radiostatus"  ng-click="vm.swithEnabledDisabledVehicules()">
+                            <label for="radio23" style="color:#45B6AF">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Habilitados </label>
+                        </div>
+                        <div class="md-radio has-error">
+                            <input type="radio" id="radio24" name="radio2" class="md-radiobtn" ng-checked="!vm.radiostatus" ng-click="vm.swithEnabledDisabledVehicules()">
+                            <label for="radio24">
+                                <span class="inc"></span>
+                                <span class="check"></span>
+                                <span class="box"></span>
+                                Deshabilitados </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div>
+
+            <no-content ng-if="vm.vehicules.length==0" icon="directions_car" text="Esta filial no tiene vehículos registrados" ></no-content>
+
+            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">
+
+                <div class="col-md-3 no-padding " ng-repeat="vehicule in vm.vehicules" >
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-20">{{vehicule.brand.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 10px!important; font-size: 17px">{{vehicule.licenseplate.toUpperCase()}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-sm card-media">
+                                    <i class="material-icons" style="color:{{vehicule.color}};  font-size: 80px!important;">
+                                        directions_car</i>
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+
+            </div>
+
+
+            <!--<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding">-->
+                <!--<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12" ng-repeat="vehicule in vm.vehicules ">-->
+                    <!--<div class="portlet light bordered text-center col-sm-12 col-xs-12 ">-->
+                        <!--<h1 ng-show="vehicule.type=='Automóvil'" class="col-lg-6 text-center "><i class=" text-center fa fa-car font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>-->
+                        <!--<h1 ng-show="vehicule.type=='Motocicleta'" class="col-lg-6 text-center "><i class=" text-center fa fa-motorcycle font-60 " style="color: {{vehicule.color}}; text-shadow: 0px 0px 1px black;" aria-hidden="true "></i> </h1>-->
+                        <!--<div class="col-lg-6 no-padding ">-->
+                            <!--<h3 class="no-padding ">{{vehicule.brand}}</h3>-->
+                            <!--<h5>Marca</h5>-->
+                        <!--</div>-->
+                        <!--<div class="col-lg-6 ">-->
+                            <!--<h3 class="no-padding no-margin " style='text-transform:uppercase'>{{vehicule.licenseplate}}</h3>-->
+                            <!--<h5>Placa</h5>-->
+                        <!--</div>-->
+
+                        <!--<div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 small-margin-top ">-->
+                            <!--<button type="submit" ng-click="vm.editVehicle(vehicule.id)" class="col-md-5 btn blue "><i class="fa fa-pencil "></i></button>-->
+                            <!--<button type="submit"  class="col-md-5 btn {{vm.color}}"  ng-click="vm.disableEnabledVehicule(vehicule)" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>

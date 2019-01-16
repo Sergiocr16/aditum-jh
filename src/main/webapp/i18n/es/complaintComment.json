@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "complaintComment" : {
+            "home": {
+                "title": "Complaint Comments",
+                "createLabel": "Crear nuevo Complaint Comment",
+                "createOrEditLabel": "Crear o editar Complaint Comment"
+            },
+            "created": "Un nuevo Complaint Comment ha sido creado con el identificador {{ param }}",
+            "updated": "Un Complaint Comment ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Complaint Comment ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Complaint Comment {{ id }}?"
+            },
+            "detail": {
+                "title": "Complaint Comment"
+            },
+            "description": "Description",
+            "creationDate": "Creation Date",
+            "editedDate": "Edited Date",
+            "deleted": "Deleted",
+            "resident": "Resident",
+            "adminInfo": "Admin Info",
+            "complaint": "Complaint"
+        }
+    }
+}

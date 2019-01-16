@@ -30,6 +30,9 @@ public class NoteDTO implements Serializable {
 
     private Long companyId;
 
+    private HouseDTO house;
+
+
     public Long getId() {
         return id;
     }
@@ -116,5 +119,13 @@ public class NoteDTO implements Serializable {
             ", creationdate='" + getCreationdate() + "'" +
             ", deleted='" + getDeleted() + "'" +
             "}";
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

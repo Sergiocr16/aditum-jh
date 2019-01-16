@@ -5,14 +5,19 @@ background-size: 1000% 1000%;
  -o-animation: loginBackground 150s ease infinite;
 animation: loginBackground 150s ease infinite;
 position:absolute;top:0;right:0;z-index:1042;height:100%;width:100%" ng-show="backgroundSelectCompany && selectedAlready==false">
-    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="loadingDash" id="se-pre-conDash">
-        <div class="spinnerLoading" style="margin-top:250px!important">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
+    <!--<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" ng-show="loadingDash" id="se-pre-conDash">-->
+        <!--<div class="spinnerLoading" style="margin-top:250px!important">-->
+            <!--<div class="double-bounce1"></div>-->
+            <!--<div class="double-bounce2"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+
 </div>
-<div id="dashboard" class="display-none">
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div id="dashboard" ng-if="vm.isReady">
     <div class="page-bar route-title">
         <ul class="page-breadcrumb">
             <li>
@@ -31,13 +36,13 @@ position:absolute;top:0;right:0;z-index:1042;height:100%;width:100%" ng-show="ba
             </div>
         </div>
     </div>
-    <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-        <div class="spinnerLoading">
-            <div class="double-bounce1"></div>
-            <div class="double-bounce2"></div>
-        </div>
-    </div>
-    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row display-none" id="tableData">
+    <!--<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">-->
+        <!--<div class="spinnerLoading">-->
+            <!--<div class="double-bounce1"></div>-->
+            <!--<div class="double-bounce2"></div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 row">
         <div class="page-title">
             <h1 >Dashboard <small  ng-click="vm.loadAll()"><i class="fa fa-repeat" style="color:#1976D2; "></i> Recargar</small></h1>
         </div>
@@ -342,3 +347,4 @@ position:absolute;top:0;right:0;z-index:1042;height:100%;width:100%" ng-show="ba
         </div>
     </div>
 </div>
+

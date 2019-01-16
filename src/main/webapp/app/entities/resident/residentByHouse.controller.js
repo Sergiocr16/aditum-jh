@@ -5,12 +5,14 @@
         .module('aditumApp')
         .controller('ResidentByHouseController', ResidentByHouseController);
 
-    ResidentByHouseController.$inject = ['$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident'];
+    ResidentByHouseController.$inject = ['companyUser','$state','DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope','WSResident','globalCompany','Modal'];
 
-    function ResidentByHouseController($state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident) {
+    function ResidentByHouseController(companyUser,$state,DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope,WSResident,globalCompany,Modal) {
         $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
+        vm.isReady = false;
+        vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.editResident = function(id){
         var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -19,7 +21,7 @@
         })
         }
         setTimeout(function(){
-        vm.userId = $rootScope.companyUser.id;
+        // vm.userId = $rootScope.companyUser.id;
 
         vm.loadPage = loadPage;
         vm.openFile = DataUtils.openFile;
@@ -29,27 +31,30 @@
 
           function onSuccess (house) {
               if (house.securityKey == null && house.emergencyKey == null) {
-                   bootbox.confirm({
-                       message: '<div class="gray-font font-15">Sus claves de seguridad aún no han sido definidas, recuerde que el tener las claves establecidas le provee mayor seguridad.</div>',
-                       closeButton: false,
-
-                       buttons: {
-                           confirm: {
-                               label: 'Establecer ahora',
-                               className: 'btn-success'
-                           },
-                           cancel: {
-                               label: 'Recordármelo luego',
-                               className: 'btn-danger'
-                           }
-                       },
-                       callback: function(result) {
-                           if (result) {
-                               $state.go('keysConguration');
-                           }
-
-                       }
-                   })
+                  Modal.actionToast("Sus claves de seguridad aún no han sido definidas.","Establecer ahora",function(){
+                      $state.go('keysConfiguration');
+                  })
+                   // bootbox.confirm({
+                   //     message: '<div class="gray-font font-15">Sus claves de seguridad aún no han sido definidas, recuerde que el tener las claves establecidas le provee mayor seguridad.</div>',
+                   //     closeButton: false,
+                   //
+                   //     buttons: {
+                   //         confirm: {
+                   //             label: 'Establecer ahora',
+                   //             className: 'btn-success'
+                   //         },
+                   //         cancel: {
+                   //             label: 'Recordármelo luego',
+                   //             className: 'btn-danger'
+                   //         }
+                   //     },
+                   //     callback: function(result) {
+                   //         if (result) {
+                   //             $state.go('keysConguration');
+                   //         }
+                   //
+                   //     }
+                   // })
                }
             }
         },500)
@@ -70,42 +75,41 @@
                vm.iconDisabled = "fa fa-undo";
                  vm.color = "green";
             }
-        }
-        setTimeout(function(){ loadResidents();},600)
+        };
+        loadResidents();
+
         function loadResidents() {
 
             if (enabledOptions) {
                 vm.changesTitles();
                 Resident.findResidentesEnabledByHouseId({
-                    houseId: $rootScope.companyUser.houseId
+                    houseId: companyUser.houseId
                 }).$promise.then(onSuccess, onError);
             } else {
                 vm.changesTitles();
                 Resident.findResidentesDisabledByHouseId({
-                    houseId: $rootScope.companyUser.houseId
+                    houseId: companyUser.houseId
                 }).$promise.then(onSuccess, onError);
             }
 
             function onSuccess(data) {
                vm.residents = data;
-                   setTimeout(function() {
-                             $("#loadingIcon").fadeOut(300);
-                   }, 400)
-                    setTimeout(function() {
-                        $("#residents_container").fadeIn('slow');
-                    },700 )
+                vm.isReady = true;
+                vm.isReady2 = true;
             }
 
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
-
+        vm.detailResident = function (id) {
+            var encryptedId = CommonMethods.encryptIdUrl(id)
+            $state.go('resident-detail', {
+                id: encryptedId
+            })
+        }
         vm.switchEnabledDisabledResidents = function() {
-             $("#residents_container").fadeOut(0);
-             setTimeout(function() {
-                 $("#loadingIcon").fadeIn(100);
-             }, 200)
+            vm.isReady2 = false;
             enabledOptions = !enabledOptions;
             loadResidents();
         }
@@ -117,33 +121,16 @@
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al residente " + resident.name + "?";
             }
-            bootbox.confirm({
 
-                message: correctMessage,
-
-                buttons: {
-                    confirm: {
-                        label: 'Aceptar',
-                        className: 'btn-success'
-                    },
-                    cancel: {
-                        label: 'Cancelar',
-                        className: 'btn-danger'
-                    }
-                },
-                callback: function(result) {
-                    if (result) {
-                        if (enabledOptions) {
-                            resident.enabled = 0;
-                            Resident.update(resident, onSuccessDisabled);
-                        } else {
-                            resident.enabled = 1;
-                            Resident.update(resident, onSuccessEnabled);
-                        }
-
-                    }
+            Modal.confirmDialog(correctMessage,"",function(){
+                Modal.showLoadingBar();
+                if (enabledOptions) {
+                    resident.enabled = 0;
+                    Resident.update(resident, onSuccessDisabled);
+                } else {
+                    resident.enabled = 1;
+                    Resident.update(resident, onSuccessEnabled);
                 }
-
             });
 
             function onSuccessDisabled(data, headers) {
@@ -155,16 +142,17 @@
 
                 } else {
                     loadResidents();
-                    toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                    bootbox.hideAll();
+                    Modal.toast("Se ha deshabilitado el residente correctamente.");
+                    Modal.hideLoadingBar();
+
                 }
                 function onSuccessGetUserDisabled(data, headers) {
                     data.activated = 0;
                     User.update(data, onSuccessUser);
 
                     function onSuccessUser(data, headers) {
-                        toastr["success"]("Se ha deshabilitado el residente correctamente.");
-                        bootbox.hideAll();
+                        Modal.toast("Se ha deshabilitado el residente correctamente.");
+                        Modal.hideLoadingBar();
                     }
                 }
             }
@@ -177,8 +165,8 @@
                     }, onSuccessUserEnabled);
 
                 } else {
-                    bootbox.hideAll();
-                    toastr["success"]("Se ha habilitado el residente correctamente.");
+                    Modal.hideLoadingBar();
+                    Modal.toast("Se ha habilitado el residente correctamente.");
                     loadResidents();
                 }
 
@@ -187,8 +175,8 @@
                     User.update(data, onSuccessUser);
 
                     function onSuccessUser(data, headers) {
-                        toastr["success"]("Se ha habilitado el residente correctamente.");
-                        bootbox.hideAll();
+                        Modal.hideLoadingBar();
+                        Modal.toast("Se ha habilitado el residente correctamente.");
                     }
                 }
             }

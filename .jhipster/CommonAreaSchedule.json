@@ -1,0 +1,43 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "lunes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "martes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "miercoles",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jueves",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "viernes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sabado",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "domingo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "commonAreaId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20180822174717",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "common_area_schedule",
+    "pagination": "no"
+}

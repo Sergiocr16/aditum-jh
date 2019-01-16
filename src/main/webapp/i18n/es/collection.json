@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "collection" : {
+            "home": {
+                "title": "Collections",
+                "createLabel": "Crear nuevo Collection",
+                "createOrEditLabel": "Crear o editar Collection"
+            },
+            "created": "Un nuevo Collection ha sido creado con el identificador {{ param }}",
+            "updated": "Un Collection ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Collection ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Collection {{ id }}?"
+            },
+            "detail": {
+                "title": "Collection"
+            },
+            "date": "Date",
+            "mensualBalance": "Mensual Balance",
+            "deleted": "Deleted",
+            "house": "House"
+        }
+    }
+}

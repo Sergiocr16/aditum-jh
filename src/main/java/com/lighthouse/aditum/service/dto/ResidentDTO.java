@@ -29,6 +29,8 @@ public class ResidentDTO implements Serializable {
 
     private String phonenumber;
 
+    private Integer deleted;
+    
     @Lob
     private byte[] image;
     private String imageContentType;
@@ -47,7 +49,7 @@ public class ResidentDTO implements Serializable {
 
     private Integer type;
 
-    private Integer deleted;
+    private Integer principalContact;
 
     private Long userId;
 
@@ -56,6 +58,8 @@ public class ResidentDTO implements Serializable {
     private Long companyId;
 
     private Long houseId;
+
+    private HouseDTO house;
 
     public Long getId() {
         return id;
@@ -161,12 +165,12 @@ public class ResidentDTO implements Serializable {
         this.type = type;
     }
 
-    public Integer getDeleted() {
-        return deleted;
+    public Integer getPrincipalContact() {
+        return principalContact;
     }
 
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
+    public void setPrincipalContact(Integer principalContact) {
+        this.principalContact = principalContact;
     }
 
     public Long getUserId() {
@@ -211,7 +215,7 @@ public class ResidentDTO implements Serializable {
         }
 
         ResidentDTO residentDTO = (ResidentDTO) o;
-        if(residentDTO.getId() == null || getId() == null) {
+        if (residentDTO.getId() == null || getId() == null) {
             return false;
         }
         return Objects.equals(getId(), residentDTO.getId());
@@ -237,7 +241,23 @@ public class ResidentDTO implements Serializable {
             ", enabled='" + getEnabled() + "'" +
             ", image_url='" + getImage_url() + "'" +
             ", type='" + getType() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", principalContact='" + getPrincipalContact() + "'" +
             "}";
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 }

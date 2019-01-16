@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Comprobante de Pago ADITUM</title>
+    <style>
+         body {
+         max-width: 800px;
+         margin: auto;
+		 line-height:25px;
+         padding: 30px;
+         font-size: 14px;
+         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+         color: #555;
+         }
+</style>
+</head>
+<body>
+<h2 style="text-align:left"> <img width="100px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/></h2>
+<span style="display:block;font-size:10px;margin-top:-25px;color:#90a4ae">Powered by</span>
+
+<p style="font-size: 14px;color: #546e7a;">
+    Estimado usuario,
+    <br></br>
+    Se ha realizado un pago referente a su filial en <span th:text="|${company.name}|"> Condominio</span><br></br>
+    Adjunto encontrará el comprobante de pago del mismo.
+</p>
+<p style="font-size:10px;margin-top:40px;color:#546e7a;text-align:center"><b>CUALQUIER DUDA O ACLARACIÓN FAVOR DE COMUNICARSE CON LA ADMINISTRACIÓN.</b></p>
+<div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>
+<h1 style="text-align:right;"><a style="margin:5px"><img th:src="@{|${baseUrl}/content/images/lhlogo.png|}" alt="" height="30"/></a></h1>
+</body>
+</html>

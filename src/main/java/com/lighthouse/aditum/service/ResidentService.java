@@ -6,12 +6,15 @@ import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,9 +32,12 @@ public class ResidentService {
 
     private final ResidentMapper residentMapper;
 
-    public ResidentService(ResidentRepository residentRepository, ResidentMapper residentMapper) {
+    private final HouseService houseService;
+
+    public ResidentService(ResidentRepository residentRepository, ResidentMapper residentMapper,@Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
+        this.houseService = houseService;
     }
 
     /**
@@ -44,6 +50,27 @@ public class ResidentService {
         log.debug("Request to save Resident : {}", residentDTO);
         Resident resident = residentMapper.toEntity(residentDTO);
         resident.setDeleted(0);
+        if(residentDTO.getPrincipalContact()==1) {
+            Page<ResidentDTO> residentsEnabled = this.findEnabledByHouseId(null, residentDTO.getHouseId());
+            Page<ResidentDTO> residentsDisabled = this.findDisabled(null, residentDTO.getHouseId());
+            List<ResidentDTO> allHouseResidents = new ArrayList<>();
+            residentsEnabled.getContent().forEach(residentDTO1 -> {
+                allHouseResidents.add(residentDTO1);
+            });
+            residentsDisabled.getContent().forEach(residentDTO2 -> {
+                allHouseResidents.add(residentDTO2);
+            });
+            ResidentDTO currentPrincipal = null;
+            for (int i = 0; i < allHouseResidents.size(); i++) {
+                if(allHouseResidents.get(i).getPrincipalContact()==1){
+                    currentPrincipal = allHouseResidents.get(i);
+                }
+            }
+            if(currentPrincipal!=null){
+                currentPrincipal.setPrincipalContact(0);
+                residentRepository.save(this.residentMapper.toEntity(currentPrincipal));
+            }
+        }
         resident = residentRepository.save(resident);
         ResidentDTO result = residentMapper.toDto(resident);
         return result;
@@ -58,7 +85,12 @@ public class ResidentService {
     public Page<ResidentDTO> findAll(Long companyId) {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId,0);
-        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+        return new PageImpl<>(result).map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
+            return residentDTO;
+        }
+        );
     }
 
     @Transactional(readOnly = true)
@@ -83,6 +115,7 @@ public class ResidentService {
     public ResidentDTO findByCompanyIdAndIdentifiactionNumber(Long companyId,String identificationNumber) {
         log.debug("Request to get all Residents");
         Resident resident = residentRepository.findByCompanyIdAndIdentificationnumberAndDeleted(companyId,identificationNumber,0);
+
         ResidentDTO residentDTO = residentMapper.toDto(resident);
         return residentDTO;
     }
@@ -111,6 +144,7 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
+        residentDTO.setHouse(this.houseService.findOne(residentDTO.getHouseId()));
         return residentDTO;
     }
 

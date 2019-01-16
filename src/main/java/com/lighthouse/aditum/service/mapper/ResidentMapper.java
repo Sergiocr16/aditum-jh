@@ -8,7 +8,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Resident and its DTO ResidentDTO.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, CompanyMapper.class, HouseMapper.class, })
+@Mapper(componentModel = "spring", uses = {UserMapper.class, CompanyMapper.class, HouseMapper.class })
 public interface ResidentMapper extends EntityMapper <ResidentDTO, Resident> {
 
     @Mapping(source = "user.id", target = "userId")
@@ -25,15 +25,6 @@ public interface ResidentMapper extends EntityMapper <ResidentDTO, Resident> {
 
     @Mapping(source = "houseId", target = "house")
     Resident toEntity(ResidentDTO residentDTO);
-
-    default House fromHouseId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        House house = new House();
-        house.setId(id);
-        return house;
-    }
     default Resident fromId(Long id) {
         if (id == null) {
             return null;
@@ -41,5 +32,15 @@ public interface ResidentMapper extends EntityMapper <ResidentDTO, Resident> {
         Resident resident = new Resident();
         resident.setId(id);
         return resident;
+
     }
+    default House houseFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        House house = new House();
+        house.setId(id);
+        return house;
+    }
+
 }

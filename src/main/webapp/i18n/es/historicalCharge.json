@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "historicalCharge" : {
+            "home": {
+                "title": "Historical Charges",
+                "createLabel": "Crear nuevo Historical Charge",
+                "createOrEditLabel": "Crear o editar Historical Charge"
+            },
+            "created": "Un nuevo Historical Charge ha sido creado con el identificador {{ param }}",
+            "updated": "Un Historical Charge ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Historical Charge ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Historical Charge {{ id }}?"
+            },
+            "detail": {
+                "title": "Historical Charge"
+            },
+            "date": "Date",
+            "concept": "Concept",
+            "ammount": "Ammount",
+            "abono": "Abono",
+            "type": "Type",
+            "state": "State",
+            "deleted": "Deleted",
+            "total": "Total",
+            "house": "House"
+        }
+    }
+}

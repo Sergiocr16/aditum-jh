@@ -7,10 +7,7 @@ import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.jwt.JWTConfigurer;
 import com.lighthouse.aditum.security.jwt.TokenProvider;
 import com.lighthouse.aditum.service.*;
-import com.lighthouse.aditum.service.dto.AdminInfoDTO;
-import com.lighthouse.aditum.service.dto.OfficerAccountDTO;
-import com.lighthouse.aditum.service.dto.OfficerDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.vm.LoginVM;
 
 import java.util.Collections;
@@ -46,7 +43,9 @@ public class UserJWTController {
 
     private ResidentService residentService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService) {
+    private JuntaDirectivaAccountService juntaDirectivaAccountService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -54,6 +53,7 @@ public class UserJWTController {
         this.companyService = companyService;
         this.managerService = managerService;
         this.residentService = residentService;
+        this.juntaDirectivaAccountService = juntaDirectivaAccountService;
     }
 
     @PostMapping("/authenticate")
@@ -96,6 +96,12 @@ public class UserJWTController {
                         break;
                     case AuthoritiesConstants.RH:
                             activeCompany = true;
+                        break;
+                    case AuthoritiesConstants.JD:
+                        JuntaDirectivaAccountDTO juntaDirectivaAccountDTO = juntaDirectivaAccountService.findOneByUserId(user.getId());
+                        if(this.companyService.findOne(juntaDirectivaAccountDTO.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
                         break;
                 }
             }

@@ -1,13 +1,21 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .config(stateConfig);
 
-    stateConfig.$inject = ['$stateProvider'];
+    stateConfig.$inject = ['$stateProvider','$mdThemingProvider','$mdDateLocaleProvider','$mdAriaProvider'];
 
-    function stateConfig($stateProvider) {
+    function stateConfig($stateProvider,$mdThemingProvider,$mdDateLocaleProvider,$mdAriaProvider) {
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return date ? moment(date).format('DD-MM-YYYY'): '';
+        };
+        $mdThemingProvider.theme('default')
+            .primaryPalette('teal')
+            .accentPalette('orange');
+        $mdAriaProvider.disableWarnings();
+
         $stateProvider.state('app', {
             abstract: true,
             views: {
@@ -15,7 +23,7 @@
                     templateUrl: 'app/layouts/navbar/navbar.html',
                     controller: 'NavbarController',
                     controllerAs: 'vm',
-                       data: {authorities: ['ROLE_USER','ROLE_MANAGER','ROLE_ADMIN']}
+                    data: {authorities: ['ROLE_USER', 'ROLE_MANAGER', 'ROLE_ADMIN']}
                 },
                 'menu@': {
                     templateUrl: 'app/layouts/navbar/menu.html',
@@ -27,20 +35,11 @@
                     controller: 'NavbarController',
                     controllerAs: 'vm'
                 },
-                 'login@': {
+                'login@': {
                     templateUrl: 'app/components/login/login.html',
                     controller: 'LoginController',
                     controllerAs: 'vm'
-                },
-                 'access_door@': {
-                  templateUrl: 'app/entities/access-door/main-access-door.html',
-                  controller: 'AccessDoorController',
-                  controllerAs: 'vm',
-                       data: {authorities: ['ROLE_OFFICER']}
-
-                  }
-
-
+                }
             },
             resolve: {
                 authorize: ['Auth',
@@ -48,9 +47,9 @@
                         return Auth.authorize();
                     }
                 ],
-                companyUser: ['MultiCompany',function(MultiCompany){
-                                     return MultiCompany.getCurrentUserCompany()
-                 }],
+                companyUser: ['MultiCompany', function (MultiCompany) {
+                    return MultiCompany.getCurrentUserCompany()
+                }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('global');
                 }]

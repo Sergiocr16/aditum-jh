@@ -1,112 +1,169 @@
 
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="" ui-sref="resident()">Residentes</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">Ver detalle</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div class="display-none" id="residentInformation">
+<md-card  ng-if="vm.isReady" class="fade-in gray-font form-wrapper no-margin"  md-theme-watch  >
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text >
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de usuario</span>
+        </md-card-title-text>
 
-    <div class="row">
-        <div class="col-md-12">
-            <form ng-submit="actionButton()">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption font-green-haze">
-                            <i class="fa fa-user font-green-haze"></i>
-                            <span class="caption-subject bold uppercase">{{vm.title}}</span>
-                        </div>
-                        <div class="actions">
-                            <span class="font-15 gray-font">Autorizado de filial: <span class="bold">{{vm.authorizer}}</span> </span>
-                        </div>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="" class="">
+        <div style="padding: 16px!important;" class="">
+            <div class="col-xs-12 col-sm-12 hidden-lg hidden-md hidden-xs margin-bottom-20">
+                <h3 class="text-center">
+                    <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                    <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
+                </h3>
+            </div>
+            <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12 no-padding">
+                <div class="col-xs-12 col-sm-12 hidden-lg hidden-md hidden-sm margin-bottom-20">
+                    <h3 class="text-center">
+                        <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                        <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
+                    </h3>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Nombre:</span>
                     </div>
-                    <div class="portlet-body form">
-                        <div ng-show="permisson===2" class="col-md-offset-9 col-md-3 col-sm-offset-8 col-sm-4 col-xs-12">
-                            <span class=" font-15 gray-font col-md-10 col-sm-10 col-xs-10">Administrador de filial: </span>
-                            <div class="lg-checkbox-list col-md-2 col-sm-2 col-xs-2">
-                                <div class="md-checkbox">
-                                    <input type="checkbox" id="checkbox1" ng-model="isOwner" class="md-check">
-                                    <label for="checkbox1">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hidden-lg hidden-md hidden-sm col-xs-12">
-                            <h3 class="text-center">
-                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
-                            </h3>
-                        </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
 
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                            <div class="margin-top-30 col-md-12 col-sm-12 col-xs-12 text-center"></div>
-                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
-                                <span class="font-15 gray-font" style="text-transform: capitalize;">Nombre: {{vm.resident.name}} {{vm.resident.lastname}} {{vm.resident.secondlastname}}</span>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30 ">
-                                <span class="font-15 gray-font">Número de celular: {{vm.resident.phonenumber}}</span>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Número de cédula: {{vm.resident.identificationnumber}}</span>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Número de casa: {{vm.resident.houseId}}</span>
-                            </div>
+                        <span class="   control-label"> {{vm.resident.name}} {{vm.resident.lastname}} {{vm.resident.secondlastname}}</span>
 
-                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30 ">
-                                <span class="font-15 gray-font">Email: {{vm.resident.email}}</span>
-                            </div>
+                    </div>
+                </div>
 
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Clave de emergencia: {{vm.emergencykey}}</span>
-                            </div>
-                            <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Clave de seguridad: {{vm.securitykey}}</span>
-                            </div>
-                            <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 margin-bottom-30">
-                                <span class="font-15 gray-font">Nombre de usuario: {{vm.resident.userLogin}}</span>
-                            </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Número cédula:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
 
+                        <span class="  control-label">  {{vm.resident.identificationnumber}} </span>
 
-                        </div>
-                        <div class="hidden-xs col-md-3 col-sm-3">
-                            <h3 class="text-center">
-                                <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
-                                <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="img-circle"/>
-                            </h3>
-                            </div>
-                            <div class="form-actions noborder ">
-                                <h3 class="text-right ">
-                                    <button type="button" ui-sref="resident()" class="btn red default">Volver</button>
-                                </h3>
-                            </div>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-xs-6 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Correo:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6  no-padding-right">
 
-                                </div>
-                            </div>
-                        </form>
+                            <span
+                                class="  control-label">{{vm.resident.email}}</span>
+
+                        <!--<input ng-model="vm.egress.expirationDate" id="field_expirationDate" name="expirationDate" ng-click="vm.openCalendar('expirationDate')" ng-change="vm.updatePicker()" enable-time="false" datetime-picker="mediumDate" datepicker-options="vm.picker2.datepickerOptions" is-open="vm.datePickerOpenStatus.expirationDate"-->
+                        <!--type="text" class="form-control letters gray-font  dating"  required>-->
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Número de casa:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label">{{vm.resident.houseId}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Contacto principal:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label"><span  ng-if="vm.resident.principalContact==1">SI</span> <span ng-if="vm.resident.principalContact==0">NO</span></span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding  form-group detailLabelMD">
+                    <div class=" col-lg-4 col-md-4  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Posee cuenta en Aditum:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-xs-6 col-xs-6 no-padding-right ">
+
+                        <span class="  control-label">{{vm.authorizer}}</span>
+
                     </div>
                 </div>
             </div>
 
-            <script>
-                jQuery(document).ready(function() {
-                    $("#loadingIcon").fadeIn("slow");
-                });
-            </script>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 no-padding ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                    <div class=" col-lg-54 col-md-5  col-sm-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Número de celular: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-sm-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label">{{vm.resident.phonenumber}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-5 col-md-5 col-xs-6 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Nombre de usuario:</span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="   control-label">{{vm.resident.userLogin}}</span>
+
+                    </div>
+
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD">
+                    <div class=" col-lg-5 col-md-5  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Tipo: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label"> {{vm.resident.type}}</span>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD" >
+                    <div class=" col-lg-5 col-md-5  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Clave de seguridad: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label">{{vm.securitykey}}</span>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12  no-padding form-group detailLabelMD" >
+                    <div class=" col-lg-5 col-md-5  col-xs-6 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Clave de emergencia: </span>
+                    </div>
+                    <div class="col-lg-7 col-md-7 col-xs-6 col-xs-6 no-padding-right">
+
+                        <span class="  control-label">{{vm.emergencykey}}</span>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-8 hidden-xs hidden-sm">
+
+                <h3 class="text-center">
+                    <img ng-show="vm.resident.image_url==null" width="200px" height="200px" class="img-circle" src="content/images/nobody-image.jpg"/>
+                    <img ng-hide="vm.resident.image_url==null" src="{{vm.resident.image_url}}" width="200px" height="200px" class="object-fit_scale-down-resident-form"/>
+                </h3>
+            </div>
+        </div>
+    </md-card-content>
+</md-card>
+

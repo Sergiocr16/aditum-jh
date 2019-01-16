@@ -4,6 +4,8 @@ package com.lighthouse.aditum.service.dto;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -14,7 +16,7 @@ public class HouseDTO implements Serializable {
     private Long id;
 
     @NotNull
-    private Integer housenumber;
+    private String housenumber;
 
     private String extension;
 
@@ -35,7 +37,13 @@ public class HouseDTO implements Serializable {
 
     private Integer codeStatus;
 
+    private String due;
+
+    private String squareMeters;
+
     private Long companyId;
+
+    private BalanceDTO balance;
 
     public Long getId() {
         return id;
@@ -44,13 +52,15 @@ public class HouseDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-    public Integer getHousenumber() {
+
+    public String getHousenumber() {
         return housenumber;
     }
 
     public void setHousenumber(String housenumber) {
-        this.housenumber = Integer.parseInt(housenumber);
+        this.housenumber = housenumber;
     }
+
     public String getExtension() {
         return extension;
     }
@@ -58,6 +68,7 @@ public class HouseDTO implements Serializable {
     public void setExtension(String extension) {
         this.extension = extension;
     }
+
     public Integer getIsdesocupated() {
         return isdesocupated;
     }
@@ -65,6 +76,7 @@ public class HouseDTO implements Serializable {
     public void setIsdesocupated(Integer isdesocupated) {
         this.isdesocupated = isdesocupated;
     }
+
     public ZonedDateTime getDesocupationinitialtime() {
         return desocupationinitialtime;
     }
@@ -72,6 +84,7 @@ public class HouseDTO implements Serializable {
     public void setDesocupationinitialtime(ZonedDateTime desocupationinitialtime) {
         this.desocupationinitialtime = desocupationinitialtime;
     }
+
     public ZonedDateTime getDesocupationfinaltime() {
         return desocupationfinaltime;
     }
@@ -79,6 +92,7 @@ public class HouseDTO implements Serializable {
     public void setDesocupationfinaltime(ZonedDateTime desocupationfinaltime) {
         this.desocupationfinaltime = desocupationfinaltime;
     }
+
     public String getSecurityKey() {
         return securityKey;
     }
@@ -86,6 +100,7 @@ public class HouseDTO implements Serializable {
     public void setSecurityKey(String securityKey) {
         this.securityKey = securityKey;
     }
+
     public String getEmergencyKey() {
         return emergencyKey;
     }
@@ -93,6 +108,7 @@ public class HouseDTO implements Serializable {
     public void setEmergencyKey(String emergencyKey) {
         this.emergencyKey = emergencyKey;
     }
+
     public String getLoginCode() {
         return loginCode;
     }
@@ -101,6 +117,29 @@ public class HouseDTO implements Serializable {
         this.loginCode = loginCode;
     }
 
+    public Integer getCodeStatus() {
+        return codeStatus;
+    }
+
+    public void setCodeStatus(Integer codeStatus) {
+        this.codeStatus = codeStatus;
+    }
+
+    public String getDue() {
+        return due;
+    }
+
+    public void setDue(String due) {
+        this.due = due;
+    }
+
+    public String getSquareMeters() {
+        return squareMeters;
+    }
+
+    public void setSquareMeters(String squareMeters) {
+        this.squareMeters = squareMeters;
+    }
 
     public Long getCompanyId() {
         return companyId;
@@ -120,38 +159,40 @@ public class HouseDTO implements Serializable {
         }
 
         HouseDTO houseDTO = (HouseDTO) o;
-
-        if ( ! Objects.equals(id, houseDTO.id)) { return false; }
-
-        return true;
+        if(houseDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), houseDTO.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "HouseDTO{" +
-            "id=" + id +
-            ", housenumber='" + housenumber + "'" +
-            ", extension='" + extension + "'" +
-            ", isdesocupated='" + isdesocupated + "'" +
-            ", desocupationinitialtime='" + desocupationinitialtime + "'" +
-            ", desocupationfinaltime='" + desocupationfinaltime + "'" +
-            ", securityKey='" + securityKey + "'" +
-            ", emergencyKey='" + emergencyKey + "'" +
-            ", loginCode='" + loginCode + "'" +
+            "id=" + getId() +
+            ", housenumber='" + getHousenumber() + "'" +
+            ", extension='" + getExtension() + "'" +
+            ", isdesocupated='" + getIsdesocupated() + "'" +
+            ", desocupationinitialtime='" + getDesocupationinitialtime() + "'" +
+            ", desocupationfinaltime='" + getDesocupationfinaltime() + "'" +
+            ", securityKey='" + getSecurityKey() + "'" +
+            ", emergencyKey='" + getEmergencyKey() + "'" +
+            ", loginCode='" + getLoginCode() + "'" +
             ", codeStatus='" + getCodeStatus() + "'" +
-            '}';
+            ", due='" + getDue() + "'" +
+            ", squareMeters='" + getSquareMeters() + "'" +
+            "}";
     }
 
-    public Integer getCodeStatus() {
-        return codeStatus;
+    public BalanceDTO getBalance() {
+        return balance;
     }
 
-    public void setCodeStatus(Integer codeStatus) {
-        this.codeStatus = codeStatus;
+    public void setBalance(BalanceDTO balance) {
+        this.balance = balance;
     }
 }

@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "balance" : {
+            "home": {
+                "title": "Balances",
+                "createLabel": "Crear nuevo Balance",
+                "createOrEditLabel": "Crear o editar Balance"
+            },
+            "created": "Un nuevo Balance ha sido creado con el identificador {{ param }}",
+            "updated": "Un Balance ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Balance ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Balance {{ id }}?"
+            },
+            "detail": {
+                "title": "Balance"
+            },
+            "extraordinary": "Extraordinary",
+            "commonAreas": "Common Areas",
+            "maintenance": "Maintenance",
+            "house": "House"
+        }
+    }
+}

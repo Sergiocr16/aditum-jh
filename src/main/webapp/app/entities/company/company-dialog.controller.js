@@ -5,15 +5,16 @@
         .module('aditumApp')
         .controller('CompanyDialogController', CompanyDialogController);
 
-    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company'];
+    CompanyDialogController.$inject = ['AdminInfo','House','$state','CompanyConfiguration','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Company','AdministrationConfiguration','EgressCategory','Banco'];
 
-    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company) {
+    function CompanyDialogController (AdminInfo,House,$state,CompanyConfiguration,$timeout, $scope, $stateParams, $uibModalInstance, entity, Company, AdministrationConfiguration,EgressCategory,Banco) {
         var vm = this;
 
         vm.company = entity;
         vm.clear = clear;
         vm.save = save;
-
+        var egressCategories = [{id:null,group:'Gastos fijos',category:'Administración',companyId:null},{id:null,group:'Gastos fijos',category:'Agua potable',companyId:null},{id:null,group:'Gastos fijos',category:'Energía eléctrica',companyId:null},{id:null,group:'Gastos fijos',category:'Seguridad',companyId:null},{id:null,group:'Gastos fijos',category:'Jardinería',companyId:null},{id:null,group:'Gastos fijos',category:'Sueldos y salarios',companyId:null},{id:null,group:'Gastos fijos',category:'Mantenimiento áreas comunes',companyId:null}
+        ,{id:null,group:'Gastos variables',category:'Eventos',companyId:null},{id:null,group:'Gastos variables',category:'Gastos legales',companyId:null},{id:null,group:'Gastos variables',category:'Impuestos y comisiones',companyId:null},{id:null,group:'Gastos variables',category:'Papelería y copias',companyId:null}]
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
@@ -66,8 +67,40 @@
             CompanyConfiguration.update(vm.companyConfiguration, onSaveSuccess, onSaveError);
         }
         function onSaveCompanySuccess (result) {
+            if(vm.companyConfiguration.hasContability==1){
+                   angular.forEach(egressCategories, function(value, key) {
+                     value.companyId = result.id;
+                     EgressCategory.save(value);
+                   });
+                   var date = moment(new Date(), 'DD/MM/YYYY').toDate()
+                   var banco = {id:null,beneficiario:'Caja chica',cedula:null,cuentaCorriente:0,cuentaCliente:0,moneda:null,cuentaContable:null,capitalInicial:0,mostrarFactura:null,fechaCapitalInicial:date,saldo:0,deleted:1,companyId:result.id}
+
+                   Banco.save(banco);
+            }
+
             vm.companyConfiguration.companyId = result.id;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
+            var adminConfig = {
+                squareMetersPrice: 0,
+                companyId: result.id,
+                incomeFolio:true,
+                folioSerie: "A",
+                folioNumber: 1,
+                hasSubcharges: true,
+                daysTobeDefaulter: 15,
+                daysToSendEmailBeforeBeDefaulter: 5,
+                subchargeAmmount: 0,
+                subchargePercentage: 5,
+                usingSubchargePercentage: true,
+                bookCommonArea: true,
+                incomeStatement:  true,
+                monthlyIncomeStatement:true,
+                egressReport:true,
+                egressFolio:true,
+                egressFolioSerie:'E',
+                egressFolioNumber:1
+            };
+            AdministrationConfiguration.save(adminConfig);
         }
         function onSaveSuccess (result) {
             $scope.$emit('aditumApp:companyUpdate', result);

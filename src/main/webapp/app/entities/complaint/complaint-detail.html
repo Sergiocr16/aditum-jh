@@ -1,0 +1,235 @@
+<div class="col-md-12 fade-in">
+    <md-card style="margin-bottom: 40px!important" md-theme-watch class="form-wrapper">
+        <md-card-title layout-align="space-between center">
+            <md-card-title-text flex="70">
+                  <span class="md-headline" layout-align="start start" layout="column" layout-gt-sm="row">
+                     <div layout-align="center center" layout="row">
+                          <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                             ng-click="back()">arrow_back</i>
+                        <div class="image-navbar">
+                           <img ng-if="vm.complaint.resident.image_url==null" src="content/images/nobody-image.jpg"
+                                class="object-fit_scale-down-navbar"/>
+                           <img ng-if="vm.complaint.resident.image_url!==null" src="{{vm.complaint.resident.image_url}}"
+                                class="object-fit_scale-down-navbar"/>
+                        </div>
+                                   <div class="caption-subject bold font-green-sharp margin-right-10"
+                                        style="font-size:14px!important"> {{vm.complaint.resident.name+" "+vm.complaint.resident.lastname+" "+vm.complaint.resident.secondlastname}}</div>
+                     </div>
+                     <div style="font-size: 13px;">
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{vm.complaint.id}}
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Categoría {{vm.complaint.vm.complaintType}}
+                        </span>
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Filial {{vm.complaint.houseNumber}}
+                        </span>
+                        <span style="padding:0px 4px">
+                        {{vm.complaint.showingCreationDate}}
+                        </span>
+                     </div>
+                  </span>
+            </md-card-title-text>
+            <div layout="row" flex="30" layout-align="end center">
+                <a style="margin:0px 25px"><i class="material-icons"
+                                              style="color:#FF3D00; font-size: 23px;margin-top:4px;"
+                                              ng-if="vm.complaint.status==1">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#FDD835; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==2">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Activo</md-tooltip>
+                    lens</i><i class="material-icons" style="color:#26A69A ; font-size: 23px;margin-top:4px;"
+                               ng-if="vm.complaint.status==3">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Resuelto</md-tooltip>
+                    lens</i></a>
+
+                <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                    <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
+                        <i class="material-icons" style="color:#999">more_vert</i>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item ng-if="vm.complaint.status!==1">
+                            <md-button
+                                ng-click="vm.setStatus(1)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como pendiente</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="vm.complaint.status!==2">
+
+                            <md-button
+                                ng-click="vm.setStatus(2)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como activo</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-item ng-if="vm.complaint.status!==3">
+                            <md-button
+                                ng-click="vm.setStatus(3)">
+                                <div layout="row" flex>
+                                    <p flex style="text-transform: none!important">Marcar como resuelto</p>
+                                </div>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
+        </md-card-title>
+        <md-divider></md-divider>
+        <md-card-content>
+            <div class="margin-top-10" ng-bind-html="vm.complaint.description"></div>
+
+
+            <div>
+                <div class="caption font-green-sharp form-title" style="padding: 15px;margin: 40px -16px 10px -16px;">
+                    <i class="fa fa-eye" style="color:#4DB3A2 !important"></i>
+                    <span class="caption-subject"> Seguimiento</span>
+                    <span class="caption-helper">
+                        <span style="border-right:1px solid #e1e1e1;margin-right: 4px;padding:0px 4px">
+                        Ticket # {{vm.complaint.id}}
+                    </span>({{vm.complaint.complaintComments.content.length}}) respuestas</span>
+                </div>
+                <div class="comments-container">
+                    <md-list flex>
+                        <md-list-item class="md-3-line"
+                                      ng-repeat="comment in vm.complaint.complaintComments.content | orderBy: 'creationDate' track by comment.id">
+                            <img class="md-avatar" ng-hide="comment.resident.image_url"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="comment.resident.image_url!==null" src="{{comment.resident.image_url}}"
+                                 class="md-avatar"/>
+                            <div class="md-list-item-text" layout="column">
+                                <div layout="row" layout-align="space-between center" ng-if="comment.editing===false">
+                                    <div>
+                                        <h3 style="font-size: 13px;font-weight: bold">
+                                            {{comment.resident.name +" "+ comment.resident.lastname +" "+
+                                            comment.resident.secondlastname}}</h3>
+                                        <h4 class="inline" style="font-size: 12px">
+                                            {{comment.showingDate}}
+                                            <span style="color: #90949c;cursor: pointer;font-size: 11px;"
+                                                  ng-if="comment.editedDate!=undefined"
+                                                  title="{{comment.editedDate | date:'medium'}}"> - Editado</span>
+                                        </h4>
+                                    </div>
+                                    <div has-authority="ROLE_MANAGER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar comentario</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                    <div has-authority="ROLE_USER"
+                                         ng-if="vm.showActionDelete(comment) || vm.showActionEdit(comment) ">
+                                        <md-menu md-position-mode="target-right target">
+                                            <md-button aria-label="Open demo menu" class="md-icon-button"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons">more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item ng-if="vm.showActionDelete(comment)">
+                                                    <md-button ng-click="vm.deleteComment(comment, vm.announcement)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar comentario</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item ng-if="vm.showActionEdit(comment)">
+                                                    <md-button ng-click="vm.editComment(comment)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </div>
+                                </div>
+                                <p style="font-size: 13px" ng-if="comment.editing===false">
+                                    {{comment.description}}
+                                </p>
+                                <form name="form1" ng-submit="vm.submitEditComment(comment, vm.announcement)">
+                                    <div flex="100" class="inline" ng-if="comment.editing===true">
+                                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="comment.newComment"
+                                                  class="input-no-decoration" style="margin-left: 5px" type="text"
+                                                  placeholder="Actualizar comentario.." required>
+                                        </textarea>
+                                    </div>
+                                    <div layout="row" layout-align="end center" ng-show="comment.editing===true">
+                                        <md-button ng-click="vm.cancelEditing(comment)">Cancelar</md-button>
+                                        <md-button ng-disabled="form1.$invalid" type="submit" class="md-primary">
+                                            Actualizar
+                                        </md-button>
+                                    </div>
+                                </form>
+                            </div>
+                        </md-list-item>
+                    </md-list>
+                </div>
+                <div>
+                    <form has-authority="ROLE_USER" flex name="form" class="md-list-item" ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
+                        </textarea>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
+                    <form has-authority="ROLE_MANAGER" flex name="form" class="md-list-item"
+                          ng-submit="vm.saveComment()">
+                        <div layout="row">
+                            <img class="circle-material-image" ng-hide="currentUserImage"
+                                 src="content/images/nobody-image.jpg"/>
+                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}"
+                                 class="circle-material-image"/>
+                            <div flex="100">
+                        <textarea style="margin:15px 0 0 0;width:100%;" ng-model="vm.newComment.description"
+                                  ng-click="vm.showCommentForm(vm.complaint)" class="input-no-decoration"
+                                  style="margin-left: 5px" type="text"
+                                  placeholder="Responder..." required>
+                        </textarea>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="end center" ng-show="vm.complaint.showingCommentForm===true">
+                            <md-button ng-click="vm.hideCommentForm(vm.complaint)">Cancelar</md-button>
+                            <md-button ng-disabled="form.$invalid" type="submit" class="md-primary">Enviar respuesta
+                            </md-button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+</div>

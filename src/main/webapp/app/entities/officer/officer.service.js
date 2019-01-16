@@ -60,6 +60,7 @@
                      return data;
                  }
               },
+            'save':{ method:"POST"},
             'update': { method:'PUT' }
         });
     }

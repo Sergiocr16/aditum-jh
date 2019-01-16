@@ -1,0 +1,118 @@
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+
+
+    <no-content ng-if="vm.collections.length==0" icon="grid_on" text="No hay filiales registradas" text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+    <div class="col-md-12 gray-font " ng-if="vm.collections.length!==0">
+        <h3 class="page-title col-md-10 caption-subject font-green-sharp font-weight-600">Tabla de cobranza</h3>
+        <div class="col-md-12 ">
+            <h6 style="font-size:15px">
+                <div class="green-box"></div>
+                <span style="font-weight: 500">
+            Cuotas que ya tienen un ingreso registrado el cual liquida la cuota por completo.
+            </span>
+            </h6>
+        </div>
+        <div class="col-md-12 ">
+            <h6 style="font-size:15px">
+            <div class="yellow-box"></div>
+                <span style="font-weight: 500">
+            Cuotas que han sido parcialmente liquidadas.
+            </span>
+            </h6>
+        </div>
+        <div class="col-md-12 ">
+            <h6 style="font-size:15px">
+            <div class="red-box"></div>
+                <span style="font-weight: 500">
+            Cuotas  no liquidadas.
+            </span>
+            </h6>
+        </div>
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12 no-padding">
+                    <h2 class="">
+                        <span ng-click="vm.showBackYear()" class="next-year-button"><i class="fa fa-angle-double-left" aria-hidden="true"></i> {{vm.backYear()}}</span>
+                        <b class="font-green-sharp">{{vm.year}}</b>
+                        <span ng-click="vm.showNextYear()" class="next-year-button">{{vm.nextYear()}} <i class="fa fa-angle-double-right" aria-hidden="true"></i></span>
+                    </h2>
+                </div>
+                
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                    <hr>
+                </div>
+            </div>
+            <div class="table-scrollable"  style="border: 0px!important;">
+                <h2 ng-show="vm.houses.length==0" class="text-center gray-font">No existen casas registradas</h2>
+                <table id="tableToExport" class="table   font-13 gray-font tableMaterialDesignAccountStatus">
+                    <thead class="flip-content text-center" style="background-color:#fafafa; ">
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Filial</th>
+                        <th class="text-center">Enero</th>
+                        <th class="text-center">Febrero</th>
+                        <th class="text-center">Marzo</th>
+                        <th class="text-center">Abril</th>
+                        <th class="text-center">Mayo</th>
+                        <th class="text-center">Junio</th>
+                        <th class="text-center">Julio</th>
+                        <th class="text-center">Agosto</th>
+                        <th class="text-center">Setiembre</th>
+                        <th class="text-center">Octubre</th>
+                        <th class="text-center">Noviembre</th>
+                        <th class="text-center">Diciembre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="collection in vm.collections |  orderBy:'houseNumber'">
+                        <td class="text-center">{{collection.houseNumber}}</td>
+                        <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
+                            <span ng-if="monthCollection.mensualBalance!=0">₡ {{vm.formatearNumero(monthCollection.mensualBalance)}}</span>
+                            <span style="color:#323232;font-size:11px" ng-if="monthCollection.mensualBalance==0">SIN CUOTA</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.download()">
+            <a ng-click="vm.download()" style="display:block" href="/api/collections/file/{{vm.companyId}}/{{vm.year}}" download >
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>
+</div>

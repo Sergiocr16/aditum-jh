@@ -1,63 +1,62 @@
-<div has-authority="ROLE_OFFICER" id="headerAccess" class="col-md-12 page-header md-shadow-z-1-i navbar navbar-fixed-top">
-    <div class="col-md-9 col-sm-6 col-xs-6 page-header-inner">
-        <div class="page-logo">
-            <a>
-                <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">
-            </a>
-        </div>
-    </div>
-    <div class="col-md-3 col-sm-6 col-xs-6 ">
-        <div class="top-menu">
-            <ul class="nav navbar-nav pull-right">
+<!--<div has-authority="ROLE_OFFICER" id="headerAccess" class="col-md-12 page-header md-shadow-z-1-i navbar navbar-fixed-top">-->
+    <!--<div class="col-md-9 col-sm-6 col-xs-6 page-header-inner">-->
+        <!--<div class="page-logo">-->
+            <!--<a>-->
+                <!--<img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">-->
+            <!--</a>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="col-md-3 col-sm-6 col-xs-6 ">-->
+        <!--<div class="top-menu">-->
+            <!--<ul class="nav navbar-nav pull-right">-->
 
-                <li class="dropdown dropdown-extended" id="header_notification_bar">
-                    <a ng-click="vm.updateDateNotes()" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <i class="fa fa-bell-o" style="font-size:20px!important;"></i>
-                        <span class="badge badge-default" style="font-size:15px!important;">
-            {{vm.countNotes}} </span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="external">
-                            <h3><span class="bold">{{vm.countNotes}}</span> Servicios a domicilio</h3>
+                <!--<li class="dropdown dropdown-extended" id="header_notification_bar">-->
+                    <!--<a ng-click="vm.updateDateNotes()" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">-->
+                        <!--<i class="fa fa-bell-o" style="font-size:20px!important;"></i>-->
+                        <!--<span class="badge badge-default" style="font-size:15px!important;">-->
+            <!--{{vm.countNotes}} </span>-->
+                    <!--</a>-->
+                    <!--<ul class="dropdown-menu">-->
+                        <!--<li class="external">-->
+                            <!--<h3><span class="bold">{{vm.countNotes}}</span> Servicios a domicilio</h3>-->
 
-                        </li>
-                        <li>
-                            <ul class="dropdown-menu-list scroll" style="height: 325px;" data-handle-color="#637283">
-                                <li ng-repeat="note in vm.notes | orderBy:'-'">
-                                        <span class=" col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; border-bottom: 1px solid #F5F5F5; ">
-                                            <span class="bold font-14 blue-font col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding" >Casa {{note.housenumber}}</span>
-                                            <span class="light-gray-font col-lg-7 col-md-7 col-sm-7 col-xs-7 text-right no-padding"> {{note.sinceDate}}</span>
-                                              <span ng-click="vm.deleteDomicilioReports(note)" class=" col-lg-1 col-md-1 col-sm-1 col-xs-1"><i class="fa fa-times-circle red" aria-hidden="true"></i></span>
-                                                  <span class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " style="margin-top:10px; margin-bottom:10px; color:#757575;">{{note.description}}</span>
-                                        </span>
+                        <!--</li>-->
+                        <!--<li>-->
+                            <!--<ul class="dropdown-menu-list scroll" style="height: 325px;" data-handle-color="#637283">-->
+                                <!--<li ng-repeat="note in vm.notes | orderBy:'-'">-->
+                                        <!--<span class=" col-md-12 col-sm-12 col-xs-12" style="margin-top:10px; border-bottom: 1px solid #F5F5F5; ">-->
+                                            <!--<span class="bold font-14 blue-font col-lg-3 col-md-3 col-sm-3 col-xs-3 no-padding" >Casa {{note.housenumber}}</span>-->
+                                            <!--<span class="light-gray-font col-lg-7 col-md-7 col-sm-7 col-xs-7 text-right no-padding"> {{note.sinceDate}}</span>-->
+                                              <!--<span ng-click="vm.deleteDomicilioReports(note)" class=" col-lg-1 col-md-1 col-sm-1 col-xs-1"><i class="fa fa-times-circle red" aria-hidden="true"></i></span>-->
+                                                  <!--<span class=" col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding " style="margin-top:10px; margin-bottom:10px; color:#757575;">{{note.description}}</span>-->
+                                        <!--</span>-->
 
 
-                                </li>
+                                <!--</li>-->
 
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
+                            <!--</ul>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
 
-                <li class="dropdown dropdown-user">
-                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                        <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>
-                        <!--<img ng-show="currentUserImage!==null" src="{{currentUserImage}}" width="35" class="img-circle"/>-->
-                        <span class="username username-hide-on-mobile ng-binding">
-					        {{' '+companyUser.name +' '+ companyUser.lastname}}</span>
-                        <i class="fa fa-angle-down"></i>
-                    </a>
-                    <ul class="dropdown-menu ">
-                        <li>
-                            <a href="" ng-click="vm.logout()">
-                                <i class="fa fa-sign-out"></i> Cerrar sesión</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+                <!--<li class="dropdown dropdown-user">-->
+                    <!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">-->
+                        <!--<img  class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>-->
+                        <!--<span class="username username-hide-on-mobile ng-binding">-->
+					        <!--{{' '+companyUser.name +' '+ companyUser.lastname}}</span>-->
+                        <!--<i class="fa fa-angle-down"></i>-->
+                    <!--</a>-->
+                    <!--<ul class="dropdown-menu ">-->
+                        <!--<li>-->
+                            <!--<a href="" ng-click="vm.logout()">-->
+                                <!--<i class="fa fa-sign-out"></i> Cerrar sesión</a>-->
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
+            <!--</ul>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <div class="access-back">
     <div class="opacity col-lg-12 col-md-12 col-sm-12 col-xs-12 " >
@@ -216,7 +215,7 @@
 
                     <div class="col-md-12 col-sm-12 col-xs-12 " ng-show="vm.show==10">
                         <div class="loading col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIconnn">
-                            <h1 class="text-center"><img src="../../assets/global/img/2.gif" alt="" /></h1>
+                            <!--<h1 class="text-center"><img src="content/assets/global/img/2.gif" alt="" /></h1>-->
                         </div>
                         <div class="display-none" id="visitantInvitedtAccess">
                             <h1 class="page-title green-font bold text-center font-30 " >Visitante invitado</h1>
@@ -680,7 +679,11 @@
                                         </thead>
                                         <tbody>
                                         <tr ng-repeat="resident in vm.residents | filter:search | orderBy:'name'">
-                                            <td>{{resident.name}} {{resident.lastname}} {{resident.secondlastname}}</td>
+                                            <td>
+                                                <i style="color:#4DB3A2;font-size:16px!important;margin: 2px 5px;float: left;" class="fa fa-address-book" aria-hidden="true" ng-if="resident.principalContact==1" angular-popover direction="right" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i>
+                                                <span ng-if="resident.principalContact==0" style="margin-right:22px"></span>
+                                                {{resident.name}} {{resident.lastname}} {{resident.secondlastname}}
+                                            </td>
                                             <td>{{resident.identificationnumber}}</td>
                                             <td>{{resident.phonenumber}}</td>
                                         </tr>

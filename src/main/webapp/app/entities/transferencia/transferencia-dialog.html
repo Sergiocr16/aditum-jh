@@ -1,0 +1,72 @@
+<div class="row">
+        <div class="col-md-12">
+            <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12"
+                 style="margin-bottom:0px!important">
+                <div ng-cloak layout="column">
+                    <md-toolbar class="form-title">
+                        <h2>{{mainTitle}}</h2>
+                    </md-toolbar>
+                </div>
+            </div>
+            <div class="portlet-body form col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <md-content layout-padding class="form-content">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
+                        <form name="form" ng-submit="vm.save()">
+                            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                    <md-input-container class="md-block">
+                                        <label>Fecha</label>
+                                        <md-datepicker ng-change="vm.autoConcept()" md-hide-icons="calendar" required
+                                                       ng-model="vm.transferencia.fecha"
+                                                       md-placeholder="Introduzca una fecha"
+                                                       md-open-on-focus></md-datepicker>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Cuenta origen</label>
+                                        <md-select ng-model="vm.transferencia.cuentaOrigen" required>
+                                            <md-option ng-repeat="banco in vm.bancos" ng-value="banco">
+                                                {{banco.beneficiario}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+
+                                    <md-input-container class="md-block">
+                                        <label>Concepto</label>
+                                        <input ng-model="vm.transferencia.concepto"
+                                               md-select-on-focus required/>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Cuenta destino</label>
+                                        <md-select ng-model="vm.transferencia.cuentaDestino" required>
+                                            <md-option ng-repeat="banco in vm.bancos" ng-value="banco">
+                                                {{banco.beneficiario}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container class="md-block">
+                                        <label>Total</label>
+                                        <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                               ng-model="vm.transferencia.monto"
+                                               required
+                                        />
+                                    </md-input-container>
+                                </div>
+                            </div>
+                            <div layout="row" class="white-bg" layout-align="end center">
+                                <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
+                                    Cancelar
+                                </md-button>
+                                <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
+                                    Aceptar
+                                </md-button>
+                            </div>
+                        </form>
+                    </div>
+                </md-content>
+            </div>
+        </div>
+</div>
+

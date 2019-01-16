@@ -69,6 +69,9 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="principal_contact" type="integer">
+                <constraints nullable="true" />
+            </column>
             <column name="deleted" type="integer">
                 <constraints nullable="true" />
             </column>

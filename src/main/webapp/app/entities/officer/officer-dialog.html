@@ -1,148 +1,243 @@
-<div has-any-authority="ROLE_ADMIN,ROLE_MANAGER" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="home()">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="officer()">Oficiales</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">{{vm.title}}</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
-        </div>
-    </div>
-</div>
-<div has-authority="ROLE_RH" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="company-rh">Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a ui-sref="officer-rh">Oficiales</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a href="">{{vm.title}}</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            {{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
 
-        </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="display-none" id="edit_officer_form">
-    <div class="row">
-        <div class="col-md-12">
-            <form ng-submit="vm.save()">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption font-green-haze">
-                            <i class="fa fa-user font-green-haze"></i>
-                            <span class="caption-subject bold uppercase">{{vm.title}}</span>
-                        </div>
+            <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.officer.image_url!==null">
+                <img width="170" height="170" class="img-circle" src="content/images/nobody-image.jpg"/>
+            </h3>
+            <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.officer.image_url===null">
+                <img width="170" height="170" class="object-fit_scale-down-resident-form"
+                     src="{{vm.officer.image_url}}"/>
+            </h3>
+            <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                 ngf-pattern="'image/*'">
+                <div ng-if="vm.displayImage" class="image-overlay-position">
+                    <div class="image-overlay-container image-overlay-view-first">
+                        <h3 class="text-center no-margin">
+                            <img
+                                data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                width="170px" height="170px" class="object-fit_scale-down-resident-form"
+                                alt="imageUser image"/>
+                        </h3>
+                    </div>
+                </div>
+                <h5 class="text-center font-green-haze">Para mejor calidad la imagen debe ser tamaño
+                    cuadrado</h5>
+                <h3 class="text-center">
+                    <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
+                               ngf-change="vm.setImage($file)" accept="image/*">
+                        Subir imagen
+                    </md-button>
+                </h3>
+                <div layout="row" layout-xs="column" class="marging-top-20 ">
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                        <md-input-container class="md-block">
+                            <label>Nacionalidad</label>
+                            <md-select ng-model="vm.officer.type" ng-required='vm.required==1'>
+                                <md-option value="9">
+                                    Costarricense
+                                </md-option>
+                                <md-option value="20">
+                                    Extranjero
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Número de cédula</label>
+                            <input required ng-class="{redBorder: vm.officer.validIdentification == 0}"
+                                   class="uppercase" ng-change="vm.findInPadron(vm.officer)"
+                                   maxlength="{{vm.officer.type}}" ng-model="vm.officer.identificationnumber">
+                            <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Nombre</label>
+                            <input required ng-model="vm.officer.name" type="text" ng-disabled="vm.officer.found==1"
+                                   class="uppercase" required>
+                        </md-input-container>
+
+                        <md-input-container class="md-block">
+                            <label>Primer Apellido</label>
+                            <input required ng-model="vm.officer.lastname" type="text"
+                                   ng-disabled="vm.officer.found==1"
+                                   class="uppercase" required>
+                        </md-input-container>
+
+                        <md-input-container class="md-block no-margin-bottom">
+                            <label>Segundo Apellido</label>
+                            <input required ng-model="vm.officer.secondlastname" type="text"
+                                   ng-disabled="vm.officer.found==1"
+                                   class="uppercase" required>
+                        </md-input-container>
                     </div>
 
-                    <form role="form">
-                        <div class="form-body">
-                            <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.officer.image_url!==null" >
-                                <img width="200" height="200" class="img-circle" src="content/images/nobody-image.jpg"/>
-                            </h3>
-                            <h3 class="text-center no-margin"  ng-hide="vm.displayImage || vm.officer.image_url===null" >
-                                <img width="200" height="200" class="img-circle" src="{{vm.officer.image_url}}"/>
-                            </h3>
-                            <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)" ngf-pattern="'image/*'">
-                                <div ng-if="vm.displayImage" class="image-overlay-position" >
-                                    <div class="image-overlay-container image-overlay-view-first">
-                                        <h3 class="text-center no-margin">
-                                            <img data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}" width="170px" height="170px" class="img-circle" alt="imageUser image"/>
-                                        </h3>
-                                    </div>
-                                </div>
-                                <h5 class="text-center font-green-haze">Para mejor calidad la imagen debe ser tamaño cuadrado</h5>
-
-                                <h3 class="text-center">
-                                    <button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"
-                                            ngf-change="vm.setImage($file)" accept="image/*" >
-                                        Subir imagen
-                                    </button>
-                                </h3>
-                            <div class="col-md-6 col-sm-6 marging-top-20">
-                                <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.officer.name" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
-                                    <label class="font-15">Nombre</label>
-                                </div>
+                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
 
 
+                        <md-input-container class="md-block">
+                            <label>Número de teléfono</label>
+                            <input ng-focus="expression==1" ng-model="vm.officer.phonenumber" type="text"
+                                   maxlength="20" class="">
+                            <div class="hint">Escriba el número de teléfono sin guiones.</div>
+                        </md-input-container>
 
-                                <div class="form-group form-md-line-input ">
-                                    <input ng-model="vm.officer.lastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
-                                    <label class="font-15">Primer Apellido</label>
-                                </div>
-                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <input ng-model="vm.officer.secondlastname" type="text" class="form-control  letters gray-font"  required style="text-transform: capitalize;">
-                                    <label class="font-15">Segundo Apellido</label>
-                                </div>
-                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <textarea ng-model="vm.officer.direction" class="form-control gray-font"  rows="3" placeholder="Dirección de residencia del oficial" required style="resize: none;"></textarea>
-                                    <label >Dirección física</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6 marging-top-20">
-                                <div class="form-group form-md-line-input l">
-                                    <input ng-model="vm.officer.identificationnumber" type="text" class="form-control  numbers gray-font"  required>
-                                    <label class="font-15">Cédula</label>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <input ng-model="vm.birthdate" ng-value="vm.birthdateToShow"  ng-click="vm.openCalendar('birthdate')" datepicker-options="vm.picker.datepickerOptions"  ng-change="vm.updatePicker()" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.birthdate"  type="text" enable-time="false" class="form-control numbers letters gray-font text-center dating" required>
-                                    <label  class="font-15">Fecha de nacimiento</label>
-                                </div>
-                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <input ng-model="vm.officer.annosexperiencia" type="number" min="0" class="form-control  letters gray-font"  required>
-                                    <label class="font-15">Años de experiencia</label>
-                                </div>
-                                <div class="form-group form-md-line-input no-padding-left no-padding-right">
-                                    <input ng-model="vm.officer.phonenumber" class="form-control numbers gray-font"  required>
-                                    <label class="font-15">Número de telefono</label>
-                                </div>
+                        <md-input-container class="md-block">
+                            <label>Años de experiencia</label>
+                            <input required ng-model="vm.officer.annosexperiencia" min="0" type="number" class="">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>Fecha de nacimiento</label>
+                            <md-datepicker md-hide-icons="calendar" required ng-model="vm.officer.fechanacimiento"
+                                           md-placeholder="Introduzca una fecha" md-open-on-focus></md-datepicker>
+                        </md-input-container>
 
-                            <div has-authority="ROLE_RH" class="form-group form-md-line-input has-info">
-                                <select class="form-control gray-font" id="field_house"  ng-model="vm.officer.companyId" ng-options="company.id as company.name for company in companyUser.companies"  ng-required='vm.required==1'>
-                                    <option value="">Seleccione un condominio</option>
-                                </select>
-                                <label class="font-15 ">Condominio</label >
-                            </div>
 
-                            </div>
+                        <md-input-container class="md-block">
+                            <label>Dirección física</label>
+                            <textarea required ng-model="vm.officer.direction"  rows="3"
+                                      md-select-on-focus></textarea>
+                        </md-input-container>
+                        <md-input-container class="md-block" has-authority="ROLE_RH">
+                            <label>Condominio</label>
+                            <md-select ng-model="vm.officer.companyId" ng-required='vm.required==1'>
+                                <md-option ng-repeat="company in companyUser.companies" ng-value="company.id">
+                                    {{company.name}}
+                                </md-option>
+                            </md-select>
+                        </md-input-container>
 
-                        </div>
-                        <div class="form-actions noborder">
-                            <h3 class="text-right">
-                                <button type="submit" class="btn blue"> {{vm.button}}</button>
-                                <button has-any-authority="ROLE_ADMIN,ROLE_MANAGER" type="button" ui-sref="officer()" class="btn red default">Cancelar</button>
-                                <button has-authority="ROLE_RH" type="button" ui-sref="officer-rh" class="btn red default">Cancelar</button>
-                            </h3>
-                        </div>
-                        </div>
-                    </form>
-
+                    </div>
                 </div>
-            </form>
-        </div>
-    </div>
-</div>
+
+                <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                    <md-button  type="button" ng-click="back()"
+                               class="md-warn md-raised">Cancelar
+                    </md-button>
+
+                    <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                        {{vm.button}}
+                    </md-button>
+                </div>
+            </div>
+        </form>
+    </md-content>
+
+
+
+
+<!--<div  id="edit_officer_form">-->
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<form ng-submit="vm.save()">-->
+                <!--<div class="portlet light bordered">-->
+                    <!--<div class="portlet-title">-->
+                        <!--<div class="caption font-green-haze">-->
+                            <!--<i class="fa fa-user font-green-haze"></i>-->
+                            <!--<span class="caption-subject bold uppercase">{{vm.title}}</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<form role="form">-->
+                        <!--<div class="form-body">-->
+                            <!--<h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.officer.image_url!==null" >-->
+                                <!--<img width="200" height="200" class="img-circle" src="content/images/nobody-image.jpg"/>-->
+                            <!--</h3>-->
+                            <!--<h3 class="text-center no-margin"  ng-hide="vm.displayImage || vm.officer.image_url===null" >-->
+                                <!--<img width="200" height="200" class="img-circle" src="{{vm.officer.image_url}}"/>-->
+                            <!--</h3>-->
+                            <!--<div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)" ngf-pattern="'image/*'">-->
+                                <!--<div ng-if="vm.displayImage" class="image-overlay-position" >-->
+                                    <!--<div class="image-overlay-container image-overlay-view-first">-->
+                                        <!--<h3 class="text-center no-margin">-->
+                                            <!--<img data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}" width="170px" height="170px" class="img-circle" alt="imageUser image"/>-->
+                                        <!--</h3>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<h5 class="text-center font-green-haze">Para mejor calidad la imagen debe ser tamaño cuadrado</h5>-->
+
+                                <!--<h3 class="text-center">-->
+                                    <!--<button type="button" ngf-select class="btn default btn-file fileinput-new gray-font"-->
+                                            <!--ngf-change="vm.setImage($file)" accept="image/*" >-->
+                                        <!--Subir imagen-->
+                                    <!--</button>-->
+                                <!--</h3>-->
+                                <!--<div class="col-md-6 col-sm-6 marging-top-20">-->
+                                    <!--<div class="form-group form-md-line-input">-->
+                                        <!--<select class="form-control gray-font" name="type" ng-model="vm.officer.type" ng-required='vm.required==1'>-->
+                                            <!--<option value="9">Costarricense</option>-->
+                                            <!--<option value="20">Extranjero</option>-->
+                                        <!--</select>-->
+                                        <!--<label class="font-15" >Nacionalidad</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input l">-->
+                                        <!--<input  ng-class="{redBorder: vm.officer.validIdentification == 0}" maxlength="{{vm.officer.type}}"  ng-change="vm.findInPadron(vm.officer)"  ng-model="vm.officer.identificationnumber" type="text" class="form-control  numbers gray-font"  required>-->
+                                        <!--<label class="font-15">Cédula</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input ">-->
+                                        <!--<input ng-model="vm.officer.name" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">-->
+                                        <!--<label class="font-15">Nombre</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input ">-->
+                                        <!--<input ng-model="vm.officer.lastname" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">-->
+                                        <!--<label class="font-15">Primer Apellido</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input no-padding-left no-padding-right">-->
+                                        <!--<input ng-model="vm.officer.secondlastname" type="text" ng-disabled="vm.officer.found==1" class="form-control  letters gray-font"  required style="text-transform: capitalize;">-->
+                                        <!--<label class="font-15">Segundo Apellido</label>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                                <!--<div class="col-md-6 col-sm-6 marging-top-20">-->
+
+                                    <!--<div class="form-group form-md-line-input">-->
+                                        <!--<input ng-model="vm.birthdate" ng-value="vm.birthdateToShow"  ng-click="vm.openCalendar('birthdate')" datepicker-options="vm.picker.datepickerOptions"  ng-change="vm.updatePicker()" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.birthdate"  type="text" enable-time="false" class="form-control numbers letters gray-font text-center dating" required>-->
+                                        <!--<label  class="font-15">Fecha de nacimiento</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input no-padding-left no-padding-right">-->
+                                        <!--<input ng-model="vm.officer.annosexperiencia" type="number" min="0" class="form-control  letters gray-font"  required>-->
+                                        <!--<label class="font-15">Años de experiencia</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input no-padding-left no-padding-right">-->
+                                        <!--<input ng-model="vm.officer.phonenumber" class="form-control numbers gray-font"  required>-->
+                                        <!--<label class="font-15">Número de telefono</label>-->
+                                    <!--</div>-->
+                                    <!--<div class="form-group form-md-line-input no-padding-left no-padding-right">-->
+                                        <!--<textarea ng-model="vm.officer.direction" class="form-control gray-font"  rows="3" placeholder="Dirección de residencia del oficial" required style="resize: none;"></textarea>-->
+                                        <!--<label >Dirección física</label>-->
+                                    <!--</div>-->
+                                    <!--<div has-authority="ROLE_RH" class="form-group form-md-line-input has-info">-->
+                                        <!--<select class="form-control gray-font" id="field_house"  ng-model="vm.officer.companyId" ng-options="company.id as company.name for company in companyUser.companies"  ng-required='vm.required==1'>-->
+                                            <!--<option value="">Seleccione un condominio</option>-->
+                                        <!--</select>-->
+                                        <!--<label class="font-15 ">Condominio</label >-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+
+                            <!--</div>-->
+                            <!--<div class="form-actions noborder">-->
+                                <!--<h3 class="text-right">-->
+                                    <!--<button type="submit" class="btn blue"> {{vm.button}}</button>-->
+                                    <!--<button has-any-authority="ROLE_ADMIN,ROLE_MANAGER" type="button" ui-sref="officer()" class="btn red default">Cancelar</button>-->
+                                    <!--<button has-authority="ROLE_RH" type="button" ui-sref="officer-rh" class="btn red default">Cancelar</button>-->
+                                <!--</h3>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</form>-->
+
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->

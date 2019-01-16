@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/soporte',
             data: {
-                authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER','ROLE_RH'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_USER','ROLE_RH','ROLE_JD'],
             },
             views: {
                 'content@': {

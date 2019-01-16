@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.web.websocket;
 
+import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.ResidentService;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
@@ -23,38 +24,43 @@ public class RealTimeCompanyInfoService {
 
     private final SimpMessageSendingOperations messagingTemplate;
 
+    private final HouseService houseService;
 
-    public RealTimeCompanyInfoService(SimpMessageSendingOperations messagingTemplate) {
+    public RealTimeCompanyInfoService(SimpMessageSendingOperations messagingTemplate, HouseService houseService) {
         this.messagingTemplate = messagingTemplate;
+        this.houseService = houseService;
     }
 
     @SubscribeMapping("/topic/sendResident/{idCompany}")
     @SendTo("/topic/resident/{idCompany}")
-    public ResidentDTO addResident(ResidentDTO residentDTO){
+    public ResidentDTO addResident(ResidentDTO residentDTO) {
+        residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
         return residentDTO;
     }
 
     @SubscribeMapping("/topic/sendVehicle/{idCompany}")
     @SendTo("/topic/vehicle/{idCompany}")
-    public VehiculeDTO addVehicule(VehiculeDTO vehicleDTO){
+    public VehiculeDTO addVehicule(VehiculeDTO vehicleDTO) {
+        vehicleDTO.setHouse(houseService.findOne(vehicleDTO.getHouseId()));
         return vehicleDTO;
     }
 
     @SubscribeMapping("/topic/sendVisitor/{idCompany}")
     @SendTo("/topic/visitor/{idCompany}")
-    public VisitantDTO addVisitor(VisitantDTO visitorDTO){
+    public VisitantDTO addVisitor(VisitantDTO visitorDTO) {
+        visitorDTO.setHouseNumber(houseService.findOne(visitorDTO.getHouseId()).getHousenumber());
         return visitorDTO;
     }
 
     @SubscribeMapping("/topic/sendHouse/{idCompany}")
     @SendTo("/topic/house/{idCompany}")
-    public HouseDTO addHouse(HouseDTO houseDTO){
+    public HouseDTO addHouse(HouseDTO houseDTO) {
         return houseDTO;
     }
 
     @SubscribeMapping("/topic/deleteEntity/{idCompany}")
     @SendTo("/topic/deletedEntity/{idCompany}")
-    public EntityToDeleteDTO deleteEntity(EntityToDeleteDTO entity){
+    public EntityToDeleteDTO deleteEntity(EntityToDeleteDTO entity) {
         return entity;
     }
 }

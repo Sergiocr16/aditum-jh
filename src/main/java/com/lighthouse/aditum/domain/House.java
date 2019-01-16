@@ -54,6 +54,12 @@ public class House implements Serializable {
     @Column(name = "code_status")
     private Integer codeStatus;
 
+    @Column(name = "due")
+    private String due;
+
+    @Column(name = "square_meters")
+    private String squareMeters;
+
     @OneToMany(mappedBy = "house")
     @JsonIgnore
     private Set<Vehicule> vehicules = new HashSet<>();
@@ -200,6 +206,32 @@ public class House implements Serializable {
 
     public void setCodeStatus(Integer codeStatus) {
         this.codeStatus = codeStatus;
+    }
+
+    public String getDue() {
+        return due;
+    }
+
+    public House due(String due) {
+        this.due = due;
+        return this;
+    }
+
+    public void setDue(String due) {
+        this.due = due;
+    }
+
+    public String getSquareMeters() {
+        return squareMeters;
+    }
+
+    public House squareMeters(String squareMeters) {
+        this.squareMeters = squareMeters;
+        return this;
+    }
+
+    public void setSquareMeters(String squareMeters) {
+        this.squareMeters = squareMeters;
     }
 
     public Set<Vehicule> getVehicules() {
@@ -349,30 +381,32 @@ public class House implements Serializable {
             return false;
         }
         House house = (House) o;
-        if (house.id == null || id == null) {
+        if (house.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, house.id);
+        return Objects.equals(getId(), house.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "House{" +
-            "id=" + id +
-            ", housenumber='" + housenumber + "'" +
-            ", extension='" + extension + "'" +
-            ", isdesocupated='" + isdesocupated + "'" +
-            ", desocupationinitialtime='" + desocupationinitialtime + "'" +
-            ", desocupationfinaltime='" + desocupationfinaltime + "'" +
-            ", securityKey='" + securityKey + "'" +
-            ", emergencyKey='" + emergencyKey + "'" +
-            ", loginCode='" + loginCode + "'" +
-            ", codeStatus='" + codeStatus + "'" +
-            '}';
+            "id=" + getId() +
+            ", housenumber='" + getHousenumber() + "'" +
+            ", extension='" + getExtension() + "'" +
+            ", isdesocupated='" + getIsdesocupated() + "'" +
+            ", desocupationinitialtime='" + getDesocupationinitialtime() + "'" +
+            ", desocupationfinaltime='" + getDesocupationfinaltime() + "'" +
+            ", securityKey='" + getSecurityKey() + "'" +
+            ", emergencyKey='" + getEmergencyKey() + "'" +
+            ", loginCode='" + getLoginCode() + "'" +
+            ", codeStatus='" + getCodeStatus() + "'" +
+            ", due='" + getDue() + "'" +
+            ", squareMeters='" + getSquareMeters() + "'" +
+            "}";
     }
 }

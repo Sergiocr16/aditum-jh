@@ -1,80 +1,95 @@
-<div class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a>Condominio</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Progreso de ingreso de datos</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right"> </div>
-    </div>
-</div>
 <div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
     <div class="spinnerLoading">
         <div class="double-bounce1"></div>
         <div class="double-bounce2"></div>
     </div>
 </div>
-<div class="row display-none" id="tableData">
+<div class=" display-none" id="tableData">
     <div class="col-lg-12 col-md-12">
-        <h2 class="col-md-12 hidden-xs"><button has-authority="ROLE_MANAGER" ui-sref="house" class="btn red">Atrás</button>    Progreso de ingreso de datos en viviendas</h2>
-        <h4 class="col-md-12 hidden-lg hidden-md hidden-sm"><button has-authority="ROLE_MANAGER" ui-sref="house" class="btn red">Atrás</button>    Progreso de ingreso de datos en viviendas</h4>
         <div class="form-group col-md-12 col-sm-12 col-xs-12 small-margin-bottom no-padding" has-authority="ROLE_ADMIN">
             <div class="col-md-6">
                 <label class="control-label no-padding gray-font">Seleccionar condominio</label>
-                <select class="form-control gray-font" ng-change="vm.loadHouses(vm.company.id)" data-ng-model="vm.company" ng-options="company.name for company in vm.companies | orderBy: 'id' track by company.id" required>
+                <select class="form-control gray-font" ng-change="vm.loadHouses(vm.company.id)"
+                        data-ng-model="vm.company"
+                        ng-options="company.name for company in vm.companies | orderBy: 'id' track by company.id"
+                        required>
                 </select>
             </div>
         </div>
-        <div class="col-lg-12 col-xs-12 col-md-12 col-sm-12" ng-show="vm.houses.length>0">
-            <div class="portlet light">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-cursor font-purple-intense hide"></i>
-                        <span class="caption-subject font-purple-intense bold uppercase">Estadísticas generales</span>
-                    </div>
-                </div>
-                <div class="portlet-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-                            <div id="codigos-pie-chart" class="animated-pie-chart" style="height:400px!important"></div>
 
-                        </div>
+        <div ng-cloak layout="column"
+             class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in margin-top-20"
+             ng-show="vm.houses.length>0">
+            <md-toolbar class="form-title" hide-sm hide-xs>
+                <h2>Estadisticas generales</h2>
+            </md-toolbar>
+            <md-content layout-padding class="form-content">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div id="codigos-pie-chart" class="animated-pie-chart" style="height:400px!important"></div>
+
+                </div>
+            </md-content>
+        </div>
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.houses.length> 0">
+            <div class="">
+                <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.query.housenumber">
                     </div>
                 </div>
-            </div>
-        </div>
-        <div >
-            <div class="col-lg-5 col-md-5"  has-authority="ROLE_MANAGER"></div>
-            <div class="col-lg-2 col-md-2"   has-authority="ROLE_ADMIN"></div>
-            <div class="form-group  col-lg-3  col-md-3 col-sm-6 col-xs-12 " ng-show="vm.houses.length>0">
-                <label class="col-md-5 col-sm-5  col-xs-4 control-label no-padding gray-font">Filtrar por casa</label>
-                <div class="col-md-7 col-sm-7 col-xs-8 ">
-                    <select class="form-control gray-font" ng-change="vm.findResidentsByHouse(vm.house)" data-ng-model="vm.house" ng-options="house.housenumber for house in vm.houses | orderBy: 'housenumber' track by house.id" required>
-                        <option value="">Todas</option>
-                    </select>
+                <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                    <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                            class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                            style="height: 34px!important; padding-top: 5px!important;">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                        <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
                 </div>
             </div>
-            <div class="form-group col-lg-4  col-md-4 col-sm-6 col-xs-12 " ng-show="vm.houses.length>0">
-            <label class="col-md-4 col-sm-4  col-xs-4 control-label no-padding gray-font">Filtrar por progreso</label>
-            <div class="col-md-8 col-sm-8 col-xs-8 ">
-                <select class="form-control gray-font" data-ng-model="vm.filterState" required>
-                    <option value="">Todos</option>
-                    <option value="0">Código sin redimir</option>
-                    <option value="1">Código redimido</option>
-                    <option value="2">Ingreso en progreso</option>
-                    <option value="3">Listo</option>
-                </select>
-            </div>
         </div>
-            <button has-authority="ROLE_ADMIN" class="btn green col-lg-3 col-md-3 col-sm-6 col-xs-12" style="margin-bottom:5px" ng-click="vm.exportarCodigos()" ng-show="vm.houses.length>0">Exportar códigos a .txt <i class="fa fa-file"></i></button>
+        <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+
+            <md-input-container class=" no-margin" has-authority="ROLE_MANAGER"
+                                ng-if="vm.houses.length> 0 || vm.house!='-1'">
+
+                <md-select ng-model="vm.house">
+                    <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
+                    <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                               ng-model="vm.house" ng-value="house">
+                        {{house.housenumber}}
+                    </md-option>
+
+                </md-select>
+
+            </md-input-container>
+            <md-input-container class=" no-margin" has-authority="ROLE_MANAGER"
+            >
+                <md-select ng-model="vm.filterStateTemporal" ng-change="vm.changeFilterState(vm.filterStateTemporal)">
+                    <md-option value="-1">Todos los progresos</md-option>
+                    <md-option value="0">Código sin redimir</md-option>
+                    <md-option value="1">Código redimido</md-option>
+                    <md-option value="2">Ingreso en progreso</md-option>
+                    <md-option value="3">Listo</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div>
+            <div class="col-lg-5 col-md-5" has-authority="ROLE_MANAGER"></div>
+            <div class="col-lg-2 col-md-2" has-authority="ROLE_ADMIN"></div>
+
+            <button has-authority="ROLE_ADMIN" class="btn green col-lg-3 col-md-3 col-sm-6 col-xs-12"
+                    style="margin-bottom:5px" ng-click="vm.exportarCodigos()" ng-show="vm.houses.length>0">Exportar
+                códigos a .txt <i class="fa fa-file"></i></button>
             <div class="portlet-body ">
-                <h2 ng-show="vm.houses.length==0" class="text-center gray-font ">No existen casas en este condominio</h2>
-                <div  style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12" ng-if="house.isdesocupated == 0" ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                <h2 ng-show="vm.houses.length==0" class="text-center gray-font ">No existen casas en este
+                    condominio</h2>
+                <div style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12"
+                     ng-if="house.isdesocupated == 0"
+                     ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
                     <hr class="col-xs-12 no-padding">
                     <div class="col-xs-12">
                         <h4>Casa: <b>{{house.housenumber}}</b></h4>
@@ -85,37 +100,58 @@
                         </div>
                     </div>
                     <div class="col-xs-6">
-                        <span style="height:100%!important;" ng-show="house.codeStatus == 0" class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger" aria-hidden="false">Código sin redimir </span>
-                        <span style="height:100%!important;" ng-show="house.codeStatus == 1" class="padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-info" aria-hidden="false" style="background-color:#4d90d6!important">Código redimido </span>
-                        <span style="height:100%!important;" ng-show="house.codeStatus == 2" class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-warning " aria-hidden="false">Ingreso de datos en progreso </span>
-                        <span style="height:100%!important;" ng-show="house.codeStatus == 3" class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success" aria-hidden="false">Todo Listo </span>
+                        <span style="height:100%!important;" ng-show="house.codeStatus == 0"
+                              class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger"
+                              aria-hidden="false">Código sin redimir </span>
+                        <span style="height:100%!important;" ng-show="house.codeStatus == 1"
+                              class="padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-info"
+                              aria-hidden="false" style="background-color:#4d90d6!important">Código redimido </span>
+                        <span style="height:100%!important;" ng-show="house.codeStatus == 2"
+                              class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-warning "
+                              aria-hidden="false">Ingreso de datos en progreso </span>
+                        <span style="height:100%!important;" ng-show="house.codeStatus == 3"
+                              class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success"
+                              aria-hidden="false">Todo Listo </span>
 
                     </div>
 
                 </div>
-                <div class="table-scrollable">
 
-                    <table ng-show="vm.houses.length>0" class="table table-striped table-hover font-12 hidden-xs">
-                        <thead>
-                        <tr>
-                            <th>Número de casa</th>
-                            <th>Código de ingreso</th>
-                            <th>Progreso de ingreso de datos</th>
+
+                <div class="table-scrollable hidden-xs gray-font"
+                     style="border: 0px!important; margin-bottom: 40px!important;">
+
+                    <no-content ng-if="vm.houses.length == 0" icon="home"
+                                text="No hay filiales registradas"></no-content>
+
+                    <table ng-show="vm.houses.length>0" class="table  table-hover font-13 tableMaterialDesign">
+                        <thead style="background-color: #fafafa;" class="">
+                        <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                            <th class="text-center">Número de filial</th>
+                            <th class="text-center">Código de ingreso</th>
+                            <th class="text-center">Progreso de ingreso de datos</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-if="house.isdesocupated == 0" ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
-                            <td style="text-transform: capitalize;">{{house.housenumber}}</td>
-                            <td style="text-transform: capitalize;">{{house.loginCode}}</td>
-                            <td  ng-if="house.codeStatus == 0"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-danger" aria-hidden="false">Código sin redimir </span></td>
-                            <td ng-if="house.codeStatus == 1"><span class="padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-info" aria-hidden="false" style="background-color:#4d90d6!important">Código redimido </span></td>
-                            <td  ng-if="house.codeStatus == 2"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-warning " aria-hidden="false">Ingreso de datos en progreso </span></td>
-                            <td ng-if="house.codeStatus == 3"><span class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm label-success" aria-hidden="false">Todo Listo </span></td>
+                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.house | filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                            <td class="text-center">{{house.housenumber}}</td>
+                            <td class="text-center">{{house.loginCode}}</td>
+                            <td class="text-center">
+                                <span style="padding:5px; font-size: 15px!important" ng-if="house.codeStatus == 0"
+                                      class="label label-sm label-danger col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Código sin redimir</span>
+                                <span style="padding:5px; font-size: 15px!important" ng-if="house.codeStatus == 1"
+                                      class="label label-sm label-info col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6"
+                                      style="background-color:#4d90d6!important">Código redimido</span>
+                                <span style="padding:5px; font-size: 15px!important" ng-if="house.codeStatus == 2"
+                                      class="label label-sm label-warning col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Ingreso de datos en progreso</span>
+                                <span style="padding:5px; font-size: 15px!important" ng-if="house.codeStatus == 2"
+                                      class="label label-sm label-success col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Todo Listo</span>
+                            </td>
+
                         </tr>
                         </tbody>
                     </table>
                 </div>
-
             </div>
         </div>
     </div>

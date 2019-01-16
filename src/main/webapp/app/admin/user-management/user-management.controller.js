@@ -5,12 +5,13 @@
         .module('aditumApp')
         .controller('UserManagementController', UserManagementController);
 
-    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService'];
+    UserManagementController.$inject = ['Principal', 'User', 'ParseLinks', 'AlertService', '$state', 'pagingParams', 'paginationConstants', 'JhiLanguageService','$rootScope'];
 
-    function UserManagementController(Principal, User, ParseLinks, AlertService, $state, pagingParams, paginationConstants, JhiLanguageService) {
+    function UserManagementController(Principal, User, ParseLinks, AlertService, $state, pagingParams, paginationConstants, JhiLanguageService,$rootScope) {
         var vm = this;
+        $rootScope.active = "user-management";
         vm.isAuthenticated = Principal.isAuthenticated;
-        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN','ROLE_MANAGER','ROLE_OFFICER','ROLE_RH'];
+        vm.authorities = ['ROLE_USER', 'ROLE_ADMIN','ROLE_MANAGER','ROLE_OFFICER','ROLE_RH','ROLE_JD'];
         vm.currentAccount = null;
         vm.languages = null;
         vm.loadAll = loadAll;

@@ -93,6 +93,10 @@
             "fieldType": "Integer"
         },
         {
+            "fieldName": "principalContact",
+            "fieldType": "Integer"
+        },
+        {
             "fieldName": "deleted",
             "fieldType": "Integer"
         }

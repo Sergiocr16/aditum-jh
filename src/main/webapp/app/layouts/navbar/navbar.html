@@ -1,88 +1,131 @@
-<div  has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH" id="rightView"  ng-show="menu==true" >
-    <div  class="page-header-fixed page-quick-sidebar-over-content ng-scope"><div class="page-header md-shadow-z-1-i navbar navbar-fixed-top ng-scope">
-        <!-- BEGIN HEADER INNER -->
-        <div class="page-header-inner">
-            <!-- BEGIN LOGO -->
-            <div class="page-logo">
+<md-toolbar layout="row" layout-align="space-between center" style="position:fixed;">
+    <div class="md-toolbar-tools" layout="row" layout-align="space-between center">
+        <div>
+            <h3 hide-sm hide-xs hide-md style="font-size: 15px">
+                <i ng-if="!inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                   ng-click="toggleLeft()">menu</i>
+                <i ng-if="inForm" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl hide-md
+                   ng-click="back()">arrow_back</i>
                 <a ui-sref="home">
-                <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22" width="80">
+                    <img src="content/images/logoAditum.png" alt="logo" class="logo-default" height="22">
                 </a>
-                <!-- <div class="menu-toggler sidebar-toggler">
+            </h3>
+            <h3 hide-lg hide-gt-lg hide-xl style="font-size: 15px">
+                <i ng-if="!inForm && !inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg
+                   hide-xl
+                   ng-click="toggleLeft()" has-any-authority="ROLE_USER,ROLE_ADMIN,ROLE_MANAGER,ROLE_RH,ROLE_JD">menu</i>
+                <i ng-if="inForm || inDetail" class="material-icons material-icons-with-text" hide-lg hide-gt-lg hide-xl
+                   ng-click="back()">arrow_back</i>
+                {{mainTitle}}
+            </h3>
+        </div>
 
-                </div> -->
-            </div>
-            <!-- END LOGO -->
-            <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
-            </a>
-            <!-- END RESPONSIVE MENU TOGGLER -->
-            <!-- BEGIN TOP NAVIGATION MENU -->
-            <div class="top-menu">
-                <ul class="nav navbar-nav pull-right">
-                    <li class="dropdown dropdown-user" ng-show="contextLiving!=undefined ">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img ng-hide="currentUserImage" class="img-circle" src="content/images/nobody-image.jpg"   width="35"/>
-                            <img ng-show="currentUserImage!==null" src="{{currentUserImage}}" width="35" class="img-circle"/>
-                            <span class="username username-hide-on-mobile ng-binding">
-					        {{' '+companyUser.name +' '+ companyUser.lastname}}{{contextLiving}}</span>
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default ">
-                            <li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()" href="#/usuario/perfil/editar/32" class="ng-hide">
-                                <a href="">
-                                    <i class="icon-user"></i> Mi perfil </a>
-                            </li>
-                            <li has-authority="ROLE_USER">
-                                <a ng-click="vm.editMyInfoAsUser()" >
-                                    <i class="fa fa-user"></i>Editar mi información</a>
-                            </li>
-                            <li has-authority="ROLE_MANAGER">
-                                <a ng-click="vm.editMyInfoAsManager()" >
-                                    <i class="fa fa-user"></i>Editar mi información</a>
-                            </li>
-                            <li>
-                                <a ui-sref="password" >
-                                    <i class="fa fa-key"></i>Cambiar contraseña</a>
-                            </li>
-                            <li>
-                                <a href="" ng-click="vm.logout()">
-                                    <i class="fa fa-sign-out"></i>Cerrar sesión</a>
-                            </li>
-                        </ul>
+        <div layout-align="left center">
+            <md-button ng-if="inForm && secondBtnForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
+                       class="md-no-ink md-raised md-primary"
+                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;padding-right: 0px;margin-right: 0px"
+                       ng-click="formAction2()">{{formActionText2}}
+            </md-button>
+            <md-button ng-if="inForm" ng-disabled="isInvalidForm" hide-lg hide-gt-lg hide-xl
+                       class="md-no-ink md-raised md-primary"
+                       style="box-shadow:none;background-color: transparent!important;font-size: 13px;"
+                       ng-click="formAction()">{{formActionText}}
+            </md-button>
+            <div ng-hide="inForm && vm.isScreenSizeSmall()" class="dropdown">
+                <div class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                     aria-expanded="false">
+                    <img style="cursor: pointer" ng-if="currentUserImage == null" src="content/images/nobody-image.jpg"
+                         class="circle-material-image"/>
+                    <img style="cursor: pointer" ng-if="currentUserImage!==null" src="{{currentUserImage}}"
+                         class="circle-material-image"/>
+                </div>
+                <ul class="dropdown-menu pull-right" style="min-width: 310px;
+    z-index: 999999;
+    margin-right: 17px;
+    margin-top: -1px;">
+                    <li>
+                        <div style="min-height:70px">
+                            <div class="image-navbar-big" aria-haspopup="true" aria-expanded="false">
+                                <img ng-if="currentUserImage==null" src="content/images/nobody-image.jpg"
+                                     class="object-fit_scale-down-navbar-big"/>
+                                <img ng-if="currentUserImage!==null" src="{{currentUserImage}}"
+                                     class="object-fit_scale-down-navbar-big"/>
+                            </div>
+                            <div class="float-right margin-right-10" style="width: 198px">
+                                <div style="color:black;" class="margin-top-15 bold-font">
+                                    {{' '+companyUser.name +' '+ companyUser.lastname+' '+companyUser.secondlastname}}
+
+                                    <div style="font-size: 13px;margin-top: 5px">
+                                    <span style="color: #44b6ae;" ng-if="hideFilial==false"><i style="margin: 0 3px 4px 0px;
+    font-size: 19px;" class="material-icons material-icons-with-text">home</i>
+                                        Filial {{companyUser.house.housenumber}}</span>
+                                        <span ng-if="hideFilial==false">-</span> <span
+                                        style="color:#666">{{vm.account.login}}</span>
+                                    </div>
+                                </div>
+                                <div style="color:#a4aab2;">
+                                    {{contextLiving}}
+                                </div>
+                            </div>
+                        </div>
                     </li>
-                    <!-- END USER LOGIN DROPDOWN -->
-                    <!-- BEGIN QUICK SIDEBAR TOGGLER -->
-                    <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+                    <li role="separator" class="divider"></li>
+                    <li ui-sref="editProfile({id:user.id})" ng-show="isAdmin()"
+                        class="ng-hide">
+                        <a href="">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li has-authority="ROLE_USER">
+                        <a ng-click="vm.editMyInfoAsUser()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li has-authority="ROLE_MANAGER">
+                        <a ng-click="vm.editMyInfoAsManager()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    account_circle
+                                </i>
+                                Editar mi información
+                            </p>
+                        </a>
+                    </li>
+                    <li has-any-authority="ROLE_MANAGER,ROLE_USER,ROLE_ADMIN,ROLE_RH">
+                        <a ui-sref="password">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    vpn_key
+                                </i>
+                                Cambiar contraseña
+                            </p>
+                        </a>
+                    </li>
+                    <li role="separator" class="divider"></li>
 
-                    <!-- END QUICK SIDEBAR TOGGLER -->
+                    <li>
+                        <a ng-click="vm.logout()">
+                            <p>
+                                <i class="material-icons material-icons-with-text">
+                                    power_settings_new
+                                </i>
+                                Cerrar sesión
+                            </p>
+                        </a>
+                    </li>
                 </ul>
             </div>
-            <!-- END TOP NAVIGATION MENU -->
-        </div>
-        <!-- END HEADER INNER -->
-    </div>
-    </div>
-</div>
 
-<!--<style>-->
-<!--@-webkit-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@-moz-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@-o-keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--@keyframes loginBackground {-->
-    <!--0%{background-position:0% 4%}-->
-    <!--50%{background-position:100% 97%}-->
-    <!--100%{background-position:0% 4%}-->
-<!--}-->
-<!--</style>-->
+        </div>
+    </div>
+</md-toolbar>

@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.AccessDoor;
+import com.lighthouse.aditum.domain.Collection;
 import com.lighthouse.aditum.repository.AccessDoorRepository;
 import com.lighthouse.aditum.service.dto.AccessDoorDTO;
 import com.lighthouse.aditum.service.mapper.AccessDoorMapper;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;

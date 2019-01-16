@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "commonAreaSchedule" : {
+            "home": {
+                "title": "Common Area Schedules",
+                "createLabel": "Crear nuevo Common Area Schedule",
+                "createOrEditLabel": "Crear o editar Common Area Schedule"
+            },
+            "created": "Un nuevo Common Area Schedule ha sido creado con el identificador {{ param }}",
+            "updated": "Un Common Area Schedule ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Common Area Schedule ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Common Area Schedule {{ id }}?"
+            },
+            "detail": {
+                "title": "Common Area Schedule"
+            },
+            "lunes": "Lunes",
+            "martes": "Martes",
+            "miercoles": "Miercoles",
+            "jueves": "Jueves",
+            "viernes": "Viernes",
+            "sabado": "Sabado",
+            "domingo": "Domingo",
+            "commonAreaId": "Common Area Id"
+        }
+    }
+}

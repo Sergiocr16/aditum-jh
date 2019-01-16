@@ -1,0 +1,33 @@
+<div ng-cloak layout="column" class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>{{mainTitle}}</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit="vm.save()">
+                <div ng-model="vm.form">
+                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                <div layout-gt-xs="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Titulo</label>
+                        <input ng-model="vm.announcement.title" required>
+                    </md-input-container>
+                </div>
+                <div>
+                    <label class="md-block" style="color:rgba(0,0,0,0.38)">Descripción *</label>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <summernote  lang="es-ES" height="400" ng-model="vm.announcement.description"
+                                    required></summernote>
+                    </md-input-container>
+                </div>
+                <div layout="row" layout-align="end center" hide-sm hide-xs>
+                    <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+                    <md-button class="md-raised md-primary" ng-click="vm.saveAsSketch()" ng-disabled="form.$invalid">Guardar borrador</md-button>
+                    <md-button class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Publicar</md-button>
+                </div>
+                </div>
+            </form>
+        </div>
+    </md-content>
+</div>
+

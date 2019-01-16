@@ -1,0 +1,110 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2>Cuenta de junta directiva</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.save()">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="column" class="font-14 margin-bottom-20">
+                <p class=" gray-font">
+                    <b>Crear una cuenta de junta directiva</b>  permite a los miembros de una junta directiva del condominio visualizar y generar información importante del condominio.
+                </p>
+                <p class="gray-font">
+                    Para crear una cuenta de junta directiva debe ingresar un correo electrónico, usuario y una contraseña.
+                </p>
+                <p class="gray-font">
+                    * Únicamente se puede generar una cuenta de junta directiva por condominio.
+                </p>
+
+            </div>
+            <div layout="row" layout-xs="column" >
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Usuario</label>
+                        <input required  ng-model="vm.juntaDirectivaAccount.login" type="text">
+                    </md-input-container>
+
+
+
+                </div>
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Contraseña</label>
+                        <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.juntaDirectivaAccount.password" type="text" autocomplete="off"
+                                maxlength="20" class="{{vm.class}} md-input" required>
+                        <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
+                            <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
+                            </md-tooltip>
+                            remove_red_eye</i></md-icon>
+                    </md-input-container>
+
+
+                </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised" ng-disabled="form.$invalid " type="submit">
+                    Guardar
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+</div>
+
+<!--<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>-->
+
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myJuntaDirectivaAccountLabel" data-translate="aditumApp.juntaDirectivaAccount.home.createOrEditLabel">Create or edit a Junta Directiva Account</h4>-->
+    <!--</div>-->
+    <!--<div class="modal-body">-->
+        <!--<jhi-alert-error></jhi-alert-error>-->
+        <!--<div class="form-group" ng-show="vm.juntaDirectivaAccount.id">-->
+            <!--<label for="id" data-translate="global.field.id">ID</label>-->
+            <!--<input type="text" class="form-control" id="id" name="id"-->
+                    <!--ng-model="vm.juntaDirectivaAccount.id" readonly />-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="control-label" data-translate="aditumApp.juntaDirectivaAccount.email" for="field_email">Email</label>-->
+            <!--<input type="text" class="form-control" name="email" id="field_email"-->
+                    <!--ng-model="vm.juntaDirectivaAccount.email"-->
+                    <!--required/>-->
+            <!--<div ng-show="editForm.email.$invalid">-->
+                <!--<p class="help-block"-->
+                    <!--ng-show="editForm.email.$error.required" data-translate="entity.validation.required">-->
+                    <!--This field is required.-->
+                <!--</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.juntaDirectivaAccount.company" for="field_company">Company</label>-->
+            <!--<select class="form-control" id="field_company" name="company" ng-model="vm.juntaDirectivaAccount.companyId" ng-options="company.id as company.id for company in vm.companies"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.juntaDirectivaAccount.user" for="field_user">User</label>-->
+            <!--<select class="form-control" id="field_user" name="user" ng-model="vm.juntaDirectivaAccount.userId" ng-options="user.id as user.login for user in vm.users"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
+            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
+        <!--</button>-->
+        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
+            <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
+        <!--</button>-->
+    <!--</div>-->
+<!--</form>-->

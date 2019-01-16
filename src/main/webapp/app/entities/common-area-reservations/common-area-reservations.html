@@ -1,0 +1,95 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+
+    <div class="col-lg-12 col-md-12 " id="tableDatas">
+
+        <no-content ng-if="vm.commonAreaReservations.length == 0" icon="local_florist" text="No hay reservaciones pendientes"></no-content>
+
+        <div class="portlet-body hidden-xs">
+                 <div class="table-scrollable  gray-font" ng-if="vm.commonAreaReservations.length>0" style="border: 0px!important;">
+                    <table class=" table  table-hover tableMaterialDesign" style="font-size:13px;">
+                            <thead style="background-color: #fafafa;">
+                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                    <th class="text-center">Ver</th>
+                                    <th>Responsable</th>
+                                    <th class="text-center">Filial</th>
+                                    <th>Área común</th>
+                                    <th>Fecha reservado</th>
+                                    <th class="text-center" >Horario</th>
+                                    <th class="text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy:'initalDate'">
+
+                                    <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.common-area-reservations.reservationDetail({id:commonAreaReservations.id})"><i
+                                        class="material-icons">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
+                                        remove_red_eye</i></a></td>
+                                    <td>{{commonAreaReservations.residentName}}</td>
+                                    <td class="text-center">{{commonAreaReservations.houseNumber}}</td>
+                                    <td>{{commonAreaReservations.commonAreaName}}</td>
+                                    <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
+                                    <td class="text-center" >{{commonAreaReservations.schedule}}</td>
+                                    <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false">PENDIENTE</span></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                </div>
+                <div class="text-center" ng-if="vm.commonAreaReservations.length>0">
+                    <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+                    <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+                </div>
+        </div>
+        <div class="col-md-4 col-xs-12 col-sm-6 hidden-md hidden-sm hidden-lg no-padding residentDivContainerXs"
+             ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy:'initalDate'">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                     class="margin-bottom-10 residentCardContainer"
+                     md-theme-watch>
+                <md-card-title style="padding-bottom: 0px;">
+                    <md-card-title-text>
+                        <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{commonAreaReservations.commonAreaName}}</span>
+                        <span class="md-headline font-15 hidden-xs">{{commonArea.name}}</span>
+                        <span class="md-subhead" style="">Fecha reservación: {{commonAreaReservations.initalDate | date:'shortDate'}}</span>
+                        <span class="md-subhead" style="">Horario: {{commonAreaReservations.schedule}}</span>
+                        <span class="md-subhead" style="">Filial: {{commonAreaReservations.houseNumber}}</span>
+                    </md-card-title-text>
+                    <md-card-title-media>
+                        <div class="md-media-sm card-media"
+                             style="padding-top: 10px!important;">
+                            <img ng-if="commonAreaReservations.commonAreaPicture==null" src="content/images/noCommonArea-image.jpg" height="80"
+                                 width="80"/>
+                            <img ng-if="commonAreaReservations.commonAreaPicture" data-ng-src="{{'data:' + commonAreaReservations.commonAreapictureContentType + ';base64,' + commonAreaReservations.commonAreaPicture}}"
+                                 class="object-fit_scale-down-index"/>
+                        </div>
+
+                    </md-card-title-media>
+                </md-card-title>
+
+                <md-card-actions layout="row" layout-align="space-between center" class="no-margin-top">
+                    <div>
+
+                    </div>
+                    <div layout="row" layout-align="space-between center">
+                        <i class="material-icons" style="color:#999; cursor: pointer; padding-right: 10px;" ui-sref="common-area-administration.common-area-reservations.reservationDetail({id:commonAreaReservations.id})">
+                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                            </md-tooltip>
+                            remove_red_eye</i>
+
+                    </div>
+
+                </md-card-actions>
+            </md-card>
+
+        </div>
+    </div>
+    <md-button ui-sref="common-area-administration.newReservation" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nueva reservación</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>

@@ -52,6 +52,9 @@ height:659px !important;
 .text-right{
 	text-align: right;
 }
+.text-left{
+	text-align: left;
+}
 .pointer{
 	cursor: pointer;
 }
@@ -92,8 +95,21 @@ height:659px !important;
 	overflow-y: scroll;
 }
 
+.redBudget{
+color: #B22222;
+}
 
+.anualReportBudgetTitleBackground{
+    background-color:#E6E6E6;
+}
 
+.anualReportBudgetBackground{
+    background-color:#F2F2F2;
+}
+
+.greenBudget{
+color: #4F94CD;
+}
 .scroll{
 	overflow-y: scroll;
 }
@@ -291,6 +307,14 @@ height: 100%;
     padding-right: 15px !important;
 
 }
+.horizontal-padding-5{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+
+}
+.maintenanceReportField:focus{
+    outline:0;
+}
 .vertical-padding-20{
     padding-top: 12px !important;
     padding-bottom:12px !important;
@@ -300,6 +324,13 @@ height: 100%;
     margin: 0 !important;
 }
 
+#expandorCollapseAnualReport:hover{
+  text-decoration: underline;
+
+}
+.scroll-vertical{
+overflow-y: auto!important;
+}
 .no-padding {
     padding: 0px !important;
 }
@@ -310,9 +341,13 @@ height: 100%;
     padding-top: 0px !important;
 }
 .redBorder{
-    border-color: red !important;
+    border-color: #e65558 !important;
     border-weight: 2px !important;
     border-style:solid;
+}
+
+.menu-li-item{
+    font-weight:500; color:white;
 }
 .padding-5 {
      padding: 5px !important;
@@ -331,8 +366,9 @@ height: 100%;
 }
 
 .route-title {
-    margin: -24px -20px;
-    padding: 0px 15px !important;
+    margin-left: -15px;
+    margin-top: -15px;
+    margin-bottom: 0px!important;
 }
 
 #imgInp {
@@ -346,7 +382,12 @@ height: 100%;
     text-align: right;
 }
 
-
+.font-10 {
+    font-size: 10px !important;
+}
+.font-size-11 {
+    font-size: 11px !important;
+}
 .font-11 {
     font-size: 12px !important;
 }
@@ -357,6 +398,10 @@ height: 100%;
 
 .font-15{
   font-size: 15px !important;
+
+}
+.font-13{
+    font-size: 13px !important;
 
 }
 .font-14{
@@ -399,9 +444,21 @@ height: 100%;
 .margin-top-15{
     margin-top: 15px !important;
 }
+.margin-top-5{
+    margin-top: 5px !important;
+}
 .margin-top-20{
     margin-top: 20px !important;
 }
+
+.bs-example{
+    	margin: 200px 150px 0;
+    }
+    .popover-title .close{
+        position: relative;
+        bottom: 3px;
+    }
+
 .margin-top-25{
     margin-top: 25px !important;
 }
@@ -455,7 +512,6 @@ height: 100%;
   background-color: #F5F5F5 ;
 
 }
-
 #loginCodeWelcomeText{
 font-size:70px;
 }
@@ -471,6 +527,11 @@ color: #009688;
   min-height: 448px;
 
 }
+.radio-green [type="radio"]:checked+label:after {
+  border-color: #00C851;
+  background-color: #00C851;
+}
+
 .bold{
   font-weight: bold;
 }
@@ -479,6 +540,26 @@ color: #C62828;
 
 }
 
+.accountStatusBtn{
+    margin-left:0px!important;
+    border:1px solid #f2f2f2;
+
+
+
+}
+
+.accountStatusBtnDesactive{
+  background-color:white;
+   color:#1caf9a!important;
+
+
+}
+.accountStatusBtnActive{
+    background-color: #f9f9f9 !important;;
+    color:#424242!important;
+
+
+}
 .red-font{
 	color: #C62828 !important;
 }
@@ -488,6 +569,16 @@ color: #C62828;
  background-color:  #ff3333;
  min-height: 500px;
 
+}
+
+.budgetReportBorderTop{
+    border-top:1px solid #4F94CD;
+}
+.budgetReportBorderleft{
+    border-left:1px solid #4F94CD;
+}
+.budgetReportBorderRight{
+    border-left:1px solid #4F94CD;
 }
 #loadingContainer {
 
@@ -528,7 +619,7 @@ color: #C62828;
 	float: right !important;
 }
 .green-font{
-  color: green !important;
+  color: #37ada2!important;
 }
 #error-image{
 background-image: url("../../content/images/error-icon-4.png");
@@ -646,6 +737,17 @@ margin: 0 auto;
     box-sizing: border-box;
 
 }
+.budgetTableHeader{
+    font-size:11px;
+    font-weight:normal;
+    padding:4px !important;
+    text-align:center;
+}
+
+.residentDivHouseAdministration:hover{
+    background-color:rgb(244, 244, 244);
+}
+
 .container{
     /*height: 100vh;*/
     width: 100%;
@@ -851,7 +953,13 @@ li.active span.round-tabs.six{
 .ballsInCodePage{
 
 }
+.redfont{
+    color:red;
+}
 
+.borderRed{
+    border-color:red;
+}
 .btn.green{
     background-color:#5cb85c;
     /*border: 2px solid #5cb85c;*/
@@ -862,6 +970,10 @@ li.active span.round-tabs.six{
 }
 #donerResidentsContainer{
     padding-top: 15px!important;
+}
+
+.commonAreaDivResidentView:hover{
+    background-color: rgba(235,235,235,0.57);
 }
 
 @media( max-width : 585px ){
@@ -925,3 +1037,5 @@ li.active span.round-tabs.six{
     from, to { border-color: transparent }
     50% { border-color: orange }
 }
+
+

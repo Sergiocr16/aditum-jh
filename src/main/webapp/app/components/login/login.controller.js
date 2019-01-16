@@ -1,32 +1,30 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state','Principal', '$timeout', 'Auth','MultiCompany','House','pdfDelegate'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods','Modal'];
 
-    function LoginController ($rootScope, $state,Principal, $timeout, Auth,MultiCompany, House,pdfDelegate) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal) {
 
-
-
-
-    angular.element(document).ready(function () {
-         $('body').removeClass("gray");
-             $('.carousel').fadeIn("slow");
-                   $('.carousel').carousel({
-                       intervals: 2000
-                   });
-        });
+        //
+        // angular.element(document).ready(function () {
+        //     $('body').removeClass("gray");
+        //     $('.carousel').fadeIn("slow");
+        //     $('.carousel').carousel({
+        //         intervals: 2000
+        //     });
+        // });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
-    vm.pdfUrl = 'content/manuals/manualusuario.pdf';
-    vm.loadNewFile = function(url) {
-      pdfDelegate
-        .$getByHandle('my-pdf-container')
-        .load(url);
-    };
+        vm.pdfUrl = 'content/manuals/manualusuario.pdf';
+        // vm.loadNewFile = function (url) {
+        //     pdfDelegate
+        //         .$getByHandle('my-pdf-container')
+        //         .load(url);
+        // };
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
@@ -44,9 +42,11 @@
         vm.requestResetPassword = requestResetPassword;
         vm.username = null;
 
-        $timeout(function (){angular.element('#username').focus();});
+        $timeout(function () {
+            angular.element('#username').focus();
+        });
 
-        function cancel () {
+        function cancel() {
             vm.credentials = {
                 username: null,
                 password: null,
@@ -55,11 +55,12 @@
             vm.authenticationError = false;
 //            $uibModalInstance.dismiss('cancel');
         }
-        function showLoginHelp() {
 
-            toastr["info"]("Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac");
+        function showLoginHelp() {
+      Modal.dialog("Nombre de usuario","Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac","¡Entendido!")
         }
-        function login (event) {
+
+        function login(event) {
             event.preventDefault();
             Auth.login({
                 username: vm.username,
@@ -68,53 +69,69 @@
             }).then(function (data) {
 
                 vm.authenticationError = false;
-                   Principal.identity().then(function(account){
+                Principal.identity().then(function (account) {
                     $rootScope.menu = true;
                     $rootScope.showLogin = false;
                     $rootScope.inicieSesion = true;
-                switch (account.authorities[0]){
-                     case "ROLE_ADMIN":
-                       setTimeout(function(){   $state.go('company');}, 300);
-                      break;
-                     case "ROLE_MANAGER":
-                       MultiCompany.getCurrentUserCompany().then(function(data){
-                       $rootScope.companyUser = data;
-                      if(data.companies.length>1 && $rootScope.companyId == undefined){
-                      $rootScope.showSelectCompany = true;
-                      vm.backgroundSelectCompany = true;
-                           setTimeout(function(){$state.go('dashboard.selectCompany');},300)
-                      }else{
-                      $rootScope.showSelectCompany = false;
-                       $rootScope.companyId = data.companies[0].id;
-                       console.log(data.companies[0].id)
-                       vm.backgroundSelectCompany = true;
-                        setTimeout(function(){$state.go('dashboard');},300)
-                      }
-                     })
-                     break;
-                     case "ROLE_OFFICER":
-                     setTimeout(function(){   $state.go('main-access-door');}, 300);
-                     break;
-                      case "ROLE_USER":
-                        MultiCompany.getCurrentUserCompany().then(function(data){
-                         House.get({id: data.houseId},function(house){
-                        vm.contextLiving = " / Casa " + house.housenumber;
-                                                       $rootScope.contextLiving = vm.contextLiving;
-                                                       $rootScope.companyId = data.companyId;
-                                                       $rootScope.currentUserImage = data.image_url;
-                                                       $rootScope.companyUser = data;
-                         setTimeout(function(){   $state.go('residentByHouse');}, 300);
-                        })
-     })
-                     break;
-                    case "ROLE_RH":
-                     setTimeout(function(){  $rootScope.active = "company-rh";  $state.go('company-rh');}, 300);
-                    break;
-                 }
-                  if ($state.current.name === 'register' || $state.current.name === 'activate' ||
-                      $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
-                      $state.go('home');    }
-                })
+                    switch (account.authorities[0]) {
+                        case "ROLE_ADMIN":
+                            setTimeout(function () {
+                                $state.go('company');
+                            }, 300);
+                            break;
+                        case "ROLE_MANAGER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                    $rootScope.showSelectCompany = false;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                                    $rootScope.companyId = data.companies[0].id;
+                                    vm.backgroundSelectCompany = true;
+                                    $state.go('dashboard');
+                            })
+                            break;
+                        case "ROLE_OFFICER":
+                            setTimeout(function () {
+                                $state.go('main-access-door');
+                            }, 300);
+                            break;
+                        case "ROLE_USER":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                House.get({id: data.houseId}, function (house) {
+                                    vm.contextLiving = " / Casa " + house.housenumber;
+                                    $rootScope.contextLiving = vm.contextLiving;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                    $rootScope.companyId = data.companyId;
+                                    $rootScope.currentUserImage = data.image_url;
+                                    $rootScope.companyUser = data;
+                                    $localStorage.houseSelected = house;
+                                    setTimeout(function () {
+                                        $state.go('announcement-user');
+                                    }, 300);
+                                })
+                            })
+                            break;
+                        case "ROLE_RH":
+                            setTimeout(function () {
+                                $rootScope.active = "company-rh";
+                                $state.go('company-rh');
+                            }, 300);
+                            break;
+                        case "ROLE_JD":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $rootScope.companyUser = data;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
+                                $rootScope.companyId = data.companies[0].id;
+                                vm.backgroundSelectCompany = true;
+                                $state.go('dashboard');
+                            });
+                            break;
+                    }
+                    if ($state.current.name === 'register' || $state.current.name === 'activate' ||
+                        $state.current.name === 'finishReset' || $state.current.name === 'requestReset') {
+                        $state.go('home');
+                    }
+                });
 
 
                 $rootScope.$broadcast('authenticationSuccess');
@@ -128,7 +145,8 @@
                 }
             }).catch(function (a) {
                 vm.authenticationError = true;
-                toastr["error"]("Credenciales inválidos o cuenta deshabilitada.");
+                Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
+
             });
         }
 
@@ -137,7 +155,7 @@
 //            $state.go('register');
 //        }
 
-        function requestResetPassword () {
+        function requestResetPassword() {
             $state.go('requestReset');
         }
     }

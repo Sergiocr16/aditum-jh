@@ -5,11 +5,14 @@
         .module('aditumApp')
         .controller('HouseController', HouseController);
 
-    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods'];
+    HouseController.$inject = ['$state','House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','Principal','$rootScope','CommonMethods','Modal','globalCompany'];
 
-    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods ) {
-    $rootScope.active = "houses";
+    function HouseController($state,House, ParseLinks, AlertService, paginationConstants, pagingParams,Principal,$rootScope,CommonMethods,Modal,globalCompany ) {
+        $rootScope.active = "houses";
+
         var vm = this;
+        $rootScope.mainTitle = "Filiales";
+        vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
@@ -17,16 +20,22 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.estado = "";
-        vm.ocultarACondos = false;
-        setTimeout(function(){loadAll();
-        if($rootScope.companyId>2){
         vm.ocultarACondos = true;
+        vm.estadoTemporal = "2";
+        vm.setEstadoView = function (val) {
+            if(val==2){
+                vm.estado = "";
+            }else{
+                vm.estado = val;
+            }
+
         }
-        },1500)
+        loadAll();
+
 
         vm.editHouse = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
-                    $state.go('house.edit', {
+                    $state.go('houses-tabs.edit', {
                         id: encryptedId
                     })
         }
@@ -35,7 +44,7 @@
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: $rootScope.companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
             function sort() {
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
@@ -49,18 +58,14 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                   angular.forEach(data,function(value,key){
+                  value.housenumber = parseInt(value.housenumber);
                       if(value.housenumber==9999){
                       value.housenumber="Oficina"
                       }
                   })
                 vm.houses = data;
                 vm.page = pagingParams.page;
-                  setTimeout(function() {
-                            $("#loadingIcon").fadeOut(300);
-                  }, 400)
-                   setTimeout(function() {
-                       $("#tableData").fadeIn('slow');
-                   },700 )
+                vm.isReady = true;
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -84,10 +89,10 @@
 
        vm.showKeys = function(house_number, securityKey, emergencyKey) {
             if (securityKey == null || emergencyKey == null || securityKey == "" || emergencyKey == "" ) {
-                toastr["error"]("Esta casa aún no tiene claves de seguridad asignadas.");
+                Modal.toast("Esta filial aún no tiene claves de seguridad asignadas.");
             } else {
                 bootbox.dialog({
-                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de seguridad: <span class="font-20 bold" id="security_key">1134314</span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de emergencia: <span class="font-20 bold" id="emergency_key">1134314</span></h1></div>',
+                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Filial número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de seguridad: <span class="font-20 bold" id="security_key">1134314</span></h1></div> <div class="text-center gray-font font-20"> <h1 class="font-20">Clave de emergencia: <span class="font-20 bold" id="emergency_key">1134314</span></h1></div>',
                     closeButton: false,
                     buttons: {
                         confirm: {
@@ -104,12 +109,12 @@
        vm.showLoginCode = function(house_number, codeStatus, loginCode) {
              var estado = "";
             if (loginCode == null) {
-                toastr["error"]("Esta casa aún no tiene un código de iniciación asignado.");
+                Modal.toast("Esta filial aún no tiene claves de seguridad asignadas.");
             } else {
 
                 if(codeStatus==false || codeStatus ==0){estado = 'No activada'} else { estado = "Activada"};
                 bootbox.dialog({
-                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Casa número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Código de iniciación: <span class="font-15 bold" id="login_code">1134314</span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Estado: <span class="font-15 bold" id="code_status">1134314</span></h1></div>',
+                    message: '<div class="text-center gray-font font-20"> <h1 class="font-30">Filial número <span class="font-30" id="key_id_house"></span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Código de iniciación: <span class="font-15 bold" id="login_code">1134314</span></h1></div> <div class="text-center gray-font font-15"> <h1 class="font-20">Estado: <span class="font-15 bold" id="code_status">1134314</span></h1></div>',
                     closeButton: false,
                     buttons: {
                         confirm: {

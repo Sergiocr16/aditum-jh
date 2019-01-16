@@ -25,7 +25,7 @@ public class BrandResource {
     private final Logger log = LoggerFactory.getLogger(BrandResource.class);
 
     private static final String ENTITY_NAME = "brand";
-        
+
     private final BrandService brandService;
 
     public BrandResource(BrandService brandService) {

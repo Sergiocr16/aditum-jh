@@ -1,0 +1,26 @@
+{
+    "aditumApp": {
+        "announcement" : {
+            "home": {
+                "title": "Announcements",
+                "createLabel": "Crear nuevo Announcement",
+                "createOrEditLabel": "Crear o editar Announcement"
+            },
+            "created": "Un nuevo Announcement ha sido creado con el identificador {{ param }}",
+            "updated": "Un Announcement ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Announcement ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Announcement {{ id }}?"
+            },
+            "detail": {
+                "title": "Announcement"
+            },
+            "title": "Title",
+            "publishingDate": "Publishing Date",
+            "description": "Description",
+            "status": "Status",
+            "deleted": "Deleted",
+            "company": "Company"
+        }
+    }
+}

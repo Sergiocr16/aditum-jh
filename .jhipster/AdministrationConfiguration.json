@@ -1,0 +1,90 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "squareMetersPrice",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "folioSerie",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "folioNumber",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "daysTobeDefaulter",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasSubcharges",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "subchargePercentage",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "subchargeAmmount",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "daysToSendEmailBeforeBeDefaulter",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "usingSubchargePercentage",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "bookCommonArea",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "incomeStatement",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "monthlyIncomeStatement",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "egressReport",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "incomeFolio",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "egressFolio",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "egressFolioSerie",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "egressFolioNumber",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180328213553",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "administration_configuration",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pager"
+}

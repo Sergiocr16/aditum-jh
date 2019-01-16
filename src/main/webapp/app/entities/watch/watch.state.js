@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/turno/{companyId}/?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH'],
+                authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH','ROLE_JD'],
             },
             views: {
                 'content@': {
@@ -94,7 +94,7 @@
             parent: 'turno',
             url: '/watch/{id}',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
             views: {
                 'content@': {
@@ -189,30 +189,6 @@
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
-                    resolve: {
-                        entity: ['Watch', function(Watch) {
-                            return Watch.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('turno', null, { reload: 'turno' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
-        .state('turno.delete', {
-            parent: 'turno',
-            url: '/{id}/delete',
-            data: {
-                authorities: ['ROLE_MANAGER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/watch/watch-delete-dialog.html',
-                    controller: 'WatchDeleteController',
-                    controllerAs: 'vm',
-                    size: 'md',
                     resolve: {
                         entity: ['Watch', function(Watch) {
                             return Watch.get({id : $stateParams.id}).$promise;

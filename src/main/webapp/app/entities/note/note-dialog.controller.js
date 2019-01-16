@@ -1,53 +1,54 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('NoteDialogController', NoteDialogController);
 
-    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Note','Principal','WSNote','$rootScope','$state'];
+    NoteDialogController.$inject = ['$timeout', '$scope', '$stateParams', 'Note', 'Principal', 'WSNote', '$rootScope', '$state', 'globalCompany', 'Modal'];
 
-    function NoteDialogController ($timeout, $scope, $stateParams, Note,Principal,WSNote,$rootScope,$state) {
+    function NoteDialogController($timeout, $scope, $stateParams, Note, Principal, WSNote, $rootScope, $state, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         $rootScope.active = "reportHomeService";
-        function populateValidNote(){
-        vm.note.creationdate = moment(new Date()).format();
-        vm.note.companyId = $rootScope.companyId;
-        vm.note.notetype = 1;
-        vm.note.houseId = $rootScope.companyUser.houseId;
+        $rootScope.mainTitle = "Reportar servicio a domicilio";
+
+        function populateValidNote() {
+            vm.note.creationdate = moment(new Date()).format();
+            vm.note.companyId = globalCompany.getId();
+            vm.note.notetype = 1;
+            vm.note.houseId = $rootScope.companyUser.houseId;
         }
 
-         angular.element(document).ready(function(){
-                      setTimeout(function() {
-                                $("#loadingIcon").fadeOut(300);
-                      }, 400)
-                       setTimeout(function() {
-                           $("#all").fadeIn('slow');
-                       },900 )
 
-         })
-
-        function save () {
+        function save() {
+            Modal.confirmDialog("¿Está seguro que desea registrar este servicio a domicilio?","",function(){
             vm.isSaving = true;
+            Modal.showLoadingBar();
             if (vm.note.id !== null) {
-            populateValidNote()
-            WSNote.sendActivity(vm.note,onSaveSuccess);
-            toastr['success']("Has reportado el servicio a domicilio correctamente");
-            vm.note = undefined;
-            $state.go('residentByHouse');
+                populateValidNote()
+                WSNote.sendActivity(vm.note, onSaveSuccess);
+                Modal.hideLoadingBar();
+
+                Modal.toast("Has reportado el servicio a domicilio correctamente");
+                vm.note = undefined;
+                $state.go('residentByHouse');
             }
+            })
         }
 
-        function onSaveSuccess (result) {
-        console.log('a')
+        function onSaveSuccess(result) {
             $scope.$emit('aditumApp:noteUpdate', result);
 
             vm.isSaving = false;
         }
 
-        function onSaveError () {
+        function onSaveError() {
             vm.isSaving = false;
         }
 
