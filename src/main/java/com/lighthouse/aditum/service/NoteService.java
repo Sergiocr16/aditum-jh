@@ -44,9 +44,9 @@ public class NoteService {
      */
     public NoteDTO save(NoteDTO noteDTO) {
         log.debug("Request to save Note : {}", noteDTO);
-        Note note = noteMapper.noteDTOToNote(noteDTO);
+        Note note = noteMapper.toEntity(noteDTO);
         note = noteRepository.save(note);
-        NoteDTO result = noteMapper.noteToNoteDTO(note);
+        NoteDTO result = noteMapper.toDto(note);
         result.setHouse(houseService.findOne(result.getHouseId()));
         return result;
     }
@@ -60,9 +60,9 @@ public class NoteService {
     @Transactional(readOnly = true)
     public Page<NoteDTO> findAll(Pageable pageable,Long companyId) {
         log.debug("Request to get all Notes");
-        Page<Note> result = noteRepository.findByCompanyId(pageable, companyId);
+        Page<Note> result = noteRepository.findByCompanyIdAndDeleted(pageable, companyId, 0);
         return result.map(note -> {
-            NoteDTO homeService = noteMapper.noteToNoteDTO(note);
+            NoteDTO homeService = noteMapper.toDto(note);
             homeService.setHouse(this.houseService.findOne(homeService.getHouseId()));
             return homeService;
         });
@@ -78,7 +78,7 @@ public class NoteService {
     public NoteDTO findOne(Long id) {
         log.debug("Request to get Note : {}", id);
         Note note = noteRepository.findOne(id);
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
         return noteDTO;
     }
 
@@ -89,6 +89,8 @@ public class NoteService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Note : {}", id);
-        noteRepository.delete(id);
+        Note note = noteMapper.toEntity(this.findOne(id));
+        note.setDeleted(1);
+        noteRepository.save(note);
     }
 }

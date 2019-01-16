@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
@@ -49,7 +49,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="enable" type="bit">
+            <column name="jhi_enable" type="bit">
                 <constraints nullable="true" />
             </column>
 
@@ -70,6 +70,10 @@
             </column>
 
             <column name="direction" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="deleted" type="integer">
                 <constraints nullable="true" />
             </column>
 

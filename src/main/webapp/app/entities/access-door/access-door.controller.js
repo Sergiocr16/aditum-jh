@@ -634,7 +634,7 @@
             }
         });
 
-        $timeout(function retry() {
+        $rootScope.timerAd =  $timeout(function retry() {
             Offline.check();
             $timeout(retry, delay);
         }, delay);

@@ -67,6 +67,9 @@ public class Resident implements Serializable {
     @Column(name = "principal_contact")
     private Integer principalContact;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+    
     @OneToOne
     @JoinColumn(unique = true)
     private User user;
@@ -331,5 +334,13 @@ public class Resident implements Serializable {
             ", type='" + getType() + "'" +
             ", principalContact='" + getPrincipalContact() + "'" +
             "}";
+    }
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
     }
 }

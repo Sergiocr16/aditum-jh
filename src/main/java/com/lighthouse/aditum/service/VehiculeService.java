@@ -47,9 +47,10 @@ public class VehiculeService {
      */
     public VehiculeDTO save(VehiculeDTO vehiculeDTO) {
         log.debug("Request to save Vehicule : {}", vehiculeDTO);
-        Vehicule vehicule = vehiculeMapper.vehiculeDTOToVehicule(vehiculeDTO);
+        Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
         vehicule = vehiculeRepository.save(vehicule);
-        VehiculeDTO result = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        vehicule.setDeleted(0);
+        VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;
     }
 
@@ -62,9 +63,10 @@ public class VehiculeService {
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findAll(Long companyId) {
         log.debug("Request to get all Vehicules");
-        List<Vehicule> result = vehiculeRepository.findByCompanyId(companyId);
+        List<Vehicule> result = vehiculeRepository.findByCompanyIdAndDeleted(companyId,0);
+ 
         return new PageImpl<>(result).map(vehicule -> {
-            VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+            VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
             vehiculeDTO.setHouse(houseService.findOne(vehiculeDTO.getHouseId()));
             return vehiculeDTO;
         });
@@ -80,28 +82,28 @@ public class VehiculeService {
     public VehiculeDTO findOne(Long id) {
         log.debug("Request to get Vehicule : {}", id);
         Vehicule vehicule = vehiculeRepository.findOne(id);
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
         return vehiculeDTO;
     }
 
     @Transactional(readOnly = true)
     public VehiculeDTO findOneByCompanyAndPlate(Long id,String licensePlate) {
         log.debug("Request to get Vehicule : {}", id);
-        Vehicule vehicule = vehiculeRepository.findOneByCompanyIdAndLicenseplate(id,licensePlate);
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        Vehicule vehicule = vehiculeRepository.findOneByCompanyIdAndLicenseplateAndDeleted(id,licensePlate,0);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
         return vehiculeDTO;
     }
 
     @Transactional(readOnly = true)
     public Integer enableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  vehiculeRepository.countByEnabledAndCompanyId(1,companyId);
+        return  vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(1,companyId,0);
     }
 
     @Transactional(readOnly = true)
     public Integer disableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  vehiculeRepository.countByEnabledAndCompanyId(0,companyId);
+        return  vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(0,companyId,0);
     }
 
     /**
@@ -111,35 +113,37 @@ public class VehiculeService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Vehicule : {}", id);
-        vehiculeRepository.delete(id);
+        Vehicule vehicule = vehiculeMapper.toEntity(this.findOne(id));
+        vehicule.setDeleted(1);
+        vehiculeRepository.save(vehicule);
     }
 
 
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findEnabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyId(1,companyId);
-        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(1,companyId,0);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
     }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabled(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyId(0,companyId);
-        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(0,companyId,0);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findEnabledByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(1,houseId);
-        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(1,houseId,0);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabledByHouse(Pageable pageable,Long houseId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseId(0,houseId);
-        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.vehiculeToVehiculeDTO(vehicule));
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(0,houseId,0);
+        return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
 

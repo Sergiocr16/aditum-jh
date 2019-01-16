@@ -55,6 +55,9 @@ public class VehiculeResourceIntTest {
     private static final String DEFAULT_TYPE = "AAAAAAAAAA";
     private static final String UPDATED_TYPE = "BBBBBBBBBB";
 
+    private static final Integer DEFAULT_DELETED = 1;
+    private static final Integer UPDATED_DELETED = 2;
+
     @Autowired
     private VehiculeRepository vehiculeRepository;
 
@@ -98,11 +101,12 @@ public class VehiculeResourceIntTest {
      */
     public static Vehicule createEntity(EntityManager em) {
         Vehicule vehicule = new Vehicule()
-                .licenseplate(DEFAULT_LICENSEPLATE)
-                .brand(DEFAULT_BRAND)
-                .color(DEFAULT_COLOR)
-                .enabled(DEFAULT_ENABLED)
-                .type(DEFAULT_TYPE);
+            .licenseplate(DEFAULT_LICENSEPLATE)
+            .brand(DEFAULT_BRAND)
+            .color(DEFAULT_COLOR)
+            .enabled(DEFAULT_ENABLED)
+            .type(DEFAULT_TYPE)
+            .deleted(DEFAULT_DELETED);
         return vehicule;
     }
 
@@ -117,8 +121,7 @@ public class VehiculeResourceIntTest {
         int databaseSizeBeforeCreate = vehiculeRepository.findAll().size();
 
         // Create the Vehicule
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
-
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
         restVehiculeMockMvc.perform(post("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(vehiculeDTO)))
@@ -133,6 +136,7 @@ public class VehiculeResourceIntTest {
         assertThat(testVehicule.getColor()).isEqualTo(DEFAULT_COLOR);
         assertThat(testVehicule.getEnabled()).isEqualTo(DEFAULT_ENABLED);
         assertThat(testVehicule.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testVehicule.getDeleted()).isEqualTo(DEFAULT_DELETED);
     }
 
     @Test
@@ -141,14 +145,13 @@ public class VehiculeResourceIntTest {
         int databaseSizeBeforeCreate = vehiculeRepository.findAll().size();
 
         // Create the Vehicule with an existing ID
-        Vehicule existingVehicule = new Vehicule();
-        existingVehicule.setId(1L);
-        VehiculeDTO existingVehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(existingVehicule);
+        vehicule.setId(1L);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restVehiculeMockMvc.perform(post("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(existingVehiculeDTO)))
+            .content(TestUtil.convertObjectToJsonBytes(vehiculeDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Alice in the database
@@ -164,7 +167,7 @@ public class VehiculeResourceIntTest {
         vehicule.setLicenseplate(null);
 
         // Create the Vehicule, which fails.
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
 
         restVehiculeMockMvc.perform(post("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -183,7 +186,7 @@ public class VehiculeResourceIntTest {
         vehicule.setBrand(null);
 
         // Create the Vehicule, which fails.
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
 
         restVehiculeMockMvc.perform(post("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -202,7 +205,7 @@ public class VehiculeResourceIntTest {
         vehicule.setColor(null);
 
         // Create the Vehicule, which fails.
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
 
         restVehiculeMockMvc.perform(post("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -228,7 +231,8 @@ public class VehiculeResourceIntTest {
             .andExpect(jsonPath("$.[*].brand").value(hasItem(DEFAULT_BRAND.toString())))
             .andExpect(jsonPath("$.[*].color").value(hasItem(DEFAULT_COLOR.toString())))
             .andExpect(jsonPath("$.[*].enabled").value(hasItem(DEFAULT_ENABLED)))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].deleted").value(hasItem(DEFAULT_DELETED)));
     }
 
     @Test
@@ -246,7 +250,8 @@ public class VehiculeResourceIntTest {
             .andExpect(jsonPath("$.brand").value(DEFAULT_BRAND.toString()))
             .andExpect(jsonPath("$.color").value(DEFAULT_COLOR.toString()))
             .andExpect(jsonPath("$.enabled").value(DEFAULT_ENABLED))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
+            .andExpect(jsonPath("$.deleted").value(DEFAULT_DELETED));
     }
 
     @Test
@@ -267,12 +272,13 @@ public class VehiculeResourceIntTest {
         // Update the vehicule
         Vehicule updatedVehicule = vehiculeRepository.findOne(vehicule.getId());
         updatedVehicule
-                .licenseplate(UPDATED_LICENSEPLATE)
-                .brand(UPDATED_BRAND)
-                .color(UPDATED_COLOR)
-                .enabled(UPDATED_ENABLED)
-                .type(UPDATED_TYPE);
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(updatedVehicule);
+            .licenseplate(UPDATED_LICENSEPLATE)
+            .brand(UPDATED_BRAND)
+            .color(UPDATED_COLOR)
+            .enabled(UPDATED_ENABLED)
+            .type(UPDATED_TYPE)
+            .deleted(UPDATED_DELETED);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(updatedVehicule);
 
         restVehiculeMockMvc.perform(put("/api/vehicules")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -288,6 +294,7 @@ public class VehiculeResourceIntTest {
         assertThat(testVehicule.getColor()).isEqualTo(UPDATED_COLOR);
         assertThat(testVehicule.getEnabled()).isEqualTo(UPDATED_ENABLED);
         assertThat(testVehicule.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testVehicule.getDeleted()).isEqualTo(UPDATED_DELETED);
     }
 
     @Test
@@ -296,7 +303,7 @@ public class VehiculeResourceIntTest {
         int databaseSizeBeforeUpdate = vehiculeRepository.findAll().size();
 
         // Create the Vehicule
-        VehiculeDTO vehiculeDTO = vehiculeMapper.vehiculeToVehiculeDTO(vehicule);
+        VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restVehiculeMockMvc.perform(put("/api/vehicules")
@@ -327,7 +334,40 @@ public class VehiculeResourceIntTest {
     }
 
     @Test
+    @Transactional
     public void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(Vehicule.class);
+        Vehicule vehicule1 = new Vehicule();
+        vehicule1.setId(1L);
+        Vehicule vehicule2 = new Vehicule();
+        vehicule2.setId(vehicule1.getId());
+        assertThat(vehicule1).isEqualTo(vehicule2);
+        vehicule2.setId(2L);
+        assertThat(vehicule1).isNotEqualTo(vehicule2);
+        vehicule1.setId(null);
+        assertThat(vehicule1).isNotEqualTo(vehicule2);
+    }
+
+    @Test
+    @Transactional
+    public void dtoEqualsVerifier() throws Exception {
+        TestUtil.equalsVerifier(VehiculeDTO.class);
+        VehiculeDTO vehiculeDTO1 = new VehiculeDTO();
+        vehiculeDTO1.setId(1L);
+        VehiculeDTO vehiculeDTO2 = new VehiculeDTO();
+        assertThat(vehiculeDTO1).isNotEqualTo(vehiculeDTO2);
+        vehiculeDTO2.setId(vehiculeDTO1.getId());
+        assertThat(vehiculeDTO1).isEqualTo(vehiculeDTO2);
+        vehiculeDTO2.setId(2L);
+        assertThat(vehiculeDTO1).isNotEqualTo(vehiculeDTO2);
+        vehiculeDTO1.setId(null);
+        assertThat(vehiculeDTO1).isNotEqualTo(vehiculeDTO2);
+    }
+
+    @Test
+    @Transactional
+    public void testEntityFromId() {
+        assertThat(vehiculeMapper.fromId(42L).getId()).isEqualTo(42);
+        assertThat(vehiculeMapper.fromId(null)).isNull();
     }
 }

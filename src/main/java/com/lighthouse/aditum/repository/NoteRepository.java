@@ -13,5 +13,5 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface NoteRepository extends JpaRepository<Note,Long> {
-    Page<Note> findByCompanyId(Pageable pageable, Long companyId);
+    Page<Note> findByCompanyIdAndDeleted(Pageable pageable, Long companyId, Integer deleted);
 }

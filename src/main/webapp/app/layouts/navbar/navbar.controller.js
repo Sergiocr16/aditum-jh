@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor'];
+    NavbarController.$inject = ['$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor'];
 
-    function NavbarController(CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor) {
+    function NavbarController($timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -1390,7 +1390,8 @@
             Principal.identity().then(function (account) {
                 switch (account.authorities[0]) {
                     case "ROLE_OFFICER":
-                        unsubscribe()
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
                         break;
                 }
             });
@@ -1548,16 +1549,14 @@
             })
         }
 
-        setTimeout(function () {
-            Principal.identity().then(function (account) {
-                if (account !== null) {
-                    $rootScope.companyUser = companyUser;
-                    vm.getAcount();
-                }
-            })
+        Principal.identity().then(function (account) {
+            if (account !== null) {
+                $rootScope.companyUser = companyUser;
+                vm.getAcount();
+            }
         })
-        var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
 
+        var subLogin = $scope.$on('authenticationSuccess', vm.getAcount);
 
         function login() {
             collapseNavbar();

@@ -95,6 +95,10 @@
         {
             "fieldName": "principalContact",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20170228214136",

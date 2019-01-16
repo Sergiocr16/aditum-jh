@@ -14,14 +14,14 @@ public interface NoteMapper {
 
     @Mapping(source = "house.id", target = "houseId")
     @Mapping(source = "company.id", target = "companyId")
-    NoteDTO noteToNoteDTO(Note note);
+    NoteDTO toDto(Note note);
 
     List<NoteDTO> notesToNoteDTOs(List<Note> notes);
 
     @Mapping(source = "houseId", target = "house")
     @Mapping(source = "companyId", target = "company")
 
-    Note noteDTOToNote(NoteDTO noteDTO);
+    Note toEntity(NoteDTO noteDTO);
 
     List<Note> noteDTOsToNotes(List<NoteDTO> noteDTOs);
 

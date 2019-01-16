@@ -18,6 +18,7 @@
             "description": "Description",
             "notetype": "Notetype",
             "creationdate": "Creationdate",
+            "deleted": "Deleted",
             "house": "House",
             "company": "Company"
         }

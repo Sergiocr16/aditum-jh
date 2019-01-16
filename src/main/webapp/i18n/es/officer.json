@@ -27,6 +27,7 @@
             "fechanacimiento": "Fechanacimiento",
             "phonenumber": "Phonenumber",
             "direction": "Direction",
+            "deleted": "Deleted",
             "company": "Company"
         }
     }

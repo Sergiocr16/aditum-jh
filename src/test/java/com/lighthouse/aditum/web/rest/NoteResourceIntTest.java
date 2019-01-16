@@ -114,7 +114,7 @@ public class NoteResourceIntTest {
         int databaseSizeBeforeCreate = noteRepository.findAll().size();
 
         // Create the Note
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
 
         restNoteMockMvc.perform(post("/api/notes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -138,7 +138,7 @@ public class NoteResourceIntTest {
         // Create the Note with an existing ID
         Note existingNote = new Note();
         existingNote.setId(1L);
-        NoteDTO existingNoteDTO = noteMapper.noteToNoteDTO(existingNote);
+        NoteDTO existingNoteDTO = noteMapper.toDto(existingNote);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restNoteMockMvc.perform(post("/api/notes")
@@ -159,7 +159,7 @@ public class NoteResourceIntTest {
         note.setDescription(null);
 
         // Create the Note, which fails.
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
 
         restNoteMockMvc.perform(post("/api/notes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -178,7 +178,7 @@ public class NoteResourceIntTest {
         note.setNotetype(null);
 
         // Create the Note, which fails.
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
 
         restNoteMockMvc.perform(post("/api/notes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -197,7 +197,7 @@ public class NoteResourceIntTest {
         note.setCreationdate(null);
 
         // Create the Note, which fails.
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
 
         restNoteMockMvc.perform(post("/api/notes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -261,7 +261,7 @@ public class NoteResourceIntTest {
                 .description(UPDATED_DESCRIPTION)
                 .notetype(UPDATED_NOTETYPE)
                 .creationdate(UPDATED_CREATIONDATE);
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(updatedNote);
+        NoteDTO noteDTO = noteMapper.toDto(updatedNote);
 
         restNoteMockMvc.perform(put("/api/notes")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -283,7 +283,7 @@ public class NoteResourceIntTest {
         int databaseSizeBeforeUpdate = noteRepository.findAll().size();
 
         // Create the Note
-        NoteDTO noteDTO = noteMapper.noteToNoteDTO(note);
+        NoteDTO noteDTO = noteMapper.toDto(note);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restNoteMockMvc.perform(put("/api/notes")
