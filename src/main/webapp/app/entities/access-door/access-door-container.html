@@ -2,7 +2,7 @@
     <div class="opacity" layout="row" layout-align="stretch">
         <div class="no-margin no-padding  col-lg-12 col-md-12 col-xs-12 col-sm-12" layout="column"
              layout-align="center center" layout-align-xs="start center">
-            <div layout="row" class="col-md-12 col-xs-12 fade-in" ui-view
+            <div layout="row" class="col-md-12 col-xs-12 fade-in no-padding" ui-view
                  ng-if="$state.current.name !== 'main-access-door'">
             </div>
             <div ng-if="!vm.isReady && $state.current.name === 'main-access-door'" layout="row" class="content-loader"

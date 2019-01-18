@@ -1,0 +1,78 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font" style="margin-bottom: 40px!important" md-theme-watch
+         class="form-wrapper">
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de turno</span>
+        </md-card-title-text>
+
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+        <div style="padding:20px">
+            <div class="md-headline font-20 bold font-green-haze uppercase">Turno # {{vm.watch.id}}</div>
+            <div class="font-14 margin-top-10"><b layout="row" layout-xs="column" layout-align-xs="center center"><span> <span
+                class="margin-right-10">Fecha:</span> {{vm.watch.initialtime}}</span> <span class="font-green-haze"
+                                                                                            style="margin: 0 10px">-</span>
+                <span>{{vm.watch.finaltime}}</span> </b></div>
+        </div>
+        <div class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+            <md-toolbar class="form-title">
+                <h2>Oficiales que sirvieron</h2>
+            </md-toolbar>
+            <md-content layout-padding class="form-content">
+                <div class="col-md-6 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                     ng-repeat="officer in vm.watch.officers | orderBy:'name'">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                                <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
+                                <span class="md-headline font-15 hidden-xs">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{officer.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead">Teléfono: {{officer.phonenumber}} <span
+                                    ng-if="officer.phonenumber==undefined">No definido</span></span>
+                            </md-card-title-text>
+                            <md-card-title-media>
+                                <div class="md-media-md card-media  hidden-md hidden-lg"
+                                     style="padding-top: 10px!important;">
+                                    <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="112"
+                                         width="112"/>
+                                    <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                         class="object-fit_scale-down-resident-index"/>
+                                </div>
+                                <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                     style="padding-top: 10px!important;">
+                                    <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="80"
+                                         width="80"/>
+                                    <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                         class="object-fit_scale-down-resident-index-xs"/>
+                                </div>
+                            </md-card-title-media>
+                        </md-card-title>
+
+                        <md-card-actions layout="row" layout-align="end center">
+                            <div layout="row" layout-align="space-between center">
+                                <i class="material-icons margin-right-10" style="color:#999;"
+                                   ng-click="vm.detailOfficer(officer.id)">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </div>
+
+                        </md-card-actions>
+                    </md-card>
+
+                </div>
+
+            </md-content>
+        </div>
+    </md-card-content>
+</md-card>
+

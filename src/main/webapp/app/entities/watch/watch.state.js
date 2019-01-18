@@ -11,7 +11,7 @@
         $stateProvider
         .state('turno', {
             parent: 'entity',
-            url: '/turno/{companyId}/?page&sort&search',
+            url: '/turnos',
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_ADMIN','ROLE_RH','ROLE_JD'],
             },
@@ -92,7 +92,7 @@
                   })
         .state('watch-detail', {
             parent: 'turno',
-            url: '/watch/{id}',
+            url: '/{id}',
             data: {
                 authorities: ['ROLE_MANAGER','ROLE_JD'],
             },
@@ -108,8 +108,9 @@
                     $translatePartialLoader.addPart('watch');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Watch', function($stateParams, Watch) {
-                    return Watch.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Watch','CommonMethods', function($stateParams, Watch, CommonMethods) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
+                    return Watch.get({id : id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {

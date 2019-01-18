@@ -33,11 +33,12 @@ public class Watch implements Serializable {
     @Column(name = "responsableofficer", nullable = false)
     private String responsableofficer;
 
-    @OneToMany(mappedBy = "watch")
-    @JsonIgnore
-    private Set<AccessDoor> accessDoors = new HashSet<>();
+//    @OneToMany(mappedBy = "watch")
+//    @JsonIgnore
+//    private Set<AccessDoor> accessDoors = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @NotNull
     private Company company;
 
     public Long getId() {
@@ -87,30 +88,30 @@ public class Watch implements Serializable {
         this.responsableofficer = responsableofficer;
     }
 
-    public Set<AccessDoor> getAccessDoors() {
-        return accessDoors;
-    }
+//    public Set<AccessDoor> getAccessDoors() {
+//        return accessDoors;
+//    }
+//
+//    public Watch accessDoors(Set<AccessDoor> accessDoors) {
+//        this.accessDoors = accessDoors;
+//        return this;
+//    }
+//
+//    public Watch addAccessDoor(AccessDoor accessDoor) {
+//        this.accessDoors.add(accessDoor);
+//        accessDoor.setWatch(this);
+//        return this;
+//    }
 
-    public Watch accessDoors(Set<AccessDoor> accessDoors) {
-        this.accessDoors = accessDoors;
-        return this;
-    }
-
-    public Watch addAccessDoor(AccessDoor accessDoor) {
-        this.accessDoors.add(accessDoor);
-        accessDoor.setWatch(this);
-        return this;
-    }
-
-    public Watch removeAccessDoor(AccessDoor accessDoor) {
-        this.accessDoors.remove(accessDoor);
-        accessDoor.setWatch(null);
-        return this;
-    }
-
-    public void setAccessDoors(Set<AccessDoor> accessDoors) {
-        this.accessDoors = accessDoors;
-    }
+//    public Watch removeAccessDoor(AccessDoor accessDoor) {
+//        this.accessDoors.remove(accessDoor);
+//        accessDoor.setWatch(null);
+//        return this;
+//    }
+//
+//    public void setAccessDoors(Set<AccessDoor> accessDoors) {
+//        this.accessDoors = accessDoors;
+//    }
 
     public Company getCompany() {
         return company;
