@@ -2,10 +2,7 @@ package com.lighthouse.aditum.web.websocket;
 
 import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.ResidentService;
-import com.lighthouse.aditum.service.dto.HouseDTO;
-import com.lighthouse.aditum.service.dto.ResidentDTO;
-import com.lighthouse.aditum.service.dto.VehiculeDTO;
-import com.lighthouse.aditum.service.dto.VisitantDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.websocket.dto.EntityToDeleteDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +53,12 @@ public class RealTimeCompanyInfoService {
     @SendTo("/topic/house/{idCompany}")
     public HouseDTO addHouse(HouseDTO houseDTO) {
         return houseDTO;
+    }
+
+    @SubscribeMapping("/topic/sendOfficer/{idCompany}")
+    @SendTo("/topic/officer/{idCompany}")
+    public OfficerDTO addOfficer(OfficerDTO officerDTO) {
+        return officerDTO;
     }
 
     @SubscribeMapping("/topic/deleteEntity/{idCompany}")

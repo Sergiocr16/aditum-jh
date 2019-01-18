@@ -1,10 +1,129 @@
-<div layout="row" class="col-md-10 col-md-offset-1 col-xs-12 fade-in register-div">
+<div layout="row" class="col-md-10 col-md-offset-1 col-xs-12 fade-in register-div " style="overflow-y: auto;overflow-x: hidden">
     <div layout="column" layout-align="center" layout-align-xs="default" id="content-officer"
-         class="background-white no-padding-bottom padding-30-acess-door col-md-12 col-xs-12 border-radius-8">
-        <div layout="row">
-            <div flex></div>
-            <div flex></div>
+         class="background-white no-padding-bottom padding-30-acess-door col-md-12 col-xs-12 border-radius-8" style="padding-bottom: 45px!important;">
+        <no-content-small class="col-lg-12 col-md-12 col-sm-12 col-xs-1  no-padding"
+                          ng-if="vm.officerToSelect.length == 0 && vm.officersSelected.length==0"
+                          icon="access_time"
+                          text="No hay oficiales registrados actualmente"></no-content-small>
+        <div layout="row" layout-xs="column">
+            <div flex="50" flex-xs="100">
+                <p class="gray-font font-14">
+                    De click sobre el oficial para seleccionar los oficiales de este turno.
+                </p>
+                <div flex="100" class="form-group"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.query">
+                    </div>
+                </div>
+                <div class="container-acces-door-info ">
+
+                    <div ng-click="vm.selectOfficer(officer)"
+                         class="col-md-12 col-xs-12 residentDivContainerXs  pointer outline-none fade-in"
+                         ng-repeat="officer in officers | filter:vm.query | orderBy:'name' track by $index " ng-if="officer.selected==false && officer.enable==true">
+                        <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                                 class="margin-bottom-10 residentCardContainer"
+                                 md-theme-watch>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline font-15 " layout="row" layout-align="start center">{{officer.name.toUpperCase()}}  {{officer.lastname.toUpperCase()}}
+                                     <i class="material-icons pointer"
+                                        style="color: #1565C0; padding-left: 5px!important;">
+                                        <md-tooltip md-direction="right" class="font-13 bold white-color">Oficial de seguridad
+                                        </md-tooltip>
+                                        security</i>
+
+                                    </span>
+                                    <span
+                                        class="md-subhead">Cédula: {{officer.identificationnumber.toUpperCase()}}</span>
+                                </md-card-title-text>
+                                <md-card-title-media class="hidden-xs">
+                                    <div class="md-media-md card-media  hidden-md hidden-lg"
+                                         style="padding-top: 10px!important;">
+                                        <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg"
+                                             height="100"
+                                             width="100"/>
+                                        <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                             class="object-fit_scale-down-index-xs"/>
+                                    </div>
+                                    <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                         style="padding-top: 10px!important;">
+                                        <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg"
+                                             height="80"
+                                             width="80"/>
+                                        <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                             class="object-fit_scale-down-index"/>
+                                    </div>
+                                </md-card-title-media>
+                            </md-card-title>
+                        </md-card>
+                    </div>
+                </div>
+            </div>
+
+            <div flex="50" flex-xs="100">
+                <h2 class="caption-subject theme-font bold uppercase font-gray font-20"
+                    style="text-align: center;margin-bottom: 37px;">Oficiales del nuevo turno</h2>
+                <div class="container-acces-door-info">
+                    <no-content-small class=""
+                                      ng-if="vm.selectedOfficers().length==0"
+                                      icon="security"
+                                      text2="Seleccione los oficiales del nuevo turno"></no-content-small>
+
+                    <div ng-click="vm.unSelectOfficer(officer)"
+                         class=" col-md-12 col-xs-12 residentDivContainerXs pointer outline-none fade-in"
+                         ng-repeat="officer in officers  | orderBy:'name' track by $index " ng-if="officer.selected==true">
+                        <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                                 class="margin-bottom-10 residentCardContainer"
+                                 md-theme-watch>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline font-15 " layout="row" layout-align="start center">{{officer.name.toUpperCase()}}  {{officer.lastname.toUpperCase()}}
+                                     <i class="material-icons pointer greenBalance"
+                                        style="color:#999;; padding-left: 5px!important;">
+                                        <md-tooltip md-direction="right" class="font-13 bold white-color">Oficial de seguridad seleccionado
+                                        </md-tooltip>
+                                        verified_user</i>
+                                    </span>
+                                    <span
+                                        class="md-subhead">Cédula: {{officer.identificationnumber.toUpperCase()}}</span>
+                                </md-card-title-text>
+                                <md-card-title-media class="hidden-xs">
+                                    <div class="md-media-md card-media  hidden-md hidden-lg"
+                                         style="padding-top: 10px!important;">
+                                        <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg"
+                                             height="100"
+                                             width="100"/>
+                                        <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                             class="object-fit_scale-down-index-xs"/>
+                                    </div>
+                                    <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                         style="padding-top: 10px!important;">
+                                        <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg"
+                                             height="80"
+                                             width="80"/>
+                                        <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
+                                             class="object-fit_scale-down-index"/>
+                                    </div>
+                                </md-card-title-media>
+                            </md-card-title>
+                        </md-card>
+                    </div>
+                </div>
+                <div>
+                <md-button ng-class="{'disabledDiv':vm.selectedOfficers().length==0}"
+                           style="border-bottom-right-radius:8px"
+                           class="red-button-oficial btn-absolute-right-bottom no-border-radius-xs"
+                           ng-click="vm.insertWatch()">
+                    Registrar turno
+                </md-button>
+                </div>
+            </div>
 
         </div>
+
     </div>
 </div>

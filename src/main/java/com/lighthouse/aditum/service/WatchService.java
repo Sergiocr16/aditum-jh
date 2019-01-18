@@ -32,9 +32,13 @@ public class WatchService {
 
     private final WatchMapper watchMapper;
 
-    public WatchService(WatchRepository watchRepository, WatchMapper watchMapper) {
+    private final OfficerService officerService;
+
+
+    public WatchService(WatchRepository watchRepository, WatchMapper watchMapper, OfficerService officerService) {
         this.watchRepository = watchRepository;
         this.watchMapper = watchMapper;
+        this.officerService = officerService;
     }
 
     /**
@@ -75,20 +79,13 @@ public class WatchService {
     }
 
     @Transactional(readOnly = true)
-    public Page<WatchDTO> findBetweenDates(String initialTime,String finalTime,Long companyId) {
+    public Page<WatchDTO> findBetweenDates(Pageable pageable,String initialTime,String finalTime,Long companyId) {
         log.debug("Request to get all Watches");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        List<Watch> result = watchRepository.findByDatesBetween(zd_initialTime,zd_finalTime,companyId);
-//        Watch lastWatch = null;
-//        if(!watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).isEmpty()) {
-//            lastWatch = watchRepository.findTop1ByCompanyIdOrderByIdDesc(companyId).get(0);
-//            if(lastWatch.getInitialtime().isAfter(zd_initialTime) && zd_finalTime.isAfter(ZonedDateTime.now())){
-//                result.add(lastWatch);
-//            }
-//        }
-        Collections.reverse(result);
-        return new PageImpl<Watch>(result).map(watch -> watchMapper.watchToWatchDTO(watch));
+        Page<Watch> result = watchRepository.findByDatesBetween(zd_initialTime,zd_finalTime,companyId,pageable);
+
+        return (result).map(watch -> watchMapper.watchToWatchDTO(watch));
     }
 
     /**
@@ -102,6 +99,11 @@ public class WatchService {
         log.debug("Request to get Watch : {}", id);
         Watch watch = watchRepository.findOne(id);
         WatchDTO watchDTO = watchMapper.watchToWatchDTO(watch);
+        String[] ids = watch.getResponsableofficer().split(";");
+        watchDTO.setOfficers(new ArrayList<>());
+        for (int i = 0; i < ids.length; i++) {
+         watchDTO.getOfficers().add(this.officerService.findOne(Long.parseLong(ids[i])));
+        }
         return watchDTO;
     }
 

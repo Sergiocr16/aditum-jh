@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerDialogController', OfficerDialogController);
 
-    OfficerDialogController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'CommonMethods', '$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal'];
+    OfficerDialogController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'CommonMethods', '$scope', '$stateParams', '$q', 'DataUtils', 'entity', 'Officer', 'User', 'Company', 'SaveImageCloudinary', 'PadronElectoral', 'globalCompany', 'Modal','WSOfficer'];
 
-    function OfficerDialogController($rootScope, $state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary, PadronElectoral, globalCompany, Modal) {
+    function OfficerDialogController($rootScope, $state, Principal, $timeout, CommonMethods, $scope, $stateParams, $q, DataUtils, entity, Officer, User, Company, SaveImageCloudinary, PadronElectoral, globalCompany, Modal, WSOfficer) {
         var vm = this;
         vm.isReady = false;
         var fileImage = null;
@@ -214,6 +214,7 @@
                                 $state.go('officer');
                             }
                             Modal.hideLoadingBar();
+                            WSOfficer.sendActivity(result);
                             Modal.toast("Se ha registrado el oficial correctamente.");
                         })
                     }
@@ -230,6 +231,7 @@
                             $state.go('officer');
                         }
                         Modal.hideLoadingBar();
+                        WSOfficer.sendActivity(result);
                         Modal.toast("Se ha registrado el oficial correctamente.");
                     })
 
@@ -270,6 +272,7 @@
                     $state.go('officer');
                 }
                 Modal.hideLoadingBar();
+                WSOfficer.sendActivity(result);
                 Modal.toast("Se ha editado el oficial correctamente.");
             })
         }

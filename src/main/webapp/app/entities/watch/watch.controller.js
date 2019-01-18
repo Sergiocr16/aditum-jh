@@ -9,100 +9,41 @@
 
     function WatchController(Watch, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, CommonMethods, $stateParams, Company, $state, globalCompany) {
         var vm = this;
-        vm.isAuthenticated = Principal.isAuthenticated;
+        vm.isReady = false;
         vm.loadPage = loadPage;
-        vm.predicate = pagingParams.predicate;
-        vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.isConsulting = false;
-        vm.showCleanBtn = false;
-        vm.showBackBtn = false;
-        vm.currentTurn = true;
-        moment.locale('es');
-        vm.company = {};
-        vm.company.name = "Condominio";
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
-        var companyId = globalCompany.getId()
-        $rootScope.active = "watches";
-        angular.element(document).ready(function () {
-            $('.dating').keydown(function () {
-                return false;
-            });
-        });
+        vm.isFiltering = false;
+        vm.watches = [];
+        vm.itemsPerPage = 10;
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
+        $rootScope.mainTitle = "Turnos de oficiales";
+        moment.locale("es");
+        $('input').attr('autocomplete', 'off');
+        vm.defineTextNoContent = function () {
+            if(!vm.isFiltering){
+                return "No se ha registrado ningún turno aún"
+            }else{
+                return "No se encontró ningún turno con ese filtro"
+            }
+        }
 
         function formatWatch(watch) {
-            watch.initialtime = moment(vm.watch.initialtime).format('h:mm a');
+            watch.initialtime = moment(watch.initialtime).format('dddd D, h:mm a');
             if (watch.finaltime === null) {
                 watch.finaltime = 'Aún en progreso'
             } else {
-                watch.finaltime = moment(vm.watch.finaltime).format('h:mm a');
+                watch.finaltime = moment(watch.finaltime).format('dddd D, h:mm a');
             }
-            watch.officers = getformatResponsableOfficers(vm.watch);
+            watch.totalOfficers = totalOfficer(watch);
             return watch;
         }
 
-
-        function setWatch(data) {
-            vm.showTable = false;
-            vm.currentTurn = false;
-            vm.showBackBtn = true;
-            vm.watch = data;
-            vm.day = moment(vm.watch.initialtime).format('LL');
-            vm.watch = formatWatch(vm.watch);
-        }
-
-        vm.filterWatches = function () {
-            $("#data").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingData").fadeIn(300);
-            }, 200)
-            if (vm.showFullDatePicker == true) {
-                Watch.findBetweenDates({
-                    initial_time: moment(vm.consulting_initial_time).format(),
-                    final_time: moment(vm.consulting_final_time).format(),
-                    companyId: parseInt(companyId),
-                }, onSuccessBetweenDates, onErrorBetweenDates)
-            } else {
-
-                if (vm.daySelectedMinimo.fechaMinima.getTime() > vm.daySelectedMaximo.fechaMaxima.getTime()) {
-                    toastr["error"]("La fecha máxima debe de ser mayor a la mínima")
-                    vm.getCurrentWatch()
-                } else {
-                    Watch.findBetweenDates({
-                        initial_time: moment(vm.daySelectedMinimo.fechaMinima).format(),
-                        final_time: moment(vm.daySelectedMaximo.fechaMaxima).format(),
-                        companyId: parseInt(companyId),
-                    }, onSuccessBetweenDates, onErrorBetweenDates)
-                }
-            }
-
-            function onSuccessBetweenDates(data, headers) {
-                if (vm.showFullDatePicker == true) {
-                    vm.showConsultingInitialTime = moment(vm.consulting_initial_time).format('ll');
-                    vm.showConsultingFinalTime = moment(vm.consulting_final_time).format('ll');
-                } else {
-                    vm.showConsultingInitialTime = moment(vm.daySelectedMinimo.fechaMinima).format('ll');
-                    vm.showConsultingFinalTime = moment(vm.daySelectedMaximo.fechaMaxima).format('ll');
-                }
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.watches = data;
-                vm.page = pagingParams.page;
-                $("#loadingData").fadeOut(0);
-                setTimeout(function () {
-                    $("#data").fadeIn(300);
-                }, 200)
-                vm.showCleanBtn = true;
-                vm.showTable = true;
-                vm.showBackBtn = false;
-            }
-
-            function onErrorBetweenDates(error) {
-                AlertService.error(error.data.message);
-            }
+        function totalOfficer(watch) {
+            var ids = watch.responsableofficer.split(";");
+            console.log(ids)
+            return ids.length - 1;
         }
 
         function createFiveDaysBehind() {
@@ -125,189 +66,80 @@
             }
         }
 
-        vm.loadAll = function () {
-            Principal.identity().then(function (account) {
-                if (account.login == 'lh-admin' || account.authorities[0] != "ROLE_MANAGER") {
-                    vm.showFullDatePicker = true;
-                } else {
-                    vm.showFullDatePicker = false;
-                    createFiveDaysBehind();
-                }
-                if (account.authorities[0] == "ROLE_RH") {
-                    Company.get({id: parseInt(companyId)}, function (company) {
-                        vm.company = company;
-                        vm.getCurrentWatch();
-                    }, function () {
-                        if (account.authorities[0] == "ROLE_RH") {
-                            $state.go('company-rh')
-                        } else {
-                            $state.go('dashboard')
-                        }
-                    })
-                } else {
-                    Company.get({id: parseInt(companyId)}, function (company) {
-                        vm.company = company;
-                        vm.getCurrentWatch();
-                    }, function () {
-                        if (account.authorities[0] == "ROLE_RH") {
-                            $state.go('company-rh')
-                        } else {
-                            $state.go('dashboard')
-                        }
-                    })
-                }
-            })
-        }
-
-        vm.getCurrentWatch = function () {
-            $("#data").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingData").fadeIn(300);
-                $("#backBTN").fadeIn(300);
-            }, 200)
-            Watch.getCurrent({
-                companyId: parseInt(companyId)
-            }, onSuccessCurrent, onErrorCurrent);
-
-            function onSuccessCurrent(data, headers) {
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.isData = true;
-                setWatch(data);
-                vm.currentTurn = true;
-                vm.showBackBtn = false;
-                vm.showCleanBtn = false;
-                vm.consulting_initial_time = "";
-                vm.consulting_final_time = "";
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-
-                }, 900)
-            }
-
-            function onErrorCurrent(error) {
-                vm.isData = false;
-                setTimeout(function () {
-                    $("#loadingIcon").fadeOut(300);
-                }, 400)
-                setTimeout(function () {
-                    $("#tableData").fadeIn('slow');
-
-                }, 900)
-                AlertService.error(error.data.message);
-                 $("#loadingData").fadeOut(0);
-                                 setTimeout(function() {
-                                     $("#data").fadeIn(300);
-                                 }, 200)
-            }
-        }
-
-        setTimeout(function () {
-            vm.loadAll();
-        }, 500)
-
-        vm.getWatch = function (turnoId) {
-            $("#data").fadeOut(0);
-            setTimeout(function () {
-                $("#loadingData").fadeIn(300);
-            }, 200)
-
-            Watch.get({
-                id: parseInt(turnoId)
-            }, onSuccess, onError)
-
-            function onSuccess(data, headers) {
-                $("#loadingData").fadeOut(0);
-                setTimeout(function () {
-                    $("#data").fadeIn(300);
-                }, 200)
-                setWatch(data);
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
-        }
-
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                date: new Date(),
-                datepickerOptions: {
-                    maxDate: vm.consulting_final_time == undefined ? new Date() : vm.consulting_final_time,
-                    enableTime: false,
-                    showWeeks: false,
-
-                }
+        loadAll();
+        vm.loadAllNormal = function () {
+            vm.initialTime = undefined;
+            vm.finalTime = undefined;
+            vm.isFiltering = false;
+            vm.page = 0;
+            vm.watches = [];
+            vm.links = {
+                last: 0
             };
-            vm.picker2 = {
-                date: new Date(),
-                datepickerOptions: {
-                    minDate: vm.consulting_initial_time,
-                    maxDate: new Date(),
-                    enableTime: false,
-                    showWeeks: false,
-                }
+            vm.isReady = false;
 
+            loadAll();
+        };
+
+        vm.filter = function () {
+            vm.isFiltering = true;
+            vm.watches = [];
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.isReady = false;
+            loadFiltered();
+        };
+
+        function sort() {
+            var result = [];
+            if (vm.predicate !== 'initialtime') {
+                result.push('initialtime,desc');
             }
+            return result;
         }
 
-        vm.updatePicker();
+        function loadFiltered() {
 
-        function formatResponsableOfficer(stringOfficer) {
-            var variables = stringOfficer.split(';')
-            var officer = {};
-            officer.id = variables[0];
-            officer.identificationnumber = variables[1];
-            officer.name = variables[2];
-            return officer;
-        }
-
-        function getformatResponsableOfficers(watch) {
-            var formattedOfficers = [];
-            var stringOfficers = watch.responsableofficer.slice(0, -2);
-            var officers = stringOfficers.split('||');
-            angular.forEach(officers, function (officer, key) {
-                formattedOfficers.push(formatResponsableOfficer(officer))
-            })
-            return formattedOfficers;
+            Watch.findBetweenDates({
+                page: vm.page,
+                size: vm.itemsPerPage,
+                initial_time: moment(vm.initialTime).format(),
+                final_time: moment(vm.finalTime).format(),
+                companyId: globalCompany.getId(),
+                sort: sort()
+            }, onSuccess, onError);
         }
 
         function loadAll() {
             Watch.query({
-                page: pagingParams.page - 1,
+                page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort(),
-                companyId: companyId
+                companyId: globalCompany.getId()
             }, onSuccess, onError);
-
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
+        }
+        function onSuccess(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            for (var i = 0; i < data.length; i++) {
+                vm.watches.push(formatWatch(data[i]));
             }
+            vm.isReady = true;
+        }
 
-            function onSuccess(data, headers) {
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.isData = vm.queryCount > 0 ? true : false;
-                vm.watches = data;
-                vm.page = pagingParams.page;
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
+        function onError(error) {
+            Modal.toast("Ocurrio un error consultando los turnos")
         }
 
         function loadPage(page) {
             vm.page = page;
-            vm.transition();
+            if (!vm.isFiltering) {
+                loadAll();
+            } else {
+                loadFiltered()
+            }
         }
 
         function transition() {
@@ -318,11 +150,11 @@
             });
         }
 
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
+        vm.viewDetail = function (watch) {
+            var encryptedId = CommonMethods.encryptIdUrl(watch.id)
+            $state.go('watch-detail', {
+                id: encryptedId
+            })
         }
 
     }

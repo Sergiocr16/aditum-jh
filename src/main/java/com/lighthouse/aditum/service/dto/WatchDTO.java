@@ -5,6 +5,7 @@ import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -18,6 +19,8 @@ public class WatchDTO implements Serializable {
     private ZonedDateTime initialtime;
 
     private ZonedDateTime finaltime;
+
+    private List<OfficerDTO> officers;
 
     @NotNull
     private String responsableofficer;
@@ -90,5 +93,13 @@ public class WatchDTO implements Serializable {
             ", finaltime='" + finaltime + "'" +
             ", responsableofficer='" + responsableofficer + "'" +
             '}';
+    }
+
+    public List<OfficerDTO> getOfficers() {
+        return officers;
+    }
+
+    public void setOfficers(List<OfficerDTO> officers) {
+        this.officers = officers;
     }
 }

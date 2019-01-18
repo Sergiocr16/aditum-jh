@@ -5,7 +5,7 @@
         .module('aditumApp')
         .controller('AccountStatusController', AccountStatusController);
 
-    AccountStatusController.$inject = [Modal,'Resident','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusController.$inject = ['Modal','Resident','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
     function AccountStatusController(Modal,Resident,$rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
