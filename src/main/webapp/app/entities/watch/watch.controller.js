@@ -42,7 +42,6 @@
 
         function totalOfficer(watch) {
             var ids = watch.responsableofficer.split(";");
-            console.log(ids)
             return ids.length - 1;
         }
 
