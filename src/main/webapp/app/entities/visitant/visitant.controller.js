@@ -11,6 +11,7 @@
         $rootScope.active = "residentsVisitors";
         var vm = this;
         vm.Principal;
+        $rootScope.mainTitle = "Bitácora de visitantes";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         vm.consult = consult;
@@ -69,7 +70,7 @@
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
-                houseId: companyUser.houseId,
+                houseId: companyUser.houseId
             }).$promise.then(onSuccess);
 
             function onSuccess(data) {

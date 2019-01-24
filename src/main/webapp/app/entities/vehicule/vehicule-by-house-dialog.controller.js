@@ -12,7 +12,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
-
+        $rootScope.mainTitle = vm.title;
         vm.required = 1;
         vm.isReady = false;
          Brand.query({}, onSuccessBrand);

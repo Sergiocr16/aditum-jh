@@ -143,9 +143,9 @@
             function onSuccessEgressCategories(data, headers) {
                 vm.searchQuery = null;
                 angular.forEach(data, function (value, key) {
-                    value.groupIsEmpty = false
+                    value.groupIsEmpty = false;
                     value.categoryIsEmpty = false;
-                })
+                });
 
                 vm.egressCategories = data;
                 vm.isReady = true;

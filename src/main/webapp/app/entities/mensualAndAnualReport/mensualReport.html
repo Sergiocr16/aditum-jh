@@ -56,7 +56,7 @@
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
                                 <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
                                 <div class="margin-top-20">
-                                    <table ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.commonAreasIngress.length==0 && vm.report.mensualIngressReport.otherIngress.length==0" class="jh-table table  table-bordered table-condensed flip-content tableMaterialDesignResultStates" style=" color:black; font-size:11px!important; ">
+                                    <table ng-if="vm.report.mensualIngressReport.maintenanceIngress.length>0 || vm.report.mensualIngressReport.extraOrdinaryIngress.length>0 || vm.report.mensualIngressReport.commonAreasIngress.length>0 || vm.report.mensualIngressReport.otherIngress.length>0 || vm.report.mensualIngressReport.maintenanceBudget>0 && vm.showPresupuestoFields || vm.report.mensualIngressReport.extraordinaryBudget>0 && vm.showPresupuestoFields || vm.report.mensualIngressReport.commonAreasBudget>0 && vm.showPresupuestoFields  || vm.report.mensualIngressReport.otherBudget>0 && vm.showPresupuestoFields" class="jh-table table  table-bordered table-condensed flip-content tableMaterialDesignResultStates" style=" color:black; font-size:11px!important; ">
                                         <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#f4f4f4; ">
                                         <tr class="bold">
                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">INGRESOS</th>
@@ -67,7 +67,7 @@
                                         </tr>
                                         </thead>
                                         <tbody style="padding: 120px!important; ">
-                                        <tr ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.maintenanceIngressPercentage==0" class="bold">
+                                        <tr ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.maintenanceBudget==0" class="bold">
                                           <td ng-click="vm.showBodyTableIngress(1,vm.isShowingMaintenanceDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MANTENIMIENTO</td>
                                             <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceIngressTotal+"")}}</td>
                                             <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.maintenanceIngressPercentage  | number:2}}%</td>

@@ -6,16 +6,20 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
+    CommonAreaReservationsDetailController.$inject = ['Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
+    function CommonAreaReservationsDetailController (Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
         vm.commonAreaReservations = entity;
-        console.log('fadfda')
+        vm.isAuthenticated = Principal.isAuthenticated;
+        $rootScope.mainTitle = 'Detalle de reservación';
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         vm.minDate = new Date();
         vm.sendEmail = false;
+        vm.isReady = false;
         vm.charge = {
             type: "3",
             concept: "",
@@ -47,14 +51,15 @@
                         vm.commonAreaReservations.commonAreaName = result.name ;
                         vm.charge.concept = "Uso de " + vm.commonAreaReservations.commonAreaName;
                         vm.commonAreaReservations.schedule = formatScheduleTime(vm.commonAreaReservations.initialTime, vm.commonAreaReservations.finalTime);
+                        vm.isReady = true;
                     })
                 })
             })
 
         }
 
-        vm.switchSendEmail = function(type){
-             vm.sendEmail = type;
+        vm.switchSendEmail = function(){
+             vm.sendEmail = !vm.sendEmail;
 
         };
 
@@ -78,16 +83,13 @@
 
         }
 
-        vm.clear = clear;
+
         vm.save = save;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-        function clear () {
-            $uibModalInstance.dismiss('cancel');
-        }
 
         function save () {
 
@@ -97,8 +99,7 @@
         }
 
         function onSaveSuccess (result) {
-            $scope.$emit('aditumApp:commonAreaScheduleUpdate', result);
-            $uibModalInstance.close(result);
+
             vm.isSaving = false;
         }
 
@@ -106,21 +107,6 @@
             vm.isSaving = false;
         }
 
-        vm.datePickerOpenStatus.chargeDate = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
-        vm.picker = {
-            datepickerOptions: {
-                minDate: moment().subtract(1, 'days').startOf(new Date()),
-                enableTime: false,
-                showWeeks: false,
-                daysOfWeekDisabled: [0,1,2,3,4,5,6],
-                clearBtn: false,
-                todayBtn: false
-            }
-        };
         vm.validateReservationCharge = function(cuota) {
             var s = cuota.ammount;
             var caracteres = ['´', 'Ç', '_', 'ñ', 'Ñ', '¨', ';', '{', '}', '[', ']', '"', "¡", "!", "¿", "<", ">", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "ñ", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", ",", ".", "?", "/", "-", "+", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "|"]
@@ -173,10 +159,12 @@
             if(vm.sendEmail){
                 vm.commonAreaReservations.sendPendingEmail = true ;
             }else{
+                vm.commonAreaReservations.chargeEmail = null;
                 vm.commonAreaReservations.sendPendingEmail = false ;
             }
+            console.log(vm.commonAreaReservations.reservationCharge)
 
-            if (vm.commonAreaReservations.reservationCharge == null) {
+            if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
                 vm.commonAreaReservations.status = 2;
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
@@ -186,9 +174,7 @@
 
                     vm.commonAreaReservations.status = 2;
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
-                    vm.commonAreaReservations.chargeIdId = result.id
-
-
+                    vm.commonAreaReservations.chargeIdId = result.id;
                     CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
 

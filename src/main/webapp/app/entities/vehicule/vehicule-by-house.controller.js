@@ -15,7 +15,7 @@
         vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-
+        $rootScope.mainTitle = "Vehículos de la filial";
         vm.editVehicle = function(id){
          var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('vehiculeByHouse.edit', {

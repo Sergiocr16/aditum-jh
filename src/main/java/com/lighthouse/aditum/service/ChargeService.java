@@ -325,9 +325,9 @@ public class ChargeService {
         log.debug("Request to get all Charges");
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId);
+        List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId,0);
 
-        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId))
+        Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId,0))
             .map(chargeMapper::toDto);
         return formatCharges(chargeDTOS);
     }
@@ -340,10 +340,10 @@ public class ChargeService {
         ZonedDateTime zd_todayTime = ZonedDateTime.parse((todayTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         Page<ChargeDTO> chargeDTOS;
         if (zd_finalTime.isAfter(zd_todayTime)) {
-            chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_todayTime, houseId))
+            chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_todayTime, houseId,0))
                 .map(chargeMapper::toDto);
         } else {
-            chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId))
+            chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId,0))
                 .map(chargeMapper::toDto);
         }
         return formatCharges(chargeDTOS);

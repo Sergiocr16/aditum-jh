@@ -59,7 +59,7 @@
          });
          setTimeout(function(){
             createBudgetYears();
-            EgressCategory.query({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
+            EgressCategory.allCategoriesIncludingDevolution({companyId: globalCompany.getId()}).$promise.then(onSuccessEgressCategories);
 
          },900)
         function onSuccessEgressCategories(data, headers) {

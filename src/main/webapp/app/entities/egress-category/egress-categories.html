@@ -75,10 +75,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <div class="col-md-12 text-center">
-                                    <h4 class="gray-font text-center">
-                                        <button class="btn orange-button-oficial" style="text-align:center;width:300px" ng-click="vm.addEgressCategory()">Agregar categoría de egresos</button></h4>
-                                </div>
+
 
                             </div>
                         </form>
@@ -87,4 +84,10 @@
             </div>
         </div>
     </div>
+
+    <md-button ng-click="vm.addEgressCategory()" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Agregar categoría de egresos</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

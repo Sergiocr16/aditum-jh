@@ -159,6 +159,11 @@ Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
     margin-bottom: 4px;
 }
 
+.visitantListCards {
+    margin-top: 10px;
+
+}
+
 .colorpicker-hue i, .colorpicker-alpha i {
     display: block;
     height: 1px;
@@ -1159,7 +1164,6 @@ ui bootstrap tweaks
     color: #1caf9a !important;
 }
 
-
 .border-radius-8 {
     border-radius: 8px !important;
 }
@@ -1205,33 +1209,32 @@ div.scrollmenu a:hover {
 }
 
 .deuda-total-negativa {
-    border: #e3e3e3 solid 1px;
-    border-radius: 10px !important;
+
     padding: 10px;
     background-color: rgba(255, 133, 106, 0.13);
 }
 
 .deuda-total-positiva {
-    border: hsl(0, 0%, 80%) solid 1px;
-    border-radius: 10px !important;
+
     padding: 10px;
     background-color: aliceblue;
 }
 
 .deuda-total {
-    border: hsl(0, 0%, 80%) solid 1px;
-    border-radius: 10px !important;
+    color:#616161 !important;
+    background-color: #fafafa;
     padding: 10px;
+}
+
+.color4c4c4c {
+    color: #4c4c4c !important;
 }
 
 .little-container {
 
-    border-left: #3faba4 2px solid;
-    border-right: #3faba4 2px solid;
     background: #f6fbfc;
     padding: 10px;
-    margin-bottom: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
@@ -1278,9 +1281,9 @@ div.scrollmenu a:hover {
 }
 
 .selected-payment {
-    color: white;
-    background-color: #4DB3A2 !important;;
-    border-left: 3px #4DB3A2 solid;
+    color: white !important;
+    background-color: #4DB3A2 !important;
+
 }
 
 .paymentDescription {
@@ -1497,8 +1500,17 @@ div.scrollmenu a:hover {
     padding: 15px !important;
     font-weight: 500;
     border-collapse: collapse;
+    color: #616161;
+}
+
+.tableMaterialDesignPayments table, .tableMaterialDesignPayments th, .tableMaterialDesignPayments td {
+    border: 1px solid #f8f8f8 !important;
+    padding: 15px !important;
+    font-weight: 500;
+    border-collapse: collapse;
 
 }
+
 .tableMaterialDesignResultStates table, .tableMaterialDesignResultStates th, .tableMaterialDesignResultStates td {
     border: 1px solid #f4f4f4 !important;
     padding-top: 8px !important;
@@ -1508,6 +1520,7 @@ div.scrollmenu a:hover {
     border-collapse: collapse;
 
 }
+
 .tableMaterialDesignResultStatesWithPresupuestos table, .tableMaterialDesignResultStatesWithPresupuestos th, .tableMaterialDesignResultStatesWithPresupuestos td {
     border: 1px solid #e6e6e6 !important;
     padding-top: 8px !important;
@@ -1517,7 +1530,6 @@ div.scrollmenu a:hover {
     border-collapse: collapse;
 
 }
-
 
 .tableMaterialDesignResidents table, .tableMaterialDesignResidents th, .tableMaterialDesignResidents td {
     border: 1px solid #fafafa !important;
@@ -1544,6 +1556,12 @@ div.scrollmenu a:hover {
     width: 150px;
     background-color: #ebedf0;
     border-radius: 50% !important;
+}
+
+.saldoBoxXS {
+
+    background-color: #fafafa;
+    padding: 5px;
 }
 
 .object-fit_scale-down-common-area {
@@ -1578,9 +1596,11 @@ div.scrollmenu a:hover {
 .note-toolbar {
     z-index: 50 !important;
 }
-.small-caption{
+
+.small-caption {
     -webkit-text-security: disc;
 }
+
 .comments-button {
     outline: none;
     background-color: white;
@@ -1806,17 +1826,21 @@ div.scrollmenu a:hover {
         max-height: inherit !important;
         overflow: auto;
     }
+
     .material-icons.md-48 {
         font-size: 35px;
     }
-    .margin-top-10-xs{
-        margin-top: 10px!important;
+
+    .margin-top-10-xs {
+        margin-top: 10px !important;
     }
-    .margin-bottom-5-xs{
-        margin-bottom: 5px!important;
+
+    .margin-bottom-5-xs {
+        margin-bottom: 5px !important;
     }
+
     .height-264 {
-        height: auto!important;
+        height: auto !important;
     }
 }
 
@@ -1883,15 +1907,18 @@ div.scrollmenu a:hover {
     }
 
 }
+
 @media only screen and (min-height: 670px) {
     .container-acces-door-info {
-        height: 320px!important;
+        height: 320px !important;
         overflow-y: auto;
     }
+
     .height-264 {
-        height: 384px!important;
+        height: 384px !important;
     }
 }
+
 md-tabs.md-default-theme md-ink-bar, md-tabs md-ink-bar {
     color: #f37960 !important;
     background: #f37960 !important;
@@ -2555,21 +2582,24 @@ md-input-container.md-input-focused:not(.md-input-has-value) md-select.md-defaul
     font-weight: bold !important;
     color: white !important;
 }
+
 md-toast.md-center {
     left: 50%;
     transform: translate3d(-50%, 0, 0);
 }
 
 .label-tab-container-ad {
-    color: rgba(255,255,255,0.5)!important;
-    background: rgb(0,150,136)!important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    background: rgb(0, 150, 136) !important;
 }
+
 .active-tab-charge-invert-ad {
     box-shadow: inset 0 -3px white !important;
     color: white !important;
 }
-#toast-container>div{
-    border-radius:0px!important;
-    opacity: 1!important;
-    box-shadow: none!important;
+
+#toast-container > div {
+    border-radius: 0px !important;
+    opacity: 1 !important;
+    box-shadow: none !important;
 }

@@ -19,7 +19,7 @@
                 <form name="form" ng-submit="vm.save()">
                     <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
                     <div layout="row" layout-xs="column" class="marging-top-20 ">
-                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-left">
                             <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                                 <label>Número de filial</label>
                                 <md-select ng-model="vm.house" ng-change="vm.changeHouse(vm.house)" required>
@@ -70,7 +70,7 @@
                             </md-input-container>
 
                         </div>
-                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-right">
                             <md-input-container class="md-block  no-margin-bottom">
                                 <label>Fecha de pago</label>
                                 <md-datepicker md-min-date="vm.egress.date" required md-hide-icons="calendar"

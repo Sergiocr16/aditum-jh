@@ -11,6 +11,7 @@
         $rootScope.active = "residentsHouses";
         var enabledOptions = true;
         var vm = this;
+        $rootScope.mainTitle = "Usuarios de la filial";
         vm.isReady = false;
         vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;

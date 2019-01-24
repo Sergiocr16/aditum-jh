@@ -97,10 +97,7 @@
     </div>
     </div>
     </div>
-    <div class="text-center" ng-show="vm.proveedorsQuantity>0">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()" ng-show="vm.proveedorsQuantity>0"></uib-pager>
+
     <md-button ui-sref="proveedor.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar proveedor</md-tooltip>

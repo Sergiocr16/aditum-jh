@@ -131,6 +131,9 @@
         min-height: 150px !important;
         margin-top: 20px !important;
     }
+    .commonAreaReservationDetailDiv{
+        margin-top: -35px!important;
+    }
 
 }
 
@@ -249,5 +252,8 @@
     }
     #timeSelectCommonAreaReservation{
         padding:0px;
+    }
+    .commonAreaReservationDetailDiv{
+        margin-top: -35px!important;
     }
 }

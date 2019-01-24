@@ -6,7 +6,7 @@
 <h3 layout="row" class="font-green-sharp font-weight-600 margin-bottom-30" hide-xs  hide-sm hide-md style="color: #00b19d">
     Noticias</h3>
 
-<div ng-if="vm.isReady" class="">
+<div ng-if="vm.isReady" class="fade-in">
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
 
@@ -138,7 +138,7 @@
                         </md-list>
                     </div>
                 </div>
-                <form has-authority="ROLE_MANAGER" flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
+                <form has-any-authority="ROLE_MANAGER,ROLE_USER" flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
                     <div layout="row">
                         <img class="circle-material-image" ng-hide="currentUserImage"
                              src="content/images/nobody-image.jpg"/>

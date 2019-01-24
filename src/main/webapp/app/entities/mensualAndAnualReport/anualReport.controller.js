@@ -67,6 +67,7 @@
         vm.loadAll();
 
         function onSuccess(data, headers) {
+            console.log(data)
             vm.report = data;
             vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
 

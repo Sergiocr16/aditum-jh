@@ -6,15 +6,20 @@
         .module('aditumApp')
         .controller('ReservationsCalentarAcceptedReservations', ReservationsCalentarAcceptedReservations);
 
-    ReservationsCalentarAcceptedReservations.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
+    ReservationsCalentarAcceptedReservations.$inject = ['Modal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state'];
 
-    function ReservationsCalentarAcceptedReservations ($timeout, $scope, $stateParams, $uibModalInstance, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
+    function ReservationsCalentarAcceptedReservations (Modal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state) {
         var vm = this;
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.commonAreaReservations = entity;
-        console.log(vm.commonAreaReservations);
+        vm.isReady = false;
         vm.minDate = new Date();
+        $rootScope.mainTitle = "Detalle de reservación";
+        Modal.enteringDetail();
+        $scope.$on("$destroy", function () {
+            Modal.leavingDetail();
+        });
         vm.sendEmail = false;
         vm.charge = {
             type: "3",
@@ -47,8 +52,10 @@
                             id: vm.commonAreaReservations.chargeIdId
                         }, function(result) {
                             vm.charge.date = result.date;
-
+                            vm.charge.concept = result.concept;
+                            vm.isReady = true;
                         })
+                        vm.isReady = true;
                     })
                 })
             })

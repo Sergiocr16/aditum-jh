@@ -4,55 +4,78 @@
 </div>
 <div ng-if="vm.isReady" class=" fade-in">
 
-    <div class="col-md-12 no-padding margin-top-20" layout="row" layout-xs="column" layout-sm="column"
-         layout-align="space-between">
-        <div layout-align="space-between center" style="width: 70px;">
-            <h2 class="bold uppercase display-inline" style="font-size:15px;">
-                Pagos
-            </h2>
-            <i class="fa fa-info-circle" style="color:#2a6496;float:right" angular-popover direction="right"
-               template="<div style='padding:10px;width:250px;color:gray'><h5>Estos son los pagos efectuados por la filial.<h5></div>"
-               mode="mouseover"></i>
+    <div class="col-md-12 col-xs-12 no-padding margin-top-20 " style="margin-bottom: 8px;">
+        <h2 class="caption-subject font-green-sharp font-weight-600 "
+            style="font-size:20px; margin-top: 6px!important;">
+            Pagos
+        </h2>
+        <div class="margin-top-20" ng-show="vm.payments.length>0">
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.query">
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+            </div>
         </div>
+    </div>
+    <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding " ng-if="vm.showFilterDiv">
 
-        <div layout="row" layout-xs="column" ng-hide="vm.payments.length==0 && vm.filtering==false">
+        <div layout="row" layout-xs="column" class="">
 
-            <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">
-                Mostrar
-                todos
-            </md-button>
+
             <md-input-container class="md-block no-margin">
                 <md-datepicker md-max-date="vm.finalTime.date" required ng-model="vm.initialTime.date"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
+
             <md-input-container class="md-block no-margin">
                 <md-datepicker md-min-date="vm.initialTime.date" required ng-model="vm.finalTime.date"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
-            <md-button class="md-raised  md-warn thin-btn no-margin-right" ng-click="vm.filter()"
+            <md-button class="md-raised  md-warn thin-btn no-margin-right hidden-xs " hide-xs ng-click="vm.filter()"
                        ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined || vm.initialTime.date == '' || vm.finalTime.date == '' ">
                 Consultar
             </md-button>
+
+            <md-button class="md-raised  md-warn thin-btn  hidden-md hidden-lg hidden-sm " hide-sm hide-md hide-lg ng-click="vm.filter()"
+                       ng-disabled="vm.initialTime.date == undefined || vm.finalTime.date == undefined || vm.initialTime.date == '' || vm.finalTime.date == '' ">
+                Consultar
+            </md-button>
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.cleanSearch()" ng-show="vm.filtering==true">
+                Mostrar todos
+            </md-button>
         </div>
+
     </div>
-    <div class="portlet-body">
+    <div class="portlet-body col-xs-12 no-padding">
         <no-content ng-if="vm.payments.length==0 && vm.filtering==false" icon="payment"
                     text="La filial no ha realizado ningún pago aún"></no-content>
 
         <no-content ng-if="vm.payments.length==0 && vm.filtering==true" icon="payment"
                     text="No se encontraron pagos en las fechas seleccionadas"></no-content>
         <div hide-lg hide-xl ng-show="vm.payments.length>0" class="margin-top-20">
-            <md-card ng-repeat="payment in vm.payments track by payment.id"
-                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+            <md-card ng-repeat="payment in vm.payments  | filter:vm.query track by payment.id"
+                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20  padding-10"
                      md-theme-watch>
                 <md-card-title style="padding:3px 7px;">
                     <md-card-title-text>
                         <span
-                            class="md-headline font-15 font-green-sharp">Número de recibo: {{payment.receiptNumber}}</span>
+                            class="md-headline font-16 font-green-sharp font-weight-600">Número de recibo: {{payment.receiptNumber}}</span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <div layout="row" layout-align="end center">
@@ -82,29 +105,29 @@
 
                 </md-card-title>
                 <md-card-actions layout="row" class="col-md-12 no-padding" layout-align="space-between center">
-                    <div>
-                        <div>
+                    <div class="gray-font">
+                        <div style="margin-bottom: 8px;">
                             Concepto: <span ng-show="payment.transaction==1">Abono a cuotas</span>
                             <span ng-show="payment.transaction==2"></span>
                         </div>
-                        <div>
+                        <div style="margin-bottom: 8px;">
                             Fecha de pago: {{payment.date | date}}
                         </div>
-                        <div>
+                        <div style="margin-bottom: 8px;">
                             Cuenta: {{payment.account}}
                         </div>
-                        <div>
+                        <div style="margin-bottom: 8px;">
                             Método de pago: {{payment.paymentMethod}}
                         </div>
-                        <div>
+                        <div style="margin-bottom: 8px;">
                             <b>Total: ₡ {{payment.ammount | currency : "" : 0}}</b>
                         </div>
                     </div>
                 </md-card-actions>
             </md-card>
         </div>
-        <div ng-show="vm.payments.length!=0" hide-xs hide-sm hide-md>
-            <table class="table table-bordered font-13 gray-font tableMaterialDesign">
+        <div ng-show="vm.payments.length!=0" hide-xs hide-sm hide-md class="margin-top-10">
+            <table class="table table-bordered font-13 gray-font tableMaterialDesignPayments">
                 <thead style="background-color: #fafafa;" class="">
                 <tr>
                     <th class="text-center">
@@ -128,10 +151,10 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments track by payment.id"
+                <tbody style="outline: none; border-top:0px;" ng-repeat="payment in vm.payments  | filter:vm.query track by payment.id"
                        ng-class="{'selected-payment':payment.isShowingCharges==true}">
-                <tr>
-                    <td style="outline: none;" ng-click="vm.showCharges(payment)"><i
+                <tr >
+                    <td  style="outline: none;" ng-click="vm.showCharges(payment)"><i
                         ng-show="payment.isShowingCharges==true" class="fa fa-chevron-up bold font-11"
                         style="float:left" aria-hidden="true"></i><i ng-hide="payment.isShowingCharges==true"
                                                                      class="fa fa-chevron-down bold font-11"
@@ -164,7 +187,7 @@
                                    mode="mouseover"></i></h6>
                         </div>
                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
-                            <hr style="margin:5px">
+
                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
                                 <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()"
                                    style="display:block" href="/api/payments/file/{{payment.id}}" download>
@@ -256,7 +279,7 @@
                                    mode="mouseover"></i></h6>
                         </div>
                         <div class="col-md-12 " style="position:absolute;bottom:10px;right:4px">
-                            <hr style="margin:5px">
+
                             <div class="col-md-4 col-xs-12 no-padding action-export-payment">
                                 <a ng-class="{disabled: vm.exportActions.downloading==true}" ng-click="vm.download()"
                                    style="display:block" href="/api/payments/file/{{payment.id}}" download>
@@ -365,11 +388,7 @@
             </table>
         </div>
     </div>
-    <div class="text-center" ng-show="vm.payments.length!=0">
-        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-    </div>
-    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"
-               ng-show="vm.payments.length!=0"></uib-pager>
+
 </div>
 
 </div>

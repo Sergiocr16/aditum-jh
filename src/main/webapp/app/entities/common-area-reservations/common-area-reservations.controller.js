@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsController', CommonAreaReservationsController);
 
-    CommonAreaReservationsController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','globalCompany'];
+    CommonAreaReservationsController.$inject = ['Modal','$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','globalCompany'];
 
-    function CommonAreaReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,globalCompany) {
+    function CommonAreaReservationsController(Modal,$state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,globalCompany) {
 
         var vm = this;
         $rootScope.active = "reservations";
@@ -45,33 +45,37 @@
                 vm.commonAreaReservations = data;
                 vm.page = pagingParams.page;
                 angular.forEach(data,function(value){
-                    House.get({
-                        id: value.houseId
-                    }, function(result) {
-                        value.houseNumber = result.housenumber;
-                        Resident.get({
-                            id: value.residentId
-                        }, function(result) {
-                            value.residentName = result.name + " " + result.lastname;
-                            CommonArea.get({
-                                id: value.commonAreaId
-                            }, function(result) {
-                                value.commonAreaName = result.name ;
-                                value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-                                value.commonAreaPicture = result.picture;
-                                value.commonAreapictureContentType = result.pictureContentType;
-
-                            })
-                        })
-                    })
+                    value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
                 });
-                setTimeout(function () {
+
                     vm.isReady = true;
-                },500);
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+        }
+        vm.deleteReservation = function(commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
+                function(){
+                    commonArea.initalDate = new Date(commonArea.initalDate)
+                    commonArea.initalDate.setHours(0);
+                    commonArea.initalDate.setMinutes(0);
+                    Modal.showLoadingBar();
+                    commonArea.status = 4;
+                    CommonAreaReservations.update(commonArea, onDeleteSuccess, onError);
+
+                });
+
+        };
+
+        function onDeleteSuccess (result) {
+
+            loadAll();
+            Modal.toast("Se eliminó la solicitud de reservación correctamente");
+            Modal.hideLoadingBar();
+            // $state.go('common-area-administration.common-area-all-reservations');
+            //
         }
         function formatScheduleTime(initialTime, finalTime){
             var times = [];
