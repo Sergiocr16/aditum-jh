@@ -84,7 +84,6 @@ public class MensualAndAnualReportResource {
         @PathVariable(value = "withPresupuesto")  int withPresupuesto){
         AnualReportDTO anualReportDTO = new AnualReportDTO();
         anualReportService.getReportByMonth(anualReportDTO,actual_month,companyId,withPresupuesto);
-
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(anualReportDTO));
     }
 

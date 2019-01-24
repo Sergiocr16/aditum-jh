@@ -22,7 +22,8 @@
             'ngMessages',
             'ngSanitize',
             'mdColorPicker',
-            'ui.calendar'
+            'ui.calendar',
+            'googlechart',
         ])
         .run(run);
 

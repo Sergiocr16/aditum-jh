@@ -63,6 +63,15 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private int userType;
 
+    private String houseNumber;
+
+    private String residentName;
+
+    private String commonAreaName;
+
+    private byte[] commonAreaPicture;
+    private String commonAreapictureContentType;
+
     public Long getId() {
         return id;
     }
@@ -284,5 +293,45 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setUserType(int userType) {
         this.userType = userType;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
+    }
+
+    public String getResidentName() {
+        return residentName;
+    }
+
+    public void setResidentName(String residentName) {
+        this.residentName = residentName;
+    }
+
+    public String getCommonAreaName() {
+        return commonAreaName;
+    }
+
+    public void setCommonAreaName(String commonAreaName) {
+        this.commonAreaName = commonAreaName;
+    }
+
+    public byte[]  getCommonAreaPicture() {
+        return commonAreaPicture;
+    }
+
+    public void setCommonAreaPicture(byte[]  commonAreaPicture) {
+        this.commonAreaPicture = commonAreaPicture;
+    }
+
+    public String getCommonAreapictureContentType() {
+        return commonAreapictureContentType;
+    }
+
+    public void setCommonAreapictureContentType(String commonAreapictureContentType) {
+        this.commonAreapictureContentType = commonAreapictureContentType;
     }
 }

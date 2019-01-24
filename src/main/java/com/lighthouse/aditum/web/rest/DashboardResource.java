@@ -3,11 +3,10 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.service.*;
-import com.lighthouse.aditum.service.dto.AdminInfoDTO;
-import com.lighthouse.aditum.service.dto.DashboardDTO;
-import com.lighthouse.aditum.service.dto.WatchDTO;
+import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,6 +47,14 @@ public class DashboardResource {
 
     private final CompanyConfigurationService companyConfigurationService;
 
+    private final AnualReportService anualReportService;
+
+    private final CollectionService collectionService;
+
+    private final ComplaintService complaintService;
+
+    private final CommonAreaReservationsService commonAreaReservationsService;
+
     public DashboardResource(AdminInfoService adminInfoService,
                              VehiculeService vehicleService,
                              ResidentService residentServices,
@@ -54,8 +62,11 @@ public class DashboardResource {
                              WatchService watchService,
                              HouseService houseService,
                              OfficerService officerService,
-                             CompanyConfigurationService companyConfigurationService
-
+                             CompanyConfigurationService companyConfigurationService,
+                             AnualReportService anualReportService,
+                             CollectionService collectionService,
+                             ComplaintService complaintService,
+                             CommonAreaReservationsService commonAreaReservationsService
     ) {
         this.adminInfoService = adminInfoService;
         this.vehicleService = vehicleService;
@@ -65,10 +76,14 @@ public class DashboardResource {
         this.houseService = houseService;
         this.officerService = officerService;
         this.companyConfigurationService = companyConfigurationService;
+        this.anualReportService = anualReportService;
+        this.collectionService = collectionService;
+        this.complaintService = complaintService;
+        this.commonAreaReservationsService = commonAreaReservationsService;
     }
 
 
-    public DashboardDTO getDashboardDTO(long companyId){
+    public DashboardDTO getDashboardDTO(long companyId) throws JSONException {
         Integer enableVehicles = vehicleService.enableQuantityByCompany(companyId);
         Integer disableVehicles = vehicleService.disableQuantityByCompany(companyId);
         Integer vehicleQuantity = enableVehicles + disableVehicles;
@@ -84,6 +99,7 @@ public class DashboardResource {
         Integer desocupatedHousesQuantity = houseService.countByCompanyAndDesocupated(companyId);
         Integer officerQuantity = officerService.countByCompanyId(companyId);
         Integer totalHouses = companyConfigurationService.getByTotalHousesByCompanyId(companyId);
+
         DashboardDTO dashboardDTO = new DashboardDTO();
         dashboardDTO.setEnableResidentQuantity(enableResidents);
         dashboardDTO.setDisableResidentQuantity(disableResidents);
@@ -100,29 +116,57 @@ public class DashboardResource {
         dashboardDTO.setOfficerQuantity(officerQuantity);
         dashboardDTO.setVisitorsPerMonth(visitorsPerMonth);
         dashboardDTO.setTotalHouses(totalHouses);
+        dashboardDTO.setComplaintsPending(complaintService.findAllByStatus(null, companyId, 1).getContent().size());
+        dashboardDTO.setComplaintsActive(complaintService.findAllByStatus(null, companyId, 2).getContent().size());
+        dashboardDTO.setReservationsPending(commonAreaReservationsService.getPendingReservations(null, companyId).getContent().size());
         return dashboardDTO;
     }
+
     @Timed
-    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
     @GetMapping("/dashboard/{companyId}")
-    public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) {
+    public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) throws JSONException {
         log.debug("REST request to info of the dashboard : {}", companyId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(getDashboardDTO(companyId)));
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/anualReportIEB/{companyId}/{year}")
+    public ResponseEntity<AnualReportDashboardDTO> getAdminInfoIngressEgressBudget(@PathVariable String companyId, @PathVariable String year) throws JSONException {
+        log.debug("REST request to info of the ingress, egress and budget for grapsh dashboard : {}", companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(anualReportService.getReportByMonthDashboard(Long.parseLong(companyId), Integer.parseInt(year))));
+    }
+
+    @Timed
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
     @GetMapping("/dashboard/updateByYear/{companyId}")
-    public ArrayList updateYear(@PathVariable Long companyId) {
+    public ArrayList<DashboardVisitorDTO> updateYear(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
         return visitorService.countVisitantsPerYear(companyId);
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.USER,AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
     @GetMapping("/dashboard/updateByMonth/{companyId}")
     public ArrayList updateMonth(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
         return visitorService.countVisitantsPerMonth(companyId);
+    }
+
+    @Timed
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/updateByWeek/{companyId}")
+    public ArrayList<DashboardVisitorDTO> updateWeek(@PathVariable Long companyId) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return visitorService.countVisitantsPerWeek(companyId);
+    }
+
+    @Timed
+    @Secured({AuthoritiesConstants.USER, AuthoritiesConstants.MANAGER})
+    @GetMapping("/dashboard/defaulters/{companyId}/{year}")
+    public ArrayList<DefaultersMonthDTO> defaulterPerYear(@PathVariable Long companyId, @PathVariable String year) {
+        log.debug("REST request to info of the dashboard : {}", companyId);
+        return this.collectionService.getDefaulters(companyId, year);
     }
 }

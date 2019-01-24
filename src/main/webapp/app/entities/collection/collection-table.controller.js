@@ -90,6 +90,7 @@
                 angular.forEach(vm.collections, function (collection, i) {
                     collection.houseNumber = parseInt(collection.houseNumber)
                 })
+                console.log(vm.collections)
                 vm.isReady = true;
             }
 
