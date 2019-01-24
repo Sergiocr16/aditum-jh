@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Officer'];
+    AccessDoorController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Officer'];
 
-    function AccessDoorController($mdToast, $timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, PadronElectoral, Destinies, globalCompany, Modal, Officer) {
+    function AccessDoorController($mdToast, $timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, PadronElectoral, Destinies, globalCompany, Modal, Officer) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -73,8 +73,10 @@
             }, onSuccessOfficer, onError);
 
             function onSuccessOfficer(officers, headers) {
+                for (var i = 0; i < officers.length; i++) {
+                    officers[i].selected = false;
+                }
                 $rootScope.officers = officers;
-                console.log($rootScope.officers)
             }
         }
 
@@ -395,7 +397,6 @@
         }
 
         function subscribe() {
-            console.log("IGUAL CORRE")
             $timeout(function () {
                 WSEmergency.subscribe(globalCompany.getId());
                 WSHouse.subscribe(globalCompany.getId());
@@ -403,6 +404,7 @@
                 WSVehicle.subscribe(globalCompany.getId());
                 WSNote.subscribe(globalCompany.getId());
                 WSVisitor.subscribe(globalCompany.getId());
+                WSOfficer.subscribe(globalCompany.getId());
                 WSDeleteEntity.subscribe(globalCompany.getId());
                 WSDeleteEntity.receive().then(null, null, receiveDeletedEntity);
                 WSEmergency.receive().then(null, null, receiveEmergency);
@@ -411,6 +413,7 @@
                 WSVehicle.receive().then(null, null, receiveVehicle);
                 WSNote.receive().then(null, null, receiveHomeService);
                 WSVisitor.receive().then(null, null, receiveVisitor);
+                WSOfficer.receive().then(null, null, receiveOfficer);
             }, 3000);
         }
 
@@ -459,6 +462,21 @@
             if ($rootScope.houses.length > 0) {
                 $rootScope.selectHouse("all");
             }
+        }
+
+        function receiveOfficer(officer) {
+            officer.selected = false;
+            if ($rootScope.officers !== undefined) {
+                var result = hasExistance($rootScope.officers, officer.id)
+                console.log(result);
+                if (result != -1) {
+                    $rootScope.officers[result] = officer;
+                } else {
+                    $rootScope.officers.push(officer);
+                }
+            }
+            console.log(officer);
+            console.log($rootScope.officers)
         }
 
         function receiveVehicle(vehicle) {
@@ -541,6 +559,12 @@
                         CommonMethods.deleteFromArray(result, $rootScope.invitedList)
                     }
                     break;
+                case 'officer':
+                    var result = existItem($rootScope.officers, entity.id)
+                    if (result !== undefined) {
+                        CommonMethods.deleteFromArray(result, $rootScope.officers)
+                    }
+                    break;
             }
         }
 
@@ -567,7 +591,7 @@
 
             })
         };
-        vm.accessDoor = function(){
+        vm.accessDoor = function () {
             $rootScope.id_number = undefined;
             $rootScope.id_vehicule = undefined;
             $rootScope.mainTitle = "Puerta de acceso";
@@ -577,13 +601,13 @@
         vm.registerVisitor = function () {
             if (vm.id_number) {
                 $rootScope.id_number = vm.id_number;
-            }else{
+            } else {
                 $rootScope.id_number = undefined;
 
             }
             if (vm.id_vehicule) {
                 $rootScope.id_vehicule = vm.id_vehicule;
-            }else{
+            } else {
                 $rootScope.id_vehicule = undefined;
             }
             $state.go('main-access-door.register-visitor')
@@ -601,6 +625,7 @@
             WSVehicle.unsubscribe(globalCompany.getId());
             WSNote.unsubscribe(globalCompany.getId());
             WSVisitor.unsubscribe(globalCompany.getId());
+            WSOfficer.unsubscribe(globalCompany.getId());
         }
 
         Offline.on('confirmed-down', function () {
@@ -634,7 +659,7 @@
             }
         });
 
-        $rootScope.timerAd =  $timeout(function retry() {
+        $rootScope.timerAd = $timeout(function retry() {
             Offline.check();
             $timeout(retry, delay);
         }, delay);

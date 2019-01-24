@@ -54,15 +54,14 @@ public class WatchResource {
         if (watchDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new watch cannot already have an ID")).body(null);
         }
-//        WatchDTO previousWatch = watchService.findLastWatch(watchDTO.getCompanyId());
-//        ZonedDateTime currentTime = ZonedDateTime.now();
-//        watchDTO.setInitialtime(currentTime);
-//        watchDTO.setFinaltime(null);
-//        if(previousWatch!=null) {
-//            previousWatch.setFinaltime(currentTime);
-//            watchService.save(previousWatch);
-//        }
-
+        WatchDTO previousWatch = watchService.findLastWatch(watchDTO.getCompanyId());
+        ZonedDateTime currentTime = ZonedDateTime.now();
+        watchDTO.setInitialtime(currentTime);
+        watchDTO.setFinaltime(null);
+        if(previousWatch!=null) {
+            previousWatch.setFinaltime(currentTime);
+            watchService.save(previousWatch);
+        }
         WatchDTO result = watchService.save(watchDTO);
         return ResponseEntity.created(new URI("/api/watches/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -111,12 +110,13 @@ public class WatchResource {
     @GetMapping("/watches/between/{initial_time}/{final_time}/{companyId}")
     @Timed
     public ResponseEntity<List<WatchDTO>> getBetweenDate(
+        @ApiParam Pageable pageable,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
         @PathVariable(value = "companyId")  Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<WatchDTO> page = watchService.findBetweenDates(initial_time,final_time,companyId);
+        Page<WatchDTO> page = watchService.findBetweenDates(pageable,initial_time,final_time,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/watches");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

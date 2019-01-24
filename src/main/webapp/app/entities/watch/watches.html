@@ -1,325 +1,86 @@
-<!-- SE REQUIERE EN CADA VISTA -->
-<div has-authority="ROLE_RH" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="company-rh">{{vm.company.name}}</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Turnos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Consultar</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-
-        </div>
-    </div>
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div  has-authority="ROLE_MANAGER" class="page-bar route-title">
-    <ul class="page-breadcrumb">
-        <li>
-            <i class="fa fa-home"></i>
-            <a ui-sref="company">{{vm.company.name}}</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Turnos</a>
-            <i class="fa fa-angle-right"></i>
-        </li>
-        <li>
-            <a>Consultar</a>
-        </li>
-    </ul>
-    <div class="page-toolbar">
-        <div class="btn-group pull-right">
-
-        </div>
-    </div>
-</div>
-<div class=" col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingIcon">
-    <div class="spinnerLoading">
-        <div class="double-bounce1"></div>
-        <div class="double-bounce2"></div>
-    </div>
-</div>
-<div class="row display-none" id="tableData" >
-    <div class="col-md-12">
-        <h2 class="text-center" ng-show="vm.isData==false">No existe ningún turno registrado aún</h2>
-        <div ng-show="vm.isData==true">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                <div class="portlet light bordered">
-                    <div class="portlet-title">
-                        <div class="caption font-green">
-                            <i class="fa fa-clock-o font-green"></i>
-                            <span class="caption-subject bold uppercase"> Consultar turnos</span>
-                        </div>
-                    </div>
-                    <div class="portlet-body form">
-                        <form role="form" ng-show="vm.showFullDatePicker==true">
-                            <div class="form-body">
-                                <div class="date-picker input-daterange" >
-                                <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" ng-show="isConsulting==true">
-                                <button type="button" class="nothing col-xs-12" ng-click="stopConsulting()" name="button"><i class="fa fa-times red-font"></i></button>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                <input ng-model="vm.consulting_initial_time" max="vm.currentDate" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" datetime-picker="mediumDate"  datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                <label  class="font-15">Desde la fecha</label>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                <input ng-model="vm.consulting_final_time"  max="vm.currentDate"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" type="text" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.finaltime" datepicker-options="vm.picker2.datepickerOptions"  enable-time="false" class="form-control letters gray-font text-center dating" required>
-                                <label  class="font-15">Hasta la fecha</label>
-                                </div>
-
-                                </div>
-                            </div>
-                            <div class="form-actions noborder no-margin no-padding">
-                                <button ng-click="vm.filterWatches()" class="btn green col-md-6 col-sm-6 col-xs-12  small-margin-bottom" ng-disabled="vm.consulting_initial_time=='' || vm.consulting_final_time==''">Consultar</button>
-                                <button ng-click="vm.getCurrentWatch()" ng-show="vm.showCleanBtn==true" class="btn small-margin-bottom btn-danger">Limpiar</button>
-                            </div>
-                        </form>
-                        <form role="form" ng-show="vm.showFullDatePicker==false">
-                            <div class="form-body">
-                                <div class="form-group col-md-12  no-padding">
-                                    <div class="form-group col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Desde:</label>
-                                        <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
-                                            <select class="form-control gray-font" data-ng-model="vm.daySelectedMinimo" ng-options="day.fecha for day in vm.days | orderBy: '-id' track by day.id" required>
-                                                <option value="">Seleccione una fecha</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-12  no-padding">
-                                    <div class="form-group col-md-12 no-padding">
-                                        <label class="col-md-4 col-sm-3 col-xs-5 gray-font">Hasta:</label>
-                                        <div class="form-group col-md-8 col-sm-9 col-xs-7  no-padding">
-                                            <select class="form-control gray-font" data-ng-model="vm.daySelectedMaximo" ng-options="day.fecha for day in vm.days | orderBy: '-id' track by day.id" required>
-                                                <option value="">Seleccione una fecha</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--<div class="date-picker input-daterange" >-->
-                                    <!--<div class="col-lg-1 col-md-1 col-sm-1 col-xs-12" ng-show="isConsulting==true">-->
-                                        <!--<button type="button" class="nothing col-xs-12" ng-click="stopConsulting()" name="button"><i class="fa fa-times red-font"></i></button>-->
-                                    <!--</div>-->
-                                    <!--<div class="form-group form-md-line-input">-->
-                                        <!--<input ng-model="vm.consulting_initial_time" max="vm.currentDate" ng-click="vm.openCalendar('initialtime')" ng-change="vm.updatePicker()" datetime-picker="mediumDate"  datepicker-options="vm.picker1.datepickerOptions" is-open="vm.datePickerOpenStatus.initialtime"  type="text" enable-time="false" class="form-control letters gray-font text-center dating" required>-->
-                                        <!--<label  class="font-15">Desde la fecha</label>-->
-                                    <!--</div>-->
-                                    <!--<div class="form-group form-md-line-input">-->
-                                        <!--<input ng-model="vm.consulting_final_time"  max="vm.currentDate"  ng-click="vm.openCalendar('finaltime')" ng-change="vm.updatePicker()" type="text" datetime-picker="mediumDate"  is-open="vm.datePickerOpenStatus.finaltime" datepicker-options="vm.picker2.datepickerOptions"  enable-time="false" class="form-control letters gray-font text-center dating" required>-->
-                                        <!--<label  class="font-15">Hasta la fecha</label>-->
-                                    <!--</div>-->
-
-                                <!--</div>-->
-                            </div>
-                            <div class="form-actions noborder no-margin no-padding">
-                                <button ng-click="vm.filterWatches(2)" class="btn green col-md-6 col-sm-6 col-xs-12  small-margin-bottom" ng-disabled="vm.daySelectedMinimo=='' || vm.daySelectedMinimo==undefined || vm.daySelectedMaximo=='' || vm.daySelectedMaximo==undefined">Consultar</button>
-                                <button ng-click="vm.getCurrentWatch()" ng-show="vm.showCleanBtn==true" class="btn small-margin-bottom btn-danger">Limpiar</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+<div ng-if="vm.isReady">
+    <h3 layout="column" class="page-title col-md-9 caption-subject font-green-sharp font-weight-600"
+        style="margin-bottom:20px;min-height: 30px" hide-sm
+        hide-xs style="color: #00b19d">
+        Turnos de oficiales
+    </h3>
+    <div class="col-md-12 col-sm-12 col-xs-12 no-padding ">
+        <div class="">
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.query">
                 </div>
             </div>
-            <div class="col-md-8 col-lg-8 col-sm-8 col-xs-12">
-                <!--<div class="loading col-lg-12 col-md-12 col-sm-12 col-xs-12" id="loadingData">-->
-                    <!--<h1 class="text-center"><img src="../../assets/global/img/loader4.gif" alt="" /></h1>-->
-                <!--</div>-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" id="data">
-                    <div class="col-md-2 col-lg-2 col-sm-2 col-xs-1">
-                        <span ng-click="vm.filterWatches(1)" class="float-right pointer" ng-show="vm.showBackBtn==true"><i class="fa fa-arrow-circle-o-left font-green font-back" aria-hidden="true"></i></span>
-                    </div>
-                    <div class="col-md-10 col-lg-10 col-sm-10 col-xs-11">
-
-                        <div class="portlet box dark-blue" ng-show="vm.showTable==false">
-                            <div class="portlet-title">
-                                <h4 class="text-center" ng-show="vm.currentTurn==true">Turno actual</h4>
-                                <h4 class="text-center" >{{vm.day}}</h4>
-                            </div>
-                            <div class="portlet-body dark-blue-border col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                                <div class="gray-font">
-                                    <div class="portlet-body col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                                            <h5 class="text-center">{{vm.watch.initialtime}}</h5>
-                                        </div>
-                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-12">
-                                            <h5 class="text-center">--</h5>
-                                        </div>
-                                        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-                                            <h5 class="text-center">{{vm.watch.finaltime}}</h5>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <h5 class="text-center bold">Oficiales</h5>
-                                    </div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <table class="table table-striped table-bordered table-advance table-hover gray-font">
-                                            <thead>
-                                            <tr>
-                                                <th>
-                                                    Cédula
-                                                </th>
-                                                <th>
-                                                    Nombre completo
-                                                </th>
-                                            </tr>
-                                            </thead>
-
-                                            <tbody>
-                                            <tr ng-repeat="officer in vm.watch.officers">
-                                                <td>
-                                                    {{officer.identificationnumber}}
-                                                </td>
-                                                <td>
-                                                    {{officer.name}}
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- BEGIN SAMPLE TABLE PORTLET-->
-                        <div class="portlet box dark-blue" ng-show="vm.showTable==true">
-                            <div class="portlet-title">
-                                <h4 class="text-center">Desde {{vm.showConsultingInitialTime}} hasta {{vm.showConsultingFinalTime}}</h4>
-                            </div>
-                            <div class="portlet-body dark-blue-border col-lg-12 col-sm-12 col-xs-12 col-md-12">
-                                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <h4 class="text-center" ng-show="vm.watches.length == 0"> No se encontraron registros entre estas fechas</h4>
-                                    <table ng-show="vm.watches.length > 0" class="table table-striped table-bordered table-advance table-hover">
-                                        <thead>
-                                        <tr>
-                                            <th>
-                                                Hora de inicio
-                                            </th>
-                                            <th>
-                                                Hora de Fin
-                                            </th>
-                                            <th>
-                                                Detalle
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="font-12">
-                                        <tr class="pointer" ng-click="vm.getWatch(turno.id)" ng-repeat="turno in vm.watches | orderBy:'-initialtime' track by $index ">
-                                            <td>
-                                                {{turno.initialtime | formatDate}}
-                                            </td>
-                                            <td>
-                                                {{turno.finaltime | formatDate}}
-                                            </td>
-                                            <td>
-                                                Ver Detalle
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i>
+                </button>
             </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20">
+        <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.finalTime" required ng-model="vm.initialTime"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vm.initialTime" required ng-model="vm.finalTime"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+            <md-button class="md-raised  md-warn thin-btn no-margin-right" style="margin-top:-15px"
+                       ng-click="vm.filter()"
+                       ng-disabled="vm.initialTime == undefined || vm.finalTime == undefined || vm.initialTime == '' || vm.finalTime == '' ">
+                Consultar
+            </md-button>
+            <md-button class="md-raised  md-success thin-btn no-margin-right" style="margin-top:-15px"
+                       ng-if="vm.isFiltering==true"
+                       ng-click="vm.loadAllNormal()">
+                Mostrar todos
+            </md-button>
 
         </div>
-    <div id="backBTN" has-authority="ROLE_RH" class="form-actions noborder col-md-12 col-lg-12 col-xs-12 col-sm-12 display-none">
-        <h3 class="text-right ">
-            <button type="button" ui-sref="company-rh" class="btn red default">Volver</button>
-        </h3>
     </div>
+    <div layout="row"  ng-if="vm.isFiltering" class="font-14 margin-top-10 fade-in col-md-12 col-sm-12 col-xs-12">
+        <b layout="row" ><span> <span
+        class="margin-right-10">Filtrando:</span> {{vm.initialTime | date}}</span> <span class="font-green-haze"
+                                                                                         style="margin: 0 10px">-</span>
+        <span>{{vm.finalTime | date}}</span> </b></div>
+    <no-content ng-if="vm.watches == 0" icon="access_time"
+                text="{{vm.defineTextNoContent()}}"></no-content>
 
+
+    <div class="col-md-12 col-xs-12 no-padding fade-in margin-top-10" infinite-scroll="vm.loadPage(vm.page + 1)"
+         infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-container='".all-content"'
+         infinite-scroll-distance="0" infinite-scroll-parent="true">
+        <md-card style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
+                 class="form-wrapper" class="row"
+                 ng-repeat="watch in vm.watches | filter:vm.query track by watch.id">
+            <div layout="column" class="padding-20 col-md-12">
+                <div class="md-headline font-15 bold font-green-haze uppercase">Turno # {{watch.id}}</div>
+                <div>Fecha: {{watch.initialtime}} - {{watch.finaltime}}</div>
+                <span>Oficiales en servicio:  {{watch.totalOfficers}}</span>
+                <md-icon ng-click="vm.viewDetail(watch)" class="float-right margin-right-10 pointer outline-none">
+                    <md-tooltip md-direction="left">Ver detalle</md-tooltip>
+                    remove_red_eye
+                </md-icon>
+            </div>
+        </md-card>
     </div>
+</div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<div>-->
-    <!--<h2 data-translate="aditumApp.watch.home.title">Watches</h2>-->
-    <!--<jhi-alert></jhi-alert>-->
-    <!--<div class="container-fluid">-->
-        <!--<div class="row">-->
-            <!--<div class="col-xs-4 no-padding-left">-->
-                <!--<button class="btn btn-primary" ui-sref="watch.new" >-->
-                    <!--<span class="glyphicon glyphicon-plus"></span>-->
-                    <!--<span  data-translate="aditumApp.watch.home.createLabel">-->
-                        <!--Create new Watch-->
-                    <!--</span>-->
-                <!--</button>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<br/>-->
-    <!--<div class="table-responsive">-->
-        <!--<table class="jh-table table table-striped">-->
-            <!--<thead>-->
-                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
-                    <!--<th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="initialtime"><span data-translate="aditumApp.watch.initialtime">Initialtime</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="finaltime"><span data-translate="aditumApp.watch.finaltime">Finaltime</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="responsableofficer"><span data-translate="aditumApp.watch.responsableofficer">Responsableofficer</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th jh-sort-by="companyId"><span data-translate="aditumApp.watch.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>-->
-                    <!--<th></th>-->
-                <!--</tr>-->
-            <!--</thead>-->
-            <!--<tbody>-->
-                <!--<tr ng-repeat="watch in vm.watches track by watch.id">-->
-                    <!--<td><a ui-sref="watch-detail({id:watch.id})">{{watch.id}}</a></td>-->
-                    <!--<td>{{watch.initialtime | date:'medium'}}</td>-->
-                    <!--<td>{{watch.finaltime | date:'medium'}}</td>-->
-                    <!--<td>{{watch.responsableofficer}}</td>-->
-                    <!--<td>-->
-                        <!--<a ui-sref="company-detail({id:watch.companyId})">{{watch.companyId}}</a>-->
-                    <!--</td>-->
-                    <!--<td class="text-right">-->
-                        <!--<div class="btn-group flex-btn-group-container">-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="watch-detail({id:watch.id})"-->
-                                    <!--class="btn btn-info btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.view"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="watch.edit({id:watch.id})"-->
-                                    <!--class="btn btn-primary btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-pencil"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.edit"></span>-->
-                            <!--</button>-->
-                            <!--<button type="submit"-->
-                                    <!--ui-sref="watch.delete({id:watch.id})"-->
-                                    <!--class="btn btn-danger btn-sm">-->
-                                <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
-                                <!--<span class="hidden-sm-down" data-translate="entity.action.delete"></span>-->
-                            <!--</button>-->
-                        <!--</div>-->
-                    <!--</td>-->
-                <!--</tr>-->
-            <!--</tbody>-->
-        <!--</table>-->
-    <!--</div>-->
-    <!--<div class="text-center">-->
-        <!--<jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>-->
-    <!--</div>-->
-    <!--<uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>-->
-<!--</div>-->

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor'];
+    NavbarController.$inject = ['$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor','WSOfficer'];
 
-    function NavbarController($timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor) {
+    function NavbarController($timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -397,7 +397,7 @@
                             },
                             {
                                 title: "Turnos",
-                                icon: "timer",
+                                icon: "access_time",
                                 authoritites: "ROLE_MANAGER",
                                 activeOn: "watches",
                                 collapsable: false,
@@ -1397,6 +1397,8 @@
             WSVehicle.unsubscribe(globalCompany.getId());
             WSNote.unsubscribe(globalCompany.getId());
             WSVisitor.unsubscribe(globalCompany.getId());
+            WSOfficer.unsubscribe(globalCompany.getId());
+
         }
 
         function logout() {
@@ -1600,7 +1602,7 @@
                 })
             }, 300)
             $state.reload();
-        }
+        };
 
         vm.defineSelectCompanyColor = function (company) {
             if (company.id == globalCompany.getId()) {

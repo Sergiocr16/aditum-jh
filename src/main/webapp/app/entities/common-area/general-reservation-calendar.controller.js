@@ -129,7 +129,6 @@
         /* Change View */
         vm.changeView = function(viewMode) {
             vm.uiConfig.calendar.defaultView = viewMode;
-            console.log(vm.uiConfig.calendar.defaultView);
         };
 
         /* Change View */

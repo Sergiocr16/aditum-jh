@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 import com.lighthouse.aditum.domain.Watch;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +39,23 @@ public class DashboardDTO implements Serializable {
 
     private WatchDTO currentWatch;
 
-    private ArrayList visitorsPerMonth;
+    private Integer complaintsActive;
+
+    private Integer complaintsPending;
+
+    private Integer reservationsPending;
+
+    private ArrayList<DashboardVisitorDTO>  visitorsPerMonth;
+
+    private AnualReportDashboardDTO anualReportDashboardDTO;
+
+    public AnualReportDashboardDTO getAnualReportDashboardDTO() {
+        return anualReportDashboardDTO;
+    }
+
+    public void setAnualReportDashboardDTO(AnualReportDashboardDTO anualReportDashboardDTO) {
+        this.anualReportDashboardDTO = anualReportDashboardDTO;
+    }
 
     public Integer getTotalHouses() {
         return totalHouses;
@@ -150,11 +167,36 @@ public class DashboardDTO implements Serializable {
         this.officerQuantity = officerQuantity;
     }
 
-    public ArrayList getVisitorsPerMonth() {
+    public ArrayList<DashboardVisitorDTO> getVisitorsPerMonth() {
         return visitorsPerMonth;
     }
 
-    public void setVisitorsPerMonth(ArrayList visitorsPerMonth) {
+    public void setVisitorsPerMonth(ArrayList<DashboardVisitorDTO>  visitorsPerMonth) {
         this.visitorsPerMonth = visitorsPerMonth;
+    }
+
+
+    public Integer getComplaintsActive() {
+        return complaintsActive;
+    }
+
+    public void setComplaintsActive(Integer complaintsActive) {
+        this.complaintsActive = complaintsActive;
+    }
+
+    public Integer getComplaintsPending() {
+        return complaintsPending;
+    }
+
+    public void setComplaintsPending(Integer complaintsPending) {
+        this.complaintsPending = complaintsPending;
+    }
+
+    public Integer getReservationsPending() {
+        return reservationsPending;
+    }
+
+    public void setReservationsPending(Integer reservationsPending) {
+        this.reservationsPending = reservationsPending;
     }
 }

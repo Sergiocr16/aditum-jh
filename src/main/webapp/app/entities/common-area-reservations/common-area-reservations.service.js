@@ -67,6 +67,14 @@
             'getAcceptedReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getAcceptedReservations/:companyId',
+              isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
+            },
+            'getLastAcceptedReservations':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getLastAcceptedReservations/:companyId',
                 isArray: true,
                 params:{
                     companyId: '@companyId'

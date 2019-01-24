@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('OfficerController', OfficerController);
 
-    OfficerController.$inject = ['User', '$state', 'CommonMethods', 'DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany', 'companyUser','Modal'];
+    OfficerController.$inject = ['User', '$state', 'CommonMethods', 'DataUtils', 'Officer', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'globalCompany', 'companyUser', 'Modal', 'WSDeleteEntity', 'WSOfficer'];
 
-    function OfficerController(User, $state, CommonMethods, DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany, companyUser, Modal) {
+    function OfficerController(User, $state, CommonMethods, DataUtils, Officer, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, globalCompany, companyUser, Modal, WSDeleteEntity, WSOfficer) {
 
         var enabledOptions = true;
         var vm = this;
@@ -50,7 +50,7 @@
         }
 
         function loadAll() {
-            if(companyUser!=undefined){
+            if (companyUser != undefined) {
                 vm.canEditOfficers = companyUser.administraOficiales;
             }
 
@@ -111,34 +111,30 @@
 
 
         vm.deleteOfficer = function (officer) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar al oficial " + officer.name + " " + officer.lastname + "?","",function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar al oficial " + officer.name + " " + officer.lastname + "?", "", function () {
                 vm.login = officer.userLogin;
                 Officer.delete({
                     id: officer.id
                 }, onSuccessDelete);
-
+                WSDeleteEntity.sendActivity({type: 'officer', id: officer.id})
             });
 
 
-            function onSuccessDelete() {
-
+            function onSuccessDelete(result) {
                 Modal.toast("Se ha eliminado el oficial correctamente.");
                 loadAll();
-
-
             }
 
         };
 
         vm.disableEnabledOfficer = function (officerInfo) {
-
             var correctMessage;
             if (enabledOptions) {
                 correctMessage = "¿Está seguro que desea deshabilitar al oficial " + officerInfo.name + "?";
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al oficial " + officerInfo.name + "?";
             }
-            Modal.confirmDialog(correctMessage,"",function(){
+            Modal.confirmDialog(correctMessage, "", function () {
                 Modal.showLoadingBar();
                 Officer.get({id: officerInfo.id}).$promise.then(onSuccessGetOfficer);
 
@@ -162,13 +158,16 @@
         }
 
         function onSuccessDisabledOfficer(data, headers) {
+            WSOfficer.sendActivity(data);
             Modal.toast("Se ha deshabilitado el oficial correctamente.");
             Modal.hideLoadingBar();
             loadAll();
 
         }
 
-        function onSuccessEnabledOfficer(onSuccessEnabledOfficer, headers) {
+        function onSuccessEnabledOfficer(data, headers) {
+            WSOfficer.sendActivity(data);
+
             Modal.toast("Se ha habilitado el oficial correctamente.");
             Modal.hideLoadingBar();
             loadAll();

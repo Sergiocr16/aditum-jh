@@ -3,14 +3,16 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<h3 layout="row" class="font-green-sharp font-weight-600 margin-bottom-30" hide-xs  hide-sm hide-md style="color: #00b19d">
+<h3 layout="row" class="font-green-sharp font-weight-600 margin-bottom-30" hide-xs hide-sm hide-md
+    style="color: #00b19d">
     Noticias</h3>
 
 <div ng-if="vm.isReady" class="fade-in">
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
                 text="El condominio no ha realizado ningún anuncio aún"></no-content>
 
-    <md-card ng-show="vm.announcements.length != 0" style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
+    <md-card ng-show="vm.announcements.length != 0"
+             style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
              class="form-wrapper" infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']" class="row"
              ng-repeat="announcement in vm.announcements track by announcement.id">
@@ -18,7 +20,8 @@
             <md-card-title-text>
                 <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{announcement.title}}</span>
                 <span class="md-headline font-15 hidden-xs">{{announcement.title}}</span>
-                <span class="md-subhead" style="font-size: 11px" hide-xl hide-lg hide-md>{{announcement.showDate}}</span>
+                <span class="md-subhead" style="font-size: 11px" hide-xl hide-lg
+                      hide-md>{{announcement.showDate}}</span>
             </md-card-title-text>
             <div>
                 <span class="md-subhead" style="font-size: 12px" hide-xs hide-sm>{{announcement.showDate}}</span>
@@ -138,7 +141,8 @@
                         </md-list>
                     </div>
                 </div>
-                <form has-any-authority="ROLE_MANAGER,ROLE_USER" flex  name="form" class="md-list-item" ng-submit="vm.saveComment(announcement)">
+                <form has-any-authority="ROLE_MANAGER,ROLE_USER" flex name="form" class="md-list-item"
+                      ng-submit="vm.saveComment(announcement)">
                     <div layout="row">
                         <img class="circle-material-image" ng-hide="currentUserImage"
                              src="content/images/nobody-image.jpg"/>
@@ -288,4 +292,4 @@
     <!--</div>-->
     <!--</div>-->
     <!--</div>-->
-    <!--</div>-->
+</div>

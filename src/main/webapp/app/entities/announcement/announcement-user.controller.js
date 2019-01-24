@@ -39,7 +39,6 @@
 
 
         function onSaveSuccess() {
-            console.log(companyUser)
             bootbox.hideAll();
             loadAll();
         }
@@ -73,7 +72,6 @@
                 };
                 vm.announcements.push(data[i]);
             }
-            console.log(companyUser)
             vm.isReady = true;
         }
 
@@ -145,7 +143,6 @@
                     data[i].newComment = data[i].comment;
                     verifyIfCommentExist(data[i], announcement.comments) === false ? announcement.comments.push(data[i]) : false;
                 }
-                console.log(announcement.comments)
                 announcement.showingComments = true;
             }, onErrorComments);
         }
@@ -187,7 +184,6 @@
                         announcement.commentsQuantity++;
                         data.showingDate = moment(data.creationDate).fromNow();
                         data.editing = false;
-                        console.log(data);
                         data.newComment = data.comment;
                         if(announcement.showingComments==true) {
                             announcement.comments.push(data);
@@ -219,8 +215,6 @@
         }
 
         function showActionEdit(comment) {
-            console.log(comment)
-            console.log(companyUser)
             return comment.resident.id == companyUser.id && comment.resident.identificationnumber == companyUser.identificationnumber;
         }
 

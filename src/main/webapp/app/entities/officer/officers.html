@@ -54,7 +54,7 @@
                             <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
                             <span class="md-headline font-15 hidden-xs">{{officer.name.toUpperCase()}} {{officer.lastname.toUpperCase()}}</span>
                             <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{officer.identificationnumber.toUpperCase()}}</span>
-                            <span class="md-subhead">Teléfono: {{officer.phonenumber}}</span>
+                            <span class="md-subhead">Teléfono: {{officer.phonenumber}} <span ng-if="officer.phonenumber==undefined">No definido</span></span>
                         </md-card-title-text>
                         <md-card-title-media>
                             <div class="md-media-md card-media  hidden-md hidden-lg"
@@ -62,14 +62,14 @@
                                 <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="112"
                                      width="112"/>
                                 <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
-                                     class="object-fit_scale-down-resident-index"/>
+                                     class="object-fit_scale-down-index-xs"/>
                             </div>
                             <div class="md-media-sm card-media hidden-xs hidden-sm"
                                  style="padding-top: 10px!important;">
                                 <img ng-hide="officer.image_url" src="content/images/nobody-image.jpg" height="80"
                                      width="80"/>
                                 <img ng-show="officer.image_url!==null" src="{{officer.image_url}}"
-                                     class="object-fit_scale-down-resident-index-xs"/>
+                                     class="object-fit_scale-down-index"/>
                             </div>
                         </md-card-title-media>
                     </md-card-title>
@@ -93,6 +93,14 @@
                                         more_vert</i>
                                 </md-button>
                                 <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.disableEnabledOfficer(officer)">
+                                            <div layout="row" flex>
+                                                <p flex ng-if="officer.enable==true">Deshabilitar</p>
+                                                <p flex ng-if="officer.enable==false">Habilitar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
                                     <md-menu-item>
                                         <md-button ng-click="vm.editOfficer(officer.id)">
                                             <div layout="row" flex>

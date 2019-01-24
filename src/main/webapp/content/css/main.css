@@ -1842,6 +1842,14 @@ div.scrollmenu a:hover {
     .height-264 {
         height: auto !important;
     }
+    .no-padding-xs{
+        padding: 15px 15px!important;
+    }
+    .md-fixed-tabs {
+        border-radius: 0 !important;
+        width: 100%!important;
+        padding: 0px !important
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -2007,7 +2015,7 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 
 .md-fixed-tabs {
     border-radius: 0 !important;
-    width: 100%;
+    width: 81%;
     padding: 0px !important
 }
 
@@ -2602,4 +2610,23 @@ md-toast.md-center {
     border-radius: 0px !important;
     opacity: 1 !important;
     box-shadow: none !important;
+}
+
+.btn-dashboard:hover{
+    color:#4DB3A2 !important
+}
+
+.margin-5{
+    margin: 5px!important;
+}
+
+.no-padding-left{
+    padding-left: 0px!important;
+}
+
+.no-padding-right{
+    padding-right: 0px!important;
+}
+.no-padding-xs{
+    padding: 15px 15px!important;
 }

@@ -74,8 +74,6 @@ public class ChargeService {
         charge.setId(null);
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
-
-
         charge = chargeRepository.save(charge);
         return this.formatCharge(chargeMapper.toDto(charge));
     }

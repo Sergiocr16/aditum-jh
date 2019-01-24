@@ -22,7 +22,8 @@
             'ngMessages',
             'ngSanitize',
             'mdColorPicker',
-            'ui.calendar'
+            'ui.calendar',
+            'googlechart',
         ])
         .run(run);
 
@@ -87,5 +88,7 @@
                 vm.action2();
             },30)
         }
+
+
     }
 })();
