@@ -11,10 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.save = save;
-        Modal.enteringForm(save);
-        $scope.$on("$destroy", function () {
-            Modal.leavingForm();
-        });
+
         $rootScope.active = "reportHomeService";
         $rootScope.mainTitle = "Reportar servicio a domicilio";
 

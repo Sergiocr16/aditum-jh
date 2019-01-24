@@ -3,7 +3,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div class="fade-in" ng-if="vm.isReady">
+
 <div class="row" ng-if="true">
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
         <md-tabs hide-xs  md-stretch-tabs='always'  md-dynamic-height="" md-border-bottom="" class="padding-left-10 hidden-xs">
@@ -22,7 +22,7 @@
         </md-tabs>
     </md-content>
 </div>
-
+<div class="fade-in" ng-if="vm.isReady">
 <div class="row fade-in">
     <div class="col-lg-12 col-md-12">
 
@@ -65,7 +65,7 @@
             <no-content ng-if="vm.vehicules.length == 0" icon="directions_car" text="No hay vehículos registrados"></no-content>
 
             <div class="col-md-4 no-padding col-sm-6 col-xs-12   " ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'licenseplate'">
-                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10 residentCardContainer"
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer"
                          md-theme-watch>
                     <md-card-title class="no-padding-bottom">
                         <md-card-title-text>

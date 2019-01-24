@@ -14,10 +14,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         CommonMethods.validateSpecialCharacters();
         vm.save = save;
-        Modal.enteringForm(save);
-        $scope.$on("$destroy", function () {
-            Modal.leavingForm();
-        });
+
         vm.isReady = false;
         House.get({id: companyUser.houseId}).$promise.then(onSuccess);
 

@@ -419,6 +419,10 @@
             Modal.showLoadingBar()
             vm.isSaving = true;
             vm.commonAreaReservations.reservationCharge = vm.commonarea.reservationCharge;
+            if(vm.commonAreaReservations.reservationCharge==="0"){
+                vm.commonAreaReservations.reservationCharge=null;
+            }
+            console.log( vm.commonAreaReservations.reservationCharge)
             vm.commonAreaReservations.devolutionAmmount = vm.commonarea.devolutionAmmount;
             vm.commonAreaReservations.commonAreaId = vm.commonarea.id;
 

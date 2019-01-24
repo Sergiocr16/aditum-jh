@@ -1,158 +1,223 @@
-<form name="editForm" role="form" novalidate ng-submit="vm.acceptReservation()" show-validation>
 
-    <div class="modal-body">
-        <div class=" pull-right no-padding">
-            <button type="button" class="btn font-17 no-padding" style="color:black; background-color: white; " data-dismiss="modal" aria-hidden="true"
-                    ng-click="vm.clear()"><i class="fa fa-times" aria-hidden="true"></i></button>
+
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+
+<md-card ng-if="vm.isReady" class="fade-in gray-font commonAreaReservationDetailDiv" style="margin-bottom: 40px!important;" md-theme-watch
+         class="form-wrapper">
+    <md-card-title hide-sm hide-xs layout-align="space-between center">
+        <md-card-title-text hide-sm hide-xs>
+            <span class="md-headline">
+                <i class="material-icons material-icons-with-text" hide-sm hide-xs
+                   ng-click="back()">arrow_back</i>Detalle de reservación</span>
+        </md-card-title-text>
+        <div style="margin-right: 15px">
+             <span class="bold" ng-show="vm.egress.state==3" style="font-size:17px;color:#F3565D"
+             >Vencido </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==2" style="font-size:17px;color:#45B6AF"
+            >Aprobada </span>
+            <span class="bold" ng-show="vm.commonAreaReservations.status==1" style="font-size:17px;color:#dfba49"
+            >Pendiente </span>
         </div>
-        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 no-padding font-14" style="color: #5f6368">
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
-                <span style="font-weight: 600">Información de la reservación</span>
-                <div class=" pull-right no-padding hidden-xs">
-                    <span>Estado: <span style="font-weight: 600">pendiente</span></span>
+    </md-card-title>
+    <md-card-content style="padding: 0px!important;" layout="column">
+        <div style="padding: 20px!important;">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold  control-label">Área común:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="   control-label">{{ vm.commonAreaReservations.commonAreaName}}</span>
+
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20" style="border:1px solid #e7e7e7; ">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
-                    <div class="margin-bottom-5 " style="font-weight: 600">Área común</div>
-                    <span>{{ vm.commonAreaReservations.commonAreaName}}</span>
-                </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
-                    <div class="margin-bottom-5" style="font-weight: 600">Fecha de reservación</div>
-                    <span>{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
-                </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-10 reservation-detail-info-div" style="border-right: 1px solid #e7e7e7;">
-                    <div class="margin-bottom-5" style="font-weight: 600">Horario</div>
-                    <span>{{vm.commonAreaReservations.schedule}}</span>
-                </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-10 " >
-                    <div class="margin-bottom-5" style="font-weight: 600">Responsable</div>
-                    <span>{{vm.commonAreaReservations.residentName}} - Filial {{vm.commonAreaReservations.houseNumber}}</span>
-                </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-10 hidden-sm hidden-lg hidden-md " >
-                    <div class="margin-bottom-5" style="font-weight: 600">Estado</div>
-                    <span>pendiente</span>
-                </div>
-            </div>
-            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10 " style="border: 1px solid #e7e7e7; background-color: #f7f7f7; border-bottom:0px;">
-                <span style="font-weight: 600">Generar costo por reservación</span>
-            </div>
-            <div ng-if="vm.commonAreaReservations.reservationCharge!==null" class="col-md-12 col-lg-12 col-sm-12 col-xs-12 text-center padding-10 font-14 margin-bottom-20 " style="border:1px solid #e7e7e7;">
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7;  padding-bottom: 10px!important;">
 
 
-                    <md-input-container class="md-block  no-margin-bottom">
-                        <label>Fecha del cargo</label>
-                        <md-datepicker md-min-date="vm.egress.date" required ng-model="vm.charge.date" md-hide-icons="calendar"
-                                       md-open-on-focus
-                                       required></md-datepicker>
-                    </md-input-container>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
+                        <span class=" bold control-label">Horario:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6  ">
 
+                            <span
+                                class="  control-label">{{vm.commonAreaReservations.schedule}}</span>
+                    </div>
                 </div>
-                <div class="col-md-4 col-lg-4 col-sm-4 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
-                    <!--<div class="margin-bottom-10 control-label" style="font-weight: 600">Concepto</div>-->
-                    <!--<input  type="text" class="form-control numbers" name="chargeConcept" id="field_chargeConcept"-->
-                             <!--required-->
-                    <!--/>-->
-                    <md-input-container class="md-block" style="margin-bottom: 0">
-                        <label>Concepto</label>
-                        <input required ng-model="vm.charge.concept" type="text" class="">
-                    </md-input-container>
-                </div>
-                <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 padding-20 form-group reservation-detail-info-div text-left" style="border-right: 1px solid #e7e7e7; padding-bottom: 10px!important;">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Responsable:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
 
-                    <md-input-container class="md-block" style="margin-bottom: 0">
-                        <label>Cantidad</label>
-                        <input required ng-model="vm.charge.ammount" format="currency" type="text" placeholder="0.00" class="">
-                    </md-input-container>
-                </div>
-                <div class="col-md-2 col-lg-2 col-sm-2 col-xs-12 padding-20 reservation-detail-info-div text-left" >
+                        <span class="  control-label">{{vm.commonAreaReservations.residentName}}</span>
 
-                    <md-input-container class="md-block" style="margin-bottom: 0">
-                        <label>Devolución</label>
-                        <input required ng-model="vm.commonAreaReservations.devolutionAmmount" format="currency" ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)" type="text" placeholder="0.00" class="">
-                    </md-input-container>
-
-                </div>
-
-            </div>
-            <div  class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-10" style="border: 1px solid #e7e7e7; background-color: #f7f7f7; ">
-                <div class="col-md-9 col-lg-9 col-sm-9 col-xs-6 no-padding"> <span style="font-weight: 600">Enviar por correo</span></div>
-
-                <div class="no-padding pull-right">
-                    <div class="md-radio-inline no-padding no-margin" >
-                        <div class="md-radio" >
-                            <input type="radio" id="radio18" name="radio2"   class="md-radiobtn"  ng-click="vm.switchSendEmail(true)">
-                            <label for="radio18" style="color:#45B6AF">
-                                <span class="inc"></span>
-                                <span class="inc"></span>
-                                <span class="check"></span>
-                                <span class="box"></span>
-                                Si </label>
-                        </div>
-                        <div class="md-radio has-error">
-                            <input type="radio" id="radio19" name="radio2" ng-checked="true" class="md-radiobtn" ng-click="vm.switchSendEmail(false)">
-                            <label for="radio19">
-                                <span class="inc"></span>
-                                <span class="check"></span>
-                                <span class="box"></span>
-                                No </label>
-                        </div>
                     </div>
                 </div>
             </div>
-            <div ng-if="vm.sendEmail" class="col-md-12 col-lg-12 col-sm-12 col-xs-12  padding-20 font-14 " style="border:1px solid #e7e7e7; border-top:0px;">
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12  form-group" style="padding-top: 10px!important;">
-                    <!--<div class="margin-bottom-10  control-label" style="font-weight: 600">Correo electrónico *</div>-->
-                    <!--<input type="text" class="form-control numbers col-md-12 col-sm-12 col-lg-12 col-sm-12" name="devolutionCharge" id="field_email"-->
-                           <!--ng-model="vm.commonAreaReservations.chargeEmail"  placeholder="Correo electrónico" required-->
-                    <!--/>-->
-                    <md-input-container class="md-block" style="margin-bottom: 0">
-                        <label>Correo electrónico</label>
-                        <input required ng-model="vm.commonAreaReservations.chargeEmail" type="email" class="">
-                    </md-input-container>
+
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 no-padding ">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Fecha de reservación:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.initalDate | date:'longDate'}}</span>
+
+                    </div>
                 </div>
-                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 " >
-                    <!--<div class="margin-bottom-10 " style="font-weight: 600">Comentarios</div>-->
-                    <!--<textarea rows="2" ng-model="vm.commonAreaReservations.comments " cols="100" type="text"-->
-                              <!--class="form-control col-md-12" name="comments" id="field_comments">-->
-                         <!--</textarea>-->
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Filial:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
 
-                    <md-input-container class="md-block">
-                        <label>Comentarios</label>
-                        <textarea  ng-model="vm.commonAreaReservations.comments"  rows="3"
-                                  md-select-on-focus></textarea>
-                    </md-input-container>
+                        <span class="  control-label">{{vm.commonAreaReservations.houseNumber}}</span>
+
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD" ng-if="vm.commonAreaReservations.comments!==null">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
+                        <span class=" bold control-label">Comentarios:</span>
+                    </div>
+                    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
+
+                        <span class="  control-label">{{vm.commonAreaReservations.comments}}</span>
+
+                    </div>
                 </div>
 
             </div>
 
-
-            <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 margin-bottom-20" ></div>
-            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 no-padding-left">
-                <button type="button" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" style="background-color: white; border:1px solid red; color:red" data-dismiss="modal" ng-click="vm.cancelReservation()">
-                    <span><i class="fa fa-times" aria-hidden="true"></i> Rechazar solicitud</span>
-                </button>
-            </div>
-            <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 no-padding">
-                <button type="submit" class="btn col-md-12 col-lg-12 col-sm-12 col-xs-12 bold" ng-disabled="editForm.$invalid || vm.isSaving" style="background-color: white; border:1px solid green; color:green"  data-dismiss="modal" >
-                    <span><i class="fa fa-check" aria-hidden="true"></i> Aprobar solicitud</span>
-                </button>
-            </div>
-            <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-            <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-            <!--</button>-->
 
         </div>
+        <form name="form" ng-submit="vm.acceptReservation()">
+        <div ng-if="vm.commonAreaReservations.reservationCharge!==null"
+             class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+            <md-toolbar class="form-title">
+                <h2>Generar costo de depósito por reservación</h2>
+            </md-toolbar>
+            <md-content layout-padding class="form-content">
+                <div>
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                                    <md-input-container class="md-block  no-margin-bottom">
+                                        <label>Fecha del cargo</label>
+                                        <md-datepicker md-min-date="vm.egress.date" required ng-model="vm.charge.date"
+                                                       md-hide-icons="calendar"
+                                                       md-open-on-focus
+                                                       required></md-datepicker>
+                                    </md-input-container>
 
-    </div>
-    <div class="modal-footer">
 
-        <!--<button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">-->
-        <!--<span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>-->
-        <!--</button>-->
-        <!--<button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">-->
-        <!--<span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>-->
-        <!--</button>-->
-    </div>
-</form>
+                                    <md-input-container class="md-block" style="margin-bottom: 0">
+                                        <label>Cantidad</label>
+                                        <input required ng-model="vm.charge.ammount" format="currency" type="text"
+                                               placeholder="0.00"
+                                               class="">
+                                    </md-input-container>
+
+                                </div>
+
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                                    <md-input-container class="md-block" style="margin-bottom: 0">
+                                        <label>Concepto</label>
+                                        <input required ng-model="vm.charge.concept" type="text" class="">
+                                    </md-input-container>
+
+                                    <md-input-container class="md-block" style="margin-bottom: 0">
+                                        <label>Devolución</label>
+                                        <input required ng-model="vm.commonAreaReservations.devolutionAmmount"
+                                               format="currency"
+                                               ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)"
+                                               type="text" placeholder="0.00" class="">
+                                    </md-input-container>
+
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+            </md-content>
+        </div>
+
+            <div class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-toolbar class="form-title" layout="row" layout-align="start center" ng-if="vm.commonAreaReservations.status==1">
+
+                    <div flex hide-xs hide-sm>
+                        <h2>Enviar por correo</h2>
+                    </div>
+                    <div flex hide-md hide-lg class="hidden-md hidden-lg">
+                        <span class="font-15">Enviar por correo </span>
+                    </div>
+                    <md-switch flex ng-click="vm.switchSendEmail()" class="hidden-md hidden-lg">
+                                    <span ng-if="vm.sendEmail" class="font-15">
+                                        Si
+                                    </span>
+                        <span ng-if="!vm.sendEmail" class="font-15">
+                                      no
+                                    </span>
+                    </md-switch>
+                    <md-switch flex ng-click="vm.switchSendEmail()" class="hidden-xs hidden-sm">
+                                    <span ng-if="vm.sendEmail" class="font-17">
+                                        Si
+                                    </span>
+                        <span ng-if="!vm.sendEmail" class="font-17">
+                                      no
+                                    </span>
+                    </md-switch>
+                </md-toolbar>
+                <md-content ng-if="vm.sendEmail" layout-padding class="form-content">
+                    <div>
+
+                        <div ng-model="vm.form">
+                            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                                    <md-input-container class="md-block" style="margin-bottom: 0">
+                                        <label>Correo electrónico</label>
+                                        <input required ng-model="vm.commonAreaReservations.chargeEmail" type="email"
+                                               class="">
+                                    </md-input-container>
+
+                                </div>
+
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+
+                                    <md-input-container class="md-block">
+                                        <label>Comentarios</label>
+                                        <textarea ng-model="vm.commonAreaReservations.comments" rows="3"
+                                                  md-select-on-focus></textarea>
+                                    </md-input-container>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </md-content>
+                <div layout="row" layout-align="end center" class="margin-bottom-20 margin-top-20 margin-right-10">
+                    <md-button ng-click="vm.cancelReservation()" class="md-warn md-raised" >
+                        Rechazar solicitud
+                    </md-button>
+                    <md-button class="md-raised md-primary " type="submit" ng-disabled="form.$invalid">
+                        Aprobar solicitud
+                    </md-button>
+                </div>
+            </div>
+        </form>
+    </md-card-content>
+</md-card>
+

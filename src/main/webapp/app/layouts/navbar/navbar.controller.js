@@ -685,6 +685,18 @@
                         showXs: true,
                         showLg: true,
                     },
+                    {
+                        title: "Devoluciones",
+                        icon: "payment",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "devolutions",
+                        collapsable: false,
+                        uisref: "common-area-devolution-administration.pending-devolution",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
+                    },
 
                 ]
             },
@@ -844,7 +856,7 @@
                         showLg: true,
                         thirdItems: [
                             {
-                                title: "Residentes",
+                                title: "Usuarios",
                                 icon: "group",
                                 authoritites: "ROLE_USER",
                                 activeOn: "residentsHouses",
@@ -912,18 +924,7 @@
                         showXs: true,
                         showLg: true,
                     },
-                    {
-                        title: "Reportar emergencia",
-                        icon: "local_hospital",
-                        authoritites: "ROLE_USER",
-                        activeOn: "reportemergencyactive",
-                        collapsable: false,
-                        uisref: "emergency.new",
-                        menuId: "",
-                        hover: false,
-                        showXs: true,
-                        showLg: true,
-                    },
+
                     {
                         title: "Áreas comunes",
                         icon: "local_florist",
@@ -1021,6 +1022,18 @@
                             },
 
                         ]
+                    },
+                    {
+                        title: "Reportar emergencia",
+                        icon: "local_hospital",
+                        authoritites: "ROLE_USER",
+                        activeOn: "reportemergencyactive",
+                        collapsable: false,
+                        uisref: "emergency.new",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Quejas y sugerencias",
@@ -1369,6 +1382,7 @@
         $rootScope.toggleLeft = buildToggler('left');
 
 
+
         function buildToggler(componentId) {
             return function () {
                 $mdSidenav(componentId).toggle();
@@ -1581,6 +1595,7 @@
 
         vm.selectCompany = function (company) {
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
+            $localStorage.houseSelected = undefined;
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.getAcount();

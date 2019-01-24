@@ -11,7 +11,7 @@
         $rootScope.active = "residentsHouses";
         var vm = this;
         var fileImage = null;
-
+        $rootScope.mainTitle = vm.title;
         vm.isAuthenticated = Principal.isAuthenticated;
         if (entity.image_url == undefined) {
             entity.image_url = null;

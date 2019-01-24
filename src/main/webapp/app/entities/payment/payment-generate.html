@@ -19,7 +19,7 @@
                             <md-toolbar class="form-title" hide-sm hide-xs>
                                 <h2>{{mainTitle}}</h2>
                             </md-toolbar>
-                            <md-content layout-padding class="form-content">
+                            <md-content layout-padding class="form-content" style="padding: 10px!important;">
                                 <div>
                                     <form name="form" ng-submit="vm.createPayment()">
                                         <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
@@ -218,7 +218,7 @@
 
                                             <div layout="row" layout-xs="column" class="white-bg margin-top-15"
                                                  layout-align="space-between center">
-                                                <div flex="70" flex-xs="100" layout="row">
+                                                <div flex="70" flex-xs="100" layout="row" style="margin-left: 10px;">
                                                     <div flex="40">
                                                         <h5><b>Enviar comprobante de pago por correo a:</b></h5>
                                                         <div ng-if="vm.residents.length!=0"

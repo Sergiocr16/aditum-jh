@@ -81,10 +81,25 @@
                     <tbody>
                     <tr ng-repeat="finalListReservations in vm.finalListReservations"  >
 
-                        <td class="text-center"><a class="light-gray-font" ng-if="finalListReservations.status==1" ui-sref="common-area-all-reservations-resident-view.reservationsDetail({id:finalListReservations.id})" ><i
-                            class="material-icons">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
-                            remove_red_eye</i></a></td>
+                        <td class="text-center">
+                            <a class="light-gray-font" ng-if="finalListReservations.status==1"
+                               ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+                            <a class="light-gray-font" ng-if="finalListReservations.status==2"
+                               ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
+                                <i
+                                    class="material-icons">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    </md-tooltip>
+                                    remove_red_eye</i>
+                            </a>
+
+                        </td>
 
                         <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
                         <td >{{finalListReservations.schedule}}</td>
@@ -97,10 +112,7 @@
                 </table>
             </div>
 
-            <div class="text-center" ng-if="vm.finalListReservations.length>0">
-            <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-            <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
-            </div>
+
         </div>
 
         <div class="col-md-4 col-xs-12 col-sm-6 hidden-md hidden-sm hidden-lg no-padding residentDivContainerXs"

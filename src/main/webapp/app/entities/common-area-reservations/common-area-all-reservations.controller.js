@@ -96,31 +96,11 @@
 
         function loadInfoByReservation(data){
             angular.forEach(data,function(value){
-                // if(value.status!==4){
-                House.get({
-                    id: value.houseId
-                }, function(result) {
-                    value.houseNumber = result.housenumber;
-                    Resident.get({
-                        id: value.residentId
-                    }, function(result) {
-                        value.residentName = result.name + " " + result.lastname;
-                        CommonArea.get({
-                            id: value.commonAreaId
-                        }, function(result) {
-                            value.commonAreaName = result.name ;
-                            value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
-                            value.commonAreaPicture = result.picture;
-                            value.commonAreapictureContentType = result.pictureContentType;
-                        })
-                    })
-                });
-                //     vm.finalListReservations.push(value)
-                // }
+                value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
+
             });
-            setTimeout(function () {
                 vm.isReady = true;
-            },600);
+
 
         }
 

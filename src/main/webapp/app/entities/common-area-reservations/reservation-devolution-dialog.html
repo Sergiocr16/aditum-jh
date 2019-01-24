@@ -20,10 +20,6 @@
             >Aprobada </span>
             <span class="bold" ng-show="vm.commonAreaReservations.status==1" style="font-size:17px;color:#dfba49"
             >Pendiente </span>
-            <span class="bold" ng-show="vm.commonAreaReservations.status==5" style="font-size:17px;color:#21a647"
-            >Finalizada </span>
-            <span class="bold" ng-show="vm.commonAreaReservations.status==6" style="font-size:17px;color:#21a647"
-            >Finalizada con devolución de depósito </span>
         </div>
     </md-card-title>
     <md-card-content style="padding: 0px!important;" layout="column">
@@ -90,11 +86,11 @@
             </div>
 
         </div>
-        <form name="form" ng-submit="vm.acceptReservation()">
-            <div ng-if="vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==2 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==5 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==6"
+        <form name="form" ng-submit="vm.createDevolution()">
+            <div ng-if="vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==2"
                  class="margin-top-20 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
-                <md-card-title-text style="margin-left: 15px;">
-            <span class="md-headline font-19"> Detalle de depósito por reservación</span>
+                <md-card-title-text hide-sm hide-xs style="margin-left: 15px;">
+                    <span class="md-headline font-19"> Detalle de depósito por reservación</span>
                 </md-card-title-text>
                 <md-content layout-padding class="form-content" style="padding: 10px!important;">
                     <div >
@@ -159,50 +155,87 @@
                     </div>
                 </md-content>
             </div>
-            <div ng-if="vm.commonAreaReservations.chargeEmail!==null"
-                 class="margin-top-10 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
-                <md-card-title-text hide-sm hide-xs style="margin-left: 15px;">
-                    <span class="md-headline font-19"> Detalle de envío de correo electrónico</span>
-                </md-card-title-text>
-                <md-content layout-padding class="form-content" style="padding: 10px!important;">
-                    <div >
+            <div
+                 class="margin-top-15 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
+                <md-toolbar class="form-title">
+                    <h2>Devolución de depósito a usuario ({{vm.commonAreaReservations.residentName}})</h2>
+                </md-toolbar>
+                <md-content layout-padding class="form-content">
+                    <div>
                         <div ng-model="vm.form">
                             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-                            <div layout="row" layout-xs="column" class="margin-top-10 gray-font">
+                            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                                    <md-input-container class="md-block  no-margin-bottom">
+                                        <label>Fecha de devolución</label>
+                                        <md-datepicker md-hide-icons="calendar" required ng-model="vm.egress.paymentDate"
+                                                       md-placeholder="Introduzca una fecha" md-open-on-focus
+                                                       required></md-datepicker>
+                                    </md-input-container>
 
-                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding form-group detailLabelMD">
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left ">
-                                            <span class=" bold  control-label">Correo electrónico:</span>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
-                                            <span> {{vm.commonAreaReservations.chargeEmail}}</span>
+                                    <md-input-container class="md-block">
+                                        <label>Seleccione un método de pago</label>
+                                        <md-select ng-model="vm.egress.paymentMethod" required>
+                                            <md-option value="Efectivo">
+                                                Efectivo
+                                            </md-option>
+                                            <md-option value="Cheque">
+                                                Cheque
+                                            </md-option>
+                                            <md-option value="Transferencia">
+                                                Transferencia
+                                            </md-option>
+                                            <md-option value="Tarjeta">
+                                                Tarjeta
+                                            </md-option>
+                                            <md-option value="Deposito en banco">
+                                                Deposito en banco
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container class="md-block no-margin-bottom" has-authority="ROLE_MANAGER">
+                                        <label>Cuenta de banco a debitar</label>
+                                        <md-select    ng-model="vm.egress.account" required>
+                                            <md-option ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
+                                                       ng-value="banco.id">
+                                                {{banco.beneficiario}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
 
-                                        </div>
-                                    </div>
 
                                 </div>
 
+                                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                                    <md-input-container class="md-block" style="margin-bottom: 0">
+                                        <label>Cantidad a devolver</label>
+                                        <input required ng-model="vm.commonAreaReservations.devolutionAmmount"
+                                               format="currency"
+                                               ng-change="vm.validateDevolutionAmmount(vm.commonAreaReservations)"
+                                               type="text" placeholder="0.00" class="">
+                                    </md-input-container>
 
-                                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12 no-padding ">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding  form-group detailLabelMD" ng-if="vm.commonAreaReservations.comments!==null">
-                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6 no-padding-left">
-                                            <span class=" bold control-label">Comentarios:</span>
-                                        </div>
-                                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-6 ">
-                                            <span>{{vm.commonAreaReservations.comments}}</span>
-                                        </div>
-                                    </div>
+                                    <md-input-container class="md-block">
+                                        <label>Comentarios</label>
+                                        <textarea ng-model="vm.egress.comments" rows="3"
+                                                  md-select-on-focus></textarea>
+                                    </md-input-container>
+
+
 
 
                                 </div>
-
-
                             </div>
 
                         </div>
                     </div>
                 </md-content>
+                <div layout="row" layout-align="end center" class="margin-bottom-20  margin-right-10">
+
+                    <md-button class="md-raised md-primary " type="submit" ng-disabled="form.$invalid">
+                        Realizar devolución
+                    </md-button>
+                </div>
             </div>
 
 

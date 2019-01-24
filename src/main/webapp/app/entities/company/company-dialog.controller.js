@@ -14,7 +14,7 @@
         vm.clear = clear;
         vm.save = save;
         var egressCategories = [{id:null,group:'Gastos fijos',category:'Administración',companyId:null},{id:null,group:'Gastos fijos',category:'Agua potable',companyId:null},{id:null,group:'Gastos fijos',category:'Energía eléctrica',companyId:null},{id:null,group:'Gastos fijos',category:'Seguridad',companyId:null},{id:null,group:'Gastos fijos',category:'Jardinería',companyId:null},{id:null,group:'Gastos fijos',category:'Sueldos y salarios',companyId:null},{id:null,group:'Gastos fijos',category:'Mantenimiento áreas comunes',companyId:null}
-        ,{id:null,group:'Gastos variables',category:'Eventos',companyId:null},{id:null,group:'Gastos variables',category:'Gastos legales',companyId:null},{id:null,group:'Gastos variables',category:'Impuestos y comisiones',companyId:null},{id:null,group:'Gastos variables',category:'Papelería y copias',companyId:null}]
+        ,{id:null,group:'Gastos variables',category:'Eventos',companyId:null},{id:null,group:'Gastos variables',category:'Gastos legales',companyId:null},{id:null,group:'Gastos variables',category:'Impuestos y comisiones',companyId:null},{id:null,group:'Gastos variables',category:'Papelería y copias',companyId:null},{id:null,group:'Otros gastos',category:'Devolución de dinero',companyId:null}];
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });

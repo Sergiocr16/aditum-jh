@@ -48,44 +48,7 @@
                 }]
             }
         })
-            .state('common-area-administration.reservation-charge-devolution', {
-                url: '/reservation-charge-devolution',
-                data: {
-                    authorities: ['ROLE_MANAGER'],
-                    pageTitle: 'aditumApp.commonAreaReservations.home.title'
-                },
-                templateUrl:'app/entities/common-area-reservations/reservation-devolution-charge.html',
-                controller: 'ReservationDevolutionChargeController',
-                controllerAs: 'vm',
 
-                params: {
-                    page: {
-                        value: '1',
-                        squash: true
-                    },
-                    sort: {
-                        value: 'id,asc',
-                        squash: true
-                    },
-                    search: null
-                },
-                resolve: {
-                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
-                        return {
-                            page: PaginationUtil.parsePage($stateParams.page),
-                            sort: $stateParams.sort,
-                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
-                            ascending: PaginationUtil.parseAscending($stateParams.sort),
-                            search: $stateParams.search
-                        };
-                    }],
-                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('commonAreaReservations');
-                        $translatePartialLoader.addPart('global');
-                        return $translate.refresh();
-                    }]
-                }
-            })
             .state('common-area-administration.common-area-all-reservations', {
 
                 url: '/common-area-all-reservations?page&sort&search',
@@ -288,106 +251,53 @@
                     }]
                 }
             })
-            .state('common-area-administration.common-area-reservations.reservationDetail', {
-            parent: 'common-area-administration.common-area-reservations',
-            url: '/{id}/detail',
-            data: {
-                authorities: ['ROLE_MANAGER']
-            },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
-                    controller: 'CommonAreaReservationsDetailController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: ['CommonAreaReservations', function(CommonAreaReservations) {
-                            return CommonAreaReservations.get({id : $stateParams.id}).$promise;
-                        }]
-                    }
-                }).result.then(function() {
-                    $state.go('common-area-administration.common-area-reservations', null, { reload: 'common-area-administration.common-area-reservations' });
-                }, function() {
-                    $state.go('^');
-                });
-            }]
-        })
-            .state('common-area-administration.common-area-all-reservations.reservationDetail', {
-                parent: 'common-area-administration.common-area-all-reservations',
+            .state('common-area-administration.reservationDetail', {
                 url: '/{id}/detail',
                 data: {
                     authorities: ['ROLE_MANAGER']
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
-                        controller: 'CommonAreaReservationsDetailController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['CommonAreaReservations', function(CommonAreaReservations) {
-                                return CommonAreaReservations.get({id : $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('common-area-administration.common-area-all-reservations.reservationDetail', null, { reload: 'common-area-administration.common-area-all-reservations.reservationDetail' });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
+                templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
+                controller: 'CommonAreaReservationsDetailController',
+                controllerAs: 'vm',
+                resolve: {
+                    entity: function ($stateParams,CommonAreaReservations) {
+                        return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
             })
-            .state('common-area-administration.common-area-all-reservations.acceptedReservationsDetail', {
-                parent: 'common-area-administration.common-area-all-reservations',
+
+            .state('common-area-administration.acceptedReservationsDetail', {
                 url: '/{id}/accepted-reservation-detail',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_USER']
                 },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
-                        controller: 'ReservationsCalentarAcceptedReservations',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['CommonAreaReservations', function(CommonAreaReservations) {
-                                return CommonAreaReservations.get({id : $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('common-area-administration.common-area-all-reservations.acceptedReservationsDetail', null, { reload: 'common-area-administration.common-area-all-reservations.acceptedReservationsDetail' });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
+                templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
+                controller: 'ReservationsCalentarAcceptedReservations',
+                controllerAs: 'vm',
+                resolve: {
+                    entity: function ($stateParams,CommonAreaReservations) {
+                        return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
             })
-            .state('common-area-all-reservations-resident-view.reservationsDetail', {
-                parent: 'common-area-all-reservations-resident-view',
-                url: '/{id}/accepted-reservation-detail-resident-view',
-                data: {
-                    authorities: ['ROLE_USER']
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
-                        controller: 'ReservationsCalentarAcceptedReservations',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg',
-                        resolve: {
-                            entity: ['CommonAreaReservations', function(CommonAreaReservations) {
-                                return CommonAreaReservations.get({id : $stateParams.id}).$promise;
-                            }]
-                        }
-                    }).result.then(function() {
-                        $state.go('common-area-all-reservations-resident-view.reservationsDetail', null, { reload: 'common-area-all-reservations-resident-view.reservationsDetail' });
-                    }, function() {
-                        $state.go('^');
-                    });
-                }]
-            })
+
+
             .state('common-area-administration.edit', {
                 url: '/{id}/edit',
                 data: {
@@ -523,7 +433,98 @@
                         return currentStateData;
                     }]
                 }
-            });
+            })
+            .state('common-area-devolution-administration', {
+                parent: 'entity',
+                url: '/common-area-devolution-administration',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area-reservations/common-area-devolution-administration.html',
+                        controller: 'CommonAreaDevolutionAdministrationController',
+                        controllerAs: 'vm'
+                    }
+                }
+            })
+            .state('common-area-devolution-administration.pending-devolution', {
+                url: '/pending-devolution',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.commonAreaReservations.home.title'
+                },
+                templateUrl:'app/entities/common-area-reservations/reservation-devolution-charge.html',
+                controller: 'ReservationDevolutionChargeController',
+                controllerAs: 'vm',
+
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('commonAreaReservations');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
+            .state('common-area-devolution-administration.reservationDevolutionDialog', {
+                url: '/{id}/reservation-devolution-dialog',
+                data: {
+                    authorities: ['ROLE_MANAGER']
+                },
+                templateUrl: 'app/entities/common-area-reservations/reservation-devolution-dialog.html',
+                controller: 'ReservationDevolutionDialogReservations',
+                controllerAs: 'vm',
+                resolve: {
+                    entity: function ($stateParams,CommonAreaReservations) {
+                        return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                    },
+                    egress: function() {
+                        return {
+                            date: null,
+                            folio: null,
+                            account: null,
+                            category: null,
+                            paymentMethod: null,
+                            concept: null,
+                            total: null,
+                            reference: null,
+                            comments: null,
+                            proveedor: null,
+                            paymentDate: null,
+                            expirationDate: null,
+                            id: null
+                        };
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
     }
 
 })();

@@ -27,7 +27,33 @@
             initial_time: firstDay,
             final_time: lastDay
         };
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false,
+        }
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
 
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo Estado de cuenta"
+            })
+        };
         loadAll();
 
 
@@ -92,6 +118,9 @@
 
 
             function onSuccess(data, headers) {
+                vm.superObject = $localStorage.houseSelected.id +'}'+moment(vm.dates.initial_time).format()+'}'+moment(vm.dates.final_time).format()+'}'+true+'}'+moment(new Date()).format();
+                vm.path = '/api/accountStatus/file/' + vm.superObject+'/'+1;
+
                 vm.initial_time = vm.dates.initial_time
                 vm.final_time = vm.dates.final_time
                 var countPassedDate = 0;

@@ -2,26 +2,28 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 <div  hide-xl hide-lg>
-    <h2 class="bold uppercase" style="font-size:15px">
+    <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
         <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl
            ng-click="vm.expand()">arrow_back</i>
-        Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="bottom" template="<div style='padding:10px;width:250px;color:gray'><h5>Este es el estado de cuenta actual de la unidad la unidad.<h5></div>" mode="mouseover"></i></h2>
+        Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span> </i></h2>
+    <div style="margin-top: 20px; margin-bottom: 10px;" class="col-xs-12 no-padding">
+        <md-button class="md-primary md-raised col-xs-10 no-padding " style="margin-left: 0px!important;" ng-click="vm.expand()"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>  Visualizar estado de cuenta </md-button>
 
-    <md-button class="md-primary md-raised col-xs-12 " style="margin-top: 50px" flex-align="strech" ng-click="vm.expand()"><i class="material-icons material-icons-with-text icon-finanzes">account_balance</i>  Visualizar estado de cuenta </md-button>
+    </div>
 
 </div>
 <div ng-if="vm.isReady" hide-sm hide-xs hide-md class="fade-in" ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen-xs':vm.expanding }">
     <div class="col-md-12 no-padding status-account">
-        <h2 class="bold uppercase" style="font-size:15px">
+        <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
             <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl
                ng-click="vm.expand()">arrow_back</i>
-            Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Este es el estado de cuenta actual de la unidad la unidad.<h5></div>" mode="mouseover"></i></h2>
+            Estado de cuenta <span hide-xl  hide-lg>Filial {{vm.house.housenumber}}</span></h2>
 
-        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
-            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
-            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
-            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
-            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
+        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding margin-top-10">
+            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
+            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
+            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
+            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
         </div>
         <div layout="row" class="pull-right">
 
@@ -119,13 +121,13 @@
         <h2 class="bold uppercase" style="font-size:15px">
             <i ng-if="vm.expanding" class="material-icons material-icons-with-text" hide-lg hide-xl hide-md
                ng-click="vm.expand()">arrow_back</i>
-            Estado de cuenta <span hide-xl hide-md hide-lg>Filial {{vm.house.housenumber}}</span> <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right" template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>" mode="mouseover"></i></h2>
+            Estado de cuenta <span hide-xl hide-md hide-lg>Filial {{vm.house.housenumber}}</span></h2>
 
-        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding">
-            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
-            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
-            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
-            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-4 col-xs-12  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
+        <div class=" col-md-6 col-lg-6 col-sm-12 col-xs-12 no-padding margin-bottom-20">
+            <button  ng-click="vm.searchByType(1)" style="border-radius: 0px!Important;" class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==1,'accountStatusBtnDesactive':vm.searchType!==1}">Todo</button>
+            <button  ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==2,'accountStatusBtnDesactive':vm.searchType!==2}">Mantenimiento</button>
+            <button  ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;" class="btn   col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==3,'accountStatusBtnDesactive':vm.searchType!==3}">Extraordinarias</button>
+            <button  ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"  class="btn  col-md-3 col-sm-3 col-xs-3  accountStatusBtn" ng-class="{'accountStatusBtnActive':vm.searchType==4,'accountStatusBtnDesactive':vm.searchType!==4}">Áreas comunes</button>
         </div>
         <div layout="row" class="pull-right">
 
@@ -215,4 +217,55 @@
             </table>
         </div>
     </div>
+
 </div>
+
+
+<md-fab-speed-dial md-direction="up" style="position: fixed;"
+                   class="md-fab md-fab-bottom-right md-fling  ">
+    <md-fab-trigger>
+    </md-fab-trigger>
+    <md-fab-actions>
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+                   ng-click="vm.sendEmail()">
+            <a style="display:block">
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.sendingEmail==false" style="color:white;font-size:20px"
+                                       class="fa fa-envelope" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.sendingEmail==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Enviar por correo</md-tooltip>
+
+        </md-button>
+        <md-button ng-disabled="vm.exportActions.printing"
+                   class="md-fab md-raised md-mini green-button-oficial float-right hidden-xs" ng-click="vm.print()">
+            <i ng-if="!vm.exportActions.printing" style="font-size:20px;color:white!important"
+               class="fa fa-print"></i>
+            <i ng-if="vm.exportActions.printing"
+               style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+               class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Imprimir</md-tooltip>
+
+        </md-button>
+
+        <md-button ng-disabled="vm.exportActions.downloading"
+                   class="md-fab md-raised md-mini green-button-oficial float-right" md-colors="indigo"
+        >
+            <a ng-click="vm.download()" style="display:block" href="{{vm.path}}" download>
+                                <span style="margin-top:2px">
+                                    <i ng-show="vm.exportActions.downloading==false" style="color:white;font-size:20px"
+                                       class="fa fa-cloud-download" aria-hidden="true"></i>
+                                    <i ng-show="vm.exportActions.downloading==true"
+                                       style="font-size:18px;color:rgba(255,255,255,0.5)!important"
+                                       class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></span>
+            </a>
+            <md-tooltip md-direction="left" md-visible="tooltipVisible">Descargar</md-tooltip>
+
+        </md-button>
+
+    </md-fab-actions>
+</md-fab-speed-dial>
+

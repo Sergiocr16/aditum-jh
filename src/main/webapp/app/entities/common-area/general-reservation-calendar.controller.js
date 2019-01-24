@@ -84,11 +84,11 @@
         function alertOnEventClick( date, jsEvent, view){
             console.log (date.status + ' was clicked ');
             if(date.status==1){
-                $state.go('common-area-administration.general-reservation-calendar.reservationDetail', {
+                $state.go('common-area-administration.reservationDetail', {
                     id: date.id
                 });
             }else if(date.status==2){
-                $state.go('common-area-administration.general-reservation-calendar.acceptedReservationsDetail', {
+                $state.go('common-area-administration.acceptedReservationsDetail', {
                     id: date.id
                 });
             }

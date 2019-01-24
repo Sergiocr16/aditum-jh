@@ -1,7 +1,4 @@
-<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-     layout-align="space-around center">
-    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-</div>
+
 <div class="fade-in">
     <div class="row fixed-tabs" ng-if="true">
         <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
@@ -22,7 +19,11 @@
             </md-tabs>
         </md-content>
     </div>
-    <div class="col-md-12 col-xs-12 col-sm-12 no-padding marging-top-40" style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px; margin-top: 60px;" ng-if="vm.residents.length> 0 ">
 
         <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
              id="index-search-bar">

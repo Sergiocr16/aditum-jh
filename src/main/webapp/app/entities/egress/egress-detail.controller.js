@@ -75,7 +75,7 @@
                     banco.saldo = banco.saldo - vm.egress.total;
                     Banco.update(banco, onAccountBalanceSuccess, onSaveError);
                 }
-            })
+            });
             vm.egress = result;
         }
 

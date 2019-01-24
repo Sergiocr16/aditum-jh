@@ -63,7 +63,6 @@ public class AnualReportService {
             initialBalanceByMonth.add(this.setTotalInitialBalance(mensualAndAnualAccount)+"");
 
         }
-
         anualReportDTO.setInitialBalanceByMonth(initialBalanceByMonth);
         anualReportDTO.setAnualIngressByMonth(ingressByMonth);
         anualReportDTO.setAnualEgressByMonth(egressByMonth);
@@ -192,7 +191,7 @@ public class AnualReportService {
         anualReportDTO.setFixedCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
         anualReportDTO.getFixedCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
         anualReportDTO.getFixedCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
-
+        anualReportDTO.setFixedCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsTotal());
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().size(); j++) {
                 fixedCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().get(j).getTotal()+"");
@@ -246,7 +245,7 @@ public class AnualReportService {
         anualReportDTO.setVariableCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
         anualReportDTO.getvariableCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetTotal());
         anualReportDTO.getVariableCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsBudgetDiference());
-
+        anualReportDTO.setVariableCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsTotal());
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().size(); j++) {
                 variableCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().get(j).getTotal()+"");
@@ -297,6 +296,7 @@ public class AnualReportService {
         anualReportDTO.setOtherCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
         anualReportDTO.getOtherCostsBudgetTotal().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetTotal());
         anualReportDTO.getOtherCostsBudgetDiference().add(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsBudgetDiference());
+        anualReportDTO.setOtherCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCostsTotal());
 
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().size(); j++) {

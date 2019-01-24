@@ -170,15 +170,13 @@
         /* alert on eventClick */
         function alertOnEventClick(date, jsEvent, view) {
             if (date.status == 1) {
-                $state.go('common-area-administration.reservation-calendar.reservationDetail', {
-                    id: vm.commonArea.id,
-                    id2: date.id,
+                $state.go('common-area-administration.reservationDetail', {
+                    id: date.id,
 
                 });
             } else if (date.status == 2) {
-                $state.go('common-area-administration.reservation-calendar.acceptedReservationsDetail', {
-                    id: vm.commonArea.id,
-                    id2: date.id,
+                $state.go('common-area-administration.acceptedReservationsDetail', {
+                    id: date.id,
 
                 });
             }

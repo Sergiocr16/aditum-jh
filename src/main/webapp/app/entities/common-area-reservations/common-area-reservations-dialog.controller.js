@@ -91,11 +91,15 @@
             // if (vm.commonAreaReservations.id == null && $state.params.commonAreaId===undefined) {
             //     vm.commonAreaReservations.initalDate = null;
             // }
+            if($state.params.date==undefined){
+                vm.commonAreaReservations.initalDate = null;
+            }else{
+                if($state.params.date!=='0'){
+                    vm.commonAreaReservations.initalDate = new Date($state.params.date)
 
-            if($state.params.date!=='0'){
-                vm.commonAreaReservations.initalDate = new Date($state.params.date)
-
+                }
             }
+
             vm.scheduleIsAvailable = false;
             vm.scheduleNotAvailable = false;
             CommonArea.get({

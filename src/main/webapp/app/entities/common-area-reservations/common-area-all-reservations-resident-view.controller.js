@@ -68,10 +68,9 @@
                     //     vm.finalListReservations.push(value)
                     // }
                 });
-                console.log(vm.finalListReservations)
-                setTimeout(function () {
+
                     vm.isReady = true;
-                },500);
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);

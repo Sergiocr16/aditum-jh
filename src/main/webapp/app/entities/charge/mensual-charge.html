@@ -76,8 +76,8 @@
                                             <div class="no-padding" style="display:inline">
                                                 <div>
                                                     <md-input-container style="width:150px;margin-bottom: 4px;min-width: 150px!important;"
-                                                                        class="md-block">
-                                                        <md-datepicker ng-change="vm.autoConcept(globalConcept)"
+                                                                        class="md-block ">
+                                                        <md-datepicker class="text-center" ng-change="vm.autoConcept(globalConcept)"
                                                                        md-hide-icons="all" required
                                                                        ng-model="globalConcept.date"
                                                                        md-placeholder="Fecha de cobro"
@@ -85,7 +85,7 @@
                                                     </md-input-container>
 
                                                 </div>
-                                                <md-input-container class="md-block concept-charge" style="width:150px;margin:0">
+                                                <md-input-container class="md-block concept-charge " style="width:150px;margin:0">
                                                     <label>Concepto</label>
                                                     <input ng-model="globalConcept.concept" type="text">
                                                 </md-input-container>
@@ -136,8 +136,8 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <md-button flex="100" style="width: 100%;" ng-show="vm.houses.length!=0"
-                                   class="md-raised md-primary" type="submit" ng-disabled="form.$invalid">Verificar
+                        <md-button flex="100" style="width: 100%; margin-left: 0px!important;" ng-show="vm.houses.length!=0"
+                                   class="md-raised md-primary" type="submit" ng-disabled="form.$invalid" >Verificar
                             cargos
                         </md-button>
                     </div>

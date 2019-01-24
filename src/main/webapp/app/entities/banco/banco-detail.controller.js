@@ -120,7 +120,7 @@
         function onSuccessEgresses(data, headers) {
             angular.forEach(data, function (value, key) {
                 value.movementType = 1;
-                if (value.state == 2) {
+                if (value.state == 2 || value.state == 5) {
                     vm.movementsList.push(value)
                 }
 
@@ -230,7 +230,7 @@
         function onSuccessEgressesConsulting(data, headers) {
             angular.forEach(data, function (value, key) {
                 value.movementType = 1;
-                if (value.state == 2) {
+                if (value.state == 2 || value.state == 5) {
                     vm.movementsListConsulting.push(value)
                 }
 

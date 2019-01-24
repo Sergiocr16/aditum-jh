@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,16 +89,31 @@ public class EgressCategoryResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of egressCategories in body
      */
+
     @GetMapping("/egress-categories")
     @Timed
-    public ResponseEntity<List<EgressCategoryDTO>> getAllEgresses(@ApiParam Pageable pageable, Long companyId)
+    public List<EgressCategoryDTO> getAllEgresses(@ApiParam Pageable pageable, Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Egresses");
+        Page<EgressCategoryDTO> page = egressCategoryService.findAll(pageable,companyId);
+        List<EgressCategoryDTO> egressCategories = new ArrayList<>();
+        for (int i = 0; i <page.getContent().size(); i++) {
+            if(!page.getContent().get(i).getGroup().equals("Otros gastos")  && !page.getContent().get(i).getCategory().equals("Devolución de dinero") ){
+                egressCategories.add(page.getContent().get(i));
+            }
+        }
+
+        return egressCategories;
+    }
+    @GetMapping("/egress-categories/allCategoriesIncludingDevolution/{companyId}")
+    @Timed
+    public ResponseEntity<List<EgressCategoryDTO>> allCategoriesIncludingDevolution(@ApiParam Pageable pageable,@PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Egresses");
         Page<EgressCategoryDTO> page = egressCategoryService.findAll(pageable,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
     /**
      * GET  /egress-categories/:id : get the "id" egressCategory.
      *

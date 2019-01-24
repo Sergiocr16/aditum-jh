@@ -2,25 +2,22 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class=" fade-in">
+<div ng-if="vm.isReady" class=" fade-in margin-top-10">
 
         <div layout-align="space-between center" class="margin-top-20">
-            <h2 class="bold uppercase display-inline" style="font-size:15px;">
+            <h2 class="caption-subject font-green-sharp font-weight-600 " style="font-size:20px">
                 Deudas vigentes
             </h2>
-            <i class="fa fa-info-circle" style="color:#2a6496" angular-popover direction="right"
-               template="<div style='padding:10px;width:250px;color:gray'><h5>Estas son las cuotas que actualmente debe la unidad.<h5></div>"
-               mode="mouseover"></i>
         </div>
-    <div class="portlet-body">
-        <no-content ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
+    <div class="portlet-body margin-top-20 margin-bottom-20">
+        <no-content  ng-if="vm.charges.length==0" icon="dvr" text="La filial no tiene deudas vigentes"></no-content>
         <div ng-show="vm.charges.length!=0">
 
 
 
             <div hide-lg hide-xl  ng-show="vm.charges.length>0" class="margin-top-20">
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
-                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-10"
+                         md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10""
                          md-theme-watch  ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                     <span ng-if="charge.definedFirstDatePassed" class="fade-in"
                           style="float:left;margin-top:-9px;margin-left:-9px;z-index:9999" angular-popover
@@ -30,23 +27,23 @@
                                               style="color:#4DB3A2;font-size:18px;background:white"></i></span>
                     <md-card-title style="padding:3px 7px;">
                         <md-card-title-text>
-                            <span class="md-headline font-15 font-green-sharp">{{charge.concept}}</span>
+                            <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-actions layout="row"  class="col-md-12 no-padding"layout-align="space-between center">
-                        <div >
-                            <div>
+                        <div class="gray-font">
+                            <div style="margin-bottom: 8px;">
                                 Categoría: {{vm.getCategory(charge.type)}}
                             </div>
                             <div>
-                                <div>
+                                <div style="margin-bottom: 8px;">
                                     Fecha de cobro: {{charge.date | date}}
                                 </div>
                             </div>
-                            <div>
+                            <div style="margin-bottom: 8px;">
                                 Monto: ₡ {{charge.ammount | currency : "" : 0}} | Recargo: ₡ {{charge.subcharge | currency : "" : 0}}</b>
                             </div>
-                            <div>
+                            <div style="margin-bottom: 8px;">
                                 <b>Total: ₡ {{charge.total | currency : "" : 0}}</b>
                             </div>
                         </div>

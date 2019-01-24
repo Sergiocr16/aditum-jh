@@ -20,12 +20,13 @@
                                     <th>Fecha reservado</th>
                                     <th class="text-center" >Horario</th>
                                     <th class="text-center">Estado</th>
+                                    <th class="text-center">Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr  ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy:'initalDate'">
 
-                                    <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.common-area-reservations.reservationDetail({id:commonAreaReservations.id})"><i
+                                    <td class="text-center"><a class="light-gray-font" ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})"><i
                                         class="material-icons">
                                         <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
                                         remove_red_eye</i></a></td>
@@ -34,16 +35,46 @@
                                     <td>{{commonAreaReservations.commonAreaName}}</td>
                                     <td>{{commonAreaReservations.initalDate | date:'longDate'}}</td>
                                     <td class="text-center" >{{commonAreaReservations.schedule}}</td>
-                                    <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false">PENDIENTE</span></td>
+                                    <td class="text-center" ><span  ng-show="commonAreaReservations.status==1" aria-hidden="false"> <i class="material-icons" style="color:#FDD835; font-size: 19px; padding: 3px;">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de aprobación</md-tooltip>
+                                lens</i></span>
+
+                                    <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
+                                        <md-menu md-position-mode="target-right target" >
+                                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                                       ng-click="$mdMenu.open($event)">
+                                                <i class="material-icons" style="color:#999">
+                                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                                    </md-tooltip>
+                                                    more_vert</i>
+                                            </md-button>
+                                            <md-menu-content width="4">
+                                                <md-menu-item>
+                                                    <md-button
+                                                        ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">
+                                                        <div layout="row" flex>
+                                                            <p flex>Editar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                                <md-menu-item>
+                                                    <md-button ng-click="vm.deleteReservation(commonAreaReservations)">
+                                                        <div layout="row" flex>
+                                                            <p flex>Eliminar</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+                                            </md-menu-content>
+                                        </md-menu>
+                                    </td>
+                                    </td>
 
                                 </tr>
+
                             </tbody>
                         </table>
                 </div>
-                <div class="text-center" ng-if="vm.commonAreaReservations.length>0">
-                    <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-                    <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
-                </div>
+
         </div>
         <div class="col-md-4 col-xs-12 col-sm-6 hidden-md hidden-sm hidden-lg no-padding residentDivContainerXs"
              ng-repeat="commonAreaReservations in vm.commonAreaReservations | orderBy:'initalDate'">
@@ -75,7 +106,7 @@
 
                     </div>
                     <div layout="row" layout-align="space-between center">
-                        <i class="material-icons" style="color:#999; cursor: pointer; padding-right: 10px;" ui-sref="common-area-administration.common-area-reservations.reservationDetail({id:commonAreaReservations.id})">
+                        <i class="material-icons" style="color:#999; cursor: pointer; padding-right: 10px;" ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>

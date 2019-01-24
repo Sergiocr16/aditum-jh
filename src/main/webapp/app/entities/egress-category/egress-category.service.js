@@ -20,7 +20,15 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'allCategoriesIncludingDevolution':{
+                method: 'GET',
+                url: 'api/egress-categories/allCategoriesIncludingDevolution/:companyId',
+                isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
+            },
         });
     }
 })();

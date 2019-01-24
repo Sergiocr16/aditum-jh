@@ -3,7 +3,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 <div class="fade-in" ng-if="vm.isReady">
-    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px;"
+    <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 20px;"
          ng-if="vm.egresses.length> 0 && vm.isConsulting!=true || vm.isConsulting==true ">
         <div class="">
             <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
@@ -66,12 +66,11 @@
                     text="No hay egresos registrados"></no-content>
         <div class="col-xs-12 col-sm-6 no-padding residentDivContainerXs" hide-lg hide-xl ng-show="vm.egresses.length>0" class="margin-top-20">
             <md-card ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse"
-                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer"
+                     md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 residentCardContainer padding-bottom-15"
                      md-theme-watch>
                 <md-card-title class="no-padding-bottom " style="padding-top: 10px!important;">
                     <md-card-title-text >
-
-                        <span class="md-headline font-16 font-green-sharp">{{egress.concept}}</span>
+                        <span class="md-headline font-16 font-green-sharp font-weight-600">{{egress.concept}}</span>
                     </md-card-title-text>
                     <md-card-title-media>
                         <a><i class="material-icons"
@@ -95,13 +94,13 @@
 
                 </md-card-title>
                 <md-card-actions layout="row" layout-align="space-between center">
-                    <div style="margin-left: 9px; color: rgba(0,0,0,0.54); font-size: 14px;">
+                    <div style="margin-left: 9px; " class="gray-font">
                         <div>
                             Categoría: {{egress.category}}
                         </div>
                         <div ng-if="egress.state== 1 || egress.state==3" class="margin-top-10">
                             <div>
-                                Fecha de vencimiento: {{egress.expirationDate | date:'mediumDate'}}
+                                Vencimiento: {{egress.expirationDate | date:'mediumDate'}}
                             </div>
                         </div>
                         <div ng-if="egress.state==2" class="margin-top-10">
@@ -195,10 +194,10 @@
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
                         remove_red_eye</i></a></td>
 
-                    <td class="text-center"><a><i class="material-icons" style="color:#FF3D00; font-size: 20px;"
+                    <td class="text-center"><a><i class="material-icons" style="color:#c02d00; font-size: 20px;"
                                                   ng-if="egress.state==3">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Vencido</md-tooltip>
-                        lens</i><i class="material-icons" style="color:#26A69A; font-size: 20px;"
+                        lens</i><i class="material-icons" style="color:#21a647; font-size: 20px;"
                                    ng-if="egress.state==2">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Pagado</md-tooltip>
                         lens</i><i class="material-icons" style="color:#FDD835; font-size: 20px;"
@@ -222,11 +221,7 @@
         <!--<button type="button" class="btn btn-primary" data-toggle="13" ng-click="vm.clickPopover()">Click Me</button>-->
         <!--</div>-->
         <!--</div>-->
-        <div class="text-center hidden-xs hidden-sm" ng-show="vm.egresses.length>0">
-            <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
-        </div>
-        <uib-pager class="hidden-xs hidden-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"
-                   ng-show="vm.egresses.length>0"></uib-pager>
+
     </div>
 
     <md-button ui-sref="egress-tabs.new" style="position: fixed"

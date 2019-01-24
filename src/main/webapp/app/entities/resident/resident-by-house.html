@@ -4,7 +4,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div class="fade-in" ng-if="vm.isReady">
+
     <div class="row" ng-if="true">
         <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
             <md-tabs hide-xs hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
@@ -25,6 +25,7 @@
             </md-tabs>
         </md-content>
     </div>
+<div class="fade-in" ng-if="vm.isReady">
     <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;" ng-if="vm.residents.length> 0 ">
 
         <div class=" no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
@@ -62,13 +63,12 @@
                      ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' "
                      >
                     <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
-                             class="margin-bottom-10 residentCardContainer"
+                             class="margin-bottom-20 residentCardContainer"
                              md-theme-watch>
                         <md-card-title>
                             <md-card-title-text>
                                 <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}  {{resident.lastname.toUpperCase()}} </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Filial: {{resident.house_id}}</span>
                                 <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
