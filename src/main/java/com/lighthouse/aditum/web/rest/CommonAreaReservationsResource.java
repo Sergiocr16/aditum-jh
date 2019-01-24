@@ -145,6 +145,20 @@ public class CommonAreaReservationsResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/common-area-reservations/getLastAcceptedReservations/{companyId}")
+    @Timed
+    public ResponseEntity<List<CommonAreaReservationsDTO>> getLastAcceptedReservations(@ApiParam Pageable pageable, @PathVariable Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> page = commonAreaReservationsService.getLastAcceptedReservations(pageable,companyId);
+        page.getContent().forEach(commonAreaReservations -> {
+            commonAreaReservations.setResident(residentService.findOne(commonAreaReservations.getResidentId()));
+            commonAreaReservations.setCommonArea(commonAreaService.findOne(commonAreaReservations.getCommonAreaId()));
+            commonAreaReservations.setHouse(houseService.findOne(commonAreaReservations.getHouseId()));
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/getPendingAndAcceptedReservations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     @GetMapping("/common-area-reservations/getReservationsByCommonArea/{commonAreaId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getReservationsByCommonArea(@ApiParam Pageable pageable, @PathVariable Long commonAreaId)

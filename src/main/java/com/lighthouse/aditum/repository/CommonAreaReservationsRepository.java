@@ -16,7 +16,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CommonAreaReservationsRepository extends JpaRepository<CommonAreaReservations,Long> {
+public interface CommonAreaReservationsRepository extends JpaRepository<CommonAreaReservations, Long> {
 
     @Query("select e from CommonAreaReservations e " +
         "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.commonArea.id = ?3 and e.status  <3")
@@ -36,6 +36,8 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
 
     Page<CommonAreaReservations> findByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
 
+    Page<CommonAreaReservations> findTop5ByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
+
     Page<CommonAreaReservations> findByHouseIdAndStatusNot(Pageable pageable, Long houseId, int status);
 
     Page<CommonAreaReservations> findByCompanyIdAndStatusNot(Pageable pageable, Long companyId, int status);
@@ -53,6 +55,6 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
 
     @Query("select e from CommonAreaReservations e " +
         "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.company.id = ?3 ")
-    Page<CommonAreaReservations> findByDatesBetweenAndCompany(Pageable pageable,ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
+    Page<CommonAreaReservations> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
 
 }

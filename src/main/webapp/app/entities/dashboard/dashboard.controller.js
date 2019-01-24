@@ -3,280 +3,602 @@
 
     angular
         .module('aditumApp')
-        .controller('DashboardController', DashboardController);
+        .controller('DashboardController', DashboardController).value('googleChartApiConfig', {
+        version: '1.1',
+        optionalSettings: {
+            packages: ['bar'],
+            language: 'es'
+        }
+    });
 
-    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard','globalCompany','Modal'];
+    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard', 'globalCompany', 'Modal', '$timeout', 'CommonAreaReservations'];
 
-    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard,globalCompany,Modal) {
+    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard, globalCompany, Modal, $timeout, CommonAreaReservations) {
         var vm = this;
         $rootScope.active = "dashboard";
-        vm.isInLogin = $state.includes('home');
-        vm.account = null;
-        vm.login = LoginService.open;
-        vm.isReady = false;
+        $rootScope.mainTitle = "Dashboard";
 
-        function getAccount() {
-            Principal.identity().then(function (account) {
-                vm.account = account;
-                vm.isAuthenticated = Principal.isAuthenticated;
-            });
-        }
+        vm.ready = false;
+        vm.year = moment(new Date()).format("YYYY");
+        vm.visitorTitle = "De la semana";
+        vm.charTypes = [{name: "Gráfico de barras", type: "ColumnChart"}, {name: "Gráfico de area", type: "AreaChart"}]
+        vm.chartTypeEIB = vm.charTypes[0];
+        vm.chartTypeDefaulters = vm.charTypes[1];
+        vm.visitantState = 1;
 
+        var ieDone = false;
+        var porCobrarDone = false;
+
+        var monthsText = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
         vm.loadAll = function () {
             Dashboard.query({companyId: globalCompany.getId()}, function (result) {
                 vm.dashboard = result;
-                showData();
-                vm.visitorTitle = "Visitantes de la semana";
-                vm.watch = formatWatch(vm.dashboard.currentWatch);
-                if (vm.dashboard.currentWatch !== null) {
-                    vm.officerPercentage = ((vm.dashboard.currentWatch.officers.length * 100) / vm.dashboard.officerQuantity)
-                } else {
-                    vm.officerPercentage = 0;
-                }
-                vm.isReady = true;
+                vm.visitorsPerMonth = vm.dashboard.visitorsPerMonth;
                 vm.housesPercentage = ((vm.dashboard.houseQuantity * 100) / vm.dashboard.totalHouses).toFixed(2)
-                if ($rootScope.backgroundSelectCompany == true) {
-                    $("#dashboard").fadeIn();
-                    setTimeout(function () {
-                        $("#selectCompany").fadeOut("slow");
-                        $rootScope.loadingDash = false;
-                    }, 1)
-                }
+                loadGraphFlujoIngresosYEgresos(vm.year, vm.chartTypeEIB.type);
+                vm.loadDefaulters(vm.year)
+                visitantsGraphInit();
+                residentsEnabledGraphInit();
+                vehiculesEnabledGraphInit();
+                createYearsArrays();
+                initCalendar();
+
             });
-        }
+        };
 
-        function formatWatch(watch) {
-            if (watch != null) {
-                watch.initialtime = moment(watch.initialtime).format('h:mm a');
-                if (watch.finaltime === null) {
-                    watch.finaltime = 'Aún en progreso'
-                } else {
-                    watch.finaltime = moment(watch.finaltime).format('h:mm a');
-                }
-                watch.officers = getformatResponsableOfficers(watch);
-                return watch;
-            } else {
-                return null;
-            }
-
-        }
-
-        function formatResponsableOfficer(stringOfficer) {
-            var variables = stringOfficer.split(';')
-            var officer = {};
-            officer.id = variables[0];
-            officer.identificationnumber = variables[1];
-            officer.name = variables[2];
-            return officer;
-        }
-
-        function getformatResponsableOfficers(watch) {
-            var formattedOfficers = [];
-            var stringOfficers = watch.responsableofficer.slice(0, -2);
-            var officers = stringOfficers.split('||');
-            angular.forEach(officers, function (officer, key) {
-                formattedOfficers.push(formatResponsableOfficer(officer))
+        vm.changeMonthDefaulter = function (month) {
+            $timeout(function () {
+                defaulterMonthGraphInit(month)
             })
-            return formattedOfficers;
+        };
+
+        function createMonthsArray(year) {
+            vm.monthsDefaultersOptions = [];
+            var d = new Date();
+            var n = d.getMonth();
+            if (year != vm.year) {
+                n = 12
+            }
+            var monthsDefaultersOptions = [];
+            for (var i = 0; i <= n; i++) {
+                monthsDefaultersOptions.push({id: i, text: monthsText[i] + " - " + year})
+            }
+            $timeout(function () {
+                vm.monthsDefaultersOptions = monthsDefaultersOptions;
+                if (year != vm.year) {
+                    vm.monthDefaulter = vm.monthsDefaultersOptions[0].id;
+                } else {
+                    vm.monthDefaulter = vm.monthsDefaultersOptions[n].id;
+                }
+            }, 10)
         }
 
-        function showData() {
-            angular.element(document).ready(function () {
-                $('#all').fadeIn("300");
-                // initGraphs();
+        function createYearsArrays() {
+            var d = new Date();
+            var year = d.getFullYear();
+            var yearsIEB = [];
+            yearsIEB.push(year)
+            for (var i = 1; i <= 3; i++) {
+                yearsIEB.push(year - i)
+            }
+            vm.yearsIEB = yearsIEB;
+            vm.yearsDefaulters = yearsIEB;
+            vm.yearIEB = yearsIEB[0];
+            vm.yearDefaulter = yearsIEB[0];
+        }
+
+        vm.changeYear = function () {
+            Dashboard.query({companyId: globalCompany.getId()}, function (result) {
+                vm.dashboard = result;
+                loadGraphFlujoIngresosYEgresos(vm.year, vm.chartTypeEIB.type);
             });
-
         }
-        getAccount();
-        // setTimeout(function () {
-        vm.loadAll();
-        if ($rootScope.backgroundSelectCompany == false) {
-            $("#dashboard").fadeIn("slow");
-            setTimeout(function () {
 
-                $("#selectCompany").fadeOut("slow");
-                $rootScope.loadingDash = false;
-            }, 1)
+        vm.loadDefaulters = function (year) {
+            Dashboard.defaulters({companyId: globalCompany.getId(), year: year}, function (result) {
+                vm.defaulters = result;
+                createMonthsArray(year);
+                definePorCobrarDelMes()
+                $timeout(function () {
+                    defaultersGraphInit(vm.chartTypeDefaulters.type)
+                    $timeout(function(){
+                        vm.isReady = true;
+                    },500)
+                }, 110)
+            });
         }
-        // }, 1000)
-        // function initGraphs() {
-        //
-        //     var handleAnimatedPieChart = function (id, title, hab, desa, color) {
-        //         var chart = AmCharts.makeChart(id, {
-        //             "type": "pie",
-        //             "balloonText": "[[title]]<br><span style='font-size:14px'><b>[[value]]</b> ([[percents]]%)</span>",
-        //             "titleField": "category",
-        //             "colorField": "color",
-        //             "innerRadius": "20%",
-        //             "baseColor": color,
-        //             "titles": [{
-        //                 "text": title
-        //             }],
-        //             "valueField": "column-1",
-        //             "labelRadius": 0,
-        //             "allLabels": [],
-        //             "balloon": {},
-        //             "dataProvider": [
-        //                 {
-        //                     "category": "Habilitados",
-        //                     "column-1": hab
-        //                 },
-        //                 {
-        //                     "category": "Deshabilitados",
-        //                     "column-1": desa
-        //                 },
-        //             ]
-        //         });
-        //     }
-        //     handleAnimatedPieChart("resident-pie-chart", "Residentes", vm.dashboard.enableResidentQuantity, vm.dashboard.disableResidentQuantity, '#FF8000');
-        //     handleAnimatedPieChart("vehicle-pie-chart", "Vehículos", vm.dashboard.enableVehicleuQantity, vm.dashboard.disableVehicleQuantity, '#008000');
-        //     $('.easy-pie-chart .number.transactions').easyPieChart({
-        //         animate: 1000,
-        //         size: 75,
-        //         lineWidth: 3,
-        //         barColor: Metronic.getBrandColor('red')
-        //     });
-        //
-        //     $('.easy-pie-chart .number.visits').easyPieChart({
-        //         animate: 1000,
-        //         size: 75,
-        //         lineWidth: 3,
-        //         barColor: Metronic.getBrandColor('red'),
-        //         data: 10
-        //     });
-        //
-        //     $('.easy-pie-chart .number.bounce').easyPieChart({
-        //         animate: 1000,
-        //         size: 75,
-        //         lineWidth: 3,
-        //         barColor: Metronic.getBrandColor('yellow')
-        //     });
-        //
-        //
-        //     vm.showVisitorGraph = function () {
-        //         if ($('#site_activities').length != 0) {
-        //             //site activities
-        //             var previousPoint2 = null;
-        //             $('#site_activities_loading').hide();
-        //             $('#site_activities_content').show();
-        //             vm.dataVisitor = vm.dashboard.visitorsPerMonth;
-        //             var plot_statistics = $.plot($("#site_activities"),
-        //                 [{
-        //                     data: vm.dataVisitor,
-        //                     lines: {
-        //                         fill: 0.2,
-        //                         lineWidth: 0,
-        //                     },
-        //                     color: ['#BAD9F5']
-        //                 }, {
-        //                     data: vm.dataVisitor,
-        //                     points: {
-        //                         show: true,
-        //                         fill: true,
-        //                         radius: 4,
-        //                         fillColor: "#9ACAE6",
-        //                         lineWidth: 2
-        //                     },
-        //                     color: '#9ACAE6',
-        //                     shadowSize: 1
-        //                 }, {
-        //                     data: vm.dataVisitor,
-        //                     lines: {
-        //                         show: true,
-        //                         fill: false,
-        //                         lineWidth: 3
-        //                     },
-        //                     color: '#9ACAE6',
-        //                     shadowSize: 0
-        //                 }],
-        //
-        //                 {
-        //
-        //                     xaxis: {
-        //                         tickLength: 0,
-        //                         tickDecimals: 0,
-        //                         mode: "categories",
-        //                         min: 0,
-        //                         font: {
-        //                             lineHeight: 18,
-        //                             style: "normal",
-        //                             variant: "small-caps",
-        //                             color: "#6F7B8A"
-        //                         }
-        //                     },
-        //                     yaxis: {
-        //                         ticks: 5,
-        //                         tickDecimals: 0,
-        //                         tickColor: "#eee",
-        //                         font: {
-        //                             lineHeight: 14,
-        //                             style: "normal",
-        //                             variant: "small-caps",
-        //                             color: "#6F7B8A"
-        //                         }
-        //                     },
-        //                     grid: {
-        //                         hoverable: true,
-        //                         clickable: true,
-        //                         tickColor: "#eee",
-        //                         borderColor: "#eee",
-        //                         borderWidth: 1
-        //                     }
-        //                 });
-        //
-        //             function showChartTooltip(x, y, xValue, yValue) {
-        //                 $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
-        //                     position: 'absolute',
-        //                     display: 'none',
-        //                     top: y - 40,
-        //                     left: x - 40,
-        //                     border: '0px solid #ccc',
-        //                     padding: '2px 6px',
-        //                     'background-color': '#fff'
-        //                 }).appendTo("body").fadeIn(200);
-        //             }
-        //
-        //             $("#site_activities").bind("plothover", function (event, pos, item) {
-        //                 $("#x").text(pos.x.toFixed(2));
-        //                 $("#y").text(pos.y.toFixed(2));
-        //                 if (item) {
-        //                     if (previousPoint2 != item.dataIndex) {
-        //                         previousPoint2 = item.dataIndex;
-        //                         $("#tooltip").remove();
-        //                         var x = item.datapoint[0].toFixed(2),
-        //                             y = item.datapoint[1].toFixed(2);
-        //                         showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' visitantes');
-        //                     }
-        //                 }
-        //             });
-        //
-        //             $('#site_activities').bind("mouseleave", function () {
-        //                 $("#tooltip").remove();
-        //             });
-        //         }
-        //     }
-        //     vm.showVisitorGraph();
-        // }
 
+        function definePorCobrarDelMes() {
+            if (porCobrarDone === false) {
+                var m = new Date().getMonth();
+                var monthData = vm.defaulters[m];
+                vm.porCobrar = monthData.debtFormat;
+                porCobrarDone = true;
+            }
+        }
 
+        vm.updateWeekData = function () {
+            vm.visitorTitle = "De la semana";
+            vm.visitantState = 1;
+
+            Dashboard.updateWeek({companyId: globalCompany.getId()}, function (result) {
+                vm.visitorsPerMonth = result;
+                $timeout(function () {
+                    visitantsGraphInit()
+                })
+            });
+        }
         vm.updateMonthData = function () {
+            vm.visitorTitle = "Del mes";
+            vm.visitantState = 2;
+
             Dashboard.updateMonth({companyId: globalCompany.getId()}, function (result) {
-                vm.dashboard.visitorsPerMonth = result;
-                vm.visitorTitle = "Visitantes del mes";
-                $('#site_activities').html('')
-                // vm.showVisitorGraph();
-                // initGraphs();
+                vm.visitorsPerMonth = result;
+                $timeout(function () {
+                    visitantsGraphInit()
+                })
             });
         }
         vm.updateYearData = function () {
+            vm.visitorTitle = "Del año";
+            vm.visitantState = 3;
             Dashboard.updateYear({companyId: globalCompany.getId()}, function (result) {
-                vm.dashboard.visitorsPerMonth = result;
-                vm.visitorTitle = "Visitantes del año";
-                $('#site_activities').html('')
-                // vm.showVisitorGraph();
-                // initGraphs();
+                vm.visitorsPerMonth = result;
+                $timeout(function () {
+                    visitantsGraphInit()
+                })
             });
         }
 
+
+        vm.showYearIEB = function () {
+            loadGraphFlujoIngresosYEgresos(vm.yearIEB);
+        }
+
+
+        vm.showYearDefaulter = function () {
+            vm.loadDefaulters(vm.yearDefaulter)
+        }
+
+
+        function loadGraphFlujoIngresosYEgresos(year, type) {
+            Dashboard.flujoIngresosEgresos({companyId: globalCompany.getId(), year: year}, function (result) {
+                vm.anualReportDashboardDTO = result;
+                defineEICurrentMonth();
+                ingresosEgresosGraphInit(type)
+            });
+        }
+
+        function defineEICurrentMonth() {
+            if (ieDone === false) {
+                var m = new Date().getMonth()
+                var currentMonth = vm.anualReportDashboardDTO.incomeEgressBudgetList[m];
+                vm.ingressMonth = currentMonth.incomeTotalformated;
+                vm.egressMonth = currentMonth.egressTotalformated;
+                ieDone = true;
+            }
+        }
+
+        vm.loadAll();
+
+        function getColumnChart(title, val) {
+            return {"v": val, "f": title}
+        }
+
+
+        function colsPerMonthIEB(monthData) {
+            var colums = [];
+            colums.push({"f": monthsText[monthData.monthValue - 1]});
+            colums.push(getColumnChart(monthData.incomeTotalformated, monthData.incomeTotal));
+            colums.push(getColumnChart(monthData.egressTotalformated, monthData.egressTotal));
+            colums.push(getColumnChart(monthData.budgetTotalformated, monthData.budgetTotal));
+
+            return {"c": colums}
+        }
+
+        function colsPerMonthDefaulters(monthData, i) {
+            var colums = [];
+            colums.push({"f": monthsText[i]});
+            colums.push(getColumnChart(monthData.totalHousesDefaulter + " unidades", monthData.totalHousesDefaulter));
+            colums.push(getColumnChart(monthData.totalHousesOnTime + " unidades", monthData.totalHousesOnTime));
+            return {"c": colums}
+        }
+
+        function colsPerMonthVisitors(monthData) {
+            var colums = [];
+            colums.push({"f": monthData.name});
+            colums.push({"v": monthData.value});
+            return {"c": colums}
+        }
+
+        vm.changeChartTypeIEB = function (type) {
+            $timeout(function () {
+                ingresosEgresosGraphInit(type)
+            })
+        }
+        vm.changeChartTypeDefaulters = function (type) {
+            $timeout(function () {
+                defaultersGraphInit(type)
+            })
+        }
+
+        function vehiculesEnabledGraphInit() {
+            var rows = [];
+            var colums = [];
+            colums.push({"v": "Habilitados"});
+            colums.push({"v": vm.dashboard.enableVehicleuQantity});
+            rows.push({"c": colums})
+            var colums = [];
+            colums.push({"v": "Deshabilitados"});
+            colums.push({"v": vm.dashboard.disableVehicleQuantity});
+            rows.push({"c": colums})
+            vm.vehiculeGraph = {
+                "type": "PieChart",
+                "displayed": false,
+                "cssStyle": "height:600px;width: 100%",
+                "data": {
+                    "cols": [
+                        {
+                            "id": "enable",
+                            "label": "enable",
+                            "type": "string"
+                        },
+                        {
+                            "id": "enable-id",
+                            "label": "Habilitados",
+                            "type": "number"
+                        },
+                        {
+                            "id": "disable-id",
+                            "label": "Deshabilitado",
+                            "type": "number"
+                        }
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    // "title": "Vehículos",
+                    "legend": {"position": "bottom"},
+                    "isStacked": "false",
+                    'chartArea': {'width': '90%', 'height': '78%'},
+                    "fill": 200000,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    "displayExactValues": true,
+                    colors: ['#ae52d4', '#7b1fa2', '#ec8f6e', '#f3b49f', '#f6c7b6']
+                }
+            }
+        }
+
+        function residentsEnabledGraphInit() {
+            var rows = [];
+            var colums = [];
+            colums.push({"v": "Habilitados"});
+            colums.push({"v": vm.dashboard.enableResidentQuantity});
+            rows.push({"c": colums})
+            var colums = [];
+            colums.push({"v": "Deshabilitados"});
+            colums.push({"v": vm.dashboard.disableResidentQuantity});
+            rows.push({"c": colums})
+            vm.residentGraph = {
+                "type": "PieChart",
+                "displayed": false,
+                "cssStyle": "height:600px;width: 100%",
+                "data": {
+                    "cols": [
+                        {
+                            "id": "enable",
+                            "label": "enable",
+                            "type": "string"
+                        },
+                        {
+                            "id": "enable-id",
+                            "label": "Habilitados",
+                            "type": "number"
+                        },
+                        {
+                            "id": "disable-id",
+                            "label": "Deshabilitado",
+                            "type": "number"
+                        }
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    // "title": "Residentes",
+                    "legend": {"position": "bottom"},
+                    "isStacked": "false",
+                    'chartArea': {'width': '90%', 'height': '78%'},
+
+                    "fill": 200000,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    "displayExactValues": true,
+                    colors: ['#ae52d4', '#7b1fa2', '#ec8f6e', '#f3b49f', '#f6c7b6']
+                }
+            }
+        }
+
+        function defaulterMonthGraphInit(month) {
+            var monthData = vm.defaulters[month]
+            var rows = [];
+            var colums = [];
+            colums.push({"v": "Liquidado"});
+            colums.push({"v": monthData.total, "f": monthData.totalFormated});
+            rows.push({"c": colums})
+            var colums = [];
+            colums.push({"v": "Por cobrar"});
+            colums.push({"v": monthData.debt, "f": monthData.debtFormat});
+            rows.push({"c": colums})
+            vm.dataDefaulterPerMonth = {
+                "type": "PieChart",
+                "displayed": false,
+                "cssStyle": "height:600px;width: 100%",
+                "data": {
+                    "cols": [
+                        {
+                            "id": "enable",
+                            "label": "enable",
+                            "type": "string"
+                        },
+                        {
+                            "id": "enable-id",
+                            "label": "Liquidado",
+                            "type": "number"
+                        },
+                        {
+                            "id": "disable-id",
+                            "label": "Por cobrar",
+                            "type": "number"
+                        }
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    "title": "",
+                    "legend": {"position": "bottom"},
+                    "isStacked": "false",
+                    "fill": 200000,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    'chartArea': {'width': '90%', 'height': '78%'},
+                    "displayExactValues": true,
+                    colors: ['#0097a7', '#e6693e']
+                }
+            }
+        }
+
+        function defaultersGraphInit(type) {
+            var defaultersPerMonth = vm.defaulters;
+            var rows = []
+            for (var i = 0; i < defaultersPerMonth.length; i++) {
+                rows.push(colsPerMonthDefaulters(defaultersPerMonth[i], i))
+            }
+            vm.dataDefaulters = {
+                "type": type,
+                "displayed": false,
+                "cssStyle": "height:600px;width: 100%",
+                "data": {
+                    "cols": [
+                        {
+                            "id": "month",
+                            "label": "Mes",
+                            "type": "string",
+                        },
+                        {
+                            "id": "defaulter-id",
+                            "label": "Morosos",
+                            "type": "number"
+                        },
+                        {
+                            "id": "Vigentes-id",
+                            "label": "Vigentes",
+                            "type": "number"
+                        },
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    // titleTextStyle: {
+                    //     color: "#4DB3A2",    // any HTML string color ('red', '#cc00cc')
+                    //     fontName: "Open Sans", // i.e. 'Times New Roman'
+                    //     fontSize: 15, // 12, 18 whatever you want (don't specify px)
+                    //     bold: true,    // true or false
+                    //     margin:20
+                    // },
+                    // "title": "MOROSIDAD POR UNIDADES PRIVATIVAS",
+                    "curveType": "function",
+                    "legend": {"position": "bottom"},
+                    "isStacked": "true",
+                    "fill": 10,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    'chartArea': {'width': '90%'},
+                    "displayExactValues": true,
+                    series: {
+                        0: {color: '#0097a7'},
+                        1: {color: '#e6693e'},
+                    }
+                    // "vAxis": {
+                    //     "title": "Salesunit",
+                    //     "gridlines": {
+                    //         "count": 10
+                    //
+                    //     }
+                    // },
+                    // "hAxis": {
+                    //     "title": "Date"
+                    // }
+                }
+            };
+
+            defaulterMonthGraphInit(vm.monthDefaulter)
+        }
+
+
+        function ingresosEgresosGraphInit(type) {
+            var reportPerMonth = vm.anualReportDashboardDTO.incomeEgressBudgetList;
+            var rows = []
+            for (var i = 0; i < reportPerMonth.length; i++) {
+                rows.push(colsPerMonthIEB(reportPerMonth[i]))
+            }
+            vm.dataIEB = {
+                "type": type,
+                "displayed": false,
+                "data": {
+                    "cols": [
+                        {
+                            "id": "month",
+                            "label": "Mes",
+                            "type": "string",
+                        },
+                        {
+                            "id": "ingress-id",
+                            "label": "Ingresos",
+                            "type": "number"
+                        },
+                        {
+                            "id": "egress-id",
+                            "label": "Egresos",
+                            "type": "number"
+                        },
+                        {
+                            "id": "budget-id",
+                            "label": "Presupuesto",
+                            "type": "number"
+                        },
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    // "title": "Flujo de Ingresos y Egresos",
+                    // "curveType": "function",
+                    "legend": {"position": "bottom"},
+                    'chartArea': {'width': '97%'},
+                    "isStacked": "false",
+                    "fill": 200000,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    "displayExactValues": true,
+                    series: {
+                        0: {color: '#009688'},
+                        1: {color: '#cb5a5e'},
+                        2: {color: '#1c91c0'},
+                    }
+                    // "vAxis": {
+                    //     "title": "Salesunit",
+                    //     "gridlines": {
+                    //         "count": 10
+                    //
+                    //     }
+                    // },
+                    // "hAxis": {
+                    //     "title": "Date"
+                    // }
+                }
+            }
+        }
+
+        function visitantsGraphInit() {
+            var visitorsPerMonth = vm.visitorsPerMonth;
+            var rows = [];
+            for (var i = 0; i < visitorsPerMonth.length; i++) {
+                rows.push(colsPerMonthVisitors(visitorsPerMonth[i]))
+            }
+            vm.dataVisitors = {
+                "type": "AreaChart",
+                "displayed": false,
+                "data": {
+                    "cols": [
+                        {
+                            "id": "month",
+                            "label": "Mes",
+                            "type": "string",
+                        },
+                        {
+                            "id": "quantity-id",
+                            "label": "Cantidad",
+                            "type": "number"
+                        },
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    "title": vm.visitorTitle,
+                    "curveType": "function",
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    'chartArea': {'width': '95%'},
+                    // pointSize: 2,
+                    "legend": {"position": "bottom"},
+                    "isStacked": "false",
+                    "fill": 200000,
+                    "displayExactValues": true,
+                    series: {
+                        0: {color: '#009688'}
+                    }
+                }
+            }
+        }
+
+        function initCalendar() {
+            /* config object */
+            vm.uiConfig = {
+                calendar: {
+                    events: function (start, end, timezone, callback) {
+                        var events = [];
+                        CommonAreaReservations.getLastAcceptedReservations({
+                            companyId: globalCompany.getId()
+                        }, function (data) {
+                            angular.forEach(data, function (value) {
+                                var color;
+                                if (value.status == 1) {
+                                    color = '#ef5350'
+                                } else if (value.status == 2) {
+                                    color = '#42a5f5'
+                                }
+                                events.push({
+                                    id: value.id,
+                                    commonAreaId: value.commonAreaId,
+                                    title: value.commonArea.name + " - " + value.resident.name + " " + value.resident.lastname + " - Filial " + value.house.housenumber,
+                                    start: new Date(value.initalDate),
+                                    end: new Date(value.finalDate),
+                                    description: 'This is a cool event',
+                                    color: color,
+                                    status: value.status
+                                })
+                            });
+                            callback(events);
+                        });
+                    },
+                    columnHeader: false,
+                    dayClick: vm.onDayClick,
+                    editable: false,
+                    header: false,
+                    height: 257,
+                    eventClick: vm.alertOnEventClick,
+                    eventDrop: vm.alertOnDrop,
+                    eventResize: vm.alertOnResize,
+                    eventRender: vm.eventRender,
+                    defaultView: 'listYear',
+                    default: 'bootstrap3'
+                }
+            };
+        }
+
+
     }
-})();
+})
+();

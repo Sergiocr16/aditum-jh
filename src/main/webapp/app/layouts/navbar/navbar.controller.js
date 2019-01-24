@@ -1587,7 +1587,7 @@
                 })
             }, 300)
             $state.reload();
-        }
+        };
 
         vm.defineSelectCompanyColor = function (company) {
             if (company.id == globalCompany.getId()) {

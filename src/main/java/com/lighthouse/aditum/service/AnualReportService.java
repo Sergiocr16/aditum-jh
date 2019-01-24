@@ -5,10 +5,13 @@ import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.Egress;
 import com.lighthouse.aditum.domain.Transferencia;
 import com.lighthouse.aditum.service.dto.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import springfox.documentation.spring.web.json.Json;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -69,13 +72,47 @@ public class AnualReportService {
         anualReportDTO.setAllEgressAcumulado();
         this.setFlujoByMonth(anualReportDTO);
         this.setAllIngressAcumulado(anualReportDTO);
-
-
         if(withPresupuesto==2){
             this.getAllEgressBudgetAndDiference(anualReportDTO);
             this.setIngressBudgets(anualReportDTO);
         }
         this.setRealBalanceByMonth(anualReportDTO);
+    }
+
+    public AnualReportDashboardDTO getReportByMonthDashboard(Long companyId,int year) throws JSONException {
+        Page<EgressCategoryDTO> egressCategories = egressCategoryService.findAll(companyId);
+        List<MensualIngressReportDTO> ingressByMonth = new ArrayList<>();
+        List<MensualEgressReportDTO> egressByMonth = new ArrayList<>();
+        ZonedDateTime zd_actualMonth = ZonedDateTime.now();
+        int finalMonth = zd_actualMonth.getMonthValue();
+        if(zd_actualMonth.getYear()!=year){
+             finalMonth = 12;
+        }
+        List<DashboardReportIncomeEgressBudgetDTO> meses = new ArrayList<>();
+        for (int i = 1; i <= finalMonth; i++) {
+            DashboardReportIncomeEgressBudgetDTO month = new DashboardReportIncomeEgressBudgetDTO();
+            ZonedDateTime initialDate = zd_actualMonth.withYear(year).withMonth(i).withDayOfMonth(1).withMinute(0).withHour(0);
+            ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
+            String initDate = initialDate.toString().replace("[America/Regina]","");
+            String fiDate = finalDate.toString().replace("[America/Regina]","");
+            MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initDate+"",fiDate+"",companyId,2);
+            MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initDate+"",fiDate+"",companyId,mensualIngressReportDTO,2);
+            mensualReportService.getEgressBudgets(mensualEgressReportDTO, companyId, initDate + "", fiDate + "", egressCategories);
+            mensualEgressReportDTO.setTotalBudgetPerGroup();
+            mensualReportService.getIngressBudgets(mensualIngressReportDTO, companyId, initDate + "", fiDate + "");
+            mensualIngressReportDTO.setAllIngressCategoriesBudgetTotal();
+            ingressByMonth.add(mensualIngressReportDTO);
+            egressByMonth.add(mensualEgressReportDTO);
+            month.setBudgetTotal(mensualIngressReportDTO.getTotalBudget());
+            month.setEgressTotal(mensualEgressReportDTO.getAllEgressCategoriesTotal());
+            month.setIncomeTotal(mensualIngressReportDTO.getAllIngressCategoriesTotal());
+            month.setMonthValue(i);
+            month.setMonth(ZonedDateTime.now().withMonth(i).getMonth().toString());
+            meses.add(month);
+        }
+        AnualReportDashboardDTO anualReport= new AnualReportDashboardDTO();
+        anualReport.setIncomeEgressBudgetList(meses);
+      return anualReport;
     }
 
     private void getAllEgressBudgetAndDiference(AnualReportDTO anualReportDTO){
