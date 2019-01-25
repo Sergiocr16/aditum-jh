@@ -47,7 +47,7 @@ public class CommonAreaReservationsService {
 
     private final CommonAreaReservationsMapper commonAreaReservationsMapper;
 
-    public CommonAreaReservationsService(CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper, HouseService houseService, ResidentService residentService,CommonAreaMailService commonAreaMailService,CommonAreaService commonAreaService,ChargeService chargeService) {
+    public CommonAreaReservationsService(CommonAreaReservationsRepository commonAreaReservationsRepository, CommonAreaReservationsMapper commonAreaReservationsMapper, HouseService houseService, ResidentService residentService, CommonAreaMailService commonAreaMailService, CommonAreaService commonAreaService, ChargeService chargeService) {
         this.commonAreaReservationsRepository = commonAreaReservationsRepository;
         this.commonAreaReservationsMapper = commonAreaReservationsMapper;
         this.houseService = houseService;
@@ -75,23 +75,23 @@ public class CommonAreaReservationsService {
         commonAreaReservationsDTO1.setChargeEmail(commonAreaReservations.getChargeEmail());
         commonAreaReservationsDTO1.setResident(residentService.findOne(commonAreaReservationsDTO1.getResidentId()));
         commonAreaReservationsDTO1.setHouse(houseService.findOne(commonAreaReservationsDTO1.getHouseId()));
-        if(commonAreaReservationsDTO1.getChargeIdId()!=null){
+        if (commonAreaReservationsDTO1.getChargeIdId() != null) {
             commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
         }
         commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
 
-        if(commonAreaReservationsDTO.getId()==null){
+        if (commonAreaReservationsDTO.getId() == null) {
             this.commonAreaMailService.sendNewCommonAreaReservationEmailToResident(commonAreaReservationsDTO1);
-            if(commonAreaReservationsDTO.isSendPendingEmail()){
+            if (commonAreaReservationsDTO.isSendPendingEmail()) {
                 this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
             }
 
-        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==1){
+        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 1) {
             this.commonAreaMailService.sendUpdateCommonAreaReservationEmail(commonAreaReservationsDTO1);
-        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==2){
+        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 2) {
             commonAreaReservationsDTO1.getResident().setEmail(commonAreaReservationsDTO.getResident().getEmail());
             this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
-        }else if(commonAreaReservationsDTO.getId()!=null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus()==3){
+        } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 3) {
             this.commonAreaMailService.sendCanceledCommonAreaReservationEmail(commonAreaReservationsDTO1);
         }
 
@@ -100,74 +100,77 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompany(Pageable pageable,String initialTime,String finalTime,Long companyId) {
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable,zd_initialTime,zd_finalTime,companyId);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         return result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations));
     }
 
     @Transactional(readOnly = true)
-    public  CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours,String reservation_date,String initial_time,String final_time, Long common_area_id,Long reservation_id) {
+    public CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours, String reservation_date, String initial_time, String final_time, Long common_area_id, Long reservation_id) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
 
-        if(maximun_hours==0){
-            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date+"[America/Regina]");
-            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date+"[America/Regina]").replace("00:00:00","23:59:59"));
-            List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
-            if(reservations.size()>0){
+        if (maximun_hours == 0) {
+            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date + "[America/Regina]");
+            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date + "[America/Regina]").replace("00:00:00", "23:59:59"));
+            List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+            if (reservations.size() > 0) {
                 commonAreaReservationsDTO.setAvailable(false);
-            }else{
+            } else {
                 commonAreaReservationsDTO.setAvailable(true);
             }
-        }else{
+        } else {
 
-            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date+"[America/Regina]");
-            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date+"[America/Regina]"));
+            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date + "[America/Regina]");
+            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date + "[America/Regina]"));
             zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
             zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
-            List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
-            List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date,zd_reservation_final_date,common_area_id);
-            List<CommonAreaReservations> test3 = commonAreaReservationsRepository. findReservationInIT(zd_reservation_initial_date,common_area_id);
+            List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+            List<CommonAreaReservations> test2 = commonAreaReservationsRepository.findReservationBetweenFT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
+            List<CommonAreaReservations> test3 = commonAreaReservationsRepository.findReservationInIT(zd_reservation_initial_date, common_area_id);
             List<CommonAreaReservations> allReservations = new ArrayList<>();
             allReservations.addAll(test1);
             allReservations.addAll(test2);
             allReservations.addAll(test3);
             int cantidad = 0;
 
-            for(int i = 0; i < allReservations.size(); i++) {
-                if(allReservations.get(i).getId()!=reservation_id){
+            for (int i = 0; i < allReservations.size(); i++) {
+                if (allReservations.get(i).getId() != reservation_id) {
                     cantidad++;
-                };
+                }
+                ;
             }
-            if(allReservations.size()>0 && cantidad>0){
+            if (allReservations.size() > 0 && cantidad > 0) {
 
                 commonAreaReservationsDTO.setAvailable(false);
-            }else{
+            } else {
                 commonAreaReservationsDTO.setAvailable(true);
             }
         }
         return commonAreaReservationsDTO;
     }
+
     /**
-     *  Get all the commonAreaReservations.
+     * Get all the commonAreaReservations.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<CommonAreaReservationsDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
 
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable,companyId,4).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatusNot(pageable, companyId, 4).map(commonAreaReservationsMapper::toDto);
 
         return mapCommonAreaReservations(commonAreaReservationsDTOPage);
     }
+
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> getPendingReservations(Pageable pageable,Long companyId) {
+    public Page<CommonAreaReservationsDTO> getPendingReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage =  commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable,companyId,1).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 1).map(commonAreaReservationsMapper::toDto);
 
         return mapCommonAreaReservations(commonAreaReservationsDTOPage);
 
@@ -183,7 +186,7 @@ public class CommonAreaReservationsService {
             ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
             commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
-            if(zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId()==null || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId()!=null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount()==0){
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
             }
         }
@@ -191,70 +194,60 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
-    public List<CommonAreaReservationsDTO> getAcceptedReservations(Pageable pageable,Long companyId) {
+    public List<CommonAreaReservationsDTO> getAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage =  commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable,companyId,2).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 2).map(commonAreaReservationsMapper::toDto);
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         List<CommonAreaReservationsDTO> finalList = new ArrayList<>();
         for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
-            ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
-          if(commonAreaReservationsDTOPage.getContent().get(i).getStatus()!=5 && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId()!=null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount()>0 && chargeDTO.getState()==2){
-              finalList.add(commonAreaReservationsDTOPage.getContent().get(i));
-          }
+            if (commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null) {
+                ChargeDTO chargeDTO = chargeService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId());
+                if (commonAreaReservationsDTOPage.getContent().get(i).getStatus() != 5 && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() > 0 && chargeDTO.getState() == 2) {
+                    finalList.add(commonAreaReservationsDTOPage.getContent().get(i));
+                }
+            }
         }
         return finalList;
 
     }
+
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservations(Pageable pageable,Long companyId) {
+    public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        return commonAreaReservationsRepository.findgetPendingAndAcceptedReservations(pageable,companyId)
+        return commonAreaReservationsRepository.findgetPendingAndAcceptedReservations(pageable, companyId)
             .map(commonAreaReservationsMapper::toDto);
     }
 
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> getLastAcceptedReservations(Pageable pageable,Long companyId) {
+    public Page<CommonAreaReservationsDTO> getLastAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage =  commonAreaReservationsRepository.findTop5ByCompanyIdAndStatus(pageable,companyId,2).map(commonAreaReservationsMapper::toDto);
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByCompanyIdAndStatus(pageable, companyId, 2).map(commonAreaReservationsMapper::toDto);
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         return commonAreaReservationsDTOPage;
 
     }
+
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> getReservationsByCommonArea(Pageable pageable,Long commonAreaId) {
+    public Page<CommonAreaReservationsDTO> getReservationsByCommonArea(Pageable pageable, Long commonAreaId) {
         log.debug("Request to get all CommonAreaReservations");
-        return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable,commonAreaId)
+        return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable, commonAreaId)
             .map(commonAreaReservationsMapper::toDto);
 
     }
+
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable,Long houseId) {
+    public Page<CommonAreaReservationsDTO> findByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all CommonAreaReservations");
-        return commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable,houseId,4)
+        return commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
             .map(commonAreaReservationsMapper::toDto);
 
     }
-    private Page<CommonAreaReservationsDTO> mapCommonAreaReservations(Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage) {
-        for (int i = 0; i < commonAreaReservationsDTOPage.getContent().size(); i++) {
-            commonAreaReservationsDTOPage.getContent().get(i).setHouseNumber(houseService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getHouseId()).getHousenumber());
-            CommonAreaDTO commonAreaDTO = commonAreaService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getCommonAreaId());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaName(commonAreaDTO.getName());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreaPicture(commonAreaDTO.getPicture());
-            commonAreaReservationsDTOPage.getContent().get(i).setCommonAreapictureContentType(commonAreaDTO.getPictureContentType());
-            ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
-            commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
-            ZonedDateTime zonedDateTime = ZonedDateTime.now();
-            if(zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId()==null || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId()!=null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount()==0){
-                commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
-            }
-        }
-        return commonAreaReservationsDTOPage;
-    }
+
     /**
-     *  Get one commonAreaReservations by id.
+     * Get one commonAreaReservations by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public CommonAreaReservationsDTO findOne(Long id) {
@@ -263,13 +256,13 @@ public class CommonAreaReservationsService {
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
         commonAreaReservationsDTO.setChargeEmail(commonAreaReservations.getChargeEmail());
         commonAreaReservationsDTO.setResident(residentService.findOne(commonAreaReservationsDTO.getResidentId()));
-        return commonAreaReservationsDTO ;
+        return commonAreaReservationsDTO;
     }
 
     /**
-     *  Delete the  commonAreaReservations by id.
+     * Delete the  commonAreaReservations by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete CommonAreaReservations : {}", id);
