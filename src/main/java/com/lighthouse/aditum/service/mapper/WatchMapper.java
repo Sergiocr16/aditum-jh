@@ -17,7 +17,6 @@ public interface WatchMapper {
 
     List<WatchDTO> watchesToWatchDTOs(List<Watch> watches);
 
-//    @Mapping(target = "accessDoors", ignore = true)
     @Mapping(source = "companyId", target = "company")
     Watch watchDTOToWatch(WatchDTO watchDTO);
 
