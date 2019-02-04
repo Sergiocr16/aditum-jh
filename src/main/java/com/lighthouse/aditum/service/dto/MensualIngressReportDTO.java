@@ -72,7 +72,7 @@ public class MensualIngressReportDTO implements Serializable {
 
         for (int i =0;ingress.size()>i;i++) {
             ChargeDTO item = ingress.get(i);
-            double total =  ingress.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+            double total =  ingress.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).mapToDouble(o -> o.getTotal()).sum();
             SumChargeDTO object = new SumChargeDTO(ingress.get(i).getConcept(), total);
             if(finalList.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).count()==0){
                 finalList.add(object);

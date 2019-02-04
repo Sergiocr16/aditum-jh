@@ -210,7 +210,14 @@ public class CommonAreaReservationsService {
         return finalList;
 
     }
+    @Transactional(readOnly = true)
+    public Page<CommonAreaReservationsDTO> getDevolutionDoneReservations(Pageable pageable, Long companyId) {
+        log.debug("Request to get all CommonAreaReservations");
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findByCompanyIdAndStatus(pageable, companyId, 6).map(commonAreaReservationsMapper::toDto);
+        commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
+        return commonAreaReservationsDTOPage;
 
+    }
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> getPendingAndAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");

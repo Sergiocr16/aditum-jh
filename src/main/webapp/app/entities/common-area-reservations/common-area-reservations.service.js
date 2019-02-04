@@ -64,10 +64,18 @@
                     companyId: '@companyId'
                 }
             },
+            'getDevolutionDoneReservations':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getDevolutionDoneReservations/:companyId',
+              isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
+            },
             'getAcceptedReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getAcceptedReservations/:companyId',
-              isArray: true,
+                isArray: true,
                 params:{
                     companyId: '@companyId'
                 }
