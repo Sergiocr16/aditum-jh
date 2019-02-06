@@ -23,6 +23,8 @@
         vm.datePickerOpenStatus = false;
         vm.payment = {ammount:"0"}
         vm.openCalendar = openCalendar;
+        vm.today = new Date();
+
         vm.residents = [];
         angular.element(document).ready(function () {
             $('.infoCharge').popover('show')

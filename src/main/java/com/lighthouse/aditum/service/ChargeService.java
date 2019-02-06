@@ -74,6 +74,8 @@ public class ChargeService {
         charge.setId(null);
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
+        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
+        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()).plusMinutes(1));
         charge = chargeRepository.save(charge);
         return this.formatCharge(chargeMapper.toDto(charge));
     }
@@ -86,6 +88,8 @@ public class ChargeService {
         charge.setCompany(chargeMapper.companyFromId(payment.getCompanyId().longValue()));
         charge.setPaymentDate(payment.getDate());
         charge.setState(2);
+        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
+        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
         charge = chargeRepository.save(charge);
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
 //        switch (chargeDTO.getType()) {
@@ -115,6 +119,7 @@ public class ChargeService {
         Charge charge = null;
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0 && chargeDTO.getType() == 1) {
+
             charge = payIfBalanceIsPositive(chargeDTO);
             balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         } else {
@@ -129,6 +134,8 @@ public class ChargeService {
                 charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
+            ZonedDateTime n = ZonedDateTime.now().plusHours(6);
+            charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
             charge = chargeRepository.save(charge);
 //
 //            switch (chargeDTO.getType()) {
@@ -191,6 +198,8 @@ public class ChargeService {
         }
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
+        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
+        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
         Charge savedCharge = chargeRepository.save(charge);
 //        }
 
@@ -415,6 +424,7 @@ public class ChargeService {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
 
         ChargeDTO newCharge = charge;
+        ZonedDateTime now = ZonedDateTime.now();
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(newCharge.getHouseId());
         if (payment != null) {
             payment.setAccount(bancoService.findOne(Long.parseLong(payment.getAccount())).getBeneficiario() + ";" + payment.getAccount());
@@ -422,6 +432,7 @@ public class ChargeService {
                 payment.setAmmountLeft(Integer.parseInt(payment.getAmmountLeft()) - Integer.parseInt(charge.getAmmount()) + "");
             } else {
                 newCharge.setAmmount(Integer.parseInt(charge.getAmmount()) - Integer.parseInt(payment.getAmmountLeft()) + "");
+                newCharge.setPaymentDate(now.plusMinutes(10));
                 newCharge = this.create(newCharge);
 //                int newMaintBalance = 0;
 //                if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
@@ -438,7 +449,7 @@ public class ChargeService {
             charge.setPaymentDate(ZonedDateTime.now());
             charge.setState(2);
             charge.setCompanyId(payment.getCompanyId().longValue());
-            charge.setPaymentDate(ZonedDateTime.now());
+            charge.setPaymentDate(now);
             payment = paymentService.update(payment);
         }
         Charge chargeEntity = chargeMapper.toEntity(charge);

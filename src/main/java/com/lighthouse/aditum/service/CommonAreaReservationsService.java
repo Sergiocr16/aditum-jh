@@ -221,10 +221,11 @@ public class CommonAreaReservationsService {
     @Transactional(readOnly = true)
     public Page<CommonAreaReservationsDTO> getLastAcceptedReservations(Pageable pageable, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
-        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByCompanyIdAndStatus(pageable, companyId, 2).map(commonAreaReservationsMapper::toDto);
+        ZonedDateTime n = ZonedDateTime.now();
+        String a ="";
+        Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservationsRepository.findTop5ByInitalDateAfterAndCompanyIdAndStatus(null,ZonedDateTime.now(), companyId, 2).map(commonAreaReservationsMapper::toDto);
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
         return commonAreaReservationsDTOPage;
-
     }
 
     @Transactional(readOnly = true)
@@ -232,7 +233,6 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all CommonAreaReservations");
         return commonAreaReservationsRepository.findByCommonAreaIdAndStatus(pageable, commonAreaId)
             .map(commonAreaReservationsMapper::toDto);
-
     }
 
     @Transactional(readOnly = true)
@@ -240,7 +240,6 @@ public class CommonAreaReservationsService {
         log.debug("Request to get all CommonAreaReservations");
         return commonAreaReservationsRepository.findByHouseIdAndStatusNot(pageable, houseId, 4)
             .map(commonAreaReservationsMapper::toDto);
-
     }
 
     /**
