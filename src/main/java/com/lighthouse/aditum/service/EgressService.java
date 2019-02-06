@@ -55,6 +55,10 @@ public class EgressService {
     public EgressDTO save(EgressDTO egressDTO) {
         log.debug("Request to save Egress : {}", egressDTO);
         Egress egress = egressMapper.toEntity(egressDTO);
+        if(egress.getPaymentDate()!=null) {
+            ZonedDateTime n = ZonedDateTime.now().plusHours(5);
+            egress.setPaymentDate(egress.getPaymentDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+        }
         egress = egressRepository.save(egress);
         return egressMapper.toDto(egress);
     }

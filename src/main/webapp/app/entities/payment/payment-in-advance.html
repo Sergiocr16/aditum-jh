@@ -73,8 +73,10 @@
                         <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-right">
                             <md-input-container class="md-block  no-margin-bottom">
                                 <label>Fecha de pago</label>
-                                <md-datepicker md-min-date="vm.egress.date" required md-hide-icons="calendar"
+                                <md-datepicker md-max-date="vm.today" required md-hide-icons="calendar"
                                                ng-model="vm.payment.date"
+                                               id="datePicker"
+                                               readonlydatepicker
                                                md-placeholder="Introduzca una fecha" md-open-on-focus
                                                required></md-datepicker>
                             </md-input-container>

@@ -40,6 +40,8 @@
                                 <label>Fecha de cobro</label>
                                 <md-datepicker ng-change="vm.autoConcept()" md-hide-icons="calendar" required
                                                ng-model="vm.charge.date" md-min-date="vm.minDate"
+                                               id="datePicker"
+                                               readonlydatepicker
                                                md-open-on-focus></md-datepicker>
                             </md-input-container>
 

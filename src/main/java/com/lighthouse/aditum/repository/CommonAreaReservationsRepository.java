@@ -36,7 +36,7 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
 
     Page<CommonAreaReservations> findByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
 
-    Page<CommonAreaReservations> findTop5ByCompanyIdAndStatus(Pageable pageable, Long companyId, int status);
+    Page<CommonAreaReservations> findTop5ByInitalDateAfterAndCompanyIdAndStatus(Pageable pageable,ZonedDateTime today, Long companyId, int status);
 
     Page<CommonAreaReservations> findByHouseIdAndStatusNot(Pageable pageable, Long houseId, int status);
 

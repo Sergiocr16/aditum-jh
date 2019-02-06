@@ -593,7 +593,7 @@
                     eventResize: vm.alertOnResize,
                     eventRender: vm.eventRender,
                     defaultView: 'listYear',
-                    default: 'bootstrap3'
+                    default: 'bootstrap3',
                 }
             };
         }
