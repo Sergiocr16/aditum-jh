@@ -101,7 +101,7 @@ public class CollectionService {
         String[] months = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"};
         for (int i = 1; i <= 12; i++) {
             MensualCollectionDTO monthCollection = new MensualCollectionDTO();
-            int monthValue = 0;
+            double monthValue = 0;
             monthCollection = defineAmmountPerCharge(
                 filterChargesPerMonth(houseCharges, i),
                 monthCollection);
@@ -115,8 +115,8 @@ public class CollectionService {
     private String defineCollectionStyle(MensualCollectionDTO mensualCollection, int month, int year, List<ChargeDTO> houseCharges) {
         String style = "";
         double ammount = mensualCollection.getMensualBalance();
-        double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
-        double totalCharges = houseCharges.stream().mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        double noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
+        double totalCharges = houseCharges.stream().mapToDouble(o -> o.getTotal()).sum();
         double finalAmmount = totalCharges - noPayedAmmount;
         mensualCollection.setDebt(noPayedAmmount);
         mensualCollection.setPayedAmmount(finalAmmount);
@@ -137,7 +137,6 @@ public class CollectionService {
         if (ammount == 0) {
             style = "background-color:#e2e2e2;";
         }
-
         if (month > ZonedDateTime.now().getMonth().getValue() && ZonedDateTime.now().getYear() == year) {
             style += "opacity: 0.6;border - right:1 px solid #002 !important;border - left:1 px solid #B3B3B3 !important;";
         }
@@ -146,15 +145,14 @@ public class CollectionService {
 
     private List<ChargeDTO> filterChargesPerMonth(List<ChargeDTO> houseCharges, int montValue) {
         List<ChargeDTO> chargesPerMonth = houseCharges.stream().filter(o -> o.getDate().getMonth().getValue() == montValue).collect(Collectors.toList());
-        String a = "";
         return chargesPerMonth;
     }
 
     private MensualCollectionDTO defineAmmountPerCharge(List<ChargeDTO> houseCharges, MensualCollectionDTO mensualCollectionDTO) {
         double noPayedAmmount = 0;
         double payedAmmount = 0;
-        noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
-        payedAmmount = houseCharges.stream().filter(o -> o.getState() == 2).mapToDouble(o -> Double.parseDouble(o.getAmmount())).sum();
+        noPayedAmmount = houseCharges.stream().filter(o -> o.getState() == 1).mapToDouble(o -> o.getTotal()).sum();
+        payedAmmount = houseCharges.stream().filter(o -> o.getState() == 2).mapToDouble(o -> o.getTotal()).sum();
         double finalTotal = noPayedAmmount;
         if (noPayedAmmount > 0) {
             finalTotal = -finalTotal;

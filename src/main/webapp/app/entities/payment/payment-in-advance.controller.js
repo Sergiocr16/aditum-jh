@@ -15,6 +15,7 @@
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
+        vm.today = new Date();
         vm.isReady = false;
         $rootScope.mainTitle = "Capturar adelanto";
         vm.itemsPerPage = paginationConstants.itemsPerPage;

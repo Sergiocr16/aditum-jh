@@ -34,7 +34,7 @@
 
             Modal.confirmDialog("¿Está seguro que desea guardar los cambios?","",
                 function(){
-                    if(vm.administrationConfiguration.usingSubchargePercentage==="0"){
+                    if(vm.administrationConfiguration.usingSubchargePercentage==="1"){
                         vm.administrationConfiguration.usingSubchargePercentage = true;
                     }else{
                         vm.administrationConfiguration.usingSubchargePercentage = false;
