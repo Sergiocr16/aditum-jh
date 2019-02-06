@@ -46,7 +46,6 @@
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
                         vm.commonAreaReservations.commonAreaName = result.name ;
-                        vm.charge.concept = "Uso de " + vm.commonAreaReservations.commonAreaName;
                         vm.commonAreaReservations.schedule = formatScheduleTime(vm.commonAreaReservations.initialTime, vm.commonAreaReservations.finalTime);
                         Charge.get({
                             id: vm.commonAreaReservations.chargeIdId
@@ -54,7 +53,7 @@
                             vm.charge.date = result.date;
                             vm.charge.concept = result.concept;
                             vm.isReady = true;
-                        })
+                        });
                         vm.isReady = true;
                     })
                 })

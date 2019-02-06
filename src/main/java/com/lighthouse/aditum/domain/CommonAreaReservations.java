@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A CommonAreaReservations.
  */
@@ -57,6 +58,12 @@ public class CommonAreaReservations implements Serializable {
     @Column(name = "charge_email")
     private String chargeEmail;
 
+    @Column(name = "egress_id")
+    private Long egressId;
+
+    @Column(name = "payment_id")
+    private Long paymentId;
+
     @ManyToOne
     private CommonArea commonArea;
 
@@ -67,6 +74,7 @@ public class CommonAreaReservations implements Serializable {
     @JoinColumn(unique = true)
     private Charge chargeId;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -218,6 +226,32 @@ public class CommonAreaReservations implements Serializable {
         this.chargeEmail = chargeEmail;
     }
 
+    public Long getEgressId() {
+        return egressId;
+    }
+
+    public CommonAreaReservations egressId(Long egressId) {
+        this.egressId = egressId;
+        return this;
+    }
+
+    public void setEgressId(Long egressId) {
+        this.egressId = egressId;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public CommonAreaReservations paymentId(Long paymentId) {
+        this.paymentId = paymentId;
+        return this;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
     public CommonArea getCommonArea() {
         return commonArea;
     }
@@ -256,6 +290,7 @@ public class CommonAreaReservations implements Serializable {
     public void setChargeId(Charge charge) {
         this.chargeId = charge;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -281,17 +316,19 @@ public class CommonAreaReservations implements Serializable {
     public String toString() {
         return "CommonAreaReservations{" +
             "id=" + getId() +
-            ", houseId='" + getHouseId() + "'" +
-            ", residentId='" + getResidentId() + "'" +
+            ", houseId=" + getHouseId() +
+            ", residentId=" + getResidentId() +
             ", initialTime='" + getInitialTime() + "'" +
             ", finalTime='" + getFinalTime() + "'" +
             ", comments='" + getComments() + "'" +
             ", initalDate='" + getInitalDate() + "'" +
             ", finalDate='" + getFinalDate() + "'" +
-            ", reservationCharge='" + getReservationCharge() + "'" +
-            ", devolutionAmmount='" + getDevolutionAmmount() + "'" +
-            ", status='" + getStatus() + "'" +
+            ", reservationCharge=" + getReservationCharge() +
+            ", devolutionAmmount=" + getDevolutionAmmount() +
+            ", status=" + getStatus() +
             ", chargeEmail='" + getChargeEmail() + "'" +
+            ", egressId=" + getEgressId() +
+            ", paymentId=" + getPaymentId() +
             "}";
     }
 }

@@ -46,6 +46,34 @@
                     reservation_id: '@reservation_id'
             }
         },
+            'findBetweenDatesByHouse':{
+                method: 'GET',
+                url: 'api/common-area-reservations/between/:initial_time/:final_time/byHouse/:houseId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    houseId: '@houseId'
+                }
+            },
+            'getDevolutionDoneReservations':{
+                method: 'GET',
+                url: 'api/common-area-reservations/getDevolutionDoneReservations/:companyId',
+                isArray: true,
+                params:{
+                    companyId: '@companyId'
+                }
+            },
+            'findDevolutionDoneBetweenDates':{
+                method: 'GET',
+                url: 'api/common-area-reservations/devolutionDoneBetween/:initial_time/:final_time/byCompany/:companyId',
+                isArray: true,
+                params:{
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId'
+                }
+            },
             'findBetweenDatesByCompany':{
                 method: 'GET',
                 url: 'api/common-area-reservations/between/:initial_time/:final_time/byCompany/:companyId',
@@ -53,7 +81,7 @@
                 params:{
                     initial_time:'@initial_time',
                     final_time: '@final_time',
-                    companyId: '@companyId',
+                    companyId: '@companyId'
                 }
             },
             'getPendingReservations':{
@@ -64,14 +92,7 @@
                     companyId: '@companyId'
                 }
             },
-            'getDevolutionDoneReservations':{
-                method: 'GET',
-                url: 'api/common-area-reservations/getDevolutionDoneReservations/:companyId',
-              isArray: true,
-                params:{
-                    companyId: '@companyId'
-                }
-            },
+
             'getAcceptedReservations':{
                 method: 'GET',
                 url: 'api/common-area-reservations/getAcceptedReservations/:companyId',

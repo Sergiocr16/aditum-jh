@@ -1,20 +1,20 @@
-
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .controller('ReservationDevolutionDoneController', ReservationDevolutionDoneController);
 
-    ReservationDevolutionDoneController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','globalCompany','Modal'];
+    ReservationDevolutionDoneController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonArea', 'House', 'Resident', '$rootScope', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function ReservationDevolutionDoneController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
+    function ReservationDevolutionDoneController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams, CommonArea, House, Resident, $rootScope, CommonMethods, globalCompany, Modal) {
 
         var vm = this;
         $rootScope.active = "devolutions";
         vm.reverse = true;
         vm.loadPage = loadPage;
         vm.isReady = false;
+        vm.isConsulting = false;
         $rootScope.mainTitle = "Devoluciones de depósito";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -26,17 +26,18 @@
         loadAll();
 
 
-
         function onError(error) {
             AlertService.error(error.data.message);
         }
-        function loadAll () {
+
+        function loadAll() {
             CommonAreaReservations.getDevolutionDoneReservations({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
                 sort: sort(),
                 companyId: globalCompany.getId()
             }, onSuccess, onError);
+
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'initalDate') {
@@ -44,28 +45,7 @@
                 }
                 return result;
             }
-            function onSuccess(data, headers) {
-                vm.finalListReservations = [];
-                vm.queryCount = vm.totalItems;
-                vm.finalListReservations = data;
-                vm.page = pagingParams.page;
-                loadInfoByReservation(data);
 
-            }
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
-        }
-        vm.formatearNumero = function (nStr) {
-
-            var x = nStr.split('.');
-            var x1 = x[0];
-            var x2 = x.length > 1 ? ',' + x[1] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(x1)) {
-                x1 = x1.replace(rgx, '$1' + ',' + '$2');
-            }
-            return x1 + x2;
         }
 
         vm.stopConsulting = function () {
@@ -78,35 +58,60 @@
             pagingParams.search = null;
             vm.isConsulting = false;
             loadAll();
-        }
+        };
+
         function consult() {
             vm.isReady = false;
-            CommonAreaReservations.findBetweenDatesByCompany({
+            vm.isConsulting = true;
+            CommonAreaReservations.findDevolutionDoneBetweenDates({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
                 companyId: globalCompany.getId(),
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: vm.itemsPerPage
             }, onSuccess, onError);
-
-            function onSuccess(data, headers) {
-                vm.isConsulting = true;
-                vm.finalListReservations = [];
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.finalListReservations = data;
-                vm.page = pagingParams.page;
-                loadInfoByReservation(data);
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
-        function loadInfoByReservation(data){
-            angular.forEach(data,function(value){
+        function onSuccess(data, headers) {
+            console.log(data)
+            vm.queryCount = vm.totalItems;
+            vm.finalListReservations = data;
+            vm.page = pagingParams.page;
+            loadInfoByReservation(data);
+
+        }
+
+        function onError(error) {
+            AlertService.error(error.data.message);
+        }
+
+        vm.formatearNumero = function (nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        };
+
+        vm.stopConsulting = function () {
+            vm.isReady = false;
+            vm.dates = {
+                initial_time: undefined,
+                final_time: undefined
+            };
+            pagingParams.page = 1;
+            pagingParams.search = null;
+            vm.isConsulting = false;
+            loadAll();
+        };
+
+
+        function loadInfoByReservation(data) {
+            angular.forEach(data, function (value) {
                 value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
 
             });
@@ -115,18 +120,18 @@
 
         }
 
-        function formatScheduleTime(initialTime, finalTime){
+        function formatScheduleTime(initialTime, finalTime) {
             var times = [];
             times.push(initialTime);
             times.push(finalTime);
-            angular.forEach(times,function(value,key){
-                if(value==0){
+            angular.forEach(times, function (value, key) {
+                if (value == 0) {
                     times[key] = "12:00AM"
-                }else if(value<12){
+                } else if (value < 12) {
                     times[key] = value + ":00AM"
-                }else if(value>12){
-                    times[key] = parseInt(value)-12 + ":00PM"
-                }else if(value==12){
+                } else if (value > 12) {
+                    times[key] = parseInt(value) - 12 + ":00PM"
+                } else if (value == 12) {
                     times[key] = value + ":00PM"
                 }
 
@@ -134,13 +139,15 @@
             return times[0] + " - " + times[1]
             console.log(times)
         }
+
         function loadPage(page) {
             vm.page = page;
             vm.transition();
         }
-        vm.deleteReservation = function(commonArea) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
-                function(){
+
+        vm.deleteReservation = function (commonArea) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?", "",
+                function () {
                     commonArea.initalDate = new Date(commonArea.initalDate)
                     commonArea.initalDate.setHours(0);
                     commonArea.initalDate.setMinutes(0);
@@ -152,7 +159,7 @@
 
         };
 
-        function onDeleteSuccess (result) {
+        function onDeleteSuccess(result) {
 
             loadAll();
             Modal.toast("Se eliminó la solicitud de reservación correctamente");
@@ -160,6 +167,7 @@
             // $state.go('common-area-administration.common-area-all-reservations');
             //
         }
+
         function onSaveError(error) {
             Modal.hideLoadingBar();
             Modal.toast("Un error inesperado ocurrió");

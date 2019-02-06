@@ -55,6 +55,14 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     private ChargeDTO charge;
 
+    private EgressDTO egress;
+
+    private PaymentDTO payment;
+
+    private Long egressId;
+
+    private Long paymentId;
+
     private CommonAreaDTO commonArea;
 
     private boolean sendPendingEmail;
@@ -333,5 +341,37 @@ public class CommonAreaReservationsDTO implements Serializable {
 
     public void setCommonAreapictureContentType(String commonAreapictureContentType) {
         this.commonAreapictureContentType = commonAreapictureContentType;
+    }
+
+    public Long getEgressId() {
+        return egressId;
+    }
+
+    public void setEgressId(Long egressId) {
+        this.egressId = egressId;
+    }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public EgressDTO getEgress() {
+        return egress;
+    }
+
+    public void setEgress(EgressDTO egress) {
+        this.egress = egress;
+    }
+
+    public PaymentDTO getPayment() {
+        return payment;
+    }
+
+    public void setPayment(PaymentDTO payment) {
+        this.payment = payment;
     }
 }

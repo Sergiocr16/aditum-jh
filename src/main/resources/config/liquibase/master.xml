@@ -44,6 +44,7 @@
     <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_ComplaintComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190108183633_added_entity_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180824030452_added_entity_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -76,5 +77,6 @@
     <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190108183633_added_entity_constraints_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180824030452_added_entity_constraints_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

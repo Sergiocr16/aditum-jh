@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
+    CommonAreaReservationsDetailController.$inject = ['globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController (Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
+    function CommonAreaReservationsDetailController (globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
         vm.commonAreaReservations = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -152,7 +152,7 @@
             Modal.showLoadingBar()
             vm.isSaving = true;
             vm.charge.houseId = vm.commonAreaReservations.houseId;
-            vm.charge.companyId = $rootScope.companyId;
+            vm.charge.companyId = globalCompany.getId();
             vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
             vm.commonAreaReservations.initalDate.setHours(0);
             vm.commonAreaReservations.initalDate.setMinutes(0);

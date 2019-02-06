@@ -563,6 +563,36 @@
                     }]
                 }
             })
+            .state('common-area-reservations-detail-resident-view', {
+                parent:'entity',
+                url: '/{id}/reservation-detail-resident-view',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservation-detail-resident-view.html',
+                        controller: 'ReservationsCalentarAcceptedReservations',
+                        controllerAs: 'vm',
+                    }
+                },
+
+                resolve: {
+                    entity: function ($stateParams,CommonAreaReservations) {
+                        return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+
+
     }
 
 })();

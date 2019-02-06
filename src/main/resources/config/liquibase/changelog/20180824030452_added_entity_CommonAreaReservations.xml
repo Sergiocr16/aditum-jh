@@ -66,6 +66,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="egress_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="payment_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="common_area_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -82,4 +90,5 @@
         <dropDefaultValue tableName="common_area_reservations" columnName="final_date" columnDataType="datetime"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

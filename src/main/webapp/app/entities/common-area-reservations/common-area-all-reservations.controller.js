@@ -14,6 +14,7 @@
         vm.reverse = true;
         vm.loadPage = loadPage;
         vm.isReady = false;
+        vm.isConsulting = false;
         $rootScope.mainTitle = "Reservaciones";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -21,7 +22,7 @@
         vm.consult = consult;
         vm.finalListReservations = [];
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.consult = consult;
+
         loadAll();
 
 
