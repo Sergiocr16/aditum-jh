@@ -486,6 +486,44 @@
                     }]
                 }
             })
+            .state('common-area-devolution-administration.done-devolution', {
+                url: '/done-devolution',
+                data: {
+                    authorities: ['ROLE_MANAGER'],
+                    pageTitle: 'aditumApp.commonAreaReservations.home.title'
+                },
+                templateUrl:'app/entities/common-area-reservations/reservation-devolution-done.html',
+                controller: 'ReservationDevolutionDoneController',
+                controllerAs: 'vm',
+
+                params: {
+                    page: {
+                        value: '1',
+                        squash: true
+                    },
+                    sort: {
+                        value: 'id,asc',
+                        squash: true
+                    },
+                    search: null
+                },
+                resolve: {
+                    pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                        return {
+                            page: PaginationUtil.parsePage($stateParams.page),
+                            sort: $stateParams.sort,
+                            predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                            ascending: PaginationUtil.parseAscending($stateParams.sort),
+                            search: $stateParams.search
+                        };
+                    }],
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('commonAreaReservations');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
             .state('common-area-devolution-administration.reservationDevolutionDialog', {
                 url: '/{id}/reservation-devolution-dialog',
                 data: {
@@ -525,6 +563,36 @@
                     }]
                 }
             })
+            .state('common-area-reservations-detail-resident-view', {
+                parent:'entity',
+                url: '/{id}/reservation-detail-resident-view',
+                data: {
+                    authorities: ['ROLE_USER']
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/common-area-reservations/common-area-reservation-detail-resident-view.html',
+                        controller: 'ReservationsCalentarAcceptedReservations',
+                        controllerAs: 'vm',
+                    }
+                },
+
+                resolve: {
+                    entity: function ($stateParams,CommonAreaReservations) {
+                        return CommonAreaReservations.get({id : $stateParams.id}).$promise;
+                    },
+                    previousState: ["$state", function ($state) {
+                        var currentStateData = {
+                            name: $state.current.name || 'common-area-reservations',
+                            params: $state.params,
+                            url: $state.href($state.current.name, $state.params)
+                        };
+                        return currentStateData;
+                    }]
+                }
+            })
+
+
     }
 
 })();

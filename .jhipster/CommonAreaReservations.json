@@ -78,11 +78,20 @@
         {
             "fieldName": "chargeEmail",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "egressId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "paymentId",
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20180824030452",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "common_area_reservations",
+    "jpaMetamodelFiltering": false,
     "pagination": "pagination"
 }

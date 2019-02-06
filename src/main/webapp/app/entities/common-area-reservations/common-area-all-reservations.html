@@ -4,9 +4,9 @@
 </div>
 
 <div ng-if="vm.isReady" class=" fade-in">
-    <div class="col-md-12 col-xs-12 no-padding  " style="margin-bottom: 8px;"
+    <div class="col-md-12 col-xs-12 no-padding  col-sm-12" style="margin-bottom: 8px;"
          ng-if="vm.finalListReservations.length> 0 ">
-        <div class="">
+
             <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
                  id="index-search-bar">
                 <div class="input-icon" style="color:#484848!important;">
@@ -24,7 +24,7 @@
                     <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
 
             </div>
-        </div>
+
     </div>
 
     <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding" ng-if="vm.showFilterDiv">
@@ -58,7 +58,7 @@
     </div>
 
 
-    <div class="col-lg-12 col-md-12 no-padding" id="tableDatas">
+    <div class="col-lg-12 col-md-12 col-sm-12 no-padding" id="tableDatas">
 
         <div class="portlet-body hidden-xs">
 
@@ -81,7 +81,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="finalListReservations in vm.finalListReservations">
+                    <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search">
 
 
                         <td class="text-center">
@@ -89,7 +89,7 @@
                                ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
                                 <i
                                     class="material-icons">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
                                     </md-tooltip>
                                     remove_red_eye</i>
                             </a>
@@ -97,7 +97,7 @@
                                ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
                                 <i
                                     class="material-icons">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
                                     </md-tooltip>
                                     remove_red_eye</i>
                             </a>
@@ -123,7 +123,7 @@
                                ng-if="finalListReservations.status==3">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Rechazada</md-tooltip>
                                 cancel</i>
-                            <i class="material-icons" style="color:#21a647; font-size: 19px; padding: 3px;"
+                            <i class="material-icons bold" style="color:#21a647; font-size: 22px; padding: 3px; font-weight: 900!important;"
                                ng-if="finalListReservations.status==5">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Finalizado</md-tooltip>
                                 check</i>

@@ -25,7 +25,9 @@
             state: 1,
             deleted: 0
         };
+
         vm.egress = egress;
+        vm.egress.total = vm.commonAreaReservations.devolutionAmmount;
         loadInfo();
 
         function loadInfo(){
@@ -41,7 +43,6 @@
                         id: vm.commonAreaReservations.commonAreaId
                     }, function(result) {
                         vm.commonAreaReservations.commonAreaName = result.name ;
-                        vm.charge.concept = "Uso de " + vm.commonAreaReservations.commonAreaName;
                         vm.commonAreaReservations.schedule = formatScheduleTime(vm.commonAreaReservations.initialTime, vm.commonAreaReservations.finalTime);
                         Charge.get({
                             id: vm.commonAreaReservations.chargeIdId
@@ -123,12 +124,13 @@
             vm.egress.companyId = globalCompany.getId();
             vm.egress.concept = "Devolución de depósitos por uso de áreas comunes";
             vm.egress.proveedor = 0;
-            vm.egress.total = vm.commonAreaReservations.devolutionAmmount;
             vm.egress.billNumber = "0";
             vm.egress.state = 5;
             console.log(vm.egress);
             Egress.save(vm.egress, function (result) {
                 vm.commonAreaReservations.status = 6;
+                vm.commonAreaReservations.egressId = result.id;
+                console.log(vm.commonAreaReservations);
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
 
             });
@@ -141,6 +143,7 @@
                             Modal.hideLoadingBar()
                             $state.go('common-area-devolution-administration.pending-devolution')
                             Modal.toast("Se realizó la devolución de depósito correctamente");
+
                         }, onSaveError);
                     }
                 });

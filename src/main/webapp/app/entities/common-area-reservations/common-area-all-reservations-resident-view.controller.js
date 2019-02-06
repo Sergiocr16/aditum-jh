@@ -18,14 +18,14 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.finalListReservations = [];
-        vm.isReady = false
+        vm.consult = consult;
+        vm.isReady = false;
+        vm.isConsulting = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
 
-        setTimeout(function(){loadAll();},1000)
+        loadAll();
 
-        function onError(error) {
-            AlertService.error(error.data.message);
-        }
+
         function loadAll () {
             CommonAreaReservations.findByHouseId({
                 page: pagingParams.page - 1,
@@ -40,41 +40,54 @@
                 }
                 return result;
             }
-            function onSuccess(data, headers) {
-                vm.finalListReservations = [];
-                vm.links = ParseLinks.parse(headers('link'));
-                vm.totalItems = headers('X-Total-Count');
-                vm.queryCount = vm.totalItems;
-                vm.finalListReservations = data;
-                vm.page = pagingParams.page;
 
-                angular.forEach(data,function(value){
-                    // if(value.status!==4){
-                        Resident.get({
-                            id: value.residentId
-                        }, function(result) {
-                            value.residentName = result.name + " " + result.lastname;
-                            CommonArea.get({
-                                id: value.commonAreaId
-                            }, function(result) {
-                                value.commonAreaName = result.name ;
-                                value.commonAreaPicture = result.picture;
-                                value.commonAreapictureContentType = result.pictureContentType;
-                                value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
+        }
+        function consult() {
+            vm.isConsulting = true;
+            vm.isReady = false;
+            CommonAreaReservations.findBetweenDatesByHouse({
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                houseId: companyUser.houseId,
+                page: pagingParams.page - 1,
+                size: vm.itemsPerPage,
+            }, onSuccess, onError);
 
-                            })
-                        })
 
-                    //     vm.finalListReservations.push(value)
-                    // }
-                });
+        }
+        vm.stopConsulting = function () {
+            vm.isReady = false;
+            vm.dates = {
+                initial_time: undefined,
+                final_time: undefined
+            };
+            pagingParams.page = 1;
+            pagingParams.search = null;
+            vm.isConsulting = false;
+            loadAll();
+        }
+        function onSuccess(data, headers) {
 
-                    vm.isReady = true;
+            vm.finalListReservations = [];
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            vm.queryCount = vm.totalItems;
+            vm.finalListReservations = data;
+            vm.page = pagingParams.page;
+            loadInfoByReservation(data);
+        }
 
-            }
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
+        function onError(error) {
+            AlertService.error(error.data.message);
+        }
+        function loadInfoByReservation(data){
+            angular.forEach(data,function(value){
+                value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
+
+            });
+            vm.isReady = true;
+
+
         }
         function formatScheduleTime(initialTime, finalTime){
             var times = [];

@@ -26,6 +26,8 @@
             "devolutionAmmount": "Devolution Ammount",
             "status": "Status",
             "chargeEmail": "Charge Email",
+            "egressId": "Egress Id",
+            "paymentId": "Payment Id",
             "commonArea": "Common Area",
             "company": "Company",
             "chargeId": "Charge Id"

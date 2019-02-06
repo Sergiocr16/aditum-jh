@@ -4,13 +4,64 @@
 </div>
 
 <div ng-if="vm.isReady" class=" fade-in">
+    <div class="col-md-12 col-xs-12 no-padding  col-sm-12" style="margin-bottom: 8px;"
+         ng-if="vm.finalListReservations.length> 0 ">
 
+        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+             id="index-search-bar">
+            <div class="input-icon" style="color:#484848!important;">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control "
+                       style="background-color: #f5f5f5; border:0px!important; "
+                       placeholder="Buscar" ng-model="vm.search">
+            </div>
+        </div>
+        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                    style="height: 34px!important; padding-top: 5px!important;">
+                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
+
+        </div>
+
+    </div>
+
+    <div class="slide-box slide-toggle-js col-md-12 col-xs-12 no-padding" ng-if="vm.showFilterDiv">
+
+        <div layout="row" layout-xs="column" class="">
+
+            <md-button class="md-raised md-primary thin-btn" ng-click="vm.stopConsulting()"
+                       ng-show="vm.isConsulting==true"> Mostrar todos
+            </md-button>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha de inicio" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-input-container class="md-block no-margin">
+                <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                               md-hide-icons="calendar"
+                               md-placeholder="Fecha final" md-open-on-focus
+                               required></md-datepicker>
+            </md-input-container>
+
+            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.consult()"
+                       ng-disabled="vm.dates.initial_time == undefined || vm.dates.final_time == undefined || vm.dates.initial_time == '' || vm.dates.final_time == '' ">
+                Consultar
+            </md-button>
+        </div>
+
+    </div>
 
     <div class="col-lg-12 col-md-12 no-padding" id="tableDatas">
         <no-content ng-if="vm.finalListReservations.length == 0" icon="local_florist"
-                    text="No hay reservaciones con devolución de deposito registradas"></no-content>
-
+                    text="No hay reservaciones con devolución de depósito registradas"></no-content>
         <div class="portlet-body hidden-xs">
+
 
 
             <div class="table-scrollable hidden-xs gray-font" ng-if="vm.finalListReservations.length>0"
@@ -19,31 +70,21 @@
                     <thead style="background-color: #fafafa;">
                     <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th class="text-center">Ver</th>
-                        <th>Fecha</th>
-                        <th>Horario</th>
+                        <th class="text-center">Área común</th>
+                        <th class="text-center">Fecha reservación</th>
+                        <th class="text-center">Horario</th>
+                        <th class="text-center">Fecha devolución depósito</th>
                         <th class="text-center">Filial</th>
-                        <th>Responsable</th>
-                        <th>Área común</th>
-                        <th class="text-center">Cargo</th>
-                        <th class="text-center">Devolución</th>
-
-                        <th class="text-center">Realizar devolución</th>
+                        <th class="text-center hidden-sm">Responsable</th>
+                        <th class="text-center">Monto devuelto</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="finalListReservations in vm.finalListReservations">
+                    <tr ng-repeat="finalListReservations in vm.finalListReservations | filter:vm.search">
 
 
                         <td class="text-center">
-                            <a class="light-gray-font" ng-if="finalListReservations.status==1"
-                               ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
-                                <i
-                                    class="material-icons">
-                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Ver detalle
-                                    </md-tooltip>
-                                    remove_red_eye</i>
-                            </a>
-                            <a class="light-gray-font" ng-if="finalListReservations.status==2"
+                            <a class="light-gray-font"
                                ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
                                 <i
                                     class="material-icons">
@@ -52,27 +93,18 @@
                                     remove_red_eye</i>
                             </a>
                         </td>
+                        <td class="text-center">{{finalListReservations.commonAreaName}}</td>
+                        <td class="text-center">{{finalListReservations.initalDate | date:'longDate'}}</td>
 
+                        <td class="text-center">{{finalListReservations.schedule}}</td>
 
+                        <td class="text-center">{{finalListReservations.egress.paymentDate | date:'longDate'}}</td>
 
-                        <td>{{finalListReservations.initalDate | date:'longDate'}}</td>
-                        <td>{{finalListReservations.schedule}}</td>
                         <td class="text-center">{{finalListReservations.houseNumber}}</td>
-                        <td>{{finalListReservations.residentName}}</td>
-                        <td>{{finalListReservations.commonAreaName}}</td>
-                        <td class="text-center">₡{{vm.formatearNumero(finalListReservations.reservationCharge+"")}}</td>
-                        <td class="text-center">₡{{vm.formatearNumero(finalListReservations.devolutionAmmount+"")}}</td>
+                        <td class="text-center hidden-sm">{{finalListReservations.residentName}}</td>
 
+                        <td class="text-center">₡{{vm.formatearNumero(finalListReservations.egress.total+"")}}</td>
 
-
-                        <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                            <a class="" style="color:#45b6af"
-                               ui-sref="common-area-devolution-administration.reservationDevolutionDialog({id:finalListReservations.id})">
-                                <i
-                                class="material-icons">
-                                <md-tooltip md-direction="left" class="font-13 bold white-color">Realizar devolución</md-tooltip>
-                                payment</i></a>
-                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -118,17 +150,11 @@
                     <div layout="row" layout-align="space-between center">
 
                         <i class="material-icons" style="color:#999; cursor: pointer;"
-                           ng-if="finalListReservations.status==1"
                            ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>
-                        <i class="material-icons" style="color:#999; cursor: pointer;"
-                           ng-if="finalListReservations.status==2"
-                           ui-sref="common-area-administration.acceptedReservationsDetail({id:finalListReservations.id})">
-                            <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-                            </md-tooltip>
-                            remove_red_eye</i>
+
                         <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                        ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">

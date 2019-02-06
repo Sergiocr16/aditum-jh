@@ -56,5 +56,11 @@ public interface CommonAreaReservationsRepository extends JpaRepository<CommonAr
     @Query("select e from CommonAreaReservations e " +
         "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.company.id = ?3 ")
     Page<CommonAreaReservations> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
+    @Query("select e from CommonAreaReservations e " +
+        "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.houseId = ?3 ")
+    Page<CommonAreaReservations> findByDatesBetweenAndHouse(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId);
+    @Query("select e from CommonAreaReservations e " +
+        "where e.initalDate >= ?1 and e.initalDate <= ?2 and e.company.id = ?3 and e.status = ?4")
+    Page<CommonAreaReservations> findDevolutionDoneByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId,int status);
 
 }
