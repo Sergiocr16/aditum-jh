@@ -15,7 +15,6 @@
         vm.radiostatus = true;
         $rootScope.mainTitle = "Usuarios autorizados";
         vm.isReady = false;
-        vm.isReady2 = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
         vm.house = "-1";
@@ -77,9 +76,9 @@
                 vm.color = "green";
             }
         }
-        setTimeout(function () {
+
             loadHouses();
-        }, 500)
+
 
 
         function loadHouses() {
@@ -154,13 +153,13 @@
         }
 
         vm.switchEnabledResidents = function () {
-            vm.isReady2 = false;
+            vm.isReady = false;
             enabledOptions = true;
             vm.radiostatus = true;
             vm.findResidentsByHouse(vm.house);
         }
         vm.switchDisabledResidents = function () {
-            vm.isReady2 = false;
+            vm.isReady = false;
             enabledOptions = false;
             vm.findResidentsByHouse(vm.house);
         }

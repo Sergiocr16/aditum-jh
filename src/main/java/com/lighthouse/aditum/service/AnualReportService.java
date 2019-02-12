@@ -46,10 +46,7 @@ public class AnualReportService {
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
             MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initialDate+"",finalDate+"",companyId,withPresupuesto);
             MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initialDate+"",finalDate+"",companyId,mensualIngressReportDTO,withPresupuesto);
-//            Arrays.sort(mensualEgressReportDTO.getFixedCosts(), (a,b) -> a.getClass().getFields().compareTo(b.getClass().getFields()));
-//            Collections.sort(mensualEgressReportDTO.getFixedCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
-//            Collections.sort(mensualEgressReportDTO.getVariableCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
-//            Collections.sort(mensualEgressReportDTO.getOtherCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
+
             if(withPresupuesto==2){
                 mensualReportService.getEgressBudgets(mensualEgressReportDTO,companyId,initialDate+"",finalDate+"",egressCategories);
                 mensualEgressReportDTO.setTotalBudgetPerGroup();
@@ -63,11 +60,13 @@ public class AnualReportService {
             initialBalanceByMonth.add(this.setTotalInitialBalance(mensualAndAnualAccount)+"");
 
         }
+
         anualReportDTO.setInitialBalanceByMonth(initialBalanceByMonth);
         anualReportDTO.setAnualIngressByMonth(ingressByMonth);
         anualReportDTO.setAnualEgressByMonth(egressByMonth);
         this.setEgressCategoriesWithOutTotal(anualReportDTO,companyId);
         this.setfixedEgressCategoriesByMonth(anualReportDTO);
+
         anualReportDTO.setAllEgressAcumulado();
         this.setFlujoByMonth(anualReportDTO);
         this.setAllIngressAcumulado(anualReportDTO);
@@ -76,6 +75,7 @@ public class AnualReportService {
             this.setIngressBudgets(anualReportDTO);
         }
         this.setRealBalanceByMonth(anualReportDTO);
+
     }
 
     public AnualReportDashboardDTO getReportByMonthDashboard(Long companyId,int year) throws JSONException {
@@ -164,11 +164,17 @@ public class AnualReportService {
         return totalBalance;
     }
     private void setfixedEgressCategoriesByMonth(AnualReportDTO anualReportDTO){
+
+        for (int i = 0; i < anualReportDTO.getAnualEgressByMonth().size(); i++) {
+
+
+        }
+
         List<EgressCategoryByMonthDTO> fixedCostsEgressList = new ArrayList<>();
         anualReportDTO.setFixedCostsBudgetTotal(new ArrayList<>());
         anualReportDTO.setFixedCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().size(); i++) {
-
+            Collections.sort(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCosts().get(i).getCategory());
             object.setTotalByMonth(new ArrayList<>());
             object.setBudgetByMonth(new ArrayList<>());
@@ -186,6 +192,7 @@ public class AnualReportService {
 
 
             fixedCostsEgressList.add(object);
+
         }
         anualReportDTO.setFixedCostsBudgetDiferenceAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetDiference());
         anualReportDTO.setFixedCostsBudgetAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsBudgetTotal());
@@ -194,6 +201,7 @@ public class AnualReportService {
         anualReportDTO.setFixedCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getFixedCostsTotal());
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().size(); j++) {
+                Collections.sort(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
                 fixedCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().get(j).getTotal()+"");
                 fixedCostsEgressList.get(j).getBudgetByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCosts().get(j).getBudget()+"");
 
@@ -211,6 +219,7 @@ public class AnualReportService {
             anualReportDTO.setFixedCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(i).getFixedCostsTotal());
         }
         anualReportDTO.setFixedCostEgress(fixedCostsEgressList);
+
         setvariableEgressCategoriesByMonth(anualReportDTO);
     }
 
@@ -220,7 +229,7 @@ public class AnualReportService {
         anualReportDTO.setFvariableCostsBudgetTotal(new ArrayList<>());
         anualReportDTO.setVariableCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().size(); i++) {
-
+            Collections.sort(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCosts().get(i).getCategory());
 
             object.setTotalByMonth(new ArrayList<>());
@@ -248,6 +257,7 @@ public class AnualReportService {
         anualReportDTO.setVariableCostsAcumulado(anualReportDTO.getAnualEgressByMonth().get(0).getVariableCostsTotal());
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().size(); j++) {
+                Collections.sort(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
                 variableCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().get(j).getTotal()+"");
                 variableCostsEgressList.get(j).getBudgetByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().get(j).getBudget()+"");
                 variableCostsEgressList.get(j).getDiferenceByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getVariableCosts().get(j).getBudgetDiference()+"");
@@ -272,7 +282,7 @@ public class AnualReportService {
         anualReportDTO.setOtherCostsBudgetTotal(new ArrayList<>());
         anualReportDTO.setOtherCostsBudgetDiference(new ArrayList<>());
         for (int i = 0; i <anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().size(); i++) {
-
+            Collections.sort(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
             EgressCategoryByMonthDTO object = new EgressCategoryByMonthDTO(anualReportDTO.getAnualEgressByMonth().get(0).getOtherCosts().get(i).getCategory());
             object.setTotalByMonth(new ArrayList<>());
             object.setBudgetByMonth(new ArrayList<>());
@@ -300,6 +310,7 @@ public class AnualReportService {
 
         for (int i = 1; i <anualReportDTO.getAnualEgressByMonth().size() ; i++) {
             for (int j = 0; j < anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().size(); j++) {
+                Collections.sort(anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts(), Comparator.comparing(SumCategoryEgressDTO::getCategory));
                 otherCostsEgressList.get(j).getTotalByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().get(j).getTotal()+"");
                 otherCostsEgressList.get(j).setAcumulado(anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().get(j).getTotal());
                 otherCostsEgressList.get(j).getBudgetByMonth().add(anualReportDTO.getAnualEgressByMonth().get(i).getOtherCosts().get(j).getBudget()+"");

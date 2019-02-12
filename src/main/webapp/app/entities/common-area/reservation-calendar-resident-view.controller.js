@@ -287,15 +287,15 @@
                 editable: false,
                 header:{
                     left: '',
-                    center: 'title',
-                    right: ' prev,next'
+                    center: '',
+                    right: ''
                 },
-
+                columnHeader: false,
                 // eventClick: vm.alertOnEventClick,
                 eventDrop: vm.alertOnDrop,
                 eventResize: vm.alertOnResize,
                 eventRender: vm.eventRender,
-                defaultView: 'listWeek',
+                defaultView: 'listYear',
                 default: 'bootstrap3'
             }
         };

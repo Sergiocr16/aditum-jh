@@ -77,9 +77,7 @@ public class PaymentService {
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
-        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-        ZonedDateTime now = payment.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond());
-        payment.setDate(now);
+        payment.setDate(payment.getDate().withHour(12));
         payment = paymentRepository.save(payment);
         bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
         List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
@@ -307,7 +305,7 @@ public class PaymentService {
     }
 
     private ChargeDTO newCharge(ChargeDTO chargeDTO) {
-        return new ChargeDTO(null, chargeDTO.getType(), ZonedDateTime.now(), chargeDTO.getConcept(),
+        return new ChargeDTO(null, chargeDTO.getType(), chargeDTO.getDate().withHour(14), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
             chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
             chargeDTO.getPaymentAmmount(), chargeDTO.getLeft(), chargeDTO.getTotal(),

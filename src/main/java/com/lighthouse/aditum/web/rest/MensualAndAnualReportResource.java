@@ -4,9 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.AnualReportDocumentService;
 import com.lighthouse.aditum.service.AnualReportService;
 import com.lighthouse.aditum.service.MensualReportDocumentService;
-import com.lighthouse.aditum.service.dto.AnualReportDTO;
-import com.lighthouse.aditum.service.dto.MensualEgressReportDTO;
-import com.lighthouse.aditum.service.dto.MensualReportDTO;
+import com.lighthouse.aditum.service.dto.*;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -21,12 +19,10 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
+
 import com.lighthouse.aditum.service.MensualReportService;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
-import com.lighthouse.aditum.service.dto.MensualIngressReportDTO;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,6 +80,9 @@ public class MensualAndAnualReportResource {
         @PathVariable(value = "withPresupuesto")  int withPresupuesto){
         AnualReportDTO anualReportDTO = new AnualReportDTO();
         anualReportService.getReportByMonth(anualReportDTO,actual_month,companyId,withPresupuesto);
+
+
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(anualReportDTO));
     }
 

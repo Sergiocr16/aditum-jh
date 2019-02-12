@@ -55,8 +55,8 @@ public class ChargeResource {
         if (chargeDTO.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new charge cannot already have an ID")).body(null);
         }
-        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-        chargeDTO.setDate(chargeDTO.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+
+        chargeDTO.setDate(chargeDTO.getDate().withHour(10));
         ChargeDTO result = chargeService.save(chargeDTO);
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

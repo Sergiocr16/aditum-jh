@@ -74,8 +74,7 @@ public class ChargeService {
         charge.setId(null);
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
-        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()).plusMinutes(1));
+        charge.setDate(charge.getDate().withHour(14));
         charge = chargeRepository.save(charge);
         return this.formatCharge(chargeMapper.toDto(charge));
     }
@@ -88,9 +87,9 @@ public class ChargeService {
         charge.setCompany(chargeMapper.companyFromId(payment.getCompanyId().longValue()));
         charge.setPaymentDate(payment.getDate());
         charge.setState(2);
-        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+        charge.setDate(charge.getDate().withHour(10));
         charge = chargeRepository.save(charge);
+
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
 //        switch (chargeDTO.getType()) {
 //            case 1:
@@ -134,8 +133,6 @@ public class ChargeService {
                 charge.setCompany(chargeMapper.companyFromId(chargeDTO.getCompanyId()));
                 charge.setPaymentDate(ZonedDateTime.now());
             }
-            ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-            charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
             charge = chargeRepository.save(charge);
 //
 //            switch (chargeDTO.getType()) {
@@ -198,8 +195,7 @@ public class ChargeService {
         }
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
-        ZonedDateTime n = ZonedDateTime.now().plusHours(6);
-        charge.setDate(charge.getDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+        charge.setDate(charge.getDate().withHour(10));
         Charge savedCharge = chargeRepository.save(charge);
 //        }
 

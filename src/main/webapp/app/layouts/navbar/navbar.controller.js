@@ -1412,6 +1412,7 @@
                 }
             });
             Auth.logout();
+            $localStorage.houseSelected = undefined;
             $rootScope.companyUser = undefined;
             $state.go('home');
             $rootScope.menu = false;

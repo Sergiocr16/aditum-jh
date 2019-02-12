@@ -3,8 +3,8 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 
-<div class="fade-in" ng-if="vm.isReady">
-    <div class="row fixed-tabs" ng-if="true">
+<div>
+    <div class="row fixed-tabs" >
         <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
             <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
                      class="md-fixed-tabs hidden-xs">
@@ -25,7 +25,7 @@
         </md-content>
     </div>
 
-    <div class="row fade-in marging-top-40">
+    <div class="row fade-in marging-top-40" ng-if="vm.isReady">
         <div class="col-lg-12 col-md-12">
 
             <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-20 " style="margin-bottom: 8px;"
@@ -67,11 +67,8 @@
 
             </div>
 
-            <div ng-if="!vm.isReady2" layout="row" class="content-loader" layout-sm="column" layout-fill
-                 layout-align="space-around center">
-                <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-            </div>
-            <div class="portlet-body fade-in " ng-if="vm.isReady2">
+
+            <div class="portlet-body fade-in ">
 
                 <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
                             text="No hay vehículos registrados"></no-content>
@@ -149,60 +146,7 @@
                     </md-card>
 
                 </div>
-                <!--<div class="table-scrollable hidden-xs hidden-sm hidden-md hidden-lg"  ng-show="vm.vehicules.length>0" style="border: 0px!important;">-->
-                <!--<table  class="table  table-hover gray-font font-13 tableMaterialDesign ">-->
-                <!--<thead style="background-color: #fafafa;" >-->
-                <!--<tr>-->
-                <!--<th>Tipo</th>-->
-                <!--<th>Placa</th>-->
-                <!--<th>Marca</th>-->
-                <!--<th class="text-center">Número de filial</th>-->
-                <!--<th class="text-center">Opciones</th>-->
 
-                <!--</tr>-->
-                <!--</thead>-->
-                <!--<tbody>-->
-                <!--<tr ng-repeat="vehicule in vm.vehicules | filter:vm.query | orderBy:'brand'">-->
-                <!--<td>{{vehicule.type}}</td>-->
-                <!--<td style="text-transform: uppercase;">{{vehicule.licenseplate}}</td>-->
-                <!--<td>{{vehicule.brand}}</td>-->
-                <!--<td class="text-center">{{vehicule.house_id}}</td>-->
-
-                <!--<td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">-->
-                <!--<md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER" >-->
-                <!--<md-button aria-label="Open demo menu" class="md-icon-button no-padding" ng-click="$mdMenu.open($event)">-->
-                <!--<i class="material-icons" style="color:#999"><md-tooltip md-direction="left" class="font-13 bold white-color">Opciones</md-tooltip>more_vert</i>-->
-                <!--</md-button>-->
-                <!--<md-menu-content width="4">-->
-                <!--<md-menu-item>-->
-                <!--<md-button ng-click="vm.editVehicle(vehicule.id)">-->
-                <!--<div layout="row" flex>-->
-                <!--<p flex>Editar</p>-->
-                <!--</div>-->
-                <!--</md-button>-->
-                <!--</md-menu-item>-->
-                <!--<md-menu-item>-->
-                <!--<md-button ng-click="vm.disableEnabledVehicule(vehicule)">-->
-                <!--<div layout="row" flex>-->
-                <!--<p flex>{{vm.actionButtonTitle}}</p>-->
-                <!--</div>-->
-                <!--</md-button>-->
-                <!--</md-menu-item>-->
-                <!--<md-menu-item>-->
-                <!--<md-button ng-click="vm.deleteVehicule(vehicule.id,vehicule.licenseplate.toUpperCase())">-->
-                <!--<div layout="row" flex>-->
-                <!--<p flex>Eliminar</p>-->
-                <!--</div>-->
-                <!--</md-button>-->
-                <!--</md-menu-item>-->
-                <!--</md-menu-content>-->
-                <!--</md-menu>-->
-                <!--</td>-->
-
-                <!--</tr>-->
-                <!--</tbody>-->
-                <!--</table>-->
-                <!--</div>-->
             </div>
 
         </div>
