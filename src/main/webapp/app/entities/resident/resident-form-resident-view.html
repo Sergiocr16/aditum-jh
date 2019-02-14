@@ -14,14 +14,7 @@
     <md-content layout-padding class="form-content">
         <form name="form" ng-submit="vm.save()">
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
-            <div
-                 layout="row" layout-align="center center">
-                <div>
-                    <span class="material-gray" style="margin-right: 5px;">Cuenta en Aditum </span>
-                    <md-checkbox ng-model="vm.resident.isOwner" aria-label="Checkbox 1">
-                    </md-checkbox>
-                </div>
-            </div>
+
             <h3 class="text-center no-margin" ng-hide="vm.displayImage || vm.resident.image_url!==null">
                 <img width="170" height="170" class="img-circle" src="content/images/nobody-image.jpg"/>
             </h3>
@@ -92,9 +85,10 @@
 
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
 
+
                         <md-input-container class="md-block">
                             <label>Número celular</label>
-                            <input ng-focus="expression==1" ng-class="{redBorder: vm.resident.validPhonenumber == 0}"  ng-model="vm.resident.phonenumber" ng-change="vm.validatePhoneNumber(vm.resident)" type="text"
+                            <input ng-class="{redBorder: vm.resident.validPhonenumber == 0}" ng-focus="expression==1"  ng-change="vm.validatePhoneNumber(vm.resident)" ng-model="vm.resident.phonenumber" type="text"
                                    maxlength="20" class="">
                             <div class="hint">Escriba el número celular sin guiones.</div>
                         </md-input-container>
@@ -125,18 +119,11 @@
                             </md-select>
                         </md-input-container>
 
-                        <md-input-container class="md-block" has-authority="ROLE_MANAGER">
-                            <label>Número de filial</label>
-                            <md-select ng-model="vm.resident.houseId" required>
-                                <md-option ng-repeat="house in vm.houses" ng-value="house.id">
-                                    {{house.housenumber}}
-                                </md-option>
-                            </md-select>
-                        </md-input-container>
+
                     </div>
                 </div>
                 <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
-                    <md-button has-authority="ROLE_MANAGER" type="button" ui-sref="resident()"
+                    <md-button type="button" ui-sref="residentByHouse()"
                                class="md-warn md-raised">Cancelar
                     </md-button>
                     <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">

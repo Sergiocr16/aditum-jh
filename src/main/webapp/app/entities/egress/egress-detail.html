@@ -96,7 +96,8 @@
                         </div>
                         <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                            <span class="  control-label">{{vm.egress.reference}}</span>
+                            <span ng-if="vm.egress.reference!==null" class="control-label">{{vm.egress.reference}}</span>
+                            <span ng-if="vm.egress.reference==null" class="control-label">Sin registrar</span>
 
                         </div>
 
@@ -121,8 +122,8 @@
                         </div>
                         <div class="col-lg-7 col-md-7 col-sm-8 col-xs-8 ">
 
-                            <span class="   control-label">{{vm.egress.billNumber}}</span>
-
+                            <span ng-if="vm.egress.billNumber !== null" class="control-label">{{vm.egress.billNumber}}</span>
+                            <span ng-if="vm.egress.billNumber == null" class="control-label">Sin registrar</span>
                         </div>
 
                     </div>
@@ -193,6 +194,13 @@
                                 <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
                                 <div layout="row" layout-xs="column" class="marging-top-20 ">
                                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
+                                        <md-input-container class="md-block">
+                                            <label>Costo de egreso</label>
+                                            <input type="text" class="form-control" format="currency"
+                                                   ng-model="vm.egress.total"
+                                                   required
+                                            />
+                                        </md-input-container>
                                         <md-input-container class="md-block  no-margin-bottom">
                                             <label>Fecha de pago</label>
                                             <md-datepicker md-hide-icons="calendar" required ng-model="vm.egress.paymentDate"
@@ -220,16 +228,17 @@
                                             </md-select>
                                         </md-input-container>
 
+
+
+                                    </div>
+
+                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                                         <md-input-container class="md-block no-margin-bottom">
                                             <label># Factura</label>
                                             <input type="text" class="form-control" name="billNumber"
                                                    ng-model="vm.egress.billNumber" required>
                                         </md-input-container>
 
-
-                                    </div>
-
-                                    <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                                         <md-input-container class="md-block no-margin-bottom" has-authority="ROLE_MANAGER">
                                             <label>Cuenta de banco a debitar</label>
                                             <md-select    ng-model="vm.egress.account" required>

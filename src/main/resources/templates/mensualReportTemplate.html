@@ -229,7 +229,8 @@
 </head>
 <body>
 <div class='header'>
-    <span th:text="|${company.name}|" style="color: rgb(0, 150, 136);margin-left:1cm">company</span> <span> - Estado de resultados </span>
+    <span  th:text="|${company.name}|" style="color: rgb(0, 150, 136);margin-left:1cm">company</span> <span th:if="${showFields!=false}"> - Ejecución prespuestaria </span>
+                                    <span th:if="${showFields==false}"> - Estado de resultados </span>
     <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
@@ -264,7 +265,8 @@
         </tr>
         <tr class="details" >
             <td style="padding-top:12px">
-                <span class="comprobante-title">Estado de resultados</span>
+                <span th:if="${showFields!=false}" class="comprobante-title">Ejecución prespuestaria</span>
+                <span th:if="${showFields==false}" class="comprobante-title">Estado de resultados</span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">

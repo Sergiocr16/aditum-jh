@@ -12,14 +12,6 @@
             <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
             <div layout="row" layout-xs="column" class=" ">
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
-                    <md-input-container class="md-block" has-authority="ROLE_MANAGER">
-                        <label>Número de filial</label>
-                        <md-select ng-model="vm.vehicule.houseId" required>
-                            <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber'" ng-value="house.id">
-                                {{house.housenumber}}
-                            </md-option>
-                        </md-select>
-                    </md-input-container>
                     <md-input-container class="md-block">
                         <label>Seleccione un tipo</label>
                         <md-select ng-model="vm.vehicule.type" required>
@@ -40,6 +32,8 @@
                             </md-option>
                         </md-select>
                     </md-input-container>
+
+
                 </div>
 
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">

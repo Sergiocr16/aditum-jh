@@ -2630,3 +2630,9 @@ md-toast.md-center {
 .no-padding-xs{
     padding: 15px 15px!important;
 }
+.white-color{
+    color:white!important;
+}
+.black-color{
+     color:black!important;
+ }
