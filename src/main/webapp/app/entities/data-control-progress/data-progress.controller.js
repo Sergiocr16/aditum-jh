@@ -10,31 +10,25 @@
     function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
 
         var vm = this;
+        vm.isReady = false;
         $rootScope.active = "houses";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.house ='-1';
         vm.filterStateTemporal = "-1";
         vm.filterState = "";
+        loadCompanies()
         function loadCompanies() {
             Company.query({}).$promise.then(onSuccessCompanies);
             function onSuccessCompanies(data, headers) {
-                vm.companies = data;
-
-                if (data != undefined) {
-                    vm.company = data[0]
-                    vm.loadHouses(data[0].id)
+                for (var i = 0; i < data.length; i++) {
+                    if(data[i].id==globalCompany.getId()){
+                        vm.company = data[i];
+                    }
                 }
+                vm.loadHouses(globalCompany.getId())
             }
         }
-        // setTimeout(function(){
-                 Principal.identity().then(function(account){
-                 if(account.authorities[0]=="ROLE_ADMIN"){
-                      loadCompanies();
-                 }else if(  account.authorities[0]=="ROLE_MANAGER"){
-                     vm.loadHouses(globalCompany.getId())
-                 }
-                 });
-        // },1000)
+
         function initGraphs() {
             var handleAnimatedPieChart = function(id, title, noRedimido, redimido, enProgreso, Listo,deshabitada) {
                 var chart = AmCharts.makeChart(id, {
@@ -87,30 +81,113 @@
             var enProgreso = 0;
             var listo = 0;
             var deshabitada = 0;
-            for (var i = 0; i < vm.houses.length; i++) {
-            if(vm.houses[i].isdesocupated==1){
-            deshabitada++;
-            }else{
-                switch (vm.houses[i].codeStatus) {
-                    case 0:
-                        sinRedimir++;
-                        break;
-                    case 1:
-                        redimido++;
-                        break;
-                    case 2:
-                        enProgreso++;
-                        break;
-                    case 5:
-                        listo++;
-                        break;
-                }
-              }
-            }
+
 
             handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);
         }
+        function residentsEnabledGraphInit() {
+            var redimido = 0;
+            var sinRedimir = 0;
+            var enProgreso = 0;
+            var listo = 0;
+            var deshabitada = 0;
+            for (var i = 0; i < vm.houses.length; i++) {
+                if(vm.houses[i].isdesocupated==1){
+                    deshabitada++;
+                }else{
+                    switch (vm.houses[i].codeStatus) {
+                        case 0:
+                            sinRedimir++;
+                            break;
+                        case 1:
+                            redimido++;
+                            break;
+                        case 2:
+                            enProgreso++;
+                            break;
+                        case 5:
+                            listo++;
+                            break;
+                    }
+                }
+            }
+            var rows = [];
+            var colums = [];
+            colums.push({"v": "Sin redimir"});
+            colums.push({"v": sinRedimir});
+            rows.push({"c": colums})
+            var colums = [];
+            colums.push({"v": "Redimido"});
+            colums.push({"v": redimido});
+            rows.push({"c": colums});
+            var colums = [];
+            colums.push({"v": "En progreso"});
+            colums.push({"v": enProgreso});
+            rows.push({"c": colums});
+            var colums = [];
+            colums.push({"v": "Listo"});
+            colums.push({"v": listo});
+            rows.push({"c": colums});
+            var colums = [];
+            colums.push({"v": "Deshabitada"});
+            colums.push({"v": deshabitada});
+            rows.push({"c": colums});
+            vm.progressData = {
+                "type": "PieChart",
+                "displayed": false,
+                "cssStyle": "height:600px;width: 100%",
+                "data": {
+                    "cols": [
+                        {
+                            "id": "enable",
+                            "label": "enable",
+                            "type": "string"
+                        },
+                        {
+                            "id": "sin-redimir-id",
+                            "label": "Sin redimir",
+                            "type": "number"
+                        },
+                        {
+                            "id": "redimido-id",
+                            "label": "Redimido",
+                            "type": "number"
+                        },
+                        {
+                            "id": "en-progreso-id",
+                            "label": "En progreso",
+                            "type": "number"
+                        },
+                        {
+                            "id": "listo-id",
+                            "label": "Listo",
+                            "type": "number"
+                        },
+                        {
+                            "id": "deshabitada-id",
+                            "label": "Deshabitada",
+                            "type": "number"
+                        }
 
+                    ],
+                    "rows": rows
+                },
+                "options": {
+                    // "title": "Residentes",
+                    "legend": {"position": "bottom"},
+                    "isStacked": "false",
+                    'chartArea': {'width': '90%', 'height': '78%'},
+                    "sliceVisibilityThreshold":0,
+                    "fill": 200000,
+                    "animation": {
+                        duration: 1000,
+                        easing: 'out',
+                    },
+                    "displayExactValues": true,
+                    colors: ['#f44336', '#3949ab', '#ffc107', '#4caf50', '#78909c']
+                }
+            }
+        }
         vm.changeFilterState = function(filterStateTemporal) {
           if(filterStateTemporal=='-1'){
               vm.filterState = "";
@@ -120,7 +197,6 @@
 
         };
         vm.loadHouses = function(companyId) {
-            console.log('sdfsadfsadfs')
             House.query({
                 companyId: companyId
             }).$promise.then(onSuccessHouses);
@@ -131,25 +207,15 @@
                         value.housenumber = "Oficina"
                     }
                 });
-                console.log('adfadfda')
-                console.log(globalCompany.getId())
-                console.log(data)
                 vm.houses = data;
-               initGraphs()
-               setTimeout(function() {
-                         $("#loadingIcon").fadeOut(300);
-               }, 400)
-                setTimeout(function() {
-                    $("#tableData").fadeIn('slow');
-                },900 )
+                residentsEnabledGraphInit()
+                vm.isReady = true;
             }
-
         }
 
         function saveTextAsFile(data, filename) {
 
             if (!data) {
-                console.error('Console.save: No data')
                 return;
             }
 
@@ -186,7 +252,7 @@
                 info += vm.houses[i].housenumber + "                        " + vm.houses[i].loginCode + "\r\n";
             }
             info += "---------------------------------\r\n\r\n";
-            info += moment(new Date()).format("YYYY") + " © Lighthouse";
+            info += moment(new Date()).format("YYYY") + " © Aditum";
             saveTextAsFile(info, "Códigos de Ingreso, Condominio " + vm.company.name)
         }
 

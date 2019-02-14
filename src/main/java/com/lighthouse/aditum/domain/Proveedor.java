@@ -23,12 +23,12 @@ public class Proveedor implements Serializable {
     @Column(name = "empresa", nullable = false)
     private String empresa;
 
-    @NotNull
-    @Column(name = "responsable", nullable = false)
+
+    @Column(name = "responsable")
     private String responsable;
 
-    @NotNull
-    @Column(name = "telefono", nullable = false)
+
+    @Column(name = "telefono")
     private String telefono;
 
     @Column(name = "email")

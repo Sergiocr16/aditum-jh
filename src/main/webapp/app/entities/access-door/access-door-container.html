@@ -87,6 +87,10 @@
                             <h5 class="username-access-door text-center bold gray-font">{{vm.resident.name}}
                                 {{vm.resident.lastname}}
                                 {{vm.resident.secondlastname}}</h5>
+                            <h4><span ng-if="vm.resident.type==1">Residente propietario </span>
+                                <span ng-if="vm.resident.type==2">Residente inquilino</span>
+                                <span ng-if="vm.resident.type==3">Visitante autorizado</span>
+                            </h4>
                             <h5 class="font-20 text-center">Filial <span class="font-30 bold text-center">{{vm.resident.house.housenumber}}</span>
                             </h5>
                             <h5 ng-if="vm.visitorFound==1 && vm.id_number!=''" class="font-20 text-center">Placa <span

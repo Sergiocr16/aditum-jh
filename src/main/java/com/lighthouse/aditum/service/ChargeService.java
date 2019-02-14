@@ -116,13 +116,14 @@ public class ChargeService {
     public ChargeDTO save(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = null;
+        AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
+
         BalanceDTO balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         if (Double.parseDouble(balanceDTO.getMaintenance()) > 0 && chargeDTO.getType() == 1) {
-
+            chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO,chargeDTO, false);
             charge = payIfBalanceIsPositive(chargeDTO);
             balanceDTO = this.houseService.findOne(chargeDTO.getHouseId()).getBalance();
         } else {
-            AdministrationConfigurationDTO administrationConfigurationDTO = this.administrationConfigurationService.findOneByCompanyId(this.houseService.findOne(chargeDTO.getHouseId()).getCompanyId());
             if (administrationConfigurationDTO.isHasSubcharges()) {
                 chargeDTO = this.createSubchargeInCharge(administrationConfigurationDTO,chargeDTO, false);
             }
@@ -198,7 +199,6 @@ public class ChargeService {
         charge.setDate(charge.getDate().withHour(10));
         Charge savedCharge = chargeRepository.save(charge);
 //        }
-
 //        }else {
 //            int newAmmount = Integer.parseInt(newCharge.getAmmount());
 //            int oldAmmount = Integer.parseInt(oldCharge.getAmmount());
@@ -418,16 +418,16 @@ public class ChargeService {
 
     private Charge payIfBalanceIsPositive(ChargeDTO charge) {
         PaymentDTO payment = paymentService.findPaymentInAdvance(charge.getHouseId());
-
+        charge = this.formatCharge(charge);
         ChargeDTO newCharge = charge;
         ZonedDateTime now = ZonedDateTime.now();
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(newCharge.getHouseId());
         if (payment != null) {
             payment.setAccount(bancoService.findOne(Long.parseLong(payment.getAccount())).getBeneficiario() + ";" + payment.getAccount());
-            if (Integer.parseInt(charge.getAmmount()) <= Integer.parseInt(payment.getAmmountLeft())) {
-                payment.setAmmountLeft(Integer.parseInt(payment.getAmmountLeft()) - Integer.parseInt(charge.getAmmount()) + "");
+            if (charge.getTotal() <= Double.parseDouble(payment.getAmmountLeft())) {
+                payment.setAmmountLeft(Double.parseDouble(payment.getAmmountLeft()) - charge.getTotal() + "");
             } else {
-                newCharge.setAmmount(Integer.parseInt(charge.getAmmount()) - Integer.parseInt(payment.getAmmountLeft()) + "");
+                newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(now.plusMinutes(10));
                 newCharge = this.create(newCharge);
 //                int newMaintBalance = 0;
@@ -440,6 +440,8 @@ public class ChargeService {
 //                balanceDTO = balanceService.save(balanceDTO);
                 charge.setAmmount(payment.getAmmountLeft());
                 payment.setAmmountLeft(0 + "");
+                charge.setSplitedCharge(newCharge.getId().intValue());
+                newCharge.setSplited(1);
             }
             charge.setPaymentId(payment.getId());
             charge.setPaymentDate(ZonedDateTime.now());
@@ -487,7 +489,6 @@ public class ChargeService {
         } else {
             return savedCharge;
         }
-
     }
 
 
@@ -507,18 +508,20 @@ public class ChargeService {
     }
     private ChargeDTO createSubchargeInCharge(AdministrationConfigurationDTO administrationConfigurationDTO, ChargeDTO chargeDTO,boolean save) {
         ZonedDateTime now = ZonedDateTime.now();
-        if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0")) {
-            int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
-            if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
-                if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
-                    double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
-                    chargeDTO.setSubcharge(subCharge + "");
-                } else {
-                    chargeDTO.setSubcharge(administrationConfigurationDTO.getSubchargeAmmount() + "");
+        if(chargeDTO.getSplited()==null) {
+            if (chargeDTO.getSubcharge() == null || chargeDTO.getSubcharge().equals("0")) {
+                int diffBetweenChargeDateAndNow = toIntExact(ChronoUnit.DAYS.between(chargeDTO.getDate().toLocalDate(), now.toLocalDate()));
+                if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
+                    if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
+                        double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
+                        chargeDTO.setSubcharge(subCharge + "");
+                    } else {
+                        chargeDTO.setSubcharge(administrationConfigurationDTO.getSubchargeAmmount() + "");
+                    }
                 }
-            }
-            if(save) {
-                this.save(chargeDTO);
+                if (save) {
+                    this.save(chargeDTO);
+                }
             }
         }
         return chargeDTO;
@@ -570,7 +573,6 @@ public class ChargeService {
             chargeDTO.setSubcharge("0");
             chargeDTO.setTotal(Double.parseDouble(chargeDTO.getAmmount()));
         }
-
         return chargeDTO;
     }
 

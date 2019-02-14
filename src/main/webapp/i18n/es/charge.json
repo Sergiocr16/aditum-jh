@@ -24,6 +24,8 @@
             "paymentDate": "Payment Date",
             "subcharge": "Subcharge",
             "payedSubcharge": "Payed Subcharge",
+            "splited": "Splited",
+            "splitedCharge": "Splited Charge",
             "house": "House",
             "payment": "Payment",
             "company": "Company"

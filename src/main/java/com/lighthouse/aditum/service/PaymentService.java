@@ -326,9 +326,10 @@ public class PaymentService {
                 newCharge.setSubcharge("0");
                 charge.setAmmount( left + "");
             }
+            newCharge.setSplited(1);
+            charge.setSplitedCharge(chargeService.create(newCharge).getId().intValue());
             chargeService.pay(charge, payment);
             newCharge.setPayedSubcharge(true);
-            chargeService.create(newCharge);
         } else {
             chargeService.pay(charge, payment);
         }

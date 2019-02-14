@@ -17,10 +17,10 @@ public class ProveedorDTO implements Serializable {
     @NotNull
     private String empresa;
 
-    @NotNull
+
     private String responsable;
 
-    @NotNull
+
     private String telefono;
 
     private String email;

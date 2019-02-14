@@ -10,7 +10,8 @@ function readonlydatepicker(){
     return {
         restrict: 'EAC',
         link: function(scope, elem, attr) {
-            angular.element("#datePicker input")[0].setAttribute("readonly","readonly");
+            angular.element(".datePicker input")[0].setAttribute("readonly","readonly");
+            angular.element(".datePicker input")[1].setAttribute("readonly","readonly");
             angular.element(".md-datepicker-button").each(function(){
                 var el = this;
                 var ip = angular.element(el).parent().find("input").bind('click', function(e){

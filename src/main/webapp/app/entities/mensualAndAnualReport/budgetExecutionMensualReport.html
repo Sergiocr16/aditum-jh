@@ -16,27 +16,27 @@
                         </div>
                         <div layout="column" layout-align="space-between center" class="">
                             <div layout="row">
-
-
-                                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >Reporte del</span>
-
-                                <md-input-container class="md-block no-margin">
-                                    <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
-                                                   md-hide-icons="calendar"
-                                                   md-placeholder="Fecha de inicio" md-open-on-focus
-                                                   required></md-datepicker>
-                                </md-input-container>
-                                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >al</span>
-                                <md-input-container class="md-block no-margin">
-                                    <md-datepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
-                                                   md-hide-icons="calendar"
-                                                   md-placeholder="Fecha final" md-open-on-focus
-                                                   required></md-datepicker>
-                                </md-input-container>
-
-                                <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
-                                    Generar reporte
-                                </md-button>
+                            <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >Reporte del</span>
+                            <md-input-container class="md-block no-margin">
+                                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                                               md-hide-icons="calendar"
+                                               md-placeholder="Fecha de inicio" md-open-on-focus
+                                               required></md-datepicker>
+                            </md-input-container>
+                        <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >al</span>
+                            <md-input-container class="md-block no-margin">
+                                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                                               md-hide-icons="calendar"
+                                               md-placeholder="Fecha final" md-open-on-focus
+                                               required></md-datepicker>
+                            </md-input-container>
+                            <md-checkbox style="margin-left: 8px;" ng-click="vm.mensualReportPresupuesto=!vm.mensualReportPresupuesto">
+                            </md-checkbox>
+                            <!--<input type="checkbox" style="margin-left:8px; margin-top: 16px;" ng-model="vm.mensualReportPresupuesto" id="checkbox1" class="md-check">-->
+                            <span class="font-14" style="font-weight:400!important; margin-top: 14px;">Presupuesto</span>
+                            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
+                                Generar reporte
+                            </md-button>
                             </div>
                         </div>
 

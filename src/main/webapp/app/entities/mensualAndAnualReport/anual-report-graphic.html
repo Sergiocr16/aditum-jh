@@ -1,0 +1,28 @@
+<md-card class="fade-in padding-30 col-md-12 no-margin"
+         style="padding-top: 10px!important;min-height: 342px;">
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div layout="row" ng-if="vm.isReady" layout-xs="column" layout-align="space-between center">
+        <div class="portlet-title">
+            <div class="caption">
+                <i class="icon-cursor font-purple-intense hide"></i>
+                <span class="caption-subject font-green-sharp bold uppercase font-15">Flujo de ingresos y egresos {{vm.year}}</span>
+            </div>
+        </div>
+        <div layout="row">
+            <md-input-container class="md-block no-margin">
+                <md-select ng-model="vm.chartTypeEIB"
+                           ng-change="vm.changeChartTypeIEB(vm.chartTypeEIB.type)">
+                    <md-option ng-repeat="charType in vm.charTypes" ng-value="charType">
+                        {{charType.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-icon class="pointer outline-none" style="position: absolute;right: 5px;top: 5px;" ng-click="vm.clear()">close</md-icon>
+        </div>
+
+    </div>
+    <div google-chart chart="vm.dataIEB" flex="100"></div>
+</md-card>

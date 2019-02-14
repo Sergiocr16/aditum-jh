@@ -77,6 +77,14 @@
         {
             "fieldName": "payedSubcharge",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "splited",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "splitedCharge",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324000506",

@@ -250,7 +250,7 @@ public class HouseService {
             return -ammountCharges;
         }else{
             List<PaymentDTO> payments = this.paymentService.findAdelantosByHouse(houseId);
-            double ammountPaymentInAdvance = payments.stream().mapToInt(o -> Integer.parseInt(o.getAmmountLeft())).sum();
+            double ammountPaymentInAdvance = payments.stream().mapToDouble(o -> Double.parseDouble(o.getAmmountLeft())).sum();
             double total = ammountPaymentInAdvance-ammountCharges;
             return total;
         }

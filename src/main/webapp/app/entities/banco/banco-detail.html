@@ -23,14 +23,14 @@
             </md-button>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                <md-datepicker class="datePicker" readonlydatepicker  md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
 
             <md-input-container class="md-block no-margin">
-                <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                <md-datepicker class="datePicker" readonlydatepicker  md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>

@@ -8,11 +8,9 @@
 
 </body>
 </html>
-
-
 <div class="row fixed-tabs" ng-if="true">
     <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
-        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs  hidden-xs">
+        <md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs  hidden-xs" ng-class="{'width-100':showingMenu}">
             <md-tab  md-active-nc="$state.includes('houses-tabs.house')" label="TODAS LAS FILIALES"  ui-sref="houses-tabs.house">
             </md-tab>
             <md-tab md-active-nc="$state.includes('houses-tabs.data-progress')" label="PROGRESO DE INGRESO DE DATOS" ui-sref="houses-tabs.data-progress">

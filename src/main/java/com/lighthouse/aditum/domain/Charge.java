@@ -54,6 +54,12 @@ public class Charge implements Serializable {
     @Column(name = "payed_subcharge")
     private Boolean payedSubcharge;
 
+    @Column(name = "splited")
+    private Integer splited;
+
+    @Column(name = "splited_charge")
+    private Integer splitedCharge;
+
     @ManyToOne(optional = false)
     @NotNull
     private House house;
@@ -190,6 +196,32 @@ public class Charge implements Serializable {
         this.payedSubcharge = payedSubcharge;
     }
 
+    public Integer getSplited() {
+        return splited;
+    }
+
+    public Charge splited(Integer splited) {
+        this.splited = splited;
+        return this;
+    }
+
+    public void setSplited(Integer splited) {
+        this.splited = splited;
+    }
+
+    public Integer getSplitedCharge() {
+        return splitedCharge;
+    }
+
+    public Charge splitedCharge(Integer splitedCharge) {
+        this.splitedCharge = splitedCharge;
+        return this;
+    }
+
+    public void setSplitedCharge(Integer splitedCharge) {
+        this.splitedCharge = splitedCharge;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -263,6 +295,8 @@ public class Charge implements Serializable {
             ", paymentDate='" + getPaymentDate() + "'" +
             ", subcharge='" + getSubcharge() + "'" +
             ", payedSubcharge='" + isPayedSubcharge() + "'" +
+            ", splited=" + getSplited() +
+            ", splitedCharge=" + getSplitedCharge() +
             "}";
     }
 }

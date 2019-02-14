@@ -30,6 +30,10 @@
         var porCobrarDone = false;
 
         var monthsText = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
+
+      vm.showGraphic = function(){
+          $state.go("dashboard.graphic",{year:2019})
+      }
         vm.loadAll = function () {
             Dashboard.query({companyId: globalCompany.getId()}, function (result) {
                 vm.dashboard = result;
@@ -57,7 +61,7 @@
             var d = new Date();
             var n = d.getMonth();
             if (year != vm.year) {
-                n = 12
+                n = 11
             }
             var monthsDefaultersOptions = [];
             for (var i = 0; i <= n; i++) {
@@ -259,6 +263,7 @@
                 "options": {
                     // "title": "Vehículos",
                     "legend": {"position": "bottom"},
+                    "sliceVisibilityThreshold":0,
                     "isStacked": "false",
                     'chartArea': {'width': '90%', 'height': '78%'},
                     "fill": 200000,
@@ -282,6 +287,7 @@
             colums.push({"v": "Deshabilitados"});
             colums.push({"v": vm.dashboard.disableResidentQuantity});
             rows.push({"c": colums})
+            console.log(rows)
             vm.residentGraph = {
                 "type": "PieChart",
                 "displayed": false,
@@ -311,7 +317,7 @@
                     "legend": {"position": "bottom"},
                     "isStacked": "false",
                     'chartArea': {'width': '90%', 'height': '78%'},
-
+                    "sliceVisibilityThreshold":0,
                     "fill": 200000,
                     "animation": {
                         duration: 1000,
@@ -363,6 +369,7 @@
                     "legend": {"position": "bottom"},
                     "isStacked": "false",
                     "fill": 200000,
+                    "sliceVisibilityThreshold":0,
                     "animation": {
                         duration: 1000,
                         easing: 'out',
@@ -416,6 +423,7 @@
                     "curveType": "function",
                     "legend": {"position": "bottom"},
                     "isStacked": "true",
+                    "sliceVisibilityThreshold":0,
                     "fill": 10,
                     "animation": {
                         duration: 1000,
@@ -481,6 +489,7 @@
                 "options": {
                     // "title": "Flujo de Ingresos y Egresos",
                     // "curveType": "function",
+                    "sliceVisibilityThreshold":0,
                     "legend": {"position": "bottom"},
                     'chartArea': {'width': '97%'},
                     "isStacked": "false",
@@ -536,6 +545,7 @@
                 "options": {
                     "title": vm.visitorTitle,
                     "curveType": "function",
+                    "sliceVisibilityThreshold":0,
                     "animation": {
                         duration: 1000,
                         easing: 'out',

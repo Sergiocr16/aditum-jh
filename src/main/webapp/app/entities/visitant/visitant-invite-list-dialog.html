@@ -12,7 +12,7 @@
                         <h6 class="font-15">Fecha desde la cual pueden ingresar:</h6>
                         <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <md-input-container class="md-block no-margin">
-                                <md-datepicker md-min-date="vm.minInitialDate"
+                                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.minInitialDate"
                                                md-max-date="vm.dates.final_date"
                                                required ng-model="vm.dates.initial_date"
                                                md-hide-icons="calendar"
@@ -32,7 +32,7 @@
 
                         <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <md-input-container class="md-block no-margin">
-                                <md-datepicker md-min-date="vm.dates.initial_date" required
+                                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_date" required
                                                ng-model="vm.dates.final_date"
                                                md-hide-icons="calendar"
                                                md-placeholder="Fecha final" md-open-on-focus
