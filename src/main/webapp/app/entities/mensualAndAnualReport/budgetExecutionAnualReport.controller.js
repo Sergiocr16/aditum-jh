@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('AnualReportController', AnualReportController);
+        .controller('BudgetExecutionAnualReportController', BudgetExecutionAnualReportController);
 
-    AnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    BudgetExecutionAnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function AnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function BudgetExecutionAnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Reporte anual";
@@ -16,19 +16,23 @@
         vm.isShowingExtrardinaryDetail = false;
         vm.isShowingCommonAreasDetail = false;
         vm.isShowingOtherIngressDetail = false;
+        vm.showNoInfoMessage = false;
         vm.openCalendar = openCalendar;
         var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
         vm.actualMonth = new Date(y1, m1, 1);
         vm.month = m1 + 1;
         vm.rowsQuantity = vm.month + 4;
-        vm.showPresupuestoFields = false;
-        var withPresupuestos = 3;
+        vm.showPresupuestoFields = true;
+        var withPresupuestos = 2;
+        vm.resultsReady = false;
         vm.expanding = false;
+        vm.showInfo = false;
         vm.exportActions = {
             downloading: false,
             printing: false,
             sendingEmail: false
         };
+        createYearsArrays();
         vm.download = function () {
             vm.exportActions.downloading = true;
             setTimeout(function () {
@@ -36,7 +40,33 @@
                     vm.exportActions.downloading = false;
                 })
             }, 7000)
-        }
+        };
+
+        vm.changeYear = function () {
+            vm.resultsReady = false;
+            vm.consulting = true;
+            vm.resultsReady = false;
+            if(vm.yearIEB === new Date().getFullYear()){
+                var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
+                vm.actualMonth = new Date(y1, m1, 1);
+                vm.month = m1 + 1;
+                vm.rowsQuantity = vm.month + 4;
+                console.log(vm.actualMonth)
+                vm.showWithBudget();
+            }else{
+                var dateMonthDay = new Date();
+                dateMonthDay.setFullYear(vm.yearIEB);
+                dateMonthDay.setMonth(11);
+                vm.actualMonth = dateMonthDay;
+                vm.month = vm.actualMonth.getMonth() + 1;
+                vm.rowsQuantity = vm.month + 4;
+                console.log(dateMonthDay)
+                console.log(vm.actualMonth)
+                vm.showWithBudget();
+
+            }
+
+        };
 
         vm.print = function () {
             vm.exportActions.printing = true;
@@ -60,20 +90,23 @@
             MensualAndAnualReport.getAnualReport({
                 actual_month: moment(vm.actualMonth).format(),
                 companyId: globalCompany.getId(),
-                withPresupuesto: withPresupuestos,
+                withPresupuesto: 2,
             }, onSuccess, onError);
 
         }
-        vm.loadAll();
+
 
         function onSuccess(data, headers) {
-            console.log(data)
             vm.report = data;
             vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
 
             vm.path = '/api/anualReport/file/' + vm.superObject;
             Company.get({id: globalCompany.getId()}).$promise.then(function (result) {
                 vm.isReady = true;
+                vm.showNoInfoMessage = false;
+                vm.showInfo = true;
+                vm.consulting = false;
+                vm.resultsReady = true;
                 vm.companyName = result.name;
             });
             vm.totalFlujo = vm.report.allIngressAcumulado - vm.report.allEgressAcumulado;
@@ -82,8 +115,11 @@
 
         vm.showWithBudget = function () {
             Presupuesto.query({companyId: globalCompany.getId()}, function (result) {
+                console.log(result)
                 if (result.length > 0) {
+                    vm.showInfo = true;
                     var yearExist = 0;
+
                     angular.forEach(result, function (value, key) {
                         if (value.anno == dateMonthDay.getFullYear()) {
                             yearExist++;
@@ -91,24 +127,43 @@
                             $("#loadingIcon2").fadeIn(0);
                             withPresupuestos = 2;
                             vm.loadAll();
-                            vm.showPresupuestoFields = !vm.showPresupuestoFields;
                         }
 
-                    })
+                    });
                     if (yearExist == 0) {
-                        Modal.toast("No existe un presupuesto del " +vm.actualMonth.getFullYear() + " registrado.");
+                        vm.showInfo = false;
+                        vm.isReady = true;
+                        vm.showNoInfoMessage = true;
                     }
                 } else {
-                    Modal.toast("No existe un presupuesto del " +vm.actualMonth.getFullYear() + " registrado.");
+                    vm.isReady = true;
+                    vm.showInfo = false;
+                    vm.showNoInfoMessage = true;
                 }
 
             });
 
 
         }
+        vm.showWithBudget();
 
         function openCalendar(date) {
             vm.datePickerOpenStatus[date] = true;
+        }
+
+
+        function createYearsArrays() {
+            var d = new Date();
+            var year = d.getFullYear();
+            var yearsIEB = [];
+            yearsIEB.push(year)
+            for (var i = 1; i <= 3; i++) {
+                yearsIEB.push(year - i)
+            }
+            vm.yearsIEB = yearsIEB;
+            vm.yearsDefaulters = yearsIEB;
+            vm.yearIEB = yearsIEB[0];
+            vm.yearDefaulter = yearsIEB[0];
         }
 
         vm.showBodyTableIngress = function (type) {

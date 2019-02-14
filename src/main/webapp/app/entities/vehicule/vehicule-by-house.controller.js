@@ -120,29 +120,31 @@
 
                        if (enabledOptions) {
                            vehicule.enabled = 0;
-                           Vehicule.update(vehicule, onSuccess);
-                           function onSuccess(data, headers) {
-                               WSVehicle.sendActivity(data);
-                               loadVehicules();
-                               Modal.toast("Se ha deshabilitado el vehículo correctamente.");
-                               Modal.hideLoadingBar();
-                           }
+                           Vehicule.update(vehicule, onSuccessDeshabilitado);
+
 
                        } else {
                            vehicule.enabled = 1;
-                           Vehicule.update(vehicule, onSuccess);
-                           function onSuccess(data, headers) {
-                               WSVehicle.sendActivity(data);
-                               Modal.hideLoadingBar();
-                               Modal.toast("Se ha habilitado el vehículo correctamente.");
-                               loadVehicules();
+                           Vehicule.update(vehicule, onSuccessHabilitado);
 
-                           }
                        }
 
                    });
 
                 };
+        function onSuccessDeshabilitado(data, headers) {
+            WSVehicle.sendActivity(data);
+            loadVehicules();
+            Modal.toast("Se ha deshabilitado el vehículo correctamente.");
+            Modal.hideLoadingBar();
+        }
+        function onSuccessHabilitado(data, headers) {
+            WSVehicle.sendActivity(data);
+            Modal.hideLoadingBar();
+            Modal.toast("Se ha habilitado el vehículo correctamente.");
+            loadVehicules();
+
+        }
         function loadPage(page) {
             vm.page = page;
             vm.transition();

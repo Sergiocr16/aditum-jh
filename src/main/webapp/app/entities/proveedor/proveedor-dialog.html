@@ -43,7 +43,7 @@
                             <md-button class="md-primary md-raised md-warn" ng-click="vm.clear()">
                                 Cancelar
                             </md-button>
-                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid || vm.isSaving" type="submit">
                                 Aceptar
                             </md-button>
                         </div>

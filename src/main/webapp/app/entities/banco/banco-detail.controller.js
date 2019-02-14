@@ -37,7 +37,7 @@
         };
         setTimeout(function () {
             getInitialBalance();
-        }, 900)
+        }, 900);
 
         vm.consult = function () {
             vm.isConsulting = true;
@@ -192,7 +192,7 @@
                 vm.movementsList.push(value);
 
 
-            })
+            });
             calculateBalance();
 
 
@@ -364,7 +364,17 @@
             } else {
                 vm.balanceColor = 'red';
             }
-            vm.isReady = true;
+
+            if(vm.isConsulting==false){
+                vm.banco.saldo = vm.totalBalance;
+                Banco.update(vm.banco, function () {
+                    vm.isReady = true;
+                }, onError);
+            }else{
+                vm.isReady = true;
+            }
+
+
         }
 
         vm.updatePicker = function () {
