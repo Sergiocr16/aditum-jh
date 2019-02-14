@@ -18,6 +18,7 @@
         }
         vm.clear = clear;
         vm.save = save;
+        vm.isSaving = false;
         vm.companies = Company.query();
 
         $timeout(function () {

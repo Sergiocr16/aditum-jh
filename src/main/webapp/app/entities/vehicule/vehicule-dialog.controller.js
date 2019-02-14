@@ -37,8 +37,6 @@
         });
         vm.required = 1;
         vm.required2 = 1;
-        CommonMethods.validateSpecialCharacters();
-        CommonMethods.validateSpecialCharactersAndVocals();
 
         angular.element(document).ready(function () {
             ColorPicker.init();
@@ -53,13 +51,14 @@
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
+
         function onSuccessHouses(data, headers) {
             angular.forEach(data, function (value, key) {
                 value.housenumber = parseInt(value.housenumber);
-                if (value.housenumber == 9999) {
+                if (value.housenumber === 9999) {
                     value.housenumber = "Oficina"
                 }
-            })
+            });
             vm.houses = data;
             vm.isReady = true;
 
@@ -81,25 +80,25 @@
             }
 
             function hasCaracterEspecial(s) {
-                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}"]
+                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "{", "}", "[", "]", "''"];
                 var invalido = 0;
                 angular.forEach(caracteres, function (val, index) {
-                    if (s != undefined) {
+                    if (s !== undefined) {
                         for (var i = 0; i < s.length; i++) {
-                            if (s.charAt(i) == val) {
+                            if (s.charAt(i) === val) {
                                 invalido++;
                             }
                         }
                     }
-                })
-                if (invalido == 0) {
+                });
+                if (invalido === 0) {
                     return false;
                 } else {
                     return true;
                 }
             }
 
-            if (vm.vehicule.licenseplate == undefined || hasWhiteSpace(vm.vehicule.licenseplate)) {
+            if (vm.vehicule.licenseplate === undefined || hasWhiteSpace(vm.vehicule.licenseplate)) {
                 Modal.toast("No puede ingresar la placa con espacios en blanco.");
 
                 invalido++;
@@ -107,15 +106,47 @@
                 invalido++;
                 Modal.toast("No puede ingresar la placa con guiones o cualquier otro carácter especial");
             }
-            if (invalido == 0) {
+            if (invalido === 0) {
                 return true;
             } else {
                 return false;
             }
+        };
+
+        function haswhiteLicensePlate(s) {
+            return /\s/g.test(s);
         }
 
+
+        function hasCaracterEspecial(s) {
+            var caracteres = [, ",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿", "#", "!", "}", "{", '"', ";", "_", "^", "!"]
+            var invalido = 0;
+            angular.forEach(caracteres, function (val, index) {
+                if (s != undefined) {
+                    for (var i = 0; i < s.length; i++) {
+                        if (s.charAt(i) == val) {
+                            invalido++;
+                        }
+                    }
+                }
+            })
+            if (invalido == 0) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        vm.validateLicenseplate = function (vehicule) {
+            if (hasCaracterEspecial(vehicule.licenseplate) || haswhiteLicensePlate(vehicule.licenseplate)) {
+                vehicule.validLicenseplate = 0;
+            } else {
+                vehicule.validLicenseplate = 1;
+            }
+        };
+
         function save() {
-            var wordOnModal = vm.vehicule.id == undefined ? "registrar" : "modificar"
+            var wordOnModal = vm.vehicule.id === undefined ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el vehículo?", "", function () {
                     vm.vehicule.enabled = 1;
@@ -131,9 +162,7 @@
                                 licensePlate: vm.vehicule.licenseplate
                             }, alreadyExist, allClearUpdate)
 
-                            function alreadyExist(data) {
-                                Modal.toast("La placa ingresada ya existe.");
-                            }
+
                         } else {
                             Vehicule.update(vm.vehicule, onEditSuccess, onSaveError);
                         }
@@ -143,21 +172,23 @@
                             licensePlate: vm.vehicule.licenseplate
                         }, alreadyExist, allClearInsert)
 
-                        function alreadyExist(data) {
-                            Modal.toast("La placa ingresada ya existe.");
-                        }
 
-                        function allClearInsert() {
-                            Modal.showLoadingBar();
-                            insertVehicule();
-                        }
-
-                        function insertVehicule() {
-                            console.log(vm.vehicule.type);
-                            Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
-                        }
                     }
                 })
+            }
+
+            function allClearInsert() {
+                Modal.showLoadingBar();
+                insertVehicule();
+            }
+
+            function insertVehicule() {
+                console.log(vm.vehicule);
+                Vehicule.save(vm.vehicule, onSaveSuccess, onSaveError);
+            }
+
+            function alreadyExist(data) {
+                Modal.toast("La placa ingresada ya existe.");
             }
 
             function allClearUpdate(data) {
@@ -189,6 +220,8 @@
             }
 
             function onSaveError() {
+                Modal.toast("Ocurrió un error insperado.");
+                Modal.hideLoadingBar();
                 vm.isSaving = false;
             }
 

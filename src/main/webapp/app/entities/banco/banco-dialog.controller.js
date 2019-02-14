@@ -18,7 +18,7 @@
         } else {
             $rootScope.mainTitle="Editar cuenta";
         }
-
+        vm.isSaving = false;
 
         vm.clear = clear;
         vm.datePickerOpenStatus = {};

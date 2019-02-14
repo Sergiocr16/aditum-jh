@@ -17,7 +17,7 @@
             entity.image_url = null;
         }
         vm.resident = entity;
-        vm.resident.houseId = 0;
+        vm.resident.houseId = companyUser.houseId;
         vm.resident.nationality = "9";
         vm.resident.principalContact = vm.resident.principalContact + "";
 
@@ -34,8 +34,6 @@
         vm.success = null;
         vm.loginStringCount = 0;
         vm.SaveUserError = false;
-        CommonMethods.validateLetters();
-        CommonMethods.validateNumbers();
         Principal.identity().then(function (account) {
             vm.account = account;
         });
@@ -43,7 +41,6 @@
         if (vm.resident.id !== null) {
             vm.title = "Editar usuario";
             vm.button = "Editar";
-            var autorizadorStatus = vm.resident.isOwner;
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
             }
@@ -71,14 +68,14 @@
                     return /\s/g.test(s);
                 }
 
-                if (tiene(s) || s == undefined) {
+                if (tiene(s) || s === undefined) {
                     return true
                 }
                 return false;
             }
 
             function hasCaracterEspecial(s) {
-                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿"]
+                var caracteres = [",", ".", "-", "$", "@", "(", ")", "=", "+", "/", ":", "%", "*", "'", "", ">", "<", "?", "¿","{","}","[","]","''"];
                 var invalido = 0;
                 angular.forEach(caracteres, function (val, index) {
                     if (s != undefined) {
@@ -96,10 +93,10 @@
                 }
             }
 
-            if (vm.resident.name == undefined || vm.resident.lastname == undefined || vm.resident.secondlastname == undefined || hasWhiteSpace(vm.resident.identificationnumber)) {
+            if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber) || hasWhiteSpace(vm.resident.phonenumber)) {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
-            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber)) {
+            } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber ) || hasCaracterEspecial(vm.resident.phonenumber) ) {
                 invalido++;
                 Modal.toast("No puede ingresar ningún caracter especial.");
             }
@@ -108,15 +105,23 @@
             } else {
                 return false;
             }
-        }
+        };
 
         function haswhiteCedula(s) {
             return /\s/g.test(s);
         }
 
+        vm.validatePhoneNumber = function(resident){
+            if (hasCaracterEspecial(resident.phonenumber) || haswhiteCedula(resident.phonenumber) || resident.nationality == "9" && hasLetter(resident.phonenumber)) {
+                resident.validPhonenumber = 0;
+            } else {
+                resident.validPhonenumber = 1;
+            }
+        };
+
         vm.findInPadron = function (resident) {
 
-            if (resident.identificationnumber != undefined || resident.identificationnumber != "") {
+            if (resident.identificationnumber !== undefined || resident.identificationnumber !== "") {
                 if (hasCaracterEspecial(resident.identificationnumber) || haswhiteCedula(resident.identificationnumber) || resident.nationality == "9" && hasLetter(resident.identificationnumber)) {
                     resident.validIdentification = 0;
                 } else {
@@ -197,6 +202,7 @@
             var wordOnModal = vm.resident.id == undefined ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
+
                     vm.isSaving = true;
                     vm.resident.name = CommonMethods.capitalizeFirstLetter(vm.resident.name);
                     vm.resident.lastname = CommonMethods.capitalizeFirstLetter(vm.resident.lastname);
@@ -207,51 +213,9 @@
                                 companyId: globalCompany.getId(),
                                 identificationID: vm.resident.identificationnumber
                             }, alreadyExist, allClearUpdate)
-
-                            function alreadyExist(data) {
-                                bootbox.hideAll();
-                                Modal.toast("La cédula ingresada ya existe.");
-                            }
-
-                            function allClear(data) {
-                                CommonMethods.waitingMessage();
-                                console.log(vm.resident.isOwner)
-                                if (vm.resident.isOwner == true) {
-                                    vm.resident.isOwner = 1;
-                                } else {
-                                    vm.resident.isOwner = 0;
-                                }
-
-                                if (fileImage !== null) {
-
-                                    vm.imageUser = {
-                                        user: vm.resident.id
-                                    };
-                                    SaveImageCloudinary
-                                        .save(fileImage, vm.imageUser)
-                                        .then(onSaveImageSuccess, onSaveError, onNotify);
-
-                                    function onNotify(info) {
-                                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                                    }
-
-                                    function onSaveImageSuccess(data) {
-                                        vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                                        if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                                        }
-                                        Resident.update(vm.resident, onSuccess, onSaveError);
-                                    }
-                                } else {
-                                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                                    }
-                                    Resident.update(vm.resident, onSuccess, onSaveError);
-                                }
-                            }
                         } else {
-                            console.log()
-                            if (vm.resident.isOwner == true) {
+                            Modal.showLoadingBar();
+                            if (vm.resident.isOwner === true) {
                                 vm.resident.isOwner = 1;
                             } else {
                                 vm.resident.isOwner = 0;
@@ -265,19 +229,8 @@
                                     .save(fileImage, vm.imageUser)
                                     .then(onSaveImageSuccess, onSaveError, onNotify);
 
-                                function onNotify(info) {
-                                    vm.progress = Math.round((info.loaded / info.total) * 100);
-                                }
-
-                                function onSaveImageSuccess(data) {
-                                    vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                                    if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                                        vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                                    }
-                                    Resident.update(vm.resident, onSuccess, onSaveError);
-                                }
                             } else {
-                                if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
+                                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
                                     vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                                 }
                                 Resident.update(vm.resident, onSuccess, onSaveError);
@@ -290,18 +243,26 @@
                             identificationID: vm.resident.identificationnumber
                         }, alreadyExist, allClearInsert)
 
-                        function alreadyExist(data) {
-                            bootbox.hideAll();
-                            Modal.toast("La cédula ingresada ya existe.");
+                    }
+                    function onSaveImageSuccess(data) {
+                        vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                        if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
                         }
-
-
+                        Resident.update(vm.resident, onSuccess, onSaveError);
+                    }
+                    function onNotify(info) {
+                        vm.progress = Math.round((info.loaded / info.total) * 100);
+                    }
+                    function alreadyExist() {
+                        vm.isSaving = false;
+                        Modal.toast("La cédula ingresada ya existe.");
                     }
                 })
             }
 
             function allClearInsert() {
-                CommonMethods.waitingMessage();
+                Modal.showLoadingBar();
                 vm.resident.enabled = 1;
                 vm.resident.isOwner = 0;
                 vm.resident.companyId = globalCompany.getId();
@@ -314,17 +275,6 @@
                         .save(fileImage, vm.imageUser)
                         .then(onSaveImageSuccess, onSaveError, onNotify);
 
-                    function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                    }
-
-                    function onSaveImageSuccess(data) {
-                        vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        Resident.save(vm.resident, onSuccess, onSaveError);
-                    }
                 } else {
                     if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
@@ -334,12 +284,7 @@
             }
 
             function allClearUpdate() {
-                modificar();
-            }
-
-            function modificar() {
-                CommonMethods.waitingMessage();
-
+                Modal.showLoadingBar();
                 if (vm.resident.isOwner == true) {
                     vm.resident.isOwner = 1;
                 } else {
@@ -354,17 +299,6 @@
                         .save(fileImage, vm.imageUser)
                         .then(onSaveImageSuccess, onSaveError, onNotify);
 
-                    function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                    }
-
-                    function onSaveImageSuccess(data) {
-                        vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        Resident.update(vm.resident, onSuccess, onSaveError);
-                    }
                 } else {
                     if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
                         vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
@@ -384,7 +318,7 @@
                 $state.go('residentByHouse', null, {
                     reload: true
                 });
-                bootbox.hideAll();
+                Modal.hideLoadingBar();
                 if (vm.resident.id !== null) {
                     Modal.toast("Se ha editado el usuario correctamente.");
                 } else {
@@ -394,6 +328,8 @@
             }
 
             function onSaveError() {
+                Modal.toast("Ocurrió un error insperado.");
+                Modal.hideLoadingBar();
                 vm.isSaving = false;
             }
         }

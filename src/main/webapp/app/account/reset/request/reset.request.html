@@ -3,10 +3,10 @@
         <h5 class="text-center">
             <img src="content/images/logoAditumAzulMaterial.png" height="70" alt="">
         </h5>
-        <h4 style="font-weight: 500" class=" font-green-haze text-center">Restablezca su contraseña</h4>
-        <h4 class="text-center" style="font-weight: 400;color:#8492a6;
+        <h4 style="font-weight: 500" class=" font-green-haze text-center margin-bottom-40">Restablezca su contraseña</h4>
+        <h4 class="text-center " style="font-weight: 400;color:#8492a6;
     margin: 0;
-    font-size: 14px;margin-bottom:40px" ng-hide="vm.success">Introduzca la dirección de correo electrónico que utilizó para
+    font-size: 14px;margin-bottom:30px" ng-hide="vm.success">Introduzca la dirección de correo electrónico que utilizó para
             registrarse</h4>
         <div class="alert alert-danger" data-translate="reset.request.messages.notfound"
              ng-show="vm.errorEmailNotExists">
@@ -25,7 +25,7 @@
 
         </div>
         <form name="form" role="form" novalidate ng-submit="vm.requestReset()" show-validation>
-            <div ng-show="!vm.success">
+            <div ng-show="!vm.success" style="margin-top:30px;">
                 <md-input-container class="md-block margin-top-40">
                     <label>Correo electrónico asociado a tu cuenta</label>
                     <!--<md-icon class="font-green-haze">vpn_key</md-icon>-->

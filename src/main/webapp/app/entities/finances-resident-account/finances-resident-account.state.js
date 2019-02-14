@@ -28,7 +28,7 @@
                         data: {
                             authorities: ['ROLE_ADMIN','ROLE_USER'],
                         },
-                        templateUrl: 'app/entities/mensualAndAnualReport/mensualReport.html',
+                        templateUrl: 'app/entities/mensualAndAnualReport/resultStatesMensualReport.html',
                         controller: 'MensualReportController',
                         controllerAs: 'vm'
 
@@ -38,7 +38,7 @@
                         data: {
                             authorities: ['ROLE_ADMIN','ROLE_USER'],
                         },
-                        templateUrl: 'app/entities/mensualAndAnualReport/anualReport.html',
+                        templateUrl: 'app/entities/mensualAndAnualReport/resultStatesAnualReport.html',
                         controller: 'AnualReportController',
                         controllerAs: 'vm'
 

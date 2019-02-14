@@ -15,6 +15,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.save = save;
+        vm.isSaving = false;
         $rootScope.mainTitle = "Transferir fondos"
         var transferInfo = {};
         $timeout(function () {
@@ -44,6 +45,7 @@
             function confirmTransferencia() {
               Modal.confirmDialog("¿Está seguro que desea realizar la transferencia?","Una vez registrada esta información no se podrá editar",function(){
                   Modal.showLoadingBar();
+                  vm.isSaving = true;
                   Banco.get({id: vm.transferencia.cuentaOrigen.id}).$promise.then(onSuccesTransferenciaOrigen);
               });
             }

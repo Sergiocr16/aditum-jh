@@ -13,6 +13,7 @@
         $rootScope.mainTitle = "Detalle de gasto";
         vm.isReady = false;
         vm.save = save;
+        console.log(entity)
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.companies = Company.query();
         vm.egress = entity;
@@ -29,9 +30,6 @@
         $scope.$on('$destroy', unsubscribe);
         if (vm.egress.folio == null || vm.egress.folio == 'undefined') {
             vm.egress.folio = 'Sin Registrar'
-        }
-        if (vm.egress.billNumber == null || vm.egress.billNumber == 'undefined' || vm.egress.billNumber == '') {
-            vm.egress.billNumber = 'Sin Registrar'
         }
 
         if (vm.egress.paymentDate == null || vm.egress.paymentDate == undefined || vm.egress.paymentDate == 'No pagado') {
@@ -76,13 +74,14 @@
                     Banco.update(banco, onAccountBalanceSuccess, onSaveError);
                 }
             });
-            vm.egress = result;
         }
 
         function onAccountBalanceSuccess(result) {
             Modal.toast("Se reportó el pago correctamente");
+            Banco.get({id: vm.egress.account}, onSuccessAccount)
             Proveedor.get({id: vm.egress.proveedor}, onSuccessProovedor)
             Modal.hideLoadingBar();
+            console.log(vm.egress)
             vm.isSaving = false;
         }
 

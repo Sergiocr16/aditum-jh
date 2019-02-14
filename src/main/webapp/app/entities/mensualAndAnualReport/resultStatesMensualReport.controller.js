@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('MensualReportController', MensualReportController);
+        .controller('ResultStatesMensualReportController', ResultStatesMensualReportController);
 
-    MensualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    ResultStatesMensualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function MensualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function ResultStatesMensualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
 
         var vm = this;
 
@@ -60,11 +60,7 @@
         };
 
         vm.loadAll = function () {
-            if (vm.mensualReportPresupuesto) {
-                vm.withPresupuesto = 1;
-            } else {
-                vm.withPresupuesto = 0;
-            }
+            vm.withPresupuesto = 0;
             var final_balance_time = new Date();
             if (firstMonthDay.getDate() == vm.dates.initial_time.getDate() && firstMonthDay.getMonth() == vm.dates.initial_time.getMonth() && firstMonthDay.getFullYear() == vm.dates.initial_time.getFullYear()) {
                 final_balance_time.setDate(vm.dates.initial_time.getDate());
@@ -101,30 +97,14 @@
 
         function onSuccess(data, headers) {
             vm.report = data;
+            console.log(data)
             vm.superObject = vm.firstMonthDayFormatted +'}'+vm.finalBalanceTimeFormatted+'}'+vm.initialTimeFormatted+'}'+vm.FinalTimeFormatted+'}'+vm.companyId+'}'+vm.withPresupuesto;
             vm.path = '/api/mensualReport/file/' + vm.superObject;
             vm.initialDateBalance = vm.dates.initial_time;
             vm.fechaInicio = vm.dates.initial_time;
             vm.fechaFin = vm.dates.final_time;
-            if (vm.mensualReportPresupuesto) {
-                Presupuesto.query({companyId: globalCompany.getId()}, function (result) {
-                    if (result.length > 0) {
-                        vm.showPresupuestoFields = true;
-                        vm.totalEgressBudget = vm.report.mensualEgressReport.fixedCostsBudgetTotal + vm.report.mensualEgressReport.variableCostsBudgetTotal + vm.report.mensualEgressReport.otherCostsBudgetTotal;
-                        vm.egressBudgetDiference = vm.report.mensualEgressReport.allEgressCategoriesTotal - vm.totalEgressBudget;
-                        vm.ingressBudgetDiference = vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualIngressReport.totalBudget;
-                        vm.superHabit = (vm.egressBudgetDiference * -1) - (vm.ingressBudgetDiference * -1);
 
-                    } else {
-                        Modal.toast("No existe un presupuesto de este año registrado.");
-                    }
-
-                });
-
-
-            } else {
-                vm.showPresupuestoFields = false;
-            }
+            vm.showPresupuestoFields = false;
 
             vm.allEgressPercentageQuantity = data.mensualEgressReport.fixedCostsPercentage + data.mensualEgressReport.variableCostsPercentage + data.mensualEgressReport.otherCostsPercentage
             vm.saldoNeto = vm.report.totalInitialBalance + vm.report.mensualIngressReport.allIngressCategoriesTotal - vm.report.mensualEgressReport.allEgressCategoriesTotal;
