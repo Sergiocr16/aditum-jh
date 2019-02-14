@@ -80,7 +80,7 @@
                                             <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                                                 <md-input-container class="md-block  no-margin-bottom">
                                                     <label>Fecha de pago</label>
-                                                    <md-datepicker md-max-date="vm.today" required
+                                                    <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker  md-max-date="vm.today" required
                                                                    md-hide-icons="calendar"
                                                                    ng-model="vm.payment.date"
                                                                    id="datePicker"
@@ -140,6 +140,9 @@
                                                         Cargo
                                                     </th>
                                                     <th style="vertical-align: top;" class="text-center">
+                                                        Recargo
+                                                    </th>
+                                                    <th style="vertical-align: top;" class="text-center">
                                                         Restante
                                                     </th>
                                                     <th style="vertical-align: top;border-right:1px solid white;"
@@ -167,6 +170,8 @@
                                                     </td>
                                                     <td class="text-center">₡ {{charge.ammount | currency : "" : 0}}
                                                     </td>
+                                                    <td class="text-center">₡ {{charge.subcharge | currency : "" : 0}}
+                                                    </td>
                                                     <td class="text-center" ng-show="charge.isIncluded ==true">₡
                                                         {{charge.left |
                                                         currency : "" : 0}}
@@ -185,11 +190,11 @@
                                                         ng-mouseover="vm.showPopOver(charge)"
                                                         ng-blur="vm.hidePopOver(charge)">
                                                         <div ng-class="{'no-bg-color':charge.isIncluded==false}"
-                                                             style="width: 100%;background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.ammount) * 100}}%">
+                                                             style="width: 100%;background-color:#6ACA3B;height:{{(charge.paymentAmmount/charge.total) * 100}}%">
                                                             &nbsp;&nbsp;&nbsp;
                                                         </div>
                                                         <div ng-class="{'no-bg-color':charge.isIncluded==false}"
-                                                             style="width: 100%;background-color:#F05232;height:{{(charge.left/charge.ammount) * 100}}%">
+                                                             style="width: 100%;background-color:#F05232;height:{{(charge.left/charge.total) * 100}}%">
                                                             &nbsp;&nbsp;&nbsp;
                                                         </div>
                                                     </td>

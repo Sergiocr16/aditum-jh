@@ -43,6 +43,8 @@ public class DashboardDTO implements Serializable {
 
     private Integer complaintsPending;
 
+    private Integer pendingDevolutions;
+
     private Integer reservationsPending;
 
     private ArrayList<DashboardVisitorDTO>  visitorsPerMonth;
@@ -198,5 +200,13 @@ public class DashboardDTO implements Serializable {
 
     public void setReservationsPending(Integer reservationsPending) {
         this.reservationsPending = reservationsPending;
+    }
+
+    public Integer getPendingDevolutions() {
+        return pendingDevolutions;
+    }
+
+    public void setPendingDevolutions(Integer pendingDevolutions) {
+        this.pendingDevolutions = pendingDevolutions;
     }
 }

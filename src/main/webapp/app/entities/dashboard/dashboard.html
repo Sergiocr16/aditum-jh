@@ -2,7 +2,7 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-
+<md-button ng-click="vm.showGraphic()" class="md-primary md-raise"><md-icon>bar_chart <md-tooltip>Gráfico de flujo de Ingresos y Egresos</md-tooltip></md-icon></md-button>
 <div layout="column" lass="fade-in" ng-if="vm.isReady" flex="100">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
@@ -211,12 +211,12 @@
             </div>
             <div class="col-md-4 col-xs-12 no-padding-xs">
                 <md-card class="fade-in col-md-12 no-margin padding-30"
-                         style="max-height: 100px;
-    margin-bottom: 15px!important;
+                         style="
+    margin-bottom: 10px!important;
     padding: 0!important"
                          ng-if="vm.isReady">
                     <div class="col-md-12" style="padding:0 35px!important;">
-                        <div class="dashboard-stat2 padding-bottom-15">
+                        <div class="dashboard-stat2 padding-bottom-13">
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-red-haze">{{vm.dashboard.reservationsPending}}</h3>
@@ -230,17 +230,31 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-12" style="padding:0 35px!important;">
+                        <div class="dashboard-stat2 padding-bottom-13">
+                            <div class="display">
+                                <div class="number">
+                                    <h3 class="font-purple-sharp">{{vm.dashboard.pendingDevolutions}}</h3>
+                                    <small>Devoluciones pendientes</small>
+                                </div>
+                                <div class="icon">
+                                    <md-icon style="    color: #cbd4e0;
+                                      font-size: 34px">money
+                                    </md-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </md-card>
 
-                <md-card class="fade-in col-md-12 no-margin padding-30"
-                         style="min-height: 242px;"
+                <md-card class="fade-in col-md-12 no-margin"
                          ng-if="vm.isReady">
                     <div class="col-md-12">
-                        <div class="dashboard-stat2 padding-bottom-15">
+                        <div class="dashboard-stat2 padding-bottom-13">
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-yellow-lemon">{{vm.dashboard.complaintsPending}}</h3>
-                                    <small>Sugerencias pendientes</small>
+                                    <small>Quejas pendientes</small>
                                 </div>
                                 <div class="icon">
                                     <md-icon style="    color: #cbd4e0;
@@ -251,11 +265,11 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <div class="dashboard-stat2 padding-bottom-15">
+                        <div class="dashboard-stat2 padding-bottom-13">
                             <div class="display">
                                 <div class="number">
                                     <h3 class="font-green-sharp ">{{vm.dashboard.complaintsActive}}</h3>
-                                    <small>Sugerencias activas</small>
+                                    <small>Quejas activas</small>
                                 </div>
                                 <div class="icon">
                                     <md-icon style="    color: #cbd4e0;

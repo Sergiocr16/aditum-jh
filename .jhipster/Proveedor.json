@@ -22,16 +22,10 @@
         {
             "fieldName": "responsable",
             "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
         },
         {
             "fieldName": "telefono",
             "fieldType": "String",
-            "fieldValidateRules": [
-                "required"
-            ]
         },
         {
             "fieldName": "email",

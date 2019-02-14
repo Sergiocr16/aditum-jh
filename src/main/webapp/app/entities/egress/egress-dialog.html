@@ -73,14 +73,14 @@
                         </md-input-container>
                         <md-input-container class="md-block">
                             <label>Fecha contable</label>
-                            <md-datepicker md-max-date="vm.egress.expirationDate" required ng-model="vm.egress.date" md-hide-icons="calendar"
+                            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.egress.expirationDate" required ng-model="vm.egress.date" md-hide-icons="calendar"
                                            md-open-on-focus
                                            required></md-datepicker>
                         </md-input-container>
 
                         <md-input-container class="md-block  no-margin-bottom">
                             <label>Fecha de vencimiento</label>
-                            <md-datepicker md-min-date="vm.egress.date" required ng-model="vm.egress.expirationDate" md-hide-icons="calendar"
+                            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.egress.date" required ng-model="vm.egress.expirationDate" md-hide-icons="calendar"
                                          md-open-on-focus
                                            required></md-datepicker>
                         </md-input-container>

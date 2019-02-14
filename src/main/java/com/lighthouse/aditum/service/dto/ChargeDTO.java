@@ -56,8 +56,11 @@ public class ChargeDTO implements Serializable {
 
     private String formatedDate;
 
-
     private boolean payedSubcharge;
+
+    private Integer splited;
+
+    private Integer splitedCharge;
 
     public ChargeDTO() {
     }
@@ -306,5 +309,21 @@ public class ChargeDTO implements Serializable {
 
     public void setTotalFormatted(String totalFormatted) {
         this.totalFormatted = totalFormatted;
+    }
+
+    public Integer getSplited() {
+        return splited;
+    }
+
+    public void setSplited(Integer splited) {
+        this.splited = splited;
+    }
+
+    public Integer getSplitedCharge() {
+        return splitedCharge;
+    }
+
+    public void setSplitedCharge(Integer splitedCharge) {
+        this.splitedCharge = splitedCharge;
     }
 }

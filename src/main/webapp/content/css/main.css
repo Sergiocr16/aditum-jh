@@ -1895,7 +1895,11 @@ div.scrollmenu a:hover {
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-
+    .md-fixed-tabs {
+        border-radius: 0 !important;
+        width: 87%!important;
+        padding: 0px !important
+    }
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -1966,7 +1970,7 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 
 .loading-bar {
     position: fixed;
-    z-index: 100;
+    z-index: 75;
 }
 
 .nav-bar-top {
@@ -2103,7 +2107,9 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     display: block;
     text-decoration: none;
 }
-
+.width-100{
+    width: 100%;
+}
 #sidebar ul li a i {
     vertical-align: middle !important;
 }
@@ -2629,4 +2635,7 @@ md-toast.md-center {
 }
 .no-padding-xs{
     padding: 15px 15px!important;
+}
+.padding-bottom-13{
+    padding-bottom: 13px!important;
 }

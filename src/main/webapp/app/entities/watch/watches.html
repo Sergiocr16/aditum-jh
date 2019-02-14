@@ -32,13 +32,13 @@
     <div class="col-md-12 col-sm-12 col-xs-12 margin-top-20">
         <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
             <md-input-container class="md-block no-margin">
-                <md-datepicker md-max-date="vm.finalTime" required ng-model="vm.initialTime"
+                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.finalTime" required ng-model="vm.initialTime"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha de inicio" md-open-on-focus
                                required></md-datepicker>
             </md-input-container>
             <md-input-container class="md-block no-margin">
-                <md-datepicker md-min-date="vm.initialTime" required ng-model="vm.finalTime"
+                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.initialTime" required ng-model="vm.finalTime"
                                md-hide-icons="calendar"
                                md-placeholder="Fecha final" md-open-on-focus
                                required></md-datepicker>

@@ -290,7 +290,7 @@
                             <md-input-container ng-class="{'md-input-invalid': vm.dateNotPermited==true}"
                                                 class="md-block  no-margin-bottom">
                                 <label>Seleccione fecha a reservar</label>
-                                <md-datepicker ng-change="vm.checkAvailability()" md-min-date="vm.today"
+                                <md-datepicker class="datePicker" readonlydatepicker ng-change="vm.checkAvailability()" md-min-date="vm.today"
                                                ng-model="vm.commonAreaReservations.initalDate"
                                                md-hide-icons="calendar"
                                                md-open-on-focus></md-datepicker>

@@ -58,6 +58,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="splited" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="splited_charge" type="integer">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="false" />
             </column>

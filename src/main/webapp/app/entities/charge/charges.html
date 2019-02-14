@@ -1,0 +1,92 @@
+<div>
+    <h2 data-translate="aditumApp.charge.home.title">Charges</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="charge.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.charge.home.createLabel">
+                        Create new Charge
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="type"><span data-translate="aditumApp.charge.type">Type</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="date"><span data-translate="aditumApp.charge.date">Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="concept"><span data-translate="aditumApp.charge.concept">Concept</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="ammount"><span data-translate="aditumApp.charge.ammount">Ammount</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="state"><span data-translate="aditumApp.charge.state">State</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="deleted"><span data-translate="aditumApp.charge.deleted">Deleted</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="paymentDate"><span data-translate="aditumApp.charge.paymentDate">Payment Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="subcharge"><span data-translate="aditumApp.charge.subcharge">Subcharge</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="payedSubcharge"><span data-translate="aditumApp.charge.payedSubcharge">Payed Subcharge</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="splited"><span data-translate="aditumApp.charge.splited">Splited</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="splitedCharge"><span data-translate="aditumApp.charge.splitedCharge">Splited Charge</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="houseId"><span data-translate="aditumApp.charge.house">House</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="paymentId"><span data-translate="aditumApp.charge.payment">Payment</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="companyId"><span data-translate="aditumApp.charge.company">Company</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="charge in vm.charges track by charge.id">
+                    <td><a ui-sref="charge-detail({id:charge.id})">{{charge.id}}</a></td>
+                    <td>{{charge.type}}</td>
+                    <td>{{charge.date | date:'medium'}}</td>
+                    <td>{{charge.concept}}</td>
+                    <td>{{charge.ammount}}</td>
+                    <td>{{charge.state}}</td>
+                    <td>{{charge.deleted}}</td>
+                    <td>{{charge.paymentDate | date:'medium'}}</td>
+                    <td>{{charge.subcharge}}</td>
+                    <td>{{charge.payedSubcharge}}</td>
+                    <td>{{charge.splited}}</td>
+                    <td>{{charge.splitedCharge}}</td>
+                    <td>
+                        <a ui-sref="house-detail({id:charge.houseId})">{{charge.houseId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="payment-detail({id:charge.paymentId})">{{charge.paymentId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="company-detail({id:charge.companyId})">{{charge.companyId}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="charge-detail({id:charge.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="charge.edit({id:charge.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="charge.delete({id:charge.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

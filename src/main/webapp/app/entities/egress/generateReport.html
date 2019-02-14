@@ -16,7 +16,7 @@
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block">
                             <label>Fecha inicio</label>
-                            <md-datepicker autocomplete="off" md-max-date="vm.dates.final_time" required
+                            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
                                            ng-model="vm.dates.initial_time"
                                            md-hide-icons="calendar"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
@@ -34,7 +34,7 @@
                     <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg">
                         <md-input-container class="md-block  no-margin-bottom">
                             <label>Fecha final</label>
-                            <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
                                            md-hide-icons="calendar"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
