@@ -171,8 +171,8 @@
 
         function onSaveSuccess(result) {
             if (entity.id == null) {
-                var balance = {houseId: parseInt(result.id), extraordinary: 0, commonAreas: 0, maintenance: 0};
-                Balance.save(balance);
+                // var balance = {houseId: parseInt(result.id), extraordinary: 0, commonAreas: 0, maintenance: 0};
+                // Balance.save(balance);
             }
 
 

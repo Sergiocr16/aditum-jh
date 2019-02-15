@@ -68,7 +68,6 @@
     <include file="classpath:config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180518003909_added_entity_constraints_EgressCategory.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180528183557_added_entity_constraints_Presupuesto.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180824030452_added_entity_constraints_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180806172946_added_entity_constraints_Announcement.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_constraints_AnnouncementComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>

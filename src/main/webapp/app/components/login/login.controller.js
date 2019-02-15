@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods','Modal'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration) {
 
         //
         // angular.element(document).ready(function () {
@@ -57,7 +57,7 @@
         }
 
         function showLoginHelp() {
-      Modal.dialog("Nombre de usuario","Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac","¡Entendido!")
+            Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
         }
 
         function login(event) {
@@ -75,24 +75,29 @@
                     $rootScope.inicieSesion = true;
                     switch (account.authorities[0]) {
                         case "ROLE_ADMIN":
-                            setTimeout(function () {
-                                $state.go('company');
-                            }, 300);
+                            $state.go('company');
                             break;
                         case "ROLE_MANAGER":
-                            MultiCompany.getCurrentUserCompany().then(function (data) {
-                                $rootScope.companyUser = data;
-                                    $rootScope.showSelectCompany = false;
-                                    $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                                    $rootScope.companyId = data.companies[0].id;
-                                    vm.backgroundSelectCompany = true;
-                                    $state.go('dashboard');
+                            MultiCompany.getCurrentUserCompany().then(function (user) {
+                                $rootScope.companyUser = user;
+                                $rootScope.showSelectCompany = false;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
+                               var companiesConfigArray = "";
+                                for (var i = 0; i < user.companies.length; i++) {
+                                    CompanyConfiguration.get({id: user.companies[i].id}, function(companyConfig){
+                                            companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+"|";
+                                        if(user.companies.length==i){
+                                            $rootScope.companyId = user.companies[0].id;
+                                            vm.backgroundSelectCompany = true;
+                                            $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                            $state.go('dashboard');
+                                        }
+                                    })
+                                }
                             })
                             break;
                         case "ROLE_OFFICER":
-                            setTimeout(function () {
-                                $state.go('main-access-door');
-                            }, 300);
+                            $state.go('main-access-door');
                             break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
@@ -111,10 +116,8 @@
                             })
                             break;
                         case "ROLE_RH":
-                            setTimeout(function () {
-                                $rootScope.active = "company-rh";
-                                $state.go('company-rh');
-                            }, 300);
+                            $rootScope.active = "company-rh";
+                            $state.go('company-rh');
                             break;
                         case "ROLE_JD":
                             MultiCompany.getCurrentUserCompany().then(function (data) {

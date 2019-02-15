@@ -14,14 +14,25 @@ public class DashboardReportIncomeEgressBudgetDTO {
 
     private double egressTotal;
 
-    private double budgetTotal;
+    private double budgetIncomeTotal;
+
+    private double budgetEgressTotal;
+
+    private double initialBalance;
+
+    private double realBalance;
+
+    private String initialBalanceformated;
+
+    private String realBalanceformated;
 
     private String incomeTotalformated;
 
     private String egressTotalformated;
 
-    private String budgetTotalformated;
+    private String budgetIncomeTotalformated;
 
+    private String budgetEgressTotalformated;
 
     private String formatMoney(double ammount){
         DecimalFormat format = new DecimalFormat("₡#,##0;₡-#,##0");
@@ -63,15 +74,14 @@ public class DashboardReportIncomeEgressBudgetDTO {
         this.egressTotal = egressTotal;
     }
 
-    public double getBudgetTotal() {
+    public double getbudgetIncomeTotal() {
 
-        return budgetTotal;
+        return budgetIncomeTotal;
     }
 
-    public void setBudgetTotal(double budgetTotal) {
-        this.budgetTotalformated = formatMoney(budgetTotal);
-
-        this.budgetTotal = budgetTotal;
+    public void setbudgetIncomeTotal(double budgetIncomeTotal) {
+        this.budgetIncomeTotalformated = formatMoney(budgetIncomeTotal);
+        this.budgetIncomeTotal = budgetIncomeTotal;
     }
 
     public String getIncomeTotalformated() {
@@ -90,13 +100,63 @@ public class DashboardReportIncomeEgressBudgetDTO {
         this.egressTotalformated = egressTotalformated;
     }
 
-    public String getBudgetTotalformated() {
-        return budgetTotalformated;
+    public String getbudgetIncomeTotalformated() {
+        return budgetIncomeTotalformated;
     }
 
-    public void setBudgetTotalformated(String budgetTotalformated) {
-        this.budgetTotalformated = budgetTotalformated;
+    public void setbudgetIncomeTotalformated(String budgetIncomeTotalformated) {
+        this.budgetIncomeTotalformated = budgetIncomeTotalformated;
     }
 
 
+    public double getBudgetEgressTotal() {
+        return budgetEgressTotal;
+    }
+
+    public void setBudgetEgressTotal(double budgetEgressTotal) {
+        setBudgetEgressTotalformated(formatMoney(budgetEgressTotal));
+        this.budgetEgressTotal = budgetEgressTotal;
+    }
+
+    public String getBudgetEgressTotalformated() {
+        return budgetEgressTotalformated;
+    }
+
+    public void setBudgetEgressTotalformated(String budgetEgressTotalformated) {
+        this.budgetEgressTotalformated = budgetEgressTotalformated;
+    }
+
+    public double getInitialBalance() {
+        return initialBalance;
+    }
+
+    public void setInitialBalance(double initialBalance) {
+        this.setInitialBalanceformated(formatMoney(initialBalance));
+        this.initialBalance = initialBalance;
+    }
+
+    public double getRealBalance() {
+        return realBalance;
+    }
+
+    public void setRealBalance(double realBalance) {
+        this.setRealBalanceformated(formatMoney(realBalance));
+        this.realBalance = realBalance;
+    }
+
+    public String getInitialBalanceformated() {
+        return initialBalanceformated;
+    }
+
+    public void setInitialBalanceformated(String initialBalanceformated) {
+        this.initialBalanceformated = initialBalanceformated;
+    }
+
+    public String getRealBalanceformated() {
+        return realBalanceformated;
+    }
+
+    public void setRealBalanceformated(String realBalanceformated) {
+        this.realBalanceformated = realBalanceformated;
+    }
 }

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResultStatesAnualReportController', ResultStatesAnualReportController);
 
-    ResultStatesAnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    ResultStatesAnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','$state'];
 
-    function ResultStatesAnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function ResultStatesAnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,$state) {
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Reporte anual";
@@ -31,6 +31,10 @@
             printing: false,
             sendingEmail: false
         };
+
+        vm.showGraphic = function(){
+            $state.go("resultStates.anualReport.graphic",{year:vm.yearIEB})
+        }
         createYearsArrays()
         vm.download = function () {
             vm.exportActions.downloading = true;
@@ -76,7 +80,6 @@
                 vm.actualMonth = new Date(y1, m1, 1);
                 vm.month = m1 + 1;
                 vm.rowsQuantity = vm.month + 4;
-                console.log(vm.actualMonth)
                 vm.loadAll();
             }else{
                 var dateMonthDay = new Date();
@@ -85,8 +88,6 @@
                 vm.actualMonth = dateMonthDay;
                 vm.month = vm.actualMonth.getMonth() + 1;
                 vm.rowsQuantity = vm.month + 4;
-                console.log(dateMonthDay)
-                console.log(vm.actualMonth)
                 vm.loadAll();
 
             }
