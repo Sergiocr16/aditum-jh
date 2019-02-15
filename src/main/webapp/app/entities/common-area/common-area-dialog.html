@@ -140,7 +140,7 @@
                                       placeholder="Ubicación, reglas del área común, etc." style="margin-top: -5px;"
                                       rows="3" md-select-on-focus></textarea>
                         </md-input-container>
-                        <md-input-container class="md-block"  >
+                        <md-input-container class="md-block"  ng-if="vm.hasContability">
                             <div  style="margin-top: 25px!important;" >
                                 <label>Requiere cobro</label>
                             </div>
@@ -155,7 +155,7 @@
                             </div>
                         </md-input-container>
 
-                        <md-input-container class="md-block"  >
+                        <md-input-container class="md-block"  ng-if="vm.hasContability" >
                             <div  style="margin-top: 25px!important;" >
                                 <label>Permite reservar con deudas</label>
                             </div>

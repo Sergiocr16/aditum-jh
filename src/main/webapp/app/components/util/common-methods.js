@@ -1,34 +1,45 @@
-(function() {
+(function () {
     'use strict';
 
     angular
         .module('aditumApp')
         .provider('CommonMethods', CommonMethods);
 
+    function CommonMethods() {
+        this.$get = getService;
 
-    function CommonMethods () {
-     this.$get = getService;
-
-        function getService () {
+        function getService($localStorage) {
             return {
-               validateName:validateName,
+                validateName: validateName,
                 waitingMessage: waitingMessage,
                 validateLetters: validateLetters,
                 validateNumbers: validateNumbers,
                 validateRepeat: validateRepeat,
                 capitalizeFirstLetter: capitalizeFirstLetter,
-                encryptIdUrl:encryptIdUrl,
-                decryptIdUrl:decryptIdUrl,
+                encryptIdUrl: encryptIdUrl,
+                decryptIdUrl: decryptIdUrl,
                 validateSpecialCharacters: validateSpecialCharacters,
                 getCarBrands: getCarBrands,
                 validateSpecialCharactersAndVocals: validateSpecialCharactersAndVocals,
                 formatCurrencyInputs: formatCurrencyInputs,
-                deleteFromArray:deleteFromArray,
-                deleteFromArrayWithId:deleteFromArrayWithId
+                deleteFromArray: deleteFromArray,
+                deleteFromArrayWithId: deleteFromArrayWithId,
+                getCurrentCompanyConfig: getCurrentCompanyConfig,
 
             };
 
-            function deleteFromArrayWithId(object,array){
+            function getCurrentCompanyConfig(compaId) {
+                var companiesConfig =  decryptIdUrl($localStorage.companiesConfig);
+                var companiesArray = companiesConfig.split("|");
+                for (var i = 0; i < companiesArray.length; i++) {
+                    var companyId = companiesArray[i].split(";")[0];
+                    if(companyId == compaId){
+                        return {companyId:companyId,hasContability:companiesArray[i].split(";")[1]}
+                    }
+                }
+            }
+
+            function deleteFromArrayWithId(object, array) {
                 var index = undefined;
                 var founded = false;
                 angular.forEach(array, function (item, i) {
@@ -41,307 +52,319 @@
                         }
                     }
                 })
-                if (index != -1){
+                if (index != -1) {
                     array.splice(index, 1);
                 }
             }
-            function deleteFromArray(item,array){
+
+            function deleteFromArray(item, array) {
                 var index = array.indexOf(item);
                 if (index > -1) {
                     array.splice(index, 1);
                 }
             }
-            function validateName (items, name) {
+
+            function validateName(items, name) {
                 var condition = true;
-                   angular.forEach(items, function(item, index) {
-                       if (item.name.toUpperCase() == name.toUpperCase()) {
-                           condition = false;
-                       }
-                   });
-                   return condition;
+                angular.forEach(items, function (item, index) {
+                    if (item.name.toUpperCase() == name.toUpperCase()) {
+                        condition = false;
+                    }
+                });
+                return condition;
             }
-           function waitingMessage(message) {
-                 bootbox.dialog({
-                         message: '<div class="text-center gray-font font-15"><img src="../../content/images/waiting-gif1.gif" style="width: 20px; height: 20px;"/>  Por favor espere...</div>',
-                         closeButton: false,
-                     })
-             }
+
+            function waitingMessage(message) {
+                bootbox.dialog({
+                    message: '<div class="text-center gray-font font-15"><img src="../../content/images/waiting-gif1.gif" style="width: 20px; height: 20px;"/>  Por favor espere...</div>',
+                    closeButton: false,
+                })
+            }
+
             function validateNumbers() {
-                jQuery('.numbers').keypress(function(tecla) {
+                jQuery('.numbers').keypress(function (tecla) {
                     if (tecla.charCode < 48 || tecla.charCode > 57) return false;
                 });
             }
-             function validateRepeat(items, itemToValidate, criteria) {
-                 var condition = false;
-                 angular.forEach(items, function(item, index) {
-                     switch (criteria) {
-                         case 1:
-                             if (item.identification_number == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 2:
-                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
-                                 condition = true;
-                             }
-                             break;
-                         case 3:
-                             if (item.house_number == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 4:
-                             if (item.license_plate == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 5:
-                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
-                                 condition = true;
-                             }
-                             break;
-                     }
+
+            function validateRepeat(items, itemToValidate, criteria) {
+                var condition = false;
+                angular.forEach(items, function (item, index) {
+                    switch (criteria) {
+                        case 1:
+                            if (item.identification_number == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 2:
+                            if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                condition = true;
+                            }
+                            break;
+                        case 3:
+                            if (item.house_number == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 4:
+                            if (item.license_plate == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 5:
+                            if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                condition = true;
+                            }
+                            break;
+                    }
 
 
-                 });
-                 return condition;
-             }
-
-            function encryptIdUrl(id){
-            return CryptoJS.AES.encrypt(id.toString(), "Ankara06").toString();
+                });
+                return condition;
             }
 
-            function decryptIdUrl(encryptedId){
-              return  CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara06").toString(CryptoJS.enc.Utf8);
+            function encryptIdUrl(id) {
+                return CryptoJS.AES.encrypt(id.toString(), "Ankara06").toString();
+            }
+
+            function decryptIdUrl(encryptedId) {
+                return CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara06").toString(CryptoJS.enc.Utf8);
 
             }
 
             function validateLetters() {
-                 $(".letters").keypress(function(key) {
-                     if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas
-                         &&
-                         (key.charCode < 65 || key.charCode > 90) //letras minusculas
-                         &&
-                         (key.charCode != 45) //retroceso
-                         &&
-                         (key.charCode != 241) //ñ
-                         &&
-                         (key.charCode != 209) //Ñ
-                         &&
-                         (key.charCode != 32) //espacio
-                         &&
-                         (key.charCode != 225) //á
-                         &&
-                         (key.charCode != 233) //é
-                         &&
-                         (key.charCode != 237) //í
-                         &&
-                         (key.charCode != 243) //ó
-                         &&
-                         (key.charCode != 250) //ú
-                         &&
-                         (key.charCode != 193) //Á
-                         &&
-                         (key.charCode != 201) //É
-                         &&
-                         (key.charCode != 205) //Í
-                         &&
-                         (key.charCode != 211) //Ó
-                         &&
-                         (key.charCode != 218) //Ú
+                $(".letters").keypress(function (key) {
+                    if ((key.charCode < 97 || key.charCode > 122) //letras mayusculas
+                        &&
+                        (key.charCode < 65 || key.charCode > 90) //letras minusculas
+                        &&
+                        (key.charCode != 45) //retroceso
+                        &&
+                        (key.charCode != 241) //ñ
+                        &&
+                        (key.charCode != 209) //Ñ
+                        &&
+                        (key.charCode != 32) //espacio
+                        &&
+                        (key.charCode != 225) //á
+                        &&
+                        (key.charCode != 233) //é
+                        &&
+                        (key.charCode != 237) //í
+                        &&
+                        (key.charCode != 243) //ó
+                        &&
+                        (key.charCode != 250) //ú
+                        &&
+                        (key.charCode != 193) //Á
+                        &&
+                        (key.charCode != 201) //É
+                        &&
+                        (key.charCode != 205) //Í
+                        &&
+                        (key.charCode != 211) //Ó
+                        &&
+                        (key.charCode != 218) //Ú
 
-                     )
-                         return false;
-                 });
+                    )
+                        return false;
+                });
             }
-             function capitalizeFirstLetter(string) {
-             if(string!=undefined){
-                     return string.charAt(0).toUpperCase() + string.slice(1);
-                     }
-             }
-             function getCarBrands() {
+
+            function capitalizeFirstLetter(string) {
+                if (string != undefined) {
+                    return string.charAt(0).toUpperCase() + string.slice(1);
+                }
+            }
+
+            function getCarBrands() {
                 var brands = {
                     data: [{
 
-                        brand:"Audi"
+                        brand: "Audi"
                     }, {
-                        brand:"Alfa Romeo"
+                        brand: "Alfa Romeo"
                     }, {
-                        brand:"BMW"
+                        brand: "BMW"
                     }, {
-                        brand:"BYD"
+                        brand: "BYD"
                     }, {
-                        brand:"Chevrolet"
+                        brand: "Chevrolet"
                     }, {
-                        brand:"Citroen"
+                        brand: "Citroen"
                     }, {
-                        brand:"Daewoo"
+                        brand: "Daewoo"
                     }, {
-                        brand:"Daihatsu"
+                        brand: "Daihatsu"
                     }, {
-                        brand:"Dodge"
+                        brand: "Dodge"
                     }, {
-                        brand:"Fiat"
+                        brand: "Fiat"
                     }, {
-                        brand:"Ford"
+                        brand: "Ford"
                     }, {
-                        brand:"Honda"
+                        brand: "Honda"
                     }, {
-                        brand:"Hummer"
+                        brand: "Hummer"
                     }, {
-                        brand:"Hyundai"
+                        brand: "Hyundai"
                     }, {
-                        brand:"Izuzu"
+                        brand: "Izuzu"
                     }, {
-                        brand:"Jaguar"
+                        brand: "Jaguar"
                     }, {
-                        brand:"JAC"
+                        brand: "JAC"
                     }, {
-                        brand:"Jeep"
+                        brand: "Jeep"
                     }, {
-                        brand:"Kia"
+                        brand: "Kia"
                     }, {
-                        brand:"Land Rover"
+                        brand: "Land Rover"
                     }, {
-                        brand:"Lexus"
+                        brand: "Lexus"
                     }, {
-                        brand:"Maserati"
+                        brand: "Maserati"
                     }, {
-                        brand:"Mazda"
+                        brand: "Mazda"
                     }, {
-                        brand:"Mercedes Benz"
+                        brand: "Mercedes Benz"
                     }, {
-                        brand:"Mini"
+                        brand: "Mini"
                     }, {
-                        brand:"Mitsubishi"
+                        brand: "Mitsubishi"
                     }, {
-                        brand:"Nissan"
+                        brand: "Nissan"
                     }, {
-                        brand:"Peugeot"
+                        brand: "Peugeot"
                     }, {
-                        brand:"Porshe"
+                        brand: "Porshe"
                     }, {
-                        brand:"Renault"
+                        brand: "Renault"
                     }, {
-                        brand:"Rolls Royce"
+                        brand: "Rolls Royce"
                     }, {
-                        brand:"Ssanyong"
+                        brand: "Ssanyong"
                     }, {
-                        brand:"Subaru"
+                        brand: "Subaru"
                     }, {
-                        brand:"Suzuki"
+                        brand: "Suzuki"
                     }, {
-                        brand:"Toyota"
+                        brand: "Toyota"
                     }, {
-                        brand:"Volkswagen"
+                        brand: "Volkswagen"
                     }, {
-                        brand:"Volvo"
+                        brand: "Volvo"
 
-                    }, ]
+                    },]
                 }
 
                 return brands;
-              }
-              function validateSpecialCharacters() {
-                 jQuery('.specialCharacters').keypress(function(tecla) {
-                 if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65)) return false;
-                 });
-              }
-              function validateSpecialCharactersAndVocals() {
-                 jQuery('.specialCharactersAndVocals').keypress(function(tecla) {
-                 if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65) || tecla.charCode == 97 || tecla.charCode == 101 || tecla.charCode == 105 || tecla.charCode == 111 || tecla.charCode == 117) return false;
-                 });
-              }
-             function validateRepeat(items, itemToValidate, criteria) {
-                 var condition = false;
-                 angular.forEach(items, function(item, index) {
-                      console.log(criteria);
-                     switch (criteria) {
-                         case 1:
-                             if (item.identificationnumber == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 2:
-                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
-                                 condition = true;
-                             }
-                             break;
-                         case 3:
-                             if (item.housenumber == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 4:
-                             if (item.licenseplate == itemToValidate) {
-                                 condition = true;
-                             }
-                             break;
-                         case 5:
-                             if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
-                                 condition = true;
-                             }
-                             break;
-                     }
+            }
+
+            function validateSpecialCharacters() {
+                jQuery('.specialCharacters').keypress(function (tecla) {
+                    if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65)) return false;
+                });
+            }
+
+            function validateSpecialCharactersAndVocals() {
+                jQuery('.specialCharactersAndVocals').keypress(function (tecla) {
+                    if ((tecla.charCode < 48) || (tecla.charCode > 90 && tecla.charCode < 97) || (tecla.charCode > 122 && tecla.charCode < 126) || (tecla.charCode > 57 && tecla.charCode < 65) || tecla.charCode == 97 || tecla.charCode == 101 || tecla.charCode == 105 || tecla.charCode == 111 || tecla.charCode == 117) return false;
+                });
+            }
+
+            function validateRepeat(items, itemToValidate, criteria) {
+                var condition = false;
+                angular.forEach(items, function (item, index) {
+                    console.log(criteria);
+                    switch (criteria) {
+                        case 1:
+                            if (item.identificationnumber == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 2:
+                            if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                condition = true;
+                            }
+                            break;
+                        case 3:
+                            if (item.housenumber == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 4:
+                            if (item.licenseplate == itemToValidate) {
+                                condition = true;
+                            }
+                            break;
+                        case 5:
+                            if (item.email.toUpperCase() == itemToValidate.toUpperCase()) {
+                                condition = true;
+                            }
+                            break;
+                    }
 
 
-                 });
-                 return condition;
-             }
-             function formatCurrencyInputs() {
+                });
+                return condition;
+            }
 
-                var $form = $( "#form" );
+            function formatCurrencyInputs() {
+
+                var $form = $("#form");
                 var $input = $('input.currency')
 
-                $input.on( "keyup", function( event ) {
+                $input.on("keyup", function (event) {
 
 
                     // When user select text in the document, also abort.
                     var selection = window.getSelection().toString();
-                    if ( selection !== '' ) {
+                    if (selection !== '') {
                         return;
                     }
 
                     // When the arrow keys are pressed, abort.
-                    if ( $.inArray( event.keyCode, [38,40,37,39] ) !== -1 ) {
+                    if ($.inArray(event.keyCode, [38, 40, 37, 39]) !== -1) {
                         return;
                     }
 
 
-                    var $this = $( this );
+                    var $this = $(this);
 
                     // Get the value.
                     var input = $this.val();
 
                     var input = input.replace(/[\D\s\._\-]+/g, "");
-                            input = input ? parseInt( input, 10 ) : 0;
+                    input = input ? parseInt(input, 10) : 0;
 
-                            $this.val( function() {
-                                return ( input === 0 ) ? "" : input.toLocaleString( "en-US" );
-                            } );
-                } );
+                    $this.val(function () {
+                        return (input === 0) ? "" : input.toLocaleString("en-US");
+                    });
+                });
 
                 /**
                  * ==================================
                  * When Form Submitted
                  * ==================================
                  */
-                $form.on( "submit", function( event ) {
+                $form.on("submit", function (event) {
 
-                    var $this = $( this );
+                    var $this = $(this);
                     var arr = $this.serializeArray();
 
                     for (var i = 0; i < arr.length; i++) {
-                            arr[i].value = arr[i].value.replace(/[($)\s\._\-]+/g, ''); // Sanitize the values.
-                    };
+                        arr[i].value = arr[i].value.replace(/[($)\s\._\-]+/g, ''); // Sanitize the values.
+                    }
+                    ;
 
-                    console.log( arr );
+                    console.log(arr);
 
                     event.preventDefault();
                 });
 
-              }
-      }
+            }
+        }
 
     }
 

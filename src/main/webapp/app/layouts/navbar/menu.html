@@ -15,10 +15,10 @@
     <md-divider hide-lg hide-gt-lg hide-xl></md-divider>
     <md-content flex style="overflow-y: auto!important" layout="column">
         <nav id="sidebar">
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components hide-xs hide-sm">
                 <li ng-if="companyUser.companies.length>1">
                     <md-menu>
-                        <a ng-click="$mdMenu.open($event)">
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
                             <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
                         </a>
                         <md-menu-content width="4">
@@ -31,9 +31,8 @@
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-
                 </li>
-                <li ng-repeat="mainItem in vm.menu"  hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
+                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.hasContability" hide-xs hide-sm has-any-authority="{{mainItem.authoritites}}">
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
@@ -45,7 +44,7 @@
                     <div>
                         <ul class="list-unstyled components">
                             <li ng-repeat="secondItem in mainItem.secondaryItems"
-                                has-any-authority="{{secondItem.authoritites}}" ng-if="secondItem.showLg">
+                                has-any-authority="{{secondItem.authoritites}}" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
                                    ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
                                    data-toggle="collapse"
@@ -112,7 +111,26 @@
                         </ul>
                     </div>
                 </li>
-                <li ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" ng-class="{'margin-top-56':$index==1}">
+            </ul>
+
+            <ul class="list-unstyled components hide-lg hide-xl hide-md">
+                    <li ng-if="companyUser.companies.length>1" class="margin-top-56">
+                        <md-menu>
+                            <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                                <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
+                            </a>
+                            <md-menu-content width="4">
+                                <md-menu-item ng-repeat="company in companyUser.companies">
+                                    <a ng-click="vm.selectCompany(company)"
+                                       style="{{vm.defineSelectCompanyColor(company).color}}">
+                                        <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
+                                            class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
+                                    </a>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </li>
+                <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" >
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>
                         <a style="{{vm.defineStyleMainButton(mainItem).color}};cursor:default">
@@ -124,7 +142,7 @@
                     <div>
                         <ul class="list-unstyled components">
                             <li ng-repeat="secondItem in mainItem.secondaryItems"
-                                has-any-authority="{{secondItem.authoritites}}" ng-if="secondItem.showXs">
+                                has-any-authority="{{secondItem.authoritites}}" ng-if="vm.showSecondItem(secondItem)" class="fade-in">
                                 <a ng-mouseenter="secondItem.hover = true;" ng-mouseleave="secondItem.hover = false"
                                    ng-if="!secondItem.collapsable" ng-click="vm.go(secondItem.uisref)"
                                    data-toggle="collapse"

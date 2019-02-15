@@ -29,7 +29,7 @@
 
                             <div class="btn-group " style="padding:5px">
 
-                                <button class="btn btn-circle btn-icon-only btn-default fullscreen"
+                                <button class="btn btn-circle btn-icon-only btn-default fullscreen float-right"
                                         ng-click="vm.expand()"><i class="fa fa-expand" aria-hidden="true"></i></button>
                             </div>
                         </div>
@@ -802,7 +802,12 @@
                     <div class="form-actions noborder" style="padding-bottom:0px;">
 
                     </div>
-
+                    <md-button hide-xs hide-sm hide-md ng-click="vm.showGraphic()" class="md-fab md-fab-bottom-right green-button-oficial"
+                               style="position: fixed;"
+                               aria-label="Add new">
+                        <md-tooltip md-direction="left" class="font-13 bold white-color">Gráfico de ejecución presupuestaria</md-tooltip>
+                        <md-icon class="white-color">bar_chart</md-icon>
+                    </md-button>
                 </div>
             </div>
         </div>

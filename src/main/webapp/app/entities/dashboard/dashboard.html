@@ -2,9 +2,8 @@
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<md-button ng-click="vm.showGraphic()" class="md-primary md-raise"><md-icon>bar_chart <md-tooltip>Gráfico de flujo de Ingresos y Egresos</md-tooltip></md-icon></md-button>
 <div layout="column" lass="fade-in" ng-if="vm.isReady" flex="100">
-    <div class="row">
+    <div class="row" ng-if="vm.hasContability">
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <div class="dashboard-stat green-haze">
                 <div class="visual">
@@ -55,7 +54,64 @@
                     </div>
                 </div>
                 <a class="more" href="javascript:;">
-                    View more <i class="m-icon-swapright m-icon-white"></i>
+                    Ver reporte <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="!vm.hasContability">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat  blue-madison">
+                <div class="visual">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <div class="details">
+                    <div class="number font-27">
+                        {{vm.dashboard.reservationsPending}}
+                    </div>
+                    <div class="desc">
+                        Reservaciones pendientes
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat red-intense">
+                <div class="visual">
+                    <i class="fa fa-frown-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number font-27">
+                        {{vm.dashboard.complaintsPending}}
+                    </div>
+                    <div class="desc">
+                        Quejas pendientes
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat green-haze">
+                <div class="visual">
+                    <i class="fa fa-meh-o"></i>
+                </div>
+                <div class="details">
+                    <div class="number font-27">
+                        {{vm.dashboard.complaintsActive}}
+                    </div>
+                    <div class="desc">
+                        Quejas activas
+                    </div>
+                </div>
+                <a class="more" href="javascript:;">
+                    Ver más <i class="m-icon-swapright m-icon-white"></i>
                 </a>
             </div>
         </div>
@@ -63,7 +119,32 @@
     <div class="row" class="col-md-12 col-xs-12">
         <div class="col-md-12 no-padding">
             <div class="col-md-8 col-xs-12 no-padding-xs">
-                <md-card class="fade-in padding-30 col-md-12 no-margin" ng-if="vm.isReady"
+                <md-card class="fade-in padding-30 col-md-12 no-margin" ng-if="vm.isReady && !vm.hasContability"
+                         style="padding-top: 10px!important;min-height: 342px;">
+                    <div class="portlet-title" layout="row" layout-xs="column" layout-align="space-between center">
+                        <div class="caption">
+                            <span
+                                class="caption-subject font-green-sharp bold uppercase font-15">Cantidad de visitantes</span>
+                        </div>
+                        <div class="float-right padding-10" layout="row">
+                            <md-button class="btn btn-dashboard btn-sm bold"
+                                       ng-class="{'font-green-sharp':vm.visitantState==1}"
+                                       ng-click="vm.updateWeekData()">Semana
+                            </md-button>
+                            <md-button class="btn btn-dashboard btn-sm bold"
+                                       ng-class="{'font-green-sharp':vm.visitantState==2}"
+                                       ng-click="vm.updateMonthData()">Mes
+                            </md-button>
+                            <md-button class="btn btn-dashboard btn-sm bold"
+                                       ng-class="{'font-green-sharp':vm.visitantState==3}"
+                                       ng-click="vm.updateYearData()">
+                                Año
+                            </md-button>
+                        </div>
+                    </div>
+                    <div google-chart chart="vm.dataVisitors" flex="100"></div>
+                </md-card>
+                <md-card class="fade-in padding-30 col-md-12 no-margin" ng-if="vm.isReady && vm.hasContability"
                          style="padding-top: 10px!important;min-height: 342px;">
                     <div layout="row" layout-xs="column" layout-align="space-between center">
                         <div class="portlet-title">
@@ -115,7 +196,7 @@
     </div>
 
     <div class="row" class="col-md-12 col-xs-12 ">
-        <div class="col-md-12 no-padding column">
+        <div class="col-md-12 no-padding column" ng-if="vm.hasContability">
             <div class="col-md-8 col-xs-12 no-padding-xs">
                 <md-card class="fade-in padding-30 col-md-12 no-margin" ng-if="vm.isReady"
                          style="padding-top: 10px!important;min-height: 342px;">
@@ -180,7 +261,7 @@
             </div>
         </div>
     </div>
-    <div class="row" class="col-md-12 col-xs-12 ">
+    <div class="row" class="col-md-12 col-xs-12 " ng-if="vm.hasContability">
         <div class="col-md-12 no-padding column">
             <div class="col-md-8 col-xs-12 no-padding-xs">
                 <md-card class="fade-in padding-30 col-md-12 no-margin" ng-if="vm.isReady"
@@ -209,7 +290,7 @@
                     <div google-chart chart="vm.dataVisitors" flex="100"></div>
                 </md-card>
             </div>
-            <div class="col-md-4 col-xs-12 no-padding-xs">
+            <div class="col-md-4 col-xs-12 no-padding-xs"  >
                 <md-card class="fade-in col-md-12 no-margin padding-30"
                          style="
     margin-bottom: 10px!important;
