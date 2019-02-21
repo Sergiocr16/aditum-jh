@@ -185,7 +185,6 @@
         }
 
         function loadAll() {
-
             if (vm.initialTime.date != undefined && vm.filtering == true || vm.finalTime.date != undefined && vm.filtering == true) {
                 Payment.getByHouseFilteredByDate({
                     page: pagingParams.page - 1,

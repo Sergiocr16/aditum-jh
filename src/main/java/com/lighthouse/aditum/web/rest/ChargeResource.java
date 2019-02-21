@@ -2,21 +2,30 @@ package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.ChargeService;
+import com.lighthouse.aditum.service.ChargesToPayDocumentService;
+import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -37,8 +46,11 @@ public class ChargeResource {
 
     private final ChargeService chargeService;
 
-    public ChargeResource(ChargeService chargeService) {
+    private final ChargesToPayDocumentService chargesToPayDocumentService;
+
+    public ChargeResource(ChargeService chargeService, ChargesToPayDocumentService chargesToPayDocumentService) {
         this.chargeService = chargeService;
+        this.chargesToPayDocumentService = chargesToPayDocumentService;
     }
 
     /**
@@ -100,6 +112,7 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/chargesPerHouse/{houseId}")
     @Timed
     public ResponseEntity<List<ChargeDTO>> getAllChargesByHouse(@PathVariable Long houseId)
@@ -109,6 +122,16 @@ public class ChargeResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/charges");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
+    @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<ChargesToPayReportDTO> getAllChargesToPay(@PathVariable(value = "final_time") String final_time, @PathVariable(value = "type") int type, @PathVariable(value = "companyId") Long companyId, @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Charges");
+        ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(report));
+    }
+
     /**
      * GET  /charges/:id : get the "id" charge.
      *
@@ -135,5 +158,29 @@ public class ChargeResource {
         log.debug("REST request to delete Charge : {}", id);
         chargeService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/charges/chargesToPay/file/{final_time}/{type}/byCompany/{companyId}")
+    @Timed
+    public void getFile(@PathVariable(value = "final_time") String final_time, @PathVariable(value = "type") int type, @PathVariable(value = "companyId") Long companyId, @ApiParam Pageable pageable,HttpServletResponse response) throws URISyntaxException, IOException {
+        File file = chargesToPayDocumentService.obtainFileToPrint(final_time, type, companyId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
     }
 }
