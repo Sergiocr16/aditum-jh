@@ -114,6 +114,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/anualReport/file/{anualReportObject}").permitAll()
             .antMatchers("/api/egresses/file/{egressObject}").permitAll()
             .antMatchers("/api/accountStatus/file/{accountStatusObject}/{option}").permitAll()
+            .antMatchers("/api/charges/chargesToPay/file/{final_time}/{type}/byCompany/{companyId}").permitAll()
             .antMatchers("/api/companies/{id}").permitAll()
             .antMatchers("/api/users").permitAll()
             .antMatchers("/api/users/updateWithPassword").permitAll()

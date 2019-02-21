@@ -6,6 +6,7 @@ import com.lighthouse.aditum.domain.Charge;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.ChargeService;
+import com.lighthouse.aditum.service.ChargesToPayDocumentService;
 import com.lighthouse.aditum.service.dto.ChargeDTO;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -77,6 +78,9 @@ public class ChargeResourceIntTest {
     private ChargeService chargeService;
 
     @Autowired
+    private ChargesToPayDocumentService chargesToPayDocumentService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -95,7 +99,7 @@ public class ChargeResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        ChargeResource chargeResource = new ChargeResource(chargeService);
+        ChargeResource chargeResource = new ChargeResource(chargeService,chargesToPayDocumentService);
         this.restChargeMockMvc = MockMvcBuilders.standaloneSetup(chargeResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

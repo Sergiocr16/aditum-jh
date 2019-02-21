@@ -759,6 +759,18 @@
                             showXs: true,
                             showLg: true,
                         },
+                        {
+                            title: "Cuotas por cobrar",
+                            icon: "list_alt",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "reporteCuotasPorPagar",
+                            collapsable: false,
+                            uisref: "chargesReport",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {

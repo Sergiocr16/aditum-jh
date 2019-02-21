@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('aditumApp')
@@ -6,11 +6,11 @@
 
     Charge.$inject = ['$resource', 'DateUtils'];
 
-    function Charge ($resource, DateUtils) {
-        var resourceUrl =  'api/charges/:id';
+    function Charge($resource, DateUtils) {
+        var resourceUrl = 'api/charges/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -24,10 +24,19 @@
             'queryByHouse': {
                 method: 'GET',
                 url: 'api/chargesPerHouse/:houseId',
-                params: {houseId:'@houseId'},
+                params: {houseId: '@houseId'},
                 isArray: true
             },
-            'update': { method:'PUT' }
+            'findChargesToPayReport': {
+                method: 'GET',
+                url: 'api/charges/chargesToPay/:final_time/:type/byCompany/:companyId',
+                params: {
+                    companyId: '@companyId',
+                    final_time: '@final_time',
+                    type:'@type'
+                },
+            },
+            'update': {method: 'PUT'}
         });
     }
 })();
