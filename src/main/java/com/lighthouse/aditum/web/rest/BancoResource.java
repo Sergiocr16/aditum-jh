@@ -1,12 +1,14 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.BancoDocumentService;
 import com.lighthouse.aditum.service.BancoService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.BancoDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,11 +18,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 /**
@@ -33,11 +44,13 @@ public class BancoResource {
     private final Logger log = LoggerFactory.getLogger(BancoResource.class);
 
     private static final String ENTITY_NAME = "banco";
-
+    private final BancoDocumentService bancoDocumentService;
     private final BancoService bancoService;
 
-    public BancoResource(BancoService bancoService) {
+
+    public BancoResource(BancoDocumentService bancoDocumentService,BancoService bancoService) {
         this.bancoService = bancoService;
+        this.bancoDocumentService = bancoDocumentService;
     }
 
     /**
@@ -112,7 +125,59 @@ public class BancoResource {
         BancoDTO bancoDTO = bancoService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bancoDTO));
     }
+    @GetMapping("/bancos/accountStatus/{first_month_day}/{final_capital_date}/{initial_time}/{final_time}/{accountId}")
+    @Timed
+    public ResponseEntity<BancoDTO> getAccountStatus(
+        @PathVariable(value = "first_month_day") String first_month_day,
+        @PathVariable(value = "final_capital_date") String final_capital_date,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "accountId") Long accountId
+    ) {
+        BancoDTO bancoDTO = bancoService.getAccountStatus(first_month_day,final_capital_date,initial_time,final_time,accountId);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(bancoDTO));
+    }
+    @GetMapping("/bancos/accountStatus/file/{first_month_day}/{final_capital_date}/{initial_time}/{final_time}/{accountId}")
+    @Timed
+    public void getAccountStatusFile(
+        @PathVariable(value = "first_month_day") String first_month_day,
+        @PathVariable(value = "final_capital_date") String final_capital_date,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "accountId") Long accountId,
+        HttpServletResponse response
+    )  throws URISyntaxException, IOException {
+        Locale local = new Locale("es", "ES");
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
+        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
+        BancoDTO bancoDTO = bancoService.getAccountStatus(first_month_day,final_capital_date,initial_time,final_time,accountId);
 
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time + "[America/Regina]");
+        String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(final_time + "[America/Regina]");
+        String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
+
+        File file = bancoDocumentService.obtainFileToPrint(bancoDTO, initialTimeFormatted, finalTimeFormatted, bancoDTO.getCompanyId());
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+
+    }
     /**
      * DELETE  /bancos/:id : delete the "id" banco.
      *

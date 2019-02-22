@@ -156,8 +156,8 @@ public class AnualReportService {
         }
     }
 
-    private int setTotalInitialBalance(List<MensualAndAnualAccountDTO> mensualAndAnualAccount){
-        int totalBalance =0;
+    private double setTotalInitialBalance(List<MensualAndAnualAccountDTO> mensualAndAnualAccount){
+        double totalBalance =0;
         for (int i = 0; i <mensualAndAnualAccount.size() ; i++) {
             totalBalance = totalBalance +mensualAndAnualAccount.get(i).getInicialBalance();
         }

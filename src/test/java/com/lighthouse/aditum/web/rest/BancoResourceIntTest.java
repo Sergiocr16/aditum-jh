@@ -5,6 +5,7 @@ import com.lighthouse.aditum.AditumApp;
 import com.lighthouse.aditum.domain.Banco;
 import com.lighthouse.aditum.domain.Company;
 import com.lighthouse.aditum.repository.BancoRepository;
+import com.lighthouse.aditum.service.BancoDocumentService;
 import com.lighthouse.aditum.service.BancoService;
 import com.lighthouse.aditum.service.dto.BancoDTO;
 import com.lighthouse.aditum.service.mapper.BancoMapper;
@@ -88,6 +89,7 @@ public class BancoResourceIntTest {
     @Autowired
     private BancoService bancoService;
 
+    private BancoDocumentService bancoDocumentService;
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -107,7 +109,7 @@ public class BancoResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        BancoResource bancoResource = new BancoResource(bancoService);
+        BancoResource bancoResource = new BancoResource(null,bancoService);
         this.restBancoMockMvc = MockMvcBuilders.standaloneSetup(bancoResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

@@ -8,6 +8,7 @@ import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.EgressCategoryService;
 import com.lighthouse.aditum.service.EgressDocumentService;
 import com.lighthouse.aditum.service.EgressService;
+import com.lighthouse.aditum.service.ProveedorService;
 import com.lighthouse.aditum.service.dto.EgressDTO;
 import com.lighthouse.aditum.service.mapper.EgressMapper;
 import com.lighthouse.aditum.web.rest.errors.ExceptionTranslator;
@@ -122,10 +123,12 @@ public class EgressResourceIntTest {
 
     private Egress egress;
 
+    private ProveedorService proveedorService;
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        EgressResource egressResource = new EgressResource(egressService,egressCategoryService,egressDocumentService);
+        EgressResource egressResource = new EgressResource(egressService,egressCategoryService,egressDocumentService,proveedorService);
         this.restEgressMockMvc = MockMvcBuilders.standaloneSetup(egressResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

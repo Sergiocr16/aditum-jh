@@ -46,6 +46,16 @@
                     accountId: '@accountId'
                 }
             },
+
+            'getEgressToPay': {
+                method: 'GET',
+                url: 'api/egresses/reportEgressToPay/:final_time/byCompany/:companyId',
+                isArray: true,
+                params: {
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                }
+            },
             'findBetweenCobroDatesByCompany': {
                 method: 'GET',
                 url: 'api/egresses/betweenCobro/:initial_time/:final_time/byCompany/:companyId',

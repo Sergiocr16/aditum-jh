@@ -83,7 +83,7 @@
                 <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font">Del {{vm.dates.initial_time
                     | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
-                     ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0">
+                     ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0 && item.tipo==1">
                     <h4 class="bold" ng-if="item.egresosFormatted.length>0">{{item.proovedor}}</h4>
                     <div class="table-scrollable" ng-if="item.egresosFormatted.length>0"
                          style="border: 0px!important;">
@@ -111,6 +111,44 @@
                                     </span>
                                 </td>
                                 <td ng-if="egress.billNumber!==null">{{egress.billNumber}}</td>
+                                <td ng-if="egress.reference!==null">{{egress.reference}}</td>
+                                <td ng-if="egress.account!==null">{{egress.account}}</td>
+                                <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>
+                                <td ng-if="egress.total!==null">₡{{vm.formatearNumero(egress.total+"")}}</td>
+                            </tr>
+                            <tr ng-if="item.total!==0">
+                                <td colspan="{{item.camposQuantity-1}}" class="bold text-right">Total</td>
+                                <td class="bold text-center">₡{{vm.formatearNumero(item.total+"")}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
+                     ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0 && item.tipo==2">
+                    <h4 class="bold" ng-if="item.egresosFormatted.length>0">{{item.proovedor}}</h4>
+                    <div class="table-scrollable" ng-if="item.egresosFormatted.length>0"
+                         style="border: 0px!important;">
+                        <table
+                            class="jh-table table table-bordered table-condensed flip-content tableMaterialDesignAccountStatus"
+                            style="font-size:12px;">
+                            <thead style="background-color:#fafafa; " class="flip-content">
+                            <tr class="text-center">
+                                <th class="text-center" ng-repeat="name in  item.headingCampos track by $index">{{name}}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="text-center" ng-repeat="egress in  item.egresosFormatted">
+                                <td ng-if="egress.concept!==null">{{egress.concept}}</td>
+
+                                <td ng-if="egress.paymentDateSelected">
+                                    <span ng-if="egress.paymentDate!==null">
+                                        {{egress.paymentDate | date:'mediumDate'}}
+                                    </span>
+                                    <span ng-if="egress.paymentDate==null">
+                                        No pagado
+                                    </span>
+                                </td>
                                 <td ng-if="egress.reference!==null">{{egress.reference}}</td>
                                 <td ng-if="egress.account!==null">{{egress.account}}</td>
                                 <td ng-if="egress.state!==null">{{egress.stateFormatted}}</td>

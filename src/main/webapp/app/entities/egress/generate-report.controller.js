@@ -27,6 +27,16 @@
             printing: false,
             sendingEmail: false,
         };
+        var date = new Date(),
+            y = date.getFullYear(),
+            m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        vm.dates = {
+            initial_time: firstDay,
+            final_time: lastDay
+        };
+        console.log(vm.dates)
         vm.translationCampos = {
             checkAll: "Selecciona todos",
             buttonDefaultText: "Selecciona los campos",
@@ -40,10 +50,6 @@
             uncheckAll: "Deseleccionar todos",
             selectionCount: "elementos seleccionados",
             dynamicButtonTextSuffix: "elementos seleccionados"
-        };
-        vm.dates = {
-            initial_time: undefined,
-            final_time: undefined
         };
 
         loadProveedors();
@@ -85,6 +91,10 @@
                     proveedorToshow.id = proveedor.id;
                     vm.proveedoresMultiSelect.push(proveedorToshow)
                 });
+                var proveedorToshow = {};
+                proveedorToshow.label = "Devoluciones de dinero";
+                proveedorToshow.id = "devolucion";
+                vm.proveedoresMultiSelect.push(proveedorToshow);
                 loadCampos();
             }
 
@@ -103,11 +113,7 @@
                 id: 5,
                 label: '# Factura',
                 attr: 'billNumber'
-            }, {id: 6, label: 'Referencia', attr: 'reference'}, {id: 7, label: 'Cuenta', attr: 'account'}, {
-                id: 8,
-                label: 'Estado',
-                attr: 'state'
-            }, {id: 9, label: 'Monto', attr: 'total'}]
+            }, {id: 6, label: 'Referencia', attr: 'reference'}, {id: 7, label: 'Cuenta', attr: 'account'}, {id: 8, label: 'Monto', attr: 'total'}]
             loadAccounts();
         }
 
@@ -148,15 +154,13 @@
             var selectedProveedores = "";
             angular.forEach(vm.selectedCampos, function (selectedCampo, key) {
                 selectedCampos = selectedCampos + vm.camposMultiSelect[selectedCampo.id].attr + ",";
-
             });
+            console.log(vm.selectedProveedores)
             angular.forEach(vm.selectedProveedores, function (selectedProveedor, keyProveedor) {
-                selectedProveedores = selectedProveedores + vm.proveedores[keyProveedor].id + ",";
+                selectedProveedores = selectedProveedores + selectedProveedor.id + ",";
 
             });
-            console.log(selectedCampos)
-            console.log(selectedProveedores)
-
+            console.log(vm.dates)
             Egress.generateReport({
                 initial_time: moment(vm.dates.initial_time).format(),
                 final_time: moment(vm.dates.final_time).format(),
@@ -171,10 +175,11 @@
             vm.loadingReport = true;
 
             function onSuccess(data) {
+
                 vm.egresses = data;
+                console.log(vm.egresses)
                 vm.superObject = moment(vm.dates.initial_time).format() +'}'+moment(vm.dates.final_time).format()+'}'+globalCompany.getId()+'}'+selectedProveedores+'}'+selectedCampos;
                 vm.path = '/api/egresses/file/' + vm.superObject;
-           console.log(data)
                 vm.isReady2 = true;
                 vm.hideReportForm = true;
                 vm.loadingReport = false;

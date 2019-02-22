@@ -65,6 +65,7 @@
         }
 
         div.content {
+
         }
 
         div.footer {
@@ -285,7 +286,7 @@
         }
     </style>
 </head>
-<body>
+<body style="width: 100%">
 <div class='header'>
     <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta
     <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
@@ -335,7 +336,7 @@
         <tr>
             <td colspan="3">
 
-                <div class="collection-table" th:each="item : ${egressReportDTO.egressByProveedor}">
+                <div class="collection-table" th:each="item : ${egressReportDTO.egressByProveedor}" th:if="${item.tipo!=2}">
                     <span th:text="|${item.proovedor}|"></span>
                     <table style=" border-spacing:0;border-collapse: collapse">
                         <thead>
@@ -343,7 +344,6 @@
                             <td th:each="item2 : ${item.headingCampos}" class="text-center">
                                 <span class="padding-left-10" th:text="|${item2}|">headName</span>
                             </td>
-
 
                         </tr>
                         </thead>
@@ -383,6 +383,60 @@
                                     <span th:text="|${egress.totalFormatted}|"></span>
                                 </td>
                             </tr>
+                        <tr class="bodyContent " >
+                            <td th:colspan="${item.camposQuantity-2}" class="no-border-right payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total:</td>
+                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;">
+                               <span>     <img
+                                   th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="10"
+                                   style="margin: -1px 0px;"/>
+                        <span  th:text="|${item.totalFormatted}|"></span></span>
+                            </td>
+
+
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="collection-table" th:each="item : ${egressReportDTO.egressByProveedor}" th:if="${item.tipo!=1}">
+                    <span th:text="|${item.proovedor}|"></span>
+                    <table style=" border-spacing:0;border-collapse: collapse">
+                        <thead>
+                        <tr class="heading">
+                            <td th:each="item2 : ${item.headingCampos}" class="text-center">
+                                <span class="padding-left-10" th:text="|${item2}|">headName</span>
+                            </td>
+
+
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr th:each="egress : ${item.egresosFormatted}" class="bodyContent ">
+                            <td class="no-border-right text-center" th:if="${egress.concept!=null}">
+                                <span th:text="|${egress.concept}|"></span>
+                            </td>
+
+                            <td class="no-border-right text-center" th:if="${egress.paymentDateSelected==true}">
+                                <span th:text="|${egress.paymentDateFormatted}|"></span>
+                            </td>
+
+                            <td class="no-border-right text-center" th:if="${egress.reference!=null}">
+                                <span th:text="|${egress.reference}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.account!=null}">
+                                <span th:text="|${egress.account}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.stateFormatted!=null}">
+                                <span th:text="|${egress.stateFormatted}|"></span>
+                            </td>
+                            <td class=" text-center" th:if="${egress.totalFormatted!=null}">
+                                <img
+                                    th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                    style="margin: 0px 0px;"/>
+                                <span th:text="|${egress.totalFormatted}|"></span>
+                            </td>
+                        </tr>
                         <tr class="bodyContent " >
                             <td th:colspan="${item.camposQuantity-2}" class="no-border-right payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
                             <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total:</td>

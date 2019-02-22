@@ -11,320 +11,103 @@
         var vm = this;
         vm.datePickerOpenStatus = {};
         $rootScope.active = "bancos";
-        vm.openCalendar = openCalendar;
         vm.banco = entity;
         vm.previousState = previousState.name;
-        vm.movementsList = [];
-        vm.movementsListConsulting = [];
-        vm.saldoInicial = 0;
-        vm.totalBalance = 0;
-        var saldoActual = 0;
-        vm.totalIngress = 0;
-        vm.totalEgress = 0;
         vm.isReady = false;
         vm.isConsulting = false;
         var unsubscribe = $rootScope.$on('aditumApp:bancoUpdate', function (event, result) {
             vm.banco = result;
         });
-
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false,
+        };
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);
         var lastDay = new Date(y, m + 1, 0);
-
+        vm.first_month_day = firstDay;
         vm.dates = {
             initial_time: firstDay,
             final_time: lastDay
         };
-        setTimeout(function () {
-            getInitialBalance();
-        }, 900);
 
-        vm.consult = function () {
-            vm.isConsulting = true;
-            var date = vm.dates.initial_time, y = date.getFullYear(), m = date.getMonth();
-            vm.firstDayConsulting = new Date(y, m, 1);
-            vm.movementsList = [];
-            vm.movementsListConsulting = [];
-            vm.saldoInicial = 0;
-            vm.totalBalance = 0;
-            saldoActual = 0;
-            vm.totalIngress = 0;
-            vm.totalEgress = 0;
-            vm.initialDate = vm.dates.initial_time;
-            getInitialBalanceBetweenDatesConsulting(vm.firstDayConsulting);
-            vm.isReady = false;
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
+
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo reporte de egresos"
+            })
+        };
+
+        getAccountStatus();
+
+        function getAccountStatus() {
+            var dateInitialCapital = new Date();
+            dateInitialCapital.setDate(vm.dates.initial_time.getDate()-1);
+            dateInitialCapital.setMinutes(0);
+            dateInitialCapital.setSeconds(0);
+            dateInitialCapital.setHours(0);
+            vm.path = '/api/bancos/accountStatus/file/' + moment(vm.first_month_day).format() + "/" + moment(dateInitialCapital).format() + "/" + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + vm.banco.id;
+
+            Banco.getAccountStatus({
+                first_month_day: moment(vm.first_month_day).format(),
+                final_capital_date: moment(dateInitialCapital).format(),
+                initial_time: moment(vm.dates.initial_time).format(),
+                final_time: moment(vm.dates.final_time).format(),
+                accountId: vm.banco.id
+            }, function (data) {
+                vm.banco = data;
+                vm.movementsList =  vm.banco.movimientos;
+                console.log(vm.movementsList)
+
+                if(vm.isConsulting===false){
+                    var banco;
+                    vm.banco.saldo = vm.banco.totalBalance;
+                    banco = vm.banco;
+                    banco.movimientos = null;
+                    Banco.update(banco, function () {
+                        vm.isReady = true;
+                    }, onError);
+                }else{
+                    vm.isReady = true;
+                }
+            });
 
         }
-
-        function getInitialBalance() {
-            vm.initialDate = vm.dates.initial_time;
-            getInitialBalanceBetweenDates(vm.dates.initial_time);
+        vm.consult = function(){
+            vm.isConsulting = true;
+            getAccountStatus();
         }
 
         vm.stopConsulting = function () {
-            vm.isConsulting = false;
-            vm.movementsList = [];
-            vm.movementsListConsulting = [];
-            vm.saldoInicial = 0;
-            vm.totalBalance = 0;
-            saldoActual = 0;
-            vm.totalIngress = 0;
-            vm.totalEgress = 0;
             var date = new Date(), y = date.getFullYear(), m = date.getMonth();
             var firstDay = new Date(y, m, 1);
             var lastDay = new Date(y, m + 1, 0);
-
             vm.dates = {
                 initial_time: firstDay,
                 final_time: lastDay
             };
-            getInitialBalance();
+            vm.isConsulting = false;
             vm.isReady = false;
+            getAccountStatus();
+        };
 
-
-        }
-
-        function getInitialBalanceBetweenDates(date) {
-
-            BalanceByAccount.findBetweenDatesByAccount({
-                initial_time: moment(date).format(),
-                final_time: moment(date).format(),
-                accountId: vm.banco.id
-            }).$promise.then(onSuccessBalance);
-        }
-
-        function onSuccessBalance(data, headers) {
-            if (data.length > 0) {
-                vm.saldoInicial = data[0].balance;
-                saldoActual = data[0].balance;
-            } else {
-                vm.saldoInicial = parseInt(vm.banco.capitalInicial);
-                saldoActual = parseInt(vm.banco.capitalInicial);
-            }
-
-
-            getEgress();
-        }
-
-        function getEgress() {
-            Egress.findBetweenDatesByCompanyAndAccount({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                companyId: globalCompany.getId(),
-                accountId: vm.banco.id,
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-            }, onSuccessEgresses, onError);
-        }
-
-        function onSuccessEgresses(data, headers) {
-            angular.forEach(data, function (value, key) {
-                value.movementType = 1;
-                if (value.state == 2 || value.state == 5) {
-                    vm.movementsList.push(value)
-                }
-
-
-            })
-            getTransferenciasEntrantes();
-        }
-
-        function getTransferenciasEntrantes() {
-            Transferencia.findBetweenDatesByIncomingTransfer({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                accountId: vm.banco.id
-            }, onSuccessTransferenciasEntrantes, onError);
-        }
-
-        function onSuccessTransferenciasEntrantes(data, headers) {
-            angular.forEach(data, function (value, key) {
-
-                value.concept = value.concepto;
-                value.ammount = value.monto;
-                value.paymentDate = value.fecha;
-                value.movementType = 3;
-                value.bancoEntrante = value.cuentaOrigen;
-                vm.movementsList.push(value)
-            })
-            getTransferenciasSalientes();
-        }
-
-        function getTransferenciasSalientes() {
-            Transferencia.findBetweenDatesByOutgoingTransfer({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                accountId: vm.banco.id
-            }, onSuccessTransferenciasSalientes, onError);
-        }
-
-        function onSuccessTransferenciasSalientes(data, headers) {
-
-            angular.forEach(data, function (value, key) {
-                value.concept = value.concepto;
-                value.total = value.monto;
-                value.paymentDate = value.fecha;
-                value.movementType = 4;
-                value.bancoEntrante = value.cuentaDestino;
-                vm.movementsList.push(value)
-            })
-            getIngress();
-        }
-
-        function getIngress() {
-            Payment.findBetweenDatesByCompanyAndAccount({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                companyId: globalCompany.getId(),
-                accountId: vm.banco.id,
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-            }, onSuccessIngreses, onError);
-
-        }
-
-        function onSuccessIngreses(data, headers) {
-
-            angular.forEach(data, function (value, key) {
-                value.movementType = 2;
-                value.paymentDate = value.date;
-                value.folio = value.receiptNumber;
-                vm.movementsList.push(value);
-
-
-            });
-            calculateBalance();
-
-
-        }
-
-        function getInitialBalanceBetweenDatesConsulting(date) {
-            BalanceByAccount.findBetweenDatesByAccount({
-                initial_time: moment(date).format(),
-                final_time: moment(date).format(),
-                accountId: vm.banco.id
-            }).$promise.then(onSuccessBalanceConsulting);
-        }
-
-        function onSuccessBalanceConsulting(data, headers) {
-            if (data.length > 0) {
-                saldoActual = data[0].balance;
-            } else {
-                saldoActual = parseInt(vm.banco.capitalInicial);
-            }
-            getEgressWhenConsulting();
-
-        }
-
-        function getEgressWhenConsulting() {
-            Egress.findBetweenDatesByCompanyAndAccount({
-                initial_time: moment(vm.firstDayConsulting).format(),
-                final_time: moment(vm.dates.initial_time).subtract('days', 1).format(),
-                companyId: globalCompany.getId(),
-                accountId: vm.banco.id,
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-            }, onSuccessEgressesConsulting, onError);
-        }
-
-        function onSuccessEgressesConsulting(data, headers) {
-            angular.forEach(data, function (value, key) {
-                value.movementType = 1;
-                if (value.state == 2 || value.state == 5) {
-                    vm.movementsListConsulting.push(value)
-                }
-
-
-            })
-            getTransferenciasEntrantesWhenConsulting();
-        }
-
-        function getTransferenciasEntrantesWhenConsulting() {
-            Transferencia.findBetweenDatesByIncomingTransfer({
-                initial_time: moment(vm.firstDayConsulting).format(),
-                final_time: moment(vm.dates.initial_time).subtract('days', 1).format(),
-                accountId: vm.banco.id
-            }, onSuccessTransferenciasEntrantesConsulting, onError);
-        }
-
-        function onSuccessTransferenciasEntrantesConsulting(data, headers) {
-            angular.forEach(data, function (value, key) {
-
-                value.concept = value.concepto;
-                value.ammount = value.monto;
-                value.paymentDate = value.fecha;
-                value.movementType = 3;
-                value.bancoEntrante = value.cuenta_origen;
-                vm.movementsListConsulting.push(value)
-            })
-            getTransferenciasSalientesWhenConsulting();
-        }
-
-        function getTransferenciasSalientesWhenConsulting() {
-            Transferencia.findBetweenDatesByOutgoingTransfer({
-                initial_time: moment(vm.firstDayConsulting).format(),
-                final_time: moment(vm.dates.initial_time).subtract('days', 1).format(),
-                accountId: vm.banco.id
-            }, onSuccessTransferenciasSalientesConsulting, onError);
-        }
-
-        function onSuccessTransferenciasSalientesConsulting(data, headers) {
-            angular.forEach(data, function (value, key) {
-                value.concept = value.concepto;
-                value.total = value.monto;
-                value.paymentDate = value.fecha;
-                value.movementType = 4;
-                vm.movementsListConsulting.push(value)
-            })
-            getIngressWhenConsulting();
-        }
-
-        function getIngressWhenConsulting() {
-
-            Payment.findBetweenDatesByCompanyAndAccount({
-                initial_time: moment(vm.firstDayConsulting).format(),
-                final_time: moment(vm.dates.initial_time).subtract('days', 1).format(),
-                companyId: globalCompany.getId(),
-                accountId: vm.banco.id,
-                page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
-            }, onSuccessIngresesConsulting, onError);
-
-        }
-
-        function onSuccessIngresesConsulting(data, headers) {
-
-            angular.forEach(data, function (value, key) {
-                value.movementType = 2;
-                value.paymentDate = value.date;
-                vm.movementsListConsulting.push(value);
-
-            })
-
-            calculateBalanceConsulting();
-
-
-        }
-
-        function calculateBalanceConsulting() {
-            vm.movementsListConsulting.sort(function (a, b) {
-                return new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime()
-            });
-            angular.forEach(vm.movementsListConsulting, function (value, key) {
-                if (value.movementType == 2 || value.movementType == 3) {
-                    var ammount = parseInt(value.ammount);
-                    value.balance = saldoActual + ammount;
-                    saldoActual = value.balance;
-                } else if (value.movementType == 1 || value.movementType == 4) {
-                    var ammount = parseInt(value.total);
-                    value.balance = saldoActual - ammount;
-                    saldoActual = value.balance;
-                }
-            })
-            vm.saldoInicialConsulting = saldoActual;
-            getEgress();
-
-        }
 
         vm.formatearNumero = function (nStr) {
 
@@ -336,74 +119,13 @@
                 x1 = x1.replace(rgx, '$1' + ',' + '$2');
             }
             return x1 + x2;
-        }
-
-        function calculateBalance() {
-            vm.movementsList.sort(function (a, b) {
-                return new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime()
-            });
-            angular.forEach(vm.movementsList, function (value, key) {
-                if (value.movementType == 2 || value.movementType == 3) {
-                    var ammount = parseInt(value.ammount);
-                    value.balance = saldoActual + ammount;
-                    saldoActual = value.balance;
-                    vm.totalIngress = vm.totalIngress + ammount;
-                } else if (value.movementType == 1 || value.movementType == 4) {
-                    var ammount = parseInt(value.total);
-                    value.balance = saldoActual - ammount;
-                    saldoActual = value.balance;
-                    vm.totalEgress = vm.totalEgress + ammount;
-                }
-
-            })
-            vm.totalBalance = saldoActual;
-            if (vm.totalBalance > 0) {
-                vm.balanceColor = 'green';
-            } else if (vm.totalBalance == 0) {
-                vm.balanceColor = 'black';
-            } else {
-                vm.balanceColor = 'red';
-            }
-
-            if(vm.isConsulting==false){
-                vm.banco.saldo = vm.totalBalance;
-                Banco.update(vm.banco, function () {
-                    vm.isReady = true;
-                }, onError);
-            }else{
-                vm.isReady = true;
-            }
-
-
-        }
-
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    maxDate: vm.dates.final_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
+        };
 
         function onError(error) {
-            AlertService.error(error.data.message);
+
         }
 
         $scope.$on('$destroy', unsubscribe);
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
 
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

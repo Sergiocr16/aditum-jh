@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.domain.Egress;
 import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.EgressMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -37,12 +39,20 @@ public class EgressService {
 
     private final BancoService bancoService;
 
-    public EgressService(EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService) {
+    private final HouseService houseService;
+
+    private final CommonAreaReservationsService commonAreaReservationsService;
+
+    public EgressService(EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService,HouseService houseService,@Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
         this.proveedorService = proveedorService;
         this.bancoService = bancoService;
+
+        this.commonAreaReservationsService = commonAreaReservationsService;
+        this.houseService = houseService;
+
 
     }
 
@@ -55,7 +65,7 @@ public class EgressService {
     public EgressDTO save(EgressDTO egressDTO) {
         log.debug("Request to save Egress : {}", egressDTO);
         Egress egress = egressMapper.toEntity(egressDTO);
-        if(egress.getPaymentDate()!=null) {
+        if (egress.getPaymentDate() != null) {
             ZonedDateTime n = ZonedDateTime.now().plusHours(5);
             egress.setPaymentDate(egress.getPaymentDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
         }
@@ -113,26 +123,49 @@ public class EgressService {
         EgressReportDTO egressReportDTO = new EgressReportDTO();
         for (int i = 0; i < proveedorsParts.length; i++) {
             if (!proveedorsParts[i].equals("a")) {
+                if (!proveedorsParts[i].equals("devolucion")) {
+                    ProveedorDTO proveedorDTO = proveedorService.findOne(Long.parseLong(proveedorsParts[i]));
+                    List<EgressDTO> egresses = egressRepository.findByCobroDatesBetweenAndCompanyAndProveedor(zd_initialTime, zd_finalTime, companyId, proveedorsParts[i]).stream()
+                        .map(egressMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
 
-                ProveedorDTO proveedorDTO = proveedorService.findOne(Long.parseLong(proveedorsParts[i]));
-                List<EgressDTO> egresses = egressRepository.findByCobroDatesBetweenAndCompanyAndProveedor(zd_initialTime, zd_finalTime, companyId, proveedorsParts[i]).stream()
-                    .map(egressMapper::toDto)
-                    .collect(Collectors.toCollection(LinkedList::new));
+                    if (egresses.size() > 0) {
+                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO(proveedorDTO.getEmpresa(), egresses, camposParts);
+                        egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
+                        for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
+                            if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount() != null) {
+                                if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount().equals("0")) {
+                                    egressReportItemsDTO.getEgresosFormatted().get(j).setAccount("No pagado");
+                                } else {
+                                    BancoDTO bancoDTO = bancoService.findOne(Long.parseLong(egressReportItemsDTO.getEgresosFormatted().get(j).getAccount()));
+                                    egressReportItemsDTO.getEgresosFormatted().get(j).setAccount(bancoDTO.getBeneficiario());
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    List<EgressDTO> egresses = egressRepository.findDevolutionsBetweenDatesAndCompany(zd_initialTime, zd_finalTime, companyId).stream()
+                        .map(egressMapper::toDto)
+                        .collect(Collectors.toCollection(LinkedList::new));
+                    if (egresses.size() > 0) {
+                        EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO("Devoluciones de dinero", egresses, camposParts);
+                        egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
+                        for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
+                            CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findOne(egressReportItemsDTO.getEgresosFormatted().get(j).getId());
+                           HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
+                            egressReportItemsDTO.getEgresosFormatted().get(j).setFolio("N/A");
 
-                if (egresses.size() > 0) {
-                    EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO(proveedorDTO.getEmpresa(), egresses, camposParts);
-                    egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
-                    for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
-                        if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount() != null) {
-                            if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount().equals("0")) {
-                                egressReportItemsDTO.getEgresosFormatted().get(j).setAccount("No pagado");
-                            } else {
+
+                            egressReportItemsDTO.getEgresosFormatted().get(j).setBillNumber("N/A");
+                            egressReportItemsDTO.getEgresosFormatted().get(j).setConcept("Devolución por uso de áreas comunes - Filial " + houseDTO.getHousenumber());
+                            if (egressReportItemsDTO.getEgresosFormatted().get(j).getAccount() != null) {
                                 BancoDTO bancoDTO = bancoService.findOne(Long.parseLong(egressReportItemsDTO.getEgresosFormatted().get(j).getAccount()));
                                 egressReportItemsDTO.getEgresosFormatted().get(j).setAccount(bancoDTO.getBeneficiario());
                             }
                         }
                     }
                 }
+
 
             }
 
@@ -147,6 +180,14 @@ public class EgressService {
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         Page<Egress> result = egressRepository.findByDatesBetweenAndCompanyAndAccount(pageable, zd_initialTime, zd_finalTime, companyId, accountId);
+//        Collections.reverse(result);
+        return result.map(egress -> egressMapper.toDto(egress));
+    }
+    @Transactional(readOnly = true)
+    public Page<EgressDTO> getEgressToPay(Pageable pageable,String finalTime, Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime,companyId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
     }

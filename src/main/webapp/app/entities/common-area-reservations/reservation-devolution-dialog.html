@@ -169,7 +169,7 @@
                                     <md-input-container class="md-block  no-margin-bottom">
                                         <label>Fecha de devolución</label>
                                         <md-datepicker class="datePicker" readonlydatepicker md-hide-icons="calendar" required ng-model="vm.egress.paymentDate"
-                                                       md-placeholder="Introduzca una fecha" md-open-on-focus
+                                                       md-open-on-focus
                                                        required></md-datepicker>
                                     </md-input-container>
 
@@ -202,7 +202,12 @@
                                             </md-option>
                                         </md-select>
                                     </md-input-container>
-
+                                    <md-input-container class="md-block">
+                                        <label>Referencia bancaria</label>
+                                        <input type="text" class="form-control" name="reference" id="field_reference"
+                                               ng-model="vm.egress.reference"
+                                        />
+                                    </md-input-container>
 
                                 </div>
 

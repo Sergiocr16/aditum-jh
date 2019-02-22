@@ -70,8 +70,8 @@
                     return true;
                 }
             }
-
-            if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)|| hasWhiteSpace(vm.resident.phonenumber)) {
+console.log(vm.resident)
+            if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)|| hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
             } else if (hasCaracterEspecial(vm.resident.name) || hasCaracterEspecial(vm.resident.lastname) || hasCaracterEspecial(vm.resident.secondlastname) || hasCaracterEspecial(vm.resident.identificationnumber) || hasCaracterEspecial(vm.resident.phonenumber) ) {
@@ -198,7 +198,12 @@
         }
 
         function save() {
-            var wordOnModal = vm.resident.id === undefined ? "registrar" : "modificar"
+            if(vm.resident.id === undefined || vm.resident.id === null){
+                var wordOnModal = "registrar";
+            }else{
+                var wordOnModal = "modificar";
+
+            }
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el usuario?", "", function () {
 
@@ -231,9 +236,12 @@
             }
 
             function allClearInsert(data) {
+
+                console.log(vm.resident.isOwner)
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
                     Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
-                } else if (vm.resident.isOwner === 1) {
+                    vm.isSaving = false;
+                } else if (vm.resident.isOwner === true) {
                     Modal.showLoadingBar();
                     createAccount(1);
                 } else {
@@ -252,6 +260,7 @@
             function updateResident() {
                 if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
                     Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
+                    vm.isSaving = false;
                 } else if (autorizadorStatus === 1 && vm.resident.isOwner === false) {
                     Modal.showLoadingBar();
                     updateAccount(0);

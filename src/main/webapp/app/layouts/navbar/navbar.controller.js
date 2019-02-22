@@ -741,6 +741,17 @@
                         hover: false,
                         showXs: true,
                         showLg: true,
+                    } ,{
+                        title: "Cuentas por pagar",
+                        icon: "keyboard_backspace",
+                        authoritites: "ROLE_MANAGER",
+                        activeOn: "cuentasPorPagar",
+                        collapsable: false,
+                        uisref: "egress-to-pay",
+                        menuId: "",
+                        hover: false,
+                        showXs: true,
+                        showLg: true,
                     },
                     {
                         title: "Reporte de ingresos",

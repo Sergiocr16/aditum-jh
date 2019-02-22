@@ -21,7 +21,18 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
+            'update': { method:'PUT' },
+            'getAccountStatus':{
+                method: 'GET',
+                url: 'api/bancos/accountStatus/:first_month_day/:final_capital_date/:initial_time/:final_time/:accountId',
+                params:{
+                    first_month_day:'@first_month_day',
+                    final_capital_date:'@final_capital_date',
+                    initial_time:'@initial_time',
+                    final_time: '@final_time',
+                    accountId: '@accountId'
+                }
+            }
         });
     }
 })();

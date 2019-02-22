@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Estado de resultados</title>
+    <title>Tabla de cobranza ADITUM</title>
     <style>
         @page {
             size: A4 landscape;
@@ -53,9 +53,7 @@
         .collection-table table {
             -fs-table-paginate: paginate;
         }
-        .no-border-top{
-            border-top: 0px!important;
-        }
+
         div.header {
             display: block;
             text-align: left;
@@ -67,6 +65,7 @@
         }
 
         div.content {
+            margin-left: -3px!important;
         }
 
         div.footer {
@@ -91,6 +90,26 @@
             color: #555;
         }
 
+        .invoice-box table tr.bodyContent td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .invoice-box table tr.bodyContentChild td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .font-red {
+            color: #b42929;
+        }
+
+        .font-green {
+            color: #269c4e;
+        }
+
         .invoice-box table {
             width: 100%;
             line-height: inherit;
@@ -106,13 +125,24 @@
         .collection-table table td {
             border: 1px solid #EEEEEE;
             border-spacing: 0;
-            font-size: 9px;
             padding-top: 0px !important;
             padding-bottom: 0px !important;
-        }
 
+        }
+        .collection-table{
+
+            margin-bottom: 20px!important;
+        }
+        .payment-method {
+            border: 0px solid #eee!important;
+            border-top: 3px solid rgb(0, 150, 136);!important;
+            color: #555;
+        }
         .invoice-box table tr td:nth-child(2) {
             text-align: right;
+        }
+        .no-border-right {
+            border-right: 0px !important;
         }
 
         .invoice-box table tr.top table td {
@@ -132,38 +162,24 @@
         .invoice-box table tr.heading td {
             background: #eeeeee;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 12px;
             border-collapse: none !important;
-        }
-
-        .invoice-box table tr.bodyContent td {
-            font-size: 11px;
-            border-collapse: none !important;
-        }
-
-        .invoice-box table tr.bodyContentChild td {
-            font-size: 11px;
-            border-collapse: none !important;
-            border-top: 0px;
-        }
-
-        .no-border-right {
-            border-right: 0px !important;
-        }
-
-        .uppercase {
-            text-transform: uppercase;
         }
 
         .invoice-box table tr.details td {
             padding-bottom: 20px;
             padding-top: 20px;
+
         }
 
         .invoice-box table tr.item td {
             border-bottom: 1px solid #eee;
             width: 1000px;
-            font-size: 10px
+            font-size: 12px
+        }
+
+        .bold {
+            font-weight: bold;
         }
 
         /** RTL **/
@@ -193,43 +209,87 @@
             text-align: center !important;
         }
 
-        .bold {
+        .total-ammount {
+            border-top: 3px solid rgb(42, 100, 150);
+            background: rgb(42, 100, 150);
+            border-bottom: 1px solid #ddd;
             font-weight: bold;
+            color: white;
+            text-align: center;
         }
 
-        .font-green {
-            color: #269c4e;
+        .payment-method {
+            border-top: 3px solid rgb(42, 100, 150);
+            color: #555;
+            font-size: 15px;
         }
-
-        .font-red {
-            color: #b42929;
+        .total-ammount {
+            border-top: 4px solid rgb(0, 150, 136);
+            background: rgb(0, 150, 136);
+            border-bottom: 1px solid rgb(0, 150, 136);!important;
+            font-weight: bold;
+            font-size:12px!important;
+            color: white!important;
+            text-align: center;
         }
-
         .comprobante-title {
             background-color: rgb(0, 150, 136);
             color: white;
             font-size: 18px;
             padding: 10px;
+
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
+        }
+
+        .year-number {
+            text-align: center;
+            color: rgb(0, 150, 136);
+            font-size: 33px;
         }
 
         .text-right {
             text-align: right !important;
         }
 
-        .padding-left-10 {
-            padding-left: 10px;
+        .description {
+            font-size: 13px;
         }
 
-        .padding-left-20 {
-            margin-left: 20px;
+        .green-box {
+            width: 15px;
+            height: 10px;
+            background-color: #C2FFD0;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
+        }
+
+        .red-box {
+            width: 15px;
+            height: 10px;
+            background-color: #FFB8B8;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
+        }
+
+        .yellow-box {
+            width: 15px;
+            height: 10px;
+            background-color: #FFD17A;
+            border: 1px solid #eee;
+            display: inline-block;
+            float: left;
+            margin: 6px 6px 0 0;
         }
     </style>
 </head>
 <body>
 <div class='header'>
-    <span th:text="|${company.name}|" style="color: rgb(0, 150, 136);margin-left:1cm">company</span> <span> - Estado de resultados </span>
+    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta
     <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
@@ -262,86 +322,85 @@
                 </hr>
             </td>
         </tr>
-        <tr class="details">
-            <td style="padding-top:12px">
-                <span class="comprobante-title">Estado de resultados</span>
+        <tr class="details" >
+            <td style="padding-top:12px;">
+                <span class="comprobante-title">Reporte de cuentas por pagar </span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
-
+                <span style="font-size:14px">Del  al <span
+                    th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
             </td>
         </tr>
 
         <tr>
             <td colspan="3">
-                <div class="collection-table ">
-                    <table style=" border-spacing:0;border-collapse: collapse">
+
+                <div class="collection-table">
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-left: 0px; padding-left: 0px;">
                         <thead>
                         <tr class="heading">
-                            <td width="6.5%" class="text-center">
-                                <span>ENE </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>FEB </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>MAR </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>ABR </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>MAY </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>JUN </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>JUL </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>AGO </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>SET </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>OCT </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span >NOV </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>DIC </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>ACUMULADO </span>
-                            </td>
+                            <td><span>Concepto </span></td>
+                            <td class="text-center"><span>Folio </span></td>
+                            <td class="text-center"><span>Categoría </span></td>
+                            <td class="text-center"><span>Proveedor </span></td>
+                            <td class="text-center"><span>Fecha contable </span></td>
+                            <td class="text-center"><span>Vencimiento </span></td>
+                            <td class="text-center"><span>Total </span></td>
+
 
                         </tr>
                         </thead>
-                        <tbody>
-                        <tr style="height: 22px!important;"></tr>
-                        <tr class="bodyContent ">
-                            <td th:colspan="${monthValue}" class=" bold">
-                                <span class="">INGRESOS: MANTENIMIENTO</span>
+                        <tbody >
+                        <tr th:each="egress : ${egress_report}" class="bodyContent ">
+                            <td class="no-border-right " th:if="${egress.concept!=null}">
+                                <span th:text="|${egress.concept}|"></span>
                             </td>
-                        </tr>
-                        <tr class="bodyContent ">
-                            <td width="6.5%" class="text-center no-border-top no-border-right" th:each="item : ${anualDTO.anualIngressByMonth}">
-                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
-                                     style="margin: 0px 0px;"/>
-                                <span th:text="|${item.maintenanceIngressTotalFormatted}|" class="text-center "> </span>
+                            <td class="no-border-right text-center" th:if="${egress.folio!=null}">
+                                <span th:text="|${egress.folio}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.category!=null}">
+                                <span th:text="|${egress.category}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.proveedor!=null}">
+                                <span th:text="|${egress.proveedor}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.expirationDate!=null}">
+                                <span th:text="|${egress.expirationDateFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center" th:if="${egress.expirationDate!=null}">
+                                <span th:text="|${egress.expirationDateFormatted}|"></span>
+                            </td>
+                            <td class=" text-center" th:if="${egress.total!=null}">
+                                <img
+                                    th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                    style="margin: 0px 0px;"/>
+                                <span th:text="|${egress.totalFormatted}|"></span>
                             </td>
 
                         </tr>
+                        <tr class="bodyContent " >
+                            <td colspan="5" class="no-border-right payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;"> Total por pagar:</td>
+                            <td class="no-border-right payment-method total-ammount" style="border-top: 1px solid rgb(0, 150, 136)!important;">
+                               <span>     <img
+                                   th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="10"
+                                   style="margin: -1px 0px;"/>
+                        <span  th:text="|${total_egress_to_pay}|"></span></span>
+                            </td>
+
+
+                        </tr>
+
                         </tbody>
+
                     </table>
                 </div>
+
+
             </td>
         </tr>
     </table>
-
 </div>
 </body>
 </html>
