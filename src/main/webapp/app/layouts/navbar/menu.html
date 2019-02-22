@@ -114,22 +114,22 @@
             </ul>
 
             <ul class="list-unstyled components hide-lg hide-xl hide-md">
-                    <li ng-if="companyUser.companies.length>1" class="margin-top-56">
-                        <md-menu>
-                            <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
-                                <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
-                            </a>
-                            <md-menu-content width="4">
-                                <md-menu-item ng-repeat="company in companyUser.companies">
-                                    <a ng-click="vm.selectCompany(company)"
-                                       style="{{vm.defineSelectCompanyColor(company).color}}">
-                                        <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
-                                            class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
-                                    </a>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </li>
+                <li ng-if="companyUser.companies.length>1" class="margin-top-56">
+                    <md-menu>
+                        <a ng-click="$mdMenu.open($event)" class="itemMenuSelect">
+                            <p><i class="material-icons material-icons-with-text">business</i>Seleccionar condominio</p>
+                        </a>
+                        <md-menu-content width="4">
+                            <md-menu-item ng-repeat="company in companyUser.companies">
+                                <a ng-click="vm.selectCompany(company)"
+                                   style="{{vm.defineSelectCompanyColor(company).color}}">
+                                    <p style="{{vm.defineSelectCompanyColor(company).backgroundColor}};padding:5px"><i
+                                        class="material-icons material-icons-with-text">business</i>{{company.name}}</p>
+                                </a>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </li>
                 <li class="fade-in" ng-repeat="mainItem in vm.menu" ng-if="mainItem.showXs && mainItem.hasContability"  hide-lg hide-xl hide-md has-any-authority="{{mainItem.authoritites}}" >
                     <div ng-if="mainItem.title!=''">
                         <md-divider></md-divider>

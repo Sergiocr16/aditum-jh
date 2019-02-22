@@ -8,7 +8,7 @@ public class MensualAndAnualAccountDTO {
     private Locale locale = new Locale("es", "CR");
     private String name;
     private String balance;
-    private int inicialBalance;
+    private double inicialBalance;
     private String inicialBalanceFormatted;
 
     public String getBalance() {
@@ -27,11 +27,11 @@ public class MensualAndAnualAccountDTO {
         this.name = name;
     }
 
-    public int getInicialBalance() {
+    public double getInicialBalance() {
         return inicialBalance;
     }
 
-    public void setInicialBalance(int inicialBalance) {
+    public void setInicialBalance(double inicialBalance) {
         this.inicialBalance = inicialBalance;
         this.setInicialBalanceFormatted(formatMoney(Double.parseDouble(inicialBalance+"")));
     }

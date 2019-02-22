@@ -2653,6 +2653,14 @@ md-toast.md-center {
 .black-color {
     color: black !important;
 }
+<<<<<<< HEAD
+.black-color{
+     color:black!important;
+ }
+.h5-login-screen:hover{
+color: #009587!important;
+}
+=======
 
 .icon-material-btn {
     height: unset;
@@ -2675,3 +2683,4 @@ md-toast.md-center {
     color: rgb(0, 150, 136) !important
 }
 
+>>>>>>> aditum2.0

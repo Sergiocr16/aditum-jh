@@ -4,9 +4,7 @@ package com.lighthouse.aditum.service.dto;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A DTO for the Banco entity.
@@ -31,6 +29,8 @@ public class BancoDTO implements Serializable {
 
     private String capitalInicial;
 
+    private String capitalInicialFormatted;
+
     private Integer mostrarFactura;
 
     private ZonedDateTime fechaCapitalInicial;
@@ -39,7 +39,23 @@ public class BancoDTO implements Serializable {
 
     private Integer deleted;
 
+    private List<BancoMovementDTO> movimientos = new ArrayList<>();
+
     private Long companyId;
+
+    private Double totalBalance;
+
+    private Double totalIngress;
+
+    private Double totalEgress;
+
+    private String totalBalanceFormatted;
+
+    private String totalIngressFormatted;
+
+    private String totalEgressFormatted;
+
+    private String balanceColor;
 
     public Long getId() {
         return id;
@@ -182,5 +198,77 @@ public class BancoDTO implements Serializable {
             ", saldo='" + getSaldo() + "'" +
             ", deleted='" + getDeleted() + "'" +
             "}";
+    }
+
+    public List<BancoMovementDTO> getMovimientos() {
+        return movimientos;
+    }
+
+    public void setMovimientos(List<BancoMovementDTO> movimientos) {
+        this.movimientos = movimientos;
+    }
+
+    public Double getTotalBalance() {
+        return totalBalance;
+    }
+
+    public void setTotalBalance(Double totalBalance) {
+        this.totalBalance = totalBalance;
+    }
+
+    public String getBalanceColor() {
+        return balanceColor;
+    }
+
+    public void setBalanceColor(String balanceColor) {
+        this.balanceColor = balanceColor;
+    }
+
+    public Double getTotalIngress() {
+        return totalIngress;
+    }
+
+    public void setTotalIngress(Double totalIngress) {
+        this.totalIngress = totalIngress;
+    }
+
+    public Double getTotalEgress() {
+        return totalEgress;
+    }
+
+    public void setTotalEgress(Double totalEgress) {
+        this.totalEgress = totalEgress;
+    }
+
+    public String getTotalBalanceFormatted() {
+        return totalBalanceFormatted;
+    }
+
+    public void setTotalBalanceFormatted(String totalBalanceFormatted) {
+        this.totalBalanceFormatted = totalBalanceFormatted;
+    }
+
+    public String getTotalIngressFormatted() {
+        return totalIngressFormatted;
+    }
+
+    public void setTotalIngressFormatted(String totalIngressFormatted) {
+        this.totalIngressFormatted = totalIngressFormatted;
+    }
+
+    public String getTotalEgressFormatted() {
+        return totalEgressFormatted;
+    }
+
+    public void setTotalEgressFormatted(String totalEgressFormatted) {
+        this.totalEgressFormatted = totalEgressFormatted;
+    }
+
+    public String getCapitalInicialFormatted() {
+        return capitalInicialFormatted;
+    }
+
+    public void setCapitalInicialFormatted(String capitalInicialFormatted) {
+        this.capitalInicialFormatted = capitalInicialFormatted;
     }
 }

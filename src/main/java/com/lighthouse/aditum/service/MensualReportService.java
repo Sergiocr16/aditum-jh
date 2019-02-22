@@ -114,30 +114,30 @@ public class MensualReportService {
         List<BancoDTO> bancos = bancoService.findAll(companyId);
         for (int i = 0; i <bancos.size() ; i++) {
            MensualAndAnualAccountDTO MensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
-           int inicialBalance;
+            double inicialBalance;
            List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(initialTime,finalTime,bancos.get(i).getId());
            if(balances.size()>0){
                inicialBalance = balances.get(0).getBalance();
            }else{
-               inicialBalance = Integer.parseInt(bancos.get(i).getCapitalInicial());
+               inicialBalance = Double.parseDouble(bancos.get(i).getCapitalInicial());
            }
-//           List<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,companyId,bancos.get(i).getId()+"");
-//
-//           for (int j = 0; j < egresos.size(); j++) {
-//               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(j).getTotal());
-//           }
-//            List<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,Integer.parseInt(companyId+""),bancos.get(i).getId()+"");
-//            for (int j = 0; j < ingresos.size(); j++) {
-//                inicialBalance = inicialBalance + Integer.parseInt(ingresos.get(j).getAmmount());
-//            }
-//            List<Transferencia> transferenciasEntrantes = transferenciaService.getBetweenDatesByInComingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
-//            for (int j = 0; j < transferenciasEntrantes.size(); j++) {
-//                inicialBalance = inicialBalance + Integer.parseInt(transferenciasEntrantes.get(j).getMonto());
-//            }
-//            List<Transferencia> transferenciasSalientes = transferenciaService.getBetweenDatesByOutgoingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
-//            for (int j = 0; j < transferenciasSalientes.size(); j++) {
-//                inicialBalance = inicialBalance - Integer.parseInt(transferenciasSalientes.get(j).getMonto());
-//            }
+           List<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,companyId,bancos.get(i).getId()+"");
+
+           for (int j = 0; j < egresos.size(); j++) {
+               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(j).getTotal());
+           }
+            List<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,Integer.parseInt(companyId+""),bancos.get(i).getId()+"");
+            for (int j = 0; j < ingresos.size(); j++) {
+                inicialBalance = inicialBalance + Integer.parseInt(ingresos.get(j).getAmmount());
+            }
+            List<Transferencia> transferenciasEntrantes = transferenciaService.getBetweenDatesByInComingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
+            for (int j = 0; j < transferenciasEntrantes.size(); j++) {
+                inicialBalance = inicialBalance + Integer.parseInt(transferenciasEntrantes.get(j).getMonto());
+            }
+            List<Transferencia> transferenciasSalientes = transferenciaService.getBetweenDatesByOutgoingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
+            for (int j = 0; j < transferenciasSalientes.size(); j++) {
+                inicialBalance = inicialBalance - Integer.parseInt(transferenciasSalientes.get(j).getMonto());
+            }
            MensualAndAnualAccountDTO.setBalance(bancos.get(i).getSaldo());
            MensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
            MensualAndAnualAccountDTO.setInicialBalance(inicialBalance);

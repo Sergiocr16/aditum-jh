@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
-    <title>Estado de resultados</title>
+    <title>Tabla de cobranza ADITUM</title>
     <style>
         @page {
             size: A4 landscape;
@@ -25,6 +25,14 @@
         div.footer {
             position: running(footer);
             text-align: right;
+        }
+
+        .font-green {
+            color: #269c4e;
+        }
+
+        .font-red {
+            color: #b42929;
         }
 
         @page {
@@ -53,9 +61,7 @@
         .collection-table table {
             -fs-table-paginate: paginate;
         }
-        .no-border-top{
-            border-top: 0px!important;
-        }
+
         div.header {
             display: block;
             text-align: left;
@@ -67,6 +73,7 @@
         }
 
         div.content {
+            margin-left: -3px !important;
         }
 
         div.footer {
@@ -91,6 +98,18 @@
             color: #555;
         }
 
+        .invoice-box table tr.bodyContent td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .invoice-box table tr.bodyContentChild td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
         .invoice-box table {
             width: 100%;
             line-height: inherit;
@@ -106,13 +125,22 @@
         .collection-table table td {
             border: 1px solid #EEEEEE;
             border-spacing: 0;
-            font-size: 9px;
             padding-top: 0px !important;
             padding-bottom: 0px !important;
+
+        }
+
+        .collection-table {
+
+            margin-bottom: 20px !important;
         }
 
         .invoice-box table tr td:nth-child(2) {
             text-align: right;
+        }
+
+        .no-border-right {
+            border-right: 0px !important;
         }
 
         .invoice-box table tr.top table td {
@@ -132,50 +160,28 @@
         .invoice-box table tr.heading td {
             background: #eeeeee;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 12px;
             border-collapse: none !important;
-        }
-
-        .invoice-box table tr.bodyContent td {
-            font-size: 11px;
-            border-collapse: none !important;
-        }
-
-        .invoice-box table tr.bodyContentChild td {
-            font-size: 11px;
-            border-collapse: none !important;
-            border-top: 0px;
-        }
-
-        .no-border-right {
-            border-right: 0px !important;
-        }
-
-        .uppercase {
-            text-transform: uppercase;
         }
 
         .invoice-box table tr.details td {
             padding-bottom: 20px;
             padding-top: 20px;
+
         }
 
         .invoice-box table tr.item td {
             border-bottom: 1px solid #eee;
             width: 1000px;
-            font-size: 10px
-        }
-
-        /** RTL **/
-        .rtl {
-            direction: rtl;
-            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            font-size: 12px
         }
 
         .rtl table {
             text-align: right;
         }
-
+            .bold{
+                font-weight: bold;
+            }
         .rtl table tr td:nth-child(2) {
             text-align: left;
         }
@@ -193,43 +199,21 @@
             text-align: center !important;
         }
 
-        .bold {
-            font-weight: bold;
-        }
-
-        .font-green {
-            color: #269c4e;
-        }
-
-        .font-red {
-            color: #b42929;
-        }
-
         .comprobante-title {
             background-color: rgb(0, 150, 136);
             color: white;
             font-size: 18px;
             padding: 10px;
+
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
         }
 
-        .text-right {
-            text-align: right !important;
-        }
-
-        .padding-left-10 {
-            padding-left: 10px;
-        }
-
-        .padding-left-20 {
-            margin-left: 20px;
-        }
     </style>
 </head>
 <body>
 <div class='header'>
-    <span th:text="|${company.name}|" style="color: rgb(0, 150, 136);margin-left:1cm">company</span> <span> - Estado de resultados </span>
+    <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - Estado de cuenta <span th:text="|${bancoDTO.beneficiario}|"></span>
     <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
@@ -263,85 +247,104 @@
             </td>
         </tr>
         <tr class="details">
-            <td style="padding-top:12px">
-                <span class="comprobante-title">Estado de resultados</span>
+            <td style="padding-top:12px;">
+                <span class="comprobante-title">Estado de cuenta <span th:text="|${bancoDTO.beneficiario}|"></span></span>
             </td>
             <td style="padding-top:12px"></td>
             <td style="text-align:right;padding-top:12px">
-
+                <span style="font-size:14px">Del <span th:text="|${initialTime}|"
+                                                       style="text-transform: lowercase"></span> al <span
+                    th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
             </td>
         </tr>
 
         <tr>
             <td colspan="3">
-                <div class="collection-table ">
-                    <table style=" border-spacing:0;border-collapse: collapse">
+
+                <div class="collection-table">
+                    <table style=" border-spacing:0;border-collapse: collapse; margin-left: 0px; padding-left: 0px;">
                         <thead>
                         <tr class="heading">
-                            <td width="6.5%" class="text-center">
-                                <span>ENE </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>FEB </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>MAR </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>ABR </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>MAY </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>JUN </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>JUL </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>AGO </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>SET </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>OCT </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span >NOV </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>DIC </span>
-                            </td>
-                            <td width="6.5%" class="text-center">
-                                <span>ACUMULADO </span>
-                            </td>
-
+                            <td class="text-center"><span>Fecha </span></td>
+                            <td class="text-center"><span>Folio </span></td>
+                            <td class="text-center"><span>Concepto </span></td>
+                            <td class="text-center"><span>Ingreso </span></td>
+                            <td class="text-center"><span>Egreso</span></td>
+                            <td class="text-center"><span>Saldos </span></td>
                         </tr>
+
                         </thead>
                         <tbody>
-                        <tr style="height: 22px!important;"></tr>
-                        <tr class="bodyContent ">
-                            <td th:colspan="${monthValue}" class=" bold">
-                                <span class="">INGRESOS: MANTENIMIENTO</span>
+                        <tr class="bodyContent bold">
+                            <td colspan="5" class="no-border-right"><span>Saldo inicial al <span th:text="|${initialTime}|"></span> </span></td>
+                            <td class="no-border-right text-center">
+                                <img
+                                    th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                    style="margin: 0px 0px;"/>
+                                <span th:text="|${bancoDTO.capitalInicialFormatted}|"></span>
                             </td>
                         </tr>
-                        <tr class="bodyContent ">
-                            <td width="6.5%" class="text-center no-border-top no-border-right" th:each="item : ${anualDTO.anualIngressByMonth}">
+
+                        <tr th:each="banco : ${bancoDTO.movimientos}" class="bodyContent ">
+                            <td class="no-border-right text-center">
+                                <span th:text="|${banco.dateFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center">
+                                <span th:text="|${banco.folio}|"></span>
+                            </td>
+                            <td class="no-border-right text-center">
+                                <span th:text="|${banco.concept}|"></span>
+                            </td>
+                            <td class="no-border-right text-center font-green ">
+                                <img th:if="${banco.ingress!=0}"
+                                     th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:if="${banco.ingress!=0}" th:text="|${banco.ingressFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center font-red">
+                                <img th:if="${banco.egress!=0}" th:src="@{|${baseUrl}/content/images/colones-rojo.png|}"
+                                     height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:if="${banco.egress!=0}" th:text="|${banco.egressFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center">
                                 <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
                                      style="margin: 0px 0px;"/>
-                                <span th:text="|${item.maintenanceIngressTotalFormatted}|" class="text-center "> </span>
+                                <span th:text="|${banco.balanceFormatted}|"></span>
                             </td>
+                        </tr>
 
+                        <tr class="bodyContent ">
+
+                            <td class="no-border-right   bold" colspan="3">
+                                <span>Total</span>
+                            </td>
+                            <td class="no-border-right text-center font-green bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-verde.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${bancoDTO.totalIngressFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center font-red bold">
+                                <img th:src="@{|${baseUrl}/content/images/colones-rojo.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${bancoDTO.totalEgressFormatted}|"></span>
+                            </td>
+                            <td class="no-border-right text-center bold">
+
+                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
+                                     style="margin: 0px 0px;"/>
+                                <span th:text="|${bancoDTO.totalBalanceFormatted}|"></span>
+                            </td>
                         </tr>
                         </tbody>
+
                     </table>
                 </div>
+
+
             </td>
         </tr>
     </table>
-
 </div>
 </body>
 </html>

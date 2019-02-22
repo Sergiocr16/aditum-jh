@@ -3,6 +3,7 @@ package com.lighthouse.aditum.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.service.EgressCategoryService;
 import com.lighthouse.aditum.service.EgressDocumentService;
+import com.lighthouse.aditum.service.ProveedorService;
 import com.lighthouse.aditum.service.dto.EgressReportDTO;
 import com.lighthouse.aditum.service.EgressService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -28,6 +29,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.text.NumberFormat;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -54,10 +56,13 @@ public class EgressResource {
 
     private final EgressDocumentService egressDocumentService;
 
-    public EgressResource(EgressService egressService,EgressCategoryService egressCategoryService,EgressDocumentService egressDocumentService) {
+    private final ProveedorService proveedorService;
+
+    public EgressResource(EgressService egressService, EgressCategoryService egressCategoryService, EgressDocumentService egressDocumentService,ProveedorService proveedorService) {
         this.egressService = egressService;
         this.egressCategoryService = egressCategoryService;
         this.egressDocumentService = egressDocumentService;
+        this.proveedorService = proveedorService;
     }
 
     /**
@@ -110,14 +115,14 @@ public class EgressResource {
      */
     @GetMapping("/egresses")
     @Timed
-    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<EgressDTO>> getAllEgresses(@ApiParam Pageable pageable, Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Egresses");
-        Page<EgressDTO> page = egressService.findAll(pageable,companyId);
-       page.getContent().forEach(egressDTO -> {
-           egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+        Page<EgressDTO> page = egressService.findAll(pageable, companyId);
+        page.getContent().forEach(egressDTO -> {
+            egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
 
-       });
+        });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -135,16 +140,17 @@ public class EgressResource {
         EgressDTO egressDTO = egressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressDTO));
     }
+
     @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompany(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "companyId") Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompany(pageable, initial_time, final_time, companyId);
         page.getContent().forEach(egressDTO -> {
             egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
 
@@ -152,89 +158,165 @@ public class EgressResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/egresses/betweenCobro/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<EgressDTO>> getBetweenCobroDatesAndCompany(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "companyId")  Long companyId,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "companyId") Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<EgressDTO> page = egressService.findByCobroDatesBetweenAndCompany(pageable,initial_time,final_time,companyId);
+        Page<EgressDTO> page = egressService.findByCobroDatesBetweenAndCompany(pageable, initial_time, final_time, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}/andAccount/{accountId}")
     @Timed
     public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompanyAndAccount(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "companyId")  Long companyId,
-        @PathVariable(value = "accountId")  String accountId,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "accountId") String accountId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompanyAndAccount(pageable,initial_time,final_time,companyId,accountId);
+        Page<EgressDTO> page = egressService.findByDatesBetweenAndCompanyAndAccount(pageable, initial_time, final_time, companyId, accountId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egress");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/egresses/reportEgressToPay/file/{final_time}/byCompany/{companyId}")
+    @Timed
+    public void getEgressToPayFile(@PathVariable(value = "companyId") Long companyId,
+                                   @PathVariable(value = "final_time") String final_time,
+                                   HttpServletResponse response) throws URISyntaxException, IOException {
+
+
+        Locale local = new Locale("es", "ES");
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
+        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
+        DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es", "ES"));
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        Page<EgressDTO> egressReportDTO = egressService.getEgressToPay(null, final_time, companyId);
+
+        double totalEgressToPay = 0.0;
+        egressReportDTO.getContent().forEach(egressDTO -> {
+            egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+            egressDTO.setProveedor(proveedorService.findOne(Long.parseLong(egressDTO.getProveedor())).getEmpresa());
+            egressDTO.setExpirationDateFormatted(spanish.format(egressDTO.getExpirationDate()));
+            egressDTO.setDateFormatted(spanish.format(egressDTO.getDate()));
+
+
+        });
+
+        for (int i = 0; i < egressReportDTO.getContent().size(); i++) {
+            egressReportDTO.getContent().get(i).setTotalFormatted(currencyFormatter.format(Double.parseDouble(egressReportDTO.getContent().get(i).getTotal())).substring(1));
+            totalEgressToPay = totalEgressToPay + Double.parseDouble(egressReportDTO.getContent().get(i).getTotal());
+        }
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(final_time + "[America/Regina]");
+        String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
+
+        File file = egressDocumentService.obtainFileToPrintEgressToPay(egressReportDTO, finalTimeFormatted, companyId,currencyFormatter.format(totalEgressToPay).substring(1));
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+
+
+    }
+
+    @GetMapping("/egresses/reportEgressToPay/{final_time}/byCompany/{companyId}")
+    @Timed
+    public ResponseEntity<List<EgressDTO>> getEgressToPay(
+
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "final_time") String final_time,
+        @ApiParam Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+
+        Page<EgressDTO> egressReportDTO = egressService.getEgressToPay(pageable, final_time, companyId);
+        egressReportDTO.getContent().forEach(egressDTO -> {
+            egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+
+        });
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(egressReportDTO, "/api/egress");
+        return new ResponseEntity<>(egressReportDTO.getContent(), headers, HttpStatus.OK);
     }
 
     @GetMapping("/egresses/egressReport/{initial_time}/{final_time}/{companyId}/{empresas}/{selectedCampos}")
     @Timed
     public ResponseEntity<EgressReportDTO> egressReport(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
-        @PathVariable(value = "companyId")  Long companyId,
-        @PathVariable(value = "empresas")  String empresas,
-        @PathVariable(value = "selectedCampos")  String selectedCampos,
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "empresas") String empresas,
+        @PathVariable(value = "selectedCampos") String selectedCampos,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
-        EgressReportDTO egressReportDTO = egressService.egressReport(pageable,initial_time,final_time,companyId,empresas,selectedCampos);
+        EgressReportDTO egressReportDTO = egressService.egressReport(pageable, initial_time, final_time, companyId, empresas, selectedCampos);
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(egressReportDTO));
     }
+
     @GetMapping("/egresses/file/{egressObject}")
     @Timed
     public void getEgressFile(@PathVariable String egressObject,
-                                   HttpServletResponse response) throws URISyntaxException, IOException {
+                              HttpServletResponse response) throws URISyntaxException, IOException {
 
         String[] parts = egressObject.split("}");
-        EgressReportDTO egressReportDTO = egressService.egressReport(null,parts[0],parts[1],Long.parseLong(parts[2]),parts[3],parts[4]);
+        EgressReportDTO egressReportDTO = egressService.egressReport(null, parts[0], parts[1], Long.parseLong(parts[2]), parts[3], parts[4]);
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
 
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[0]+"[America/Regina]");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[0] + "[America/Regina]");
         String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[1]+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[1] + "[America/Regina]");
         String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
 
-            File file = egressDocumentService.obtainFileToPrint(egressReportDTO,initialTimeFormatted,finalTimeFormatted,Long.parseLong(parts[2]));
-            FileInputStream stream = new FileInputStream(file);
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "inline; filename="+file.getName());
-            IOUtils.copy(stream,response.getOutputStream());
-            stream.close();
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        this.sleep(400000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    file.delete();
-
+        File file = egressDocumentService.obtainFileToPrint(egressReportDTO, initialTimeFormatted, finalTimeFormatted, Long.parseLong(parts[2]));
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }.start();
 
+                file.delete();
 
+            }
+        }.start();
 
 
     }
+
     /**
      * DELETE  /egresses/:id : delete the "id" egress.
      *

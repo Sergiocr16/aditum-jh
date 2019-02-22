@@ -8,6 +8,7 @@ import java.util.Locale;
 
 public class EgressReportItemsDTO {
     private String proovedor;
+    private int tipo;
     private double total = 0;
     private String totalFormatted;
     private List<EgressDTO> egresosFormatted = new ArrayList<>();
@@ -16,6 +17,11 @@ public class EgressReportItemsDTO {
 
     public EgressReportItemsDTO(String proovedor, List<EgressDTO> egresos, String[] proveedorsParts) {
         this.proovedor = proovedor;
+        if(proovedor.equals("Devoluciones de dinero")){
+            this.tipo = 2;
+        }else{
+            this.tipo = 1;
+        }
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es", "ES"));
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
@@ -36,7 +42,7 @@ public class EgressReportItemsDTO {
                     }
 
                 }
-                if (proveedorsParts[j].equals("folio")) {
+                if (proveedorsParts[j].equals("folio") && !proovedor.equals("Devoluciones de dinero")) {
                     egressDTO.setFolio(egresos.get(i).getFolio());
                     if(i==0){
                         getHeadingCampos().add("Folio");
@@ -44,7 +50,7 @@ public class EgressReportItemsDTO {
                     }
 
                 }
-                if (proveedorsParts[j].equals("date")) {
+                if (proveedorsParts[j].equals("date") && !proovedor.equals("Devoluciones de dinero")) {
                     egressDTO.setDate(egresos.get(i).getDate());
                     if(i==0){
                         getHeadingCampos().add("Fecha cobro");
@@ -53,7 +59,7 @@ public class EgressReportItemsDTO {
 
                     egressDTO.setDateFormatted(spanish.format(egresos.get(i).getDate()));
                 }
-                if (proveedorsParts[j].equals("expirationDate")) {
+                if (proveedorsParts[j].equals("expirationDate") && !proovedor.equals("Devoluciones de dinero")) {
                     egressDTO.setExpirationDate(egresos.get(i).getExpirationDate());
                     if(i==0){
                         getHeadingCampos().add("Fecha vencimiento");
@@ -76,7 +82,7 @@ public class EgressReportItemsDTO {
                         egressDTO.setPaymentDateFormatted("No pagado");
                     }
                 }
-                if (proveedorsParts[j].equals("billNumber")) {
+                if (proveedorsParts[j].equals("billNumber") && !proovedor.equals("Devoluciones de dinero")) {
                     if (egresos.get(i).getBillNumber() == null) {
                         egressDTO.setBillNumber("Sin registrar");
                     } else {
@@ -109,22 +115,7 @@ public class EgressReportItemsDTO {
                     }
 
                 }
-                if (proveedorsParts[j].equals("state")) {
-                    egressDTO.setState(egresos.get(i).getState());
-                    if(egresos.get(i).getState()==1){
-                        egressDTO.setStateFormatted("Pendiente");
-                    }else if(egresos.get(i).getState()==2){
-                        egressDTO.setStateFormatted("Pagado");
-                    }else if(egresos.get(i).getState()==3){
-                        egressDTO.setStateFormatted("Vencido");
-                    }
 
-                    if(i==0){
-                        getHeadingCampos().add("Estado");
-                        this.camposQuantity = camposQuantity + 1;
-                    }
-
-                }
                 if (proveedorsParts[j].equals("total")) {
                     egressDTO.setTotal(egresos.get(i).getTotal());
                     if(i==0){
@@ -188,5 +179,13 @@ public class EgressReportItemsDTO {
 
     public void setTotalFormatted(String totalFormatted) {
         this.totalFormatted = totalFormatted;
+    }
+
+    public int getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(int tipo) {
+        this.tipo = tipo;
     }
 }
