@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;" charset="UTF-8"/>
+    <title>Reporte de ingresos ADITUM</title>
+    <style>
+        @page {
+            size: A4 landscape;
+            margin: 1cm;
+            counter-increment: page;
+        }
+
+        @page {
+            @top-left {
+                content: element(header);
+            }
+        }
+
+        @page :first {
+            @top-left {
+                content: element(firstPageHeader);
+            }
+        }
+
+        div.footer {
+            position: running(footer);
+            text-align: right;
+        }
+
+        @page {
+            @bottom-right {
+                content: element(footer);
+            }
+        }
+
+        #pagenumber:before {
+            content: counter(page);
+        }
+
+        #pagecount:before {
+            content: counter(pages);
+        }
+
+        @media print {
+            .no-page-break {
+                margin-top: 25px;
+                page-break-inside: avoid;
+                -fs-keep-with-inline: keep;
+                -fs-table-paginate: paginate;
+            }
+        }
+
+        .collection-table table {
+            -fs-table-paginate: paginate;
+        }
+
+        div.header {
+            display: block;
+            text-align: left;
+            position: running(header);
+            font-size: 10px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        div.content {
+        }
+
+        div.footer {
+            counter-increment: page;
+            position: running(footer);
+            text-align: left;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+            padding: 5px;
+        }
+
+        body {
+            margin: 0;
+            counter-reset: body;
+        }
+
+        .invoice-box {
+            margin: auto;
+            width: 27cm;
+            font-size: 14px;
+            line-height: 24px;
+            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;
+        }
+
+        .invoice-box table {
+            width: 100%;
+            line-height: inherit;
+            text-align: left;
+            border-collapse: collapse;
+        }
+
+        .invoice-box table td {
+            padding: 5px;
+            vertical-align: top;
+        }
+
+        .collection-table table td {
+            border: 1px solid #eee;
+            border-spacing: 0;
+            padding-top: 0px !important;
+            padding-bottom: 0px !important;
+        }
+
+        .invoice-box table tr td:nth-child(2) {
+            text-align: right;
+        }
+
+        .invoice-box table tr.top table td {
+            padding-bottom: 20px;
+        }
+
+        .invoice-box table tr.top table td.title {
+            font-size: 45px;
+            line-height: 45px;
+            color: #333;
+        }
+
+        .invoice-box table tr.information table td {
+            padding-bottom: 40px;
+        }
+
+        .invoice-box table tr.heading td {
+            background: #eeeeee;
+            font-weight: bold;
+            font-size: 12px;
+            border-collapse: none !important;
+        }
+
+        .no-border-right {
+            border-right: 0px !important;
+        }
+
+        .invoice-box table tr.details td {
+            padding-bottom: 20px;
+            padding-top: 20px;
+        }
+
+        .invoice-box table tr.item td {
+            border-bottom: 1px solid #eee;
+            width: 1000px;
+            padding-bottom: 1px !important;
+            font-size: 10px;
+
+        }
+
+        /** RTL **/
+        .rtl {
+            direction: rtl;
+            font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        }
+
+        .rtl table {
+            text-align: right;
+        }
+
+        .rtl table tr td:nth-child(2) {
+            text-align: left;
+        }
+
+        .condominio-name {
+            line-height: 1em;
+            font-weight: bold;
+            font-size: 25px;
+            color: rgb(0, 150, 136);
+            margin-bottom: 0px;
+            margin-top: 35px;
+        }
+
+        .text-center {
+            text-align: center !important;
+        }
+
+        .total-ammount {
+            border-top: 4px solid rgb(0, 150, 136);
+            background: rgb(0, 150, 136);
+            border-bottom: 1px solid #eee !important;
+            font-weight: bold;
+            font-size: 12px !important;
+            color: white !important;
+            text-align: center;
+        }
+
+        .payment-method {
+            border: 0px solid #eee !important;
+            border-top: 3px solid rgb(0, 150, 136);
+        !important;
+            color: #555;
+        }
+
+        .comprobante-title {
+            background-color: rgb(0, 150, 136);
+            color: white;
+            font-size: 18px;
+            padding: 10px;
+            margin-left: -5px;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+
+        .invoice-box table tr.bodyContent td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .invoice-box table tr.bodyContentChild td {
+            font-size: 11px;
+            border-collapse: none !important;
+            border-top: 0px !important;
+        }
+
+        .no-padding {
+            padding: 0;
+        }
+
+        .balance-title {
+            margin: 5px
+        }
+        .no-double-border {
+            border-right: 0px !important;
+            border-top: 0px !important;
+            font-size: 12px!important;
+        }
+        .no-double-border-last {
+            border-top: 0px !important;
+            font-size: 12px!important;
+        }
+        .no-content{
+            padding: 100px;
+            border: 1px #616161 solid;
+            width: 100%;
+            border-radius: 8px;
+            background-color: #f7f7f7;
+        }
+    </style>
+</head>
+<body>
+<div class='header'>
+    <span th:text="|${company.name}|" style="color:rgb(0, 150, 136);margin-left:1cm">company</span> - Reporte de cuotas
+    por cobrar <span th:text="|${finalTime}|"></span>
+    <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzulMaterial.png|}"
+         style="float:right;margin-right:1cm"/>
+    <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
+</div>
+<div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
+<div class="footer">
+    <div style="float:left;display:inline">
+        <span style="font-size:10px">Creación de este reporte:</span><b style="font-size:11px"
+                                                                        th:text="|${currentDate}|"></b>
+    </div>
+    <div style="float:right;display:inline">
+    <span style="font-size:11px;font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+            color: #555;display:inline;float:right;"> Página <span id="pagenumber"></span> / <span
+        id="pagecount"></span></span>
+    </div>
+</div>
+<div class="invoice-box landscapePage content">
+    <table cellpadding="0" cellspacing="0">
+        <tr class="top">
+            <td>
+                <h3 class="condominio-name" th:text="|${company.name}|">Condominio</h3>
+            </td>
+            <td>
+            </td>
+            <td>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
+                                                                                  th:src="@{|${baseUrl}/content/images/logoAditumAzulMaterial.png|}"/>
+                    <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
+                </h2>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <hr style="border-top: 1px solid #e0f2f1;">
+                </hr>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top:12px" colspan="3">
+                <div style="width:49%;float:left">
+                    <div>
+                        <span class="comprobante-title"> Reporte de Cuotas por Cobrar</span>
+                    </div>
+                    <div style="margin-top:20px">
+                        <span th:text="|${finalTime}|">
+                        </span>
+                    </div>
+                    <div th:if="|${filtering==true}|" style="margin-top:5px">
+                        <span>
+                            Filtrado por tipo de cuota:
+                            <span th:if="|${filterType==1}|">MANTENIMIENTO</span>
+                            <span th:if="|${filterType==2}|">EXTRAORDINARIA</span>
+                            <span th:if="|${filterType==3}|">ÁREAS COMUNES</span>
+                        </span>
+                    </div>
+                </div>
+                <div class="no-padding"
+                     style="border:#CCCCCC solid 1px;border-radius:10px!important;width:50%;float:right;margin-top: -12px;">
+                    <div style="float:left;width:49.5%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Total morosidad</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"
+                                style="margin:0 3px;"/>
+                           <span th:text="|${report.totalDueFormatted}|">0</span></span>
+                        </h5>
+                    </div>
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:50%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Total de Morosos</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <span th:text="|${report.totalDueHouses}|">0</span></span>
+                        </h5>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <div th:if="|${report.getTotalDueHouses()==0}|">
+                    <h3 style="margin: 50px" class="text-center no-content">
+                        No hay cuotas por cobrar
+                    </h3>
+                </div>
+                <div class="collection-table" th:if="|${report.getTotalDueHouses()>0}|">
+                    <table cellspacing="0" cellpadding="0" style="border-spacing:0;border-collapse: collapse;border: none;">
+                        <thead>
+                        <tr class="heading">
+                            <td width="15%" class="text-center">
+                                Fecha de cobro
+                            </td>
+                            <td width="25%" class="text-center">
+                                Concepto
+                            </td>
+                            <td class="text-center" width="15%">
+                                Categoría
+                            </td>
+                            <td class="text-center" width="10%">
+                                Monto
+                            </td>
+                            <td class="text-center" width="10%">
+                                Recargo
+                            </td>
+                            <td class="text-center" width="10%">
+                                Total
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody style="border:none;padding:0px!important">
+                        <tr style="border:none;padding:0px!important">
+                            <td colspan="6" style="border:none;padding:0px!important">
+                                <table th:each="dueHouse : ${report.dueHouses}"
+                                       class="table font-13 collection-table"
+                                       style="border-spacing:0;border-collapse: collapse;margin-top: 10px">
+                                    <thead style="background-color: #fafafa;">
+                                    <tr class="no-padding">
+                                        <th colspan="6" class="fade-in no-padding" style="padding: 0px!important;">
+                                            <md-toolbar style="min-height: unset!important"
+                                                        class="form-title _md _md-toolbar-transitions">
+                                                <h2 style="margin:5px!important;font-size:13px;color:rgb(0, 150, 136)">
+                                                    <span>Filial <span
+                                                        th:text="|${dueHouse.houseDTO.housenumber}|"></span></span>
+                                                    |
+                                                    <span style="font-size:13px">Responsable:
+                                        <span th:if="|${dueHouse.responsable!=null}|"><span style="font-size:12px"
+                                            th:text="|${dueHouse.responsable.name+' '+dueHouse.responsable.lastname+' '+dueHouse.responsable.secondlastname }|"></span>
+                                         </span>
+                                        <span style="font-size:12px" th:if="|${dueHouse.responsable==null}|">No definido</span>
+                                          </span>
+                                                </h2>
+                                            </md-toolbar>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="charge : ${dueHouse.dues}" class="font-13">
+                                        <td class="text-center no-double-border font-13" th:text="|${charge.getFormatedDate()}|">
+                                        </td>
+                                        <td class="text-center no-double-border font-13" th:text="|${charge.concept}|"></td>
+                                        <td class="text-center no-double-border font-13">
+                                            <span th:if="|${charge.type==1}|">MANTENIMIENTO</span>
+                                            <span th:if="|${charge.type==2}|">EXTRAORDINARIA</span>
+                                            <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
+                                        </td>
+                                        <td class="text-center no-double-border font-13"><img
+                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            th:text="${charge.ammount}"></span></td>
+                                        <td class="text-center no-double-border font-13"><img
+                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            th:text="${charge.subcharge}"></span></td>
+                                        <td class="text-center no-double-border-last font-13"><img
+                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            th:text="${charge.getPaymentAmmount()}"></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="payment-method" style="border-top: 1px solid rgb(0, 150, 136)!important;"></td>
+                                        <td class="total-ammount payment-method" style="text-align: right; border-top: 1px solid rgb(0, 150, 136)!important;" >
+
+                                            <div style="display:inline;float: right"><b>SUBTOTAL</b></div>
+                                        </td>
+                                        <td class="total-ammount payment-method text-center" style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
+                                            <img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="10"/>
+                                            <span
+                                                th:text="${dueHouse.totalDueFormatted}"></span>
+                                        </b></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"/>
+        <span th:text="${report.getTotalDueFormatted()}"></span></h6>
+</div>
+</body>
+</html>

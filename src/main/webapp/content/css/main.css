@@ -1221,7 +1221,7 @@ div.scrollmenu a:hover {
 }
 
 .deuda-total {
-    color:#616161 !important;
+    color: #616161 !important;
     background-color: #fafafa;
     padding: 10px;
 }
@@ -1842,12 +1842,14 @@ div.scrollmenu a:hover {
     .height-264 {
         height: auto !important;
     }
-    .no-padding-xs{
-        padding: 15px 15px!important;
+
+    .no-padding-xs {
+        padding: 15px 15px !important;
     }
+
     .md-fixed-tabs {
         border-radius: 0 !important;
-        width: 100%!important;
+        width: 100% !important;
         padding: 0px !important
     }
 }
@@ -1897,7 +1899,7 @@ div.scrollmenu a:hover {
 @media only screen and (min-width: 992px) {
     .md-fixed-tabs {
         border-radius: 0 !important;
-        width: 87%!important;
+        width: 87% !important;
         padding: 0px !important
     }
 }
@@ -2107,9 +2109,11 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
     display: block;
     text-decoration: none;
 }
-.width-100{
+
+.width-100 {
     width: 100%;
 }
+
 #sidebar ul li a i {
     vertical-align: middle !important;
 }
@@ -2618,33 +2622,65 @@ md-toast.md-center {
     box-shadow: none !important;
 }
 
-.btn-dashboard:hover{
-    color:#4DB3A2 !important
+.btn-dashboard:hover {
+    color: #4DB3A2 !important
 }
 
-.margin-5{
-    margin: 5px!important;
+.margin-5 {
+    margin: 5px !important;
 }
 
-.no-padding-left{
-    padding-left: 0px!important;
+.no-padding-left {
+    padding-left: 0px !important;
 }
 
-.no-padding-right{
-    padding-right: 0px!important;
+.no-padding-right {
+    padding-right: 0px !important;
 }
-.no-padding-xs{
-    padding: 15px 15px!important;
+
+.no-padding-xs {
+    padding: 15px 15px !important;
 }
-.padding-bottom-13{
-    padding-bottom: 13px!important;
+
+.padding-bottom-13 {
+    padding-bottom: 13px !important;
 }
-.white-color{
-    color:white!important;
+
+.white-color {
+    color: white !important;
 }
+
+.black-color {
+    color: black !important;
+}
+<<<<<<< HEAD
 .black-color{
      color:black!important;
  }
 .h5-login-screen:hover{
 color: #009587!important;
 }
+=======
+
+.icon-material-btn {
+    height: unset;
+    width: unset;
+}
+
+.icon-material-btn:hover {
+    background-color: rgba(158, 158, 158, 0.2);
+}
+
+.portlet.portlet-fullscreen {
+    z-index: 70 !important;
+}
+
+.itemMenuSelect {
+    color: #37474f !important
+}
+
+.itemMenuSelect:hover {
+    color: rgb(0, 150, 136) !important
+}
+
+>>>>>>> aditum2.0

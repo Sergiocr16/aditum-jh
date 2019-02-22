@@ -11,13 +11,18 @@
         }
     });
 
-    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard', 'globalCompany', 'Modal', '$timeout', 'CommonAreaReservations'];
+    DashboardController.$inject = ['$scope', '$rootScope', 'Principal', 'LoginService', '$state', 'Dashboard', 'globalCompany', 'Modal', '$timeout', 'CommonAreaReservations', 'CommonMethods'];
 
-    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard, globalCompany, Modal, $timeout, CommonAreaReservations) {
+    function DashboardController($scope, $rootScope, Principal, LoginService, $state, Dashboard, globalCompany, Modal, $timeout, CommonAreaReservations, CommonMethods) {
         var vm = this;
         $rootScope.active = "dashboard";
         $rootScope.mainTitle = "Dashboard";
-
+        var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        if (companyConfig.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
         vm.ready = false;
         vm.year = moment(new Date()).format("YYYY");
         vm.visitorTitle = "De la semana";
@@ -31,9 +36,7 @@
 
         var monthsText = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Setiembre", "Octubre", "Noviembre", "Diciembre"]
 
-      vm.showGraphic = function(){
-          $state.go("dashboard.graphic",{year:2019})
-      }
+
         vm.loadAll = function () {
             Dashboard.query({companyId: globalCompany.getId()}, function (result) {
                 vm.dashboard = result;
@@ -105,9 +108,9 @@
                 definePorCobrarDelMes()
                 $timeout(function () {
                     defaultersGraphInit(vm.chartTypeDefaulters.type)
-                    $timeout(function(){
+                    $timeout(function () {
                         vm.isReady = true;
-                    },500)
+                    }, 500)
                 }, 110)
             });
         }
@@ -194,9 +197,9 @@
             var colums = [];
             colums.push({"f": monthsText[monthData.monthValue - 1]});
             colums.push(getColumnChart(monthData.incomeTotalformated, monthData.incomeTotal));
+            colums.push(getColumnChart(monthData.budgetIncomeTotalformated, monthData.budgetIncomeTotal));
             colums.push(getColumnChart(monthData.egressTotalformated, monthData.egressTotal));
-            colums.push(getColumnChart(monthData.budgetTotalformated, monthData.budgetTotal));
-
+            colums.push(getColumnChart(monthData.budgetEgressTotalformated, monthData.budgetEgressTotal));
             return {"c": colums}
         }
 
@@ -263,7 +266,7 @@
                 "options": {
                     // "title": "Vehículos",
                     "legend": {"position": "bottom"},
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "isStacked": "false",
                     'chartArea': {'width': '90%', 'height': '78%'},
                     "fill": 200000,
@@ -287,7 +290,6 @@
             colums.push({"v": "Deshabilitados"});
             colums.push({"v": vm.dashboard.disableResidentQuantity});
             rows.push({"c": colums})
-            console.log(rows)
             vm.residentGraph = {
                 "type": "PieChart",
                 "displayed": false,
@@ -317,7 +319,7 @@
                     "legend": {"position": "bottom"},
                     "isStacked": "false",
                     'chartArea': {'width': '90%', 'height': '78%'},
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "fill": 200000,
                     "animation": {
                         duration: 1000,
@@ -369,7 +371,7 @@
                     "legend": {"position": "bottom"},
                     "isStacked": "false",
                     "fill": 200000,
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "animation": {
                         duration: 1000,
                         easing: 'out',
@@ -423,7 +425,7 @@
                     "curveType": "function",
                     "legend": {"position": "bottom"},
                     "isStacked": "true",
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "fill": 10,
                     "animation": {
                         duration: 1000,
@@ -474,13 +476,18 @@
                             "type": "number"
                         },
                         {
+                            "id": "budget-ingress-id",
+                            "label": "Presupuesto Ingresos",
+                            "type": "number"
+                        },
+                        {
                             "id": "egress-id",
                             "label": "Egresos",
                             "type": "number"
                         },
                         {
-                            "id": "budget-id",
-                            "label": "Presupuesto",
+                            "id": "budget-egress-id",
+                            "label": "Presupuesto Egresos",
                             "type": "number"
                         },
                     ],
@@ -489,9 +496,9 @@
                 "options": {
                     // "title": "Flujo de Ingresos y Egresos",
                     // "curveType": "function",
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "legend": {"position": "bottom"},
-                    'chartArea': {'width': '97%'},
+                    'chartArea': {'width': '75%'},
                     "isStacked": "false",
                     "fill": 200000,
                     "animation": {
@@ -500,9 +507,10 @@
                     },
                     "displayExactValues": true,
                     series: {
-                        0: {color: '#009688'},
-                        1: {color: '#cb5a5e'},
-                        2: {color: '#1c91c0'},
+                        0: {color: '#43a047'},
+                        1: {color: '00701a'},
+                        2: {color: '#d50000'},
+                        3: {color: '#9b0000'},
                     }
                     // "vAxis": {
                     //     "title": "Salesunit",
@@ -545,7 +553,7 @@
                 "options": {
                     "title": vm.visitorTitle,
                     "curveType": "function",
-                    "sliceVisibilityThreshold":0,
+                    "sliceVisibilityThreshold": 0,
                     "animation": {
                         duration: 1000,
                         easing: 'out',

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('BudgetExecutionAnualReportController', BudgetExecutionAnualReportController);
 
-    BudgetExecutionAnualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    BudgetExecutionAnualReportController.$inject = ['Company', 'AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany', '$state'];
 
-    function BudgetExecutionAnualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function BudgetExecutionAnualReportController(Company, AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany, $state) {
         var vm = this;
         vm.isReady = false;
         $rootScope.mainTitle = "Reporte anual";
@@ -41,19 +41,21 @@
                 })
             }, 7000)
         };
-
+        vm.showGraphic = function () {
+            $state.go("budgetExecution.anualReport.graphic", {year: vm.yearIEB})
+        }
         vm.changeYear = function () {
             vm.resultsReady = false;
             vm.consulting = true;
             vm.resultsReady = false;
-            if(vm.yearIEB === new Date().getFullYear()){
+            if (vm.yearIEB === new Date().getFullYear()) {
                 var dateMonthDay = new Date(), y1 = dateMonthDay.getFullYear(), m1 = dateMonthDay.getMonth();
                 vm.actualMonth = new Date(y1, m1, 1);
                 vm.month = m1 + 1;
                 vm.rowsQuantity = vm.month + 4;
                 console.log(vm.actualMonth)
                 vm.showWithBudget();
-            }else{
+            } else {
                 var dateMonthDay = new Date();
                 dateMonthDay.setFullYear(vm.yearIEB);
                 dateMonthDay.setMonth(11);
@@ -83,7 +85,6 @@
         }
 
 
-
         vm.loadAll = function () {
             vm.companyId = globalCompany.getId();
             vm.actualMonthFormatted = moment(vm.actualMonth).format();
@@ -98,7 +99,7 @@
 
         function onSuccess(data, headers) {
             vm.report = data;
-            vm.superObject =  vm.actualMonthFormatted + '}' + vm.companyId +'}'+ withPresupuestos;
+            vm.superObject = vm.actualMonthFormatted + '}' + vm.companyId + '}' + withPresupuestos;
 
             vm.path = '/api/anualReport/file/' + vm.superObject;
             Company.get({id: globalCompany.getId()}).$promise.then(function (result) {

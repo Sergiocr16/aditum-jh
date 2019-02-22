@@ -1,3 +1,20 @@
+Skip to content
+
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+@diegobari06 Sign out
+2
+0 0 Sergiocr16/aditum-jh
+Code  Issues 0  Pull requests 1  Projects 0  Wiki  Insights
+aditum-jh/src/main/webapp/app/entities/mensual-anual-report/resultStatesMensualReport.html
+418a64b  a day ago
+@Sergiocr16 Sergiocr16 Se agrega el reporte de cuotas por cobrar
+
+321 lines (284 sloc)  34.3 KB
 
 <div ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }" class="" id="new_egress_form">
     <div class="row">
@@ -16,24 +33,24 @@
                             <div layout="row">
 
 
-                            <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >Reporte del</span>
+                                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >Reporte del</span>
 
-                            <md-input-container class="md-block no-margin">
-                                <md-datepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
-                                               md-hide-icons="calendar"
-                                               md-placeholder="Fecha de inicio" md-open-on-focus
-                                               required></md-datepicker>
-                            </md-input-container>
-                        <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >al</span>
-                            <md-input-container class="md-block no-margin">
-                                <md-datepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
-                                               md-hide-icons="calendar"
-                                               md-placeholder="Fecha final" md-open-on-focus
-                                               required></md-datepicker>
-                            </md-input-container>
-                            <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
-                                Generar reporte
-                            </md-button>
+                                <md-input-container class="md-block no-margin">
+                                    <md-datepicker class="datePicker" readonlydatepicker  md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha de inicio" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+                                <span style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;" >al</span>
+                                <md-input-container class="md-block no-margin">
+                                    <md-datepicker class="datePicker" readonlydatepicker  md-min-date="vvm.dates.initial_time" required ng-model="vm.dates.final_time"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha final" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+                                <md-button class="md-raised  md-warn thin-btn no-margin-right " ng-click="vm.loadAll()">
+                                    Generar reporte
+                                </md-button>
                             </div>
                         </div>
 
@@ -48,40 +65,40 @@
                             <h5 class="text-center bold gray-font uppercase" style="font-size:12px;">{{vm.companyName}}</h5>
                             <h5 class="text-center bold gray-font" style="font-size:12px;">ESTADO DE RESULTADOS</h5>
                             <h5 class="text-center bold gray-font">Del {{vm.fechaInicio | date:'longDate'}} al {{vm.fechaFin | date:'longDate'}}</h5>
-                           
+
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" >
                                 <h4 class="bold" ng-show="reporte.gastos.length>0">{{reporte.nombre}}</h4>
                                 <div class="margin-top-20">
                                     <table ng-if="vm.report.mensualIngressReport.maintenanceIngress.length>0 || vm.report.mensualIngressReport.extraOrdinaryIngress.length>0 || vm.report.mensualIngressReport.commonAreasIngress.length>0 || vm.report.mensualIngressReport.otherIngress.length>0 || vm.report.mensualIngressReport.maintenanceBudget>0 && vm.showPresupuestoFields || vm.report.mensualIngressReport.extraordinaryBudget>0 && vm.showPresupuestoFields || vm.report.mensualIngressReport.commonAreasBudget>0 && vm.showPresupuestoFields  || vm.report.mensualIngressReport.otherBudget>0 && vm.showPresupuestoFields" class="jh-table table  table-bordered table-condensed flip-content tableMaterialDesignResultStates" style=" color:black; font-size:11px!important; ">
                                         <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#f4f4f4; ">
                                         <tr class="bold">
-                                           <th style="width:60%; border-color:#4F94CD; font-size:11px;">INGRESOS</th>
+                                            <th style="width:60%; border-color:#4F94CD; font-size:11px;">INGRESOS</th>
                                             <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">CANTIDAD</th>
-                                           <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
+                                            <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
 
                                         </tr>
                                         </thead>
                                         <tbody style="padding: 120px!important; ">
                                         <tr ng-hide="vm.report.mensualIngressReport.maintenanceIngress.length==0 && vm.report.mensualIngressReport.maintenanceBudget==0" class="bold">
-                                          <td ng-click="vm.showBodyTableIngress(1,vm.isShowingMaintenanceDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i ng-class="{'white-color':vm.report.mensualIngressReport.maintenanceIngress.length==0,'black-color':vm.report.mensualIngressReport.maintenanceIngress.length>0}" class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MANTENIMIENTO</td>
+                                            <td ng-click="vm.showBodyTableIngress(1,vm.isShowingMaintenanceDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i ng-class="{'white-color':vm.report.mensualIngressReport.maintenanceIngress.length==0,'black-color':vm.report.mensualIngressReport.maintenanceIngress.length>0}" class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> MANTENIMIENTO</td>
                                             <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.maintenanceIngressTotal+"")}}</td>
                                             <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.maintenanceIngressPercentage  | number:2}}%</td>
                                         </tr>
                                         </tbody>
                                         <tbody style="border-top:0px;" ng-show=" vm.isShowingMaintenanceDetail">
-                                            <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left: 15px!important; text-transform:uppercase" >- {{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
-                                            </tr>
+                                        <tr ng-repeat="item in vm.report.mensualIngressReport.maintenanceIngress| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left: 15px!important; text-transform:uppercase" >- {{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{item.percentage | number:2}}%</td>
+                                        </tr>
                                         </tbody>
 
                                         <tbody style="border-top:0px;">
-                                            <tr ng-hide="vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.extraordinaryBudget==0" class="bold">
-                                                <td ng-click="vm.showBodyTableIngress(2,vm.isShowingExtrardinaryDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i ng-class="{'white-color':vm.report.mensualIngressReport.extraOrdinaryIngress.length==0,'black-color':vm.report.mensualIngressReport.extraOrdinaryIngress.length>0}" class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> EXTRAORDINARIAS</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.extraordinaryIngressTotal+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.extraordinaryIngressPercentage | number:2}}%</td>
-                                            </tr>
+                                        <tr ng-hide="vm.report.mensualIngressReport.extraOrdinaryIngress.length==0 && vm.report.mensualIngressReport.extraordinaryBudget==0" class="bold">
+                                            <td ng-click="vm.showBodyTableIngress(2,vm.isShowingExtrardinaryDetail)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD;" class="maintenanceReportField"><i ng-class="{'white-color':vm.report.mensualIngressReport.extraOrdinaryIngress.length==0,'black-color':vm.report.mensualIngressReport.extraOrdinaryIngress.length>0}" class="fa fa-chevron-down bold font-11 horizontal-padding-5" aria-hidden="true"></i> EXTRAORDINARIAS</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(vm.report.mensualIngressReport.extraordinaryIngressTotal+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right">{{vm.report.mensualIngressReport.extraordinaryIngressPercentage | number:2}}%</td>
+                                        </tr>
                                         </tbody>
                                         <tbody style="border-top:0px;" ng-show="vm.isShowingExtrardinaryDetail">
                                         <tr ng-repeat="item in vm.report.mensualIngressReport.extraOrdinaryIngress| orderBy:'total'" style="font-size:11px;">
@@ -139,16 +156,16 @@
                                         </tr>
                                         </thead>
                                         <tbody ng-repeat="fixedCost in vm.report.mensualEgressReport.fixedCosts | orderBy:'total'" style="border-top:0px;">
-                                            <tr  class="bold" >
-                                                <td ng-click="vm.showBodyTableEgress(fixedCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i  class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-class="{'white-color':fixedCost.egressList==undefined,'black-color':fixedCost.egressList.length>0}"  aria-hidden="true"></i> {{fixedCost.category}}</td>
-                                                <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(fixedCost.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"><span  ng-if="vm.isFinite(fixedCost.percentage)">{{fixedCost.percentage | number:2}}%</span><span ng-if="!vm.isFinite(fixedCost.percentage)">-</span></td>
-                                            </tr>
-                                            <tr ng-show="fixedCost.showDetail" ng-repeat="item in fixedCost.egressList| orderBy:'total'" style="font-size:11px;">
-                                                <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px!important; text-transform:uppercase" >- {{item.concept}}</td>
-                                                <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
-                                                <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"><span  ng-if="vm.isFinite(item.percentage)">{{item.percentage | number:2}}%</span><span ng-if="!vm.isFinite(item.percentage)">-</span></td>
-                                            </tr>
+                                        <tr  class="bold" >
+                                            <td ng-click="vm.showBodyTableEgress(fixedCost)" style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; text-transform:uppercase;" class="maintenanceReportField"><i  class="fa fa-chevron-down bold font-11 horizontal-padding-5" ng-class="{'white-color':fixedCost.egressList==undefined,'black-color':fixedCost.egressList.length>0}"  aria-hidden="true"></i> {{fixedCost.category}}</td>
+                                            <td style="border-top:1px solid #4F94CD; " class=" text-right">₡ {{vm.formatearNumero(fixedCost.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"><span  ng-if="vm.isFinite(fixedCost.percentage)">{{fixedCost.percentage | number:2}}%</span><span ng-if="!vm.isFinite(fixedCost.percentage)">-</span></td>
+                                        </tr>
+                                        <tr ng-show="fixedCost.showDetail" ng-repeat="item in fixedCost.egressList| orderBy:'total'" style="font-size:11px;">
+                                            <td style="border-top:1px solid #4F94CD;  border-left:1px solid #4F94CD; padding-left:15px!important; text-transform:uppercase" >- {{item.concept}}</td>
+                                            <td style="border-top:1px solid #4F94CD;"  class=" text-right">₡ {{vm.formatearNumero(item.total+"")}}</td>
+                                            <td style="border-right:1px solid #4F94CD; border-top:1px solid #4F94CD;" class=" text-right"><span  ng-if="vm.isFinite(item.percentage)">{{item.percentage | number:2}}%</span><span ng-if="!vm.isFinite(item.percentage)">-</span></td>
+                                        </tr>
                                         </tbody>
                                         <tbody style="border-top:0px; " >
                                         <tr style="font-size:11px;" >
@@ -223,11 +240,11 @@
                                     </table>
                                     <table class="jh-table table  table-bordered table-condensed flip-content tableMaterialDesignResultStates" style=" color:black; font-size:11px!important; ">
                                         <thead  class="flip-content"  style="border:1px solid #4F94CD; background-color:#f4f4f4; ">
-                                            <tr class="bold">
+                                        <tr class="bold">
                                             <th style="width:60%; border-color:#4F94CD; font-size:11px;">RESUMEN</th>
                                             <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">TOTAL</th>
                                             <th class="text-center" style="width:10%; border-color:#4F94CD; font-size:11px;">%</th>
-                                            </tr>
+                                        </tr>
                                         </thead>
                                         <tbody  style="border-top:0px;">
                                         <tr  class="bold" >
@@ -274,10 +291,10 @@
                             </div>
 
                         </div>
-                        </div>
-                        <div class="form-actions noborder" style="padding-bottom:0px;">
+                    </div>
+                    <div class="form-actions noborder" style="padding-bottom:0px;">
 
-                        </div>
+                    </div>
 
                 </div>
             </div>
@@ -317,4 +334,3 @@
         </md-fab-actions>
     </md-fab-speed-dial>
 </div>
-

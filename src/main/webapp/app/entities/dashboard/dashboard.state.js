@@ -23,26 +23,6 @@
                     }
                 },
             })
-            .state('dashboard.graphic', {
-                parent: 'dashboard',
-                url: '/grafica?year',
-                data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
-                },
-                onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
-                    $uibModal.open({
-                        templateUrl: 'app/entities/dashboard/anual-report-graphic.html',
-                        controller: 'AnualReportGraphicController',
-                        controllerAs: 'vm',
-                        backdrop: 'static',
-                        size: 'lg'
-                    }).result.then(function () {
-                        $state.go('dashboard', null, {reload: 'dashboard'});
-                    }, function () {
-                        $state.go('dashboard');
-                    });
-                }]
-            })
             .state('dashboard.selectCompany', {
                 parent: 'dashboard',
                 url: '/select',

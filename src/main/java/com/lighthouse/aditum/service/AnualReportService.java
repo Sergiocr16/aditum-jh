@@ -91,6 +91,7 @@ public class AnualReportService {
         for (int i = 1; i <= finalMonth; i++) {
             DashboardReportIncomeEgressBudgetDTO month = new DashboardReportIncomeEgressBudgetDTO();
             ZonedDateTime initialDate = zd_actualMonth.withYear(year).withMonth(i).withDayOfMonth(1).withMinute(0).withHour(0);
+            String initialDate2 = initialDate.withHour(23).withMinute(59).toString().replace("[America/Regina]","");;
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
             String initDate = initialDate.toString().replace("[America/Regina]","");
             String fiDate = finalDate.toString().replace("[America/Regina]","");
@@ -102,9 +103,12 @@ public class AnualReportService {
             mensualIngressReportDTO.setAllIngressCategoriesBudgetTotal();
             ingressByMonth.add(mensualIngressReportDTO);
             egressByMonth.add(mensualEgressReportDTO);
-            month.setBudgetTotal(mensualIngressReportDTO.getTotalBudget());
+            month.setbudgetIncomeTotal(mensualIngressReportDTO.getTotalBudget());
+            month.setBudgetEgressTotal(mensualEgressReportDTO.getTotalBudget());
             month.setEgressTotal(mensualEgressReportDTO.getAllEgressCategoriesTotal());
             month.setIncomeTotal(mensualIngressReportDTO.getAllIngressCategoriesTotal());
+            month.setInitialBalance(this.setTotalInitialBalance(mensualReportService.getAccountBalance(initDate+"",initialDate2,companyId)));
+            month.setRealBalance(month.getInitialBalance()+(month.getIncomeTotal()-month.getEgressTotal()));
             month.setMonthValue(i);
             month.setMonth(ZonedDateTime.now().withMonth(i).getMonth().toString());
             meses.add(month);
