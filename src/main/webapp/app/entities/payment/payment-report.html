@@ -121,20 +121,21 @@
                         <div class="col-md-6">
                             <div class="col-md-12 no-padding"
                                  style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
-                                <div class="col-md-4" style="border-right:hsl(0, 0%, 80%) solid 1px">
+                                <div class="col-md-3" style="border-right:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Mantenimiento</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalMaintenance | currency : "" :
-                                        0}}</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalMaintenance}}</h5>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <h5 class="text-center" style="font-weight:bold">Extraordinarias</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalExtraordinary | currency : ""
-                                        : 0}}</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalExtraordinary}}</h5>
                                 </div>
-                                <div class="col-md-4" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
                                     <h5 class="text-center" style="font-weight:bold">Áreas comunes</h5>
-                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalCommonArea | currency : "" :
-                                        0}}</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalCommonArea}}</h5>
+                                </div>
+                                <div class="col-md-3" style="border-left:hsl(0, 0%, 80%) solid 1px">
+                                    <h5 class="text-center" style="font-weight:bold">Otros ingresos</h5>
+                                    <h5 class="text-center  bold">₡ {{vm.incomeReport.totalOtherIngress}}</h5>
                                 </div>
                             </div>
                         </div>
@@ -144,35 +145,36 @@
                                        style="font-size:12px;">
                                     <thead style="background-color:#fafafa; " class="text-center">
                                     <tr class="text-center">
-                                        <th>
+                                        <th class="text-center">
                                             Filial
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Número de recibo
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Fecha de pago
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Cuenta
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Categoría
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Concepto
                                         </th>
-                                        <th>
+                                        <th class="text-center">
                                             Cantidad
                                         </th>
                                     </tr>
                                     </thead>
-
                                     <tbody style="outline: none; border-top:0px; "
                                            ng-repeat="payment in vm.payments | orderBy: 'houseNumber'  track by payment.id"
                                            ng-class="{'selected-payment':payment.isShowingCharges==true}">
                                     <tr class="text-center">
-                                        <td class="text-center">{{payment.houseNumber}}</td>
+                                        <td class="text-center">
+                                            <span ng-if="payment.houseId==null">Ninguna</span>
+                                            <span ng-if="payment.houseId!=null">{{payment.houseNumber}}</span></td>
                                         <td style="outline: none;" ng-click="vm.showCharges(payment)"><i
                                             ng-show="payment.isShowingCharges==true"
                                             class="fa fa-chevron-up bold font-11" style="float:left"
@@ -183,9 +185,11 @@
                                         </td>
                                         <td>{{payment.date | date}}</td>
                                         <td>{{payment.account}}</td>
-                                        <td>{{payment.categories}}</td>
-                                        <td ng-show="payment.transaction==1">Abono a cuotas</td>
-                                        <td ng-show="payment.transaction==2">Adelanto de condómino</td>
+                                        <td ng-if="payment.transaction!=3">{{payment.categories}}</td>
+                                        <td ng-if="payment.transaction==3">Otros ingresos</td>
+                                        <td ng-if="payment.transaction==1">Abono a cuotas</td>
+                                        <td ng-if="payment.transaction==2">Adelanto de condómino</td>
+                                        <td ng-if="payment.transaction==3">{{payment.concept}}</td>
                                         <td style="font-weight:bold">₡ {{payment.ammount | currency : "" : 0}}</td>
                                     </tr>
                                     <tr ng-show="payment.isShowingCharges==true && payment.charges.length==0">
@@ -244,7 +248,7 @@
                                                         </h6>
                                                     </a>
                                                 </div>
-                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment">
+                                                <div class="col-md-4 col-xs-12 no-padding action-export-payment" ng-if="payment.transaction!='3'">
                                                     <a ng-class="{disabled: vm.exportActions.sendingEmail==true}"
                                                        style="display:block" ng-click="vm.sendEmail(payment)">
                                                         <h6 class="text-center no-margin">
@@ -262,13 +266,13 @@
                                             </div>
                                         </td>
                                         <td class="note note-info" colspan="3">
-                                            <h5 class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i
+                                            <h5 ng-if="payment.transaction!=3" class="bold uppercase" style="font-size:12px">Cuotas Canceladas <i
                                                 class="fa fa-info-circle" style="color:#2a6496" angular-popover
                                                 direction="right"
                                                 template="<div style='padding:10px;width:200px;color:gray'><h5>Estos son las cuotas que se cancelaron en el pago.<h5></div>"
                                                 mode="mouseover"></i></h5>
 
-                                            <h5 class="text-center" style="font-weight:bold!important;margin-top:20px">
+                                            <h5 ng-if="payment.transaction!=3" class="text-center" style="font-weight:bold!important;margin-top:20px">
                                                 No existen cuotas canceladas con este adelanto de condómino aún
                                             </h5>
                                         </td>
@@ -407,8 +411,7 @@
                                         <td colspan="6" style="border-top:0px!important;" class="bold text-right">
                                             Total
                                         </td>
-                                        <td class="bold text-center" style="border-top:0px!important;">₡ {{vm.incomeReport.total |
-                                            currency : "" : 0}}
+                                        <td class="bold text-center" style="border-top:0px!important;">₡ {{vm.incomeReport.total}}
                                         </td>
                                     </tr>
                                     </tbody>

@@ -5,9 +5,6 @@
             "relationshipName": "house",
             "otherEntityName": "house",
             "relationshipType": "many-to-one",
-            "relationshipValidateRules": [
-                "required"
-            ],
             "otherEntityField": "id"
         }
     ],

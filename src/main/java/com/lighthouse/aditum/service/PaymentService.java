@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -110,6 +111,29 @@ public class PaymentService {
         return paymentsDTO;
     }
 
+    private String formatColonesD(double text) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if (text == 0) {
+            return currencyFormatter.format(text).substring(1);
+        } else {
+            String t = currencyFormatter.format(text).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
+
+    private String formatColonesS(String text) {
+        double ammount = Double.parseDouble(text);
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if (ammount == 0) {
+            return currencyFormatter.format(ammount).substring(1);
+        } else {
+            String t = currencyFormatter.format(ammount).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
+
     @Transactional(readOnly = true)
     public IncomeReportDTO findIncomeReportByCompanyAndDatesBetween(Pageable pageable, String initialTime, String finalTime, int companyId, String houseId, String paymentMethod, String category, String account) {
         log.debug("Request to get all Payments in last month by house");
@@ -121,15 +145,22 @@ public class PaymentService {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            paymentDTO.setHouseNumber(Integer.parseInt(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber()));
+            if (Integer.parseInt(paymentDTO.getTransaction()) != 3) {
+                paymentDTO.setHouseNumber(Integer.parseInt(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber()));
+            }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         IncomeReportDTO incomeReport = new IncomeReportDTO(this.houseService);
         incomeReport.setPayments(this.filterPaymentsForIncome(paymentsDTO.getContent(), houseId, paymentMethod, category, account));
-        incomeReport.setTotalMaintenance(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1) + "");
-        incomeReport.setTotalExtraordinary(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2) + "");
-        incomeReport.setTotalCommonArea(this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3) + "");
-        incomeReport.setTotal(Integer.parseInt(incomeReport.getTotalCommonArea()) + Integer.parseInt(incomeReport.getTotalMaintenance()) + Integer.parseInt(incomeReport.getTotalExtraordinary()) + "");
+        int totalMaint = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 1);
+        int totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
+        int totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
+        int totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
+        incomeReport.setTotalMaintenance(formatColonesD(totalMaint));
+        incomeReport.setTotalExtraordinary(formatColonesD(totalExtra));
+        incomeReport.setTotalCommonArea(formatColonesD(totalAreas));
+        incomeReport.setTotalOtherIngress(formatColonesD(totalOtherIngress));
+        incomeReport.setTotal(formatColonesD(totalMaint + totalAreas + totalExtra + totalOtherIngress));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }
@@ -163,6 +194,31 @@ public class PaymentService {
         return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "2").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public List<PaymentDTO> findOtherIngressByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Transactional(readOnly = true)
+    public int findTotalOtherIngressByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        int total = 0;
+        List<PaymentDTO> payments = paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
+            .map(paymentMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+        for (int i = 0; i < payments.size(); i++) {
+            total = total + Integer.parseInt(payments.get(i).getAmmount());
+        }
+        return total;
     }
 
     @Transactional(readOnly = true)
@@ -324,7 +380,7 @@ public class PaymentService {
                 double left = Double.parseDouble(newCharge.getPaymentAmmount()) - Double.parseDouble(newCharge.getSubcharge());
                 newCharge.setAmmount(charge.getLeft());
                 newCharge.setSubcharge("0");
-                charge.setAmmount( left + "");
+                charge.setAmmount(left + "");
             }
             newCharge.setSplited(1);
             charge.setSplitedCharge(chargeService.create(newCharge).getId().intValue());
@@ -340,7 +396,7 @@ public class PaymentService {
         PaymentDTO paymentDTO = this.findOne(paymentId);
         paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
         paymentDTO.getCharges().forEach(chargeDTO -> {
-            chargeDTO.setPaymentAmmount(chargeDTO.getTotal()+"");
+            chargeDTO.setPaymentAmmount(chargeDTO.getTotal() + "");
         });
         if (paymentDTO.getCharges().size() == 0) {
             paymentDTO.setCharges(new ArrayList<>());

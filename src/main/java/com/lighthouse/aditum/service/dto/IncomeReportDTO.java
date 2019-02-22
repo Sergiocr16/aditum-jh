@@ -16,6 +16,8 @@ public class IncomeReportDTO implements Serializable {
 
     private String totalCommonArea;
 
+    private String totalOtherIngress;
+
     private String total;
 
     private List<PaymentDTO> payments;
@@ -108,4 +110,11 @@ public class IncomeReportDTO implements Serializable {
       }
 
 
+    public String getTotalOtherIngress() {
+        return totalOtherIngress;
+    }
+
+    public void setTotalOtherIngress(String totalOtherIngress) {
+        this.totalOtherIngress = totalOtherIngress;
+    }
 }

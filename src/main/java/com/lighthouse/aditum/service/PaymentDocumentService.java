@@ -76,7 +76,27 @@ public class PaymentDocumentService {
         this.residentService = residentService;
     }
 
-
+    private String formatColonesD(double text) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if(text==0){
+            return currencyFormatter.format(text).substring(1);
+        }else {
+            String t = currencyFormatter.format(text).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
+    private String formatColonesS(String text) {
+        double ammount = Double.parseDouble(text);
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if(ammount==0){
+            return currencyFormatter.format(ammount).substring(1);
+        }else {
+            String t = currencyFormatter.format(ammount).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
     private PaymentDTO formatPayment(PaymentDTO payment,boolean isCancellingFromPayment){
         if(payment.getComments()==null || payment.getComments()==""){
             payment.setComments("No hay comentarios");
@@ -85,21 +105,23 @@ public class PaymentDocumentService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
             if(payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(currencyFormatter.format(chargeDTO.getTotal()).substring(1));
-                chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-                chargeDTO.setSubcharge(currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
+                chargeDTO.setPaymentAmmount(formatColonesD(chargeDTO.getTotal()));
+                chargeDTO.setAmmount(formatColonesS(chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatColonesS(chargeDTO.getSubcharge()));
             }else{
-                chargeDTO.setPaymentAmmount(currencyFormatter.format(chargeDTO.getTotal()).substring(1));
-                chargeDTO.setAmmount(currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-                chargeDTO.setSubcharge(currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
+                chargeDTO.setPaymentAmmount(formatColonesD(chargeDTO.getTotal()));
+                chargeDTO.setAmmount(formatColonesS(chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatColonesS(chargeDTO.getSubcharge()));
             }
         });
-        if(payment.getTransaction().equals("1")){
+        if(payment.getTransaction().equals("3")){
+
+        }else  if(payment.getTransaction().equals("1")){
             payment.setConcept("Abono a cuotas");
         }else if(payment.getTransaction().equals("2")){
             if(payment.getCharges().size()==0){
                 ChargeDTO adelanto = new ChargeDTO();
-                adelanto.setPaymentAmmount(currencyFormatter.format(Double.parseDouble(payment.getAmmount())).substring(1));
+                adelanto.setPaymentAmmount(formatColonesS(payment.getAmmount()));
                 adelanto.setConcept(payment.getConcept());
                 adelanto.setType(4);
                 payment.getCharges().add(adelanto);
@@ -109,29 +131,21 @@ public class PaymentDocumentService {
                 payment.setConcept("Abono a cuotas");
             }
         }
-
-        payment.setAmmount(currencyFormatter.format(Double.parseDouble(payment.getAmmount())).substring(1));
+        payment.setAmmount(formatColonesS(payment.getAmmount()));
         if(payment.getAmmountLeft()!=null) {
-            payment.setAmmountLeft(currencyFormatter.format(Double.parseDouble(payment.getAmmountLeft())).substring(1));
+            payment.setAmmountLeft(formatColonesS(payment.getAmmountLeft()));
         }
         payment.setAccount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
-
         return payment;
     }
 
     private IncomeReportDTO formatIncomeReport(IncomeReportDTO income){
         Locale locale = new Locale("es", "CR");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
-
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         income.getPayments().forEach(paymentDTO -> {
-                paymentDTO.setAmmount(currencyFormatter.format(Double.parseDouble(paymentDTO.getAmmount())).substring(1));
+                paymentDTO.setAmmount(formatColonesS(paymentDTO.getAmmount()));
             paymentDTO.setStringDate( pattern.ofPattern("dd MMMM yyyy").format(paymentDTO.getDate()));
         });
-        income.setTotal(currencyFormatter.format(Double.parseDouble(income.getTotal())).substring(1));
-        income.setTotalCommonArea(currencyFormatter.format(Double.parseDouble(income.getTotalCommonArea())).substring(1));
-        income.setTotalMaintenance(currencyFormatter.format(Double.parseDouble(income.getTotalMaintenance())).substring(1));
-        income.setTotalExtraordinary(currencyFormatter.format(Double.parseDouble(income.getTotalExtraordinary())).substring(1));
         return income;
 
     }
@@ -145,7 +159,10 @@ public class PaymentDocumentService {
             }
         }
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));
-        House house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
+        House house = null;
+        if(payment.getHouseId()!=null) {
+            house = houseMapper.houseDTOToHouse(houseService.findOne(Long.valueOf(payment.getHouseId())));
+        }
         String fileName = this.defineFileNamePaymentEmail(payment);
 //        ENVIO DE COMPROBANTE DE PAGO
         try {
@@ -161,9 +178,7 @@ public class PaymentDocumentService {
             if(isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
                 paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getTotal()).sum()+"";
-                Locale locale = new Locale("es", "CR");
-                NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-                paymentTotal=currencyFormatter.format(Double.parseDouble(paymentTotal)).substring(1);
+                paymentTotal=formatColonesS(paymentTotal);
             }
             contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);

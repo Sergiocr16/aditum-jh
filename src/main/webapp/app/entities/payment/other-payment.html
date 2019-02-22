@@ -1,0 +1,126 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
+<div ng-if="vm.isReady" class=" fade-in">
+
+
+    <no-content ng-if="vm.houses.length==0" icon="redo" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+
+
+    <div ng-if="vm.houses.length!==0" ng-cloak layout="column"
+         class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+        <md-toolbar class="form-title" hide-sm hide-xs>
+            <h2>{{mainTitle}}</h2>
+        </md-toolbar>
+        <md-content layout-padding class="form-content">
+            <div>
+                <form name="form" ng-submit="vm.save()">
+                    <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                    <div layout="row" layout-xs="column" class="marging-top-20 ">
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-left">
+                            <md-input-container class="md-block">
+                                <label>Número de recibo</label>
+                                <input ng-model="vm.payment.receiptNumber" type="text"
+                                       class="form-control letters gray-font "
+                                       placeholder="Número de recibo"
+                                       required ng-disabled="vm.admingConfig.incomeFolio == true">
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Concepto</label>
+                                <input type="text" class="form-control"
+                                       ng-model="vm.payment.concept"
+                                       required
+                                />
+                            </md-input-container>
+                            <md-input-container class="md-block no-margin-bottom"
+                                                has-authority="ROLE_MANAGER">
+                                <label>Cuenta</label>
+                                <md-select ng-model="vm.account" required>
+                                    <md-option ng-repeat="banco in vm.bancos | orderBy: 'beneficiario' "
+                                               ng-value="banco">
+                                        {{banco.beneficiario}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Seleccione un método de pago</label>
+                                <md-select ng-model="vm.payment.paymentMethod"
+                                           ng-required="vm.charges.length>0">
+                                    <md-option value="Efectivo">
+                                        Efectivo
+                                    </md-option>
+                                    <md-option value="Cheque">
+                                        Cheque
+                                    </md-option>
+                                    <md-option value="Transferencia">
+                                        Transferencia
+                                    </md-option>
+                                    <md-option value="Tarjeta">
+                                        Tarjeta
+                                    </md-option>
+                                    <md-option value="Deposito en banco">
+                                        Deposito en banco
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+
+                        </div>
+                        <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-right">
+                            <md-input-container class="md-block  no-margin-bottom">
+                                <label>Fecha de pago</label>
+                                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.today" required md-hide-icons="calendar"
+                                               ng-model="vm.payment.date"
+                                               id="datePicker"
+                                               readonlydatepicker
+                                               md-placeholder="Introduzca una fecha" md-open-on-focus
+                                               required></md-datepicker>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Cantidad</label>
+                                <input type="text" class="form-control" format="currency" placeholder="0.00"
+                                       ng-model="vm.payment.ammount"
+                                       required
+                                />
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Comentarios</label>
+                                <textarea style="margin-top: -5px;" ng-model="vm.payment.comments" rows="3"
+                                          md-select-on-focus></textarea>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                        <div>
+                            <div class="col-md-12">
+                                <h5 style="display:inline;margin-right:5px"><b>Imprimir recibo de
+                                    pago</b></h5>
+                                <div class="md-checkbox"
+                                     style="margin:0 auto;height:50px;display:inline;">
+                                    <input type="checkbox" ng-model="vm.printReceipt" id="checkbox2"
+                                           class="md-check">
+                                    <label for="checkbox2">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <md-button class="md-raised  md-warn" ng-click="back()">Cancelar</md-button>
+
+                        <md-button class="md-raised md-primary" type="submit"
+                                   ng-disabled="form.$invalid || vm.isSaving && vm.payment.valida==true || vm.payment.ammount==0 && vm.payment.valida==true || vm.payment.ammount==undefined && vm.payment.valida==true || vm.selectedHouse.balance.total<0">
+                            Realizar pago
+                        </md-button>
+
+                    </div>
+                </form>
+            </div>
+        </md-content>
+    </div>
+</div>
+</div>
+
