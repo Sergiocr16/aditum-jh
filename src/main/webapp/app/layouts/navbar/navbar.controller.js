@@ -527,7 +527,17 @@
                                     hover: false,
                                     showXs: false
                                 },
-
+                                {
+                                    title: "Otro ingreso",
+                                    icon: "money",
+                                    authoritites: "ROLE_MANAGER",
+                                    activeOn: "otroIngreso",
+                                    collapsable: false,
+                                    uisref: "otherPayment",
+                                    menuId: "",
+                                    hover: false,
+                                    showXs: false
+                                },
                             ]
                         },
                         {

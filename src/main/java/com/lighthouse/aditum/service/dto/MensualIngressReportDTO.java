@@ -77,7 +77,6 @@ public class MensualIngressReportDTO implements Serializable {
             if(finalList.stream().filter(o -> o.getConcept().toUpperCase().equals(item.getConcept().toUpperCase())).count()==0){
                 finalList.add(object);
             }
-
         }
        return finalList;
     }

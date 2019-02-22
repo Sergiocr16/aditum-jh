@@ -52,7 +52,14 @@ public class MensualReportService {
         }
         List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,2,companyId);
         List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,3,companyId);
-        List<ChargeDTO> otherIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,4,companyId);
+        List<PaymentDTO> otherPayments = paymentService.findOtherIngressByDatesBetweenAndCompany(initialTime,finalTime,Integer.parseInt(companyId+""));
+        List<ChargeDTO> otherIngress = new ArrayList<>();
+         otherPayments.forEach(paymentDTO -> {
+             ChargeDTO charge = new ChargeDTO();
+             charge.setTotal(Double.parseDouble(paymentDTO.getAmmount()));
+             charge.setConcept(paymentDTO.getConcept());
+             otherIngress.add(charge);
+         });
 
         MensualIngressReportDTO mensualAndAnualIngressReportDTO = new MensualIngressReportDTO();
 

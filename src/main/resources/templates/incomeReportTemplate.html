@@ -241,15 +241,15 @@
                     </div>
                 </div>
                 <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:50%;float:right;margin-top: -12px;">
-                    <div style="border-right:#CCCCCC solid 1px;float:left;width:33%">
+                    <div style="border-right:#CCCCCC solid 1px;float:left;width:25%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Mantenimiento</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10" style="margin:0 3px;"/>
-                           <span th:text="|${incomeReport.totalMaintenance}|">0</span></span>
+                           <span th:text="|${incomeReport.getTotalMaintenance()}|">0</span></span>
                         </h5>
                     </div>
-                    <div style=";float:left;width:33%">
+                    <div style=";float:left;width:25%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Extraordinarias</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
@@ -257,12 +257,20 @@
                            <span th:text="|${incomeReport.totalExtraordinary}|">0</span></span>
                         </h5>
                     </div>
-                    <div style="border-left:#CCCCCC solid 1px;float:left;width:33%">
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:25%">
                         <h5 class="text-center balance-title" style="font-weight:bold">Áreas comunes</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
                            <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10" style="margin:0 3px;"/>
                            <span th:text="|${incomeReport.totalCommonArea}|">0</span></span>
+                        </h5>
+                    </div>
+                    <div style="border-left:#CCCCCC solid 1px;float:left;width:25%">
+                        <h5 class="text-center balance-title" style="font-weight:bold">Otros ingresos</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${incomeReport.getTotalOtherIngress()}|">0</span></span>
                         </h5>
                     </div>
                 </div>
@@ -301,7 +309,10 @@
                     </tr>
                     </thead>
         <tr class="item no-page-break bodyContent" th:each="payment : ${incomeReport.payments}">
-            <td class="text-center no-border-right" th:text="|${payment.houseNumber}|">
+            <td th:if="|${payment.getHouseId()!=null}|" class="text-center no-border-right" th:text="|${payment.houseNumber}|">
+            </td>
+            <td th:if="|${payment.getHouseId()==null}|" class="text-center no-border-right">
+                Ninguna
             </td>
             <td class="text-center no-border-right" th:text="|${payment.receiptNumber}|">
             </td>
@@ -311,7 +322,10 @@
             </td>
             <td class="text-center no-border-right" th:text="|${payment.paymentMethod}|">
             </td>
-            <td class="text-center no-border-right" th:text="|${payment.categories}|">
+            <td th:if="|${payment.getHouseId()!=null}|" class="text-center no-border-right" th:text="|${payment.categories}|">
+            </td>
+            <td th:if="|${payment.getHouseId()==null}|" class="text-center no-border-right">
+                Otros ingresos
             </td>
             <td class="text-center no-border-right" th:text="|${payment.concept}|">
             </td>

@@ -55,8 +55,7 @@ public class Payment implements Serializable {
     @Column(name = "ammount_left")
     private String ammountLeft;
 
-    @ManyToOne(optional = false)
-    @NotNull
+    @ManyToOne(optional = true)
     private House house;
 
     public Long getId() {
