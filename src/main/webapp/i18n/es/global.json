@@ -49,6 +49,7 @@
 
         "jdAccount": "JD Account",
         "juntaDirectivaAccount": "Junta Directiva Account",
+        "activosFijos": "Activos Fijos",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

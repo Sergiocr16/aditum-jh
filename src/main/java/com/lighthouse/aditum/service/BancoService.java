@@ -124,14 +124,12 @@ public class BancoService {
                 totalIngress = totalIngress + bancoMovements.get(i).getIngress();
             }
             bancoMovements.get(i).setBalance(saldo);
-            bancoMovements.get(i).setBalanceFormatted(currencyFormatter.format(bancoMovements.get(i).getBalance()).substring(1));
 
         }
 
         bancoDTO.setTotalBalance(saldo);
         bancoDTO.setTotalEgress(totalEgress);
         bancoDTO.setTotalIngress(totalIngress);
-        bancoDTO.setTotalBalanceFormatted(currencyFormatter.format(bancoDTO.getTotalBalance()).substring(1));
         bancoDTO.setTotalEgressFormatted(currencyFormatter.format(bancoDTO.getTotalEgress()).substring(1));
         bancoDTO.setTotalIngressFormatted(currencyFormatter.format(bancoDTO.getTotalIngress()).substring(1));
         return bancoDTO;

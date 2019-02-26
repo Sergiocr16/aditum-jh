@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
@@ -214,6 +215,7 @@ public class BancoDTO implements Serializable {
 
     public void setTotalBalance(Double totalBalance) {
         this.totalBalance = totalBalance;
+        this.setTotalBalanceFormatted(formatMoney(totalBalance));
     }
 
     public String getBalanceColor() {
@@ -270,5 +272,21 @@ public class BancoDTO implements Serializable {
 
     public void setCapitalInicialFormatted(String capitalInicialFormatted) {
         this.capitalInicialFormatted = capitalInicialFormatted;
+    }
+
+    private String formatMoney(double ammount) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if(ammount==0){
+            return currencyFormatter.format(ammount).substring(1);
+        }else {
+            String t = "";
+            if(ammount<0){
+                t = currencyFormatter.format(ammount).substring(0,2);
+            }else{
+                t = currencyFormatter.format(ammount).substring(1);
+            }
+            return t.substring(0, t.length() - 3);
+        }
     }
 }

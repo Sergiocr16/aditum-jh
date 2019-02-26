@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.activosFijos.detail.title">Activos Fijos</span> {{vm.activosFijos.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.activosFijos.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{vm.activosFijos.nombre}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activosFijos.valor">Valor</span></dt>
+        <dd>
+            <span>{{vm.activosFijos.valor}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activosFijos.depreciacion">Depreciacion</span></dt>
+        <dd>
+            <span>{{vm.activosFijos.depreciacion}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.activosFijos.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.activosFijos.companyId})">{{vm.activosFijos.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="activos-fijos-detail.edit({id:vm.activosFijos.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
