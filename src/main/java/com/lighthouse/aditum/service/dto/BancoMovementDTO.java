@@ -1,6 +1,8 @@
 package com.lighthouse.aditum.service.dto;
 
+import java.text.NumberFormat;
 import java.time.ZonedDateTime;
+import java.util.Locale;
 
 public class BancoMovementDTO {
 
@@ -102,6 +104,7 @@ public class BancoMovementDTO {
 
     public void setBalance(double balance) {
         this.balance = balance;
+        this.setBalanceFormatted(formatMoney(balance));
     }
 
     public String getBancoSalienteOentrante() {
@@ -142,5 +145,23 @@ public class BancoMovementDTO {
 
     public void setBalanceFormatted(String balanceFormatted) {
         this.balanceFormatted = balanceFormatted;
+    }
+
+    private String formatMoney(double ammount) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if(ammount==0){
+            return currencyFormatter.format(ammount).substring(1);
+        }else {
+            String t = "";
+            if(ammount<0){
+                int l = 2;
+                t = currencyFormatter.format(ammount);
+                t = t.substring(0,l)+t.substring(l+1);
+            }else{
+                t = currencyFormatter.format(ammount).substring(1);
+            }
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
     }
 }
