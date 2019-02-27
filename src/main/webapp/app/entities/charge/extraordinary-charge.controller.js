@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
+    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
+    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;
@@ -21,6 +21,11 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
         vm.selectedAll = false;
+        vm.isDivided = false;
+        vm.dividedChargeQuantity = 2;
+        vm.totalPerHouseAmmount = 0;
+        vm.dividedChargeAmmount = 0;
+        vm.currentDate = new Date();
         vm.globalConcept = {
             date: "",
             text: undefined,
@@ -30,7 +35,58 @@
             },
             type: 2
         };
+        vm.createDividedChargeArray = function() {
+           var a = [];
+            for (var i = 2; i <= 30; i++) {
+                a.push(i)
+            }
+            vm.cuotasNumber = a;
+        };
+        vm.createDividedChargeArray();
+
         moment.locale("es");
+        moment.addRealMonth = function addRealMonth(d, m) {
+            var fm = moment(d).add(m, 'M');
+            var fmEnd = moment(fm).endOf('month');
+            return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD')) ? fm.add(m, 'd') : fm;
+        }
+        vm.isDividedDisable = function(){
+            var disabled =  vm.dividedChargeDate != undefined && vm.dividedChargeQuantity>=2 &&  vm.dividedChargeAmmount > 0 && vm.dividedChargeAmmount != undefined && vm.dividedChargeConcept!="" && vm.dividedChargeConcept!=undefined;
+            return disabled;
+        }
+        vm.changeDividedCharge = function () {
+            if(!vm.dividedCharge){
+                vm.isDivided = false;
+            }
+        }
+
+        vm.getTotalPerHouses = function(){
+            var count = 0 ;
+            angular.forEach(vm.houses, function (house, key) {
+                if (house.isIncluded == true) {
+                    count++;
+                }
+            })
+            return count*vm.totalPerHouseAmmount;
+        }
+        vm.generateDividedCharges = function () {
+            vm.dividedCharges = [];
+            var ammount = vm.dividedChargeAmmount;
+            var date = vm.dividedChargeDate;
+            for (var i = 1; i <= vm.dividedChargeQuantity; i++) {
+                var charge = {
+                    concept: vm.dividedChargeConcept + " (" + i + "/" + vm.dividedChargeQuantity + ")",
+                    ammount: ammount
+                };
+                if (i != 1) {
+                    date = moment.addRealMonth(moment(date), i - 1);
+                }
+                charge.date = date;
+                vm.dividedCharges.push(charge)
+            }
+            vm.isDivided = true;
+            vm.totalPerHouseAmmount = ammount*vm.dividedChargeQuantity;
+        }
 
         vm.selectAll = function () {
             angular.forEach(vm.houses, function (house, i) {
@@ -43,14 +99,14 @@
         }
         vm.globalCuotaSelected = function () {
             if (vm.globalConcept.cuota.ammount != undefined && vm.globalConcept.cuota.valida == true) {
-                Modal.confirmDialog( "¿Está seguro que desea modificar la cuota de todas las cuotas?","",
-                    function(){
+                Modal.confirmDialog("¿Está seguro que desea modificar la cuota de todas las cuotas?", "",
+                    function () {
 
-                            angular.forEach(vm.houses, function (house, i) {
+                        angular.forEach(vm.houses, function (house, i) {
 
-                                house.cuota.ammount = vm.globalConcept.cuota.ammount;
+                            house.cuota.ammount = vm.globalConcept.cuota.ammount;
 
-                            })
+                        })
 
                     });
 
@@ -60,8 +116,8 @@
         vm.globalConceptSelected = function () {
             if (vm.globalConcept.text != undefined) {
 
-                Modal.confirmDialog( "¿Está seguro que desea modificar el concepto de todas las cuotas?","",
-                    function(){
+                Modal.confirmDialog("¿Está seguro que desea modificar el concepto de todas las cuotas?", "",
+                    function () {
                         angular.forEach(vm.houses, function (house, i) {
 
                             house.cuota.concept = vm.globalConcept.text;
@@ -132,7 +188,26 @@
             return house.cuota;
         }
 
-        vm.createDues = function () {
+        function buildChargeDivided(house,dividedCharge) {
+            var cuota = {};
+            cuota.houseId = parseInt(house.id);
+            cuota.type = vm.globalConcept.type;
+            cuota.date = dividedCharge.date;
+            cuota.companyId = globalCompany.getId();
+            cuota.ammount = vm.dividedChargeAmmount;
+            cuota.state = 1;
+            cuota.deleted = 0;
+            cuota.concept = dividedCharge.concept
+            return cuota;
+        }
+        vm.createDues = function(){
+            if(!vm.dividedCharge){
+                vm.createDuesNormal()
+            }else{
+                vm.createDuesDivided()
+            }
+        }
+        vm.createDuesNormal = function () {
             var allReady = 0;
             Modal.showLoadingBar();
             angular.forEach(vm.selectedHouses, function (house, i) {
@@ -141,7 +216,6 @@
                         allReady++;
                         if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
                             Modal.hideLoadingBar();
-
                             Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
                             $state.go('extraordinaryCharge', null, {
                                 reload: true
@@ -150,6 +224,29 @@
 
                     })
                 }
+            })
+        }
+        vm.createDuesDivided = function () {
+            var allReady = 0;
+            Modal.showLoadingBar();
+            angular.forEach(vm.selectedHouses, function (house, i) {
+                for (var j = 0; j < vm.dividedCharges.length; j++) {
+                    var readyCharge = 0;
+                    Charge.save(buildChargeDivided(house,vm.dividedCharges[j]), function (result) {
+                        readyCharge++;
+                        if (parseInt(readyCharge) == parseInt(vm.dividedCharges.length)) {
+                            allReady++;
+                        }
+                        if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
+                            Modal.hideLoadingBar();
+                            Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
+                            $state.go('extraordinaryCharge', null, {
+                                reload: true
+                            })
+                        }
+                    })
+                }
+
             })
         }
 

@@ -24,4 +24,8 @@ public interface BalanceByAccountRepository extends JpaRepository<BalanceByAccou
         "where e.date >= ?1 and e.date <= ?2 and e.accountId = ?3")
     List<BalanceByAccount> findByDatesBetweenAndAccount(ZonedDateTime initialDate, ZonedDateTime finalDate, Long accountId);
 
+    @Query("select e from BalanceByAccount e " +
+        "where e.date >= ?1 and e.accountId = ?2")
+    List<BalanceByAccount> findByAccountAndAfterDate(ZonedDateTime date, Long accountId);
+
 }

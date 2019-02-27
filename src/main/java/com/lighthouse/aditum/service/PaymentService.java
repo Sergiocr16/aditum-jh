@@ -43,7 +43,9 @@ public class PaymentService {
 
     private final HouseService houseService;
 
-    public PaymentService(@Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    private final BalanceByAccountService balanceByAccountService;
+
+    public PaymentService(BalanceByAccountService balanceByAccountService,@Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -51,6 +53,7 @@ public class PaymentService {
         this.paymentEmailSenderService = paymentEmailSenderService;
         this.residentService = residentService;
         this.houseService = houseService;
+        this.balanceByAccountService = balanceByAccountService;
     }
 
     /**
@@ -91,6 +94,7 @@ public class PaymentService {
         if (paymentDTo.getEmailTo().size() > 0) {
             this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
         }
+        this.balanceByAccountService.modifyBalancesInPastPayment(payment);
         return paymentMapper.toDto(payment);
     }
 
