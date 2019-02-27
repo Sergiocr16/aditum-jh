@@ -68,6 +68,7 @@
         }
 
         function onSaveSuccess(result) {
+            console.log('asd')
             angular.forEach(vm.bancos, function (banco, key) {
                 if (banco.id == vm.egress.account) {
                     banco.saldo = banco.saldo - vm.egress.total;

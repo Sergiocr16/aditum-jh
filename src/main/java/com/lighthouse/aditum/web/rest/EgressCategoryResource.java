@@ -98,7 +98,9 @@ public class EgressCategoryResource {
         Page<EgressCategoryDTO> page = egressCategoryService.findAll(pageable,companyId);
         List<EgressCategoryDTO> egressCategories = new ArrayList<>();
         for (int i = 0; i <page.getContent().size(); i++) {
-            if(!page.getContent().get(i).getGroup().equals("Otros gastos")  && !page.getContent().get(i).getCategory().equals("Devolución de dinero") ){
+            if(page.getContent().get(i).getGroup().equals("Otros gastos")  && page.getContent().get(i).getCategory().equals("Devolución de dinero") ){
+
+            }else{
                 egressCategories.add(page.getContent().get(i));
             }
         }

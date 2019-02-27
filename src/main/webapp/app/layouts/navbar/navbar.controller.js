@@ -770,6 +770,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Cuentas por pagar",
+                            icon: "list_alt",
+                            authoritites: "ROLE_MANAGER,ROLE_JD",
+                            activeOn: "cuentasPorPagar",
+                            collapsable: false,
+                            uisref: "egress-to-pay",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Cuotas por cobrar",
                             icon: "list_alt",
                             authoritites: "ROLE_MANAGER,ROLE_JD",
