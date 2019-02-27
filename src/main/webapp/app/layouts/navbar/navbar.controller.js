@@ -851,6 +851,18 @@
                             showLg: true,
                         },
                         {
+                            title: "Activos fijos",
+                            icon: "category",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "activosFijos",
+                            collapsable: false,
+                            uisref: "activos-fijos",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Categoría de egresos",
                             icon: "call_received",
                             authoritites: "ROLE_MANAGER",

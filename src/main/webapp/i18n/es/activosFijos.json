@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "activosFijos" : {
+            "home": {
+                "title": "Activos Fijos",
+                "createLabel": "Crear nuevo Activos Fijos",
+                "createOrEditLabel": "Crear o editar Activos Fijos"
+            },
+            "created": "Un nuevo Activos Fijos ha sido creado con el identificador {{ param }}",
+            "updated": "Un Activos Fijos ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Activos Fijos ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Activos Fijos {{ id }}?"
+            },
+            "detail": {
+                "title": "Activos Fijos"
+            },
+            "nombre": "Nombre",
+            "valor": "Valor",
+            "depreciacion": "Depreciacion",
+            "company": "Company"
+        }
+    }
+}
