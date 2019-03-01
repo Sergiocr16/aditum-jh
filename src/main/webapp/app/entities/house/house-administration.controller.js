@@ -38,15 +38,10 @@
             }
 
             function onSuccess(data, headers) {
-
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
                     value.debit = value.balance.debit;
                     if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
                         if(value.id == $localStorage.houseSelected.id ){

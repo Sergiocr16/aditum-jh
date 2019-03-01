@@ -79,9 +79,10 @@
                     ammount: ammount
                 };
                 if (i != 1) {
-                    date = moment.addRealMonth(moment(date), i - 1);
+                    charge.date = moment.addRealMonth(moment(date), i - 1);
+                }else{
+                    charge.date = date;
                 }
-                charge.date = date;
                 vm.dividedCharges.push(charge)
             }
             vm.isDivided = true;
@@ -101,16 +102,10 @@
             if (vm.globalConcept.cuota.ammount != undefined && vm.globalConcept.cuota.valida == true) {
                 Modal.confirmDialog("¿Está seguro que desea modificar la cuota de todas las cuotas?", "",
                     function () {
-
                         angular.forEach(vm.houses, function (house, i) {
-
                             house.cuota.ammount = vm.globalConcept.cuota.ammount;
-
                         })
-
                     });
-
-
             }
         }
         vm.globalConceptSelected = function () {
@@ -119,13 +114,9 @@
                 Modal.confirmDialog("¿Está seguro que desea modificar el concepto de todas las cuotas?", "",
                     function () {
                         angular.forEach(vm.houses, function (house, i) {
-
                             house.cuota.concept = vm.globalConcept.text;
-
                         })
-
                     });
-
             }
         }
         vm.validate = function (cuota) {
@@ -282,10 +273,6 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
                     if (value.isdesocupated == 1) {
                         value.cuota = ({
                             ammount: 0,

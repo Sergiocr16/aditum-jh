@@ -113,6 +113,10 @@ public class House implements Serializable {
         return this;
     }
 
+    public int getHouseNumberInt(){
+        return Integer.parseInt(this.housenumber);
+    }
+
     public void setExtension(String extension) {
         this.extension = extension;
     }

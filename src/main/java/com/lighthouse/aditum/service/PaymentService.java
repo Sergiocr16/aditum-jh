@@ -109,7 +109,7 @@ public class PaymentService {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
-            paymentDTO.setHouseNumber(Integer.parseInt(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber()));
+            paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
         return paymentsDTO;
@@ -150,7 +150,7 @@ public class PaymentService {
             paymentDTO.setCharges(chargeService.findAllByPayment(paymentDTO.getId()).getContent());
             paymentDTO.setAccount(bancoService.findOne((Long.valueOf(paymentDTO.getAccount()))).getBeneficiario());
             if (Integer.parseInt(paymentDTO.getTransaction()) != 3) {
-                paymentDTO.setHouseNumber(Integer.parseInt(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber()));
+                paymentDTO.setHouseNumber(this.houseService.findOne(paymentDTO.getHouseId()).getHousenumber());
             }
             paymentDTO.setCategories(this.findCategoriesInPayment(paymentDTO));
         }
@@ -533,7 +533,11 @@ public class PaymentService {
                 filteredPayments.add(p);
             }
         }
-        Collections.sort(filteredPayments, Comparator.comparing(PaymentDTO::getHouseNumber));
+        Collections.sort(filteredPayments, new Comparator<PaymentDTO>() {
+            public int compare(PaymentDTO o1, PaymentDTO o2) {
+                return o2.getDate().compareTo(o1.getDate());
+            }
+        });
         return filteredPayments;
     }
 }

@@ -18,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -62,6 +60,7 @@ public class HouseService {
         House house = houseMapper.houseDTOToHouse(houseDTO);
         house.setCodeStatus(houseDTO.getCodeStatus());
         house.loginCode(houseDTO.getLoginCode());
+        house.setHousenumber(houseDTO.getHousenumber().toUpperCase());
         house = houseRepository.save(house);
         HouseDTO result = houseMapper.houseToHouseDTO(house);
         return result;
@@ -77,8 +76,10 @@ public class HouseService {
     public Page<HouseDTO> findAll(Long companyId) {
         log.debug("Request to get all Houses");
         List<House> result = houseRepository.findByCompanyId(companyId);
-        List<House> onlyHouses = new ArrayList<>();
-        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
+        List<House> onlyHousesLetters = new ArrayList<>();
+        List<House> onlyHousesNumber = new ArrayList<>();
+        List<House> allHouses;
+        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','-','/','*','+','!','@','#','$','%','.',',','(',')'};
         result.forEach(house->{
             int existe = 0;
               for (int i = 0;i<letras.length;i++){
@@ -87,14 +88,18 @@ public class HouseService {
                  }
               }
               if(existe==0){
-                  onlyHouses.add(house);
+                  onlyHousesNumber.add(house);
+              }else{
+                  house.setHousenumber(house.getHousenumber().toUpperCase());
+                  onlyHousesLetters.add(house);
               }
         });
-
-        return  new PageImpl<>(onlyHouses).map(house ->{
+        Collections.sort(onlyHousesNumber, Comparator.comparing(House::getHouseNumberInt));
+        Collections.sort(onlyHousesLetters, Comparator.comparing(House::getHousenumber));
+        allHouses = onlyHousesNumber;
+        allHouses.addAll(onlyHousesLetters);
+        return  new PageImpl<>(allHouses).map(house ->{
             HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
-            house1.setCodeStatus(house.getCodeStatus());
-            house1.setLoginCode(house.getLoginCode());
             return house1;
         });
     }
@@ -102,8 +107,10 @@ public class HouseService {
     public Page<HouseDTO> findWithBalance(Long companyId) {
         log.debug("Request to get all Houses");
         List<House> result = houseRepository.findByCompanyId(companyId);
-        List<House> onlyHouses = new ArrayList<>();
-        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
+        List<House> onlyHousesLetters = new ArrayList<>();
+        List<House> onlyHousesNumber = new ArrayList<>();
+        List<House> allHouses;
+        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z','-','/','*','+','!','@','#','$','%','.',',','(',')'};
         result.forEach(house->{
             int existe = 0;
             for (int i = 0;i<letras.length;i++){
@@ -112,39 +119,26 @@ public class HouseService {
                 }
             }
             if(existe==0){
-                onlyHouses.add(house);
+                onlyHousesNumber.add(house);
+            }else{
+                house.setHousenumber(house.getHousenumber().toUpperCase());
+                onlyHousesLetters.add(house);
             }
         });
-
-        return  new PageImpl<>(onlyHouses).map(house ->{
+        Collections.sort(onlyHousesNumber, Comparator.comparing(House::getHouseNumberInt));
+        Collections.sort(onlyHousesLetters, Comparator.comparing(House::getHousenumber));
+        allHouses = onlyHousesNumber;
+        allHouses.addAll(onlyHousesLetters);
+        return  new PageImpl<>(allHouses).map(house ->{
             HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
-            house1.setCodeStatus(house.getCodeStatus());
-            house1.setLoginCode(house.getLoginCode());
             house1.setBalance(this.getBalanceByHouse(house1.getId()));
+
             return house1;
         });
     }
     @Transactional(readOnly = true)
     public Page<HouseDTO> findAllWithMaintenance(Long companyId) {
-        log.debug("Request to get all Houses");
-        List<House> result = houseRepository.findByCompanyId(companyId);
-        List<House> onlyHouses = new ArrayList<>();
-        Character [] letras = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','ñ','o','p','q','r','s','t','u','v','w','x','y','z'};
-
-        result.forEach(house->{
-            int existe = 0;
-            for (int i = 0;i<letras.length;i++){
-                if(Character.toLowerCase(house.getHousenumber().charAt(0))==(letras[i])){
-                    onlyHouses.add(house);
-                }
-            }
-        });
-        return  new PageImpl<>(onlyHouses).map(house ->{
-            HouseDTO house1 =  houseMapper.houseToHouseDTO(house);
-            house1.setCodeStatus(house.getCodeStatus());
-            house1.setLoginCode(house.getLoginCode());
-            return house1;
-        });
+        return  this.findAll(companyId);
     }
 
     /**
@@ -201,8 +195,10 @@ public class HouseService {
             rHouse= house1;
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
-        houseDTO.setCodeStatus(house.getCodeStatus());
-        houseDTO.setLoginCode(house.getLoginCode());
+        if(rHouse!=null) {
+            houseDTO.setCodeStatus(rHouse.getCodeStatus());
+            houseDTO.setLoginCode(rHouse.getLoginCode());
+        }
         return houseDTO;
     }
 
@@ -211,7 +207,6 @@ public class HouseService {
         House rHouse = null;
         House house = houseRepository.findByhousenumberAndAndCompanyIdAndIdNot(houseNumber,companyId,houseId);
         House house1 = houseRepository.findByExtensionAndCompanyIdAndIdNot(extension,companyId,houseId);
-
         if(house!=null){
             rHouse= house;
         }
@@ -219,8 +214,10 @@ public class HouseService {
             rHouse= house1;
         }
         HouseDTO houseDTO = houseMapper.houseToHouseDTO(rHouse);
-        houseDTO.setCodeStatus(house.getCodeStatus());
-        houseDTO.setLoginCode(house.getLoginCode());
+        if(rHouse!=null) {
+            houseDTO.setCodeStatus(rHouse.getCodeStatus());
+            houseDTO.setLoginCode(rHouse.getLoginCode());
+        }
         return houseDTO;
     }
     /**
