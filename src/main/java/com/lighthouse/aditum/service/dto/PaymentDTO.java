@@ -45,7 +45,7 @@ public class PaymentDTO implements Serializable {
 
     private Long houseId;
 
-    private int houseNumber;
+    private String houseNumber;
 
     private String categories;
 
@@ -202,11 +202,11 @@ public class PaymentDTO implements Serializable {
         this.emailTo = emailTo;
     }
 
-    public int getHouseNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
     }
 

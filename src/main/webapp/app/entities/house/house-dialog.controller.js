@@ -117,7 +117,7 @@
                     Modal.showLoadingBar();
                     House.validateUpdate({
                         houseId: vm.house.id,
-                        houseNumber: vm.house.housenumber,
+                        houseNumber: vm.house.housenumber.toUpperCase(),
                         extension: vm.extension,
                         companyId: globalCompany.getId()
                     }, onSuccessUp, onErrorUp)

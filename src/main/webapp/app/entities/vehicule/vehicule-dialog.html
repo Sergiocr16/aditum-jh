@@ -15,7 +15,7 @@
                     <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                         <label>Número de filial</label>
                         <md-select ng-model="vm.vehicule.houseId" required>
-                            <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber'" ng-value="house.id">
+                            <md-option ng-repeat="house in vm.houses" ng-value="house.id">
                                 {{house.housenumber}}
                             </md-option>
                         </md-select>

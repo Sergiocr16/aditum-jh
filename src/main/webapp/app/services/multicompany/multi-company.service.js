@@ -41,7 +41,7 @@
                    break;
                     case "ROLE_JD":
                         return isJD(account.id);
-                        break;
+                    break;
                 }
                 }
             })

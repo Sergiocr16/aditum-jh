@@ -70,7 +70,6 @@
                     return true;
                 }
             }
-console.log(vm.resident)
             if (vm.resident.name === undefined || vm.resident.lastname === undefined || vm.resident.secondlastname === undefined || hasWhiteSpace(vm.resident.identificationnumber)|| hasWhiteSpace(vm.resident.phonenumber) && vm.resident.phonenumber != null && vm.resident.phonenumber !== "") {
                 Modal.toast("No puede ingresar espacios en blanco.");
                 invalido++;
@@ -103,15 +102,8 @@ console.log(vm.resident)
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
         function onSuccessHouses(data, headers) {
-            angular.forEach(data, function (value, key) {
-                value.housenumber = parseInt(value.housenumber);
-                if (value.housenumber === 9999) {
-                    value.housenumber = "Oficina"
-                }
-            });
             vm.houses = data;
             vm.isReady = true;
-
         }
 
 

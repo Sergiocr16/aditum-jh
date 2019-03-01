@@ -123,8 +123,8 @@
                             MultiCompany.getCurrentUserCompany().then(function (data) {
                                 $rootScope.companyUser = data;
                                 $rootScope.showSelectCompany = false;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companies[0].id);
-                                $rootScope.companyId = data.companies[0].id;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
+                                $rootScope.companyId = data.companyId;
                                 vm.backgroundSelectCompany = true;
                                 $state.go('dashboard');
                             });

@@ -40,7 +40,7 @@
 
             <no-content ng-if="vm.houses.length == 0" icon="home" text="No hay filiales registradas"></no-content>
 
-            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 no-padding" ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado} | orderBy:'housenumber'">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 no-padding" ng-repeat="house in vm.houses | filter:vm.query | filter:{isdesocupated:vm.estado}">
 
                 <md-card class="residentCardContainer margin-bottom-10" md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
                     <md-card-title class="no-padding-bottom">

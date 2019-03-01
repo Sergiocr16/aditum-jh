@@ -89,9 +89,6 @@ vm.save = createPayment;
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
                 angular.forEach(data, function (value, key) {
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
                     value.debit = value.balance.debit;
                 })
                 vm.houses = data;
