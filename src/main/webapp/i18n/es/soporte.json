@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "soporte" : {
+            "home": {
+                "title": "Soportes",
+                "createLabel": "Crear nuevo Soporte",
+                "createOrEditLabel": "Crear o editar Soporte"
+            },
+            "created": "Un nuevo Soporte ha sido creado con el identificador {{ param }}",
+            "updated": "Un Soporte ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Soporte ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Soporte {{ id }}?"
+            },
+            "detail": {
+                "title": "Soporte"
+            },
+            "description": "Description",
+            "fullName": "Full Name",
+            "email": "Email",
+            "subject": "Subject",
+            "username": "Username",
+            "creationDate": "Creation Date",
+            "status": "Status",
+            "house": "House",
+            "company": "Company"
+        }
+    }
+}
