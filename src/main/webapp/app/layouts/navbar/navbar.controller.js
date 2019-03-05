@@ -4,10 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
+    NavbarController.$inject = ['WSHouse','WSResident','WSVehicle','WSNote','WSVisitor','WSOfficer','$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany','WSDeleteEntity','WSEmergency'];
 
-    NavbarController.$inject = ['$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany'];
-
-    function NavbarController($timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany) {
+    function NavbarController(WSHouse,WSResident,WSVehicle,WSNote,WSVisitor,WSOfficer,$timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany,WSDeleteEntity,WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -1597,7 +1596,6 @@
             WSNote.unsubscribe(globalCompany.getId());
             WSVisitor.unsubscribe(globalCompany.getId());
             WSOfficer.unsubscribe(globalCompany.getId());
-
         }
 
         function logout() {
@@ -1753,6 +1751,8 @@
                                 $rootScope.companyName = condo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = null;
+                                $rootScope.companyUser.name = "Junta";
+                                $rootScope.companyUser.lastname = "Directiva";
                                 if (data.enabled == 0) {
                                     logout();
                                 }

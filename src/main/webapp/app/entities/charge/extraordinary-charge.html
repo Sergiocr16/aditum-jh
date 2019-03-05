@@ -35,8 +35,10 @@
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
                                     <th
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                        <md-input-container class="md-block no-margin-bottom">
-                                            <md-datepicker class="datePicker" readonlydatepicker class="datePicker" readonlydatepicker ng-change="vm.autoConcept(globalConcept)"
+                                        <md-input-container class="md-block no-margin-bottom" ng-if="!vm.dividedCharge">
+                                            <label>Fecha de Cobro</label>
+                                            <md-datepicker class="datePicker" readonlydatepicker class="datePicker"
+                                                           readonlydatepicker ng-change="vm.autoConcept(globalConcept)"
                                                            md-hide-icons="all" required
                                                            ng-model="vm.globalConcept.date"
                                                            md-placeholder="Fecha de cobro"
@@ -45,7 +47,6 @@
                                                            readonlydatepicker
                                                            md-open-on-focus></md-datepicker>
                                         </md-input-container>
-
                                     </th>
                                     <th
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
@@ -61,8 +62,24 @@
                                             </md-select>
                                         </md-input-container>
                                     </th>
-                                    <th class="text-center"
-                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                    <th layout-align="center center" class="text-center"
+                                        style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
+                                        <div style="margin-top: -70px">
+                                            <span>
+                                        Dividir cuota en varios pagos
+                                            </span>
+                                            <div class="md-checkbox" style="margin:5px auto">
+                                                <input type="checkbox" ng-model="vm.dividedCharge"
+                                                       ng-change="vm.changeDividedCharge()" id="checkbox2"
+                                                       class="md-check">
+                                                <label for="checkbox2">
+                                                    <span style="margin-left: 47%"></span>
+                                                    <span class="check" style="margin-left: 47%"></span>
+                                                    <span class="box" style="margin-left: 47%"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </th>
                                 </tr>
                                 </thead>
                                 <thead>
@@ -75,23 +92,130 @@
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
                                     <th class="text-center"
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                        <input ng-model="vm.globalConcept.text" ng-blur="vm.globalConceptSelected()"
-                                               class="form-control letters gray-font text-center" type="text"
+                                        <input ng-if="!vm.dividedCharge" ng-model="vm.globalConcept.text"
+                                               ng-blur="vm.globalConceptSelected()"
+                                               class="form-control letters gray-font text-center fade-in" type="text"
                                                placeholder="Concepto Global">
                                     </th>
                                     <th class="text-center"
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;">
-                                        <input ng-model="vm.globalConcept.cuota.ammount"
+                                        <input ng-if="!vm.dividedCharge" ng-model="vm.globalConcept.cuota.ammount"
                                                ng-class="{redBorder: vm.globalConcept.cuota.valida==false}"
                                                ng-blur="vm.globalCuotaSelected()"
                                                ng-change="vm.validate(vm.globalConcept.cuota)"
-                                               class="form-control letters gray-font text-center" type="text"
+                                               class="form-control letters gray-font text-center fade-in" type="text"
                                                format="currency"
                                                placeholder="Cuota Global">
 
                                     </th>
                                     <th class="text-center"
                                         style="border-color: white!important; border-bottom-color: #f2f2f2!important;"></th>
+                                </tr>
+                                <tr ng-if="vm.dividedCharge" class="fade-in">
+                                    <td colspan="5" style="padding: 0!important">
+                                        <md-toolbar class="form-title">
+                                            <h2>Cuota dividida en varios pagos</h2>
+                                        </md-toolbar>
+                                        <div class="col-md-12 margin-bottom-15">
+                                            <form action="" name="form1">
+                                                <div class="col-md-6">
+                                                    <md-input-container class="md-block  margin-top-30">
+                                                        <label>Concepto</label>
+                                                        <textarea ng-model="vm.dividedChargeConcept"
+                                                                  style="margin-top: -5px;"
+                                                                  rows="2"
+                                                                  md-select-on-focus required></textarea>
+                                                    </md-input-container>
+                                                    <md-input-container class="md-block" >
+                                                        <label>Número de cuotas por filial</label>
+                                                        <md-select  ng-model="vm.dividedChargeQuantity">
+                                                            <md-option ng-value="n" ng-repeat="n in vm.cuotasNumber track by $index">
+                                                                {{n}}
+                                                            </md-option>
+                                                        </md-select>
+                                                    </md-input-container>
+                                                    <md-input-container class="md-block">
+                                                        <label>Total a cobrar por cuota</label>
+                                                        <input type="text" class="form-control" format="currency"
+                                                               placeholder="0.00"
+                                                               ng-model="vm.dividedChargeAmmount"
+                                                               required
+                                                        />
+                                                    </md-input-container>
+                                                    <md-input-container class="md-block">
+                                                        <label>Fecha de cobro inicial</label>
+                                                        <md-datepicker class="datePicker" readonlydatepicker
+                                                                       class="datePicker"
+                                                                       readonlydatepicker
+                                                                       md-hide-icons="all" required
+                                                                       ng-model="vm.dividedChargeDate"
+                                                                       md-min-date="vm.currentDate"
+                                                                       md-open-on-focus></md-datepicker>
+                                                    </md-input-container>
+
+                                                    <md-button ng-disabled="!vm.isDividedDisable()"
+                                                               class="md-primary md-raised float-right" type="button"
+                                                               ng-click="vm.generateDividedCharges()">
+                                                        Generar división
+                                                    </md-button>
+                                                </div>
+                                            </form>
+                                            <div class="col-md-6 fade-in"
+                                                 style="max-height: 350px;height: 350px;overflow-y: auto"
+                                                 ng-if="vm.isDivided">
+                                                <table style="margin:5px!important"
+                                                       class="col-md-12 table-responsive table-material-desing">
+                                                    <thead style="background-color: #fafafa;">
+                                                    <tr>
+                                                        <th class="text-center" width="25%">
+                                                            Concepto
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Fecha de cobro
+                                                        </th>
+                                                        <th class="text-center">
+                                                            Total por cuota
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr ng-repeat="charge in vm.dividedCharges">
+                                                        <td class="text-center">
+                                                            {{charge.concept}}
+                                                        </td>
+                                                        <td>
+                                                            <md-datepicker class="datePicker" readonlydatepicker
+                                                                           class="datePicker"
+                                                                           readonlydatepicker
+                                                                           md-hide-icons="all" required
+                                                                           ng-model="charge.date"
+                                                                           md-open-on-focus></md-datepicker>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            ₡ {{charge.ammount | currency : "" : 0}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">
+                                                            <span class="float-right">Total a pagar por filial:
+                                                        </span>
+                                                        <td>
+                                                            <span class="text-center"><b>₡ {{vm.totalPerHouseAmmount | currency : "" : 0}}</b>
+                                                        </span>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="text-center col-md-6"
+                                                 style="position: absolute; bottom:0;right:0;">
+                                                <h4>
+                                                    Total a cobrar entre todas las filiales: <b>₡
+                                                    {{vm.getTotalPerHouses() | currency : "" : 0}}</b>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </td>
                                 </tr>
                                 </thead>
                                 <thead style="background-color: #fafafa;" class="">
@@ -109,7 +233,8 @@
                                     </th>
                                     <th class="text-center"><b>Casa</b></th>
                                     <th class="text-center"><b>Concepto</b></th>
-                                    <th class="text-center"><b>Cuota</b></th>
+                                    <th class="text-center"><b ng-if="!vm.dividedCharge">Cuota</b> <b
+                                        ng-if="vm.dividedCharge">Cuota total a cobrar</b></th>
                                     <th class="text-center"><b>Habitada</b></th>
                                 </tr>
                                 </thead>
@@ -132,18 +257,25 @@
                                         ng-show="vm.cuotaFija==false" class="text-center">{{house.squareMeters}}
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
-                                        <input ng-disabled="house.isdesocupated == 1"
-                                               class="form-control number gray-font text-center dating" type="text"
+                                        <input ng-disabled="house.isdesocupated == 1" ng-if="!vm.dividedCharge"
+                                               class="form-control number gray-font text-center dating fade-in"
+                                               type="text"
                                                fcsa-number ng-model="house.cuota.concept" placeholder="Concepto"
-                                               ng-required="house.isIncluded==true">
+                                               ng-required="house.isIncluded==true && !vm.dividedCharge">
+                                        <span ng-if="vm.dividedCharge">
+                                            {{vm.dividedCharges[vm.dividedCharges.length-1].concept}}
+                                        </span>
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}" class="text-center">
-                                        <input ng-disabled="house.isdesocupated == 1"
+                                        <input ng-if="!vm.dividedCharge" ng-disabled="house.isdesocupated == 1"
                                                ng-class="{redBorder: house.cuota.valida==false}"
                                                ng-change="vm.validate(house.cuota)"
                                                class="form-control number gray-font text-center " type="text"
                                                format="currency"
-                                               fcsa-number ng-model="house.cuota.ammount" required>
+                                               fcsa-number ng-model="house.cuota.ammount" required="!vm.dividedCharge">
+                                        <span ng-if="vm.dividedCharge">
+                                         ₡ {{vm.getTotalPerHouses() | currency : "" : 0}}
+                                        </span>
                                     </td>
                                     <td ng-class="{tdDisabled:house.isdesocupated == 1}"
                                         ng-if="house.isdesocupated == 1" class="text-center"><span
@@ -172,64 +304,77 @@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding" ng-show="vm.verificando==true">
                 <h3 class="text-center" style="color:#870a0a"><b>¿Estás seguro de que deseas realizar los siguientes
                     cargos?</b></h3>
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <h3 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales
-                        registradas.</h3>
-                    <div class="table-scrollable" style="border: 0px!important;">
-                        <table ng-show="vm.houses.length>0" class="table font-13 gray-font tableMaterialDesign">
-                            <thead style="background-color: #fafafa;" class="">
-                            <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                                <th class="text-center"><b>Casa</b></th>
-                                <th class="text-center"><b>Concepto</b></th>
-                                <th>
-                                    <div class="col-md-12 no-padding">
-                                        <div class="no-padding" style="display:inline">
-                                            <div style="margin-bottom:5px">
-                                                <h5 class="text-center" style="width:150px">{{vm.globalConcept.date
-                                                    | date}}</h5>
-                                                <h6 class="text-center" style="font-size:11px"><b>Fecha de cobro</b>
-                                                </h6>
+                <div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h3 ng-show="vm.houses.length==0" class="text-center gray-font">No existen filiales
+                            registradas.</h3>
+                        <div class="table-scrollable" style="border: 0px!important;">
+                            <table ng-show="vm.houses.length>0" class="table font-13 gray-font tableMaterialDesign">
+                                <thead style="background-color: #fafafa;" class="">
+                                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                                    <th class="text-center"><b>Casa</b></th>
+                                    <th class="text-center"><b>Concepto</b></th>
+                                    <th>
+                                        <div class="col-md-12 no-padding">
+                                            <div class="no-padding" style="display:inline">
+                                                <div style="margin-bottom:5px">
+                                                    <h5 ng-if="!vm.dividedCharge" class="text-center" style="width:150px">{{vm.globalConcept.date
+                                                        | date}}</h5>
+                                                    <h5 ng-if="vm.dividedCharge" class="text-center" style="width:150px">{{vm.dividedChargeDate
+                                                        | date}}</h5>
+                                                    <h6 class="text-center" style="font-size:11px">
+                                                        <b ng-if="!vm.dividedCharge">Fecha de cobro</b>
+                                                        <b ng-if="vm.dividedCharge">Empieza a cobrar apartir de</b>
+                                                    </h6>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="house in vm.selectedHouses | orderBy:'housenumber'">
-                                <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
-                                    <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
-                                    <span ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"
-                                          class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span>
-                                </td>
-                                <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
-                                    <span>{{house.cuota.concept}}</span>
-                                </td>
-                                <td ng-class="{noCharge:house.cuota.ammount == 0}" class="text-center"
-                                    style="width:150px">
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="house in vm.selectedHouses | orderBy:'housenumber'">
+                                    <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
+                                        <span ng-show="house.isdesocupated == 0">{{house.housenumber}}</span>
+                                        <span ng-show="house.isdesocupated == 1" style="margin:5px;height:5px!important"
+                                              class="label label-sm label-danger" aria-hidden="false">{{house.housenumber}} Deshabitada</span>
+                                    </td>
+                                    <td class="text-center" ng-class="{tdDisabled:house.isdesocupated == 1}">
+                                        <span ng-if="!vm.dividedCharge">{{house.cuota.concept}}</span>
+                                        <span ng-if="vm.dividedCharge">{{vm.dividedCharges[vm.dividedCharges.length-1].concept}}</span>
+
+                                    </td>
+                                    <td ng-class="{noCharge:house.cuota.ammount == 0}" class="text-center"
+                                        style="width:150px">
+                                        <span ng-if="!vm.dividedCharge">
                                         <span ng-show="house.cuota.ammount==0"
                                               class="col-lg-12 col-md-12 col-sm-12 col-xs-12" angular-popover
                                               direction="left"
                                               template="<div style='padding:5px;width:200px'><h5>Esta cuota no será generada.<h5></div>"
                                               mode="mouseover">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
-                                    <span ng-show="house.cuota.ammount!=0"
-                                          class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
-                         layout-align="end center">
-                        <md-button type="button" ng-click="vm.cancelar()"
-                                   class="md-warn md-raised">Cancelar
-                        </md-button>
-                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid " ng-click="vm.createDues()">
-                            Aceptar
-                        </md-button>
+                                        <span ng-show="house.cuota.ammount!=0"
+                                              class="col-lg-12 col-md-12 col-sm-12 col-xs-12">    ₡{{house.cuota.ammount | currency : "" : 0}}</span>
+                                  </span>
+                                        <span  ng-if="vm.dividedCharge">
+                                               ₡ {{vm.getTotalPerHouses()  | currency : "" : 0}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding" layout="row"
+                             layout-align="end center">
+                            <md-button type="button" ng-click="vm.cancelar()"
+                                       class="md-warn md-raised">Cancelar
+                            </md-button>
+                            <md-button class="md-primary md-raised" ng-disabled="form.$invalid "
+                                       ng-click="vm.createDues()">
+                                Aceptar
+                            </md-button>
+                        </div>
                     </div>
                 </div>
-            </div>
         </md-content>
     </div>
 

@@ -524,6 +524,7 @@ public class ChargeService {
                 if (diffBetweenChargeDateAndNow >= administrationConfigurationDTO.getDaysTobeDefaulter()) {
                     if (administrationConfigurationDTO.isUsingSubchargePercentage()) {
                         double subCharge = Double.parseDouble(chargeDTO.getAmmount()) * (administrationConfigurationDTO.getSubchargePercentage() / 100);
+                        subCharge = (int)subCharge;
                         chargeDTO.setSubcharge(subCharge + "");
                     } else {
                         chargeDTO.setSubcharge(administrationConfigurationDTO.getSubchargeAmmount() + "");

@@ -61,12 +61,6 @@
             }
 
             function onSuccess(data, headers) {
-                angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                });
                 vm.houses = data;
                 vm.isReady = true;
             }

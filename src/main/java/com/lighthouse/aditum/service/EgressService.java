@@ -43,17 +43,18 @@ public class EgressService {
 
     private final CommonAreaReservationsService commonAreaReservationsService;
 
-    public EgressService(EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService,HouseService houseService,@Lazy CommonAreaReservationsService commonAreaReservationsService) {
+
+    private final BalanceByAccountService balanceByAccountService;
+
+    public EgressService(BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
         this.proveedorService = proveedorService;
         this.bancoService = bancoService;
-
+        this.balanceByAccountService = balanceByAccountService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.houseService = houseService;
-
-
     }
 
     /**
@@ -68,6 +69,8 @@ public class EgressService {
         if (egress.getPaymentDate() != null) {
             ZonedDateTime n = ZonedDateTime.now().plusHours(5);
             egress.setPaymentDate(egress.getPaymentDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+            this.balanceByAccountService.modifyBalancesInPastEgress(egress);
+
         }
         egress = egressRepository.save(egress);
         return egressMapper.toDto(egress);
@@ -164,7 +167,8 @@ public class EgressService {
                         egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
                         for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
                             CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findByEgressId(egressReportItemsDTO.getEgresosFormatted().get(j).getId());
-                           HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
+                            HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
+
                             egressReportItemsDTO.getEgresosFormatted().get(j).setFolio("N/A");
 
 
@@ -201,12 +205,13 @@ public class EgressService {
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
     }
+
     @Transactional(readOnly = true)
-    public Page<EgressDTO> getEgressToPay(Pageable pageable,String finalTime, Long companyId) {
+    public Page<EgressDTO> getEgressToPay(Pageable pageable, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
         ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
-        Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime,companyId);
+        Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime, companyId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
     }

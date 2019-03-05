@@ -73,7 +73,7 @@
                     condominio</h2>
                 <div style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12"
                      ng-if="house.isdesocupated == 0"
-                     ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                     ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState}">
                     <hr class="col-xs-12 no-padding">
                     <div class="col-xs-12">
                         <h4>Casa: <b>{{house.housenumber}}</b></h4>
@@ -121,7 +121,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.house | filter: {codeStatus:vm.filterState} | orderBy:'housenumber'">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.house | filter: {codeStatus:vm.filterState} ">
                             <td class="text-center">{{house.housenumber}}</td>
                             <td class="text-center">{{house.loginCode}}</td>
                             <td ng-if="house.isdesocupated==1" class="text-center">

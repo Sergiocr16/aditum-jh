@@ -86,11 +86,6 @@
             }, onSuccessHouse, onError);
 
             function onSuccessHouse(houses, headers) {
-                angular.forEach(houses, function (value, key) {
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                })
                 $rootScope.houses = houses;
             }
         }

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 public interface HouseRepository extends JpaRepository<House,Long> {
-    List<House> findByCompanyId(Long companyId);
+    ArrayList<House> findByCompanyId(Long companyId);
 
     House findByhousenumberAndCompanyId(String houseNumber,Long companyId);
 
