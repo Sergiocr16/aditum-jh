@@ -1,51 +1,55 @@
-<h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600" hide-sm hide-xs style="color: #00b19d">Quejas y
-    sugerencias
-</h3>
-<div class="col-md-12 no-padding margin-top-10">
-    <div class="">
-        <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
-             id="index-search-bar">
-            <div class="input-icon" style="color:#484848!important;">
-                <i class="fa fa-search"></i>
-                <input type="text" class="form-control "
-                       style="background-color: #f5f5f5; border:0px!important; "
-                       placeholder="Buscar" ng-model="vm.query">
-            </div>
-        </div>
-        <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-            <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
-                    class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
-                    style="height: 34px!important; padding-top: 5px!important;">
-                <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
-                <i class="material-icons " style="font-size: 24px!important;">filter_list</i>
-            </button>
-        </div>
-    </div>
-</div>
-<div class="col-md-12 col-sm-12 col-xs-12">
-    <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
-        <md-input-container class="md-block col-md-3 no-margin" >
-            <md-select ng-model="vm.status" ng-change="vm.changeStatus()">
-                <md-option value="-1">Todos</md-option>
-                <md-option value="1">Pendiente</md-option>
-                <md-option value="2">Activo</md-option>
-                <md-option value="3">Resuelto</md-option>
-            </md-select>
-        </md-input-container>
-    </div>
-</div>
 <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
      layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
 <div ng-if="vm.isReady" class="col-md-12 fade-in">
+    <h3 class="page-title col-md-9 caption-subject font-green-sharp font-weight-600" hide-sm hide-xs
+        style="color: #00b19d">Quejas y
+        sugerencias
+    </h3>
+    <div class="col-md-12 no-padding margin-top-10" ng-if="vm.complaints.length>0">
+        <div class="">
+            <div class="form-group no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+                 id="index-search-bar">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.query">
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button type="submit" ng-click="vm.showFilterDiv=!vm.showFilterDiv;"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
+                        style="height: 34px!important; padding-top: 5px!important;">
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">filter_list</i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12">
+        <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
+            <md-input-container class="md-block col-md-3 no-margin">
+                <md-select ng-model="vm.status" ng-change="vm.changeStatus()">
+                    <md-option value="-1">Todos</md-option>
+                    <md-option value="1">Pendiente</md-option>
+                    <md-option value="2">Activo</md-option>
+                    <md-option value="3">Resuelto</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </div>
+
+
     <br/>
     <div style="">
         <no-content ng-if="vm.complaints.length == 0" icon="sentiment_very_dissatisfied"
                     text="No hay quejas o sugerencias registradas"></no-content>
         <div infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']" class="row margin-bottom-15">
-            <md-card style="margin-bottom: 20px!important; margin-left: 0; margin-right: 0;" md-theme-watch class="form-wrapper"
+            <md-card style="margin-bottom: 20px!important; margin-left: 0; margin-right: 0;" md-theme-watch
+                     class="form-wrapper"
                      ng-repeat="complaint in vm.complaints | orderBy: '-creationDate' track by complaint.id">
                 <md-card-title layout-align="space-between center">
                     <md-card-title-text>
@@ -77,7 +81,7 @@
                   </span>
                     </md-card-title-text>
                     <div layout="row">
-                        <div  style="margin: 0 6px; padding:0 6px">
+                        <div style="margin: 0 6px; padding:0 6px">
                             <a class="light-gray-font"
                                ng-click="vm.viewDetail(complaint.id)"><i
                                 class="material-icons">
@@ -108,7 +112,8 @@
         </div>
     </div>
 </div>
-<md-button  style="position: fixed!important;" ui-sref="complaint-user.new" class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+<md-button style="position: fixed!important;" ui-sref="complaint-user.new"
+           class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
     <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar queja o sugerencia</md-tooltip>
     <md-icon class="white-color">add</md-icon>
 </md-button>

@@ -27,6 +27,7 @@
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Deudas vigentes";
+                    $rootScope.active = "chargesResidentAccount";
                     break;
             }
         })

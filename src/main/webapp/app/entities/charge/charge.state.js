@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/reporte-cuotas-cobrar',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_JD','ROLE_MANAGER'],
                     pageTitle: 'Aditum'
                 },
                 views: {
@@ -55,7 +55,7 @@
                 parent: 'chargesReport',
                 url: '/grafica',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_JD','ROLE_ADMIN', 'ROLE_MANAGER'],
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', function ($stateParams, $state, $uibModal) {
                     $uibModal.open({

@@ -21,6 +21,8 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.houses = [];
         vm.minDate = new Date();
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.charge = {
             type: "1",
             concept: "",

@@ -71,7 +71,7 @@
                     <tbody>
 
                     <tr>  <td  colspan="6"><span class=" bold" style="font-size:12px; text-transform:uppercase;">SALDO INICIAL AL {{ vm.dates.initial_time | date:'longDate'}}</span></td>
-                        <td class="bold text-center">₡{{vm.formatearNumero(vm.banco.capitalInicial+"")}}</td></tr>
+                        <td class="bold text-center">₡{{vm.formatearNumero(vm.banco.capitalInicialTemporal+"")}}</td></tr>
                     <tr ng-repeat="movement in vm.movementsList "  data-toggle="{{egress.id}}" >
                         <td style="text-align:center;">
 

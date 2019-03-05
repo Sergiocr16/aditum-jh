@@ -36,12 +36,17 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "minDate",
+            "fieldType": "ZonedDateTime"
         }
     ],
     "changelogDate": "20170228214136",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "company_configuration",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager",
     "javadoc": "not an ignored comment"
 }

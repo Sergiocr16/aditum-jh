@@ -30,6 +30,8 @@ public class BancoDTO implements Serializable {
 
     private String capitalInicial;
 
+    private double capitalInicialTemporal;
+
     private String capitalInicialFormatted;
 
     private Integer mostrarFactura;
@@ -288,5 +290,13 @@ public class BancoDTO implements Serializable {
             }
             return t.substring(0, t.length() - 2);
         }
+    }
+
+    public double getCapitalInicialTemporal() {
+        return capitalInicialTemporal;
+    }
+
+    public void setCapitalInicialTemporal(double capitalInicialTemporal) {
+        this.capitalInicialTemporal = capitalInicialTemporal;
     }
 }

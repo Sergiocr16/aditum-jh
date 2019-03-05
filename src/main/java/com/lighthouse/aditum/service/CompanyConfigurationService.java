@@ -43,8 +43,10 @@ public class CompanyConfigurationService {
     public CompanyConfigurationDTO save(CompanyConfigurationDTO companyConfigurationDTO) {
         log.debug("Request to save CompanyConfiguration : {}", companyConfigurationDTO);
         CompanyConfiguration companyConfiguration = companyConfigurationMapper.companyConfigurationDTOToCompanyConfiguration(companyConfigurationDTO);
+        companyConfiguration.setMinDate(companyConfigurationDTO.getMinDate());
         companyConfiguration = companyConfigurationRepository.save(companyConfiguration);
         CompanyConfigurationDTO result = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        result.setMinDate(companyConfigurationDTO.getMinDate());
         return result;
     }
 
@@ -72,6 +74,7 @@ public class CompanyConfigurationService {
         log.debug("Request to get CompanyConfiguration : {}", id);
         CompanyConfiguration companyConfiguration = companyConfigurationRepository.findOne(id);
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        companyConfigurationDTO.setMinDate(companyConfiguration.getMinDate());
         return companyConfigurationDTO;
     }
     @Transactional(readOnly = true)

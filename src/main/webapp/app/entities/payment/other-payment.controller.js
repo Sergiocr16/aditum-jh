@@ -19,6 +19,7 @@
         vm.printReceipt = false;
         vm.selectedAll = true;
         vm.datePickerOpenStatus = false;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
         vm.save = createPayment;
         Modal.enteringForm(createPayment);

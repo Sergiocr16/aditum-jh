@@ -24,6 +24,7 @@
         vm.payment = {ammount:"0"}
         vm.openCalendar = openCalendar;
         vm.today = new Date();
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
         vm.residents = [];
         angular.element(document).ready(function () {

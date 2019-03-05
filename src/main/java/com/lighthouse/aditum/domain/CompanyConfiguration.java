@@ -5,7 +5,9 @@ import io.swagger.annotations.ApiModel;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
+
 
 /**
  * not an ignored comment
@@ -37,9 +39,13 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "has_contability", nullable = false)
     private Integer hasContability;
 
+    @Column(name = "min_date")
+    private ZonedDateTime minDate;
+
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -100,6 +106,19 @@ public class CompanyConfiguration implements Serializable {
         this.hasContability = hasContability;
     }
 
+    public ZonedDateTime getMinDate() {
+        return minDate;
+    }
+
+    public CompanyConfiguration minDate(ZonedDateTime minDate) {
+        this.minDate = minDate;
+        return this;
+    }
+
+    public void setMinDate(ZonedDateTime minDate) {
+        this.minDate = minDate;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -112,6 +131,7 @@ public class CompanyConfiguration implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -137,10 +157,11 @@ public class CompanyConfiguration implements Serializable {
     public String toString() {
         return "CompanyConfiguration{" +
             "id=" + getId() +
-            ", quantityhouses='" + getQuantityhouses() + "'" +
-            ", quantityadmins='" + getQuantityadmins() + "'" +
-            ", quantityaccessdoor='" + getQuantityaccessdoor() + "'" +
-            ", hasContability='" + getHasContability() + "'" +
+            ", quantityhouses=" + getQuantityhouses() +
+            ", quantityadmins=" + getQuantityadmins() +
+            ", quantityaccessdoor=" + getQuantityaccessdoor() +
+            ", hasContability=" + getHasContability() +
+            ", minDate='" + getMinDate() + "'" +
             "}";
     }
 }

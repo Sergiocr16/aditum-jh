@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('EgressDetailController', EgressDetailController);
 
-    EgressDetailController.$inject = ['$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
+    EgressDetailController.$inject = ['CommonMethods','$scope', '$state', '$rootScope', '$stateParams', 'previousState', 'entity', 'Egress', 'Company', 'Proveedor', 'Banco', 'Principal', 'Modal', 'globalCompany'];
 
-    function EgressDetailController($scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
+    function EgressDetailController(CommonMethods,$scope, $state, $rootScope, $stateParams, previousState, entity, Egress, Company, Proveedor, Banco, Principal, Modal, globalCompany) {
         var vm = this;
         $rootScope.active = "newEgress";
         $rootScope.mainTitle = "Detalle de gasto";
@@ -18,6 +18,8 @@
         vm.companies = Company.query();
         vm.egress = entity;
         vm.previousState = previousState.name;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.datePickerOpenStatus = {};
         Modal.enteringDetail();
         $scope.$on("$destroy", function () {

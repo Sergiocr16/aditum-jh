@@ -15,6 +15,8 @@
         vm.loadAll = loadAll;
         vm.final_time = new Date();
         vm.chargeType = 5;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident-detail', {
