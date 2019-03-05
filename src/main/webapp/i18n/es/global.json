@@ -50,6 +50,7 @@
         "jdAccount": "JD Account",
         "juntaDirectivaAccount": "Junta Directiva Account",
         "activosFijos": "Activos Fijos",
+        "soporte": "Soporte",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

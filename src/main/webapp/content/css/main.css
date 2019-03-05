@@ -1852,6 +1852,15 @@ div.scrollmenu a:hover {
         width: 100% !important;
         padding: 0px !important
     }
+    .support-box{
+        margin: 20px 0px !important;
+    }
+    .min-height-730px{
+        min-height:730px;
+    }
+    .support-banner{
+        background-position-y: unset!important;
+    }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
@@ -2653,14 +2662,14 @@ md-toast.md-center {
 .black-color {
     color: black !important;
 }
-<<<<<<< HEAD
+
 .black-color{
      color:black!important;
  }
 .h5-login-screen:hover{
 color: #009587!important;
 }
-=======
+
 
 .icon-material-btn {
     height: unset;
@@ -2682,5 +2691,12 @@ color: #009587!important;
 .itemMenuSelect:hover {
     color: rgb(0, 150, 136) !important
 }
-
->>>>>>> aditum2.0
+.support-box{
+    margin: 0 0 0 20px;
+}
+.support-banner{
+    height: 120px;
+    background-image: url(../../content/images/login.jpg);
+    background-size: cover;
+    background-position-y: 290px;
+}
