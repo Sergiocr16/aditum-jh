@@ -17,6 +17,7 @@
         vm.searchType = 1;
         vm.openCalendar = openCalendar;
         vm.loadAll = loadAll;
+        $rootScope.active = "residentAccountStatus";
         $rootScope.mainTitle = "Estado de cuenta";
         vm.datePickerOpenStatus = {};
         vm.isReady = false;

@@ -30,6 +30,8 @@ public class BancoDTO implements Serializable {
 
     private String capitalInicial;
 
+    private double capitalInicialTemporal;
+
     private String capitalInicialFormatted;
 
     private Integer mostrarFactura;
@@ -44,11 +46,11 @@ public class BancoDTO implements Serializable {
 
     private Long companyId;
 
-    private Double totalBalance;
+    private double totalBalance;
 
-    private Double totalIngress;
+    private double totalIngress;
 
-    private Double totalEgress;
+    private double totalEgress;
 
     private String totalBalanceFormatted;
 
@@ -209,11 +211,11 @@ public class BancoDTO implements Serializable {
         this.movimientos = movimientos;
     }
 
-    public Double getTotalBalance() {
+    public double getTotalBalance() {
         return totalBalance;
     }
 
-    public void setTotalBalance(Double totalBalance) {
+    public void setTotalBalance(double totalBalance) {
         this.totalBalance = totalBalance;
         this.setTotalBalanceFormatted(formatMoney(totalBalance));
     }
@@ -226,19 +228,19 @@ public class BancoDTO implements Serializable {
         this.balanceColor = balanceColor;
     }
 
-    public Double getTotalIngress() {
+    public double getTotalIngress() {
         return totalIngress;
     }
 
-    public void setTotalIngress(Double totalIngress) {
+    public void setTotalIngress(double totalIngress) {
         this.totalIngress = totalIngress;
     }
 
-    public Double getTotalEgress() {
+    public double getTotalEgress() {
         return totalEgress;
     }
 
-    public void setTotalEgress(Double totalEgress) {
+    public void setTotalEgress(double totalEgress) {
         this.totalEgress = totalEgress;
     }
 
@@ -286,7 +288,15 @@ public class BancoDTO implements Serializable {
             }else{
                 t = currencyFormatter.format(ammount).substring(1);
             }
-            return t.substring(0, t.length() - 3);
+            return t.substring(0, t.length() - 2);
         }
+    }
+
+    public double getCapitalInicialTemporal() {
+        return capitalInicialTemporal;
+    }
+
+    public void setCapitalInicialTemporal(double capitalInicialTemporal) {
+        this.capitalInicialTemporal = capitalInicialTemporal;
     }
 }

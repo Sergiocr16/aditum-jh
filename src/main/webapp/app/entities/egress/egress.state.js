@@ -119,7 +119,7 @@
             parent: 'entity',
             url: '/cuentasPorPagar',
             data: {
-                authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN', 'ROLE_JD','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.egress.home.title'
             },
             views: {

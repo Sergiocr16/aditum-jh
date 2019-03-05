@@ -25,6 +25,7 @@
         vm.datePickerOpenStatus = false;
         vm.openCalendar = openCalendar;
         vm.residents = [];
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
 
 vm.save = createPayment;
         Modal.enteringForm(createPayment);

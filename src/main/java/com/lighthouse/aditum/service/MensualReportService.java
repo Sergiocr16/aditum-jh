@@ -52,6 +52,7 @@ public class MensualReportService {
         }
         List<ChargeDTO> extraOrdinaryIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,2,companyId);
         List<ChargeDTO> commonAreasIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,3,companyId);
+        String af = "a";
         List<PaymentDTO> otherPayments = paymentService.findOtherIngressByDatesBetweenAndCompany(initialTime,finalTime,Integer.parseInt(companyId+""));
         List<ChargeDTO> otherIngress = new ArrayList<>();
          otherPayments.forEach(paymentDTO -> {
@@ -117,38 +118,28 @@ public class MensualReportService {
 
 
     public List<MensualAndAnualAccountDTO> getAccountBalance(String initialTime, String finalTime, long companyId){
+
+
         List<MensualAndAnualAccountDTO> listaFinal = new ArrayList<>();
         List<BancoDTO> bancos = bancoService.findAll(companyId);
+        BancoDTO bancoDTO;
         for (int i = 0; i <bancos.size() ; i++) {
-           MensualAndAnualAccountDTO MensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
-            double inicialBalance;
-           List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(initialTime,finalTime,bancos.get(i).getId());
-           if(balances.size()>0){
-               inicialBalance = balances.get(0).getBalance();
+           MensualAndAnualAccountDTO mensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
+            ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+            ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+            ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+            ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+           if(zd_initialTime.isAfter(zd_finalTime)){
+               bancoDTO = bancoService.getInicialBalance(initialTime,bancos.get(i),initialTime);
            }else{
-               inicialBalance = Double.parseDouble(bancos.get(i).getCapitalInicial());
+               bancoDTO = bancoService.getInicialBalance(initialTime,bancos.get(i),finalTime);
            }
-           List<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,companyId,bancos.get(i).getId()+"");
+String a = "a";
 
-           for (int j = 0; j < egresos.size(); j++) {
-               inicialBalance = inicialBalance - Integer.parseInt(egresos.get(j).getTotal());
-           }
-            List<PaymentDTO> ingresos = paymentService.findByDatesBetweenAndCompanyAndAccount(initialTime,finalTime,Integer.parseInt(companyId+""),bancos.get(i).getId()+"");
-            for (int j = 0; j < ingresos.size(); j++) {
-                inicialBalance = inicialBalance + Integer.parseInt(ingresos.get(j).getAmmount());
-            }
-            List<Transferencia> transferenciasEntrantes = transferenciaService.getBetweenDatesByInComingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
-            for (int j = 0; j < transferenciasEntrantes.size(); j++) {
-                inicialBalance = inicialBalance + Integer.parseInt(transferenciasEntrantes.get(j).getMonto());
-            }
-            List<Transferencia> transferenciasSalientes = transferenciaService.getBetweenDatesByOutgoingTransfer(initialTime,finalTime,Integer.parseInt(bancos.get(i).getId()+""));
-            for (int j = 0; j < transferenciasSalientes.size(); j++) {
-                inicialBalance = inicialBalance - Integer.parseInt(transferenciasSalientes.get(j).getMonto());
-            }
-           MensualAndAnualAccountDTO.setBalance(bancos.get(i).getSaldo());
-           MensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
-           MensualAndAnualAccountDTO.setInicialBalance(inicialBalance);
-           listaFinal.add(MensualAndAnualAccountDTO);
+            mensualAndAnualAccountDTO.setBalance(bancoDTO.getSaldo());
+            mensualAndAnualAccountDTO.setName(bancos.get(i).getBeneficiario());
+            mensualAndAnualAccountDTO.setInicialBalance(bancoDTO.getCapitalInicialTemporal());
+           listaFinal.add(mensualAndAnualAccountDTO);
         }
 
         return listaFinal;

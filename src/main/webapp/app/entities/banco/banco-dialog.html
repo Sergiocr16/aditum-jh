@@ -18,11 +18,6 @@
                                     <input  ng-model="vm.banco.beneficiario" type="text" required>
                                 </md-input-container>
                                 <md-input-container class="md-block" ng-if="vm.banco.id == null">
-                                    <label>Fecha capital inicial</label>
-                                    <md-datepicker class="datePicker" readonlydatepicker md-hide-icons="calendar" required ng-model="vm.banco.fechaCapitalInicial"
-                                                   md-placeholder="Introduzca una fecha" md-open-on-focus required></md-datepicker>
-                                </md-input-container>
-                                <md-input-container class="md-block" ng-if="vm.banco.id == null">
                                     <label>Saldo inicial</label>
                                     <input ng-model="vm.banco.capitalInicial" type="text" required format="currency" required>
                                 </md-input-container>

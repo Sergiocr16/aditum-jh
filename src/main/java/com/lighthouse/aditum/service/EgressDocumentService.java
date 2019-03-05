@@ -37,6 +37,7 @@ public class EgressDocumentService {
     private static final String INITIALTIME = "initialTime";
     private static final String FINALTIME = "finalTime";
     private static final String EGRESS_REPORT = "egress_report";
+    private static final String TOTAL = "total";
     private static final String TOTAL_EGRESS_TO_PAY = "total_egress_to_pay";
     private final Logger log = LoggerFactory.getLogger(CollectionTableDocumentService.class);
     private final JHipsterProperties jHipsterProperties;
@@ -74,6 +75,7 @@ public class EgressDocumentService {
             contextTemplate.setVariable(EGRESS_REPORT_DTO,egressReportDTO);
             contextTemplate.setVariable(INITIALTIME,initialTime);
             contextTemplate.setVariable(FINALTIME,finalTime);
+            contextTemplate.setVariable(TOTAL, formatMoney(egressReportDTO.getTotal()));
 
 
             ZonedDateTime date = ZonedDateTime.now();

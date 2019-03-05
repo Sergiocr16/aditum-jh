@@ -34,7 +34,8 @@
                 for (var i = 0; i < companiesArray.length; i++) {
                     var companyId = companiesArray[i].split(";")[0];
                     if(companyId == compaId){
-                        return {companyId:companyId,hasContability:companiesArray[i].split(";")[1]}
+                        console.log(new Date(companiesArray[i].split(";")[2]))
+                        return {companyId:companyId,hasContability:companiesArray[i].split(";")[1],minDate:new Date(companiesArray[i].split(";")[2])}
                     }
                 }
             }

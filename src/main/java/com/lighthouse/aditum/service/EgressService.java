@@ -79,8 +79,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<Egress> result = egressRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
@@ -89,8 +91,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         return new PageImpl<>(egressRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId))
             .map(egressMapper::toDto);
 
@@ -99,8 +103,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findPaymentEgressByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         return new PageImpl<>(egressRepository.findPaymentEgressByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId))
             .map(egressMapper::toDto);
 
@@ -109,8 +115,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findByCobroDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<Egress> result = egressRepository.findByCobroDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
@@ -119,11 +127,14 @@ public class EgressService {
     @Transactional(readOnly = true)
     public EgressReportDTO egressReport(Pageable pageable, String initialTime, String finalTime, Long companyId, String selectedProveedors, String selectedCampos) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         String[] proveedorsParts = selectedProveedors.split(",");
         String[] camposParts = selectedCampos.split(",");
         EgressReportDTO egressReportDTO = new EgressReportDTO();
+        double total = 0;
         for (int i = 0; i < proveedorsParts.length; i++) {
             if (!proveedorsParts[i].equals("a")) {
                 if (!proveedorsParts[i].equals("devolucion")) {
@@ -145,6 +156,7 @@ public class EgressService {
                                 }
                             }
                         }
+                        total = total + egressReportItemsDTO.getTotal();
                     }
                 } else {
                     List<EgressDTO> egresses = egressRepository.findDevolutionsBetweenDatesAndCompany(zd_initialTime, zd_finalTime, companyId).stream()
@@ -154,8 +166,9 @@ public class EgressService {
                         EgressReportItemsDTO egressReportItemsDTO = new EgressReportItemsDTO("Devoluciones de dinero", egresses, camposParts);
                         egressReportDTO.getEgressByProveedor().add(egressReportItemsDTO);
                         for (int j = 0; j < egressReportItemsDTO.getEgresosFormatted().size(); j++) {
-                            CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findOne(egressReportItemsDTO.getEgresosFormatted().get(j).getId());
+                            CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findByEgressId(egressReportItemsDTO.getEgresosFormatted().get(j).getId());
                             HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
+
                             egressReportItemsDTO.getEgresosFormatted().get(j).setFolio("N/A");
 
 
@@ -166,13 +179,17 @@ public class EgressService {
                                 egressReportItemsDTO.getEgresosFormatted().get(j).setAccount(bancoDTO.getBeneficiario());
                             }
                         }
+                        total = total + egressReportItemsDTO.getTotal();
                     }
+
                 }
 
 
             }
 
         }
+
+        egressReportDTO.setTotal(total);
         String a = "a";
         return egressReportDTO;
     }
@@ -180,8 +197,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, String initialTime, String finalTime, Long companyId, String accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<Egress> result = egressRepository.findByDatesBetweenAndCompanyAndAccount(pageable, zd_initialTime, zd_finalTime, companyId, accountId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
@@ -190,7 +209,8 @@ public class EgressService {
     @Transactional(readOnly = true)
     public Page<EgressDTO> getEgressToPay(Pageable pageable, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<Egress> result = egressRepository.findEgressToPayByCompany(pageable, zd_finalTime, companyId);
 //        Collections.reverse(result);
         return result.map(egress -> egressMapper.toDto(egress));
@@ -199,8 +219,10 @@ public class EgressService {
     @Transactional(readOnly = true)
     public List<EgressDTO> findByDatesBetweenAndCompanyAndAccount(String initialTime, String finalTime, Long companyId, String accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         return egressRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime, zd_finalTime, companyId, accountId).stream()
             .map(egressMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));

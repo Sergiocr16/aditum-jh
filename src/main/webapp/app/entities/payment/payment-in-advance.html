@@ -73,7 +73,7 @@
                         <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg no-padding-right">
                             <md-input-container class="md-block  no-margin-bottom">
                                 <label>Fecha de pago</label>
-                                <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.today" required md-hide-icons="calendar"
+                                <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.companyConfig.minDate" md-max-date="vm.today" required md-hide-icons="calendar"
                                                ng-model="vm.payment.date"
                                                id="datePicker"
                                                readonlydatepicker

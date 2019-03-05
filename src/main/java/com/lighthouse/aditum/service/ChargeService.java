@@ -326,8 +326,10 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDate(Long houseId, String initialTime, String finalTime) {
         log.debug("Request to get all Charges");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         List<Charge> a = chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId, 0);
 
         Page<ChargeDTO> chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_finalTime, houseId, 0))
@@ -338,9 +340,12 @@ public class ChargeService {
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findAllByHouseAndBetweenDateResidentAccount(Long houseId, String initialTime, String finalTime, String todayTime) {
         log.debug("Request to get all Charges");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        ZonedDateTime zd_todayTime = ZonedDateTime.parse((todayTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_todayTimeNoFormatted = ZonedDateTime.parse((todayTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+        ZonedDateTime zd_todayTime = zd_todayTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<ChargeDTO> chargeDTOS;
         if (zd_finalTime.isAfter(zd_todayTime)) {
             chargeDTOS = new PageImpl<>(chargeRepository.findAllBetweenDatesAndHouseId(zd_initialTime, zd_todayTime, houseId, 0))
@@ -399,16 +404,20 @@ public class ChargeService {
 
     @Transactional(readOnly = true)
     public Page<ChargeDTO> findPaidChargesBetweenDates(String initialTime, String finalTime, int type, Long companyId) {
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         log.debug("Request to get all Charges");
         return new PageImpl<>(chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime, zd_finalTime, type, 2, companyId))
             .map(chargeMapper::toDto);
     }
 
     public List<ChargeDTO> findPaidChargesBetweenDatesList(String initialTime, String finalTime, int type, Long companyId) {
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         log.debug("Request to get all Charges");
         List<ChargeDTO> chargeDTOS = chargeRepository.findPaidChargesBetweenDatesAndCompanyId(zd_initialTime, zd_finalTime, type, 2, companyId).stream()
             .map(chargeMapper::toDto)

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResultStatesMensualReportController', ResultStatesMensualReportController);
 
-    ResultStatesMensualReportController.$inject = ['Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
+    ResultStatesMensualReportController.$inject = ['CommonMethods','Company','AlertService', '$rootScope', 'Principal', 'MensualAndAnualReport', '$scope', 'Presupuesto', 'globalCompany','Modal'];
 
-    function ResultStatesMensualReportController(Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
+    function ResultStatesMensualReportController(CommonMethods,Company,AlertService, $rootScope, Principal, MensualAndAnualReport, $scope, Presupuesto, globalCompany,Modal) {
 
         var vm = this;
 
@@ -22,6 +22,8 @@
         vm.isShowingInitialBalanceAccounts = false;
         vm.showPresupuestoFields = false;
         vm.expanding = false;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);
         var lastDay = new Date(y, m + 1, 0);
@@ -65,11 +67,19 @@
             if (firstMonthDay.getDate() == vm.dates.initial_time.getDate() && firstMonthDay.getMonth() == vm.dates.initial_time.getMonth() && firstMonthDay.getFullYear() == vm.dates.initial_time.getFullYear()) {
                 final_balance_time.setDate(vm.dates.initial_time.getDate());
             } else {
+
+
+
                 final_balance_time.setDate(vm.dates.initial_time.getDate() - 1);
+                final_balance_time.setDate(vm.dates.initial_time.getDate());
+                final_balance_time.setMonth(vm.dates.initial_time.getMonth());
+                final_balance_time.setFullYear(vm.dates.initial_time.getFullYear());
+                final_balance_time.setDate(final_balance_time.getDate()-1);
+                final_balance_time.setMinutes(0);
+                final_balance_time.setSeconds(0);
+                final_balance_time.setHours(0);
 
             }
-            final_balance_time.setMonth(vm.dates.initial_time.getMonth());
-            final_balance_time.setYear(vm.dates.initial_time.getFullYear());
             var date = vm.dates.initial_time, y = date.getFullYear(), m = date.getMonth();
             vm.firstMonthDay = new Date(y, m, 1);
 

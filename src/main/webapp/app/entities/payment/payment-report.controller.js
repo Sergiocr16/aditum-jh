@@ -21,6 +21,8 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.propertyName = 'id';
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.reverse = true;
         vm.consulting = false;
         vm.banco = "empty";

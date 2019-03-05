@@ -85,7 +85,8 @@
                                var companiesConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function(companyConfig){
-                                            companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+"|";
+                                        console.log(companyConfig);
+                                            companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
                                         if(user.companies.length==i){
                                             $rootScope.companyId = user.companies[0].id;
                                             vm.backgroundSelectCompany = true;
