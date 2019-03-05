@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import java.time.ZonedDateTime;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -25,6 +26,8 @@ public class CompanyConfigurationDTO implements Serializable {
 
     @NotNull
     private Integer hasContability;
+
+    private ZonedDateTime minDate;
 
     private Long companyId;
 
@@ -68,6 +71,14 @@ public class CompanyConfigurationDTO implements Serializable {
         this.hasContability = hasContability;
     }
 
+    public ZonedDateTime getMinDate() {
+        return minDate;
+    }
+
+    public void setMinDate(ZonedDateTime minDate) {
+        this.minDate = minDate;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -101,10 +112,11 @@ public class CompanyConfigurationDTO implements Serializable {
     public String toString() {
         return "CompanyConfigurationDTO{" +
             "id=" + getId() +
-            ", quantityhouses='" + getQuantityhouses() + "'" +
-            ", quantityadmins='" + getQuantityadmins() + "'" +
-            ", quantityaccessdoor='" + getQuantityaccessdoor() + "'" +
-            ", hasContability='" + getHasContability() + "'" +
+            ", quantityhouses=" + getQuantityhouses() +
+            ", quantityadmins=" + getQuantityadmins() +
+            ", quantityaccessdoor=" + getQuantityaccessdoor() +
+            ", hasContability=" + getHasContability() +
+            ", minDate='" + getMinDate() + "'" +
             "}";
     }
 }

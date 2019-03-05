@@ -284,6 +284,9 @@
             float: left;
             margin: 6px 6px 0 0;
         }
+        .balance-title{
+            margin:5px
+        }
     </style>
 </head>
 <body style="width: 100%">
@@ -321,18 +324,32 @@
                 </hr>
             </td>
         </tr>
+
         <tr class="details">
-            <td style="padding-top:12px">
-                <span class="comprobante-title">Reporte de egresos </span>
-            </td>
-            <td style="padding-top:12px"></td>
-            <td style="text-align:right;padding-top:12px">
-                <span style="font-size:14px">Del <span th:text="|${initialTime}|"
-                                                       style="text-transform: lowercase"></span> al <span
-                    th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
+            <td style="padding-top:12px" colspan="3">
+                <div style="width:49%;float:left">
+                    <div>
+                        <span class="comprobante-title"> Reporte de egresos</span>
+                    </div>
+                    <div style="margin-top:20px">
+                      <span style="font-size:14px">Del <span th:text="|${initialTime}|"
+                                                             style="text-transform: lowercase"></span> al <span
+                          th:text="|${finalTime}|" style="text-transform: lowercase"></span></span>
+                    </div>
+                </div>
+                <div class="no-padding" style="border:#CCCCCC solid 1px;border-radius:10px!important;width:17%;float:right;margin-top: -8px;">
+
+                        <h5 class="text-center balance-title" style="font-weight:bold">Total</h5>
+                        <h5 class="text-center  bold balance-title">
+                           <span>
+                           <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10" style="margin:0 3px;"/>
+                           <span th:text="|${total}|">0</span></span>
+                        </h5>
+
+
+                </div>
             </td>
         </tr>
-
         <tr>
             <td colspan="3">
 

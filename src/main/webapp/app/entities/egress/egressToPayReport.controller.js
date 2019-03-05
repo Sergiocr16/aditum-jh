@@ -14,6 +14,8 @@
             vm.isReady = false;
             vm.isReady2 = false;
             vm.total = 0;
+            vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
             vm.exportActions = {
                 downloading: false,
                 printing: false,

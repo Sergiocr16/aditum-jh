@@ -68,8 +68,10 @@ public class BalanceByAccountService {
     @Transactional(readOnly = true)
     public Page<BalanceByAccountDTO> findByDatesBetweenAndAccount(Pageable pageable, String initialTime, String finalTime, Long accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         Page<BalanceByAccount> result = balanceByAccountRepository.findByDatesBetweenAndAccount(pageable,zd_initialTime,zd_finalTime,accountId);
 //        Collections.reverse(result);
         return result.map(balanceByAccount -> balanceByAccountMapper.toDto(balanceByAccount));
@@ -77,9 +79,10 @@ public class BalanceByAccountService {
     @Transactional(readOnly = true)
     public List<BalanceByAccountDTO> findByDatesBetweenAndAccount(String initialTime, String finalTime, Long accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-
+        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
         return balanceByAccountRepository.findByDatesBetweenAndAccount(zd_initialTime,zd_finalTime,accountId).stream()
             .map(balanceByAccountMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));

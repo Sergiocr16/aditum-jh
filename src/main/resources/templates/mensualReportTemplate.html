@@ -494,10 +494,10 @@
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.otherIngressTotalFormatted}|"></span>
                             </td>
-                            <td class="text-center bold no-border-right">
+                            <td class="text-center bold ">
                                 <span th:text="${#numbers.formatDecimal(mensualDTO.mensualIngressReport.otherIngressPercentage, 0, 2)}"/><span>%</span>
                             </td>
-                            <td class="text-center bold ">
+                            <td  th:if="${showFields!=false}"  class="text-center bold no-border-right">
                                 <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"
                                      style="margin: 0px 0px;"/>
                                 <span th:text="|${mensualDTO.mensualIngressReport.otherBudgetFormatted}|"></span>
@@ -536,10 +536,10 @@
                                 <span th:text="|${item.totalFormatted}|"></span>
 
                             </td>
-                            <td class="text-center no-border-right">
+                            <td class="text-center ">
                                 <span th:text="${#numbers.formatDecimal(item.percentage, 0, 2)}"/><span>%</span></td>
-                            <td class="no-border-right"></td>
-                            <td></td>
+                            <td th:if="${showFields!=false}" class="no-border-right"></td>
+                            <td th:if="${showFields!=false}"></td>
                         </tr>
                         </tbody>
                         <tbody style="border-top: 0px;">

@@ -16,6 +16,8 @@
         vm.isReady = false;
         vm.isReady2 = false;
         vm.reverse = true;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.gastosQuantity = 0;
         vm.showNoResults = false;
         vm.hideReportForm = false;

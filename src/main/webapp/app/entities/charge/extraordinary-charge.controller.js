@@ -21,6 +21,8 @@
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.verificando = false;
         vm.selectedAll = false;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.isDivided = false;
         vm.dividedChargeQuantity = 2;
         vm.totalPerHouseAmmount = 0;

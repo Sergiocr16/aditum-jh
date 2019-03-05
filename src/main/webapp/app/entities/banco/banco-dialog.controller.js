@@ -54,6 +54,7 @@
                     if (vm.banco.cuentaCliente == null) {
                         vm.banco.cuentaCliente = 'No registrado'
                     }
+                    vm.banco.fechaCapitalInicial = new Date();
                     vm.banco.companyId = globalCompany.getId();
                     vm.banco.saldo = vm.banco.capitalInicial;
                     vm.banco.deleted = 1;

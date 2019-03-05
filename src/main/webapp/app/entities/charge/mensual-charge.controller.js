@@ -21,6 +21,8 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
         vm.verificando = false;
         angular.element(document).ready(function () {
 

@@ -16,7 +16,7 @@
 <span
     style="margin-top: 14px; margin-right: 5px; margin-left:5px; font-size: 14px;">Cuotas previas al</span>
                         <md-input-container class="md-block no-margin">
-                            <md-datepicker md-max-date="vm.dates.final_time" required class="datePicker"
+                            <md-datepicker md-max-date="vm.dates.final_time" md-min-date="vm.companyConfig.minDate" required class="datePicker"
                                            readonlydatepicker
                                            ng-model="vm.final_time"
                                            md-hide-icons="calendar"

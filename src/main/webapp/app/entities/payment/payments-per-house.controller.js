@@ -24,6 +24,7 @@
                     break;
                 case "ROLE_USER":
                     $rootScope.mainTitle = "Pagos";
+                    $rootScope.active = "paymentsResidentAccount";
                     break;
             }
         })

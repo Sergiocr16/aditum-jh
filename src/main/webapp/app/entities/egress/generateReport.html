@@ -19,6 +19,7 @@
                             <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required
                                            ng-model="vm.dates.initial_time"
                                            md-hide-icons="calendar"
+                                           md-min-date="vm.companyConfig.minDate"
                                            md-placeholder="Introduzca una fecha" md-open-on-focus
                                            required></md-datepicker>
                         </md-input-container>
@@ -75,13 +76,22 @@
 
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 gray-font no-padding fade-in"
                  ng-if="vm.isReady2 && !vm.loadingReport" ng-show="vm.hideReportForm==true">
+                <div class="col-md-12">
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font uppercase"
+                        style="font-size:14px;">{{vm.companyName}}</h5>
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font" style="font-size:14px;">
+                        REPORTE DE EGRESOS</h5>
+                    <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font">Del {{vm.dates.initial_time
+                        | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
+                </div>
 
-                <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font uppercase"
-                    style="font-size:14px;">{{vm.companyName}}</h5>
-                <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font" style="font-size:14px;">
-                    REPORTE DE EGRESOS</h5>
-                <h5 ng-if="vm.egresses.egressByProveedor.length>0" class="text-center bold gray-font">Del {{vm.dates.initial_time
-                    | date:'longDate'}} al {{vm.dates.final_time | date:'longDate'}}</h5>
+                <div class="col-md-2 no-padding" style="float: right;">
+                    <div class="col-md-12 no-padding"
+                         style="border:hsl(0, 0%, 80%) solid 1px;border-radius:10px!important">
+                        <h5 class="text-center" style="font-weight:bold">Total</h5>
+                        <h5 class="text-center  bold">₡{{vm.formatearNumero(vm.egresses.total+"")}}</h5>
+                    </div>
+                </div>
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding"
                      ng-repeat="item in vm.egresses.egressByProveedor" ng-if="vm.egresses.egressByProveedor.length>0 && item.tipo==1">
                     <h4 class="bold" ng-if="item.egresosFormatted.length>0">{{item.proovedor}}</h4>

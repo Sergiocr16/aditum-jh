@@ -59,11 +59,15 @@
 
         function getAccountStatus() {
             var dateInitialCapital = new Date();
-            dateInitialCapital.setDate(vm.dates.initial_time.getDate()-1);
+            dateInitialCapital.setDate(vm.dates.initial_time.getDate());
+            dateInitialCapital.setMonth(vm.dates.initial_time.getMonth());
+            dateInitialCapital.setFullYear(vm.dates.initial_time.getFullYear());
+            dateInitialCapital.setDate(dateInitialCapital.getDate()-1);
             dateInitialCapital.setMinutes(0);
             dateInitialCapital.setSeconds(0);
             dateInitialCapital.setHours(0);
             vm.path = '/api/bancos/accountStatus/file/' + moment(vm.first_month_day).format() + "/" + moment(dateInitialCapital).format() + "/" + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + vm.banco.id;
+            vm.first_month_day.setMonth(vm.dates.initial_time.getMonth());
 
             Banco.getAccountStatus({
                 first_month_day: moment(vm.first_month_day).format(),
@@ -74,13 +78,14 @@
             }, function (data) {
                 vm.banco = data;
                 vm.movementsList =  vm.banco.movimientos;
-                console.log(vm.movementsList)
+
 
                 if(vm.isConsulting===false){
                     var banco;
                     vm.banco.saldo = vm.banco.totalBalance;
                     banco = vm.banco;
                     banco.movimientos = null;
+                    console.log(banco)
                     Banco.update(banco, function () {
                         vm.isReady = true;
                     }, onError);

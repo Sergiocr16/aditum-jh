@@ -8,7 +8,7 @@ import java.util.List;
 public class EgressReportDTO {
 
     private List<EgressReportItemsDTO> egressByProveedor;
-
+    private double total = 0;
 
     public List<EgressReportItemsDTO> getEgressByProveedor() {
         return egressByProveedor;
@@ -20,5 +20,14 @@ public class EgressReportDTO {
 
     public EgressReportDTO(){
         this.egressByProveedor = new ArrayList<>();
+
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
     }
 }

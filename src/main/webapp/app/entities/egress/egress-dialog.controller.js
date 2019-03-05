@@ -26,6 +26,8 @@
         vm.gastosOtros = [];
         CommonMethods.validateNumbers();
         CommonMethods.formatCurrencyInputs();
+        vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+console.log(vm.companyConfig)
         $(function () {
 
         });

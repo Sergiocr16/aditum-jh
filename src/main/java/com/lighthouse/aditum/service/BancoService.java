@@ -84,14 +84,15 @@ public class BancoService {
         return result.map(banco -> bancoMapper.toDto(banco));
     }
 
-
-    private BancoDTO getInicialBalance(String firstMonthDay,BancoDTO bancoDTO,String initialTime){
+    @Transactional(readOnly = true)
+    public BancoDTO getInicialBalance(String firstMonthDay,BancoDTO bancoDTO,String initialTime){
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         double saldo;
         List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(firstMonthDay, firstMonthDay, bancoDTO.getId());
+        String f = "a";
         if (balances.size() > 0) {
-            bancoDTO.setCapitalInicial(balances.get(0).getBalance()+"");
+            bancoDTO.setCapitalInicialTemporal(balances.get(0).getBalance());
             saldo =  balances.get(0).getBalance();
         } else {
             saldo = Double.parseDouble(bancoDTO.getCapitalInicial());
@@ -100,7 +101,7 @@ public class BancoService {
         List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay,initialTime,bancoDTO.getId(),bancoDTO.getCompanyId());
         bancoDTO = calculateBalance(saldo,bancoMovements,bancoDTO);
         bancoDTO.setCapitalInicialFormatted(currencyFormatter.format(bancoDTO.getTotalBalance()).substring(1));
-        bancoDTO.setCapitalInicial(bancoDTO.getTotalBalance()+"");
+        bancoDTO.setCapitalInicialTemporal(bancoDTO.getTotalBalance());
         return bancoDTO;
     }
 
@@ -138,10 +139,11 @@ public class BancoService {
     @Transactional(readOnly = true)
     public BancoDTO getAccountStatus(String firstMonthDay,String final_capital_date,String initialTime, String finalTime, Long accountId) {
         BancoDTO bancoDTO = this.findOne(accountId);
+        String a = "a";
         bancoDTO = getInicialBalance(firstMonthDay,bancoDTO,final_capital_date);
         List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime,finalTime,bancoDTO.getId(),bancoDTO.getCompanyId());
         bancoDTO.setMovimientos(bancoMovements);
-        bancoDTO = calculateBalance(Double.parseDouble(bancoDTO.getCapitalInicial()),bancoDTO.getMovimientos(),bancoDTO);
+        bancoDTO = calculateBalance(bancoDTO.getCapitalInicialTemporal(),bancoDTO.getMovimientos(),bancoDTO);
         bancoDTO.setTotalBalance(bancoDTO.getTotalBalance());
 
         if(bancoDTO.getTotalBalance()>0){
@@ -161,7 +163,7 @@ public class BancoService {
         for (int i = 0; i < egresos.getContent().size(); i++) {
             if (egresos.getContent().get(i).getState() == 2 || egresos.getContent().get(i).getState() == 5) {
                 if(egresos.getContent().get(i).getState() == 5){
-                    CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findOne(egresos.getContent().get(i).getId());
+                    CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsService.findByEgressId(egresos.getContent().get(i).getId());
                     HouseDTO houseDTO = houseService.findOne(commonAreaReservationsDTO.getHouseId());
                     egresos.getContent().get(i).setConcept(egresos.getContent().get(i).getConcept() + " - Filial " + houseDTO.getHousenumber());
                 }

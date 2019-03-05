@@ -11,7 +11,7 @@
 
         return {
             getId: function () {
-                if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
+                if ($localStorage.companyId !== undefined || $localStorage.companyId != null) {
                     return CommonMethods.decryptIdUrl($localStorage.companyId)
                 } else {
                     Auth.logout();

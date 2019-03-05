@@ -18,6 +18,8 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
         loadQuantities();
         function loadQuantities(){
             House.query({ companyId: vm.company.id}, onSuccess, onError);
@@ -56,6 +58,7 @@
         }
         function save () {
             vm.isSaving = true;
+
             if (vm.company.id !== null) {
                 Company.update(vm.company, onUpdateSuccess, onSaveError);
             } else {
@@ -79,6 +82,7 @@
             }
 
             vm.companyConfiguration.companyId = result.id;
+            vm.companyConfiguration.minDate = firstDay;
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
             var adminConfig = {
                 squareMetersPrice: 0,
