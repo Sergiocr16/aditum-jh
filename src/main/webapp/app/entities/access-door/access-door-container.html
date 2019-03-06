@@ -164,8 +164,12 @@
         class="material-icons material-icons-with-text icon-finanzes">home</i> <span hide-xs hide-sm hide-md>Información de filiales</span></label>
     <label class="no-margin label-tab-container-ad  outline-none" flex
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.home-service')}"
-           ui-sref="main-access-door.home-service"><i
-        class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span></label>
+           ui-sref="main-access-door.home-service" ng-click="vm.showNotificationNote=false"><i
+        class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span>
+        <i ng-if="vm.showNotificationNote" class="material-icons material-icons-with-text icon-finanzes fade-in" style="color: yellow;
+    ">notification_important</i>
+
+    </label>
     <label class="no-margin label-tab-container-ad  outline-none" flex ng-if="vm.adminConfig.hasAccessDoor"
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.change-watch')}"
            ui-sref="main-access-door.change-watch"><i

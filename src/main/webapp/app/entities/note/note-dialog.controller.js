@@ -22,6 +22,7 @@
             vm.note.creationdate = moment(new Date()).format();
             vm.note.companyId = globalCompany.getId();
             vm.note.notetype = 1;
+            vm.note.deleted = 0;
             vm.note.houseId = $rootScope.companyUser.houseId;
         }
 

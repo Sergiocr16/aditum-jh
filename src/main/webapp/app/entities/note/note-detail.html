@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="aditumApp.note.detail.title">Note</span> {{vm.note.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.note.description">Description</span></dt>
+        <dd>
+            <span>{{vm.note.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.note.notetype">Notetype</span></dt>
+        <dd>
+            <span>{{vm.note.notetype}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.note.creationdate">Creationdate</span></dt>
+        <dd>
+            <span>{{vm.note.creationdate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.note.deleted">Deleted</span></dt>
+        <dd>
+            <span>{{vm.note.deleted}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.note.status">Status</span></dt>
+        <dd>
+            <span>{{vm.note.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.note.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.note.houseId})">{{vm.note.houseId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.note.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.note.companyId})">{{vm.note.companyId}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.note.user">User</span></dt>
+        <dd>
+            {{vm.note.userLogin}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="note-detail.edit({id:vm.note.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

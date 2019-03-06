@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Note.
  */
@@ -35,12 +36,19 @@ public class Note implements Serializable {
     @Column(name = "deleted")
     private Integer deleted;
 
+    @Column(name = "status")
+    private Integer status;
+
     @ManyToOne
     private House house;
 
     @ManyToOne
     private Company company;
 
+    @ManyToOne
+    private User user;
+
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -101,6 +109,19 @@ public class Note implements Serializable {
         this.deleted = deleted;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public Note status(Integer status) {
+        this.status = status;
+        return this;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -127,6 +148,20 @@ public class Note implements Serializable {
         this.company = company;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public Note user(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -152,9 +187,10 @@ public class Note implements Serializable {
         return "Note{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", notetype='" + getNotetype() + "'" +
+            ", notetype=" + getNotetype() +
             ", creationdate='" + getCreationdate() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", deleted=" + getDeleted() +
+            ", status=" + getStatus() +
             "}";
     }
 }

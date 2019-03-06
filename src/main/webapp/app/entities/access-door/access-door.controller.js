@@ -22,6 +22,7 @@
         $rootScope.emergencyList = [];
         $rootScope.officers = [];
         $rootScope.mainTitle = "Puerta de Acceso";
+        vm.showNotificationNote = false;
 
         vm.resident = undefined;
         vm.residentFound = 0;
@@ -152,11 +153,15 @@
             }, onSuccessNotes, onError);
 
             function onSuccessNotes(notes, headers) {
+                console.log(notes)
                 $rootScope.countNotes = notes.length;
                 for (var i = 0; i < notes.length; i++) {
                     notes[i].sinceDate = moment(notes[i].creationdate).fromNow();
                 }
                 $rootScope.notes = notes;
+                if(notes.length>0){
+                    vm.showNotificationNote = true;
+                }
                 loadAdminConfig();
 
             }
@@ -534,6 +539,8 @@
             if ($rootScope.notes !== undefined) {
                 note.sinceDate = moment(note.creationdate).fromNow();
                 $rootScope.notes.push(note);
+                vm.showNotificationNote = true;
+
                 toastr["info"]("¡Se ha recibido una nueva nota de la filial " + note.house.housenumber + "!")
                 vm.countNotes = $rootScope.notes.length;
             }

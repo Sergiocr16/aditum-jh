@@ -45,6 +45,7 @@ public class NoteService {
     public NoteDTO save(NoteDTO noteDTO) {
         log.debug("Request to save Note : {}", noteDTO);
         Note note = noteMapper.toEntity(noteDTO);
+        note.setDeleted(noteDTO.getDeleted());
         note = noteRepository.save(note);
         NoteDTO result = noteMapper.toDto(note);
         result.setHouse(houseService.findOne(result.getHouseId()));

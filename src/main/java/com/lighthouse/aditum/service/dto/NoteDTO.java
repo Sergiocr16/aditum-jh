@@ -26,12 +26,17 @@ public class NoteDTO implements Serializable {
 
     private Integer deleted;
 
-    private Long houseId;
+    private Integer status;
 
-    private Long companyId;
+    private Long houseId;
 
     private HouseDTO house;
 
+    private Long companyId;
+
+    private Long userId;
+
+    private String userLogin;
 
     public Long getId() {
         return id;
@@ -73,6 +78,14 @@ public class NoteDTO implements Serializable {
         this.deleted = deleted;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
@@ -87,6 +100,22 @@ public class NoteDTO implements Serializable {
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserLogin() {
+        return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     @Override
@@ -115,9 +144,10 @@ public class NoteDTO implements Serializable {
         return "NoteDTO{" +
             "id=" + getId() +
             ", description='" + getDescription() + "'" +
-            ", notetype='" + getNotetype() + "'" +
+            ", notetype=" + getNotetype() +
             ", creationdate='" + getCreationdate() + "'" +
-            ", deleted='" + getDeleted() + "'" +
+            ", deleted=" + getDeleted() +
+            ", status=" + getStatus() +
             "}";
     }
 
