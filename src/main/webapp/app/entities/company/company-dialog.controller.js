@@ -50,7 +50,7 @@
             angular.forEach(data, function(configuration, key) {
                 vm.companyConfiguration = configuration;
             });
-
+console.log(vm.companyConfiguration)
         }
 
         function onError () {
@@ -83,6 +83,7 @@
 
             vm.companyConfiguration.companyId = result.id;
             vm.companyConfiguration.minDate = firstDay;
+            console.log( vm.companyConfiguration)
             CompanyConfiguration.save(vm.companyConfiguration, onSaveSuccess, onSaveError);
             var adminConfig = {
                 squareMetersPrice: 0,

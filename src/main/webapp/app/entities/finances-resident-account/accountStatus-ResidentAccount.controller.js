@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccountStatusResidentAccountController', AccountStatusResidentAccountController);
 
-    AccountStatusResidentAccountController.$inject = ['$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
+    AccountStatusResidentAccountController.$inject = ['globalCompany','Balance','$rootScope', '$scope', '$state', 'AccountStatus', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'House', 'CommonMethods', '$localStorage'];
 
-    function AccountStatusResidentAccountController($rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
+    function AccountStatusResidentAccountController(globalCompany,Balance,$rootScope, $scope, $state, AccountStatus, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage) {
 
         var vm = this;
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
@@ -57,7 +57,45 @@
         };
         loadAll();
 
+        function loadAll() {
+            Balance.queryBalances({
+                companyId: globalCompany.getId()
+            }, onSuccess, onError);
 
+            function onSuccess(data, headers) {
+
+                vm.totalItems = headers('X-Total-Count');
+                vm.queryCount = vm.totalItems;
+                angular.forEach(data, function (value, key) {
+                    if (value.housenumber == 9999) {
+                        value.housenumber = "Oficina"
+                    }
+                    value.debit = value.balance.debit;
+                })
+                vm.houses = data;
+                if ($localStorage.houseSelected != null || $localStorage.houseSelected != undefined) {
+                    House.get({
+                        id: $localStorage.houseSelected.id
+                    }, function (result) {
+                        $localStorage.houseSelected = result
+
+                        vm.house = $localStorage.houseSelected;
+                        $rootScope.houseSelected = $localStorage.houseSelected;
+                    })
+                } else {
+                    if (vm.houses.length > 0) {
+                        $rootScope.houseSelected = vm.houses[0]
+                        $localStorage.houseSelected = vm.houses[0]
+                        vm.house = $rootScope.houseSelected;
+                    }
+                }
+                loadAccountStatus();
+            }
+
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+        }
         function openCalendar(date) {
             vm.datePickerOpenStatus[date] = true;
         }
@@ -106,7 +144,7 @@
             loadAll();
         }
 
-        function loadAll() {
+        function loadAccountStatus() {
 
             AccountStatus.query({
                 houseId: $localStorage.houseSelected.id,
@@ -212,6 +250,38 @@
 
             function onError(error) {
                 AlertService.error(error.data.message);
+            }
+
+            vm.expand = function () {
+
+                setTimeout(function () {
+                    $scope.$apply(function () {
+                        vm.expanding = !vm.expanding;
+                    });
+                }, 200);
+
+            }
+            vm.defineBalanceClass = function (balance) {
+                var b = parseInt(balance);
+                if (b != 0) {
+                    if (b > 0) {
+                        return "greenBalance";
+                    } else {
+                        return "redBalance";
+                    }
+                }
+            }
+            vm.defineBalanceTotalClass = function (balance) {
+                var b = parseInt(balance);
+                if (b != 0) {
+                    if (b > 0) {
+                        return "deuda-total-positiva";
+                    } else {
+                        return "deuda-total-negativa";
+                    }
+                } else {
+                    return "deuda-total";
+                }
             }
         }
 

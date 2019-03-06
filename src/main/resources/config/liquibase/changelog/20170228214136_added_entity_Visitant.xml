@@ -3,7 +3,7 @@
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
     xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <property name="now" value="now()" dbms="h2"/>
@@ -62,6 +62,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="departure_time" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
             <column name="house_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -75,6 +79,8 @@
         <dropDefaultValue tableName="visitant" columnName="arrivaltime" columnDataType="datetime"/>
         <dropDefaultValue tableName="visitant" columnName="invitationstaringtime" columnDataType="datetime"/>
         <dropDefaultValue tableName="visitant" columnName="invitationlimittime" columnDataType="datetime"/>
+        <dropDefaultValue tableName="visitant" columnName="departure_time" columnDataType="datetime"/>
         
     </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

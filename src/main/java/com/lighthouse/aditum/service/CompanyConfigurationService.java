@@ -44,6 +44,7 @@ public class CompanyConfigurationService {
         log.debug("Request to save CompanyConfiguration : {}", companyConfigurationDTO);
         CompanyConfiguration companyConfiguration = companyConfigurationMapper.companyConfigurationDTOToCompanyConfiguration(companyConfigurationDTO);
         companyConfiguration.setMinDate(companyConfigurationDTO.getMinDate());
+        companyConfiguration.setHasAccessDoor(companyConfigurationDTO.getHasAccessDoor());
         companyConfiguration = companyConfigurationRepository.save(companyConfiguration);
         CompanyConfigurationDTO result = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
         result.setMinDate(companyConfigurationDTO.getMinDate());
@@ -75,6 +76,7 @@ public class CompanyConfigurationService {
         CompanyConfiguration companyConfiguration = companyConfigurationRepository.findOne(id);
         CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
         companyConfigurationDTO.setMinDate(companyConfiguration.getMinDate());
+        companyConfigurationDTO.setHasAccessDoor(companyConfiguration.getHasAccessDoor());
         return companyConfigurationDTO;
     }
     @Transactional(readOnly = true)
@@ -88,9 +90,9 @@ public class CompanyConfigurationService {
         log.debug("Request to get all Residents");
         List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
         return companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(result.get(0)).getQuantityhouses();
-    }
-    /**
-     *  Delete the  companyConfiguration by id.
+         }
+        /**
+     *      *  Delete the  companyConfiguration by id.
      *
      *  @param id the id of the entity
      */

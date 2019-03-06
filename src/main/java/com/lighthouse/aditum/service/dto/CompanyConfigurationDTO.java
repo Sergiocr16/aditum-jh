@@ -27,6 +27,8 @@ public class CompanyConfigurationDTO implements Serializable {
     @NotNull
     private Integer hasContability;
 
+    private Integer hasAccessDoor;
+
     private ZonedDateTime minDate;
 
     private Long companyId;
@@ -118,5 +120,13 @@ public class CompanyConfigurationDTO implements Serializable {
             ", hasContability=" + getHasContability() +
             ", minDate='" + getMinDate() + "'" +
             "}";
+    }
+
+    public Integer getHasAccessDoor() {
+        return hasAccessDoor;
+    }
+
+    public void setHasAccessDoor(Integer hasAccessDoor) {
+        this.hasAccessDoor = hasAccessDoor;
     }
 }

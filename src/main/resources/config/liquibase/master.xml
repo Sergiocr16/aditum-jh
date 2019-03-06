@@ -45,7 +45,10 @@
     <include file="config/liquibase/changelog/20180824030452_added_entity_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225184253_added_entity_ActivosFijos.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190304191235_added_entity_Soporte.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306010228_added_entity_PaymentProof.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306014214_added_entity_DocumentFile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_Note.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20170228214136_added_entity_constraints_AccessDoor.xml" relativeToChangelogFile="false"/>
@@ -62,7 +65,6 @@
     <include file="classpath:config/liquibase/changelog/20170908032321_added_entity_constraints_RHAccount.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323223934_added_entity_constraints_Proveedor.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180323230211_added_entity_constraints_Banco.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324001923_added_entity_constraints_Balance.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324004144_added_entity_constraints_HistoricalCharge.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180324010031_added_entity_constraints_Collection.xml" relativeToChangelogFile="false"/>
@@ -75,12 +77,14 @@
     <include file="classpath:config/liquibase/changelog/20180823184330_added_entity_constraints_AnnouncementComment.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827211747_added_entity_constraints_Complaint.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20180827213517_added_entity_constraints_ComplaintComment.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190108183633_added_entity_constraints_JuntaDirectivaAccount.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180824030452_added_entity_constraints_CommonAreaReservations.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180324000506_added_entity_constraints_Charge.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225184253_added_entity_constraints_ActivosFijos.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190304191235_added_entity_constraints_Soporte.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306010228_added_entity_constraints_PaymentProof.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190306014214_added_entity_constraints_DocumentFile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_CompanyConfiguration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

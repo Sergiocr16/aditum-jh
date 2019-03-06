@@ -85,8 +85,7 @@
                                var companiesConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function(companyConfig){
-                                        console.log(companyConfig);
-                                            companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
+                                        companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
                                         if(user.companies.length==i){
                                             $rootScope.companyId = user.companies[0].id;
                                             vm.backgroundSelectCompany = true;
@@ -110,11 +109,17 @@
                                     $rootScope.currentUserImage = data.image_url;
                                     $rootScope.companyUser = data;
                                     $localStorage.houseSelected = house;
-                                    setTimeout(function () {
-                                        $state.go('announcement-user');
-                                    }, 300);
+                                    var companiesConfigArray = "";
+                                    CompanyConfiguration.get({id: data.companyId}, function(companyConfig){
+                                        companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
+                                        vm.backgroundSelectCompany = true;
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                        setTimeout(function () {
+                                            $state.go('announcement-user');
+                                        }, 300);
+                                    })
                                 })
-                            })
+                            });
                             break;
                         case "ROLE_RH":
                             $rootScope.active = "company-rh";

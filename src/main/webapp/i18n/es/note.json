@@ -19,8 +19,10 @@
             "notetype": "Notetype",
             "creationdate": "Creationdate",
             "deleted": "Deleted",
+            "status": "Status",
             "house": "House",
-            "company": "Company"
+            "company": "Company",
+            "user": "User"
         }
     }
 }

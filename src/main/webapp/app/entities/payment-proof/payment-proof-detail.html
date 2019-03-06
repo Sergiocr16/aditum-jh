@@ -1,0 +1,35 @@
+
+<div>
+    <h2><span data-translate="aditumApp.paymentProof.detail.title">Payment Proof</span> {{vm.paymentProof.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.paymentProof.imageUrl">Image Url</span></dt>
+        <dd>
+            <span>{{vm.paymentProof.imageUrl}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentProof.status">Status</span></dt>
+        <dd>
+            <span>{{vm.paymentProof.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentProof.description">Description</span></dt>
+        <dd>
+            <span>{{vm.paymentProof.description}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.paymentProof.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.paymentProof.houseId})">{{vm.paymentProof.houseId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="payment-proof-detail.edit({id:vm.paymentProof.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

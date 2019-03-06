@@ -48,6 +48,10 @@
                 backgroundColor: 'background-color:white!important',
             }
         };
+
+        $scope.$on("$destroy", function(){
+            vm.menu = [];
+        })
         vm.chargeMenu = function () {
             vm.menu = [
                 {
@@ -962,6 +966,53 @@
 
                 },
                 {
+                    title: "Finanzas",
+                    activeOn: "",
+                    authoritites: "ROLE_USER",
+                    showXs: true,
+                    hasContability: vm.hasContability,
+                    secondaryItems: [
+
+                        {
+                            title: "Estado de cuenta",
+                            icon: "account_balance_wallet",
+                            authoritites: "ROLE_USER",
+                            activeOn: "residentAccountStatus",
+                            collapsable: false,
+                            uisref: "accountStatus-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Deudas",
+                            icon: "assignment",
+                            authoritites: "ROLE_USER",
+                            activeOn: "chargesResidentAccount",
+                            collapsable: false,
+                            uisref: "chargePerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Pagos",
+                            icon: "payment",
+                            authoritites: "ROLE_USER",
+                            activeOn: "paymentsResidentAccount",
+                            collapsable: false,
+                            uisref: "paymentsPerHouse-residentAccount",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+
+                    ]
+                },
+                {
                     title: "ADMINISTRAR MI FILIAL",
                     activeOn: "",
                     authoritites: "ROLE_USER",
@@ -1033,53 +1084,6 @@
                     ]
                 },
                 {
-                    title: "Finanzas",
-                    activeOn: "",
-                    authoritites: "ROLE_USER",
-                    showXs: true,
-                    hasContability: vm.hasContability,
-                    secondaryItems: [
-
-                        {
-                            title: "Estado de cuenta",
-                            icon: "account_balance_wallet",
-                            authoritites: "ROLE_USER",
-                            activeOn: "residentAccountStatus",
-                            collapsable: false,
-                            uisref: "finanzasPorCasa.accountStatus",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Deudas",
-                            icon: "assignment",
-                            authoritites: "ROLE_USER",
-                            activeOn: "chargesResidentAccount",
-                            collapsable: false,
-                            uisref: "finanzasPorCasa.chargePerHouse",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-                        {
-                            title: "Pagos",
-                            icon: "payment",
-                            authoritites: "ROLE_USER",
-                            activeOn: "paymentsResidentAccount",
-                            collapsable: false,
-                            uisref: "finanzasPorCasa.paymentsPerHouse",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                        },
-
-                    ]
-                },
-                {
                     title: "Reportar",
                     activeOn: "",
                     authoritites: "ROLE_USER",
@@ -1112,8 +1116,8 @@
                             showXs: true
                         },
                         {
-                            title: "Servicio a domicilio",
-                            icon: "restaurant",
+                            title: "Nota a oficial",
+                            icon: "note",
                             authoritites: "ROLE_USER",
                             activeOn: "reportHomeService",
                             collapsable: false,
@@ -1455,19 +1459,19 @@
                             showLg: true,
                             secondItems: []
                         },
-                        {
-                            title: "Manual de usuario",
-                            icon: "book",
-                            authoritites: "ROLE_USER",
-                            activeOn: "manualResidente",
-                            collapsable: false,
-                            uisref: "manualResidente",
-                            menuId: "",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                            secondItems: []
-                        },
+                        // {
+                        //     title: "Manual de usuario",
+                        //     icon: "book",
+                        //     authoritites: "ROLE_USER",
+                        //     activeOn: "manualResidente",
+                        //     collapsable: false,
+                        //     uisref: "manualResidente",
+                        //     menuId: "",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        //     secondItems: []
+                        // },
                     ]
                 },
 
@@ -1482,11 +1486,12 @@
             }else{
                 vm.hasContability = false;
             }
+            console.log(vm.hasContability)
             vm.chargeMenu();
         };
 
         vm.showSecondItem = function (secondItem) {
-            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Finanzas"];
+            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria",'Estado de resultados',''];
             var items = secondItemsToHideIfHasNoContability;
             var ocultar = 0;
             for (var i = 0; i < items.length; i++) {

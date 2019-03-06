@@ -30,6 +30,7 @@
 
             function getCurrentCompanyConfig(compaId) {
                 var companiesConfig =  decryptIdUrl($localStorage.companiesConfig);
+                console.log(companiesConfig)
                 var companiesArray = companiesConfig.split("|");
                 for (var i = 0; i < companiesArray.length; i++) {
                     var companyId = companiesArray[i].split(";")[0];

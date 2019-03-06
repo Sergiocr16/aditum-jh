@@ -1,0 +1,24 @@
+{
+    "aditumApp": {
+        "paymentProof" : {
+            "home": {
+                "title": "Payment Proofs",
+                "createLabel": "Crear nuevo Payment Proof",
+                "createOrEditLabel": "Crear o editar Payment Proof"
+            },
+            "created": "Un nuevo Payment Proof ha sido creado con el identificador {{ param }}",
+            "updated": "Un Payment Proof ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Payment Proof ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Payment Proof {{ id }}?"
+            },
+            "detail": {
+                "title": "Payment Proof"
+            },
+            "imageUrl": "Image Url",
+            "status": "Status",
+            "description": "Description",
+            "house": "House"
+        }
+    }
+}

@@ -20,8 +20,7 @@
             $rootScope.mainTitle = "Registrar visitante";
 
             vm.getVisitorByPlate = function () {
-                if (vm.visitor_license_plate) {
-                    console.log(vm.visitor_license_plate)
+                if (vm.visitor_license_plate && vm.visitor_id_number==undefined) {
                     Modal.showLoadingBar();
                     byPlate();
                 }

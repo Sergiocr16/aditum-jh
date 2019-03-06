@@ -11,9 +11,17 @@
             var vm = this;
             $rootScope.mainTitle = "Cambio de turno";
             vm.officersSelected = [];
+            vm.hideAll = false;
+
             $rootScope.$watchGroup(['officers'], function () {
                 vm.officerToSelect = $rootScope.officers;
+                if (vm.officerToSelect != undefined) {
+                    if (vm.officerToSelect.length > 0) {
+                        vm.hideAll = true;
+                    }
+                }
             });
+
 
             vm.selectOfficer = function (officer) {
                 officer.selected = true;

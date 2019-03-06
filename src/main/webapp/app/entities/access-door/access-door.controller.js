@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('AccessDoorController', AccessDoorController);
 
-    AccessDoorController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Officer'];
+    AccessDoorController.$inject = ['$mdToast', '$timeout', 'Auth', '$state', '$scope', '$rootScope', 'CommonMethods', 'AccessDoor', 'Resident', 'House', 'Vehicule', 'Visitant', 'Note', 'AlertService', 'Emergency', 'Principal', '$filter', 'companyUser', 'WSDeleteEntity', 'WSEmergency', 'WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', 'PadronElectoral', 'Destinies', 'globalCompany', 'Modal', 'Officer', 'CompanyConfiguration'];
 
-    function AccessDoorController($mdToast, $timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, PadronElectoral, Destinies, globalCompany, Modal, Officer) {
+    function AccessDoorController($mdToast, $timeout, Auth, $state, $scope, $rootScope, CommonMethods, AccessDoor, Resident, House, Vehicule, Visitant, Note, AlertService, Emergency, Principal, $filter, companyUser, WSDeleteEntity, WSEmergency, WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, PadronElectoral, Destinies, globalCompany, Modal, Officer, CompanyConfiguration) {
         var vm = this;
         CommonMethods.validateLetters();
         CommonMethods.validateNumbers();
@@ -22,6 +22,7 @@
         $rootScope.emergencyList = [];
         $rootScope.officers = [];
         $rootScope.mainTitle = "Puerta de Acceso";
+        vm.showNotificationNote = false;
 
         vm.resident = undefined;
         vm.residentFound = 0;
@@ -152,13 +153,25 @@
             }, onSuccessNotes, onError);
 
             function onSuccessNotes(notes, headers) {
-                vm.isReady = true;
+                console.log(notes)
                 $rootScope.countNotes = notes.length;
                 for (var i = 0; i < notes.length; i++) {
                     notes[i].sinceDate = moment(notes[i].creationdate).fromNow();
                 }
                 $rootScope.notes = notes;
+                if(notes.length>0){
+                    vm.showNotificationNote = true;
+                }
+                loadAdminConfig();
+
             }
+        }
+
+        function loadAdminConfig() {
+            CompanyConfiguration.get({id: globalCompany.getId()}, function (data) {
+                vm.adminConfig = data;
+                vm.isReady = true;
+            })
         }
 
         function loadEmergencies() {
@@ -526,6 +539,8 @@
             if ($rootScope.notes !== undefined) {
                 note.sinceDate = moment(note.creationdate).fromNow();
                 $rootScope.notes.push(note);
+                vm.showNotificationNote = true;
+
                 toastr["info"]("¡Se ha recibido una nueva nota de la filial " + note.house.housenumber + "!")
                 vm.countNotes = $rootScope.notes.length;
             }
