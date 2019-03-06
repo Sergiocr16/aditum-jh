@@ -51,6 +51,7 @@
         "juntaDirectivaAccount": "Junta Directiva Account",
         "activosFijos": "Activos Fijos",
         "soporte": "Soporte",
+        "paymentProof": "Payment Proof",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
