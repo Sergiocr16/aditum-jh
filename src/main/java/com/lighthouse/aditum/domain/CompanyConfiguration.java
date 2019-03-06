@@ -42,6 +42,9 @@ public class CompanyConfiguration implements Serializable {
     @Column(name = "min_date")
     private ZonedDateTime minDate;
 
+    @Column(name = "has_access_door")
+    private Integer hasAccessDoor;
+
     @ManyToOne
     private Company company;
 
@@ -119,6 +122,19 @@ public class CompanyConfiguration implements Serializable {
         this.minDate = minDate;
     }
 
+    public Integer getHasAccessDoor() {
+        return hasAccessDoor;
+    }
+
+    public CompanyConfiguration hasAccessDoor(Integer hasAccessDoor) {
+        this.hasAccessDoor = hasAccessDoor;
+        return this;
+    }
+
+    public void setHasAccessDoor(Integer hasAccessDoor) {
+        this.hasAccessDoor = hasAccessDoor;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -162,6 +178,7 @@ public class CompanyConfiguration implements Serializable {
             ", quantityaccessdoor=" + getQuantityaccessdoor() +
             ", hasContability=" + getHasContability() +
             ", minDate='" + getMinDate() + "'" +
+            ", hasAccessDoor=" + getHasAccessDoor() +
             "}";
     }
 }

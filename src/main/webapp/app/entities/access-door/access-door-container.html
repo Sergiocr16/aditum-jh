@@ -166,7 +166,7 @@
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.home-service')}"
            ui-sref="main-access-door.home-service"><i
         class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span></label>
-    <label class="no-margin label-tab-container-ad  outline-none" flex
+    <label class="no-margin label-tab-container-ad  outline-none" flex ng-if="vm.adminConfig.hasAccessDoor"
            ng-class="{'active-tab-charge-invert-ad' : $state.includes('main-access-door.change-watch')}"
            ui-sref="main-access-door.change-watch"><i
         class="material-icons material-icons-with-text icon-finanzes">access_time</i> <span hide-xs hide-sm hide-md>Cambio de turno</span></label>

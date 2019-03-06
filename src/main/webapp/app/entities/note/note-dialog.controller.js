@@ -13,8 +13,11 @@
         vm.save = save;
 
         $rootScope.active = "reportHomeService";
-        $rootScope.mainTitle = "Reportar servicio a domicilio";
-
+        $rootScope.mainTitle = "Enviar nota a oficial";
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         function populateValidNote() {
             vm.note.creationdate = moment(new Date()).format();
             vm.note.companyId = globalCompany.getId();

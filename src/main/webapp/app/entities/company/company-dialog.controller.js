@@ -50,7 +50,7 @@
             angular.forEach(data, function(configuration, key) {
                 vm.companyConfiguration = configuration;
             });
-
+console.log(vm.companyConfiguration)
         }
 
         function onError () {

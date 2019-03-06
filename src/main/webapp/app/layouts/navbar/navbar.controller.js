@@ -1116,8 +1116,8 @@
                             showXs: true
                         },
                         {
-                            title: "Servicio a domicilio",
-                            icon: "restaurant",
+                            title: "Nota a oficial",
+                            icon: "note",
                             authoritites: "ROLE_USER",
                             activeOn: "reportHomeService",
                             collapsable: false,

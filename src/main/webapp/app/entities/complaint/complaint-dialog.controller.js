@@ -9,7 +9,7 @@
 
     function ComplaintDialogController ($timeout, $scope, $stateParams, Complaint, House, Company, Resident, $rootScope, $state, globalCompany,Modal) {
         var vm = this;
-        $rootScope.mainTitle = "Registrar queja o sugerencia";
+        $rootScope.mainTitle = "Registrar sugerencia";
         vm.isReady = false;
         vm.complaint = {complaintType:"Vigilancia"};
         vm.clear = clear;

@@ -19,6 +19,8 @@
             "quantityadmins": "Quantityadmins",
             "quantityaccessdoor": "Quantityaccessdoor",
             "hasContability": "Has Contability",
+            "minDate": "Min Date",
+            "hasAccessDoor": "Has Access Door",
             "company": "Company"
         }
     }
