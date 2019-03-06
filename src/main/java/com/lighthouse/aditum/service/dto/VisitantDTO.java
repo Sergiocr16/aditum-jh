@@ -29,6 +29,8 @@ public class VisitantDTO implements Serializable {
 
     private ZonedDateTime arrivaltime;
 
+    private ZonedDateTime departureTime;
+
     private ZonedDateTime invitationstaringtime;
 
     private ZonedDateTime invitationlimittime;
@@ -186,5 +188,13 @@ public class VisitantDTO implements Serializable {
 
     public void setHouseNumber(String houseNumber) {
         this.houseNumber = houseNumber;
+    }
+
+    public ZonedDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public void setDepartureTime(ZonedDateTime departureTime) {
+        this.departureTime = departureTime;
     }
 }

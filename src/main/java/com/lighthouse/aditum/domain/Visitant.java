@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Visitant.
  */
@@ -32,7 +33,6 @@ public class Visitant implements Serializable {
     @Column(name = "secondlastname", nullable = false)
     private String secondlastname;
 
-
     @Column(name = "identificationnumber")
     private String identificationnumber;
 
@@ -57,12 +57,16 @@ public class Visitant implements Serializable {
     @Column(name = "responsableofficer")
     private String responsableofficer;
 
+    @Column(name = "departure_time")
+    private ZonedDateTime departureTime;
+
     @ManyToOne
     private House house;
 
     @ManyToOne
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -201,6 +205,19 @@ public class Visitant implements Serializable {
         this.responsableofficer = responsableofficer;
     }
 
+    public ZonedDateTime getDepartureTime() {
+        return departureTime;
+    }
+
+    public Visitant departureTime(ZonedDateTime departureTime) {
+        this.departureTime = departureTime;
+        return this;
+    }
+
+    public void setDepartureTime(ZonedDateTime departureTime) {
+        this.departureTime = departureTime;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -226,6 +243,7 @@ public class Visitant implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -236,31 +254,32 @@ public class Visitant implements Serializable {
             return false;
         }
         Visitant visitant = (Visitant) o;
-        if (visitant.id == null || id == null) {
+        if (visitant.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(id, visitant.id);
+        return Objects.equals(getId(), visitant.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 
     @Override
     public String toString() {
         return "Visitant{" +
-            "id=" + id +
-            ", name='" + name + "'" +
-            ", lastname='" + lastname + "'" +
-            ", secondlastname='" + secondlastname + "'" +
-            ", identificationnumber='" + identificationnumber + "'" +
-            ", arrivaltime='" + arrivaltime + "'" +
-            ", invitationstaringtime='" + invitationstaringtime + "'" +
-            ", invitationlimittime='" + invitationlimittime + "'" +
-            ", licenseplate='" + licenseplate + "'" +
-            ", isinvited='" + isinvited + "'" +
-            ", responsableofficer='" + responsableofficer + "'" +
-            '}';
+            "id=" + getId() +
+            ", name='" + getName() + "'" +
+            ", lastname='" + getLastname() + "'" +
+            ", secondlastname='" + getSecondlastname() + "'" +
+            ", identificationnumber='" + getIdentificationnumber() + "'" +
+            ", arrivaltime='" + getArrivaltime() + "'" +
+            ", invitationstaringtime='" + getInvitationstaringtime() + "'" +
+            ", invitationlimittime='" + getInvitationlimittime() + "'" +
+            ", licenseplate='" + getLicenseplate() + "'" +
+            ", isinvited=" + getIsinvited() +
+            ", responsableofficer='" + getResponsableofficer() + "'" +
+            ", departureTime='" + getDepartureTime() + "'" +
+            "}";
     }
 }
