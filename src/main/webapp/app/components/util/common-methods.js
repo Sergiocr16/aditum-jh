@@ -18,6 +18,8 @@
                 capitalizeFirstLetter: capitalizeFirstLetter,
                 encryptIdUrl: encryptIdUrl,
                 decryptIdUrl: decryptIdUrl,
+                encryptString: encryptString,
+                decryptString: decryptString,
                 validateSpecialCharacters: validateSpecialCharacters,
                 getCarBrands: getCarBrands,
                 validateSpecialCharactersAndVocals: validateSpecialCharactersAndVocals,
@@ -29,22 +31,26 @@
             };
 
             function getCurrentCompanyConfig(compaId) {
-                var companiesConfig = decryptIdUrl($localStorage.companiesConfig);
-                if (companiesConfig == "admin") {
-                    return "admin";
-                } else {
-                    var companiesArray = companiesConfig.split("|");
-                    for (var i = 0; i < companiesArray.length; i++) {
-                        var companyId = companiesArray[i].split(";")[0];
-                        if (companyId == compaId) {
-                            console.log(new Date(companiesArray[i].split(";")[2]))
-                            return {
-                                companyId: companyId,
-                                hasContability: companiesArray[i].split(";")[1],
-                                minDate: new Date(companiesArray[i].split(";")[2])
+                if ($localStorage.companiesConfig != undefined) {
+                    var companiesConfig = decryptIdUrl($localStorage.companiesConfig);
+                    if (companiesConfig == "admin") {
+                        return "admin";
+                    } else {
+                        var companiesArray = companiesConfig.split("|");
+                        for (var i = 0; i < companiesArray.length; i++) {
+                            var companyId = companiesArray[i].split(";")[0];
+                            if (companyId == compaId) {
+                                console.log(new Date(companiesArray[i].split(";")[2]))
+                                return {
+                                    companyId: companyId,
+                                    hasContability: companiesArray[i].split(";")[1],
+                                    minDate: new Date(companiesArray[i].split(";")[2])
+                                }
                             }
                         }
                     }
+                }else{
+                    return "admin";
                 }
             }
 
@@ -139,6 +145,12 @@
             function decryptIdUrl(encryptedId) {
                 return CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara06").toString(CryptoJS.enc.Utf8);
 
+            }
+            function encryptString(id) {
+                return CryptoJS.AES.encrypt(id, "Ankara06").toString();
+            }
+            function decryptString(encryptedId) {
+                return CryptoJS.AES.decrypt(encryptedId, "Ankara06").toString(CryptoJS.enc.Utf8);
             }
 
             function validateLetters() {

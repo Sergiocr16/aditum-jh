@@ -1474,8 +1474,8 @@
                         // },
                     ]
                 },
-
             ];
+            showTheOneThatsActive()
         }
 
 
@@ -1489,8 +1489,8 @@
                 } else {
                     vm.hasContability = false;
                 }
-                vm.chargeMenu();
             }
+            vm.chargeMenu();
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -1575,9 +1575,7 @@
 
             }
         };
-        setTimeout(function () {
-            showTheOneThatsActive()
-        }, 500)
+
 
         function showTheOneThatsActive() {
             for (var i = 0; i < vm.menu.length; i++) {
