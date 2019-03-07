@@ -798,7 +798,7 @@
                         },
                         {
                             title: "Cuotas por cobrar",
-                            icon: "money",
+                            icon: "list",
                             authoritites: "ROLE_MANAGER,ROLE_JD",
                             activeOn: "reporteCuotasPorPagar",
                             collapsable: false,
@@ -1421,7 +1421,7 @@
                         },
                         {
                             title: "Cuotas por cobrar",
-                            icon: "list_alt",
+                            icon: "list",
                             authoritites: "ROLE_JD",
                             activeOn: "reporteCuotasPorPagar",
                             collapsable: false,
@@ -1448,7 +1448,7 @@
                     secondaryItems: [
                         {
                             title: "Soporte",
-                            icon: "contact_support",
+                            icon: "live_help",
                             authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
                             activeOn: "soporte-user",
                             collapsable: false,
