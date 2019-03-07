@@ -75,6 +75,7 @@
                     $rootScope.inicieSesion = true;
                     switch (account.authorities[0]) {
                         case "ROLE_ADMIN":
+                            $localStorage.companiesConfig = CommonMethods.encryptIdUrl("admin");
                             $state.go('company');
                             break;
                         case "ROLE_MANAGER":

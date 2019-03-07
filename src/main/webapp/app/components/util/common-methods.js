@@ -29,14 +29,21 @@
             };
 
             function getCurrentCompanyConfig(compaId) {
-                var companiesConfig =  decryptIdUrl($localStorage.companiesConfig);
-                console.log(companiesConfig)
-                var companiesArray = companiesConfig.split("|");
-                for (var i = 0; i < companiesArray.length; i++) {
-                    var companyId = companiesArray[i].split(";")[0];
-                    if(companyId == compaId){
-                        console.log(new Date(companiesArray[i].split(";")[2]))
-                        return {companyId:companyId,hasContability:companiesArray[i].split(";")[1],minDate:new Date(companiesArray[i].split(";")[2])}
+                var companiesConfig = decryptIdUrl($localStorage.companiesConfig);
+                if (companiesConfig == "admin") {
+                    return "admin";
+                } else {
+                    var companiesArray = companiesConfig.split("|");
+                    for (var i = 0; i < companiesArray.length; i++) {
+                        var companyId = companiesArray[i].split(";")[0];
+                        if (companyId == compaId) {
+                            console.log(new Date(companiesArray[i].split(";")[2]))
+                            return {
+                                companyId: companyId,
+                                hasContability: companiesArray[i].split(";")[1],
+                                minDate: new Date(companiesArray[i].split(";")[2])
+                            }
+                        }
                     }
                 }
             }

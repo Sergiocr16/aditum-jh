@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse','WSResident','WSVehicle','WSNote','WSVisitor','WSOfficer','$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany','WSDeleteEntity','WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse,WSResident,WSVehicle,WSNote,WSVisitor,WSOfficer,$timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany,WSDeleteEntity,WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -49,7 +49,7 @@
             }
         };
 
-        $scope.$on("$destroy", function(){
+        $scope.$on("$destroy", function () {
             vm.menu = [];
         })
         vm.chargeMenu = function () {
@@ -114,7 +114,7 @@
                                 },
                                 {
                                     title: "Soporte",
-                                    icon: "contact_support",
+                                    icon: "info",
                                     authoritites: "ROLE_ADMIN",
                                     activeOn: "soporte",
                                     collapsable: false,
@@ -798,7 +798,7 @@
                         },
                         {
                             title: "Cuotas por cobrar",
-                            icon: "list_alt",
+                            icon: "money",
                             authoritites: "ROLE_MANAGER,ROLE_JD",
                             activeOn: "reporteCuotasPorPagar",
                             collapsable: false,
@@ -1481,17 +1481,20 @@
 
         vm.loadCompanyConfig = function () {
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-            if(companyConfig.hasContability==1){
+            if (companyConfig == "admin") {
                 vm.hasContability = true;
-            }else{
-                vm.hasContability = false;
+            } else {
+                if (companyConfig.hasContability == 1) {
+                    vm.hasContability = true;
+                } else {
+                    vm.hasContability = false;
+                }
+                vm.chargeMenu();
             }
-            console.log(vm.hasContability)
-            vm.chargeMenu();
         };
 
         vm.showSecondItem = function (secondItem) {
-            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria",'Estado de resultados',''];
+            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados', ''];
             var items = secondItemsToHideIfHasNoContability;
             var ocultar = 0;
             for (var i = 0; i < items.length; i++) {
@@ -1506,9 +1509,9 @@
             }
         };
 
-        $scope.$watch(function(){
+        $scope.$watch(function () {
             return $localStorage.companiesConfig;
-        }, function(newCodes, oldCodes){
+        }, function (newCodes, oldCodes) {
             vm.loadCompanyConfig(globalCompany.getId())
 
         });

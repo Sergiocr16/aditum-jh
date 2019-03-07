@@ -1,6 +1,6 @@
 {
   "name": "cloudinary-core",
-  "version": "2.6.1",
+  "version": "2.5.0",
   "homepage": "http://cloudinary.com",
   "authors": [
     {
@@ -58,11 +58,11 @@
     "tests",
     "docs/"
   ],
-  "_release": "2.6.1",
+  "_release": "2.5.0",
   "_resolution": {
     "type": "version",
-    "tag": "2.6.1",
-    "commit": "7c8df9d53e7269726850ba8197b8a77cae329dc9"
+    "tag": "2.5.0",
+    "commit": "054f756ca1c32df4302f000b8b8993c32f9a6ddf"
   },
   "_source": "https://github.com/cloudinary/pkg-cloudinary-core.git",
   "_target": "^2.0.4",
