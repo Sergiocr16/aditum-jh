@@ -861,40 +861,24 @@ a:hover {
 }
 
 .intermitentRed {
-    -webkit-animation-name: ejemplo_rojo; /*Chrome, Safari, Opera */
-    -webkit-animation-duration: 1s; /*Chrome, Safari, Opera */
-    -webkit-animation-iteration-count: infinite;
-    animation-name: ejemplo_rojo;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
+
+    background-color: #DF0101!important;
 
 }
 
 /*Chrome, Safari, Opera */
 @-webkit-keyframes ejemplo_rojo {
     0% {
-        background-color: #8A0808;
+        background-color: #8A0808!important;
     }
     50% {
-        background-color: #DF0101;
+        background-color: #DF0101!important;
     }
     100% {
-        background-color: #8A0808;
+        background-color: #8A0808!important;
     }
 }
 
-/*Chrome, Safari, Opera */
-@-webkit-keyframes ejemplo_rojo {
-    0% {
-        background-color: #8A0808;
-    }
-    50% {
-        background-color: #DF0101;
-    }
-    100% {
-        background-color: #8A0808;
-    }
-}
 
 @import url(http://fonts.googleapis.com/css?family=Roboto+Condensed:400,700);
 /* written by riliwan balogun http://www.facebook.com/riliwan.rabo*/

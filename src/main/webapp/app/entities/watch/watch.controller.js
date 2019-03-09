@@ -102,12 +102,12 @@
         function loadFiltered() {
 
             Watch.findBetweenDates({
-                page: vm.page,
-                size: vm.itemsPerPage,
+                // page: vm.page,
+                // size: vm.itemsPerPage,
                 initial_time: moment(vm.initialTime).format(),
                 final_time: moment(vm.finalTime).format(),
                 companyId: globalCompany.getId(),
-                sort: sort()
+                // sort: sort()
             }, onSuccess, onError);
         }
 

@@ -104,9 +104,9 @@
             if (enabledOptions) {
                 vm.changesTitles();
                 Resident.residentsEnabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
+                    // page: pagingParams.page - 1,
+                    // size: vm.itemsPerPage,
+                    // sort: sort(),
                     companyId: globalCompany.getId(),
                 }).$promise.then(onSuccess, onError);
             } else {

@@ -40,19 +40,17 @@
         </div>
         <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
 
-            <md-input-container class=" no-margin" has-authority="ROLE_MANAGER"
-                                ng-if="vm.houses.length> 0 || vm.house!='-1'">
+            <!--<md-input-container class=" no-margin" has-authority="ROLE_MANAGER"-->
+                                <!--ng-if="vm.houses.length> 0 || vm.house!='-1'">-->
 
-                <md-select ng-model="vm.house">
-                    <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                    <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
-                               ng-model="vm.house" ng-value="house">
-                        {{house.housenumber}}
-                    </md-option>
-
-                </md-select>
-
-            </md-input-container>
+                <!--<md-select ng-model="vm.filterStateHouseTemporal" ng-change="vm.changeFilterStateHouse(vm.filterStateHouseTemporal)">-->
+                    <!--<md-option ng-value="-1" selected="true">Todas las filiales</md-option>-->
+                    <!--<md-option ng-repeat="house in vm.houses  track by house.id"-->
+                               <!--ng-model="vm.filterHouse" ng-value="house">-->
+                        <!--{{house.housenumber}}-->
+                    <!--</md-option>-->
+                <!--</md-select>-->
+            <!--</md-input-container>-->
             <md-input-container class=" no-margin" has-authority="ROLE_MANAGER"
             >
                 <md-select ng-model="vm.filterStateTemporal" ng-change="vm.changeFilterState(vm.filterStateTemporal)">
@@ -73,7 +71,7 @@
                     condominio</h2>
                 <div style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12"
                      ng-if="house.isdesocupated == 0"
-                     ng-repeat="house in vm.houses | filter:vm.house |  filter: {codeStatus:vm.filterState}">
+                     ng-repeat="house in vm.houses | filter:vm.filterStateHouseTemporal |  filter: {housenumber:vm.filterState}">
                     <hr class="col-xs-12 no-padding">
                     <div class="col-xs-12">
                         <h4>Casa: <b>{{house.housenumber}}</b></h4>
@@ -121,7 +119,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.house | filter: {codeStatus:vm.filterState} ">
+                        <tr ng-repeat="house in vm.houses | filter:vm.query.housenumber |  filter:vm.filterStateHouseTemporal | filter: {codeStatus:vm.filterState} ">
                             <td class="text-center">{{house.housenumber}}</td>
                             <td class="text-center">{{house.loginCode}}</td>
                             <td ng-if="house.isdesocupated==1" class="text-center">

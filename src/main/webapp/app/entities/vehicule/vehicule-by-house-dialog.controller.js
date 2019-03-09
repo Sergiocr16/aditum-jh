@@ -37,6 +37,7 @@
             vm.title = "Registrar vehículo";
             vm.button = "Registrar";
         }
+        $rootScope.mainTitle = vm.title;
 
         vm.validate = function () {
             var invalido = 0;

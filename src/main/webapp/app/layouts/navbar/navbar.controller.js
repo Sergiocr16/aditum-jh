@@ -1275,7 +1275,7 @@
                             ]
                         },
                         {
-                            title: "Sujerencias",
+                            title: "Sugerencias",
                             icon: "feedback",
                             authoritites: "ROLE_JD",
                             activeOn: "complaint",

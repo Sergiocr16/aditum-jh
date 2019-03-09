@@ -16,7 +16,6 @@
         if (vm.vehicule.id == undefined) {
             vm.button = "Registrar";
             vm.title = "Registrar vehículo";
-
         } else {
             vm.button = "Editar";
             vm.title = "Editar vehículo";
@@ -27,8 +26,9 @@
             default: "#ffffff",
             openOnInput: true
         };
-        vm.isReady = false;
         $rootScope.mainTitle = vm.title;
+
+        vm.isReady = false;
         vm.myPlate = vm.vehicule.licenseplate;
         vm.save = save;
         Modal.enteringForm(save);
@@ -40,6 +40,7 @@
 
         angular.element(document).ready(function () {
             ColorPicker.init();
+
         });
         Brand.query({}, onSuccessBrand);
 

@@ -194,8 +194,8 @@
           }else{
               vm.filterState = filterStateTemporal;
           }
-
         };
+
         vm.loadHouses = function(companyId) {
             House.query({
                 companyId: companyId

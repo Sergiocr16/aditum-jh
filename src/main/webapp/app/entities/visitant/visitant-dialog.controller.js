@@ -18,7 +18,11 @@
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
-
+        vm.save = save;
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         vm.houses = House.query();
         vm.companies = Company.query();
         vm.dates = {
