@@ -203,6 +203,9 @@
                     vm.resident.lastname = vm.resident.lastname.toUpperCase();
                     vm.resident.secondlastname = vm.resident.secondlastname.toUpperCase();
                     vm.isSaving = true;
+                    console.log(vm.resident.isOwner);
+                    console.log(autorizadorStatus);
+
                     if (vm.resident.id !== null) {
                         if (indentification !== vm.resident.identificationnumber) {
                             Resident.getByCompanyAndIdentification({
@@ -228,12 +231,11 @@
             }
 
             function allClearInsert(data) {
-
-                console.log(vm.resident.isOwner)
-                if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
+                changeStatusIsOwner();
+                if (vm.resident.isOwner === 1 && vm.resident.email == null || vm.resident.isOwner && vm.resident.email === "") {
+                    Modal.toast("Debe ingresar un correo para crear una cuenta al usuario.");
                     vm.isSaving = false;
-                } else if (vm.resident.isOwner === true) {
+                } else if (vm.resident.isOwner === 1) {
                     Modal.showLoadingBar();
                     createAccount(1);
                 } else {
@@ -250,13 +252,14 @@
                 vm.isSaving = false;
             }
             function updateResident() {
-                if (vm.resident.isOwner && vm.resident.email == null || vm.resident.isOwner && vm.resident.email == "") {
-                    Modal.toast("Debe ingresar un correo para asignar el usuario como crear una cuenta.");
+                changeStatusIsOwner();
+                if (vm.resident.isOwner === 1 && vm.resident.email == null || vm.resident.isOwner && vm.resident.email === "") {
+                    Modal.toast("Debe ingresar un correo para crear una cuenta al usuario.");
                     vm.isSaving = false;
-                } else if (autorizadorStatus === 1 && vm.resident.isOwner === false) {
+                } else if (autorizadorStatus === 1 && vm.resident.isOwner === 0) {
                     Modal.showLoadingBar();
                     updateAccount(0);
-                } else if (autorizadorStatus === 0 && vm.resident.isOwner === true) {
+                } else if (autorizadorStatus === 0 && vm.resident.isOwner === 1) {
                     if (vm.resident.userId !== null) {
                         Modal.showLoadingBar();
                         updateAccount(1);
@@ -264,8 +267,7 @@
                         Modal.showLoadingBar();
                         createAccount(2);
                     }
-                } else if (vm.resident.isOwner === false) {
-                    changeStatusIsOwner();
+                } else if (autorizadorStatus === 0 && vm.resident.isOwner === 0) {
                     Modal.showLoadingBar();
                     vm.imageUser = {user: vm.resident.id};
                     if (fileImage !== null) {
@@ -282,7 +284,7 @@
                         Resident.update(vm.resident, onUpdateSuccess, onSaveError);
                     }
 
-                } else {
+                } else if (autorizadorStatus === 1 && vm.resident.isOwner === 1) {
                     Modal.showLoadingBar();
                     updateAccount(vm.resident.enabled);
                 }
@@ -312,10 +314,10 @@
 
 
             function changeStatusIsOwner() {
-                if (vm.resident.isOwner == false) {
-                    vm.resident.isOwner = 0
-                } else {
+                if (vm.resident.isOwner) {
                     vm.resident.isOwner = 1
+                } else if(vm.resident.isOwner === false || vm.resident.isOwner == null){
+                    vm.resident.isOwner = 0
                 }
             }
 
@@ -399,11 +401,6 @@
                 vm.resident.enabled = 1;
                 vm.resident.companyId = globalCompany.getId();
                 vm.resident.userId = id;
-                if (vm.resident.isOwner) {
-                    vm.resident.isOwner = 1;
-                } else {
-                    vm.resident.isOwner = 0;
-                }
                 vm.imageUser = {user: id};
                 if (fileImage !== null) {
                     SaveImageCloudinary
