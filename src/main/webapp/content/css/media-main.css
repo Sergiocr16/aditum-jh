@@ -134,6 +134,9 @@
     .commonAreaReservationDetailDiv{
         margin-top: -35px!important;
     }
+    .no-margin-top-xs-sm{
+        margin-top:-40px!important;
+    }
 
 }
 
@@ -255,5 +258,8 @@
     }
     .commonAreaReservationDetailDiv{
         margin-top: -35px!important;
+    }
+    .no-margin-top-xs-sm{
+        margin-top:-40px!important;
     }
 }

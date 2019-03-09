@@ -65,7 +65,7 @@
                     <span>home</span>
                 </md-icon>
                 <md-select ng-model="vm.house" class="select-res" required>
-                    <md-option ng-repeat="house in houses | orderBy: 'housenumber'" ng-value="house">
+                    <md-option ng-repeat="house in houses" ng-value="house">
                         {{house.housenumber}}
                     </md-option>
                 </md-select>

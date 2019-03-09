@@ -25,7 +25,7 @@
 
     <div class="portlet-body fade-in " ng-if="vm.isReady">
         <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px; margin-top: 60px;"
-             ng-if="vm.residents.length> 0 ">
+             ng-if="vm.residents.length> 0 || vm.consulting">
 
             <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
                  id="index-search-bar">
@@ -54,7 +54,7 @@
 
                 <md-select ng-model="vm.house" ng-change="vm.findResidentsByHouse(vm.house)">
                     <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                    <md-option ng-repeat="house in vm.houses | orderBy: 'housenumber' track by house.id"
+                    <md-option ng-repeat="house in vm.houses track by house.id"
                                ng-model="vm.house" ng-value="house">
                         {{house.housenumber}}
                     </md-option>

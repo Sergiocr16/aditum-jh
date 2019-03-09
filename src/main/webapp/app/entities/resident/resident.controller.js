@@ -18,6 +18,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
         vm.house = "-1";
+        vm.consulting = false;
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident.edit', {
@@ -164,7 +165,7 @@
             vm.findResidentsByHouse(vm.house);
         }
         vm.findResidentsByHouse = function (house) {
-
+            vm.consulting = true;
             vm.house = house;
             if (house == undefined || house=='-1') {
                 loadResidents();
