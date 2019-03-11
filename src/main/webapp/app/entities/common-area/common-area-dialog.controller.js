@@ -13,7 +13,7 @@
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.commonArea = entity;
         vm.isReady = false;
-        $rootScope.mainTitle = "Registrar área común";
+        $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
         CompanyConfiguration.get({id: globalCompany.getId()}, function (data) {
