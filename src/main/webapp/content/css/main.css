@@ -14,7 +14,7 @@ html {
 ::-webkit-scrollbar-track {
     background: white;
 }
-
+panel-heading
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background-color: rgba(30, 30, 30, 0.3);
@@ -1593,8 +1593,10 @@ div.scrollmenu a:hover {
     width: 100%;
 }
 
-.note-toolbar {
-    z-index: 50 !important;
+.note-popover .popover-content, .panel-heading.note-toolbar {
+    padding: 0 0 5px 5px;
+    margin: 0;
+    z-index: 10!important;
 }
 
 .small-caption {

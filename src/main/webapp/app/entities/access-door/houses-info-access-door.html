@@ -110,6 +110,7 @@
                                 <span class="md-subhead" ng-if="resident.type==1">Residente propietario </span>
                                 <span class="md-subhead" ng-if="resident.type==2">Residente inquilino</span>
                                 <span class="md-subhead" ng-if="resident.type==3">Visitante autorizado</span>
+                                <span class="md-subhead" ng-if="resident.type==null">Tipo de residente no definido</span>
                                 <span class="md-subhead" ng-if="vm.house=='all'"><b>Filial: {{resident.house.housenumber}}</b></span>
                                 <span class="md-subhead">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Teléfono: <span ng-if="resident.phonenumber==undefined">No definido</span>
