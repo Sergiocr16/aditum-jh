@@ -1,12 +1,14 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.service.VisitantDocumentService;
 import com.lighthouse.aditum.service.VisitantService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.VisitantDTO;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,11 +18,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,8 +48,11 @@ public class VisitantResource {
 
     private final VisitantService visitantService;
 
-    public VisitantResource(VisitantService visitantService) {
+    private final VisitantDocumentService visitantDocumentService;
+
+    public VisitantResource(VisitantService visitantService,VisitantDocumentService visitantDocumentService) {
         this.visitantService = visitantService;
+        this.visitantDocumentService = visitantDocumentService;
     }
 
     /**
@@ -86,7 +100,7 @@ public class VisitantResource {
     /**
      * GET  /visitants : get all the visitants.
      *
-     * @param pageable the pagination information
+
      * @return the ResponseEntity with status 200 (OK) and the list of visitants in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
@@ -152,7 +166,54 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/visitants/file/{initial_time}/{final_time}/{companyId}/{houseId}")
+    @Timed
+    public void getVisitantReportFile(
+        @PathVariable(value = "initial_time") String initial_time,
+        @PathVariable(value = "final_time") String final_time,
+        @PathVariable(value = "companyId") Long companyId,
+        @PathVariable(value = "houseId") Long houseId,
+        HttpServletResponse response
+    )  throws URISyntaxException, IOException {
+        Locale local = new Locale("es", "ES");
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
+        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
+        Page<VisitantDTO> visitantDTOS;
+        if(houseId==-1){
+            visitantDTOS = visitantService.findByDatesBetweenAndCompany(initial_time,final_time,companyId);
 
+        }else{
+            visitantDTOS = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
+
+        }
+
+
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time + "[America/Regina]");
+        String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(final_time + "[America/Regina]");
+        String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
+
+        File file = visitantDocumentService.obtainFileToPrint(visitantDTOS, initialTimeFormatted, finalTimeFormatted, companyId,houseId);
+        FileInputStream stream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "inline; filename=" + file.getName());
+        IOUtils.copy(stream, response.getOutputStream());
+        stream.close();
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    this.sleep(400000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                file.delete();
+
+            }
+        }.start();
+
+    }
     @GetMapping("/visitants/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndCompany(

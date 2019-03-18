@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.Visitant;
 import com.lighthouse.aditum.repository.VisitantRepository;
+import com.lighthouse.aditum.service.VisitantDocumentService;
 import com.lighthouse.aditum.service.VisitantService;
 import com.lighthouse.aditum.service.dto.VisitantDTO;
 import com.lighthouse.aditum.service.mapper.VisitantMapper;
@@ -83,7 +84,8 @@ public class VisitantResourceIntTest {
 
     @Autowired
     private VisitantService visitantService;
-
+    @Autowired
+    private VisitantDocumentService visitantDocumentService;
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
@@ -103,7 +105,7 @@ public class VisitantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        VisitantResource visitantResource = new VisitantResource(visitantService);
+        VisitantResource visitantResource = new VisitantResource(visitantService,visitantDocumentService);
         this.restVisitantMockMvc = MockMvcBuilders.standaloneSetup(visitantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

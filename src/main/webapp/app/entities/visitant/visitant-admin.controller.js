@@ -21,15 +21,46 @@
         vm.transition = transition;
         vm.isReady = false;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        vm.first_month_day = firstDay;
+        vm.houseSelected = -1;
         vm.dates = {
-            initial_time: undefined,
-            final_time: undefined
+            initial_time: firstDay,
+            final_time: lastDay
+        };
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false
+        };
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
+
+        vm.print = function () {
+            console.log(vm.houseSelected)
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo reporte de visitantes"
+            })
         };
 
         vm.isDisableButton = function () {
-            if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) return true;
+            if(vm.dates.initial_time === undefined || vm.dates.final_time === undefined) return true;
             return false;
         }
 
@@ -38,9 +69,9 @@
                 return false;
             });
         });
-        setTimeout(function () {
-            loadHouses();
-        }, 500)
+
+        loadHouses();
+
 
         function loadHouses() {
             House.query({companyId: globalCompany.getId()}, onSuccessHouses);
@@ -75,12 +106,11 @@
                 vm.isReady = true;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         function consultByHouse(house) {
+            vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
+
             vm.isReady = false;
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
@@ -98,18 +128,19 @@
                 vm.isReady = true;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         vm.findVisitorByHouse = function (house) {
             if (house == undefined || house == '-1') {
+                vm.houseSelected = -1;
                 loadAll();
             } else {
                 if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) {
+                    vm.houseSelected = house.id;
                     loadByHouseLastMonth(house);
+
                 } else {
+                    vm.houseSelected = house.id;
                     consultByHouse(house);
                 }
             }
@@ -129,36 +160,30 @@
             })
         }
 
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    maxDate: vm.dates.final_time == undefined ? new Date() : vm.dates.final_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
-                    maxDate: new Date(),
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
-        vm.updatePicker();
 
         function consult() {
+            vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
+
             $scope.house = undefined;
             $("#all").fadeOut(0);
             setTimeout(function () {
                 $("#loadingIcon").fadeIn(100);
             }, 200)
-            Visitant.findBetweenDatesByCompany({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                companyId: globalCompany.getId(),
-            }).$promise.then(onSuccess);
+            if(vm.houseSelected===-1){
+                Visitant.findBetweenDatesByCompany({
+                    initial_time: moment(vm.dates.initial_time).format(),
+                    final_time: moment(vm.dates.final_time).format(),
+                    companyId: globalCompany.getId(),
+                }).$promise.then(onSuccess);
+            }else{
+                Visitant.findBetweenDatesByHouse({
+                    initial_time: moment(vm.dates.initial_time).format(),
+                    final_time: moment(vm.dates.final_time).format(),
+                    houseId: vm.houseSelected,
+                }).$promise.then(onSuccess);
+
+            }
+
 
             function onSuccess(data) {
                 vm.visitants = data;
@@ -171,21 +196,21 @@
                 vm.isReady = true;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         vm.stopConsulting = function () {
             vm.showFilterDiv = false;
-            vm.dates.initial_time = undefined;
-            vm.dates.final_time = undefined;
+            vm.dates = {
+                initial_time: firstDay,
+                final_time: lastDay
+            };
             vm.isConsulting = false;
             loadAll();
             vm.titleConsult = "";
         }
 
         function loadAll() {
+            vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
             $scope.house = undefined;
             Visitant.findByCompanyInLastMonth({
                 companyId: globalCompany.getId()
@@ -201,9 +226,6 @@
                 vm.isReady = true;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         function loadPage(page) {
@@ -219,11 +241,5 @@
             });
         }
 
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();
