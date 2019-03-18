@@ -16,9 +16,12 @@ import java.util.Optional;
 @SuppressWarnings("unused")
 public interface ResidentRepository extends JpaRepository<Resident,Long> {
     Resident findOneByUserId(Long id);
-    List<Resident> findByEnabledAndCompanyIdAndDeleted(Integer state, Long companyId,Integer deleted);
-    List<Resident> findByCompanyIdAndDeleted(Long companyId,Integer deleted);
+    Page<Resident> findByEnabledAndCompanyIdAndDeleted(Pageable pageable,Integer state, Long companyId,Integer deleted);
+    Page<Resident> findByEnabledAndCompanyIdAndDeletedAndIsOwner(Pageable pageable,Integer state, Long companyId,Integer deleted,int owner);
+    Page<Resident> findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseId(Pageable pageable,Integer state, Long companyId,Integer deleted,int owner,Long houseId);
+    Page<Resident> findByEnabledAndCompanyIdAndDeletedAndHouseId(Pageable pageable,Integer state, Long companyId,Integer deleted,Long houseId);
+    Page<Resident> findByCompanyIdAndDeleted(Pageable pageable,Long companyId,Integer deleted);
     Resident findByCompanyIdAndIdentificationnumberAndDeleted(Long companyId,String identificationNumber,Integer deleted);
-    List<Resident> findByEnabledAndHouseIdAndDeleted(Integer state,Long houseId, Integer deleted);
+    Page<Resident> findByEnabledAndHouseIdAndDeleted(Pageable pageable,Integer state,Long houseId, Integer deleted);
     Integer countByEnabledAndCompanyIdAndDeleted(Integer state,Long companyId,Integer deleted);
 }

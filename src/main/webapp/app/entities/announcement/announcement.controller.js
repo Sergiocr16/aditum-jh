@@ -14,7 +14,7 @@
         $rootScope.mainTitle = 'Administrar noticias';
         vm.announcements = [];
         vm.loadPage = loadPage;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.itemsPerPage = 15;
         vm.showingNews = true;
         vm.loadAll = loadAll;
         vm.isReady = false;
