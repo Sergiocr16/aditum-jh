@@ -25,7 +25,7 @@
 
     <div class="portlet-body fade-in " ng-if="vm.isReady">
         <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px; margin-top: 60px;">
-            <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+            <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
                  id="index-search-bar">
                 <form ng-submit="vm.filterResidents()">
                     <div class="input-icon" style="color:#484848!important;">
@@ -37,12 +37,18 @@
                 </form>
             </div>
             <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button ng-click="vm.filterResidents()" type="button"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                        style="height: 34px!important; padding-top: 5px!important;" >
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
                 <button ng-click="vm.open()" type="button"
                         class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
                         style="height: 34px!important; padding-top: 5px!important;">
                     <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
                     <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
-
             </div>
 
         </div>

@@ -120,11 +120,10 @@
             loadResidents();
         }
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
-
         function onSuccessHouses(data, headers) {
             vm.houses = data;
-            loadResidents();
         }
+        loadResidents();
 
 
         function loadResidents() {
@@ -184,10 +183,12 @@
         }
         vm.switchEnabledResidents = function () {
             vm.filter.enabled = 1;
+            vm.enabledOptions = 1;
             vm.filterResidents();
         }
         vm.switchDisabledResidents = function () {
             vm.filter.enabled = 0;
+            vm.enabledOptions = 0;
             vm.filterResidents();
         }
 
@@ -211,12 +212,12 @@
                     function () {
                         Modal.hideLoadingBar();
                         Modal.toast("Se ha eliminado el residente correctamente.");
-                        loadResidents();
+                        vm.filterResidents();
                         WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
                     });
             } else {
                 Modal.toast("Se ha eliminado el residente correctamente.");
-                loadResidents();
+                vm.filterResidents();
                 Modal.hideLoadingBar();
                 WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
             }
@@ -260,10 +261,8 @@
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetDisabledUser);
-
             } else {
-                loadResidents();
-
+                vm.filterResidents();
                 Modal.toast("Se ha deshabilitado el residente correctamente.");
                 Modal.hideLoadingBar();
             }
@@ -274,10 +273,9 @@
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {
-
                 Modal.toast("Se ha deshabilitado el residente correctamente.");
                 Modal.hideLoadingBar();
-                loadResidents();
+                vm.filterResidents();
             }
         }
 
@@ -288,9 +286,11 @@
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetEnabledUser);
-
             } else {
-                loadResidents();
+                Modal.toast("Se ha habilitado el residente correctamente.");
+                Modal.hideLoadingBar();
+
+                vm.filterResidents();
             }
         }
 
@@ -299,10 +299,9 @@
             User.update(data, onSuccessEnabledUser);
 
             function onSuccessEnabledUser(data, headers) {
-
                 Modal.toast("Se ha habilitado el residente correctamente.");
                 Modal.hideLoadingBar();
-                loadResidents();
+                vm.filterResidents();
             }
         }
     }

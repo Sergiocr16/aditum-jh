@@ -5,23 +5,57 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany','Modal'];
+    VehiculeController.$inject = ['$scope', '$mdDialog', '$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany', 'Modal'];
 
-    function VehiculeController($state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany,Modal) {
+    function VehiculeController($scope, $mdDialog, $state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany, Modal) {
         $rootScope.active = "vehicules";
         var enabledOptions = true;
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
-        vm.showFilterDiv = false;
-        vm.house = "-1";
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.radioEnablestatus = true;
         vm.transition = transition;
         $rootScope.mainTitle = "Vehículos";
         vm.isReady = false;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
+        vm.filter = {
+            houseId: "empty",
+            licensePlate: " ",
+            enabled: 1
+        };
+
+        vm.open = function (ev) {
+            $mdDialog.show({
+                templateUrl: 'app/entities/vehicule/vehicules-filter.html',
+                scope: $scope,
+                preserveScope: true,
+                targetEvent: ev
+            });
+        };
+
+        vm.close = function () {
+            $mdDialog.hide();
+        };
+        vm.closeAndFilter = function () {
+            vm.filterVehicules();
+            $mdDialog.hide();
+        };
+        vm.filterVehicules = function () {
+            vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.vehicules = [];
+            loadVehicules();
+        }
+        vm.itemsPerPage = 12;
+        vm.vehicules = [];
         vm.editVehicle = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('vehicule.edit', {
@@ -30,7 +64,7 @@
 
         }
         vm.changesTitles = function () {
-            if (enabledOptions) {
+            if (vm.filter.enabled==1) {
                 vm.title = "Vehículos habilitados";
                 vm.buttonTitle = "Ver vehículos deshabilitados";
                 vm.titleDisabledButton = "Deshabilitar vehículo";
@@ -38,7 +72,6 @@
                 vm.actionButtonTitle = "Deshabilitar";
                 vm.iconDisabled = "fa fa-user-times";
                 vm.color = "red-font";
-
             } else {
                 vm.title = "Vehículos deshabilitados";
                 vm.buttonTitle = "Ver vehículos habilitados";
@@ -57,50 +90,39 @@
                 vm.houses = data;
                 loadVehicules();
             }
-
         }
 
-        function loadVehicules(option) {
-            if (enabledOptions) {
-                vm.changesTitles();
-                Vehicule.vehiculesEnabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
-                    companyId: globalCompany.getId(),
-                }).$promise.then(onSuccess, onError);
-            } else {
-                vm.changesTitles();
-                Vehicule.vehiculesDisabled({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort(),
-                    companyId: globalCompany.getId(),
-                }).$promise.then(onSuccess, onError);
+        function loadVehicules() {
+            if (vm.filter.houseId == undefined) {
+                vm.filter.houseId = "empty"
             }
+            if (vm.filter.licensePlate == "" || vm.filter.licensePlate == undefined) {
+                vm.filter.licensePlate = " ";
+            }
+            vm.changesTitles();
+            Vehicule.getVehicules({
+                page: vm.page,
+                size: vm.itemsPerPage,
+                houseId: vm.filter.houseId,
+                licencePlate: vm.filter.licensePlate,
+                enabled: vm.filter.enabled,
+                sort: sort(),
+                companyId: globalCompany.getId(),
+            }, onSuccess, onError);
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'licenseplate') {
+                    result.push('licenseplate,asc');
                 }
                 return result;
             }
 
-            function onSuccess(data) {
-                if (option !== 1) {
-                    vm.queryCount = data.length;
-                    vm.page = pagingParams.page;
-                    vm.vehicules = formatVehicules(data);
-                } else {
-                    var vehiculesByHouse = [];
-                    vm.vehicules = data;
-                    for (var i = 0; i < vm.vehicules.length; i++) {
-                        if (vm.house.id === vm.vehicules[i].houseId) {
-                            vehiculesByHouse.push(vm.vehicules[i])
-                        }
-                    }
-                    vm.vehicules = formatVehicules(vehiculesByHouse);
+            function onSuccess(data, headers) {
+                vm.links = ParseLinks.parse(headers('link'));
+                vm.totalItems = headers('X-Total-Count');
+                for (var i = 0; i < data.length; i++) {
+                    vm.vehicules.push(data[i])
                 }
                 vm.isReady = true;
             }
@@ -108,55 +130,25 @@
             function onError(error) {
                 AlertService.error(error.data.message);
             }
-
         }
-
 
         vm.switchEnabledVehicules = function () {
             vm.isReady = false;
-
-            enabledOptions = true;
-            vm.radioEnablestatus = true;
-            vm.radioDisablestatus = false;
-            vm.findVehiculesByHouse(vm.house);
+            vm.filter.enabled = 1;
+            vm.actionButtonTitle = "Deshabilitar";
+            vm.filterVehicules();
         }
         vm.switchDisabledVehicules = function () {
             vm.isReady = false;
-            enabledOptions = false;
-            vm.radioEnablestatus = false;
-            vm.radioDisablestatus = true;
-            vm.findVehiculesByHouse(vm.house);
-
+            vm.filter.enabled = 0;
+            vm.actionButtonTitle = "Habilitar";
+            vm.filterVehicules();
         }
 
-        vm.findVehiculesByHouse = function (house) {
-
-            vm.house = house;
-
-            if (house == undefined || house=='-1') {
-                loadVehicules();
-            } else {
-                loadVehicules(1);
-            }
-        }
-
-        function formatVehicules(vehicules) {
-            var formattedVehicules = [];
-            for (var i = 0; i < vehicules.length; i++) {
-
-                for (var e = 0; e < vm.houses.length; e++) {
-                    if (vehicules[i].houseId == vm.houses[e].id) {
-                        vehicules[i].house_id = vm.houses[e].housenumber;
-                    }
-                }
-            }
-
-            return vehicules;
-        }
 
         vm.deleteVehicule = function (id_vehicule, license_plate) {
-            Modal.confirmDialog("¿Está seguro que desea eliminar al vehículo "+ license_plate + "?","Una vez eliminado no podrá recuperar los datos",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar al vehículo " + license_plate + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
                     Modal.showLoadingBar();
                     Vehicule.delete({
                         id: id_vehicule
@@ -167,7 +159,7 @@
             function onSuccessDelete(data, headers) {
                 Modal.hideLoadingBar();
                 Modal.toast("Se ha eliminado el vehículo correctamente.");
-                loadVehicules();
+                vm.filterVehicules();
                 WSDeleteEntity.sendActivity({type: 'vehicle', id: id_vehicule})
             }
 
@@ -176,14 +168,14 @@
         vm.disableEnabledVehicule = function (vehicule) {
 
             var correctMessage;
-            if (enabledOptions) {
+            if (vm.filter.enabled==1) {
                 correctMessage = "¿Está seguro que desea deshabilitar al vehículo " + vehicule.licenseplate + "?";
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al vehículo " + vehicule.licenseplate + "?";
             }
-            Modal.confirmDialog(correctMessage,"",function(){
+            Modal.confirmDialog(correctMessage, "", function () {
                 Modal.showLoadingBar();
-                if (enabledOptions) {
+                if (vm.filter.enabled==1) {
                     vehicule.enabled = 0;
                     Vehicule.update(vehicule, onSuccessDisable);
 
@@ -198,8 +190,7 @@
 
             function onSuccessEnable(data, headers) {
                 WSVehicle.sendActivity(data);
-                loadVehicules();
-
+                vm.filterVehicules();
                 Modal.toast("Se ha habilitado el vehículo correctamente.");
                 Modal.hideLoadingBar();
 
@@ -207,8 +198,7 @@
 
             function onSuccessDisable(data, headers) {
                 WSVehicle.sendActivity(data);
-                loadVehicules();
-
+                vm.filterVehicules();
                 Modal.toast("Se ha deshabilitado el vehículo correctamente.");
                 Modal.hideLoadingBar();
             }
@@ -216,7 +206,7 @@
 
         function loadPage(page) {
             vm.page = page;
-            vm.transition();
+            loadVehicules();
         }
 
         function transition() {
