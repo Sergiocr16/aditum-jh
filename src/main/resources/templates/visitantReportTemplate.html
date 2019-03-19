@@ -280,10 +280,10 @@
                             <td class="no-border-right text-center">
                                 <span th:text="|${visitant.getIdentificationnumber()}|"></span>
                             </td>
-                            <td  th:if="${visitant.getLicenseplate()!=null}"  class="no-border-right text-center">
+                            <td  th:if="${visitant.getLicenseplate()!=''}"  class="no-border-right text-center">
                                 <span th:text="|${visitant.getLicenseplate()}|"></span>
                             </td>
-                            <td th:if="${visitant.getLicenseplate()==null}" class="no-border-right text-center">
+                            <td th:if="${visitant.getLicenseplate()==''}" class="no-border-right text-center">
                                 <span>No registrado</span>
                             </td>
                             <td class="text-center">

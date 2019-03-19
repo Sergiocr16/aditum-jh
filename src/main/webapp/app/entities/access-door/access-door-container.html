@@ -81,9 +81,20 @@
                             <div aria-haspopup="true" aria-expanded="false">
                                 <img ng-if="vm.resident.image_url==null" src="content/images/nobody-image.jpg"
                                      class="object-fit_scale-down-navbar-huge"/>
-                                <img ng-if="vm.resident.image_url!==null" src="{{vm.resident.image_url}}"
+                                <img  style="cursor: pointer" data-toggle="modal" data-target="#myModal" ng-if="vm.resident.image_url!==null" src="{{vm.resident.image_url}}"
                                      class="object-fit_scale-down-navbar-huge"/>
                             </div>
+
+                            <div id="myModal" class="modal fade" tabindex="100" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <img src="{{vm.resident.image_url}}" class="img-responsive">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <h5 class="username-access-door text-center bold gray-font">{{vm.resident.name}}
                                 {{vm.resident.lastname}}
                                 {{vm.resident.secondlastname}}</h5>
@@ -140,6 +151,7 @@
                             </md-fab-speed-dial>
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -147,8 +159,11 @@
         </div>
 
     </div>
+
 </div>
 </div>
+
+
 <h3 style="bottom: 50px;
     position: fixed;
     color: white;
@@ -187,3 +202,19 @@
         <h1  class="text-center huge-margin-top emergencyTitle white-color font-27 bold ">Emergencia reportada en la casa número {{vm.emergency.houseNumber}}</h1>
         <md-button type="submit" class="btn-default" ng-click="vm.attendEmergency()">Atender Emergencia</md-button>
 </div>
+
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>
