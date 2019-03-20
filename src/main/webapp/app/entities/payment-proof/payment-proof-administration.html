@@ -1,0 +1,42 @@
+
+<div class="row fixed-tabs" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs has-authority="ROLE_MANAGER" hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-xs" >
+            <md-tab md-active-nc="$state.includes('paymentProof.pending')" ui-sref="paymentProof.pending" label="Comprobantes de pago sin revisar">
+            </md-tab>
+            <md-tab label="Comprobantes de pago revisados" md-active-nc="$state.includes('paymentProof.checked')" ui-sref="paymentProof.checked" >
+            </md-tab>
+        </md-tabs>
+
+
+        <md-tabs has-authority="ROLE_MANAGER" hide-md hide-sm hide-lg  md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs  hidden-md hidden-sm hidden-lg" >
+            <md-tab md-active-nc="$state.includes('paymentProof.pending')" ui-sref="paymentProof.pending" label="Sin revisar">
+            </md-tab>
+            <md-tab label="Revisados" md-active-nc="$state.includes('paymentProof.checked')" ui-sref="paymentProof.checked" >
+            </md-tab>
+        </md-tabs>
+
+
+        <md-tabs has-authority="ROLE_USER" hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-xs " >
+            <md-tab md-active-nc="$state.includes('paymentProof.pending-user')" ui-sref="paymentProof.pending-user" label="Comprobantes de pago sin revisar">
+            </md-tab>
+            <md-tab label="Comprobantes de pago revisados" md-active-nc="$state.includes('paymentProof.checked-user')" ui-sref="paymentProof.checked-user" >
+            </md-tab>
+        </md-tabs>
+
+        <md-tabs has-authority="ROLE_USER" hide-md hide-sm hide-lg md-stretch-tabs='always' md-dynamic-height="" md-border-bottom="" class="md-fixed-tabs hidden-md hidden-sm hidden-lg" >
+            <md-tab md-active-nc="$state.includes('paymentProof.pending-user')" ui-sref="paymentProof.pending-user" label="Sin revisar">
+            </md-tab>
+            <md-tab label="Revisados" md-active-nc="$state.includes('paymentProof.checked-user')" ui-sref="paymentProof.checked-user" >
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+
+
+
+</div>
+
+<div ui-view class="row marging-top-40" style="padding: 20px;">
+</div>

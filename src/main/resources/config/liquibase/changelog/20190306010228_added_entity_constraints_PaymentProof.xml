@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="house"/>
 
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="payment_proof"
+                                 constraintName="fk_payment_proof_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
     </changeSet>
 </databaseChangeLog>

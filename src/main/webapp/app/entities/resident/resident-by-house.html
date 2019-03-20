@@ -76,14 +76,14 @@
                                      style="padding-top: 10px!important;">
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="100"
                                          width="100"/>
-                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"  ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index-xs"/>
                                 </div>
                                 <div class="md-media-sm card-media hidden-xs hidden-sm"
                                      style="padding-top: 10px!important;">
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="80"
                                          width="80"/>
-                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"  ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index"/>
                                 </div>
                             </md-card-title-media>
@@ -136,7 +136,15 @@
 
                         </md-card-actions>
                     </md-card>
-
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="{{resident.image_url}}" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -150,69 +158,18 @@
 </div>
 
 
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
 
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
 
-
-
-<!--<div class="row " id="residents_container">-->
-    <!--<div class="col-lg-12 col-md-12 gray-font ">-->
-
-        <!--<div>-->
-            <!--<h3 class="page-title col-md-6 col-lg-5 col-xs-12 col-sm-6">{{vm.titleCondominosIndex}}</h3>-->
-        <!--</div>-->
-        <!--<div>-->
-                <!--<div class="col-md-6 col-sm-6 col-xs-12 col-lg-4">-->
-                    <!--&lt;!&ndash;<button type="submit" class="btn blue small-margin-bottom col-sm-12 col-lg-12 col-xs-12 " ng-click="vm.switchEnabledDisabledResidents()">{{vm.buttonTitle}}</button>&ndash;&gt;-->
-                    <!--<div class="form-group form-md-radios">-->
-                        <!--<div class="md-radio-inline">-->
-
-                            <!--<div class="md-radio" >-->
-                                <!--<input type="radio" id="radio34" name="radio2" class="md-radiobtn" checked=""  ng-click="vm.switchEnabledDisabledResidents()">-->
-                                <!--<label for="radio34" style="color:#45B6AF">-->
-                                    <!--<span class="inc"></span>-->
-                                    <!--<span class="check"></span>-->
-                                    <!--<span class="box"></span>-->
-                                    <!--Habilitados </label>-->
-                            <!--</div>-->
-                            <!--<div class="md-radio has-error">-->
-                                <!--<input type="radio" id="radio35" name="radio2" class="md-radiobtn"  ng-click="vm.switchEnabledDisabledResidents()">-->
-                                <!--<label for="radio35">-->
-                                    <!--<span class="inc"></span>-->
-                                    <!--<span class="check"></span>-->
-                                    <!--<span class="box"></span>-->
-                                    <!--Deshabilitados </label>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="col-md-4 col-sm-6 col-xs-12 col-lg-3 ">-->
-                    <!--<button type="submit" class="btn green small-margin-bottom col-sm-12 col-lg-12 col-xs-12 col-md-12" ui-sref="residentByHouse.new()">Registrar residente</button>-->
-                <!--</div>-->
-                <!--<div ng-show="vm.residents.length==0" class="col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-top:30px">-->
-                    <!--<h2  class="text-center gray-font ">No tienes residentes registrados</h2>-->
-                <!--</div>-->
-                <!--<div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">-->
-                <!--<div class="col-md-6 col-sm-6 col-xs-12 col-lg-3"  ng-repeat="resident in vm.residents  | orderBy:'name'">-->
-                    <!--<div class="portlet light bordered  text-center  col-sm-12 col-xs-12 " id="">-->
-<!--<span style="z-index:-1!important;border-radius:5px!important;float:right;color:#45B6AF" ng-show="resident.principalContact==1" class=""><i style="color:#4DB3A2;font-size:20px!important" class="fa fa-address-book-o" aria-hidden="true"  angular-popover direction="left" template="<div style='padding:10px;width:130px;color:gray'><h5>Contacto Principal<h5></div>" mode="mouseover"></i></span>-->
-
-                            <!--<h3 class="text-center " style="cursor: pointer;" ui-sref="residentByHouse.residentDetail({id2:resident.id})">-->
-                                <!--<img ng-show="resident.image_url==null" width="150" height="150" class="img-circle" src="content/images/nobody-image.jpg"/>-->
-                                <!--<img ng-hide="resident.image_url==null" src="{{resident.image_url}}" width="160" height="160" class="object-fit_scale-down-resident-by-house"/>-->
-                            <!--</h3>-->
-
-
-
-                        <!--<h3 style="text-transform: capitalize;" class="no-padding text-center font-20">{{resident.name}} {{resident.lastname}}</h3>-->
-                        <!--<h5 class="no-padding text-center font-17">{{resident.identificationnumber.toUpperCase()}}</h5>-->
-
-                        <!--<div class="col-lg-12 col-md-12 small-margin-top">-->
-                            <!--<button type="submit" ng-click="vm.editResident(resident.id)"class="btn blue" title="Editar residente"><i class="fa fa-pencil " ></i></button>-->
-                            <!--<button type="submit" id="disabledButton" ng-click="vm.disableEnabledResident(resident)" ng-hide="resident.id== vm.userId || resident.isOwner == 1" class="btn {{vm.color}}" title="{{vm.titleDisabledButton}}"><i class="{{vm.iconDisabled}}"></i></button>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+</script>

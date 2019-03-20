@@ -27,6 +27,8 @@ public class VisitantDTO implements Serializable {
 
     private String identificationnumber;
 
+    private String arrivalTimeFormatted;
+
     private ZonedDateTime arrivaltime;
 
     private ZonedDateTime departureTime;
@@ -196,5 +198,13 @@ public class VisitantDTO implements Serializable {
 
     public void setDepartureTime(ZonedDateTime departureTime) {
         this.departureTime = departureTime;
+    }
+
+    public String getArrivalTimeFormatted() {
+        return arrivalTimeFormatted;
+    }
+
+    public void setArrivalTimeFormatted(String arrivalTimeFormatted) {
+        this.arrivalTimeFormatted = arrivalTimeFormatted;
     }
 }

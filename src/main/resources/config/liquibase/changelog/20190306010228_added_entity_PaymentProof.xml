@@ -34,7 +34,15 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="subject" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="house_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="company_id" type="bigint">
                 <constraints nullable="true" />
             </column>
 

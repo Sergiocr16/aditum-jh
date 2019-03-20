@@ -111,7 +111,7 @@ public class CommonAreaMailService {
             context.setVariable(DEVOLUTIONAMOUNT, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getDevolutionAmmount()+"")).substring(1));
         }
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
-        context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
+        context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
         if(commonAreaReservationsDTO.getCharge()!=null){
             context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));
@@ -135,7 +135,7 @@ public class CommonAreaMailService {
 
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(SCHEDULE, this.formatSchedule(commonAreaReservationsDTO.getInitialTime(),commonAreaReservationsDTO.getFinalTime()));
-        context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname() + " " + commonAreaReservationsDTO.getResident().getSecondlastname());
+        context.setVariable(RESIDENT, commonAreaReservationsDTO.getResident().getName() + " " + commonAreaReservationsDTO.getResident().getLastname());
         context.setVariable(DATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getInitalDate()));
         if(commonAreaReservationsDTO.getCharge()!=null){
             context.setVariable(CHARGEDATE,  DateTimeFormatter.ofPattern("EEEE  d MMMM yyyy").format(commonAreaReservationsDTO.getCharge().getDate()));

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -47,9 +48,10 @@ public class PaymentProofResource {
      */
     @PostMapping("/payment-proofs")
     @Timed
-    public ResponseEntity<PaymentProofDTO> createPaymentProof(@RequestBody PaymentProofDTO paymentProofDTO) throws URISyntaxException {
+    public ResponseEntity<PaymentProofDTO> createPaymentProof(@Valid @RequestBody PaymentProofDTO paymentProofDTO) throws URISyntaxException {
         log.debug("REST request to save PaymentProof : {}", paymentProofDTO);
         if (paymentProofDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new payment proof cannot already have an ID")).body(null);
         }
         PaymentProofDTO result = paymentProofService.save(paymentProofDTO);
         return ResponseEntity.created(new URI("/api/payment-proofs/" + result.getId()))
@@ -68,7 +70,7 @@ public class PaymentProofResource {
      */
     @PutMapping("/payment-proofs")
     @Timed
-    public ResponseEntity<PaymentProofDTO> updatePaymentProof(@RequestBody PaymentProofDTO paymentProofDTO) throws URISyntaxException {
+    public ResponseEntity<PaymentProofDTO> updatePaymentProof(@Valid @RequestBody PaymentProofDTO paymentProofDTO) throws URISyntaxException {
         log.debug("REST request to update PaymentProof : {}", paymentProofDTO);
         if (paymentProofDTO.getId() == null) {
             return createPaymentProof(paymentProofDTO);
@@ -87,13 +89,26 @@ public class PaymentProofResource {
      */
     @GetMapping("/payment-proofs")
     @Timed
-    public ResponseEntity<List<PaymentProofDTO>> getAllPaymentProofs(Pageable pageable) throws URISyntaxException {
+    public ResponseEntity<List<PaymentProofDTO>> getAllPaymentProofs(Pageable pageable,Long companyId,int status) throws URISyntaxException{
         log.debug("REST request to get a page of PaymentProofs");
-        Page<PaymentProofDTO> page = paymentProofService.findAll(pageable);
+        Page<PaymentProofDTO> page = paymentProofService.findAll(pageable,companyId,status);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
-
+    /**
+     * GET  /payment-proofs : get all the paymentProofs.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of paymentProofs in body
+     */
+    @GetMapping("/payment-proofs/byHouse")
+    @Timed
+    public ResponseEntity<List<PaymentProofDTO>> getPendingPaymentProofsByHouse(Pageable pageable, Long houseId,int status) throws URISyntaxException{
+        log.debug("REST request to get a page of PaymentProofs");
+        Page<PaymentProofDTO> page = paymentProofService.getPaymentProofsByHouse(pageable,houseId,status);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/payment-proofs");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * GET  /payment-proofs/:id : get the "id" paymentProof.
      *
