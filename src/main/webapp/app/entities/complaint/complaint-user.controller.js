@@ -5,14 +5,29 @@
         .module('aditumApp')
         .controller('ComplaintUserController', ComplaintUserController);
 
-    ComplaintUserController.$inject = ['Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state','companyUser', 'globalCompany'];
+    ComplaintUserController.$inject = ['$scope','$mdDialog','Complaint', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope', 'CommonMethods', '$state', 'companyUser', 'globalCompany'];
 
-    function ComplaintUserController(Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
+    function ComplaintUserController($scope,$mdDialog,Complaint, ParseLinks, AlertService, paginationConstants, $rootScope, CommonMethods, $state, companyUser, globalCompany) {
 
         var vm = this;
         $rootScope.active = 'complaint-user';
         $rootScope.mainTitle = "Quejas y sugerencias";
+        vm.open = function(ev) {
+            $mdDialog.show({
+                templateUrl: 'app/entities/complaint/complaints-filter.html',
+                scope: $scope,
+                preserveScope: true,
+                targetEvent: ev
+            });
+        };
 
+        vm.close = function() {
+            $mdDialog.hide();
+        };
+        vm.closeAndFilter = function() {
+            vm.changeStatus();
+            $mdDialog.hide();
+        };
         vm.status = "-1";
         moment.locale("es");
         vm.complaints = [];
@@ -29,33 +44,33 @@
         vm.reset = reset;
         vm.reverse = true;
         // setTimeout(function () {
-            loadAll();
+        loadAll();
         // }, 1000);
 
-        vm.changeStatus = function(){
+        vm.changeStatus = function () {
             vm.page = 0;
+            vm.isReady = false;
+            vm.complaints = [];
+            vm.links = {
+                last: 0
+            };
             vm.loadAllByStatus();
-            setTimeout(function () {
-                vm.complaints=[]
-            },400)
         }
 
         function loadAllByStatus() {
-
             vm.isReady = false;
+            if (vm.status !== "-1") {
+                Complaint.queryByStatus({
+                    companyId: globalCompany.getId(),
+                    status: parseInt(vm.status),
+                    page: vm.page,
+                    size: 10,
+                    sort: sort()
+                }, onSuccess, onError);
+            } else {
+                loadAll();
+            }
 
-
-            if(vm.status!=="-1") {
-                    Complaint.queryByStatus({
-                        companyId: globalCompany.getId(),
-                        status: parseInt(vm.status),
-                        page: vm.page,
-                        size: 10,
-                        sort: sort()
-                    }, onSuccess, onError);
-                }else{
-                    loadAll();
-                }
             function sort() {
                 var result = [];
                 if (vm.predicate !== 'creationDate') {
@@ -79,6 +94,7 @@
                 AlertService.error(error.data.message);
             }
         }
+
         function loadAll() {
             Complaint.queryAsResident({
                 residentId: companyUser.id,
@@ -117,17 +133,18 @@
             loadAll();
         }
 
-        vm.viewDetail = function(id){
+        vm.viewDetail = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('complaint-detail', {
                 id: encryptedId
             });
         };
+
         function loadPage(page) {
             vm.page = page;
-            if(vm.status!=="-1"){
+            if (vm.status !== "-1") {
                 loadAllByStatus();
-            }else{
+            } else {
                 loadAll();
             }
 

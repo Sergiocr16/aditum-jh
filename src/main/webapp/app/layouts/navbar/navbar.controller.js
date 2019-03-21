@@ -1513,7 +1513,6 @@
             return $localStorage.companiesConfig;
         }, function (newCodes, oldCodes) {
             vm.loadCompanyConfig(globalCompany.getId())
-
         });
 
 
@@ -1644,7 +1643,7 @@
                 MultiCompany.getCurrentUserCompany().then(function (data) {
                     if (data != undefined) {
                         if (data.enable == 0 || data.enabled == 0) {
-                            logout();
+                             logout();
                         }
                     }
                 })
