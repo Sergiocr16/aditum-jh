@@ -1,63 +1,153 @@
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Solicitud de reservación</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
-    <style>
 
-        .bold {
-            font-weight: 700 !important;
-        }
-
-        .font-15{
-            font-size: 15px;
-        }
-        .font-14{
-            font-size: 14px;
-        }
-        .black{
-            color: black;
-        }
-    </style>
 </head>
-<body style="margin:0;padding:5px;background-size:700% 100%;font-family:Raleway,'Helvetica Neue',Helvetica,Arial,sans-serif;color:white;line-height:1.428571429;font-size:13px;">
-<!--<div style="background: #4DB3A2;  /* fallback for old browsers */-->
-         <!--background: -webkit-linear-gradient(to left, #00b19d, #009987);  /* Chrome 10-25, Safari 5.1-6 */-->
-         <!--background: linear-gradient(to right, #00b19d, #009987); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */-->
-         <!--padding: 5px 20px 20px 20px; -webkit-border-radius: 15px!important;-->
-         <!-- -moz-border-radius: 15px;-->
-         <!--border-radius: 15px!important;">-->
+<body>
+<div marginwidth="0" marginheight="0" style="margin:0;padding:0;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;width:100%!important;min-width:100%!important">
+    <center>
+        <table align="center" border="0" cellpadding="0" cellspacing="0"  style="margin:auto;padding:0;width:560px;background-color:#fff;color:#555;font-family:Helvetica,Arial,sans-serif;font-size:16px;line-height:150%;border-collapse:separate!important">
+            <tbody><tr>
+                <td align="left" valign="top"  style="margin:0;padding:0">
 
-<div style="background-color: #009987; padding: 5px 20px 20px 20px;" >
-    <h1 style="text-align:center;margin-bottom:1px"><img th:src="@{|${baseUrl}/content/images/logoAditum.png|}" alt="" height="40"/></h1>
-    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-bottom:10px"></div>
-    <div style="background-color:white;border-radius:15px;padding:15px;color:#3c3e42; text-align: center">
-        <div style="color:black;">
-            <h2  class="black">Estimado(a) <span th:text="|${type}|"></span></h2>
-            <p class="font-15 black" style="margin-bottom: 50px;" th:text="|${reservation.getEmailTitle()}|"></p>
-            <p class="font-14 black" th:if="${reservation.getStatus()==1}"><span class="bold">Estado: </span><span>Pendiente</span></p>
-            <p class="font-14 black"  th:if="${reservation.getStatus()==2}"><span class="bold">Estado: </span><span>Aprobada</span></p>
-            <p class="font-14 black"  th:if="${reservation.getStatus()==3}"><span class="bold">Estado: </span><span>Rechazada</span></p>
-            <p class="font-14 black"><span class="bold">Área común: </span><span th:text="|${commonArea.getName()}|"></span></p>
-            <p class="font-14 black"><span class="bold">Fecha de reservación: </span><span th:text="|${date}|"></span></p>
-            <p class="font-14 black"><span class="bold">Horario: </span><span th:text="|${schedule}|"></span></p>
-            <p class="font-14 black"><span class="bold">Responsable: </span><span th:text="|${resident}|"></span></p>
-            <div th:if="${commonArea.getChargeRequired()==1}" >
-                <p class="font-14 black"><span class="bold">Costo por reservación: </span>₡<span th:text="|${reservationCharge}|"></span></p>
-                <p class="font-14 black"><span class="bold">Devolución: </span>₡<span th:text="|${devolutionAmount}|"></span></p>
-                <p class="font-14 black" th:if="${reservation.getStatus()==2}"><span class="bold">Fecha de cargo: </span><span th:text="|${chargeDate}|"></span></p>
+                    <table border="0" cellpadding="0" cellspacing="0"  style="margin:0;padding:0;width:100%;border-collapse:separate!important">
 
-            </div>
-            <p class="font-14 black" style="margin-top: 30px ;" th:if="${reservation.getComments()!=null}"><span class="bold">Comentarios: </span><span th:text="|${reservation.getComments()}|"></span></p>
-            <p style="font-size:12px;margin-top:50px;color:#546e7a;text-align:center;text-transform:uppercase; " th:if="${reservation.getUserType()==1}"><b>Para aprobar o rechazar esta solicitud, dirijase a <a href="https://www.aditumcr.com">ADITUM</a> en el navegador o su dispositivo móvil.</b></p>
-            <p style="font-size:12px;margin-top:50px;color:#546e7a;text-align:center;text-transform:uppercase; " th:if="${reservation.getUserType()==2}"><b>
-                Para ver la información completa, dirijase a <a href="https://www.aditumcr.com">ADITUM</a> en el navegador o su dispositivo móvil.</b></p>
+                        <tbody><tr style="width:100%">
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background-position:0 1px;border-top-left-radius:4px;border-top-right-radius:4px;height:62px;margin-top:1.5em;width:100%!important;border-collapse:separate!important; background-color:#009688;">
+                                    <tbody><tr>
+                                        <td align="left"  style="border-top-left-radius:4px;border-top-right-radius:4px;padding:0 20px">
+                                            <img src="https://res.cloudinary.com/aditum/image/upload/v1553049924/logoAditum.png" style="border:0;height:42px;line-height:100%;max-width:100%;outline:none;text-decoration:none;color:#fff;display:block;font-size:18px;width:145px" ></img>
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
 
-        </div>
-    </div>
-    <div style="border-top:1px solid rgba(244,240,240,0.1);margin-top:10px"></div>
-    <h1 style="text-align:right;"><a style="margin:5px" href="https://lhousecr.com/"><img th:src="@{|${baseUrl}/content/images/lhlogo.png|}" alt="" height="30"/></a></h1>
-</div>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td ><a target="_blank"><img
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1553042392/administraci%C3%B3n-de-condominios.png"  height="200"  style="border:0px initial;width:560px;height:200px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img></a></td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">Estimado(a) <span th:text="|${type}|"></span></h1>
+
+                                            <p style="margin:1em 0;padding:0" th:text="|${reservation.getEmailTitle()}|"></p>
+
+                                            <table style="margin: 0 auto;color:#515151; margin-bottom:40px; margin-top:40px;" >
+                                                <tr >
+                                                    <td><b style="color:#009688">Estado:</b></td>
+                                                    <td>
+                                                        <span th:if="${reservation.getStatus()==1}">Pendiente</span>
+                                                        <span th:if="${reservation.getStatus()==2}">Aprobada</span>
+                                                        <span th:if="${reservation.getStatus()==2}">Rechazada</span>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Área común:</b></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${commonArea.getName()}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Fecha reservación:</b></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${date}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Horario:</b></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${schedule}|"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Responsable:</b></td>
+                                                    <td style= "padding-top:14px;"><span th:text="|${resident}|"></span></td>
+                                                </tr>
+                                                <tr th:if="${commonArea.getChargeRequired()==1}">
+                                                    <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Costo por reservación:</b></td>
+                                                    <td style= "padding-top:14px;">₡<span th:text="|${reservationCharge}|"></span></td>
+                                                </tr>
+                                                <tr th:if="${commonArea.getChargeRequired()==1}">
+                                                    <td  style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Devolución:</b></td>
+                                                    <td style= "padding-top:14px;">₡<span th:text="|${devolutionAmount}|"></span></td>
+                                                </tr>
+                                                <tr th:if="${commonArea.getChargeRequired()==1}">
+                                                    <td  th:if="${reservation.getStatus()==2}" style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Fecha de cargo:</b></td>
+                                                    <td  th:if="${reservation.getStatus()==2}" style= "padding-top:14px;"> <span th:text="|${chargeDate}|"></span></td>
+                                                </tr>
+                                                <tr th:if="${reservation.getComments()!=null}">
+                                                    <td style="padding-right:20px; padding-top:14px;"><b style="color:#009688">Comentarios:</b></td>
+                                                    <td style= "padding-top:14px;"> <span th:text="|${reservation.getComments()}|"></span></td>
+                                                </tr>
+
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <p th:if="${reservation.getUserType()==1}" style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Para aprobar o rechazar esta solicitud, diríjase a <a href="https://www.aditumcr.com" style="color:#009688; font-weight:bold;">ADITUM</a> en el navegador o su despositivo móvil.</p>
+                                            <p th:if="${reservation.getUserType()==2}" style="margin-top:10px!important;margin:1em 0;padding:0;text-align:center">Para ver la información completa, dirijase a <a href="https://www.aditumcr.com" style="color:#009688; font-weight:bold;">ADITUM</a> en el navegador o su despositivo móvil.</p>
+
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;color:#888;font-size:14px;line-height:150%;width:100%;border-collapse:separate!important">
+                                    <tbody><tr>
+                                        <td align="center" valign="top" style="background:#fff;padding-top:1.75em;padding-right:20px;padding-bottom:3em;padding-left:20px">
+                                            <div  style="padding-bottom:10px">
+                                                <strong>¿Preguntas?</strong>
+                                                Solo responde a este correo o contacta el <a href="http://lhousecr.com/?page_id=4930" style="text-decoration:underline;color:#888!important" target="_blank" data-saferedirecturl="http://lhousecr.com/?page_id=4930">Soporte de ADITUM</a>.
+                                            </div>
+                                            <div  style="padding-bottom:10px">
+                                                ADITUM • Desamparados • San José, Costa Rica
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    </tbody></table>
+                            </td>
+                        </tr>
+
+                        </tbody></table>
+
+                </td>
+            </tr>
+            </tbody></table>
+    </center></div>
+
+
+
+
+
 </body>
 </html>

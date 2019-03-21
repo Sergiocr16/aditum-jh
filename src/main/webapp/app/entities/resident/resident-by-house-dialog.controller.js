@@ -227,7 +227,7 @@
                                 };
                                 SaveImageCloudinary
                                     .save(fileImage, vm.imageUser)
-                                    .then(onSaveImageSuccess, onSaveError, onNotify);
+                                    .then(onUpdateImageSuccess, onSaveError, onNotify);
 
                             } else {
                                 if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
@@ -244,16 +244,7 @@
                         }, alreadyExist, allClearInsert)
 
                     }
-                    function onSaveImageSuccess(data) {
-                        vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
-                            vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
-                        }
-                        Resident.update(vm.resident, onSuccess, onSaveError);
-                    }
-                    function onNotify(info) {
-                        vm.progress = Math.round((info.loaded / info.total) * 100);
-                    }
+
                     function alreadyExist() {
                         vm.isSaving = false;
                         Modal.toast("La cédula ingresada ya existe.");
@@ -283,6 +274,25 @@
                 }
             }
 
+
+            function onSaveImageSuccess(data) {
+                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {
+                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                }
+                Resident.save(vm.resident, onSuccess, onSaveError);
+            }
+
+            function onNotify(info) {
+                vm.progress = Math.round((info.loaded / info.total) * 100);
+            }
+            function onUpdateImageSuccess(data) {
+                vm.resident.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                if (vm.resident.identificationnumber !== undefined || vm.resident.identificationnumber != null) {
+                    vm.resident.identificationnumber = vm.resident.identificationnumber.toUpperCase()
+                }
+                Resident.update(vm.resident, onSuccess, onSaveError);
+            }
             function allClearUpdate() {
                 Modal.showLoadingBar();
                 if (vm.resident.isOwner == true) {
@@ -297,7 +307,7 @@
                     };
                     SaveImageCloudinary
                         .save(fileImage, vm.imageUser)
-                        .then(onSaveImageSuccess, onSaveError, onNotify);
+                        .then(onUpdateImageSuccess, onSaveError, onNotify);
 
                 } else {
                     if (vm.resident.identificationnumber != undefined || vm.resident.identificationnumber != null) {

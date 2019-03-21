@@ -21,6 +21,11 @@
                 }
             },
             'update': { method:'PUT' }
+            ,'findByHouseId': {
+            method: 'GET',
+                url: 'api/payment-proofs/byHouse',
+                isArray: true
+        }
         });
     }
 })();

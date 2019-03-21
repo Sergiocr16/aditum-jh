@@ -122,7 +122,7 @@
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg"
                                          height="100"
                                          width="100"/>
-                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"  ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index-xs"/>
                                 </div>
                                 <div class="md-media-sm card-media hidden-xs hidden-sm"
@@ -130,12 +130,22 @@
                                     <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg"
                                          height="80"
                                          width="80"/>
-                                    <img ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal"  ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index"/>
                                 </div>
                             </md-card-title-media>
                         </md-card-title>
                     </md-card>
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <img src="{{resident.image_url}}" class="img-responsive">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
             </div>
@@ -260,3 +270,19 @@
     </div>
 </div>
 
+
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>

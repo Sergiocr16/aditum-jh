@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
 
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +20,16 @@ public class PaymentProofDTO implements Serializable {
 
     private String description;
 
+    private String housenumber;
+
+    @NotNull
+    private String subject;
+
     private Long houseId;
+
+    private HouseDTO house;
+
+    private Long companyId;
 
     public Long getId() {
         return id;
@@ -53,12 +63,28 @@ public class PaymentProofDTO implements Serializable {
         this.description = description;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public Long getHouseId() {
         return houseId;
     }
 
     public void setHouseId(Long houseId) {
         this.houseId = houseId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     @Override
@@ -89,6 +115,23 @@ public class PaymentProofDTO implements Serializable {
             ", imageUrl='" + getImageUrl() + "'" +
             ", status=" + getStatus() +
             ", description='" + getDescription() + "'" +
+            ", subject='" + getSubject() + "'" +
             "}";
+    }
+
+    public String getHousenumber() {
+        return housenumber;
+    }
+
+    public void setHousenumber(String housenumber) {
+        this.housenumber = housenumber;
+    }
+
+    public HouseDTO getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseDTO house) {
+        this.house = house;
     }
 }

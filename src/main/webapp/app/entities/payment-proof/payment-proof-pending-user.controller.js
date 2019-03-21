@@ -3,11 +3,11 @@
 
     angular
         .module('aditumApp')
-        .controller('PaymentProofController', PaymentProofController);
+        .controller('PaymentProofPendingUserController', PaymentProofPendingUserController);
 
-    PaymentProofController.$inject = ['$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    PaymentProofPendingUserController.$inject = ['$state', 'PaymentProof', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','companyUser'];
 
-    function PaymentProofController($state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function PaymentProofPendingUserController($state, PaymentProof, ParseLinks, AlertService, paginationConstants, pagingParams,companyUser) {
 
         var vm = this;
 
@@ -16,13 +16,15 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-
+        vm.isReady = false;
         loadAll();
 
         function loadAll () {
-            PaymentProof.query({
+            PaymentProof.findByHouseId({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
+                houseId: companyUser.houseId,
+                status: 1,
                 sort: sort()
             }, onSuccess, onError);
             function sort() {
@@ -33,6 +35,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;

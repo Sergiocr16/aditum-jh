@@ -604,6 +604,19 @@
                             ]
                         },
                         {
+                            title: "Comprobantes de pago",
+                            icon: "description",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "paymentProof",
+                            collapsable: false,
+                            uisref: "paymentProof.pending",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
                             title: "Presupuestos",
                             icon: "trending_up",
                             authoritites: "ROLE_MANAGER",
@@ -985,6 +998,7 @@
                             showXs: true,
                             showLg: true,
                         },
+
                         {
                             title: "Deudas",
                             icon: "assignment",
@@ -1009,7 +1023,18 @@
                             showXs: true,
                             showLg: true,
                         },
-
+                        {
+                            title: "Comprobantes de pago",
+                            icon: "description",
+                            authoritites: "ROLE_USER",
+                            activeOn: "paymentProof",
+                            collapsable: false,
+                            uisref: "paymentProof.pending-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
                     ]
                 },
                 {
@@ -1083,6 +1108,7 @@
 
                     ]
                 },
+
                 {
                     title: "Reportar",
                     activeOn: "",

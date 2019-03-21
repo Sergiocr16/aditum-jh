@@ -18,7 +18,9 @@
             "imageUrl": "Image Url",
             "status": "Status",
             "description": "Description",
-            "house": "House"
+            "subject": "Subject",
+            "house": "House",
+            "company": "Company"
         }
     }
 }

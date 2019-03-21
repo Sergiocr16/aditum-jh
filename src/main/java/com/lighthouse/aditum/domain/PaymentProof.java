@@ -2,6 +2,7 @@ package com.lighthouse.aditum.domain;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -28,8 +29,15 @@ public class PaymentProof implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @NotNull
+    @Column(name = "subject", nullable = false)
+    private String subject;
+
     @ManyToOne
     private House house;
+
+    @ManyToOne
+    private Company company;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -79,6 +87,19 @@ public class PaymentProof implements Serializable {
         this.description = description;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public PaymentProof subject(String subject) {
+        this.subject = subject;
+        return this;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
     public House getHouse() {
         return house;
     }
@@ -90,6 +111,19 @@ public class PaymentProof implements Serializable {
 
     public void setHouse(House house) {
         this.house = house;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public PaymentProof company(Company company) {
+        this.company = company;
+        return this;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
@@ -120,6 +154,7 @@ public class PaymentProof implements Serializable {
             ", imageUrl='" + getImageUrl() + "'" +
             ", status=" + getStatus() +
             ", description='" + getDescription() + "'" +
+            ", subject='" + getSubject() + "'" +
             "}";
     }
 }

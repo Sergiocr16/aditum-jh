@@ -1,50 +1,91 @@
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+     layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+</div>
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+<div ng-if="vm.isReady" ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
 
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" id="myPaymentProofLabel" data-translate="aditumApp.paymentProof.home.createOrEditLabel">Create or edit a Payment Proof</h4>
-    </div>
-    <div class="modal-body">
-        <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" ng-show="vm.paymentProof.id">
-            <label for="id" data-translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.paymentProof.id" readonly />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.paymentProof.imageUrl" for="field_imageUrl">Image Url</label>
-            <input type="text" class="form-control" name="imageUrl" id="field_imageUrl"
-                    ng-model="vm.paymentProof.imageUrl"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.paymentProof.status" for="field_status">Status</label>
-            <input type="number" class="form-control" name="status" id="field_status"
-                    ng-model="vm.paymentProof.status"
-                    />
-        </div>
-        <div class="form-group">
-            <label class="control-label" data-translate="aditumApp.paymentProof.description" for="field_description">Description</label>
-            <input type="text" class="form-control" name="description" id="field_description"
-                    ng-model="vm.paymentProof.description"
-                    />
-        </div>
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 hide-sm hide-xs>Enviar comprobante de pago</h2>
 
-        <div class="form-group">
-            <label data-translate="aditumApp.paymentProof.house" for="field_house">House</label>
-            <select class="form-control" id="field_house" name="house" ng-model="vm.paymentProof.houseId" ng-options="house.id as house.id for house in vm.houses"            >
-                <option value=""></option>
-            </select>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <div>
+            <form name="form" ng-submit=" vm.save()">
+                <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+                <h3 class="text-center no-margin"
+                    ng-hide="vm.displayImage || vm.paymentProof.imageUrl===null">
+                    <img width="170" height="170" class="object-fit_scale-down-resident-form"
+                         src="{{vm.paymentProof.imageUrl}}"/>
+                </h3>
+
+                <div class="form-group form-md-line-input" ngf-drop ngf-change="vm.setImage($file)"
+                     ngf-pattern="'image/*'">
+
+                    <div layout="row" layout-xs="column" class=" ">
+                        <div flex class="col-lg-12 col-md-12 col-sm-12 white-bg divFormsMDXS">
+                            <md-input-container class="md-block">
+                                <label>Asunto</label>
+                                <input type="text" class="form-control gray" name="subject" id="field_subject"
+                                       ng-model="vm.paymentProof.subject"
+                                       required/>
+                            </md-input-container>
+                            <md-input-container class="md-block">
+                                <label>Descripción</label>
+                                <textarea ng-model="vm.paymentProof.description" rows="7" md-select-on-focus required></textarea>
+                            </md-input-container>
+
+
+
+                            <div ng-if="vm.displayImage" class="image-overlay-position margin-bottom-30" >
+                                <div class="image-overlay-container image-overlay-view-first">
+                                    <h3 class="text-center no-margin">
+                                        <img
+                                            data-ng-src="{{'data:' + vm.displayImageType + ';base64,' + vm.displayImage}}"
+                                            width="30%"
+                                            alt="imageUser image"/>
+                                    </h3>
+                                </div>
+                            </div>
+                            <md-button type="button" ngf-select class="btn default btn-file fileinput-new gray-font no-margin col-md-12 col-sm-12 col-xs-12"
+                                       ngf-change="vm.setImage($file)" accept="image/*">
+                                Adjuntar imagen
+                            </md-button>
+
+                        </div>
+
+                    </div>
+
+                    <div layout="row" class="white-bg marging-top-100" layout-align="end center" hide-sm hide-xs>
+
+                        <md-button type="button" ng-click="back()"
+                                   class="md-warn md-raised">Cancelar
+                        </md-button>
+                        <md-button class="md-primary md-raised" ng-disabled="form.$invalid" type="submit">
+                            Enviar
+                        </md-button>
+                    </div>
+
+
+                </div>
+            </form>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
-            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
-        </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
-            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
-        </button>
-    </div>
-</form>
+    </md-content>
+</div>
+
+<script>
+    function centerModal() {
+        $(this).css('display', 'block');
+        var $dialog = $(this).find(".modal-dialog");
+        var offset = ($(window).height() - $dialog.height()) / 2;
+        // Center modal vertically in window
+        $dialog.css("margin-top", offset);
+    }
+
+    $('.modal').on('show.bs.modal', centerModal);
+    $(window).on("resize", function () {
+        $('.modal:visible').each(centerModal);
+    });
+
+</script>

@@ -19,16 +19,48 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        vm.datePickerOpenStatus = {};
+
         vm.isReady = false;
-        vm.openCalendar = openCalendar;
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+        vm.first_month_day = firstDay;
+        vm.houseSelected = -1;
         vm.dates = {
-            initial_time: undefined,
-            final_time: undefined
+            initial_time: firstDay,
+            final_time: lastDay
         };
-        // setTimeout(function () {
+        vm.exportActions = {
+            downloading: false,
+            printing: false,
+            sendingEmail: false
+        };
+        vm.download = function () {
+            vm.exportActions.downloading = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.downloading = false;
+                })
+            }, 7000)
+        };
+
+        vm.print = function () {
+            vm.exportActions.printing = true;
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    vm.exportActions.printing = false;
+                })
+            }, 7000);
+            printJS({
+                printable: vm.path,
+                type: 'pdf',
+                modalMessage: "Obteniendo reporte de visitantes"
+            })
+        };
+
+
         loadAll();
-        // }, 500)
+
         vm.isDisableButton = function () {
             if (vm.dates.initial_time == undefined || vm.dates.final_time == undefined) return true;
             return false;
@@ -46,26 +78,9 @@
             })
         }
 
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    maxDate: vm.dates.final_time == undefined ? new Date() : vm.dates.final_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
-                    maxDate: new Date(),
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
-        vm.updatePicker();
-
         function consult() {
+            vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
+
             vm.isReady = false;
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
@@ -84,15 +99,14 @@
                 vm.showFilterDiv = false;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         vm.stopConsulting = function () {
             vm.isReady = false;
-            vm.dates.initial_time = undefined;
-            vm.dates.final_time = undefined;
+            vm.dates = {
+                initial_time: firstDay,
+                final_time: lastDay
+            };
             vm.isConsulting = false;
             vm.showFilterDiv = false;
             loadAll();
@@ -100,6 +114,8 @@
         }
 
         function loadAll() {
+            vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
+
             vm.isReady = false;
             Visitant.findByHouseInLastMonth({
                 houseId: companyUser.houseId,
@@ -114,9 +130,6 @@
                 vm.isReady = true;
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
         function loadPage(page) {
@@ -132,11 +145,5 @@
             });
         }
 
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();
