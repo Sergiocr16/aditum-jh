@@ -20,13 +20,14 @@
                 }
             },
             'update': { method:'PUT' },
-            'residentsEnabled': {
+            'getResidents': {
                 method: 'GET',
-                url: 'api/residentsEnabled',
+                url: 'api/allResidents/:companyId/:enabled/:houseId/:owner/:name',
                 isArray: true
-             },'residentsDisabled': {
+             }
+             ,'residentsDisabled': {
                 method: 'GET',
-                url: 'api/residentsDisabled',
+                url: 'api/residentsDisabled/:companyId',
                 isArray: true
             },'findByUserId':{
                 url:'api/residents/findByUserId/:id',

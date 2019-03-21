@@ -9,16 +9,14 @@
 
     function ResetFinishController($stateParams, $rootScope, $timeout, Auth, LoginService, Principal, $state) {
         angular.element(document).ready(function () {
-
-            $('#page-content').hide();
+            $('#content').hide();
         });
         $rootScope.showLogin = false;
         var vm = this;
         $rootScope.menu = false;
         vm.signIn = function () {
             Auth.logout();
-            $('#page-content').show();
-
+            $('#content').show();
             $rootScope.companyUser = undefined;
             $state.go('home');
             $rootScope.menu = false;

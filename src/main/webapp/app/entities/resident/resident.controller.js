@@ -5,19 +5,57 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal','globalCompany'];
+    ResidentController.$inject = ['$scope','$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany','$mdDialog'];
 
-    function ResidentController($state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal,globalCompany) {
+    function ResidentController($scope,$state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany,$mdDialog) {
         $rootScope.active = "residents";
-
-        var enabledOptions = true;
         var vm = this;
+
+
+        vm.open = function(ev) {
+            $mdDialog.show({
+                templateUrl: 'app/entities/resident/residents-filter.html',
+                scope: $scope,
+                preserveScope: true,
+                targetEvent: ev
+            });
+        };
+
+        vm.close = function() {
+            $mdDialog.hide();
+        };
+        vm.closeAndFilter = function() {
+            vm.filterResidents();
+            $mdDialog.hide();
+        };
+        vm.filterResidents = function(){
+            vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.residents= [];
+            loadResidents();
+        }
+
+        vm.enabledOptions = true;
+        vm.page = 0;
+        vm.links = {
+            last: 0
+        };
+
+        vm.filter = {
+            owner : "empty",
+            houseId: "empty",
+            name:" ",
+            enabled: 1
+        }
+        vm.residents = [];
         vm.radiostatus = true;
         $rootScope.mainTitle = "Usuarios autorizados";
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
-        vm.house = "-1";
         vm.consulting = false;
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
@@ -35,8 +73,7 @@
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
-        vm.transition = transition;
-        vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.itemsPerPage = 9;
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         vm.filterAuthorized = "";
@@ -57,12 +94,12 @@
                 id: encryptedId
             })
         }
-        vm.changeFilterShowing = function(){
-            vm.showFilterDiv=!vm.showFilterDiv;
-
+        vm.changeFilterShowing = function () {
+            vm.showFilterDiv = !vm.showFilterDiv;
         }
+
         vm.changesTitles = function () {
-            if (enabledOptions) {
+            if (vm.enabledOptions) {
                 vm.title = "Usuarios autorizados";
                 vm.buttonTitle = "Ver usuarios autorizados deshabilitados";
                 vm.actionButtonTitle = "Deshabilitar";
@@ -78,127 +115,89 @@
             }
         }
 
-            loadHouses();
-
-
-
-        function loadHouses() {
-            House.query({
-                companyId: globalCompany.getId()
-            }).$promise.then(onSuccessHouses);
-
-            function onSuccessHouses(data, headers) {
-                angular.forEach(data, function (value, key) {
-                    value.housenumber = parseInt(value.housenumber);
-                    if (value.housenumber == 9999) {
-                        value.housenumber = "Oficina"
-                    }
-                })
-                vm.houses = data;
-                vm.filterAuthorized = 2;
-                loadResidents();
-            }
-
+        function loadPage(page) {
+            vm.page = page;
+            loadResidents();
         }
+        House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
+        function onSuccessHouses(data, headers) {
+            vm.houses = data;
+        }
+        loadResidents();
 
-        function loadResidents(option) {
-            if (enabledOptions) {
+
+        function loadResidents() {
+            if(vm.filter.houseId==undefined){
+                vm.filter.houseId = "empty"
+            }
+            if(vm.filter.name==""||vm.filter.name==undefined){
+                vm.filter.name = " ";
+            }
+            if (vm.enabledOptions) {
                 vm.changesTitles();
-                Resident.residentsEnabled({
-                    // page: pagingParams.page - 1,
-                    // size: vm.itemsPerPage,
-                    // sort: sort(),
-                    companyId: globalCompany.getId(),
-                }).$promise.then(onSuccess, onError);
-            } else {
-                vm.changesTitles();
-                Resident.residentsDisabled({
-                    page: pagingParams.page - 1,
+                Resident.getResidents({
+                    page: vm.page,
                     size: vm.itemsPerPage,
                     sort: sort(),
                     companyId: globalCompany.getId(),
-                }).$promise.then(onSuccess, onError);
+                    name: vm.filter.name,
+                    houseId: vm.filter.houseId,
+                    owner: vm.filter.owner,
+                    enabled: vm.filter.enabled,
+                },onSuccess, onError);
+            } else {
+                vm.changesTitles();
+                Resident.getResidents({
+                    page: vm.page,
+                    size: vm.itemsPerPage,
+                    sort: sort(),
+                    companyId: globalCompany.getId(),
+                    name: vm.filter.name,
+                    houseId: vm.filter.houseId,
+                    owner: vm.filter.owner,
+                    enabled: vm.filter.enabled,
+                },onSuccess, onError);
             }
 
             function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
+                var result = [];
+                if (vm.predicate !== 'name') {
+                    result.push('name,asc');
                 }
                 return result;
             }
-
-            function onSuccess(data, headers) {
-                if (option !== 1) {
-                    vm.queryCount = data.length;
-                    vm.page = pagingParams.page;
-                    vm.residents = formatResidents(data);
-                } else {
-                    var residentsByHouse = [];
-                    vm.residents = data;
-                    for (var i = 0; i < vm.residents.length; i++) {
-                        if (vm.house.id === vm.residents[i].houseId) {
-                            residentsByHouse.push(vm.residents[i])
-                        }
-                    }
-
-                    vm.residents = formatResidents(residentsByHouse);
-                }
-                vm.isReady = true;
-                vm.isReady2 = true;
-            }
-
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
+        function onSuccess(data, headers) {
+            vm.links = ParseLinks.parse(headers('link'));
+            vm.totalItems = headers('X-Total-Count');
+            for (var i = 0; i < data.length; i++) {
+                vm.residents.push(data[i])
+            }
+            vm.isReady = true;
+            vm.isReady2 = true;
+        }
+
+        function onError(error) {
+            AlertService.error(error.data.message);
+        }
         vm.switchEnabledResidents = function () {
-            vm.isReady = false;
-            enabledOptions = true;
-            vm.radiostatus = true;
-            vm.findResidentsByHouse(vm.house);
+            vm.filter.enabled = 1;
+            vm.enabledOptions = 1;
+            vm.filterResidents();
         }
         vm.switchDisabledResidents = function () {
-            vm.isReady = false;
-            enabledOptions = false;
-            vm.findResidentsByHouse(vm.house);
-        }
-        vm.findResidentsByHouse = function (house) {
-            vm.consulting = true;
-            vm.house = house;
-            if (house == undefined || house=='-1') {
-                loadResidents();
-            } else {
-                loadResidents(1);
-            }
+            vm.filter.enabled = 0;
+            vm.enabledOptions = 0;
+            vm.filterResidents();
         }
 
-        function formatResidents(residents) {
-            var formattedResidents = [];
-            for (var i = 0; i < residents.length; i++) {
-                for (var e = 0; e < vm.houses.length; e++) {
-                    if (residents[i].houseId == vm.houses[e].id) {
-                        residents[i].house_id = vm.houses[e].housenumber;
-                        residents[i].name = residents[i].name + " " + residents[i].lastname;
-                        if (residents[i].email == null) {
-                            residents[i].email = "No registrado"
-                        }
-                        ;
-                        if (residents[i].phonenumber == null) {
-                            residents[i].phonenumber = "No registrado"
-                        }
-                        ;
-                    }
-                }
-            }
-            return residents;
-        }
+
 
         vm.deleteResident = function (resident) {
             vm.residentToDelete = resident;
-            Modal.confirmDialog("¿Está seguro que desea eliminar al residente "+ resident.name + "?","Una vez eliminado no podrá recuperar los datos",
-                function(){
+            Modal.confirmDialog("¿Está seguro que desea eliminar al residente " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
                     Modal.showLoadingBar();
                     vm.login = resident.userLogin;
                     Resident.delete({
@@ -213,12 +212,12 @@
                     function () {
                         Modal.hideLoadingBar();
                         Modal.toast("Se ha eliminado el residente correctamente.");
-                        loadResidents();
+                        vm.filterResidents();
                         WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
                     });
             } else {
                 Modal.toast("Se ha eliminado el residente correctamente.");
-                loadResidents();
+                vm.filterResidents();
                 Modal.hideLoadingBar();
                 WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
             }
@@ -227,14 +226,14 @@
 
         vm.disableEnabledResident = function (residentInfo) {
             var correctMessage;
-            if (enabledOptions) {
+            if (vm.enabledOptions) {
                 correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
 
             } else {
                 correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
             }
 
-            Modal.confirmDialog(correctMessage,"",function(){
+            Modal.confirmDialog(correctMessage, "", function () {
                 Modal.showLoadingBar();
                 Resident.get({id: residentInfo.id}).$promise.then(onSuccessGetResident);
             });
@@ -246,7 +245,7 @@
         }
 
         function enabledDisabledResident(resident) {
-            if (enabledOptions) {
+            if (vm.enabledOptions) {
                 resident.enabled = 0;
                 Resident.update(resident, onSuccessDisabledResident);
             } else {
@@ -262,10 +261,8 @@
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetDisabledUser);
-
             } else {
-                loadResidents();
-
+                vm.filterResidents();
                 Modal.toast("Se ha deshabilitado el residente correctamente.");
                 Modal.hideLoadingBar();
             }
@@ -276,10 +273,9 @@
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {
-
                 Modal.toast("Se ha deshabilitado el residente correctamente.");
                 Modal.hideLoadingBar();
-                loadResidents();
+                vm.filterResidents();
             }
         }
 
@@ -290,9 +286,11 @@
                 User.getUserById({
                     id: data.userId
                 }, onSuccessGetEnabledUser);
-
             } else {
-                loadResidents();
+                Modal.toast("Se ha habilitado el residente correctamente.");
+                Modal.hideLoadingBar();
+
+                vm.filterResidents();
             }
         }
 
@@ -301,24 +299,10 @@
             User.update(data, onSuccessEnabledUser);
 
             function onSuccessEnabledUser(data, headers) {
-
                 Modal.toast("Se ha habilitado el residente correctamente.");
                 Modal.hideLoadingBar();
-                loadResidents();
+                vm.filterResidents();
             }
-        }
-
-        function loadPage(page) {
-            vm.page = page;
-            vm.transition();
-        }
-
-        function transition() {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
-            });
         }
     }
 })();

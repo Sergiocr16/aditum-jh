@@ -82,6 +82,8 @@ public class VehiculeResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, vehiculeDTO.getId().toString()))
             .body(result);
     }
+
+
     @GetMapping("/vehiculesEnabled/byHouse")
     @Timed
     public ResponseEntity<List<VehiculeDTO>> getEnabledVehiculesByHouse(@ApiParam Pageable pageable,Long houseId)
@@ -107,6 +109,16 @@ public class VehiculeResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
         Page<VehiculeDTO> page = vehiculeService.findEnabled(pageable,companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesEnabled");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/allVehicules/{companyId}/{houseId}/{enabled}/{licencePlate}")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getEnabledVehicules(@ApiParam Pageable pageable, @PathVariable Long companyId,@PathVariable String houseId, @PathVariable int enabled, @PathVariable String licencePlate)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents");
+        Page<VehiculeDTO> page = vehiculeService.findByFilter(pageable,companyId,houseId,enabled,licencePlate);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/vehiculesEnabled");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
