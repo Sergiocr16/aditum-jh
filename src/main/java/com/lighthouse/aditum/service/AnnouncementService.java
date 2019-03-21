@@ -27,10 +27,13 @@ public class AnnouncementService {
 
     private final AnnouncementCommentService announcementCommentService;
 
-    public AnnouncementService(AnnouncementCommentService announcementCommentService, AnnouncementRepository announcementRepository, AnnouncementMapper announcementMapper) {
+    private final AnnouncementMailService announcementMailService;
+
+    public AnnouncementService(AnnouncementMailService announcementMailService, AnnouncementCommentService announcementCommentService, AnnouncementRepository announcementRepository, AnnouncementMapper announcementMapper) {
         this.announcementRepository = announcementRepository;
         this.announcementMapper = announcementMapper;
         this.announcementCommentService = announcementCommentService;
+        this.announcementMailService = announcementMailService;
     }
 
     /**
@@ -51,7 +54,14 @@ public class AnnouncementService {
         announcement.setDeleted(0);
         announcement.setCompany(announcementMapper.companyFromId(announcementDTO.getCompanyId()));
         announcement = announcementRepository.save(announcement);
-        return announcementMapper.toDto(announcement);
+        AnnouncementDTO announcementDTO1 = announcementMapper.toDto(announcement);
+
+String a = "a";
+        if(announcementDTO.getId()==null){
+            this.announcementMailService.sendEmail(announcementDTO1);
+        }
+
+        return announcementDTO1;
     }
 
     /**

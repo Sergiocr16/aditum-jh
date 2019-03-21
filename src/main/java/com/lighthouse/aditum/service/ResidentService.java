@@ -127,7 +127,13 @@ public class ResidentService {
         List<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(0, houseId, 0);
         return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
     }
-
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> findPrincipalContactByCompanyId(Pageable pageable, Long companyId) {
+        log.debug("Request to get all Residents");
+        List<Resident> result = residentRepository.findByPrincipalContactAndCompanyIdAndDeleted(1, companyId, 0);
+        String a = "a";
+        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+    }
     /**
      * Get one resident by id.
      *

@@ -20,5 +20,6 @@ public interface ResidentRepository extends JpaRepository<Resident,Long> {
     List<Resident> findByCompanyIdAndDeleted(Long companyId,Integer deleted);
     Resident findByCompanyIdAndIdentificationnumberAndDeleted(Long companyId,String identificationNumber,Integer deleted);
     List<Resident> findByEnabledAndHouseIdAndDeleted(Integer state,Long houseId, Integer deleted);
+    List<Resident> findByPrincipalContactAndCompanyIdAndDeleted(Integer principalContact,Long houseId, Integer deleted);
     Integer countByEnabledAndCompanyIdAndDeleted(Integer state,Long companyId,Integer deleted);
 }
