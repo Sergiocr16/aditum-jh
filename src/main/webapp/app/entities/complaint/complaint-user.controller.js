@@ -54,11 +54,11 @@
             vm.links = {
                 last: 0
             };
+            vm.isReady = false;
             vm.loadAllByStatus();
         }
 
         function loadAllByStatus() {
-            vm.isReady = false;
             if (vm.status !== "-1") {
                 Complaint.queryByStatus({
                     companyId: globalCompany.getId(),

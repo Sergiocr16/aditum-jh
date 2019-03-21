@@ -19,10 +19,6 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
 
     Page<Resident> findByEnabledAndCompanyIdAndDeleted(Pageable pageable, Integer state, Long companyId, Integer deleted);
 
-    //    @Query("select r from Resident r where r.enabled >= ?1 and r.company.id = ?2 and r.deleted = ?3  and(UPPER(r.name) LIKE CONCAT('%',UPPER(?4),'%') or  UPPER(r.lastname) LIKE CONCAT('%',UPPER(?4),'%'))")
-//        "r.enabled >= ?1 and r.company.id = ?2 and r.deleted = ?3  and or " +
-//        "r.enabled >= ?1 and r.company.id = ?2 and r.deleted = ?3 and UPPER(r.secondlastname) LIKE CONCAT('%',UPPER(?4),'%') or " +
-//        "r.enabled >= ?1 and r.company.id = ?2 and r.deleted = ?3   and UPPER(r.identificationnumber) LIKE CONCAT('%',UPPER(?4),'%')")
     Page<Resident> findByEnabledAndCompanyIdAndDeletedAndNameContainsOrEnabledAndCompanyIdAndDeletedAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndIdentificationnumberContains(Pageable pageable, Integer state, Long companyId, Integer deleted, String name,
                                                                                                                                                                                                                                               Integer state1, Long companyId1, Integer deleted1, String name1,
                                                                                                                                                                                                                                               Integer state2, Long companyId2, Integer deleted2, String name2,
