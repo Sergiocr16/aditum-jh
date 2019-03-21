@@ -92,20 +92,21 @@ public class ResidentResource {
      */
     @GetMapping("/residents")
     @Timed
-    public ResponseEntity<List<ResidentDTO>> getAllResidents(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<ResidentDTO>> getAllResidents(@ApiParam Pageable pageable, Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findAll(companyId);
+        Page<ResidentDTO> page = residentService.findAll(pageable, companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/residentsEnabled/byHouse")
     @Timed
     public ResponseEntity<List<ResidentDTO>> findResidentesEnabledByHouseId(@ApiParam Pageable pageable, Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable,houseId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsEnabled/byHouse");
+        Page<ResidentDTO> page = residentService.findEnabledByHouseId(pageable, houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -114,28 +115,33 @@ public class ResidentResource {
     public ResponseEntity<List<ResidentDTO>> findResidentesDisabledByHouseId(@ApiParam Pageable pageable, Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findDisabledByHouseId(pageable,houseId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsDisabled/byHouse");
+        Page<ResidentDTO> page = residentService.findDisabledByHouseId(pageable, houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/residentsEnabled")
+    @GetMapping("/allResidents/{companyId}/{enabled}/{houseId}/{owner}/{name}")
     @Timed
-    public ResponseEntity<List<ResidentDTO>> getEnabledResidents(@ApiParam Pageable pageable,Long companyId)
+    public ResponseEntity<List<ResidentDTO>> getResidents(@ApiParam Pageable pageable,
+                                                          @PathVariable Long companyId
+                                                        , @PathVariable int enabled
+                                                        , @PathVariable String houseId
+                                                        , @PathVariable String owner
+                                                        , @PathVariable String name)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findEnabled(pageable,companyId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsEnabled");
+        Page<ResidentDTO> page = residentService.getAllInFilter(pageable,companyId,enabled, houseId,owner,name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
-    @GetMapping("/residentsDisabled")
+    @GetMapping("/residentsDisabled/{companyId}")
     @Timed
-    public ResponseEntity<List<ResidentDTO>> getDisabledResidents(@ApiParam Pageable pageable, Long companyId)
+    public ResponseEntity<List<ResidentDTO>> getDisabledResidents(@ApiParam Pageable pageable, @PathVariable Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a page of Residents");
-        Page<ResidentDTO> page = residentService.findDisabled(pageable,companyId);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residentsDisabled");
+        Page<ResidentDTO> page = residentService.findDisabled(pageable, companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -152,13 +158,15 @@ public class ResidentResource {
         ResidentDTO residentDTO = residentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(residentDTO));
     }
+
     @GetMapping("/residents/findByCompanyAndIdentification/{companyId}/{identificationNumber}")
     @Timed
-    public ResponseEntity<ResidentDTO> getResidentByCompanyAndIdentification(@PathVariable(value = "companyId")  Long  companyId, @PathVariable(value = "identificationNumber")  String identificationNumber) {
-        log.debug("REST request to get Resident by Company and Identifiaction : {}",companyId,identificationNumber);
-        ResidentDTO residentDTO = residentService.findByCompanyIdAndIdentifiactionNumber(companyId,identificationNumber);
+    public ResponseEntity<ResidentDTO> getResidentByCompanyAndIdentification(@PathVariable(value = "companyId") Long companyId, @PathVariable(value = "identificationNumber") String identificationNumber) {
+        log.debug("REST request to get Resident by Company and Identifiaction : {}", companyId, identificationNumber);
+        ResidentDTO residentDTO = residentService.findByCompanyIdAndIdentifiactionNumber(companyId, identificationNumber);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(residentDTO));
     }
+
     @GetMapping("/residents/findByUserId/{id}")
     @Timed
     public ResponseEntity<ResidentDTO> getResidentByUserId(@PathVariable Long id) {
@@ -166,6 +174,7 @@ public class ResidentResource {
         ResidentDTO residentDTO = residentService.findOneByUserId(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(residentDTO));
     }
+
     /**
      * DELETE  /residents/:id : delete the "id" resident.
      *

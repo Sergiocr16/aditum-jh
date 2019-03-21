@@ -40,7 +40,6 @@
         }
         stateHandler.initialize();
         translationHandler.initialize();
-
         vm.isInLogin = $state.includes('home');
         vm.isInManual = $state.includes('manualResidente');
         vm.loadingDash = false;
@@ -88,7 +87,5 @@
                 vm.action2();
             },30)
         }
-
-
     }
 })();

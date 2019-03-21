@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,10 +83,10 @@ public class ResidentService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findAll(Long companyId) {
+    public Page<ResidentDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId, 0);
-        return new PageImpl<>(result).map(resident -> {
+        Page<Resident> result = residentRepository.findByCompanyIdAndDeleted(pageable, companyId, 0);
+        return result.map(resident -> {
                 ResidentDTO residentDTO = residentMapper.toDto(resident);
                 residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
                 return residentDTO;
@@ -108,8 +109,8 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findEnabledByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(1, houseId, 0);
-        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+        Page<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(pageable, 1, houseId, 0);
+        return result.map(resident -> residentMapper.toDto(resident));
     }
 
     @Transactional(readOnly = true)
@@ -124,8 +125,8 @@ public class ResidentService {
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabledByHouseId(Pageable pageable, Long houseId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(0, houseId, 0);
-        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
+        Page<Resident> result = residentRepository.findByEnabledAndHouseIdAndDeleted(pageable, 0, houseId, 0);
+        return result.map(resident -> residentMapper.toDto(resident));
     }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findPrincipalContactByCompanyId(Pageable pageable, Long companyId) {
@@ -170,18 +171,73 @@ public class ResidentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findEnabled(Pageable pageable, Long companyId) {
+    public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(1, companyId, 0);
-        return new PageImpl<>(result).map(resident -> resident.image(null)).map(resident -> residentMapper.toDto(resident));
+        Page<Resident> result;
+        if (!name.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                if (!owner.equals("empty")) {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndNameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseIdAndIdentificationnumberContains(
+                        pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId), name
+                    );
+                } else {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndNameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndHouseIdAndIdentificationnumberContains(
+                        pageable, enabled, companyId, 0, Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Long.parseLong(houseId), name,
+                        enabled, companyId, 0, Long.parseLong(houseId), name
+                        );
+                }
+            } else {
+                if (!owner.equals("empty")) {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndNameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndIsOwnerAndIdentificationnumberContains(
+                        pageable, enabled, companyId, 0, Integer.parseInt(owner), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), name,
+                        enabled, companyId, 0, Integer.parseInt(owner), name
+                    );
+                } else {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndNameContainsOrEnabledAndCompanyIdAndDeletedAndLastnameContainsOrEnabledAndCompanyIdAndDeletedAndSecondlastnameContainsOrEnabledAndCompanyIdAndDeletedAndIdentificationnumberContains(
+                        pageable, enabled, companyId, 0, name,
+                        enabled, companyId, 0, name,
+                        enabled, companyId, 0,
+                        name, enabled, companyId, 0, name);
+                }
+            }
+        } else {
+            if (!houseId.equals("empty")) {
+                if (!owner.equals("empty")) {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwnerAndHouseId(pageable, enabled, companyId, 0, Integer.parseInt(owner), Long.parseLong(houseId));
+                } else {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndHouseId(pageable, enabled, companyId, 0, Long.parseLong(houseId));
+                }
+            } else {
+                if (!owner.equals("empty")) {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeletedAndIsOwner(pageable, enabled, companyId, 0, Integer.parseInt(owner));
+                } else {
+                    result = residentRepository.findByEnabledAndCompanyIdAndDeleted(pageable, enabled, companyId, 0);
+                }
+            }
+        }
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
+            return residentDTO;
+        });
     }
 
     @Transactional(readOnly = true)
     public Page<ResidentDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        List<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(0, companyId, 0);
-        return new PageImpl<>(result).map(resident -> residentMapper.toDto(resident));
-
+        Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(pageable, 0, companyId, 0);
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
+            return residentDTO;
+        });
     }
 
     @Transactional(readOnly = true)

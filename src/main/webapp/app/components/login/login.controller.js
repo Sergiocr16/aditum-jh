@@ -9,14 +9,6 @@
 
     function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration) {
 
-        //
-        // angular.element(document).ready(function () {
-        //     $('body').removeClass("gray");
-        //     $('.carousel').fadeIn("slow");
-        //     $('.carousel').carousel({
-        //         intervals: 2000
-        //     });
-        // });
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
         vm.pdfUrl = 'content/manuals/manualusuario.pdf';
@@ -25,6 +17,7 @@
         //         .$getByHandle('my-pdf-container')
         //         .load(url);
         // };
+
         vm.anno = moment(new Date()).format('YYYY')
         $rootScope.showLogin = true;
         $rootScope.showSelectCompany = false;
@@ -45,7 +38,6 @@
         $timeout(function () {
             angular.element('#username').focus();
         });
-
         function cancel() {
             vm.credentials = {
                 username: null,
@@ -53,13 +45,10 @@
                 rememberMe: true
             };
             vm.authenticationError = false;
-//            $uibModalInstance.dismiss('cancel');
         }
-
         function showLoginHelp() {
             Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
         }
-
         function login(event) {
             event.preventDefault();
             Auth.login({
@@ -67,7 +56,6 @@
                 password: vm.password,
                 rememberMe: vm.rememberMe
             }).then(function (data) {
-
                 vm.authenticationError = false;
                 Principal.identity().then(function (account) {
                     $rootScope.menu = true;
@@ -82,11 +70,11 @@
                                 $rootScope.companyUser = user;
                                 $rootScope.showSelectCompany = false;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
-                               var companiesConfigArray = "";
+                                var companiesConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
-                                    CompanyConfiguration.get({id: user.companies[i].id}, function(companyConfig){
-                                        companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
-                                        if(user.companies.length==i){
+                                    CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + "|";
+                                        if (user.companies.length == i) {
                                             $rootScope.companyId = user.companies[0].id;
                                             vm.backgroundSelectCompany = true;
                                             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
@@ -110,8 +98,8 @@
                                     $rootScope.companyUser = data;
                                     $localStorage.houseSelected = house;
                                     var companiesConfigArray = "";
-                                    CompanyConfiguration.get({id: data.companyId}, function(companyConfig){
-                                        companiesConfigArray += companyConfig.companyId+";"+companyConfig.hasContability+";"+companyConfig.minDate+"|";
+                                    CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + "|";
                                         vm.backgroundSelectCompany = true;
                                         $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                         setTimeout(function () {
@@ -141,8 +129,6 @@
                         $state.go('home');
                     }
                 });
-
-
                 $rootScope.$broadcast('authenticationSuccess');
                 $('body').addClass("gray");
                 // previousState was set in the authExpiredInterceptor before being redirected to login modal.
@@ -155,7 +141,6 @@
             }).catch(function (a) {
                 vm.authenticationError = true;
                 Modal.toast("Credenciales inválidos o cuenta deshabilitada.")
-
             });
         }
 

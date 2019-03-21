@@ -24,157 +24,134 @@
     </div>
 
     <div class="portlet-body fade-in " ng-if="vm.isReady">
-        <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px; margin-top: 60px;"
-             ng-if="vm.residents.length> 0 || vm.consulting">
-
-            <div class=" no-padding col-md-11 col-sm-10 col-xs-10" style="margin-bottom: 0px;"
+        <div class="col-md-12 col-xs-12 col-sm-12 no-padding " style="margin-bottom: 8px; margin-top: 60px;">
+            <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
                  id="index-search-bar">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar" ng-model="vm.query">
-                </div>
+                <form ng-submit="vm.filterResidents()">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.filter.name">
+                    </div>
+                </form>
             </div>
             <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
-                <button ng-click="vm.changeFilterShowing()" type="button"
+                <button ng-click="vm.filterResidents()" type="button"
+                        class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
+                        style="height: 34px!important; padding-top: 5px!important;" >
+                    <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
+                    <i class="material-icons " style="font-size: 24px!important;">search</i></button>
+            </div>
+            <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
+                <button ng-click="vm.open()" type="button"
                         class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding green-button-oficial"
                         style="height: 34px!important; padding-top: 5px!important;">
                     <md-tooltip md-direction="left" class="font-13 bold white-color">Filtrar</md-tooltip>
                     <i class="material-icons " style="font-size: 24px!important;">filter_list</i></button>
-
             </div>
-
         </div>
 
-        <div class="slide-box slide-toggle-js no-padding fade-in row " layout-xs="column"
-             style="margin-right: 0px!important;" ng-if="vm.showFilterDiv">
-            <md-input-container class="md-block no-margin col-md-4  " has-authority="ROLE_MANAGER"
-                                ng-if="vm.residents.length> 0 || vm.house!='-1'">
-
-                <md-select ng-model="vm.house" ng-change="vm.findResidentsByHouse(vm.house)">
-                    <md-option ng-value="-1" selected="true">Todas las filiales</md-option>
-                    <md-option ng-repeat="house in vm.houses track by house.id"
-                               ng-model="vm.house" ng-value="house">
-                        {{house.housenumber}}
-                    </md-option>
-
-                </md-select>
-            </md-input-container>
-            <md-input-container class="md-block no-margin col-md-4 no-padding-right" has-authority="ROLE_MANAGER"
-                                ng-if="vm.residents.length> 0 || vm.house!='-1'">
-                <md-select ng-model="vm.filterAuthorized" ng-change="vm.setAuthorizedView(vm.filterAuthorized)">
-                    <md-option value="2">Con y sin cuenta en sistema</md-option>
-                    <md-option value="1">Con cuenta en sistema</md-option>
-                    <md-option value="0">Sin cuenta en sistema</md-option>
-                </md-select>
-            </md-input-container>
-
-        </div>
-
-        <div class="col-lg-12 col-md-12 col-xs-12 no-padding ">
-
-            <div class="col-md-12 col-xs-12 no-padding fade-in">
-                <no-content ng-if="vm.residents.length == 0" icon="group"
-                            text="No hay usuarios registrados"></no-content>
-
-                <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
-                     ng-repeat="resident in vm.residents | filter:vm.query | orderBy:'name' "
-                     ng-show="vm.filterAuthorized==resident.isOwner || vm.filterAuthorized>1">
-                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
-                             class="margin-bottom-10 residentCardContainer"
-                             md-theme-watch>
-                        <md-card-title>
-                            <md-card-title-text>
-                                <span class="md-headline font-15 ">{{resident.name.toUpperCase()}}</span>
-                                <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
-                                <span class="md-subhead">Filial: {{resident.house_id}}</span>
-                                <span class="md-subhead">Teléfono: {{resident.phonenumber}}</span>
-                            </md-card-title-text>
-                            <md-card-title-media>
-                                <div class="md-media-md card-media  hidden-md hidden-lg"
-                                     style="padding-top: 10px!important;">
-                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="112"
-                                         width="112"/>
-                                    <img  style="cursor: pointer" data-toggle="modal" data-target="#myModal" ng-show="resident.image_url!==null" src="{{resident.image_url}}"
-                                         class="object-fit_scale-down-index-xs"/>
-                                </div>
-                                <div class="md-media-sm card-media hidden-xs hidden-sm"
-                                     style="padding-top: 10px!important;">
-                                    <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="80"
-                                         width="80"/>
-                                    <img style="cursor: pointer" data-toggle="modal" data-target="#myModal" ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+        <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
+             infinite-scroll-disabled="vm.page >= vm.links['last']"
+             infinite-scroll-container="'.all-content'">
+            <no-content ng-if="vm.residents.length == 0" icon="group" text="No hay usuarios registrados"></no-content>
+            <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                 ng-repeat="resident in vm.residents | orderBy:'name' ">
+                <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                         class="margin-bottom-10 residentCardContainer"
+                         md-theme-watch>
+                    <md-card-title>
+                        <md-card-title-text>
+                            <span class="md-headline font-15 ">{{resident.name.toUpperCase() + " " + resident.lastname.toUpperCase()}}</span>
+                            <span class="md-subhead" style="padding-top: 15px!important;">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                            <span class="md-subhead">Filial: {{resident.house.housenumber}}</span>
+                            <span class="md-subhead">Teléfono: <span ng-if="resident.phonenumber == null"></span> <span
+                                ng-if="resident.phonenumber != null">{{resident.phonenumber}}</span></span>
+                        </md-card-title-text>
+                        <md-card-title-media>
+                            <div class="md-media-md card-media  hidden-md hidden-lg"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="112"
+                                     width="112"/>
+                              <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+resident.id}}" ng-show="resident.image_url!==null" src="{{resident.image_url}}"
                                          class="object-fit_scale-down-index"/>
-                                </div>
-
-                            </md-card-title-media>
-                        </md-card-title>
-
-                        <md-card-actions layout="row" layout-align="space-between center">
-                            <div>
-                                <i class="material-icons greenBalance" ng-if="resident.isOwner==1"
-                                   style="color: #999; padding-left: 5px!important;">
-                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Tiene cuenta en
-                                        sistema
-                                    </md-tooltip>
-                                    perm_identity</i>
-                                <i class="material-icons redBalance" ng-if="resident.isOwner==0"
-                                   style="color: #999; padding-left: 5px!important;">
-                                    <md-tooltip md-direction="right" class="font-13 bold white-color">No tiene cuenta en
-                                        sistema
-                                    </md-tooltip>
-                                    perm_identity</i>
-                                <i class="material-icons greenBalance"
-                                   style="color: #999; padding-left: 5px!important;"
-                                   ng-if="resident.principalContact==1">
-                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Contacto principal
-                                        de la filial
-                                    </md-tooltip>
-                                    assignment_ind</i>
                             </div>
-                            <div layout="row" layout-align="space-between center">
-                                <i class="material-icons outline-none" style="color:#999;"
-                                   ng-click="vm.detailResident(resident.id)">
-                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
-                                    </md-tooltip>
-                                    remove_red_eye</i>
-
-                                <md-menu md-position-mode="target-right target " has-any-authority="ROLE_MANAGER">
-                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
-                                               ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
-                                        <i class="material-icons" style="color:#999;">
-                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
-                                            </md-tooltip>
-                                            more_vert</i>
-                                    </md-button>
-                                    <md-menu-content width="4">
-                                        <md-menu-item>
-                                            <md-button ng-click="vm.editResident(resident.id)">
-                                                <div layout="row" flex>
-                                                    <p flex>Editar</p>
-                                                </div>
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="vm.disableEnabledResident(resident)">
-                                                <div layout="row" flex>
-                                                    <p flex>{{vm.actionButtonTitle}}</p>
-                                                </div>
-                                            </md-button>
-                                        </md-menu-item>
-                                        <md-menu-item>
-                                            <md-button ng-click="vm.deleteResident(resident)">
-                                                <div layout="row" flex>
-                                                    <p flex>Eliminar</p>
-                                                </div>
-                                            </md-button>
-                                        </md-menu-item>
-                                    </md-menu-content>
-                                </md-menu>
+                            <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                 style="padding-top: 10px!important;">
+                                <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg" height="80"
+                                     width="80"/>
+                               <img style="cursor: pointer" data-toggle="modal" data-target="{{'#myModal'+resident.id}}" ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                         class="object-fit_scale-down-index"/>
                             </div>
-                        </md-card-actions>
-                    </md-card>
-                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        </md-card-title-media>
+                    </md-card-title>
+
+                    <md-card-actions layout="row" layout-align="space-between center">
+                        <div>
+                            <i class="material-icons greenBalance" ng-if="resident.isOwner==1"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Tiene cuenta en
+                                    sistema
+                                </md-tooltip>
+                                perm_identity</i>
+                            <i class="material-icons redBalance" ng-if="resident.isOwner==0"
+                               style="color: #999; padding-left: 5px!important;">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">No tiene cuenta en
+                                    sistema
+                                </md-tooltip>
+                                perm_identity</i>
+                            <i class="material-icons greenBalance"
+                               style="color: #999; padding-left: 5px!important;"
+                               ng-if="resident.principalContact==1">
+                                <md-tooltip md-direction="right" class="font-13 bold white-color">Contacto principal
+                                    de la filial
+                                </md-tooltip>
+                                assignment_ind</i>
+                        </div>
+                        <div layout="row" layout-align="space-between center">
+                            <i class="material-icons outline-none" style="color:#999;"
+                               ng-click="vm.detailResident(resident.id)">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
+                                </md-tooltip>
+                                remove_red_eye</i>
+
+                            <md-menu md-position-mode="target-right target " has-any-authority="ROLE_MANAGER">
+                                <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                           ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                    <i class="material-icons" style="color:#999;">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        </md-tooltip>
+                                        more_vert</i>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.editResident(resident.id)">
+                                            <div layout="row" flex>
+                                                <p flex>Editar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.disableEnabledResident(resident)">
+                                            <div layout="row" flex>
+                                                <p flex>{{vm.actionButtonTitle}}</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="vm.deleteResident(resident)">
+                                            <div layout="row" flex>
+                                                <p flex>Eliminar</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                        </div>
+
+                    </md-card-actions>
+                    <div id="{{'myModal'+resident.id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-body">
@@ -183,7 +160,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </md-card>
             </div>
         </div>
         <md-button ui-sref="resident.new" style="position: fixed"
@@ -193,7 +170,6 @@
         </md-button>
     </div>
 </div>
-
 <script>
     function centerModal() {
         $(this).css('display', 'block');

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -55,16 +56,15 @@ public class VehiculeService {
     }
 
     /**
-     *  Get all the vehicules.
+     * Get all the vehicules.
      *
-
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findAll(Long companyId) {
         log.debug("Request to get all Vehicules");
-        List<Vehicule> result = vehiculeRepository.findByCompanyIdAndDeleted(companyId,0);
- 
+        List<Vehicule> result = vehiculeRepository.findByCompanyIdAndDeleted(companyId, 0);
+
         return new PageImpl<>(result).map(vehicule -> {
             VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
             vehiculeDTO.setHouse(houseService.findOne(vehiculeDTO.getHouseId()));
@@ -73,10 +73,10 @@ public class VehiculeService {
     }
 
     /**
-     *  Get one vehicule by id.
+     * Get one vehicule by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public VehiculeDTO findOne(Long id) {
@@ -87,9 +87,9 @@ public class VehiculeService {
     }
 
     @Transactional(readOnly = true)
-    public VehiculeDTO findOneByCompanyAndPlate(Long id,String licensePlate) {
+    public VehiculeDTO findOneByCompanyAndPlate(Long id, String licensePlate) {
         log.debug("Request to get Vehicule : {}", id);
-        Vehicule vehicule = vehiculeRepository.findOneByCompanyIdAndLicenseplateAndDeleted(id,licensePlate,0);
+        Vehicule vehicule = vehiculeRepository.findOneByCompanyIdAndLicenseplateAndDeleted(id, licensePlate, 0);
         VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
         return vehiculeDTO;
     }
@@ -97,19 +97,19 @@ public class VehiculeService {
     @Transactional(readOnly = true)
     public Integer enableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(1,companyId,0);
+        return vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(1, companyId, 0);
     }
 
     @Transactional(readOnly = true)
     public Integer disableQuantityByCompany(Long companyId) {
         log.debug("Request to get Vehicule : {}", companyId);
-        return  vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(0,companyId,0);
+        return vehiculeRepository.countByEnabledAndCompanyIdAndDeleted(0, companyId, 0);
     }
 
     /**
-     *  Delete the  vehicule by id.
+     * Delete the  vehicule by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Vehicule : {}", id);
@@ -120,29 +120,56 @@ public class VehiculeService {
 
 
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findEnabled(Pageable pageable,Long companyId) {
+    public Page<VehiculeDTO> findEnabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(1,companyId,0);
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(1, companyId, 0);
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
     }
+
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findDisabled(Pageable pageable,Long companyId) {
+    public Page<VehiculeDTO> findByFilter(Pageable pageable, Long companyId, String houseId, int enabled, String licensePlate) {
+        Page<Vehicule> result;
+        if (!licensePlate.equals(" ")) {
+            if (!houseId.equals("empty")) {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndLicenseplateContains(pageable, enabled, companyId, 0, Long.parseLong(houseId),licensePlate);
+            } else {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndLicenseplateContains(pageable, enabled, companyId, 0,licensePlate);
+            }
+        }else{
+            if (!houseId.equals("empty")) {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndHouseId(pageable, enabled, companyId, 0, Long.parseLong(houseId));
+            } else {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(pageable, enabled, companyId, 0);
+            }
+        }
+        return result.map(vehicule -> {
+            VehiculeDTO vehiculeDto = vehiculeMapper.toDto(vehicule);
+            vehiculeDto.setHouse(houseService.findOne(vehiculeDto.getHouseId()));
+            return vehiculeDto;
+        });
+    }
+
+
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(0,companyId,0);
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(0, companyId, 0);
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
+
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findEnabledByHouse(Pageable pageable,Long houseId) {
+    public Page<VehiculeDTO> findEnabledByHouse(Pageable pageable, Long houseId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(1,houseId,0);
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(1, houseId, 0);
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
+
     @Transactional(readOnly = true)
-    public Page<VehiculeDTO> findDisabledByHouse(Pageable pageable,Long houseId) {
+    public Page<VehiculeDTO> findDisabledByHouse(Pageable pageable, Long houseId) {
         log.debug("Request to get all Residents");
-        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(0,houseId,0);
+        List<Vehicule> result = vehiculeRepository.findByEnabledAndHouseIdAndDeleted(0, houseId, 0);
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }

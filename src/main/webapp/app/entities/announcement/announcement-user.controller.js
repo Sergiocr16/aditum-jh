@@ -59,7 +59,6 @@
         function onSuccess(data, headers) {
             vm.links = ParseLinks.parse(headers('link'));
             vm.totalItems = headers('X-Total-Count');
-        console.log(data)
             for (var i = 0; i < data.length; i++) {
                 data[i].showDate = moment(data[i].publishingDate).fromNow();
                 data[i].comments = [];
@@ -72,6 +71,7 @@
                 };
                 vm.announcements.push(data[i]);
             }
+            console.log(vm.announcements)
             vm.isReady = true;
         }
 

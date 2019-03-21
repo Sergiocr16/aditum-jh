@@ -17,11 +17,13 @@
                     Auth.logout();
                     $rootScope.companyUser = undefined;
                     $localStorage.companyId = undefined;
-                    $state.go('home');
                     $rootScope.menu = false;
                     $rootScope.companyId = undefined;
                     $rootScope.showLogin = true;
                     $rootScope.inicieSesion = false;
+                    if(!$state.includes('finishReset')){
+                        $state.go('home');
+                    }
                     return null;
                 }
             }

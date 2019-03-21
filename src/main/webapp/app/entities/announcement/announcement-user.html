@@ -2,8 +2,9 @@
      style="height: 100%;  flex-grow: 1;" layout-align="space-around center">
     <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
 </div>
-<div ng-if="vm.isReady" class="fade-in" layout="column">
-    <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600  "
+<div ng-if="vm.isReady" class="fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
+     infinite-scroll-disabled="vm.page >= vm.links['last']" infinite-scroll-container="'.all-content'">
+    <h3 class="page-title font-green-sharp font-weight-600  "
         style="color: #00b19d">Noticias</h3>
 
     <no-content ng-if="vm.announcements == 0" icon="picture_in_picture"
@@ -11,8 +12,8 @@
 
     <md-card ng-show="vm.announcements.length != 0"
              style="margin-bottom: 20px!important; margin-left:0px; margin-right:0px;" md-theme-watch
-             class="form-wrapper" infinite-scroll="vm.loadPage(vm.page + 1)"
-             infinite-scroll-disabled="vm.page >= vm.links['last']" class="row"
+
+
              ng-repeat="announcement in vm.announcements track by announcement.id">
         <md-card-title layout-align="space-between center">
             <md-card-title-text>
