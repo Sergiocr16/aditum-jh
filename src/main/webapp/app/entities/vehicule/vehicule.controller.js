@@ -39,6 +39,7 @@
         };
 
         vm.close = function () {
+
             $mdDialog.hide();
         };
         vm.closeAndFilter = function () {

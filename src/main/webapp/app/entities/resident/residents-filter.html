@@ -1,7 +1,6 @@
 <md-dialog aria-label="options dialog" style="min-width: 350px;">
     <md-dialog-content layout="column" layout-padding>
-        <md-input-container class="md-block margin-top-30" has-authority="ROLE_MANAGER"
-                            ng-if="vm.residents.length> 0 || vm.house!='-1'">
+        <md-input-container class="md-block margin-top-30">
             <label>Por filial</label>
             <md-select ng-model="vm.filter.houseId" >
                 <md-option value="empty" >Todas las filiales</md-option>

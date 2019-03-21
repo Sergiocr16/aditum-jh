@@ -142,6 +142,16 @@ public class HouseResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/allHouses/{companyId}/{desocupated}/{houseNumber}")
+    @Timed
+    public ResponseEntity<List<HouseDTO>> getAllHousesFilter(@ApiParam Pageable pageable,@PathVariable Long companyId, @PathVariable String desocupated, @PathVariable String houseNumber)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Houses");
+        Page<HouseDTO> page = houseService.findAllFilter(pageable,companyId,desocupated,houseNumber);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/houses");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/houses-balance")
     @Timed
     public ResponseEntity<List<HouseDTO>> getAllHousesWidthBalance(Long companyId)

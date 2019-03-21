@@ -128,14 +128,19 @@ public class VehiculeService {
 
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findByFilter(Pageable pageable, Long companyId, String houseId, int enabled, String licensePlate) {
-        Page<Vehicule> result = null;
-        if (!houseId.equals("empty")) {
-            result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndHouseId(pageable, enabled, companyId, 0, Long.parseLong(houseId));
-        } else {
-            result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(pageable, enabled, companyId, 0);
-        }
+        Page<Vehicule> result;
         if (!licensePlate.equals(" ")) {
-            result = new PageImpl<>(filterIfName(result, licensePlate), pageable, result.getTotalElements());
+            if (!houseId.equals("empty")) {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndHouseIdAndLicenseplateContains(pageable, enabled, companyId, 0, Long.parseLong(houseId),licensePlate);
+            } else {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndLicenseplateContains(pageable, enabled, companyId, 0,licensePlate);
+            }
+        }else{
+            if (!houseId.equals("empty")) {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeletedAndHouseId(pageable, enabled, companyId, 0, Long.parseLong(houseId));
+            } else {
+                result = vehiculeRepository.findByEnabledAndCompanyIdAndDeleted(pageable, enabled, companyId, 0);
+            }
         }
         return result.map(vehicule -> {
             VehiculeDTO vehiculeDto = vehiculeMapper.toDto(vehicule);
@@ -144,15 +149,6 @@ public class VehiculeService {
         });
     }
 
-    private List<Vehicule> filterIfName(Page<Vehicule> residents, String licensePlate) {
-        List<Vehicule> filteredList = new ArrayList<>();
-        residents.getContent().forEach(v -> {
-            if (v.getLicenseplate().toUpperCase().contains(licensePlate.toUpperCase())) {
-                filteredList.add(v);
-            }
-        });
-        return filteredList;
-    }
 
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabled(Pageable pageable, Long companyId) {
