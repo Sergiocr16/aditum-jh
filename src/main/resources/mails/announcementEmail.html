@@ -1,12 +1,9 @@
 
 
-
-
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{email.activation.title}">JHipster creation</title>
+    <title >Nuevo anuncio</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 
@@ -32,6 +29,7 @@
                             </td>
                         </tr>
 
+
                         <tr>
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="margin:0;padding:0;background:#fff;width:100%;border-collapse:separate!important">
@@ -42,14 +40,15 @@
                                     </tbody></table>
                             </td>
                         </tr>
+
                         <tr>
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#494949; margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
                                     <tbody><tr>
                                         <td  style="background:#fff;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px">
-                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;">Estimado usuario</h1>
+                                            <h1 style="margin-top:20px!important;display:block;font-family:Helvetica,Arial,sans-serif;font-size:24px;font-weight:bold;line-height:125%;margin:.75em 0;padding:0;text-align:left;" th:utext="|${announcement.title}|"></h1>
 
-                                            <p style="margin:1em 0;padding:0">Adjunto encontrará el estado de cuenta de la filial <span th:text="|${house}|"></span> en <span th:text="|${company.name}|"> Condominio</span>.</p>
+                                            <p style="margin:1em 0;padding:0" th:remove="tag" th:utext="|${announcement.description}|"></p>
 
                                             <h4 style=" text-align:center; font-weight:400; color:#494949;">Cualquier duda o aclaración favor de comunicarse con la administración.</h4>
 
@@ -74,11 +73,10 @@
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
                                     <tbody>
-
                                     <tr>
                                         <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 0 1px;padding-top:0px;;padding-right:0px;padding-bottom:0;padding-left:0px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
 
-                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"  height="250"  style="border:0px initial;width:561px;height:250px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img>
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"  style="border:0px initial;width:100%;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img>
 
 
                                         </td>
@@ -140,3 +138,4 @@
 
 </body>
 </html>
+

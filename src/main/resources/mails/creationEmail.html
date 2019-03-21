@@ -53,7 +53,7 @@
                                             <p style="margin:1em 0;padding:0">Tu nombre de usuario para iniciar en nuestra página web o aplicación es el siguiente:</p>
                                             <table style="margin: 0 auto;color:#515151; margin-bottom:10px; margin-top:20px;" >
 
-                                                <h2 th:text="|${user.login}|" style="text-align:center; color:#009688; font-size:30px; padding-top:20px; padding-bottom:20px;">dbarillasv</h2>
+                                                <h2 th:text="|${user.login}|" style="text-align:center; color:#009688; font-size:30px; padding-top:20px; padding-bottom:20px;"></h2>
 
                                                 <a style="text-decoration: none;" th:href="@{|${baseUrl}/#/reset/finish?key=${user.resetKey}|}">
                                                     <h4 style="text-align:center; margin-top:50px;"><span style="background-color: #e57461; color:white; padding:14px; font-weight:600;">  ¡Has click aquí para activar tu cuenta! </span></h4>
@@ -93,7 +93,17 @@
                         <tr>
                             <td>
                                 <table border="0" cellpadding="0" cellspacing="0" width="100%"  style="color:#515151;margin:0;padding:0;font-size:16px;line-height:150%;text-align:left;width:100%;border-collapse:separate!important">
-                                    <tbody><tr>
+                                    <tbody>
+
+                                    <tr>
+                                        <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 0 1px;padding-top:0px;;padding-right:0px;padding-bottom:0;padding-left:0px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
+
+                                            <img  src="https://res.cloudinary.com/aditum/image/upload/v1553125756/Captura7.png"  height="250"  style="border:0px initial;width:561px;height:250px;margin:0px;line-height:100%;max-width:100%;outline:none;text-decoration:none;display:block" width="560" ></img>
+
+
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td  style="background:#009688;border-color:#ddd;border-style:solid;border-width:0 1px 1px;padding-top:.5em;padding-right:20px;padding-bottom:.5em;padding-left:20px"><div  style="text-align:center"><a style="color:#f36c00!important;text-decoration:underline!important" target="_blank" ></a></div>
 
                                             <h4 style="color:white; text-align:center; font-weight:400">Descarga nuestra aplicación</h4>
