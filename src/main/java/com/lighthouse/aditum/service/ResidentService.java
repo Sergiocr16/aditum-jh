@@ -83,10 +83,10 @@ public class ResidentService {
      * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<ResidentDTO> findAll(Pageable pageable, Long companyId) {
+    public Page<ResidentDTO> findAll(Long companyId) {
         log.debug("Request to get all Residents");
-        Page<Resident> result = residentRepository.findByCompanyIdAndDeleted(pageable, companyId, 0);
-        return result.map(resident -> {
+        List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId, 0);
+        return new PageImpl<>(result).map(resident -> {
                 ResidentDTO residentDTO = residentMapper.toDto(resident);
                 residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
                 return residentDTO;

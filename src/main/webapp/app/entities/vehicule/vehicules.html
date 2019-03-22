@@ -56,7 +56,8 @@
             </div>
             <div class="portlet-body fade-in"  infinite-scroll="vm.loadPage(vm.page + 1)"
                  infinite-scroll-disabled="vm.page >= vm.links['last']"
-                 infinite-scroll-container="'.all-content'">
+                 infinite-scroll-distance="1"
+                 infinite-scroll-container="'.all-content'" >
                 <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
                             text="No hay vehículos registrados"></no-content>
                 <div class="col-md-4 no-padding col-sm-6 col-xs-12   "
