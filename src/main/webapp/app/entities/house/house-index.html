@@ -36,6 +36,7 @@
         </div>
         <div class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"ng-if="vm.isReady"  infinite-scroll="vm.loadPage(vm.page + 1)"
              infinite-scroll-disabled="vm.page >= vm.links['last']"
+             infinite-scroll-distance="1"
              infinite-scroll-container="'.all-content'">
             <no-content ng-if="vm.houses.length == 0" icon="home" text="No hay filiales registradas"></no-content>
 

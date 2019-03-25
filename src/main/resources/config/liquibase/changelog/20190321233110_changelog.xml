@@ -1,0 +1,12 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="Sergio (generated)" id="1553211107696-1">
+        <addNotNullConstraint columnDataType="bigint" columnName="company_id" tableName="watch"/>
+    </changeSet>
+    <changeSet author="Sergio (generated)" id="1553211107696-2">
+        <dropNotNullConstraint columnDataType="int" columnName="deleted" tableName="announcement_comment"/>
+    </changeSet>
+    <changeSet author="Sergio (generated)" id="1553211107696-3">
+        <addNotNullConstraint columnDataType="varchar(255)" columnName="subject" tableName="payment_proof"/>
+    </changeSet>
+</databaseChangeLog>
