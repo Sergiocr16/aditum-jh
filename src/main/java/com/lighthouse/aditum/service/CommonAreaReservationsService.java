@@ -84,7 +84,7 @@ public class CommonAreaReservationsService {
         }
         commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
 
-        if (commonAreaReservationsDTO.getId() == null) {
+        if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()) {
             this.commonAreaMailService.sendNewCommonAreaReservationEmailToResident(commonAreaReservationsDTO1);
             if (commonAreaReservationsDTO.isSendPendingEmail()) {
                 this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
@@ -309,7 +309,6 @@ public class CommonAreaReservationsService {
         log.debug("Request to get CommonAreaReservations : {}", id);
         CommonAreaReservations commonAreaReservations = commonAreaReservationsRepository.findOne(id);
         CommonAreaReservationsDTO commonAreaReservationsDTO = commonAreaReservationsMapper.toDto(commonAreaReservations);
-String a = "a";
         commonAreaReservationsDTO.setChargeEmail(commonAreaReservations.getChargeEmail());
 
         commonAreaReservationsDTO.setResident(residentService.findOne(commonAreaReservationsDTO.getResidentId()));

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ReservationCalendarController', ReservationCalendarController);
 
-    ReservationCalendarController.$inject = ['CommonAreaSchedule', '$scope', '$compile', 'uiCalendarConfig', 'entity', 'CommonAreaReservations', 'AlertService', 'Resident', '$state', '$rootScope', 'Modal'];
+    ReservationCalendarController.$inject = ['globalCompany','CommonMethods','CommonAreaSchedule', '$scope', '$compile', 'uiCalendarConfig', 'entity', 'CommonAreaReservations', 'AlertService', 'Resident', '$state', '$rootScope', 'Modal'];
 
-    function ReservationCalendarController(CommonAreaSchedule, $scope, $compile, uiCalendarConfig, entity, CommonAreaReservations, AlertService, Resident, $state, $rootScope, Modal) {
+    function ReservationCalendarController(globalCompany,CommonMethods,CommonAreaSchedule, $scope, $compile, uiCalendarConfig, entity, CommonAreaReservations, AlertService, Resident, $state, $rootScope, Modal) {
         var vm = this;
         vm.commonArea = entity;
         $rootScope.mainTitle = vm.commonArea.name;
@@ -25,6 +25,13 @@
         $scope.$on("$destroy", function () {
             Modal.leavingDetail();
         });
+
+        var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        if (data.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
 
         CommonAreaSchedule.findSchedulesByCommonArea({
             commonAreaId: vm.commonArea.id

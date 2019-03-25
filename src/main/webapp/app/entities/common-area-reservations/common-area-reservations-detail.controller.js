@@ -18,7 +18,7 @@
             Modal.leavingDetail();
         });
         vm.minDate = new Date();
-        vm.sendEmail = false;
+        vm.sendEmail = true;
         vm.isReady = false;
         vm.charge = {
             type: "3",
@@ -32,6 +32,14 @@
         };
         loadInfo();
 
+
+        var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        if (data.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
+
         function loadInfo(){
 
             House.get({
@@ -42,6 +50,7 @@
                     id: vm.commonAreaReservations.residentId
                 }, function(result) {
                     vm.commonAreaReservations.residentName = result.name + " " + result.lastname;
+                    vm.commonAreaReservations.phone = result.phonenumber;
                     vm.commonAreaReservations.chargeEmail = result.email;
                     console.log("dafadf")
                     console.log(result.email)
@@ -58,10 +67,7 @@
 
         }
 
-        vm.switchSendEmail = function(){
-             vm.sendEmail = !vm.sendEmail;
 
-        };
 
         function formatScheduleTime(initialTime, finalTime){
             var times = [];
@@ -193,6 +199,11 @@
             Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
                 function () {
                     Modal.showLoadingBar()
+                    if(vm.sendEmail){
+                        vm.commonAreaReservations.sendPendingEmail = true ;
+                    }else{
+                        vm.commonAreaReservations.sendPendingEmail = false ;
+                    }
                     vm.commonAreaReservations.status = 3;
                     vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                     vm.commonAreaReservations.initalDate.setHours(0);

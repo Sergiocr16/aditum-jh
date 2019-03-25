@@ -29,7 +29,7 @@
         function loadAll () {
             CommonAreaReservations.findByHouseId({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 1000,
                 sort: sort(),
                 houseId: companyUser.houseId
             }, onSuccess, onError);

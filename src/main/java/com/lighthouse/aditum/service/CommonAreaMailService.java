@@ -53,6 +53,9 @@ public class CommonAreaMailService {
 
     private static final String TYPE = "type";
 
+    private static final String USERTYPE = "userType";
+
+
     private static final String DEVOLUTIONAMOUNT = "devolutionAmount";
 
     private static final String RESERVATIONCHARGE = "reservationCharge";
@@ -105,7 +108,7 @@ public class CommonAreaMailService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(HOUSE, commonAreaReservationsDTO.getHouse().getHousenumber());
         context.setVariable(TYPE, "Administrador");
-
+        context.setVariable(USERTYPE, 1);
         if(commonAreaReservationsDTO.getReservationCharge()!=null){
             context.setVariable(RESERVATIONCHARGE, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getReservationCharge()+"")).substring(1));
             context.setVariable(DEVOLUTIONAMOUNT, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getDevolutionAmmount()+"")).substring(1));
@@ -128,6 +131,7 @@ public class CommonAreaMailService {
         context.setVariable(COMMONAREA, commonAreaReservationsDTO.getCommonArea());
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         context.setVariable(TYPE, "Residente");
+        context.setVariable(USERTYPE, 2);
         if(commonAreaReservationsDTO.getReservationCharge()!=null){
             context.setVariable(RESERVATIONCHARGE, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getReservationCharge()+"")).substring(1));
             context.setVariable(DEVOLUTIONAMOUNT, currencyFormatter.format(Double.parseDouble(commonAreaReservationsDTO.getDevolutionAmmount()+"")).substring(1));
@@ -146,7 +150,7 @@ public class CommonAreaMailService {
     }
     @Async
     public void sendNewCommonAreaReservationEmailToAdmin(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-        commonAreaReservationsDTO.setUserType(1);
+
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Tiene una nueva solicitud de reservación de la filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " en el condominio " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
 
@@ -157,7 +161,7 @@ public class CommonAreaMailService {
     }
     @Async
     public void sendNewCommonAreaReservationEmailToResident(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-        commonAreaReservationsDTO.setUserType(2);
+
         String subject = "Solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha creado una nueva solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
 
@@ -170,7 +174,7 @@ public class CommonAreaMailService {
     public void sendAcceptedCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
         String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha aceptado la solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
-        commonAreaReservationsDTO.setUserType(2);
+
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getChargeEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getChargeEmail(), subject, content, false, true);
@@ -180,9 +184,9 @@ public class CommonAreaMailService {
     @Async
     public void sendCanceledCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
-        String subject = "Aprobación de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
+        String subject = "Rechazo de solicitud de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
         commonAreaReservationsDTO.setEmailTitle("Se ha rechazado la solicitud de reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
-        commonAreaReservationsDTO.setUserType(2);
+
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
             this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
@@ -192,7 +196,7 @@ public class CommonAreaMailService {
     public void sendUpdateCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
         String subject = "Actualización de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
-        commonAreaReservationsDTO.setUserType(2);
+
         commonAreaReservationsDTO.setEmailTitle("El administrador ha actualizado la información de la reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
         String content = this.defineContentResident(commonAreaReservationsDTO);
         if(commonAreaReservationsDTO.getResident().getEmail()!=null){
@@ -201,14 +205,6 @@ public class CommonAreaMailService {
 
     }
 
-    @Async
-    public void sendComplaintEmailChangeStatus(CommonAreaReservationsDTO commonAreaReservationsDTO) {
-//        String subject = "Ticket # " + complaintDTO.getId() + " ("+defineStatus(complaintDTO.getStatus())+"), Queja o sugerencia " + this.companyService.findOne(complaintDTO.getCompanyId()).getName();
-//        String content = defineContent(complaintDTO);
-//        this.mailService.sendEmail(complaintDTO.getResident().getEmail(), subject, content, false, true);
-//        this.adminInfoService.findAllByCompany(null, complaintDTO.getCompanyId()).getContent().forEach(adminInfoDTO -> {
-//            this.mailService.sendEmail(adminInfoDTO.getEmail(), subject, content, false, true);
-//        });
     }
-}
+
 

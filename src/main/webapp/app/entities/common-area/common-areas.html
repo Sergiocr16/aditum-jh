@@ -31,7 +31,7 @@
                         <md-card-title-text>
                             <span class="md-headline font-20 hidden-sm hidden-md hidden-lg">{{commonArea.name}}</span>
                             <span class="md-headline font-15 hidden-xs">{{commonArea.name}}</span>
-                            <span class="md-subhead">Costo: <span ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</span><span ng-if="commonArea.chargeRequired==0">No requiere</span> </span>
+                            <span class="md-subhead" ng-if="vm.hasContability">Costo: <span ng-if="commonArea.chargeRequired==1">₡{{vm.formatearNumero(commonArea.reservationCharge+"")}}</span><span ng-if="commonArea.chargeRequired==0">No requiere</span> </span>
                             <span class="md-subhead">Bloques de: <span ng-if="commonArea.maximunHours==0">Todo el día</span><span ng-if="commonArea.maximunHours>0">{{commonArea.maximunHours}} horas</span></span>
 
                         </md-card-title-text>

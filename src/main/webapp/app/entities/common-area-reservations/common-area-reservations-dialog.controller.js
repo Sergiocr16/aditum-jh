@@ -545,18 +545,11 @@
                 vm.commonAreaReservations.initalDate = new Date(vm.commonAreaReservations.initalDate)
                 vm.commonAreaReservations.initalDate.setHours(0);
                 vm.commonAreaReservations.initalDate.setMinutes(0);
-                if (companyUser.companies == null) {
-                    vm.commonAreaReservations.sendPendingEmail = false;
-                } else {
-                    vm.commonAreaReservations.sendPendingEmail = true;
-                }
+                vm.commonAreaReservations.sendPendingEmail = false;
+
                 CommonAreaReservations.update(vm.commonAreaReservations, onSaveSuccess, onSaveError);
             } else {
-                if (companyUser.companies == null) {
-                    vm.commonAreaReservations.sendPendingEmail = true;
-                } else {
-                    vm.commonAreaReservations.sendPendingEmail = false;
-                }
+                vm.commonAreaReservations.sendPendingEmail = false;
                 vm.commonAreaReservations.status = 1;
                 vm.commonAreaReservations.companyId = globalCompany.getId();
                 if (vm.commonarea.chargeRequired == 0) {
@@ -572,7 +565,7 @@
         function onSaveSuccess(result) {
             Modal.hideLoadingBar()
             $state.go('common-area-administration.common-area-reservations');
-            Modal.toast("Se ha enviado la reservación correctamente para su respectiva aprobación")
+            Modal.toast("Se ha creado una solicitud de reservación correctamente.")
             vm.isSaving = false;
         }
 

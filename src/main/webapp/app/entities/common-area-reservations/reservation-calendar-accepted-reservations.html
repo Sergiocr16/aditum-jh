@@ -100,7 +100,7 @@
         </div>
         <form name="form" ng-submit="vm.acceptReservation()">
             <div
-                ng-if="vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==2 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==5 || vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==6"
+                ng-if="vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==2 && vm.hasContability|| vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==5 && vm.hasContability|| vm.commonAreaReservations.reservationCharge!==null && vm.commonAreaReservations.status==6 && vm.hasContability"
                 class="margin-top-20 md-inline-form col-md-12 col-lg-12  no-padding fade-in">
                 <md-card-title-text style="margin-left: 15px;">
                     <span class="md-headline font-19"> Cargo por reservación</span>

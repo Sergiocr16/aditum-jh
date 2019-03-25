@@ -13,7 +13,7 @@
 
             <p >Bloques de: <b ng-if="vm.commonArea.maximunHours==0">Todo el día</b><b ng-if="vm.commonArea.maximunHours>0">{{vm.commonArea.maximunHours}} horas</b></p>
 
-            <span>Costo por reservación: <span ng-if="vm.commonArea.chargeRequired==1">₡<b>{{vm.formatearNumero(vm.commonArea.reservationCharge+"")}}</b> </span> <span
+            <span ng-if="vm.hasContability">Costo por reservación: <span ng-if="vm.commonArea.chargeRequired==1">₡<b>{{vm.formatearNumero(vm.commonArea.reservationCharge+"")}}</b> </span> <span
                 class="bold" ng-if="vm.commonArea.chargeRequired==0">No requiere</span></span>
             <p ng-if="vm.commonArea.description!==null" style="padding-top: 20px!important;">Descripción: {{vm.commonArea.description}}</p>
         </div>

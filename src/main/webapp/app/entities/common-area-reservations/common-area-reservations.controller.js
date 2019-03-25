@@ -27,7 +27,7 @@
         function loadAll () {
             CommonAreaReservations.getPendingReservations({
                 page: pagingParams.page - 1,
-                size: vm.itemsPerPage,
+                size: 1000,
                 sort: sort(),
                 companyId: globalCompany.getId()
             }, onSuccess, onError);

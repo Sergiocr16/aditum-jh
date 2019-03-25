@@ -18,6 +18,15 @@
             $rootScope.active = "reservationAdministration";
         }
 
+
+        var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        console.log(data)
+        if (data.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
+
         vm.isReady = false;
         $rootScope.mainTitle = "Áreas comunes";
         vm.loadPage = loadPage;

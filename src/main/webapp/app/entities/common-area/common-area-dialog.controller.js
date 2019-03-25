@@ -16,13 +16,14 @@
         $rootScope.mainTitle = "Nueva área común";
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
-        CompanyConfiguration.get({id: globalCompany.getId()}, function (data) {
-            if (data.hasContability == 1) {
-                vm.hasContability = true;
-            } else {
-                vm.hasContability = false;
-            }
-        });
+
+
+        var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        if (data.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
         vm.save = save;
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
@@ -49,7 +50,7 @@
         }, {value: 3, hour: "3 horas"}, {value: 4, hour: "4 horas"}, {value: 5, hour: "5 horas"}, {
             value: 6,
             hour: "6 horas"
-        }, {value: 7, hour: "7 horas"}, {value: 8, hour: "8 horas"}]
+        }, {value: 7, hour: "7 horas"}, {value: 8, hour: "8 horas"}, {value: 9, hour: "9 horas"}, {value: 10, hour: "10 horas"}, {value: 11, hour: "11 horas"}, {value: 12, hour: "12 horas"}, {value: 13, hour: "13 horas"}]
         vm.hours = [];
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
