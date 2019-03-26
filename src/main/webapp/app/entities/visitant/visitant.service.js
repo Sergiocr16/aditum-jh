@@ -1,4 +1,4 @@
-(function() {
+(function () {
     'use strict';
     angular
         .module('aditumApp')
@@ -6,11 +6,11 @@
 
     Visitant.$inject = ['$resource', 'DateUtils'];
 
-    function Visitant ($resource, DateUtils) {
-        var resourceUrl =  'api/visitants/:id';
+    function Visitant($resource, DateUtils) {
+        var resourceUrl = 'api/visitants/:id';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': {method: 'GET', isArray: true},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {
@@ -23,14 +23,14 @@
                     return data;
                 }
             },
-            'findInvitedByHouseAndIdentificationNumber':{
-            url: 'api/visitants/invited/findOneByHouse/:identificationNumber/:houseId/:companyId',
-             method: 'GET',
-             params:{
-                   identificationNumber:'@identificationNumber',
-                   houseId: '@houseId',
-                   companyId: '@companyId',
-                 },
+            'findInvitedByHouseAndIdentificationNumber': {
+                url: 'api/visitants/invited/findOneByHouse/:identificationNumber/:houseId/:companyId',
+                method: 'GET',
+                params: {
+                    identificationNumber: '@identificationNumber',
+                    houseId: '@houseId',
+                    companyId: '@companyId',
+                },
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
@@ -40,61 +40,73 @@
                     return data;
                 }
             },
-            'findInvitedByHouse':{
-            url: 'api/visitants/invited/finByHouse/:companyId/:houseId',
-             method: 'GET',
-             params:{
-                   houseId: '@houseId',
-                   companyId: '@companyId',
-                 },
-              isArray: true,
-            },
-            'findAllInvited':{
-                url: 'api/visitants/invited/all/:companyId/',
+            'findByFilter': {
                 method: 'GET',
-                params:{
+                url: 'api/visitants/filter/:initial_time/:final_time/byCompany/:companyId/byHouse/:houseId/byName/:name',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
+                    houseId: '@houseId',
+                    name: '@name',
+                }
+            },
+            'findInvitedByHouse': {
+                url: 'api/visitants/invited/finByHouse/:companyId/:houseId',
+                method: 'GET',
+                params: {
+                    houseId: '@houseId',
                     companyId: '@companyId',
                 },
                 isArray: true,
             },
-            'findByHouseInLastMonth':{
-            url: 'api/visitants/finByHouse/lastMonth/:houseId',
-             method: 'GET',
-             params:{
-                   houseId: '@houseId'
-                 },
-              isArray: true,
+            'findAllInvited': {
+                url: 'api/visitants/invited/all/:companyId/',
+                method: 'GET',
+                params: {
+                    companyId: '@companyId',
+                },
+                isArray: true,
             },
-            'findBetweenDatesByHouse':{
-                 method: 'GET',
-                 url: 'api/visitants/between/:initial_time/:final_time/byHouse/:houseId',
-                 isArray: true,
-                 params:{
-                  initial_time:'@initial_time',
-                  final_time: '@final_time',
-                  houseId: '@houseId',
+            'findByHouseInLastMonth': {
+                url: 'api/visitants/finByHouse/lastMonth/:houseId',
+                method: 'GET',
+                params: {
+                    houseId: '@houseId'
+                },
+                isArray: true,
+            },
+            'findBetweenDatesByHouse': {
+                method: 'GET',
+                url: 'api/visitants/between/:initial_time/:final_time/byHouse/:houseId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    houseId: '@houseId',
                 }
             },
-            'findByCompanyInLastMonth':{
-            url: 'api/visitants/finByCompany/lastMonth/:companyId',
-             method: 'GET',
-             params:{
-                   companyId: '@companyId'
-                 },
-              isArray: true,
+            'findByCompanyInLastMonth': {
+                url: 'api/visitants/finByCompany/lastMonth/:companyId',
+                method: 'GET',
+                params: {
+                    companyId: '@companyId'
+                },
+                isArray: true,
             },
-            'findBetweenDatesByCompany':{
-                 method: 'GET',
-                 url: 'api/visitants/between/:initial_time/:final_time/byCompany/:companyId',
-                 isArray: true,
-                 params:{
-                  initial_time:'@initial_time',
-                  final_time: '@final_time',
-                  companyId: '@companyId',
+            'findBetweenDatesByCompany': {
+                method: 'GET',
+                url: 'api/visitants/between/:initial_time/:final_time/byCompany/:companyId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId',
                 }
             },
-            'update': { method:'PUT' },
-            'delete': { method:'DELETE' }
+            'update': {method: 'PUT'},
+            'delete': {method: 'DELETE'}
         });
     }
 })();

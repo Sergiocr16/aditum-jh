@@ -80,7 +80,6 @@
 
         function consult() {
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
-
             vm.isReady = false;
             Visitant.findBetweenDatesByHouse({
                 initial_time: moment(vm.dates.initial_time).format(),
