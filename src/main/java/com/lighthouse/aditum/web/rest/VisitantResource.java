@@ -155,6 +155,17 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/visitants/filter/{initial_time}/{final_time}/byCompany/{companyId}/byHouse/{houseId}/byName/{name}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getByFilter(
+        @ApiParam Pageable pageable,@PathVariable Long companyId,@PathVariable String houseId,
+        @PathVariable String initial_time,@PathVariable String final_time,@PathVariable String name)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByFilter(pageable,companyId,houseId,initial_time,final_time,name);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
 
     @GetMapping("/visitants/finByCompany/lastMonth/{companyId}")

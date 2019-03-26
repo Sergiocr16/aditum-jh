@@ -1,0 +1,49 @@
+<md-dialog aria-label="options dialog" style="min-width: 350px">
+    <md-dialog-content layout="column" layout-padding style="overflow-x: hidden">
+        <md-input-container class="md-block margin-top-30">
+            <label>Por filial</label>
+            <md-select ng-model="vm.filter.houseId" >
+                <md-option value="empty" >Todas las filiales</md-option>
+                <md-option ng-repeat="house in vm.houses track by house.id"
+                           ng-value="house.id">
+                    {{house.housenumber}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container flex class="md-block no-margin">
+            <label>Fecha inicio</label>
+            <md-datepicker class="datePicker" readonlydatepicker md-max-date="vm.dates.final_time" required ng-model="vm.dates.initial_time"
+                           md-hide-icons="calendar"
+                           md-placeholder="Fecha de inicio" md-open-on-focus
+                           required></md-datepicker>
+        </md-input-container>
+        <md-input-container flex class="md-block no-margin">
+            <label>Fecha final</label>
+            <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.dates.initial_time" required ng-model="vm.dates.final_time"
+                           md-hide-icons="calendar"
+                           md-placeholder="Fecha final" md-open-on-focus
+                           required></md-datepicker>
+        </md-input-container>
+    </md-dialog-content>
+    <md-dialog-actions>
+        <span flex></span>
+        <md-button ng-click="vm.close()">Cancelar</md-button>
+
+        <md-button ng-click="vm.closeAndFilter()" class="md-primary md-raised md-button md-ink-ripple">Filtrar</md-button>
+    </md-dialog-actions>
+</md-dialog>
+<script>
+    if(angular.element(".datePicker input")[0]!=undefined){
+        angular.element(".datePicker input")[0].setAttribute("readonly","readonly");
+    }
+    if(angular.element(".datePicker input")[1]!=undefined) {
+        angular.element(".datePicker input")[1].setAttribute("readonly","readonly");
+    }
+    angular.element(".md-datepicker-button").each(function(){
+        var el = this;
+        var ip = angular.element(el).parent().find("input").bind('click', function(e){
+            angular.element(el).click();
+        });
+        angular.element(this).css('visibility', 'hidden');
+    });
+</script>

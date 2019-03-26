@@ -34,7 +34,7 @@ public class VisitantService {
     private final HouseService houseService;
 
 
-    public VisitantService(VisitantRepository visitantRepository, VisitantMapper visitantMapper,@Lazy HouseService houseService) {
+    public VisitantService(VisitantRepository visitantRepository, VisitantMapper visitantMapper, @Lazy HouseService houseService) {
         this.visitantRepository = visitantRepository;
         this.visitantMapper = visitantMapper;
         this.houseService = houseService;
@@ -49,7 +49,7 @@ public class VisitantService {
     public VisitantDTO save(VisitantDTO visitantDTO) {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
-        if(visitant.getLicenseplate()=="NINGUNA"){
+        if (visitant.getLicenseplate() == "NINGUNA") {
             visitant.setLicenseplate("");
         }
         visitant = visitantRepository.save(visitant);
@@ -58,9 +58,9 @@ public class VisitantService {
     }
 
     /**
-     *  Get all the visitants.
+     * Get all the visitants.
      *
-     *  @return the list of entities
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findAll(Long companyId) {
@@ -70,55 +70,111 @@ public class VisitantService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findByDatesBetweenAndHouse(String initialTime,String finalTime,Long houseId) {
+    public Page<VisitantDTO> findByDatesBetweenAndHouse(String initialTime, String finalTime, Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        List<Visitant> result = visitantRepository.findByDatesBetweenAndHouse(zd_initialTime,zd_finalTime,houseId,3);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(zd_initialTime, zd_finalTime, houseId, 3);
         Collections.reverse(result);
-        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            return visitantDTO;
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findByFilter(Pageable pageable, Long companyId, String houseId,
+                                          String initialTime, String finalTime, String name) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        Page<Visitant> result;
+        if (!name.equals(" ")) {
+            if (houseId.equals("empty")) {
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContains(
+                    pageable, companyId, zd_initialTime, zd_finalTime, 3, name,
+                    companyId, zd_initialTime, zd_finalTime, 3, name,
+                    companyId, zd_initialTime, zd_finalTime, 3, name,
+                    companyId, zd_initialTime, zd_finalTime, 3, name,
+                    companyId, zd_initialTime, zd_finalTime, 3, name
+                );
+            } else {
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContains(
+                    pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId),3, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
+                    zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name
+                );
+            }
+        }else{
+            if (houseId.equals("empty")) {
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvited( pageable,companyId, zd_initialTime, zd_finalTime,  3);
+            } else {
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  3);
+            }
+        }
+        return result.map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            return visitantDTO;
+        });
     }
 
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findByHouseInLastMonth(Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        List<Visitant> result = visitantRepository.findByHouseInLastMonth(firstDayOfMonth,houseId,3);
+        List<Visitant> result = visitantRepository.findByHouseInLastMonth(firstDayOfMonth, houseId, 3);
         Collections.reverse(result);
-        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            return visitantDTO;
+        });
     }
 
 
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findByDatesBetweenAndCompany(String initialTime,String finalTime,Long companyId) {
+    public Page<VisitantDTO> findByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        List<Visitant> result = visitantRepository.findByDatesBetweenAndCompany(zd_initialTime,zd_finalTime,companyId,3);
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        List<Visitant> result = visitantRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, 3);
         Collections.reverse(result);
-        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            return visitantDTO;
+        });
     }
 
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findByCompanyInLastMonth(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        List<Visitant> result = visitantRepository.findByCompanyInLastMonth(firstDayOfMonth,companyId,3);
+        List<Visitant> result = visitantRepository.findByCompanyInLastMonth(firstDayOfMonth, companyId, 3);
         Collections.reverse(result);
-        return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
+        return new PageImpl<>(result).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            return visitantDTO;
+        });
     }
+
     @Transactional(readOnly = true)
     public Integer countByCompanyInLastMonth(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6),companyId,3);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6), companyId, 3);
     }
 
     @Transactional(readOnly = true)
     public Integer countByCompanyInLastDay(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0);
-        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6),companyId,3);
+        return visitantRepository.countByCompanyInLastMonth(firstDayOfMonth.plusHours(6), companyId, 3);
     }
 
     @Transactional(readOnly = true)
@@ -126,16 +182,16 @@ public class VisitantService {
         log.debug("Request to get all Visitants per month");
         ArrayList<DashboardVisitorDTO> visitantesPorMes = new ArrayList();
 
-        List<String> meses = Arrays.asList("Ene","Feb","Mar","Abr","May","Jun","Jul","Ago","Set","Oct","Nov","Dic");
-       Integer currentMotnh = ZonedDateTime.now().minusHours(6).getMonthValue();
-        for( int i = 1 ; i <= currentMotnh; i++){
+        List<String> meses = Arrays.asList("Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Set", "Oct", "Nov", "Dic");
+        Integer currentMotnh = ZonedDateTime.now().getMonthValue();
+        for (int i = 1; i <= currentMotnh; i++) {
             ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withMonth(i).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
             ZonedDateTime lastDayOfMonth = ZonedDateTime.now().withMonth(i).withHour(23).withMinute(59).withSecond(59).withNano(59);
             int lastDay = lastDayOfMonth.getMonth().length(false);
             lastDayOfMonth = lastDayOfMonth.withDayOfMonth(lastDay);
-            int visitantesEseMes = visitantRepository.countByDatesBetweenAndCompany(firstDayOfMonth.plusHours(6),lastDayOfMonth.plusHours(6),companyId,3);
+            int visitantesEseMes = visitantRepository.countByDatesBetweenAndCompany(firstDayOfMonth.plusHours(6), lastDayOfMonth.plusHours(6), companyId, 3);
             DashboardVisitorDTO visitorInfo = new DashboardVisitorDTO();
-            visitorInfo.setName(meses.get(i-1));
+            visitorInfo.setName(meses.get(i - 1));
             visitorInfo.setValue(visitantesEseMes);
             visitantesPorMes.add(visitorInfo);
         }
@@ -146,13 +202,13 @@ public class VisitantService {
     public ArrayList countVisitantsPerWeek(Long companyId) {
         log.debug("Request to get all Visitants per month");
         ArrayList<DashboardVisitorDTO> visitantesPorSemana = new ArrayList();
-        List<String> dias = Arrays.asList("Lun","Mar","Mier","Jue","Vie","Sab","Dom");
+        List<String> dias = Arrays.asList("Lun", "Mar", "Mier", "Jue", "Vie", "Sab", "Dom");
         Integer currentDay = ZonedDateTime.now().getDayOfWeek().getValue();
-        ZonedDateTime firstDayOfWeek = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(currentDay-1);
-        for( int i = 0 ; i < currentDay; i++){
+        ZonedDateTime firstDayOfWeek = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).minusDays(currentDay - 1);
+        for (int i = 0; i < currentDay; i++) {
             ZonedDateTime initDay = firstDayOfWeek.plusDays(i);
             ZonedDateTime finishDay = firstDayOfWeek.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
-            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay,finishDay,companyId,3);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay, finishDay, companyId, 3);
             DashboardVisitorDTO visitorInfo = new DashboardVisitorDTO();
             visitorInfo.setName(dias.get(i));
             visitorInfo.setValue(visitantesEseDia);
@@ -165,15 +221,15 @@ public class VisitantService {
     public ArrayList countVisitantsPerMonth(Long companyId) {
         log.debug("Request to get all Visitants per month");
         ArrayList<DashboardVisitorDTO> visitantesPorSemana = new ArrayList();
-        Integer currentDay = ZonedDateTime.now().minusHours(6).getDayOfMonth();
+        Integer currentDay = ZonedDateTime.now().getDayOfMonth();
         ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0).withNano(0).withDayOfMonth(1);
         ZonedDateTime startDay = firstDayOfMonth;
-        for( int i = 0 ; i < currentDay; i++){
+        for (int i = 0; i < currentDay; i++) {
             ZonedDateTime initDay = startDay.plusDays(i);
             ZonedDateTime finishDay = startDay.withHour(23).withMinute(59).withSecond(59).withNano(59).plusDays(i);
-            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay.plusHours(6),finishDay.plusHours(6),companyId,3);
+            int visitantesEseDia = visitantRepository.countByDatesBetweenAndCompany(initDay.plusHours(6), finishDay.plusHours(6), companyId, 3);
             DashboardVisitorDTO visitorInfo = new DashboardVisitorDTO();
-            visitorInfo.setName(i+1+"");
+            visitorInfo.setName(i + 1 + "");
             visitorInfo.setValue(visitantesEseDia);
             visitantesPorSemana.add(visitorInfo);
         }
@@ -183,12 +239,13 @@ public class VisitantService {
     @Transactional(readOnly = true)
     public Integer countByAuthorizedVisitors(Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        return visitantRepository.countByCompanyIdAndIsinvited(companyId,1);
+        return visitantRepository.countByCompanyIdAndIsinvited(companyId, 1);
     }
+
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findInvitedVisitorsByHouse(Long companyId, Long houseId) {
         log.debug("Request to get all Visitants");
-        List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrCompanyIdAndHouseIdAndIsinvited(companyId,houseId,1,companyId,houseId,2);
+        List<Visitant> result = visitantRepository.findByCompanyIdAndHouseIdAndIsinvitedOrCompanyIdAndHouseIdAndIsinvited(companyId, houseId, 1, companyId, houseId, 2);
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> visitantMapper.visitantToVisitantDTO(visitant));
     }
@@ -196,7 +253,7 @@ public class VisitantService {
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findAllInvited(Long companyId) {
         log.debug("Request to get all Visitants");
-        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrCompanyIdAndIsinvited(companyId,1,companyId,2);
+        List<Visitant> result = visitantRepository.findByCompanyIdAndIsinvitedOrCompanyIdAndIsinvited(companyId, 1, companyId, 2);
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
@@ -204,11 +261,12 @@ public class VisitantService {
             return visitantDTO;
         });
     }
+
     /**
-     *  Get one visitant by id.
+     * Get one visitant by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public VisitantDTO findOne(Long id) {
@@ -219,17 +277,17 @@ public class VisitantService {
     }
 
     @Transactional(readOnly = true)
-    public VisitantDTO findInvitedVisitorByHouse(String identificationNumber,Long houseId,Long companyId) {
+    public VisitantDTO findInvitedVisitorByHouse(String identificationNumber, Long houseId, Long companyId) {
         log.debug("Request to find if there is already a registered visitor with this identification number : {}", identificationNumber);
-        Visitant visitant = visitantRepository.findByIdentificationnumberAndHouseIdAndCompanyId(identificationNumber,houseId,companyId);
+        Visitant visitant = visitantRepository.findByIdentificationnumberAndHouseIdAndCompanyId(identificationNumber, houseId, companyId);
         VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
         return visitantDTO;
     }
 
     /**
-     *  Delete the  visitant by id.
+     * Delete the  visitant by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Visitant : {}", id);
