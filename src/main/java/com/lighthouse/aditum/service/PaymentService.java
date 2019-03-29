@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,7 +48,16 @@ public class PaymentService {
 
     private final BalanceByAccountService balanceByAccountService;
 
-    public PaymentService(BalanceByAccountService balanceByAccountService,@Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
+    private Locale locale = new Locale("es", "CR");
+
+    private final BitacoraAccionesService bitacoraAccionesService;
+
+    private final AdminInfoService adminInfoService;
+
+    private final UserService userService;
+
+
+    public PaymentService(UserService userService,AdminInfoService adminInfoService,BitacoraAccionesService bitacoraAccionesService,BalanceByAccountService balanceByAccountService,@Lazy HouseService houseService, ResidentService residentService, PaymentDocumentService paymentEmailSenderService, PaymentRepository paymentRepository, PaymentMapper paymentMapper, ChargeService chargeService, BancoService bancoService) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
         this.chargeService = chargeService;
@@ -54,6 +66,9 @@ public class PaymentService {
         this.residentService = residentService;
         this.houseService = houseService;
         this.balanceByAccountService = balanceByAccountService;
+        this.bitacoraAccionesService = bitacoraAccionesService;
+        this.adminInfoService = adminInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -95,8 +110,34 @@ public class PaymentService {
             this.paymentEmailSenderService.sendPaymentEmail(paymentDTo, false);
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
+
+
+        LocalDateTime today = LocalDateTime.now();
+        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
+        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+
+
+        bitacoraAccionesDTO.setType(5);
+
+        bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+
+
+        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+        bitacoraAccionesDTO.setCategory("Ingresos");
+
+        bitacoraAccionesDTO.setIdReference(payment.getId());
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""));
+
+        bitacoraAccionesService.save(bitacoraAccionesDTO);
+
+
+
         return paymentMapper.toDto(payment);
     }
+
+
 
     @Transactional(readOnly = true)
     public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, int companyId) {

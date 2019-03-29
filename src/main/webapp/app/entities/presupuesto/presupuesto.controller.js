@@ -55,11 +55,18 @@
         }
         vm.showBudgetEdit = function (budget) {
             $localStorage.budgetAction = 2;
-            $state.go('presupuesto-detail', {id: budget.id});
+            var encryptedId = CommonMethods.encryptIdUrl(budget.id)
+            $state.go('presupuesto-detail', {
+                id: encryptedId
+            });
         }
         vm.showBudgetDetail = function (budget) {
             $localStorage.budgetAction = 1;
-            $state.go('presupuesto-detail', {id: budget.id});
+            var encryptedId = CommonMethods.encryptIdUrl(budget.id)
+            $state.go('presupuesto-detail', {
+                id: encryptedId
+            });
+
         }
 
         function onDeleteSuccess(result) {

@@ -40,6 +40,7 @@
                         vm.administrationConfiguration.usingSubchargePercentage = false;
                     }
                     vm.isSaving = true;
+                    vm.administrationConfiguration.saveInBitacora = 1;
                     if (vm.administrationConfiguration.id !== null) {
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {

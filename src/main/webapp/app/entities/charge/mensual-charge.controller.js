@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
+    MensualChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
 
-    function MensualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
+    function MensualChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
@@ -22,7 +22,6 @@
         vm.openCalendar = openCalendar;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
         vm.verificando = false;
         angular.element(document).ready(function () {
 
@@ -163,13 +162,16 @@
 
         vm.createDues = function () {
             Modal.showLoadingBar();
-
+            var selectedHouses = "";
             function createCharge(houseNumber, cuotaNumber) {
+
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
                 if (cuota.ammount != 0) {
+
                     Charge.save(buildCharge(cuota, house), function (result) {
+                        selectedHouses = selectedHouses + house.housenumber + ", ";
                         if (house.cuotas.length - 1 > cuotaNumber) {
                             createCharge(houseNumber, cuotaNumber + 1)
                         } else {
@@ -178,7 +180,9 @@
                             } else {
                                 $state.go('mensualCharge', null, {
                                     reload: true
-                                })
+                                });
+                                var concept = "Creación de cuota mensual" + ": " + cuota.concept + ", "+ " a las filiales: " + selectedHouses;
+                                BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se generaron las cuotas correctamente.")
                             }
@@ -196,8 +200,10 @@
                         } else {
                             $state.go('mensualCharge', null, {
                                 reload: true
-                            })
+                            });
                             Modal.hideLoadingBar();
+                            var concept = "Creación de cuota mensual" + ": " + cuota.concept + ", "+ " a las filiales: " + selectedHouses;
+                            BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
                             Modal.toast("Se generaron las cuotas correctamente.")
                         }
                     }
@@ -212,6 +218,21 @@
             }
 
             chargesPerHouse(0)
+        }
+
+
+        function mapBitacoraAcciones (concept){
+            vm.bitacoraAcciones = {};
+            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 2);
+            vm.bitacoraAcciones.type = 6;
+            vm.bitacoraAcciones.ejecutionDate = new Date();
+            vm.bitacoraAcciones.category = "Cuotas";
+            vm.bitacoraAcciones.idReference = 1;
+            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.companyId = globalCompany.getId();
+
+            return vm.bitacoraAcciones;
+
         }
 
         vm.autoConcept = function (globalConcept) {

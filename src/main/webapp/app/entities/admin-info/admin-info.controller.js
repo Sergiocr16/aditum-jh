@@ -19,7 +19,7 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         var admins = [];
-
+vm.isReady = false;
       vm.viewDetail = function(adminId){
            var adminInfoId = CommonMethods.encryptIdUrl(adminId);
 
@@ -67,6 +67,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;

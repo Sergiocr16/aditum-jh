@@ -10,7 +10,7 @@
     function BrandController(Brand,Principal,House,Resident,Vehicule, $rootScope,firebase) {
 
         var vm = this;
-
+vm.isReady = false;
         function newWithCallback(childRef,obj,callback){
           var pathName = "/"+childRef+"/"+obj.identificationnumber+"/"
           firebase.database().ref(pathName).set(obj);
@@ -217,6 +217,7 @@ console.log(person)
 
         function loadAll() {
             Brand.query(function(result) {
+                vm.isReady = true;
                 vm.brands = result;
                 vm.searchQuery = null;
             });

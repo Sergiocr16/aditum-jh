@@ -53,6 +53,7 @@
         "soporte": "Soporte",
         "paymentProof": "Payment Proof",
         "documentFile": "Document File",
+        "bitacoraAcciones": "Bitacora Acciones",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

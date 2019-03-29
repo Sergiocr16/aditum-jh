@@ -16,7 +16,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.isAuthenticated = Principal.isAuthenticated;
-
+vm.isReady = false;
         loadAll();
         vm.disableEnabledAdmin= function(rhAccount) {
             var correctMessage;
@@ -97,6 +97,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                vm.isReady = true;
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
