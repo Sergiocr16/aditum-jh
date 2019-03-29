@@ -85,12 +85,13 @@ public class VisitantService {
 
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findByFilter(Pageable pageable, Long companyId, String houseId,
-                                          String initialTime, String finalTime, String name) {
+                                          ZonedDateTime initialTime, ZonedDateTime finalTime, String name) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        Page<Visitant> result;
-        if (!name.equals(" ")) {
+        ZonedDateTime zd_initialTime = initialTime;
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        Page<Visitant> result = new PageImpl<Visitant>(new ArrayList<Visitant>(),pageable,0);
+
+        if (!name.equals("empty")) {
             if (houseId.equals("empty")) {
                 result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContains(
                     pageable, companyId, zd_initialTime, zd_finalTime, 3, name,
@@ -117,7 +118,11 @@ public class VisitantService {
         }
         return result.map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
             return visitantDTO;
         });
     }
@@ -130,7 +135,11 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
             return visitantDTO;
         });
     }
@@ -145,7 +154,11 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
             return visitantDTO;
         });
     }
@@ -158,7 +171,11 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
             return visitantDTO;
         });
     }
@@ -257,7 +274,11 @@ public class VisitantService {
         Collections.reverse(result);
         return new PageImpl<Visitant>(result).map(visitant -> {
             VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
-            visitantDTO.setHouseNumber(houseService.findOne(visitantDTO.getHouseId()).getHousenumber());
+            if(visitant.getHouse()!=null){
+                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+            }else{
+                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+            }
             return visitantDTO;
         });
     }
