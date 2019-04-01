@@ -112,8 +112,8 @@ public class WatchResource {
     @Timed
     public ResponseEntity<List<WatchDTO>> getBetweenDate(
         @ApiParam Pageable pageable,
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId")  Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");

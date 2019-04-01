@@ -65,7 +65,7 @@ public class ChargesToPayDocumentService {
             return t.substring(0, t.length() - 3).replace(",", ".");
         }
     }
-    public File obtainFileToPrint(String finalDate,int type, Long companyId) {
+    public File obtainFileToPrint(ZonedDateTime finalDate,int type, Long companyId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String fileName = "Reporte de cuotas por cobrar.pdf";
         try {

@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,8 +75,8 @@ public class CommonAreaReservationsResource {
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndCompany(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId")  Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
@@ -86,8 +88,8 @@ public class CommonAreaReservationsResource {
     @GetMapping("/common-area-reservations/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getBetweenDatesAndHouse(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "houseId")  Long houseId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
@@ -99,8 +101,8 @@ public class CommonAreaReservationsResource {
     @GetMapping("/common-area-reservations/devolutionDoneBetween/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<CommonAreaReservationsDTO>> getDevolutionDoneBetweenDatesAndCompany(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId")  Long companyId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
@@ -248,7 +250,7 @@ public class CommonAreaReservationsResource {
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserve(
         @PathVariable (value = "maximun_hours")  int maximun_hours,
-        @PathVariable (value = "reservation_date")  String reservation_date,
+        @PathVariable("reservation_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime reservation_date,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
         @PathVariable(value = "common_area_id")  Long common_area_id
@@ -261,7 +263,7 @@ public class CommonAreaReservationsResource {
     @Timed
     public CommonAreaReservationsDTO isAvailableToReserveNotNull(
         @PathVariable (value = "maximun_hours")  int maximun_hours,
-        @PathVariable (value = "reservation_date")  String reservation_date,
+        @PathVariable("reservation_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime reservation_date,
         @PathVariable (value = "initial_time")  String initial_time,
         @PathVariable(value = "final_time")  String  final_time,
         @PathVariable(value = "common_area_id")  Long common_area_id,

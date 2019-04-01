@@ -35,7 +35,7 @@ public class MensualReportService {
         this.detallePresupuestoService = detallePresupuestoService;
     }
 
-    public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(String initialTime, String finalTime, long companyId, int withPresupuesto){
+    public MensualIngressReportDTO getMensualAndAnualIngressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, int withPresupuesto){
         List<ChargeDTO> maintenanceIngress = chargeService.findPaidChargesBetweenDatesList(initialTime,finalTime,1,companyId);
         List<PaymentDTO> adelantosIngress = paymentService.findAdelantosByDatesBetweenAndCompany(initialTime,finalTime,Integer.parseInt(companyId+""));
         List<ChargeDTO> ingressList = new ArrayList<>();
@@ -91,7 +91,7 @@ public class MensualReportService {
 
 
 
-    public MensualEgressReportDTO getMensualAndAnualEgressReportDTO(String initialTime, String finalTime, long companyId, MensualIngressReportDTO mensualAndAnualIngressReportDTO, int withPresupuesto){
+    public MensualEgressReportDTO getMensualAndAnualEgressReportDTO(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId, MensualIngressReportDTO mensualAndAnualIngressReportDTO, int withPresupuesto){
         Page<EgressCategoryDTO> egressCategories = egressCategoryService.findAll(companyId);
         Page<EgressDTO> allEgressList = egressService.findPaymentEgressByDatesBetweenAndCompany(initialTime,finalTime,companyId);
 
@@ -117,7 +117,7 @@ public class MensualReportService {
     }
 
 
-    public List<MensualAndAnualAccountDTO> getAccountBalance(String initialTime, String finalTime, long companyId){
+    public List<MensualAndAnualAccountDTO> getAccountBalance(ZonedDateTime initialTime, ZonedDateTime finalTime, long companyId){
 
 
         List<MensualAndAnualAccountDTO> listaFinal = new ArrayList<>();
@@ -125,10 +125,8 @@ public class MensualReportService {
         BancoDTO bancoDTO;
         for (int i = 0; i <bancos.size() ; i++) {
            MensualAndAnualAccountDTO mensualAndAnualAccountDTO = new MensualAndAnualAccountDTO();
-            ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
-            ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-            ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
-            ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+            ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+            ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
            if(zd_initialTime.isAfter(zd_finalTime)){
                bancoDTO = bancoService.getInicialBalance(initialTime,bancos.get(i),initialTime);
            }else{
@@ -145,12 +143,13 @@ String a = "a";
         return listaFinal;
     }
 
-    public void getEgressBudgets(MensualEgressReportDTO mensualEgressReportDTO, Long companyId, String intialTime, String finalTime, Page<EgressCategoryDTO> egressCategories) {
+    public void getEgressBudgets(MensualEgressReportDTO mensualEgressReportDTO, Long companyId, ZonedDateTime intialTime, ZonedDateTime finalTime, Page<EgressCategoryDTO> egressCategories) {
 
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(intialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        ZonedDateTime initialBudgetTime = zd_initialTime.withMonth(1).withDayOfYear(1);
-        ZonedDateTime finalBudgetTime = zd_finalTime.withMonth(1).withDayOfYear(3);
+        ZonedDateTime zd_initialTime = intialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        ZonedDateTime initialBudgetTime = intialTime.withMonth(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime finalBudgetTime = finalTime.withMonth(1).withDayOfYear(3).withHour(23).withMinute(59).withSecond(59);
+
 
         List<PresupuestoDTO> presupuestos = presupuestoService.findByBudgetsDatesBetweenAndCompany(initialBudgetTime,finalBudgetTime,companyId);
         String a = "a";
@@ -290,12 +289,12 @@ String a = "a";
 
 
     }
-    public void getIngressBudgets(MensualIngressReportDTO mensualAndAnualIngressReportDTO, Long companyId, String intialTime, String finalTime) {
+    public void getIngressBudgets(MensualIngressReportDTO mensualAndAnualIngressReportDTO, Long companyId, ZonedDateTime intialTime, ZonedDateTime finalTime) {
 
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(intialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        ZonedDateTime initialBudgetTime = zd_initialTime.withMonth(1).withDayOfYear(1);
-        ZonedDateTime finalBudgetTime = zd_finalTime.withMonth(1).withDayOfYear(2);
+        ZonedDateTime zd_initialTime = intialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        ZonedDateTime initialBudgetTime = zd_initialTime.withMonth(1).withDayOfYear(1).withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime finalBudgetTime = zd_finalTime.withMonth(1).withDayOfYear(2).withHour(23).withMinute(59).withSecond(59);
 
         List<PresupuestoDTO> presupuestos = presupuestoService.findByBudgetsDatesBetweenAndCompany(initialBudgetTime,finalBudgetTime,companyId);
         if(presupuestos.size()==1){

@@ -59,40 +59,40 @@ public class WatchService {
     public WatchDTO findLastWatch(Long companyId) {
         log.debug("Request to get Watch : {}");
         Watch watch = null;
-        if(!watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).isEmpty()) {
-             watch = watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).get(0);
+        if (!watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).isEmpty()) {
+            watch = watchRepository.findTop1ByCompanyIdOrderByInitialtimeDesc(companyId).get(0);
         }
         WatchDTO watchDTO = watchMapper.watchToWatchDTO(watch);
         return watchDTO;
     }
+
     /**
-     *  Get all the watches.
+     * Get all the watches.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<WatchDTO> findAll(Pageable pageable,Long companyId) {
+    public Page<WatchDTO> findAll(Pageable pageable, Long companyId) {
         log.debug("Request to get all Watches");
-        Page<Watch> result = watchRepository.findByCompanyId(pageable,companyId);
+        Page<Watch> result = watchRepository.findByCompanyId(pageable, companyId);
         return result.map(watch -> watchMapper.watchToWatchDTO(watch));
     }
 
     @Transactional(readOnly = true)
-    public Page<WatchDTO> findBetweenDates(Pageable pageable,String initialTime,String finalTime,Long companyId) {
+    public Page<WatchDTO> findBetweenDates(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Watches");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
-        Page<Watch> result = watchRepository.findByDatesBetween(zd_initialTime,zd_finalTime,companyId,pageable);
-
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = initialTime.withHour(23).withMinute(59).withSecond(59);
+        Page<Watch> result = watchRepository.findByDatesBetween(zd_initialTime, zd_finalTime, companyId, pageable);
         return (result).map(watch -> watchMapper.watchToWatchDTO(watch));
     }
 
     /**
-     *  Get one watch by id.
+     * Get one watch by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public WatchDTO findOne(Long id) {
@@ -102,15 +102,15 @@ public class WatchService {
         String[] ids = watch.getResponsableofficer().split(";");
         watchDTO.setOfficers(new ArrayList<>());
         for (int i = 0; i < ids.length; i++) {
-         watchDTO.getOfficers().add(this.officerService.findOne(Long.parseLong(ids[i])));
+            watchDTO.getOfficers().add(this.officerService.findOne(Long.parseLong(ids[i])));
         }
         return watchDTO;
     }
 
     /**
-     *  Delete the  watch by id.
+     * Delete the  watch by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Watch : {}", id);
