@@ -109,7 +109,7 @@
                             title: "Bitácora de acciones",
                             icon: "chrome_reader_mode",
                             authoritites: "ROLE_ADMIN",
-                            activeOn: "dataprogress",
+                            activeOn: "bitacoraAcciones",
                             collapsable: false,
                             uisref: "bitacora-acciones",
                             menuId: "",

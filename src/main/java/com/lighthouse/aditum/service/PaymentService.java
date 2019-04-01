@@ -120,16 +120,22 @@ public class PaymentService {
 
         bitacoraAccionesDTO.setType(5);
 
-        bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+
+        if(paymentDTO.getHouseId()!=null){
+            bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+        }else{
+            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categorias otros: " + paymentDTO.getConcept()+ " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+
+        }
 
 
         bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
         bitacoraAccionesDTO.setCategory("Ingresos");
 
         bitacoraAccionesDTO.setIdReference(payment.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""));
 
+        bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""));
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
         bitacoraAccionesService.save(bitacoraAccionesDTO);
 
 
@@ -163,18 +169,6 @@ public class PaymentService {
             return currencyFormatter.format(text).substring(1);
         } else {
             String t = currencyFormatter.format(text).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
-
-    private String formatColonesS(String text) {
-        double ammount = Double.parseDouble(text);
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if (ammount == 0) {
-            return currencyFormatter.format(ammount).substring(1);
-        } else {
-            String t = currencyFormatter.format(ammount).substring(1);
             return t.substring(0, t.length() - 3).replace(",", ".");
         }
     }

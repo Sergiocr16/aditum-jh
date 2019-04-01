@@ -5,11 +5,12 @@
         .module('aditumApp')
         .controller('BitacoraAccionesController', BitacoraAccionesController);
 
-    BitacoraAccionesController.$inject = ['Company','$localStorage','CommonMethods','$state', 'BitacoraAcciones', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    BitacoraAccionesController.$inject = ['$rootScope','Company','$localStorage','CommonMethods','$state', 'BitacoraAcciones', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function BitacoraAccionesController(Company,$localStorage,CommonMethods,$state, BitacoraAcciones, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function BitacoraAccionesController($rootScope,Company,$localStorage,CommonMethods,$state, BitacoraAcciones, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
+        $rootScope.active = "bitacoraAcciones";
 
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
