@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +64,8 @@ public class TransferenciaResource {
     @GetMapping("/transferencias/between/{initial_time}/{final_time}/incomingTransfer/{accountId}")
     @Timed
     public ResponseEntity<List<Transferencia>> getBetweenDatesByInComingTransfer(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "accountId")  int accountId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {
@@ -75,8 +77,8 @@ public class TransferenciaResource {
     @GetMapping("/transferencias/between/{initial_time}/{final_time}/outgoingTransfer/{accountId}")
     @Timed
     public ResponseEntity<List<Transferencia>> getBetweenDatesByOutgoingTransfer(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "accountId")  int accountId,
         @ApiParam Pageable pageable)
         throws URISyntaxException {

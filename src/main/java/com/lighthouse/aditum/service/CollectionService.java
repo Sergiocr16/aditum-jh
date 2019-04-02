@@ -91,8 +91,8 @@ public class CollectionService {
     }
 
     private List<ChargeDTO> findChargesPerHouseAndYear(Long houseId, String year) {
-        String initialTime = year + "-01-01T00:00:00-06:00";
-        String finalTime = year + "-12-31T00:00:00-06:00";
+        ZonedDateTime initialTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(1).withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime finalTime = ZonedDateTime.now().withYear(Integer.parseInt(year)).withMonth(12).withDayOfMonth(31).withHour(23).withMinute(59).withSecond(59);
         return this.chargeService.findAllByHouseAndBetweenDate(houseId, initialTime, finalTime).getContent();
     }
 

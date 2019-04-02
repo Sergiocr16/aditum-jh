@@ -2,6 +2,7 @@ package com.lighthouse.aditum.web.rest;
 
 import com.lighthouse.aditum.AditumApp;
 
+import com.lighthouse.aditum.config.BugsnagConfig;
 import com.lighthouse.aditum.domain.Visitant;
 import com.lighthouse.aditum.repository.VisitantRepository;
 import com.lighthouse.aditum.service.VisitantDocumentService;
@@ -84,6 +85,9 @@ public class VisitantResourceIntTest {
 
     @Autowired
     private VisitantService visitantService;
+
+    @Autowired
+    private BugsnagConfig bugsnagConfig;
     @Autowired
     private VisitantDocumentService visitantDocumentService;
     @Autowired
@@ -105,7 +109,7 @@ public class VisitantResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        VisitantResource visitantResource = new VisitantResource(visitantService,visitantDocumentService);
+        VisitantResource visitantResource = new VisitantResource(visitantService,visitantDocumentService,bugsnagConfig);
         this.restVisitantMockMvc = MockMvcBuilders.standaloneSetup(visitantResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

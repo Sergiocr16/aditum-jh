@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -176,8 +177,8 @@ public class EgressResource {
     @GetMapping("/egresses/between/{initial_time}/{final_time}/byCompany/{companyId}/andAccount/{accountId}")
     @Timed
     public ResponseEntity<List<EgressDTO>> getBetweenDatesAndCompanyAndAccount(
-        @PathVariable(value = "initial_time") String initial_time,
-        @PathVariable(value = "final_time") String final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId") Long companyId,
         @PathVariable(value = "accountId") String accountId,
         @ApiParam Pageable pageable)

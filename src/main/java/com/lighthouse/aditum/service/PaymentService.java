@@ -99,10 +99,10 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, int companyId) {
+    public Page<PaymentDTO> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Payments in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
@@ -139,10 +139,10 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public IncomeReportDTO findIncomeReportByCompanyAndDatesBetween(Pageable pageable, String initialTime, String finalTime, int companyId, String houseId, String paymentMethod, String category, String account) {
+    public IncomeReportDTO findIncomeReportByCompanyAndDatesBetween(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId, String houseId, String paymentMethod, String category, String account) {
         log.debug("Request to get all Payments in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Payment> payments = paymentRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
@@ -171,50 +171,50 @@ public class PaymentService {
 
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, String initialTime, String finalTime, int companyId, String accountId) {
+    public Page<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId, String accountId) {
         log.debug("Request to get all Payments by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Payment> result = paymentRepository.findByDatesBetweenAndCompanyAndAccount(pageable, zd_initialTime, zd_finalTime, companyId, accountId);
 //        Collections.reverse(result);
         return result.map(payment -> paymentMapper.toDto(payment));
     }
 
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(String initialTime, String finalTime, int companyId, String accountId) {
+    public List<PaymentDTO> findByDatesBetweenAndCompanyAndAccount(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId, String accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return paymentRepository.findByDatesBetweenAndCompanyAndAccount(zd_initialTime, zd_finalTime, companyId, accountId).stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findAdelantosByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
+    public List<PaymentDTO> findAdelantosByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "2").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Transactional(readOnly = true)
-    public List<PaymentDTO> findOtherIngressByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
+    public List<PaymentDTO> findOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
             .map(paymentMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Transactional(readOnly = true)
-    public int findTotalOtherIngressByDatesBetweenAndCompany(String initialTime, String finalTime, int companyId) {
+    public int findTotalOtherIngressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         int total = 0;
         List<PaymentDTO> payments = paymentRepository.findAdelantosByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, "3").stream()
             .map(paymentMapper::toDto)
@@ -246,10 +246,10 @@ public class PaymentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable, Long houseId, String initialTime, String finalTime) {
+    public Page<PaymentDTO> findByHouseFilteredByDate(Pageable pageable, Long houseId, ZonedDateTime initialTime, ZonedDateTime finalTime) {
         log.debug("Request to get all Payments");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);;;
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
 
         Page<Payment> payments = paymentRepository.findByDatesBetweenAndHouseId(pageable, zd_initialTime, zd_finalTime, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
@@ -264,10 +264,9 @@ public class PaymentService {
 
 
     @Transactional(readOnly = true)
-    public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, String initialTime) {
+    public Page<PaymentDTO> findByHouseUnderDate(Pageable pageable, Long houseId, ZonedDateTime initialTime) {
         log.debug("Request to get all Payments");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable, zd_initialTime, houseId);
+        Page<Payment> payments = paymentRepository.findUnderDateAndHouseId(pageable, initialTime, houseId);
         Page<PaymentDTO> paymentsDTO = payments.map(paymentMapper::toDto);
         for (int i = 0; i < paymentsDTO.getContent().size(); i++) {
             PaymentDTO paymentDTO = paymentsDTO.getContent().get(i);
@@ -423,7 +422,7 @@ public class PaymentService {
         return paymentEmailSenderService.obtainFileToPrint(paymentDTO, cancelingFromPayment);
     }
 
-    public File obtainIncomeReportToPrint(Pageable pageable, int companyId, String initial_time, String final_time, String houseId, String paymentMethod, String category, String account) {
+    public File obtainIncomeReportToPrint(Pageable pageable, int companyId, ZonedDateTime initial_time, ZonedDateTime final_time, String houseId, String paymentMethod, String category, String account) {
         IncomeReportDTO income = this.findIncomeReportByCompanyAndDatesBetween(pageable, initial_time, final_time, companyId, houseId, paymentMethod, category, account);
         ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time + "[America/Regina]");
         ZonedDateTime zd_finalTime = ZonedDateTime.parse((final_time + "[America/Regina]").replace("00:00:00", "23:59:59"));

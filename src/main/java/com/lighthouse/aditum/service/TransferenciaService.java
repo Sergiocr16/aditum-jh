@@ -39,31 +39,31 @@ public class TransferenciaService {
         return transferenciaRepository.save(transferencia);
     }
     @Transactional(readOnly = true)
-    public Page<Transferencia> getBetweenDatesByInComingTransfer(Pageable pageable,String initialTime,String finalTime,int accountId) {
+    public Page<Transferencia> getBetweenDatesByInComingTransfer(Pageable pageable,ZonedDateTime initialTime,ZonedDateTime finalTime,int accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return transferenciaRepository.findBetweenDatesByInComingTransfer(pageable,zd_initialTime,zd_finalTime,accountId);
     }
     @Transactional(readOnly = true)
-    public Page<Transferencia> getBetweenDatesByOutgoingTransfer(Pageable pageable,String initialTime,String finalTime,int accountId) {
+    public Page<Transferencia> getBetweenDatesByOutgoingTransfer(Pageable pageable,ZonedDateTime initialTime,ZonedDateTime finalTime,int accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return transferenciaRepository.findBetweenDatesByOutgoingTransfer(pageable,zd_initialTime,zd_finalTime,accountId);
     }
     @Transactional(readOnly = true)
-    public List<Transferencia> getBetweenDatesByInComingTransfer(String initialTime,String finalTime,int accountId) {
+    public List<Transferencia> getBetweenDatesByInComingTransfer(ZonedDateTime initialTime,ZonedDateTime finalTime,int accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return transferenciaRepository.findBetweenDatesByInComingTransfer(zd_initialTime,zd_finalTime,accountId);
     }
     @Transactional(readOnly = true)
-    public List<Transferencia> getBetweenDatesByOutgoingTransfer(String initialTime, String finalTime, int accountId) {
+    public List<Transferencia> getBetweenDatesByOutgoingTransfer(ZonedDateTime initialTime, ZonedDateTime finalTime, int accountId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime+"[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime+"[America/Regina]").replace("00:00:00","23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         return transferenciaRepository.findBetweenDatesByOutgoingTransfer(zd_initialTime,zd_finalTime,accountId);
     }
     /**

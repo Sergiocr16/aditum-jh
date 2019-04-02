@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -128,10 +129,10 @@ public class BancoResource {
     @GetMapping("/bancos/accountStatus/{first_month_day}/{final_capital_date}/{initial_time}/{final_time}/{accountId}")
     @Timed
     public ResponseEntity<BancoDTO> getAccountStatus(
-        @PathVariable(value = "first_month_day") String first_month_day,
-        @PathVariable(value = "final_capital_date") String final_capital_date,
-        @PathVariable(value = "initial_time") String initial_time,
-        @PathVariable(value = "final_time") String final_time,
+        @PathVariable("first_month_day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime first_month_day,
+        @PathVariable("final_capital_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_capital_date,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "accountId") Long accountId
     ) {
         BancoDTO bancoDTO = bancoService.getAccountStatus(first_month_day,final_capital_date,initial_time,final_time,accountId);
@@ -140,10 +141,10 @@ public class BancoResource {
     @GetMapping("/bancos/accountStatus/file/{first_month_day}/{final_capital_date}/{initial_time}/{final_time}/{accountId}")
     @Timed
     public void getAccountStatusFile(
-        @PathVariable(value = "first_month_day") String first_month_day,
-        @PathVariable(value = "final_capital_date") String final_capital_date,
-        @PathVariable(value = "initial_time") String initial_time,
-        @PathVariable(value = "final_time") String final_time,
+        @PathVariable("first_month_day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime first_month_day,
+        @PathVariable("final_capital_date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_capital_date,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "accountId") Long accountId,
         HttpServletResponse response
     )  throws URISyntaxException, IOException {

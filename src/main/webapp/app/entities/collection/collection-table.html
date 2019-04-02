@@ -66,7 +66,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="collection in vm.collections |  orderBy:'houseNumber'">
+                    <tr ng-repeat="collection in vm.collections">
                         <td class="text-center">{{collection.houseNumber}}</td>
                         <td class="text-center" style="{{monthCollection.style}}" ng-repeat="monthCollection in collection.yearCollection">
                             <span ng-if="monthCollection.mensualBalance!=0">₡ {{vm.formatearNumero(monthCollection.mensualBalance)}}</span>

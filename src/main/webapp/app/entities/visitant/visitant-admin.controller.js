@@ -123,7 +123,7 @@
             };
             vm.visitants = [];
             vm.filter = {
-                name: " ",
+                name: "",
                 houseId: "empty"
             }
             loadAll();
@@ -141,8 +141,10 @@
             if (vm.filter.houseId == undefined) {
                 vm.filter.houseId = "empty"
             }
-            if (vm.filter.name == "" || vm.filter.name == undefined) {
-                vm.filter.name = " ";
+            if (vm.filter.name == "" || vm.filter.name == undefined || vm.filter.name == " ") {
+                vm.filterName = "empty";
+            }else{
+                vm.filterName = vm.filter.name;
             }
             if(vm.filter.houseId=="empty"){
                 vm.houseSelected = "-1"
@@ -152,7 +154,7 @@
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + globalCompany.getId() + '/' + vm.houseSelected;
             vm.titleConsult = moment(vm.dates.initial_time).format('LL') + "   y   " + moment(vm.dates.final_time).format("LL");
             Visitant.findByFilter({
-                name: vm.filter.name,
+                name: vm.filterName,
                 page: vm.page,
                 size: vm.itemsPerPage,
                 sort: sort(),

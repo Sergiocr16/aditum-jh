@@ -44,19 +44,19 @@ public class AnualReportService {
             ZonedDateTime initialDate = zd_actualMonth.withMonth(i).withDayOfMonth(1).withMinute(0).withHour(0);
             ZonedDateTime initialDate2 = initialDate.withHour(23).withMinute(59);
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
-            MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initialDate+"",finalDate+"",companyId,withPresupuesto);
-            MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initialDate+"",finalDate+"",companyId,mensualIngressReportDTO,withPresupuesto);
+            MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initialDate,finalDate,companyId,withPresupuesto);
+            MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initialDate,finalDate,companyId,mensualIngressReportDTO,withPresupuesto);
 
             if(withPresupuesto==2){
-                mensualReportService.getEgressBudgets(mensualEgressReportDTO,companyId,initialDate+"",finalDate+"",egressCategories);
+                mensualReportService.getEgressBudgets(mensualEgressReportDTO,companyId,initialDate,finalDate,egressCategories);
                 mensualEgressReportDTO.setTotalBudgetPerGroup();
 
-                mensualReportService.getIngressBudgets(mensualIngressReportDTO,companyId,initialDate+"",finalDate+"");
+                mensualReportService.getIngressBudgets(mensualIngressReportDTO,companyId,initialDate,finalDate);
                 mensualIngressReportDTO.setAllIngressCategoriesBudgetTotal();
             }
             ingressByMonth.add(mensualIngressReportDTO);
             egressByMonth.add(mensualEgressReportDTO);
-            List<MensualAndAnualAccountDTO> mensualAndAnualAccount = mensualReportService.getAccountBalance(initialDate+"",initialDate2+"",companyId);
+            List<MensualAndAnualAccountDTO> mensualAndAnualAccount = mensualReportService.getAccountBalance(initialDate,initialDate2,companyId);
             initialBalanceByMonth.add(this.setTotalInitialBalance(mensualAndAnualAccount)+"");
 
         }
@@ -91,15 +91,15 @@ public class AnualReportService {
         for (int i = 1; i <= finalMonth; i++) {
             DashboardReportIncomeEgressBudgetDTO month = new DashboardReportIncomeEgressBudgetDTO();
             ZonedDateTime initialDate = zd_actualMonth.withYear(year).withMonth(i).withDayOfMonth(1).withMinute(0).withHour(0);
-            String initialDate2 = initialDate.withHour(23).withMinute(59).toString().replace("[America/Regina]","");;
+            ZonedDateTime initialDate2 = initialDate.withHour(23).withMinute(59);
             ZonedDateTime finalDate = initialDate.with(TemporalAdjusters.lastDayOfMonth());
-            String initDate = initialDate.toString().replace("[America/Regina]","");
-            String fiDate = finalDate.toString().replace("[America/Regina]","");
-            MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initDate+"",fiDate+"",companyId,2);
-            MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initDate+"",fiDate+"",companyId,mensualIngressReportDTO,2);
-            mensualReportService.getEgressBudgets(mensualEgressReportDTO, companyId, initDate + "", fiDate + "", egressCategories);
+            ZonedDateTime initDate = initialDate;
+            ZonedDateTime fiDate = finalDate;
+            MensualIngressReportDTO mensualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(initDate,fiDate,companyId,2);
+            MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(initDate,fiDate,companyId,mensualIngressReportDTO,2);
+            mensualReportService.getEgressBudgets(mensualEgressReportDTO, companyId, initDate, fiDate, egressCategories);
             mensualEgressReportDTO.setTotalBudgetPerGroup();
-            mensualReportService.getIngressBudgets(mensualIngressReportDTO, companyId, initDate + "", fiDate + "");
+            mensualReportService.getIngressBudgets(mensualIngressReportDTO, companyId, initDate, fiDate);
             mensualIngressReportDTO.setAllIngressCategoriesBudgetTotal();
             ingressByMonth.add(mensualIngressReportDTO);
             egressByMonth.add(mensualEgressReportDTO);
@@ -107,7 +107,7 @@ public class AnualReportService {
             month.setBudgetEgressTotal(mensualEgressReportDTO.getTotalBudget());
             month.setEgressTotal(mensualEgressReportDTO.getAllEgressCategoriesTotal());
             month.setIncomeTotal(mensualIngressReportDTO.getAllIngressCategoriesTotal());
-            month.setInitialBalance(this.setTotalInitialBalance(mensualReportService.getAccountBalance(initDate+"",initialDate2,companyId)));
+            month.setInitialBalance(this.setTotalInitialBalance(mensualReportService.getAccountBalance(initDate,initialDate2,companyId)));
             month.setRealBalance(month.getInitialBalance()+(month.getIncomeTotal()-month.getEgressTotal()));
             month.setMonthValue(i);
             month.setMonth(ZonedDateTime.now().withMonth(i).getMonth().toString());

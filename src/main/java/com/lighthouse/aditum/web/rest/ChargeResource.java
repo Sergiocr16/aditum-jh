@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -125,7 +126,11 @@ public class ChargeResource {
 
     @GetMapping("/charges/chargesToPay/{final_time}/{type}/byCompany/{companyId}")
     @Timed
-    public ResponseEntity<ChargesToPayReportDTO> getAllChargesToPay(@PathVariable(value = "final_time") String final_time, @PathVariable(value = "type") int type, @PathVariable(value = "companyId") Long companyId, @ApiParam Pageable pageable)
+    public ResponseEntity<ChargesToPayReportDTO> getAllChargesToPay(
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "type") int type,
+        @PathVariable(value = "companyId") Long companyId,
+        @ApiParam Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Charges");
         ChargesToPayReportDTO report = chargeService.findChargesToPay(final_time, type, companyId);
@@ -162,7 +167,12 @@ public class ChargeResource {
 
     @GetMapping("/charges/chargesToPay/file/{final_time}/{type}/byCompany/{companyId}")
     @Timed
-    public void getFile(@PathVariable(value = "final_time") String final_time, @PathVariable(value = "type") int type, @PathVariable(value = "companyId") Long companyId, @ApiParam Pageable pageable,HttpServletResponse response) throws URISyntaxException, IOException {
+    public void getFile(
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "type") int type,
+        @PathVariable(value = "companyId") Long companyId,
+        @ApiParam Pageable pageable,
+        HttpServletResponse response) throws URISyntaxException, IOException {
         File file = chargesToPayDocumentService.obtainFileToPrint(final_time, type, companyId);
         FileInputStream stream = new FileInputStream(file);
         response.setContentType("application/pdf");

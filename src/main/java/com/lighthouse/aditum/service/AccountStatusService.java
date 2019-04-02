@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -32,7 +33,7 @@ public class AccountStatusService {
         this.paymentService = paymentService;
     }
 
-    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, String initial_time, String final_time, boolean resident_account, String today_time) {
+    public AccountStatusDTO getAccountStatusDTO(Pageable pageable, Long houseId, ZonedDateTime initial_time, ZonedDateTime final_time, boolean resident_account, ZonedDateTime today_time) {
         AccountStatusDTO accountStatusDTO = new AccountStatusDTO();
         accountStatusDTO.setListaAccountStatusItems(new ArrayList<>());
         double saldoInicial = this.getSaldoInicial(pageable, houseId, initial_time);
@@ -100,7 +101,7 @@ public class AccountStatusService {
         }
     }
 
-    private double getSaldoInicial(Pageable pageable, Long houseId, String initial_time) {
+    private double getSaldoInicial(Pageable pageable, Long houseId, ZonedDateTime initial_time) {
         double saldoInicial = 0;
         double totalCharges = 0;
         double totalPayments = 0;

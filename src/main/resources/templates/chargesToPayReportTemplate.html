@@ -246,7 +246,7 @@
 <div class='header'>
     <span th:text="|${company.name}|" style="color:rgb(0, 150, 136);margin-left:1cm">company</span> - Reporte de cuotas
     por cobrar <span th:text="|${finalTime}|"></span>
-    <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzulMaterial.png|}"
+    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"
          style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
@@ -271,8 +271,7 @@
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
-                                                                                  th:src="@{|${baseUrl}/content/images/logoAditumAzulMaterial.png|}"/>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
                     <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
                 </h2>
             </td>
@@ -308,7 +307,7 @@
                         <h5 class="text-center balance-title" style="font-weight:bold">Total morosidad</h5>
                         <h5 class="text-center  bold balance-title">
                            <span>
-                           <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"
+                           <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"
                                 style="margin:0 3px;"/>
                            <span th:text="|${report.totalDueFormatted}|">0</span></span>
                         </h5>
@@ -391,13 +390,13 @@
                                             <span th:if="|${charge.type==3}|">ÁREA COMUN</span>
                                         </td>
                                         <td class="text-center no-double-border font-13"><img
-                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                             th:text="${charge.ammount}"></span></td>
                                         <td class="text-center no-double-border font-13"><img
-                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                             th:text="${charge.subcharge}"></span></td>
                                         <td class="text-center no-double-border-last font-13"><img
-                                            th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                            src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                             th:text="${charge.getPaymentAmmount()}"></span></td>
                                     </tr>
                                     <tr>
@@ -407,7 +406,7 @@
                                             <div style="display:inline;float: right"><b>SUBTOTAL</b></div>
                                         </td>
                                         <td class="total-ammount payment-method text-center" style="border-top: 1px solid rgb(0, 150, 136)!important;"><b>
-                                            <img th:src="@{|${baseUrl}/content/images/colones-blanco.png|}" height="10"/>
+                                            <img src="https://res.cloudinary.com/aditum/image/upload/v1554150816/ADITUM%20IMAGES/colones-blanco.png" height="10"/>
                                             <span
                                                 th:text="${dueHouse.totalDueFormatted}"></span>
                                         </b></td>
@@ -422,7 +421,7 @@
             </td>
         </tr>
     </table>
-    <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"/>
+    <h6 class="text-center bold gray-font" style="margin-bottom: 0px">TOTAL DE MOROSIDAD: <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/>
         <span th:text="${report.getTotalDueFormatted()}"></span></h6>
 </div>
 </body>
