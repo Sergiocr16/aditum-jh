@@ -9,6 +9,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.io.File;
@@ -51,10 +52,10 @@ public class MensualAndAnualReportResource {
 
     @GetMapping("/mensualReport/{first_month_day}/{final_balance_time}/{initial_time}/{final_time}/{companyId}/{withPresupuesto}")
     public ResponseEntity<MensualReportDTO> getMensualReport(
-        @PathVariable (value = "first_month_day")  String first_month_day,
-        @PathVariable (value = "final_balance_time")  String final_balance_time,
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("first_month_day") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime first_month_day,
+        @PathVariable("final_balance_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_balance_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId")  Long companyId,
         @PathVariable(value = "withPresupuesto")  int withPresupuesto){
         log.debug("REST request to info of the dashboard : {}", companyId);
@@ -92,23 +93,21 @@ public class MensualAndAnualReportResource {
                        HttpServletResponse response) throws URISyntaxException, IOException {
         String[] parts = mensualReportObject.split("}");
         MensualReportDTO mensualReportDTO = new MensualReportDTO();
-        MensualIngressReportDTO mensualAndAnualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(parts[2],parts[3],Long.parseLong(parts[4]),Integer.parseInt(parts[5]));
+        MensualIngressReportDTO mensualAndAnualIngressReportDTO = mensualReportService.getMensualAndAnualIngressReportDTO(ZonedDateTime.parse(parts[2]),ZonedDateTime.parse(parts[3]),Long.parseLong(parts[4]),Integer.parseInt(parts[5]));
         mensualReportDTO.setMensualIngressReport(mensualAndAnualIngressReportDTO);
-        MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(parts[2],parts[3],Long.parseLong(parts[4]),mensualAndAnualIngressReportDTO,Integer.parseInt(parts[5]));
+        MensualEgressReportDTO mensualEgressReportDTO = mensualReportService.getMensualAndAnualEgressReportDTO(ZonedDateTime.parse(parts[2]),ZonedDateTime.parse(parts[3]),Long.parseLong(parts[4]),mensualAndAnualIngressReportDTO,Integer.parseInt(parts[5]));
         mensualReportDTO.setMensualEgressReport(mensualEgressReportDTO);
-        mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(parts[0],parts[1],Long.parseLong(parts[4])));
+        mensualReportDTO.setMensualAndAnualAccount(mensualReportService.getAccountBalance(ZonedDateTime.parse(parts[0]),ZonedDateTime.parse(parts[1]),Long.parseLong(parts[4])));
         mensualReportDTO.setTotalInitialBalance(mensualReportDTO.getMensualAndAnualAccount());
         double flujo = mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
         mensualReportDTO.setFlujo(flujo);
-
-
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
 
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[2]+"[America/Regina]");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[2]);
         String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[3]+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[3]);
         String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
 
 

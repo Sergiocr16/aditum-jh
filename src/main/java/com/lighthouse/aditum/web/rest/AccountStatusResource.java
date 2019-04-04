@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,10 +65,10 @@ public class AccountStatusResource {
     public ResponseEntity<AccountStatusDTO> getAccountStatusByHouse(
         @ApiParam Pageable pageable,
         @PathVariable Long houseId,
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "resident_account")  boolean  resident_account,
-        @PathVariable(value = "today_time")  String  today_time
+        @PathVariable("today_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime today_time
     ) {
         log.debug("REST request to get a page of Charges");
         AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(pageable,houseId,initial_time,final_time,resident_account,today_time);
@@ -83,18 +84,14 @@ public class AccountStatusResource {
         Locale local = new Locale("es", "ES");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
         ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
-
-
-        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),parts[1],parts[2],Boolean.parseBoolean(parts[3]),parts[4]);
-
+        AccountStatusDTO accountStatusDTO = accountStatusService.getAccountStatusDTO(null,Long.parseLong(parts[0]),ZonedDateTime.parse(parts[1]),ZonedDateTime.parse(parts[2]),Boolean.parseBoolean(parts[3]),ZonedDateTime.parse(parts[4]));
         for (int j = 0; j < accountStatusDTO.getListaAccountStatusItems().size(); j++) {
           accountStatusDTO.getListaAccountStatusItems().get(j).setDateFormatted(pattern.ofPattern("dd MMM yyyy").format(accountStatusDTO.getListaAccountStatusItems().get(j).getDate()));
         }
         HouseDTO houseDTO = houseService.findOne(Long.parseLong(parts[0]));
-
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[1]+"[America/Regina]");
+        ZonedDateTime zd_initialTime = ZonedDateTime.parse(parts[1]);
         String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[2]+"[America/Regina]");
+        ZonedDateTime zd_finalTime = ZonedDateTime.parse(parts[2]);
         String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
         if(option==1){
             File file = accountStatusDocumentService.obtainFileToPrint(accountStatusDTO,houseDTO,initialTimeFormatted,finalTimeFormatted);

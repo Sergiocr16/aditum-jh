@@ -1,6 +1,7 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.config.BugsnagConfig;
 import com.lighthouse.aditum.service.VisitantDocumentService;
 import com.lighthouse.aditum.service.VisitantService;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +52,13 @@ public class VisitantResource {
 
     private final VisitantDocumentService visitantDocumentService;
 
-    public VisitantResource(VisitantService visitantService,VisitantDocumentService visitantDocumentService) {
+    private final BugsnagConfig bugsnagConfig;
+
+
+    public VisitantResource(VisitantService visitantService,VisitantDocumentService visitantDocumentService,BugsnagConfig bugsnagConfig) {
         this.visitantService = visitantService;
         this.visitantDocumentService = visitantDocumentService;
+        this.bugsnagConfig = bugsnagConfig;
     }
 
     /**
@@ -153,6 +159,21 @@ public class VisitantResource {
         log.debug("REST request to get a Watches between dates");
         Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/visitants/filter/{initial_time}/{final_time}/byCompany/{companyId}/byHouse/{houseId}/byName/{name}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getByFilter(
+        @ApiParam Pageable pageable,
+        @PathVariable("companyId") Long companyId,
+        @PathVariable("houseId")String houseId,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable ("name") String name)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByFilter(pageable,companyId,houseId,initial_time,final_time,name);
+        HttpHeaders headers  = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 

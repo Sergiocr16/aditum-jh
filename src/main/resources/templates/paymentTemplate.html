@@ -224,7 +224,7 @@
     <span th:text="|${company.name}|" style="color:rgb(42, 100, 150);margin-left:1cm">company</span> - <span
     th:text="|${payment.concept}|"> </span> <span th:if="|${house!=null}|">Filial # <span th:text="|${house.housenumber}|"></span></span> - <b>Folio
     N° <span th:text="|${payment.receiptNumber}|">anno</span></b>
-    <img width="70px" th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}" style="float:right;margin-right:1cm"/>
+    <img width="70px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png" style="float:right;margin-right:1cm"/>
     <span style="margin-right:3px;float:right;font-size:10px;color:#90a4ae">Powered by</span>
 </div>
 <div id="firstPageHeader" style="position: running(firstPageHeader);"></div>
@@ -243,8 +243,7 @@
             <td>
             </td>
             <td>
-                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px"
-                                                                                  th:src="@{|${baseUrl}/content/images/logoAditumAzul.png|}"/>
+                <h2 style="text-align:right;margin-bottom:0;margin-top:30px"><img width="100px" src="https://res.cloudinary.com/aditum/image/upload/v1554150838/ADITUM%20IMAGES/logoAditumAzulMaterial.png"/>
                     <span style="display:block;font-size:10px;margin-top:-10px;color:#90a4ae">Powered by</span>
                 </h2>
             </td>
@@ -293,7 +292,7 @@
         <tr th:if="${isCancellingFromPayment==true}">
             <td colspan="3" style="font-size:12px;text-align:left">Este pago se realizo automaticamente gracias a un
                 adelanto de condómino realizado el <span th:text="|${payment.account}|"></span> por un monto de <img
-                    th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="8"/> <span
+                    src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="8"/> <span
                     th:text="${payment.ammount}"></span>.
             </td>
         </tr>
@@ -341,7 +340,7 @@
                             <td></td>
                             <td></td>
                             <td class="text-center">
-                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${paymentTotal}"></span>
                             </td>
                         </tr>
@@ -360,17 +359,17 @@
                             </td>
                             <td th:if="${charge.type==4}">ADELANTO</td>
                             <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${charge.ammount}"></span>
                             </td>
                             <td class="text-center" th:if="${payment.concept=='Abono a cuotas'}">
-                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${charge.subcharge}"></span>
                             </td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td th:if="${payment.concept!='Abono a cuotas'}"></td>
                             <td class="text-center">
-                                <img th:src="@{|${baseUrl}/content/images/colones-gris.png|}" height="10"/> <span
+                                <img src="https://res.cloudinary.com/aditum/image/upload/v1554150824/ADITUM%20IMAGES/colones-gris.png" height="10"/> <span
                                 th:text="${charge.paymentAmmount}"></span>
                             </td>
                         </tr>
@@ -382,7 +381,7 @@
                                     <span><span th:text="|${paymentTotal}|"></span></span>
                                 </div>
                                 <div style="display:inline;float: right;margin:0px 2px"><img
-                                    th:src="@{|${baseUrl}/content/images/colones-blanco-pequeño.png|}" height="11"/></div>
+                                    src="https://res.cloudinary.com/aditum/image/upload/v1554150821/ADITUM%20IMAGES/colones-blanco-peque%C3%B1o.png" height="11"/></div>
                                 <div style="display:inline;float: right"><b>Total:</b></div>
                             </td>
                         </tr>

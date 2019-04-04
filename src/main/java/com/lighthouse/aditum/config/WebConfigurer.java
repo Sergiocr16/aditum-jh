@@ -1,5 +1,6 @@
 package com.lighthouse.aditum.config;
 
+import com.bugsnag.Bugsnag;
 import io.github.jhipster.config.JHipsterConstants;
 import io.github.jhipster.config.JHipsterProperties;
 import io.github.jhipster.web.filter.CachingHttpHeadersFilter;
@@ -42,7 +43,6 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
     private MetricRegistry metricRegistry;
 
     public WebConfigurer(Environment env, JHipsterProperties jHipsterProperties) {
-
         this.env = env;
         this.jHipsterProperties = jHipsterProperties;
     }
@@ -57,6 +57,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         if (env.acceptsProfiles(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
         }
+        Bugsnag bugsnag = new Bugsnag("4e83527d0bf0429a27c2cb026f964fcc");
         log.info("Web application fully configured");
     }
 

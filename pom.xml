@@ -389,6 +389,11 @@
             <version>9.1.14</version>
         </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
+        <dependency>
+            <groupId>com.bugsnag</groupId>
+            <version>[3.0,4.0)</version>
+            <artifactId>bugsnag-spring</artifactId>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>spring-boot:run</defaultGoal>

@@ -102,33 +102,27 @@ public class CommonAreaReservationsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
-        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndHouse(Pageable pageable, String initialTime, String finalTime, Long houseId) {
+    public Page<CommonAreaReservationsDTO> findByDatesBetweenAndHouse(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
-        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<CommonAreaReservations> result = commonAreaReservationsRepository.findByDatesBetweenAndHouse(pageable, zd_initialTime, zd_finalTime, houseId);
         return mapCommonAreaReservations(result.map(commonAreaReservations -> commonAreaReservationsMapper.toDto(commonAreaReservations)));
     }
     @Transactional(readOnly = true)
-    public Page<CommonAreaReservationsDTO> findDevolutionDoneByDatesBetweenAndCompany(Pageable pageable, String initialTime, String finalTime, Long companyId) {
+    public Page<CommonAreaReservationsDTO> findDevolutionDoneByDatesBetweenAndCompany(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all CommonAreaReservations");
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTimeNoFormatted = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTimeNoFormatted = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
-        ZonedDateTime zd_initialTime = zd_initialTimeNoFormatted.withMinute(0).withHour(0).withSecond(0);
-        ZonedDateTime zd_finalTime = zd_finalTimeNoFormatted.withMinute(59).withHour(23).withSecond(59);
+        ZonedDateTime zd_initialTime = initialTime.withMinute(0).withHour(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withMinute(59).withHour(23).withSecond(59);
         Page<CommonAreaReservations> commonAreaReservations = commonAreaReservationsRepository.findDevolutionDoneByDatesBetweenAndCompany(pageable, zd_initialTime, zd_finalTime, companyId,6);
         Page<CommonAreaReservationsDTO> commonAreaReservationsDTOPage = commonAreaReservations.map(commonAreaReservationsMapper::toDto);
         commonAreaReservationsDTOPage = mapCommonAreaReservations(commonAreaReservationsDTOPage);
@@ -142,12 +136,12 @@ public class CommonAreaReservationsService {
         return commonAreaReservationsDTOPage;
     }
     @Transactional(readOnly = true)
-    public CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours, String reservation_date, String initial_time, String final_time, Long common_area_id, Long reservation_id) {
+    public CommonAreaReservationsDTO isAvailableToReserve(int maximun_hours, ZonedDateTime reservation_date, String initial_time, String final_time, Long common_area_id, Long reservation_id) {
         CommonAreaReservationsDTO commonAreaReservationsDTO = new CommonAreaReservationsDTO();
 
         if (maximun_hours == 0) {
-            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date + "[America/Regina]");
-            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date + "[America/Regina]").replace("00:00:00", "23:59:59"));
+            ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
+            ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(59).withHour(23).withSecond(59);
             List<CommonAreaReservations> reservations = commonAreaReservationsRepository.findByBetweenDatesAndCommonArea(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);
             if (reservations.size() > 0) {
                 commonAreaReservationsDTO.setAvailable(false);
@@ -155,9 +149,8 @@ public class CommonAreaReservationsService {
                 commonAreaReservationsDTO.setAvailable(true);
             }
         } else {
-
-            ZonedDateTime zd_reservation_initial_date = ZonedDateTime.parse(reservation_date + "[America/Regina]");
-            ZonedDateTime zd_reservation_final_date = ZonedDateTime.parse((reservation_date + "[America/Regina]"));
+            ZonedDateTime zd_reservation_initial_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
+            ZonedDateTime zd_reservation_final_date = reservation_date.withMinute(0).withHour(0).withSecond(0);
             zd_reservation_initial_date = zd_reservation_initial_date.plusHours(Integer.parseInt(initial_time));
             zd_reservation_final_date = zd_reservation_final_date.plusHours(Integer.parseInt(final_time));
             List<CommonAreaReservations> test1 = commonAreaReservationsRepository.findReservationBetweenIT(zd_reservation_initial_date, zd_reservation_final_date, common_area_id);

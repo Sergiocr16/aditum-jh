@@ -43,7 +43,7 @@
                 vm.visitorsPerMonth = vm.dashboard.visitorsPerMonth;
                 vm.housesPercentage = ((vm.dashboard.houseQuantity * 100) / vm.dashboard.totalHouses).toFixed(2)
                 loadGraphFlujoIngresosYEgresos(vm.year, vm.chartTypeEIB.type);
-                vm.loadDefaulters(vm.year)
+                vm.loadDefaulters(vm.year);
                 visitantsGraphInit();
                 residentsEnabledGraphInit();
                 vehiculesEnabledGraphInit();
@@ -168,8 +168,8 @@
         }
 
 
-        function loadGraphFlujoIngresosYEgresos(year, type) {
-            Dashboard.flujoIngresosEgresos({companyId: globalCompany.getId(), year: year}, function (result) {
+        function loadGraphFlujoIngresosYEgresos(nowYear, type) {
+            Dashboard.flujoIngresosEgresos({companyId: globalCompany.getId(), year: nowYear}, function (result) {
                 vm.anualReportDashboardDTO = result;
                 defineEICurrentMonth();
                 ingresosEgresosGraphInit(type)

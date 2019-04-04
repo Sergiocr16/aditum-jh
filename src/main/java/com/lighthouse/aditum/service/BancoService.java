@@ -118,7 +118,7 @@ public class BancoService {
     }
 
     @Transactional(readOnly = true)
-    public BancoDTO getInicialBalance(String firstMonthDay, BancoDTO bancoDTO, String initialTime) {
+    public BancoDTO getInicialBalance(ZonedDateTime firstMonthDay,BancoDTO bancoDTO,ZonedDateTime initialTime){
         Locale locale = new Locale("es", "CR");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         double saldo;
@@ -170,7 +170,7 @@ public class BancoService {
     }
 
     @Transactional(readOnly = true)
-    public BancoDTO getAccountStatus(String firstMonthDay, String final_capital_date, String initialTime, String finalTime, Long accountId) {
+    public BancoDTO getAccountStatus(ZonedDateTime firstMonthDay,ZonedDateTime final_capital_date,ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         BancoDTO bancoDTO = this.findOne(accountId);
         String a = "a";
         bancoDTO = getInicialBalance(firstMonthDay, bancoDTO, final_capital_date);
@@ -188,8 +188,7 @@ public class BancoService {
 
     }
 
-
-    private List<BancoMovementDTO> bancoMovements(String initialTime, String finalTime, Long accountId, Long companyId) {
+    private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime,Long accountId,Long companyId){
         List<BancoMovementDTO> movements = new ArrayList<>();
 
         Page<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, companyId, accountId + "");
