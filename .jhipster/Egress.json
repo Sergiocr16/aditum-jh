@@ -83,11 +83,16 @@
         {
             "fieldName": "billNumber",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "deleted",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180324021545",
     "dto": "mapstruct",
     "service": "serviceClass",
     "entityTableName": "egress",
+    "jpaMetamodelFiltering": false,
     "pagination": "pager"
 }

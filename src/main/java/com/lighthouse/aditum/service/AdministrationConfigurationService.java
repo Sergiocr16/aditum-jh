@@ -68,6 +68,7 @@ public class AdministrationConfigurationService {
 
             bitacoraAccionesDTO.setType(3);
             bitacoraAccionesDTO.setConcept("Edición de panel de configuración general");
+            bitacoraAccionesDTO.setUrlState("administration-configuration-detail");
 
 
             bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);

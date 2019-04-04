@@ -75,7 +75,9 @@
                         <td>₡{{vm.formatearNumero(banco.saldo+"")}}</td>
 
                         <td> <a class="light-gray-font" ui-sref="banco-configuration.edit({id:banco.id})">Editar</a></td>
-                        <td> <a class="light-gray-font" ng-click="vm.deleteBanco(banco)">Eliminar</a></td>
+                        <td class="text-center"> <a class="light-gray-font" ng-click="vm.deleteBanco(banco)"><i class="material-icons">
+                            delete
+                        </i></a></td>
                     </tr>
                     </tbody>
                 </table>

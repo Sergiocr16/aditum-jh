@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('MensualChargeController', MensualChargeController);
 
-    MensualChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany','Modal'];
+    MensualChargeController.$inject = ['companyUser', 'BitacoraAcciones', '$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function MensualChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany,Modal) {
+    function MensualChargeController(companyUser, BitacoraAcciones, $state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'mensual';
         vm.loadPage = loadPage;
@@ -163,8 +163,9 @@
         vm.createDues = function () {
             Modal.showLoadingBar();
             var selectedHouses = "";
-            function createCharge(houseNumber, cuotaNumber) {
 
+            function createCharge(houseNumber, cuotaNumber) {
+                console.log("holis")
                 var cuota = vm.houses[houseNumber].cuotas[cuotaNumber];
                 var cuotaNumber = cuotaNumber;
                 var house = vm.houses[houseNumber]
@@ -181,8 +182,21 @@
                                 $state.go('mensualCharge', null, {
                                     reload: true
                                 });
-                                var concept = "Creación de cuota mensual" + ": " + cuota.concept + ", "+ " a las filiales: " + selectedHouses;
-                                BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                                angular.forEach(vm.globalConcept, function (value, key) {
+                                    var housesSelected = "";
+                                    angular.forEach(vm.houses, function (house, key) {
+                                        angular.forEach(house.cuotas, function (cuota, key) {
+                                            if (cuota.ammount > 0 && vm.globalConcept[cuota.globalConcept].id == value.id) {
+                                                housesSelected = housesSelected + house.housenumber + ",";
+                                            }
+                                        });
+                                    });
+                                    var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
+                                    BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
+                                    });
+
+                                });
+
                                 Modal.hideLoadingBar();
                                 Modal.toast("Se generaron las cuotas correctamente.")
                             }
@@ -202,8 +216,20 @@
                                 reload: true
                             });
                             Modal.hideLoadingBar();
-                            var concept = "Creación de cuota mensual" + ": " + cuota.concept + ", "+ " a las filiales: " + selectedHouses;
-                            BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                            angular.forEach(vm.globalConcept, function (value, key) {
+                                var housesSelected = "";
+                                angular.forEach(vm.houses, function (house, key) {
+                                    angular.forEach(house.cuotas, function (cuota, key) {
+                                        if (cuota.ammount > 0 && vm.globalConcept[cuota.globalConcept].id == value.id) {
+                                            housesSelected = housesSelected + house.housenumber + ",";
+                                        }
+                                    });
+                                });
+                                var concept = "Creación de cuota mensual" + ": " + value.concept +", a las filiales " + housesSelected;
+                                BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {
+                                });
+
+                            });
                             Modal.toast("Se generaron las cuotas correctamente.")
                         }
                     }
@@ -221,9 +247,9 @@
         }
 
 
-        function mapBitacoraAcciones (concept){
+        function mapBitacoraAcciones(concept) {
             vm.bitacoraAcciones = {};
-            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 2);
+            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 1);
             vm.bitacoraAcciones.type = 6;
             vm.bitacoraAcciones.ejecutionDate = new Date();
             vm.bitacoraAcciones.category = "Cuotas";
@@ -246,21 +272,21 @@
 
         }
         vm.deleteDue = function (id) {
-            Modal.confirmDialog( "¿Está seguro que desea eliminar esta columna?","",
-                function(){
-                        angular.forEach(vm.globalConcept, function (value, key) {
-                            if (value.id == id) {
-                                vm.globalConcept.splice(key, 1);
+            Modal.confirmDialog("¿Está seguro que desea eliminar esta columna?", "",
+                function () {
+                    angular.forEach(vm.globalConcept, function (value, key) {
+                        if (value.id == id) {
+                            vm.globalConcept.splice(key, 1);
+                        }
+                    })
+
+                    angular.forEach(vm.houses, function (value, key) {
+                        angular.forEach(value.cuotas, function (cuota, key) {
+                            if (cuota.globalConcept == id) {
+                                value.cuotas.splice(key, 1);
                             }
                         })
-
-                        angular.forEach(vm.houses, function (value, key) {
-                            angular.forEach(value.cuotas, function (cuota, key) {
-                                if (cuota.globalConcept == id) {
-                                    value.cuotas.splice(key, 1);
-                                }
-                            })
-                        })
+                    })
 
                 });
 

@@ -194,7 +194,7 @@ console.log(vm.companyConfig)
                 vm.egress.companyId = globalCompany.getId();
                 vm.egress.paymentMethod = 0;
                 vm.egress.account = 0;
-                vm.egress.account = 0;
+                vm.egress.deleted = 0;
 
                 Egress.save(vm.egress, onSaveSuccess, onSaveError);
             }

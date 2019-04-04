@@ -56,7 +56,6 @@ public class AnnouncementService {
         announcement = announcementRepository.save(announcement);
         AnnouncementDTO announcementDTO1 = announcementMapper.toDto(announcement);
 
-String a = "a";
         if(announcementDTO.getId()==null){
             this.announcementMailService.sendEmail(announcementDTO1);
         }

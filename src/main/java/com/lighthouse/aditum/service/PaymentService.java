@@ -124,7 +124,7 @@ public class PaymentService {
         if(paymentDTO.getHouseId()!=null){
             bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
         }else{
-            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categorias otros: " + paymentDTO.getConcept()+ " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
 
         }
 

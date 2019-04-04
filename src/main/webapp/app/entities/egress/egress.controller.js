@@ -5,16 +5,14 @@
         .module('aditumApp')
         .controller('EgressController', EgressController);
 
-    EgressController.$inject = ['$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
+    EgressController.$inject = ['Modal','$scope', '$state', 'Egress', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'CommonMethods', 'Proveedor', '$rootScope', 'globalCompany'];
 
-    function EgressController($scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
+    function EgressController(Modal,$scope, $state, Egress, ParseLinks, AlertService, paginationConstants, pagingParams, CommonMethods, Proveedor, $rootScope, globalCompany) {
         $rootScope.active = "egress";
         var vm = this;
         $rootScope.mainTitle =  "Egresos";
         vm.isReady = false;
         vm.isReady2 = false;
-        vm.datePickerOpenStatus = {};
-        vm.openCalendar = openCalendar;
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
 //        vm.reverse = pagingParams.ascending;
@@ -71,11 +69,12 @@
                 formatEgresos(vm.egresses);
             }
 
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
         }
 
+        function onError(error) {
+            Modal.toast("Un error inesperado sucedió");
+            AlertService.error(error.data.message);
+        }
         vm.sortBy = function (propertyName) {
             vm.reverse = (vm.propertyName === propertyName) ? !vm.reverse : false;
             vm.propertyName = propertyName;
@@ -123,6 +122,35 @@
 
         };
 
+        vm.deleteEgress = function (egress) {
+            Modal.confirmDialog("¿Está seguro que desea eliminar este egreso?","",
+                function(){
+                    Modal.showLoadingBar();
+                    egress.deleted = 1;
+
+                    if (egress.paymentDate == "No pagado") {
+                        egress.paymentDate = null;
+                    }
+                    if (egress.folio == "Sin Registrar") {
+                        egress.folio = null;
+                    }
+                    if (egress.reference == "Sin Registrar") {
+                        egress.reference = null;
+                    }
+
+                    Egress.update(egress, onDeleteSuccess, onError);
+
+                });
+
+        };
+
+
+        function onDeleteSuccess(result) {
+            Modal.hideLoadingBar();
+            loadAll();
+            Modal.toast("Se eliminó el egreso correctamente");
+            vm.isSaving = false;
+        }
         vm.detailEgress = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('egress-detail', {
@@ -135,25 +163,7 @@
             $state.go('egress.edit', {
                 id: encryptedId
             })
-        }
-
-        vm.updatePicker = function () {
-            vm.picker1 = {
-                datepickerOptions: {
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            };
-            vm.picker2 = {
-                datepickerOptions: {
-                    minDate: vm.dates.initial_time,
-                    enableTime: false,
-                    showWeeks: false,
-                }
-            }
-        }
-        vm.updatePicker();
-
+        };
         function consult() {
             vm.isReady2 = false;
             Egress.findBetweenDatesByCompany({
@@ -228,11 +238,5 @@
             });
         }
 
-        vm.datePickerOpenStatus.initialtime = false;
-        vm.datePickerOpenStatus.finaltime = false;
-
-        function openCalendar(date) {
-            vm.datePickerOpenStatus[date] = true;
-        }
     }
 })();

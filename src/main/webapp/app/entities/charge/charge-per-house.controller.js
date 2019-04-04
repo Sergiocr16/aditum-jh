@@ -227,7 +227,8 @@
                             countPassedDate++;
                         }
                     }
-                })
+                    cuota.temporalAmmount = cuota.ammount;
+                });
                 vm.charges = data;
 
                 vm.page = pagingParams.page;

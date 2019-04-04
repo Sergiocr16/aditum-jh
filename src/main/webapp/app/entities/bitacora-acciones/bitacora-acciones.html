@@ -91,7 +91,6 @@
                     <thead  style="background-color: #fafafa;" class="">
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th>Concepto</th>
-                        <th class="text-center">Tipo</th>
                         <th class="text-center">Responsable</th>
                         <th class="text-center">Fecha y hora</th>
                         <th class="text-center">Categoría</th>
@@ -103,12 +102,11 @@
 
                     <tr class="text-center" ng-repeat="bitacoraAcciones in vm.bitacoraAcciones  | filter:vm.search  | orderBy:'ejecutionDate':true" >
                         <td class="text-left">{{bitacoraAcciones.concept}}</td>
-                        <td>{{bitacoraAcciones.type}}</td>
                         <td>{{bitacoraAcciones.responsable.name}} {{bitacoraAcciones.responsable.lastname}}</td>
                         <td>{{bitacoraAcciones.ejecutionDate | formatDate}}</td>
                         <td>{{bitacoraAcciones.category}}</td>
                         <td class="text-center">
-                            <a class="light-gray-font" ng-if="bitacoraAcciones.type==1 || bitacoraAcciones.type==4" ng-click="vm.detail(bitacoraAcciones)"><i
+                            <a class="light-gray-font" ng-if="bitacoraAcciones.type==1 || bitacoraAcciones.type==4 || bitacoraAcciones.type==3" ng-click="vm.detail(bitacoraAcciones)"><i
                             class="material-icons">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
                             remove_red_eye</i></a>

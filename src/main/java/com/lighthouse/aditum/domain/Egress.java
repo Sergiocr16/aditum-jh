@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
+
 /**
  * A Egress.
  */
@@ -67,10 +68,14 @@ public class Egress implements Serializable {
     @Column(name = "bill_number")
     private String billNumber;
 
+    @Column(name = "deleted")
+    private Integer deleted;
+
     @ManyToOne(optional = false)
     @NotNull
     private Company company;
 
+    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -261,6 +266,19 @@ public class Egress implements Serializable {
         this.billNumber = billNumber;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public Egress deleted(Integer deleted) {
+        this.deleted = deleted;
+        return this;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -273,6 +291,7 @@ public class Egress implements Serializable {
     public void setCompany(Company company) {
         this.company = company;
     }
+    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
     public boolean equals(Object o) {
@@ -310,8 +329,9 @@ public class Egress implements Serializable {
             ", proveedor='" + getProveedor() + "'" +
             ", paymentDate='" + getPaymentDate() + "'" +
             ", expirationDate='" + getExpirationDate() + "'" +
-            ", state='" + getState() + "'" +
+            ", state=" + getState() +
             ", billNumber='" + getBillNumber() + "'" +
+            ", deleted=" + getDeleted() +
             "}";
     }
 }

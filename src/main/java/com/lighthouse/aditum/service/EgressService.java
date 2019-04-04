@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -85,6 +86,7 @@ public class EgressService {
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
 
         }
+        egress.setDeleted(egressDTO.getDeleted());
         egress = egressRepository.save(egress);
         LocalDateTime today = LocalDateTime.now();
         ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
@@ -92,10 +94,10 @@ public class EgressService {
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
         if(egressDTO.getId()==null){
             bitacoraAccionesDTO.setType(1);
-            bitacoraAccionesDTO.setConcept("Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + egressDTO.getTotal() + " colones");
+            bitacoraAccionesDTO.setConcept("Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones");
         }else{
             bitacoraAccionesDTO.setType(1);
-            bitacoraAccionesDTO.setConcept("Pago de un egreso: " + egressDTO.getConcept() + " por " + egressDTO.getTotal() + " colones");
+            bitacoraAccionesDTO.setConcept("Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones");
         }
 
 
@@ -132,7 +134,16 @@ public class EgressService {
             .map(egressMapper::toDto);
 
     }
-
+    private String formatColonesD(double text) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if (text == 0) {
+            return currencyFormatter.format(text).substring(1);
+        } else {
+            String t = currencyFormatter.format(text).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
     @Transactional(readOnly = true)
     public Page<EgressDTO> findPaymentEgressByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");

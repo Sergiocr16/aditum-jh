@@ -268,7 +268,7 @@
 
         function mapBitacoraAcciones (concept){
             vm.bitacoraAcciones = {};
-            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 1);
+            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 2);
             vm.bitacoraAcciones.type = 6;
             vm.bitacoraAcciones.ejecutionDate = new Date();
             vm.bitacoraAcciones.category = "Cuotas";
