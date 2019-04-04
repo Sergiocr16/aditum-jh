@@ -27,10 +27,14 @@ public class PaymentProofService {
 
     private final HouseService houseService;
 
-    public PaymentProofService(PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
+    private final paymentProofMailService paymentProofMailService;
+
+
+    public PaymentProofService( paymentProofMailService paymentProofMailService,PaymentProofRepository paymentProofRepository, PaymentProofMapper paymentProofMapper, HouseService houseService) {
         this.paymentProofRepository = paymentProofRepository;
         this.paymentProofMapper = paymentProofMapper;
         this.houseService = houseService;
+        this.paymentProofMailService = paymentProofMailService;
     }
 
     /**
@@ -43,8 +47,13 @@ public class PaymentProofService {
         log.debug("Request to save PaymentProof : {}", paymentProofDTO);
         PaymentProof paymentProof = paymentProofMapper.toEntity(paymentProofDTO);
         paymentProof.setHouse(paymentProofMapper.houseFromId(paymentProofDTO.getHouseId()));
+        paymentProofDTO.setHouse(houseService.findOne(paymentProofDTO.getHouseId()));
         paymentProof.setCompany(paymentProofMapper.companyFromId(paymentProofDTO.getCompanyId()));
         paymentProof = paymentProofRepository.save(paymentProof);
+
+        if(paymentProofDTO.getId()==null){
+            this.paymentProofMailService.sendEmail(paymentProofDTO);
+        }
         return paymentProofMapper.toDto(paymentProof);
     }
 

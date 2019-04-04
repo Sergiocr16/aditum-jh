@@ -50,8 +50,9 @@
                     $translatePartialLoader.addPart('presupuesto');
                     return $translate.refresh();
                 }],
-                entity: ['$stateParams', 'Presupuesto', function($stateParams, Presupuesto) {
-                    return Presupuesto.get({id : $stateParams.id}).$promise;
+                entity: ['$stateParams', 'Presupuesto', 'CommonMethods', function($stateParams, Presupuesto, CommonMethods) {
+                    var id = CommonMethods.decryptIdUrl($stateParams.id)
+                    return Presupuesto.get({id : id}).$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {

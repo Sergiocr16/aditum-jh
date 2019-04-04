@@ -1,0 +1,47 @@
+
+<div>
+    <h2><span data-translate="aditumApp.bitacoraAcciones.detail.title">Bitacora Acciones</span> {{vm.bitacoraAcciones.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.bitacoraAcciones.concept">Concept</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.concept}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.type">Type</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.type}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.idReference">Id Reference</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.idReference}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.idResponsable">Id Responsable</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.idResponsable}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.ejecutionDate">Ejecution Date</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.ejecutionDate | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.category">Category</span></dt>
+        <dd>
+            <span>{{vm.bitacoraAcciones.category}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.bitacoraAcciones.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.bitacoraAcciones.companyId})">{{vm.bitacoraAcciones.companyId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="bitacora-acciones-detail.edit({id:vm.bitacoraAcciones.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

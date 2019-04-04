@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('IndividualChargeController', IndividualChargeController);
 
-    IndividualChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
+    IndividualChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', '$localStorage', 'globalCompany', 'Modal'];
 
-    function IndividualChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
+    function IndividualChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, $localStorage, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'individual';
         vm.loadPage = loadPage;
@@ -102,6 +102,7 @@
                             vm.charge.companyId = globalCompany.getId();
                             Modal.showLoadingBar();
                             Charge.save(vm.charge, function (result) {
+
                                 vm.isSaving == false;
                                 House.get({
                                     id: result.houseId
@@ -109,8 +110,17 @@
 
                                 function onSuccess(house) {
                                     Modal.hideLoadingBar();
-                                    Modal.toast("Se ha generado la cuota correctamente.")
-                                    $state.go('houseAdministration.chargePerHouse')
+
+                                    House.get({
+                                        id: vm.selectedHouse
+                                    }, function(result) {
+                                        var concept = "Creación de cuota individual" + ": " + vm.charge.concept + ", "+ " a la filial " + result.housenumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
+                                        console.log(concept)
+                                        BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+                                    });
+
+                                    Modal.toast("Se ha generado la cuota correctamente.");
+                                    $state.go('houseAdministration.chargePerHouse');
                                     $rootScope.houseSelected = house;
                                     $localStorage.houseSelected = house;
                                 }
@@ -123,6 +133,32 @@
             } else {
                 Modal.toast("Para generar una cuota su monto debe de ser mayor a ₡ 0.00")
             }
+        }
+
+        vm.formatearNumero = function (nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function mapBitacoraAcciones (concept){
+            vm.bitacoraAcciones = {};
+            vm.bitacoraAcciones.concept = concept;
+            vm.bitacoraAcciones.type = 6;
+            vm.bitacoraAcciones.ejecutionDate = new Date();
+            vm.bitacoraAcciones.category = "Cuotas";
+            vm.bitacoraAcciones.idReference = 1;
+            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.companyId = globalCompany.getId();
+
+            return vm.bitacoraAcciones;
+
         }
 
         function loadAll() {

@@ -51,6 +51,8 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private Long companyId;
 
+    private int saveInBitacora;
+
     public Long getId() {
         return id;
     }
@@ -246,5 +248,13 @@ public class AdministrationConfigurationDTO implements Serializable {
             ", egressFolioSerie='" + getEgressFolioSerie() + "'" +
             ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
             "}";
+    }
+
+    public int getSaveInBitacora() {
+        return saveInBitacora;
+    }
+
+    public void setSaveInBitacora(int saveInBitacora) {
+        this.saveInBitacora = saveInBitacora;
     }
 }

@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.CommonAreaReservations;
 import com.lighthouse.aditum.domain.Egress;
+import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.repository.EgressRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.EgressMapper;
@@ -14,9 +15,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 
@@ -39,14 +45,19 @@ public class EgressService {
 
     private final BancoService bancoService;
 
+    private final AdminInfoService adminInfoService;
+
     private final HouseService houseService;
+
+    private final UserService userService;
 
     private final CommonAreaReservationsService commonAreaReservationsService;
 
+    private final BitacoraAccionesService bitacoraAccionesService;
 
     private final BalanceByAccountService balanceByAccountService;
 
-    public EgressService(BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
+    public EgressService( AdminInfoService adminInfoService,UserService userService,BitacoraAccionesService bitacoraAccionesService, BalanceByAccountService balanceByAccountService, EgressRepository egressRepository, EgressMapper egressMapper, EgressCategoryService egressCategoryService, ProveedorService proveedorService, BancoService bancoService, HouseService houseService, @Lazy CommonAreaReservationsService commonAreaReservationsService) {
         this.egressRepository = egressRepository;
         this.egressMapper = egressMapper;
         this.egressCategoryService = egressCategoryService;
@@ -55,6 +66,9 @@ public class EgressService {
         this.balanceByAccountService = balanceByAccountService;
         this.commonAreaReservationsService = commonAreaReservationsService;
         this.houseService = houseService;
+        this.bitacoraAccionesService = bitacoraAccionesService;
+        this.userService = userService;
+        this.adminInfoService = adminInfoService;
     }
 
     /**
@@ -72,7 +86,28 @@ public class EgressService {
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
 
         }
+        egress.setDeleted(egressDTO.getDeleted());
         egress = egressRepository.save(egress);
+        LocalDateTime today = LocalDateTime.now();
+        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
+        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+        if(egressDTO.getId()==null){
+            bitacoraAccionesDTO.setType(1);
+            bitacoraAccionesDTO.setConcept("Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones");
+        }else{
+            bitacoraAccionesDTO.setType(1);
+            bitacoraAccionesDTO.setConcept("Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones");
+        }
+
+
+        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+        bitacoraAccionesDTO.setCategory("Egresos");
+        bitacoraAccionesDTO.setUrlState("egress-detail");
+        bitacoraAccionesDTO.setIdReference(egress.getId());
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setCompanyId(egress.getCompany().getId());
+        bitacoraAccionesService.save(bitacoraAccionesDTO);
         return egressMapper.toDto(egress);
     }
 
@@ -99,7 +134,16 @@ public class EgressService {
             .map(egressMapper::toDto);
 
     }
-
+    private String formatColonesD(double text) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if (text == 0) {
+            return currencyFormatter.format(text).substring(1);
+        } else {
+            String t = currencyFormatter.format(text).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
     @Transactional(readOnly = true)
     public Page<EgressDTO> findPaymentEgressByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");

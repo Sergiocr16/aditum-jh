@@ -10,7 +10,6 @@
     function ChargePerHouseController($rootScope, $scope, $state, Charge, ParseLinks, AlertService, paginationConstants, pagingParams, House, CommonMethods, $localStorage, Modal, $timeout, Principal) {
 
         var vm = this;
-        console.log('la reputa')
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -228,7 +227,8 @@
                             countPassedDate++;
                         }
                     }
-                })
+                    cuota.temporalAmmount = cuota.ammount;
+                });
                 vm.charges = data;
 
                 vm.page = pagingParams.page;

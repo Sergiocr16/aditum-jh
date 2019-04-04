@@ -16,12 +16,16 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toIntExact;
@@ -45,10 +49,12 @@ public class ChargeService {
     private final ResidentService residentService;
     private final HouseService houseService;
     private final AdministrationConfigurationService administrationConfigurationService;
-
-
+    private final UserService userService;
+    private final AdminInfoService adminInfoService;
+    private final BitacoraAccionesService bitacoraAccionesService;
+    private final CompanyService companyService;
     @Autowired
-    public ChargeService(@Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
+    public ChargeService(CompanyService companyService, AdminInfoService adminInfoService,UserService userService,BitacoraAccionesService bitacoraAccionesService, @Lazy HouseService houseService, ResidentService residentService, @Lazy PaymentDocumentService paymentEmailSenderService, BancoService bancoService, @Lazy PaymentService paymentService, ChargeRepository chargeRepository, ChargeMapper chargeMapper, BalanceService balanceService, AdministrationConfigurationService administrationConfigurationService) {
         this.chargeRepository = chargeRepository;
         this.chargeMapper = chargeMapper;
         this.balanceService = balanceService;
@@ -58,6 +64,10 @@ public class ChargeService {
         this.residentService = residentService;
         this.houseService = houseService;
         this.administrationConfigurationService = administrationConfigurationService;
+        this.bitacoraAccionesService = bitacoraAccionesService;
+        this.userService = userService;
+        this.adminInfoService = adminInfoService;
+        this.companyService = companyService;
     }
 
     /**
@@ -185,6 +195,17 @@ public class ChargeService {
         return chargeMapper.toDto(charge);
     }
 
+    private String formatColonesD(double text) {
+        Locale locale = new Locale("es", "CR");
+        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+        if (text == 0) {
+            return currencyFormatter.format(text).substring(1);
+        } else {
+            String t = currencyFormatter.format(text).substring(1);
+            return t.substring(0, t.length() - 3).replace(",", ".");
+        }
+    }
+
     public ChargeDTO update(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = chargeMapper.toEntity(chargeDTO);
@@ -198,6 +219,30 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setDate(charge.getDate().withHour(10));
         Charge savedCharge = chargeRepository.save(charge);
+
+
+        if(chargeDTO.getDeleted()==1 || Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
+            LocalDateTime today = LocalDateTime.now();
+            ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
+            BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+            if(chargeDTO.getDeleted()==1){
+                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatColonesD(Integer.parseInt( chargeDTO.getAmmount()))   + " colones");
+            }else if(Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
+                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatColonesD(Integer.parseInt( chargeDTO.getTemporalAmmount())) + " colones a " + formatColonesD(Integer.parseInt( chargeDTO.getAmmount())) + " colones");
+            }
+
+            bitacoraAccionesDTO.setType(6);
+            bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+            bitacoraAccionesDTO.setCategory("Cuotas");
+            bitacoraAccionesDTO.setUrlState("");
+            bitacoraAccionesDTO.setIdReference(charge.getId());
+            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+            bitacoraAccionesDTO.setCompanyId(companyService.findOne(houseService.findOne(chargeDTO.getHouseId()).getCompanyId()).getId());
+            bitacoraAccionesService.save(bitacoraAccionesDTO);
+
+        }
+
 //        }
 //        }else {
 //            int newAmmount = Integer.parseInt(newCharge.getAmmount());

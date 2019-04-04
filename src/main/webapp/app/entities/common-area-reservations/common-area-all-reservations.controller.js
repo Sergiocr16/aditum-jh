@@ -9,7 +9,7 @@
 
     function CommonAreaAllReservationsController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,globalCompany,Modal) {
 
-        var vm = this
+        var vm = this;
         $rootScope.active = "reservationAdministration";
         vm.reverse = true;
         vm.loadPage = loadPage;
