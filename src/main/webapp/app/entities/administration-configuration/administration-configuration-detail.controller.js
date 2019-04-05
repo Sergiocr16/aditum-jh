@@ -11,7 +11,8 @@
         var vm = this;
         $rootScope.active = "administrationConfiguration";
         vm.administrationConfiguration = entity;
-        console.log(vm.administrationConfiguration)
+
+        vm.usingSubchargePercentage = vm.administrationConfiguration.usingSubchargePercentage==false?0:1;
         vm.isReady = false;
         vm.previousState = previousState.name;
         vm.save = save;
@@ -31,15 +32,10 @@
         });
         $scope.$on('$destroy', unsubscribe);
         function save () {
-
             Modal.confirmDialog("¿Está seguro que desea guardar los cambios?","",
                 function(){
-                    if(vm.administrationConfiguration.usingSubchargePercentage==="1"){
-                        vm.administrationConfiguration.usingSubchargePercentage = true;
-                    }else{
-                        vm.administrationConfiguration.usingSubchargePercentage = false;
-                    }
                     vm.isSaving = true;
+                    vm.administrationConfiguration.usingSubchargePercentage = vm.usingSubchargePercentage=="0"?false:true;
                     if (vm.administrationConfiguration.id !== null) {
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {

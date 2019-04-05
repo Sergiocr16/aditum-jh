@@ -152,8 +152,8 @@ public class VisitantResource {
     @GetMapping("/visitants/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndHouse(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "houseId")  Long houseId)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
@@ -190,15 +190,14 @@ public class VisitantResource {
     @GetMapping("/visitants/file/{initial_time}/{final_time}/{companyId}/{houseId}")
     @Timed
     public void getVisitantReportFile(
-        @PathVariable(value = "initial_time") String initial_time,
-        @PathVariable(value = "final_time") String final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId") Long companyId,
         @PathVariable(value = "houseId") Long houseId,
         HttpServletResponse response
     )  throws URISyntaxException, IOException {
-        Locale local = new Locale("es", "ES");
+        Locale local = new Locale("es", "CR");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(local);
-        ZonedDateTime utcDateZoned = ZonedDateTime.now(ZoneId.of("Etc/UTC"));
         Page<VisitantDTO> visitantDTOS;
         if(houseId==-1){
             visitantDTOS = visitantService.findByDatesBetweenAndCompany(initial_time,final_time,companyId);
@@ -209,9 +208,9 @@ public class VisitantResource {
         }
 
 
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initial_time + "[America/Regina]");
+        ZonedDateTime zd_initialTime = initial_time;
         String initialTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_initialTime);
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse(final_time + "[America/Regina]");
+        ZonedDateTime zd_finalTime = final_time;
         String finalTimeFormatted = pattern.ofPattern("dd MMMM yyyy").format(zd_finalTime);
 
         File file = visitantDocumentService.obtainFileToPrint(visitantDTOS, initialTimeFormatted, finalTimeFormatted, companyId,houseId);
@@ -238,8 +237,8 @@ public class VisitantResource {
     @GetMapping("/visitants/between/{initial_time}/{final_time}/byCompany/{companyId}")
     @Timed
     public ResponseEntity<List<VisitantDTO>> getBetweenDatesAndCompany(
-        @PathVariable (value = "initial_time")  String initial_time,
-        @PathVariable(value = "final_time")  String  final_time,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
         @PathVariable(value = "companyId")  Long companyId)
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");

@@ -8,6 +8,8 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.Objects;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 /**
  * A DTO for the Charge entity.
  */
@@ -46,12 +48,7 @@ public class SumChargeDTO implements Serializable {
 
     }
 
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
 
     public double getPercentage() {

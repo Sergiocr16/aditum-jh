@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -22,12 +24,6 @@ public class DefaultersMonthDTO implements Serializable {
 
     private Locale locale = new Locale("es", "CR");
 
-    private String formatMoney(double ammount) {
-        DecimalFormat format = new DecimalFormat("₡#,##0;₡-#,##0");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
 
     public int getTotalHousesOnTime() {
         return totalHousesOnTime;
@@ -50,7 +46,7 @@ public class DefaultersMonthDTO implements Serializable {
     }
 
     public void setDebt(double debt) {
-        this.debtFormat = formatMoney(debt);
+        this.debtFormat = RandomUtil.formatMoney(debt);
         this.debt = debt;
     }
 
@@ -59,7 +55,7 @@ public class DefaultersMonthDTO implements Serializable {
     }
 
     public void setTotal(double total) {
-        this.totalFormated = formatMoney(total);
+        this.totalFormated = RandomUtil.formatMoney(total);
         this.total = total;
     }
 

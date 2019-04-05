@@ -84,7 +84,7 @@
                                     hover: false,
                                     thirdItems: [],
                                     showXs: true,
-
+                                    showLg:true
                                 },
                                 {
                                     title: "Administradores",
@@ -97,6 +97,7 @@
                                     hover: false,
                                     thirdItems: [],
                                     showXs: true,
+                                    showLg:true
 
                                 },
                                 {
@@ -110,6 +111,7 @@
                                     hover: false,
                                     thirdItems: [],
                                     showXs: true,
+                                    showLg:true
 
                                 },
                                 {
@@ -123,6 +125,7 @@
                                     hover: false,
                                     thirdItems: [],
                                     showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Marcas vehículos",
@@ -135,7 +138,7 @@
                                     hover: false,
                                     thirdItems: [],
                                     showXs: true,
-
+                                    showLg:true
                                 },
                                 {
                                     title: "Destinos puerta acceso",
@@ -147,7 +150,7 @@
                                     menuId: "",
                                     hover: false,
                                     showXs: true,
-
+                                    showLg:true
                                 },
                                 {
                                     title: "Progreso ingreso de datos",
@@ -158,7 +161,8 @@
                                     uisref: "data-progress",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                             ]
                         },
@@ -184,7 +188,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Tracker",
@@ -196,7 +201,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Métricas",
@@ -208,7 +214,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Salud",
@@ -220,7 +227,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Configuración",
@@ -232,7 +240,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Auditorías",
@@ -244,7 +253,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Logs",
@@ -256,7 +266,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "API",
@@ -268,7 +279,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                             ]
                         },
@@ -315,7 +327,8 @@
                                     uisref: "announcement-user",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Administrar noticias",
@@ -326,7 +339,8 @@
                                     uisref: "announcements.announcement",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                             ]
                         },
@@ -351,7 +365,8 @@
                                     uisref: "resident",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Filiales",
@@ -362,7 +377,8 @@
                                     uisref: "houses-tabs.house",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Vehículos",
@@ -373,7 +389,8 @@
                                     uisref: "vehicule",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                                 {
                                     title: "Visitantes",
@@ -384,7 +401,8 @@
                                     uisref: "visitant-admin",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg:true
                                 },
                             ]
                         },
@@ -410,7 +428,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg: true
                                 },
                                 {
                                     title: "Turnos",
@@ -422,7 +441,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: vm.hasWatches,
+                                    showLg: vm.hasWatches
                                 },
                             ]
                         },
@@ -493,7 +513,9 @@
                                     collapsable: false,
                                     uisref: "egress-tabs.egress",
                                     menuId: "",
-                                    hover: false
+                                    hover: false,
+                                    showLg: true
+
                                 },
                                 {
                                     title: "Capturar egresos",
@@ -504,7 +526,8 @@
                                     uisref: "egress-tabs.new",
                                     menuId: "",
                                     hover: false,
-                                    showXs: false
+                                    showXs: false,
+                                    showLg: true
                                 },
                             ]
                         },
@@ -529,7 +552,8 @@
                                     uisref: "generatePayment",
                                     menuId: "",
                                     hover: false,
-                                    showXs: false
+                                    showXs: false,
+                                    showLg: true
                                 },
                                 {
                                     title: "Capturar adelanto",
@@ -540,7 +564,8 @@
                                     uisref: "advancePayment",
                                     menuId: "",
                                     hover: false,
-                                    showXs: false
+                                    showXs: false,
+                                    showLg: true
                                 },
                                 {
                                     title: "Otro ingreso",
@@ -551,7 +576,8 @@
                                     uisref: "otherPayment",
                                     menuId: "",
                                     hover: false,
-                                    showXs: false
+                                    showXs: false,
+                                    showLg: true
                                 },
                             ]
                         },
@@ -576,7 +602,8 @@
                                     uisref: "mensualCharge",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg: true
                                 },
                                 {
                                     title: "Extraordinarias",
@@ -587,7 +614,8 @@
                                     uisref: "extraordinaryCharge",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg: true
                                 },
                                 {
                                     title: "Individual",
@@ -598,7 +626,8 @@
                                     uisref: "individualCharge",
                                     menuId: "",
                                     hover: false,
-                                    showXs: true
+                                    showXs: true,
+                                    showLg: true
                                 },
 
                             ]
@@ -959,8 +988,8 @@
                             menuId: "",
                             hasContability: vm.hasContability,
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.showEstadoResultados,
+                            showLg: vm.showEstadoResultados,
                         },
                         {
                             title: "Ejec. presupuestaria",
@@ -972,8 +1001,8 @@
                             uisref: "budgetExecution.mensualReport",
                             menuId: "",
                             hover: false,
-                            showXs: true,
-                            showLg: true,
+                            showXs: vm.showEjecPresu,
+                            showLg: vm.showEjecPresu,
                         },
                     ],
 
@@ -1172,9 +1201,8 @@
                     activeOn: "",
                     authoritites: "ROLE_USER",
                     showXs: true,
-                    hasContability: true,
+                    hasContability: vm.bookCommonArea,
                     secondaryItems: [
-
                         {
                             title: "Ver todas",
                             icon: "view_agenda",
@@ -1284,7 +1312,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: true,
+                                    showLg: true
                                 },
                                 {
                                     title: "Turnos",
@@ -1296,7 +1325,8 @@
                                     menuId: "",
                                     hover: false,
                                     thirdItems: [],
-                                    showXs: true
+                                    showXs: vm.hasWatches,
+                                    showLg: vm.hasWatches
                                 },
                             ]
                         },
@@ -1507,6 +1537,10 @@
 
         vm.loadCompanyConfig = function () {
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+            vm.hasWatches = companyConfig.hasWatches;
+            vm.showEstadoResultados = companyConfig.showEstadoResultados;
+            vm.showEjecPresu = companyConfig.showEjecPresu;
+            vm.bookCommonArea = companyConfig.bookCommonArea;
             if (companyConfig == "admin") {
                 vm.hasContability = true;
             } else {
@@ -1520,7 +1554,7 @@
         };
 
         vm.showSecondItem = function (secondItem) {
-            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados', ''];
+            var secondItemsToHideIfHasNoContability = ["Devoluciones", "Ejec. presupuestaria", 'Estado de resultados'];
             var items = secondItemsToHideIfHasNoContability;
             var ocultar = 0;
             for (var i = 0; i < items.length; i++) {
@@ -1531,7 +1565,7 @@
             if (ocultar > 0 && !vm.hasContability) {
                 return false;
             } else {
-                return secondItem.showLg
+                return true;
             }
         };
 
@@ -1733,7 +1767,6 @@
                                     logout();
                                 }
                             });
-
                             $rootScope.hideFilial = true;
                         });
                         break;

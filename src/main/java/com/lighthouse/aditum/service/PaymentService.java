@@ -19,6 +19,8 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 
 /**
  * Service Implementation for managing Payment.
@@ -115,28 +117,6 @@ public class PaymentService {
         return paymentsDTO;
     }
 
-    private String formatColonesD(double text) {
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if (text == 0) {
-            return currencyFormatter.format(text).substring(1);
-        } else {
-            String t = currencyFormatter.format(text).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
-
-    private String formatColonesS(String text) {
-        double ammount = Double.parseDouble(text);
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if (ammount == 0) {
-            return currencyFormatter.format(ammount).substring(1);
-        } else {
-            String t = currencyFormatter.format(ammount).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
 
     @Transactional(readOnly = true)
     public IncomeReportDTO findIncomeReportByCompanyAndDatesBetween(Pageable pageable, ZonedDateTime initialTime, ZonedDateTime finalTime, int companyId, String houseId, String paymentMethod, String category, String account) {
@@ -160,11 +140,11 @@ public class PaymentService {
         int totalExtra = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 2);
         int totalAreas = this.getTotalAmmoutPerTypeOfPayment(incomeReport, 3);
         int totalOtherIngress = this.findTotalOtherIngressByDatesBetweenAndCompany(initialTime, finalTime, companyId);
-        incomeReport.setTotalMaintenance(formatColonesD(totalMaint));
-        incomeReport.setTotalExtraordinary(formatColonesD(totalExtra));
-        incomeReport.setTotalCommonArea(formatColonesD(totalAreas));
-        incomeReport.setTotalOtherIngress(formatColonesD(totalOtherIngress));
-        incomeReport.setTotal(formatColonesD(totalMaint + totalAreas + totalExtra + totalOtherIngress));
+        incomeReport.setTotalMaintenance(formatMoney(totalMaint));
+        incomeReport.setTotalExtraordinary(formatMoney(totalExtra));
+        incomeReport.setTotalCommonArea(formatMoney(totalAreas));
+        incomeReport.setTotalOtherIngress(formatMoney(totalOtherIngress));
+        incomeReport.setTotal(formatMoney(totalMaint + totalAreas + totalExtra + totalOtherIngress));
         incomeReport.defineFilter(houseId, paymentMethod, category, account);
         return incomeReport;
     }

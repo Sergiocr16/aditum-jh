@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 public class MensualEgressReportDTO {
     private Locale locale = new Locale("es", "CR");
     private List<SumCategoryEgressDTO> fixedCosts = new ArrayList<>();
@@ -101,12 +103,7 @@ public class MensualEgressReportDTO {
         return sumCategoryEgress;
     }
 
-    private String formatMoney(double ammount) {
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public void setSumEgressListPerSumCategoryEgressDTO(SumCategoryEgressDTO sumCategory, String group, double totalIngress) {
         List<SumEgressDTO> sumEgreesList = new ArrayList<>();

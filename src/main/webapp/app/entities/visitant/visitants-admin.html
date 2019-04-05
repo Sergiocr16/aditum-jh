@@ -69,7 +69,7 @@
                             <td>{{visitor.name + " " + visitor.lastname + " " + visitor.secondlastname}}</td>
                             <td>{{visitor.identificationnumber}}</td>
                             <td ng-if="visitor.licenseplate!=undefined">{{visitor.licenseplate}}</td>
-                            <td ng-if=" visitor.licenseplate==undefined">No se registró</td>
+                            <td ng-if="visitor.licenseplate==undefined">No se registró</td>
                             <td>{{visitor.arrivaltime | formatDate}}</td>
                             <td>{{visitor.houseNumber}}</td>
                         </tr>

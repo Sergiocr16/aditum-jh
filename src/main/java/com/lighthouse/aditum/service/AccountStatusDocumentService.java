@@ -53,12 +53,7 @@ public class AccountStatusDocumentService {
         this.templateEngine = templateEngine;
         this.mailService = mailService;
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public File obtainFileToPrint(AccountStatusDTO accountStatusDTO, HouseDTO houseDTO,String initialTime, String finalTime) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(houseDTO.getCompanyId()));

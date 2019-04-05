@@ -50,7 +50,7 @@ public class VisitantService {
         log.debug("Request to save Visitant : {}", visitantDTO);
         Visitant visitant = visitantMapper.visitantDTOToVisitant(visitantDTO);
         if (visitant.getLicenseplate() == "NINGUNA") {
-            visitant.setLicenseplate("");
+            visitant.setLicenseplate(null);
         }
         visitant = visitantRepository.save(visitant);
         VisitantDTO result = visitantMapper.visitantToVisitantDTO(visitant);
@@ -70,10 +70,10 @@ public class VisitantService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findByDatesBetweenAndHouse(String initialTime, String finalTime, Long houseId) {
+    public Page<VisitantDTO> findByDatesBetweenAndHouse(ZonedDateTime initialTime, ZonedDateTime finalTime, Long houseId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(zd_initialTime, zd_finalTime, houseId, 3);
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
@@ -87,13 +87,13 @@ public class VisitantService {
     public Page<VisitantDTO> findByFilter(Pageable pageable, Long companyId, String houseId,
                                           ZonedDateTime initialTime, ZonedDateTime finalTime, String name) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = initialTime;
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
         ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         Page<Visitant> result = new PageImpl<Visitant>(new ArrayList<Visitant>(),pageable,0);
 
         if (!name.equals("empty")) {
             if (houseId.equals("empty")) {
-                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContains(
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
                     pageable, companyId, zd_initialTime, zd_finalTime, 3, name,
                     companyId, zd_initialTime, zd_finalTime, 3, name,
                     companyId, zd_initialTime, zd_finalTime, 3, name,
@@ -101,7 +101,7 @@ public class VisitantService {
                     companyId, zd_initialTime, zd_finalTime, 3, name
                 );
             } else {
-                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContains(
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
                     pageable, zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
                     zd_initialTime, zd_finalTime, Long.parseLong(houseId),3, name,
                     zd_initialTime, zd_finalTime, Long.parseLong(houseId), 3, name,
@@ -111,9 +111,9 @@ public class VisitantService {
             }
         }else{
             if (houseId.equals("empty")) {
-                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvited( pageable,companyId, zd_initialTime, zd_finalTime,  3);
+                result = visitantRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedOrderByArrivaltimeDesc( pageable,companyId, zd_initialTime, zd_finalTime,  3);
             } else {
-                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  3);
+                result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedOrderByArrivaltimeDesc(pageable,zd_initialTime, zd_finalTime,Long.parseLong(houseId),  3);
             }
         }
         return result.map(visitant -> {
@@ -146,10 +146,10 @@ public class VisitantService {
 
 
     @Transactional(readOnly = true)
-    public Page<VisitantDTO> findByDatesBetweenAndCompany(String initialTime, String finalTime, Long companyId) {
+    public Page<VisitantDTO> findByDatesBetweenAndCompany(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
         log.debug("Request to get all Visitants in last month by house");
-        ZonedDateTime zd_initialTime = ZonedDateTime.parse(initialTime + "[America/Regina]");
-        ZonedDateTime zd_finalTime = ZonedDateTime.parse((finalTime + "[America/Regina]").replace("00:00:00", "23:59:59"));
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
         List<Visitant> result = visitantRepository.findByDatesBetweenAndCompany(zd_initialTime, zd_finalTime, companyId, 3);
         Collections.reverse(result);
         return new PageImpl<>(result).map(visitant -> {
