@@ -103,7 +103,8 @@ console.log(vm.companyConfiguration)
                 egressReport:true,
                 egressFolio:true,
                 egressFolioSerie:'E',
-                egressFolioNumber:1
+                egressFolioNumber:1,
+                initialConfiguration:0
             };
             AdministrationConfiguration.save(adminConfig);
         }

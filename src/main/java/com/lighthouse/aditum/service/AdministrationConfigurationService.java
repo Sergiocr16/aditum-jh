@@ -56,6 +56,7 @@ public class AdministrationConfigurationService {
         AdministrationConfiguration administrationConfiguration = administrationConfigurationMapper.toEntity(administrationConfigurationDTO);
         administrationConfiguration.setFolioNumber(administrationConfigurationDTO.getFolioNumber());
         administrationConfiguration.setFolioSerie(administrationConfigurationDTO.getFolioSerie());
+        administrationConfiguration.setInitialConfiguration(administrationConfigurationDTO.getInitialConfiguration());
         administrationConfiguration = administrationConfigurationRepository.save(administrationConfiguration);
 
         if(administrationConfigurationDTO.getSaveInBitacora()==1){
@@ -86,6 +87,7 @@ public class AdministrationConfigurationService {
         AdministrationConfigurationDTO adminConfigDto = administrationConfigurationMapper.toDto(administrationConfiguration);
         adminConfigDto.setFolioSerie(administrationConfiguration.getFolioSerie());
         adminConfigDto.setFolioNumber(administrationConfiguration.getFolioNumber());
+        adminConfigDto.setInitialConfiguration(administrationConfiguration.getInitialConfiguration());
         return adminConfigDto;
     }
 
@@ -114,6 +116,7 @@ public class AdministrationConfigurationService {
         AdministrationConfiguration administrationConfiguration = administrationConfigurationRepository.findByCompanyId(id).get(0);
         AdministrationConfigurationDTO adminConfDto = administrationConfigurationMapper.toDto(administrationConfiguration);
         adminConfDto.setFolioNumber(administrationConfiguration.getFolioNumber());
+        adminConfDto.setInitialConfiguration(administrationConfiguration.getInitialConfiguration());
         adminConfDto.setFolioSerie(administrationConfiguration.getFolioSerie());
         return adminConfDto;
     }

@@ -23,6 +23,13 @@
         } else {
             vm.hasContability = false;
         }
+
+        console.log(companyConfig.initialConfiguration)
+        if(companyConfig.initialConfiguration==0){
+            $state.go('dashboard.initialConfiguration');
+        }
+
+
         vm.ready = false;
         vm.year = moment(new Date()).format("YYYY");
         vm.visitorTitle = "De la semana";

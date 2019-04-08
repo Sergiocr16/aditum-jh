@@ -51,6 +51,8 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     private Long companyId;
 
+    private Integer initialConfiguration;
+
     private int saveInBitacora;
 
     public Long getId() {
@@ -256,5 +258,13 @@ public class AdministrationConfigurationDTO implements Serializable {
 
     public void setSaveInBitacora(int saveInBitacora) {
         this.saveInBitacora = saveInBitacora;
+    }
+
+    public Integer getInitialConfiguration() {
+        return initialConfiguration;
+    }
+
+    public void setInitialConfiguration(Integer initialConfiguration) {
+        this.initialConfiguration = initialConfiguration;
     }
 }

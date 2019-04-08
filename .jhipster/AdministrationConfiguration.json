@@ -79,6 +79,10 @@
         {
             "fieldName": "egressFolioNumber",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "initialConfiguration",
+            "fieldType": "Integer"
         }
     ],
     "changelogDate": "20180328213553",

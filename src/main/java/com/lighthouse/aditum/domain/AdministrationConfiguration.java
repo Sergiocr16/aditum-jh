@@ -72,6 +72,9 @@ public class AdministrationConfiguration implements Serializable {
     @Column(name = "egress_folio_number")
     private String egressFolioNumber;
 
+    @Column(name = "initial_configuration")
+    private Integer initialConfiguration;
+
     @ManyToOne
     private Company company;
 
@@ -305,6 +308,19 @@ public class AdministrationConfiguration implements Serializable {
         this.egressFolioNumber = egressFolioNumber;
     }
 
+    public Integer getInitialConfiguration() {
+        return initialConfiguration;
+    }
+
+    public AdministrationConfiguration initialConfiguration(Integer initialConfiguration) {
+        this.initialConfiguration = initialConfiguration;
+        return this;
+    }
+
+    public void setInitialConfiguration(Integer initialConfiguration) {
+        this.initialConfiguration = initialConfiguration;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -360,6 +376,7 @@ public class AdministrationConfiguration implements Serializable {
             ", egressFolio='" + isEgressFolio() + "'" +
             ", egressFolioSerie='" + getEgressFolioSerie() + "'" +
             ", egressFolioNumber='" + getEgressFolioNumber() + "'" +
+            ", initialConfiguration=" + getInitialConfiguration() +
             "}";
     }
 }
