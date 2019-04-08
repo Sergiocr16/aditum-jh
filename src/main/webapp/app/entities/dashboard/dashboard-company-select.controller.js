@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DashboardCompanySelectController', DashboardCompanySelectController);
 
-    DashboardCompanySelectController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'Watch', 'AccessDoor', 'Company', 'MultiCompany', '$rootScope', '$state', 'Auth'];
+    DashboardCompanySelectController.$inject = ['globalCompany','$timeout', '$scope', '$stateParams', '$uibModalInstance', 'Watch', 'AccessDoor', 'Company', 'MultiCompany', '$rootScope', '$state', 'Auth'];
 
-    function DashboardCompanySelectController($timeout, $scope, $stateParams, $uibModalInstance, Watch, AccessDoor, Company, MultiCompany, $rootScope, $state, Auth) {
+    function DashboardCompanySelectController(globalCompany,$timeout, $scope, $stateParams, $uibModalInstance, Watch, AccessDoor, Company, MultiCompany, $rootScope, $state, Auth) {
         var vm = this;
         vm.clear = clear;
         $rootScope.active = "selectCondominio";
@@ -18,6 +18,12 @@
         }, 500)
         $("#selectCompany").fadeIn();
         $("#dashboard").fadeOut();
+
+        var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+
+        if(companyConfig.initialConfiguration==0){
+            $state.go('dashboard.initialConfiguration');
+        }
 
         function logout() {
             Auth.logout();

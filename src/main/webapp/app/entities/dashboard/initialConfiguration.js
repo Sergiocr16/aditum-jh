@@ -54,6 +54,7 @@
                     vm.isSaving = true;
                     vm.administrationConfiguration.saveInBitacora = 1;
                     if (vm.administrationConfiguration.id !== null) {
+                        vm.administrationConfiguration.initialConfiguration = 1;
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {
                         AdministrationConfiguration.save(vm.administrationConfiguration, onSaveSuccess, onSaveError);
