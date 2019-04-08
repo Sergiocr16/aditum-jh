@@ -48,6 +48,7 @@
                                     showEstadoResultados: companiesArray[i].split(";")[4]=="true",
                                     showEjecPresu: companiesArray[i].split(";")[5]=="true",
                                     bookCommonArea: companiesArray[i].split(";")[6]=="true",
+                                    initialConfiguration: companiesArray[i].split(";")[7],
                                 }
                             }
                         }

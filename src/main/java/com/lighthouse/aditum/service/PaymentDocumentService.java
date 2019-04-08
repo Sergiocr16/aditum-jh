@@ -55,6 +55,11 @@ public class PaymentDocumentService {
     private static final String SUBCHARGE_TOTAL = "subchargeTotal";
     private static final String ADMINISTRATION_CONFIGURATION = "administrationConfiguration";
 
+    private static final String CHARGE = "charge";
+
+
+
+
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
@@ -312,40 +317,63 @@ public class PaymentDocumentService {
 
     @Async
     public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, List<ChargeDTO> chargesDTOS){
-        ResidentDTO residentDTO = null;
-        List<ResidentDTO> residentDTOS = this.residentService.findEnabledByHouseId(null,house.getId()).getContent();
-        for (int i = 0; i < residentDTOS.size(); i++) {
-            if(residentDTOS.get(i).getPrincipalContact()==1){
-                residentDTO = residentDTOS.get(i);
-            }
-        }
+        ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
         if(residentDTO!=null){
             Context contextTemplate = new Context();
             contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
             contextTemplate.setVariable(HOUSE,house);
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
-            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));
             Locale locale = new Locale("es", "CR");
-            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
             double subchargeTotal = 0;
             for (int i = 0; i < chargesDTOS.size(); i++) {
                 ChargeDTO chargeDTO = chargesDTOS.get(i);
                 chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
                 subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
-                chargeDTO.setAmmount("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-                chargeDTO.setSubcharge("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
-                chargeDTO.setPaymentAmmount("₡"+currencyFormatter.format(chargeDTO.getTotal()).substring(1));
+                chargeDTO.setAmmount("₡"+formatMoney(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setSubcharge("₡"+formatMoney(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
+                chargeDTO.setPaymentAmmount("₡"+formatMoney(chargeDTO.getTotal()).substring(1));
             }
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(COMPANY,company);
-            contextTemplate.setVariable(SUBCHARGE_TOTAL,currencyFormatter.format(subchargeTotal).substring(1));
+            contextTemplate.setVariable(SUBCHARGE_TOTAL,formatMoney(subchargeTotal).substring(1));
             contextTemplate.setVariable(CHARGES,chargesDTOS);
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             String content = templateEngine.process("subchargeReminderEmail", contextTemplate);
             String subject = "Recordatorio de pago, Filial # "+house.getHousenumber()+" ,"+company.getName();
             this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
         }
+    }
 
+
+
+    @Async
+    public void sendChargeEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, ChargeDTO chargesDTO){
+        ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
+        if(residentDTO!=null){
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
+            contextTemplate.setVariable(HOUSE,house);
+            contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
+            Locale locale = new Locale("es", "CR");
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            ChargeDTO chargeDTO = chargesDTO;
+            chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
+            double total = Double.parseDouble(chargeDTO.getAmmount())+Double.parseDouble(chargeDTO.getSubcharge());
+            chargeDTO.setAmmount("₡" + formatMoney(Double.parseDouble(chargeDTO.getAmmount())));
+            chargeDTO.setSubcharge("₡" + formatMoney(Double.parseDouble(chargeDTO.getSubcharge()!=null?chargeDTO.getSubcharge():"0")));
+            chargeDTO.setPaymentAmmount("₡" + formatMoney(chargeDTO.getTotal()));
+            chargeDTO.setTotal(total);
+            chargeDTO.setTotalFormatted("₡" +chargeDTO.getTotalFormatted());
+            CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+            contextTemplate.setVariable(COMPANY,company);
+            contextTemplate.setVariable(CHARGE,chargeDTO);
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            String content = templateEngine.process("newChargeEmail", contextTemplate);
+            String subject = "Nueva cuota '"+ chargeDTO.getConcept()+"', Filial # "+house.getHousenumber()+" , "+company.getName();
+            this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
+        }
     }
 }
 

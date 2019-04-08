@@ -19,12 +19,12 @@
                 <md-card ng-repeat="charge in vm.charges | orderBy: 'date'"
                          md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}" class="margin-bottom-20 padding-10""
                          md-theme-watch  ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
-                    <span ng-if="charge.definedFirstDatePassed" class="fade-in"
-                          style="float:left;margin-top:-9px;margin-left:-9px;z-index:9999" angular-popover
-                          direction="bottom"
-                          template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>"
-                          mode="mouseover"><i class="fa fa-info-circle"
-                                              style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+
+                <span ng-if="charge.definedFirstDatePassed" class="fade-in"
+                      style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
+                        <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
+                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado.</md-tooltip>
+                    </i></span>
                     <md-card-title style="padding:3px 7px;">
                         <md-card-title-text>
                             <span class="md-headline font-16 font-green-sharp font-weight-600">{{charge.concept}}</span>
@@ -81,12 +81,11 @@
                     <tr ng-repeat="charge in vm.charges | orderBy: 'date'"
                         ng-class="{'datePassed': charge.datePassed==true,'firstPassed': charge.definedFirstDatePassed}">
                         <td class="text-center" ng-if="!vm.isEditing">
-                            <span ng-if="charge.definedFirstDatePassed" class="fade-in"
-                                  style="float:left;margin-top:-18px;margin-left:-16px;z-index:9999" angular-popover
-                                  direction="right"
-                                  template="<div style='padding:5px;width:350px;color:#4DB3A2;font-weight:bolder'><h5 style='font-size:15px!important'>Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado<h5></div>"
-                                  mode="mouseover"><i class="fa fa-info-circle"
-                                                      style="color:#4DB3A2;font-size:18px;background:white"></i></span>
+                <span ng-if="charge.definedFirstDatePassed" class="fade-in"
+                      style="float:left;margin-top:-23px;margin-left:-10px;z-index:9999">
+                        <i class="fa fa-info-circle" style="color:#4DB3A2;font-size:18px;background:white">
+                         <md-tooltip md-direction="right" md-visible="tooltipVisible" class="font-13 bold white-color">Estas son deudas futuras de la unidad, los usuarios no podran ver estas cuotas hasta que la fecha de cobro sea vigente o haya sido liquidado.</md-tooltip>
+                    </i></span>
                             {{charge.date | date}}
                         </td>
                         <td ng-if="!vm.isEditing" class="fade-in">{{charge.concept}}</td>

@@ -76,7 +76,7 @@
                                 var companiesConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + "|";
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea + ";" + companyConfig.initialConfiguration + "|";
                                         if (user.companies.length == i) {
                                             $rootScope.companyId = user.companies[0].id;
                                             vm.backgroundSelectCompany = true;
@@ -106,7 +106,7 @@
                                         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                             var administrationConfiguration = result;
                                             console.log(administrationConfiguration)
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea + "|";
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea +  ";" + companyConfig.initialConfiguration +"|";
                                             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                         });
                                         setTimeout(function () {

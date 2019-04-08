@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedList;
@@ -136,8 +137,10 @@ public class ChargeService {
             }
             charge = chargeRepository.save(charge);
         }
-
-        return chargeMapper.toDto(charge);
+        if(chargeDTO.getDate().getDayOfYear()==ZonedDateTime.now().getDayOfYear()){
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO,this.houseService.findOne(chargeDTO.getHouseId()),chargeDTO);
+        }
+        return  chargeMapper.toDto(charge);
     }
 
     public ChargeDTO update(ChargeDTO chargeDTO) {
@@ -363,6 +366,7 @@ public class ChargeService {
                 }
             }
         }
+        chargeDTO.setSubcharge(chargeDTO.getSubcharge()==null?"0":chargeDTO.getSubcharge());
         return chargeDTO;
     }
 
@@ -445,5 +449,5 @@ public class ChargeService {
         chargesReport.setDueHouses(finalHouses);
         return chargesReport;
     }
-    
+
 }
