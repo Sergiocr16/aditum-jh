@@ -196,41 +196,44 @@
 
         vm.deleteResident = function (resident) {
             vm.residentToDelete = resident;
-            Modal.confirmDialog("¿Está seguro que desea eliminar al residente " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
+            Modal.confirmDialog("¿Está seguro que desea eliminar al usuario " + resident.name + "?", "Una vez eliminado no podrá recuperar los datos",
                 function () {
                     Modal.showLoadingBar();
                     vm.login = resident.userLogin;
                     Resident.delete({
                         id: resident.id
-                    }, onSuccessDelete);
+                    }, function () {
+                        if (vm.login !== null) {
+                            User.getUserById({
+                                id: resident.userId
+                            }, function (data) {
+                                data.activated = 0;
+                                User.update(data, onSuccessDisabledUser);
+
+                                function onSuccessDisabledUser(data, headers) {
+                                    Modal.toast("Se ha eliminado el usuario correctamente.");
+                                    Modal.hideLoadingBar();
+                                    vm.filterResidents();
+                                }
+                            });
+                        } else {
+                            Modal.toast("Se ha eliminado el usuario correctamente.");
+                            vm.filterResidents();
+                            Modal.hideLoadingBar();
+                            WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
+                        }
+
+                    });
                 });
         };
-
-        function onSuccessDelete(result) {
-            if (vm.login !== null) {
-                User.delete({login: vm.login},
-                    function () {
-                        Modal.hideLoadingBar();
-                        Modal.toast("Se ha eliminado el residente correctamente.");
-                        vm.filterResidents();
-                        WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
-                    });
-            } else {
-                Modal.toast("Se ha eliminado el residente correctamente.");
-                vm.filterResidents();
-                Modal.hideLoadingBar();
-                WSDeleteEntity.sendActivity({type: 'resident', id: vm.residentToDelete.id})
-            }
-
-        }
 
         vm.disableEnabledResident = function (residentInfo) {
             var correctMessage;
             if (vm.enabledOptions) {
-                correctMessage = "¿Está seguro que desea deshabilitar al residente " + residentInfo.name + "?";
+                correctMessage = "¿Está seguro que desea deshabilitar al usuario " + residentInfo.name + "?";
 
             } else {
-                correctMessage = "¿Está seguro que desea habilitar al residente " + residentInfo.name + "?";
+                correctMessage = "¿Está seguro que desea habilitar al usuario " + residentInfo.name + "?";
             }
 
             Modal.confirmDialog(correctMessage, "", function () {
@@ -263,7 +266,7 @@
                 }, onSuccessGetDisabledUser);
             } else {
                 vm.filterResidents();
-                Modal.toast("Se ha deshabilitado el residente correctamente.");
+                Modal.toast("Se ha deshabilitado el usuario correctamente.");
                 Modal.hideLoadingBar();
             }
         }
@@ -273,7 +276,7 @@
             User.update(data, onSuccessDisabledUser);
 
             function onSuccessDisabledUser(data, headers) {
-                Modal.toast("Se ha deshabilitado el residente correctamente.");
+                Modal.toast("Se ha deshabilitado el usuario correctamente.");
                 Modal.hideLoadingBar();
                 vm.filterResidents();
             }
@@ -287,7 +290,7 @@
                     id: data.userId
                 }, onSuccessGetEnabledUser);
             } else {
-                Modal.toast("Se ha habilitado el residente correctamente.");
+                Modal.toast("Se ha habilitado el usuario correctamente.");
                 Modal.hideLoadingBar();
 
                 vm.filterResidents();
@@ -299,7 +302,7 @@
             User.update(data, onSuccessEnabledUser);
 
             function onSuccessEnabledUser(data, headers) {
-                Modal.toast("Se ha habilitado el residente correctamente.");
+                Modal.toast("Se ha habilitado el usuario correctamente.");
                 Modal.hideLoadingBar();
                 vm.filterResidents();
             }

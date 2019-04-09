@@ -83,6 +83,16 @@
                         ng-class="{'accountStatusBtnActive':vm.type==7,'accountStatusBtnDesactive':vm.type!==7}">
                     Transferencias
                 </button>
+                <button ng-click="vm.searchByType(8)" style="border-left:0px!important; border-radius: 0px!Important;"
+                        class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
+                        ng-class="{'accountStatusBtnActive':vm.type==8,'accountStatusBtnDesactive':vm.type!==8}">
+                    Usuarios
+                </button>
+                <button ng-click="vm.searchByType(9)" style="border-left:0px!important; border-radius: 0px!Important;"
+                        class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
+                        ng-class="{'accountStatusBtnActive':vm.type==9,'accountStatusBtnDesactive':vm.type!==9}">
+                    Vehículos
+                </button>
             </div>
             <no-content class="margin-top-30" ng-if="vm.bitacoraAcciones.length == 0" icon="chrome_reader_mode" text="No hay ninguna acción registrada"></no-content>
 
@@ -106,7 +116,7 @@
                         <td>{{bitacoraAcciones.ejecutionDate | formatDate}}</td>
                         <td>{{bitacoraAcciones.category}}</td>
                         <td class="text-center">
-                            <a class="light-gray-font" ng-if="bitacoraAcciones.type==1 || bitacoraAcciones.type==4 || bitacoraAcciones.type==3" ng-click="vm.detail(bitacoraAcciones)"><i
+                            <a class="light-gray-font" ng-if="bitacoraAcciones.type==1 || bitacoraAcciones.type==4 || bitacoraAcciones.type==3 || bitacoraAcciones.type==8" ng-click="vm.detail(bitacoraAcciones)"><i
                             class="material-icons">
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle</md-tooltip>
                             remove_red_eye</i></a>
