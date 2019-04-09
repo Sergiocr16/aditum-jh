@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -34,11 +36,6 @@ public class DashboardReportIncomeEgressBudgetDTO {
 
     private String budgetEgressTotalformated;
 
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0;₡-#,##0");
-        String total = format.format(ammount);
-        return total;
-    }
 
     public String getMonth() {
         return month;
@@ -61,7 +58,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setIncomeTotal(double incomeTotal) {
-        this.incomeTotalformated = formatMoney(incomeTotal);
+        this.incomeTotalformated = RandomUtil.formatMoney(incomeTotal);
         this.incomeTotal = incomeTotal;
     }
 
@@ -70,7 +67,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setEgressTotal(double egressTotal) {
-        this.egressTotalformated = formatMoney(egressTotal);
+        this.egressTotalformated = RandomUtil.formatMoney(egressTotal);
         this.egressTotal = egressTotal;
     }
 
@@ -80,7 +77,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setbudgetIncomeTotal(double budgetIncomeTotal) {
-        this.budgetIncomeTotalformated = formatMoney(budgetIncomeTotal);
+        this.budgetIncomeTotalformated = RandomUtil.formatMoney(budgetIncomeTotal);
         this.budgetIncomeTotal = budgetIncomeTotal;
     }
 
@@ -114,7 +111,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setBudgetEgressTotal(double budgetEgressTotal) {
-        setBudgetEgressTotalformated(formatMoney(budgetEgressTotal));
+        setBudgetEgressTotalformated(RandomUtil.formatMoney(budgetEgressTotal));
         this.budgetEgressTotal = budgetEgressTotal;
     }
 
@@ -131,7 +128,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setInitialBalance(double initialBalance) {
-        this.setInitialBalanceformated(formatMoney(initialBalance));
+        this.setInitialBalanceformated(RandomUtil.formatMoney(initialBalance));
         this.initialBalance = initialBalance;
     }
 
@@ -140,7 +137,7 @@ public class DashboardReportIncomeEgressBudgetDTO {
     }
 
     public void setRealBalance(double realBalance) {
-        this.setRealBalanceformated(formatMoney(realBalance));
+        this.setRealBalanceformated(RandomUtil.formatMoney(realBalance));
         this.realBalance = realBalance;
     }
 

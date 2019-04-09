@@ -5,6 +5,7 @@ import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.CompanyMapper;
 import com.lighthouse.aditum.service.mapper.HouseMapper;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lowagie.text.DocumentException;
 import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
@@ -23,6 +24,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.List;
 import java.util.Locale;
+
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoneyString;
 
 @Service
 @Transactional
@@ -51,6 +55,11 @@ public class PaymentDocumentService {
     private static final String SUBCHARGE_TOTAL = "subchargeTotal";
     private static final String ADMINISTRATION_CONFIGURATION = "administrationConfiguration";
 
+    private static final String CHARGE = "charge";
+
+
+
+
     private final JHipsterProperties jHipsterProperties;
     private final CompanyService companyService;
     private final CompanyMapper companyMapper;
@@ -76,27 +85,8 @@ public class PaymentDocumentService {
         this.residentService = residentService;
     }
 
-    private String formatColonesD(double text) {
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if(text==0){
-            return currencyFormatter.format(text).substring(1);
-        }else {
-            String t = currencyFormatter.format(text).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
-    private String formatColonesS(String text) {
-        double ammount = Double.parseDouble(text);
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if(ammount==0){
-            return currencyFormatter.format(ammount).substring(1);
-        }else {
-            String t = currencyFormatter.format(ammount).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
+
+
     private PaymentDTO formatPayment(PaymentDTO payment,boolean isCancellingFromPayment){
         if(payment.getComments()==null || payment.getComments()==""){
             payment.setComments("No hay comentarios");
@@ -105,13 +95,13 @@ public class PaymentDocumentService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
             if(payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatColonesD(chargeDTO.getTotal()));
-                chargeDTO.setAmmount(formatColonesS(chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatColonesS(chargeDTO.getSubcharge()));
+                chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
+                chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
             }else{
-                chargeDTO.setPaymentAmmount(formatColonesD(chargeDTO.getTotal()));
-                chargeDTO.setAmmount(formatColonesS(chargeDTO.getAmmount()));
-                chargeDTO.setSubcharge(formatColonesS(chargeDTO.getSubcharge()));
+                chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
+                chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
+                chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
             }
         });
         if(payment.getTransaction().equals("3")){
@@ -121,7 +111,7 @@ public class PaymentDocumentService {
         }else if(payment.getTransaction().equals("2")){
             if(payment.getCharges().size()==0){
                 ChargeDTO adelanto = new ChargeDTO();
-                adelanto.setPaymentAmmount(formatColonesS(payment.getAmmount()));
+                adelanto.setPaymentAmmount(formatMoneyString(payment.getAmmount()));
                 adelanto.setConcept(payment.getConcept());
                 adelanto.setType(4);
                 payment.getCharges().add(adelanto);
@@ -131,9 +121,9 @@ public class PaymentDocumentService {
                 payment.setConcept("Abono a cuotas");
             }
         }
-        payment.setAmmount(formatColonesS(payment.getAmmount()));
+        payment.setAmmount(formatMoneyString(payment.getAmmount()));
         if(payment.getAmmountLeft()!=null) {
-            payment.setAmmountLeft(formatColonesS(payment.getAmmountLeft()));
+            payment.setAmmountLeft(formatMoneyString(payment.getAmmountLeft()));
         }
         payment.setAccount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getDate()));
         return payment;
@@ -143,7 +133,7 @@ public class PaymentDocumentService {
         Locale locale = new Locale("es", "CR");
         DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
         income.getPayments().forEach(paymentDTO -> {
-                paymentDTO.setAmmount(formatColonesS(paymentDTO.getAmmount()));
+                paymentDTO.setAmmount(formatMoneyString(paymentDTO.getAmmount()));
             paymentDTO.setStringDate( pattern.ofPattern("dd MMMM yyyy").format(paymentDTO.getDate()));
         });
         return income;
@@ -178,7 +168,7 @@ public class PaymentDocumentService {
             if(isCancellingFromPayment == true) {
                 paymentDate = DateTimeFormatter.ofPattern("dd/MM/yyyy").format(payment.getCharges().get(0).getPaymentDate());
                 paymentTotal = payment.getCharges().stream().mapToDouble(o -> o.getTotal()).sum()+"";
-                paymentTotal=formatColonesS(paymentTotal);
+                paymentTotal=formatMoneyString(paymentTotal);
             }
             contextTemplate.setVariable(PAYMENT_DATE,paymentDate);
             contextTemplate.setVariable(PAYMENT_TOTAL,paymentTotal);
@@ -327,40 +317,63 @@ public class PaymentDocumentService {
 
     @Async
     public void sendReminderEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, List<ChargeDTO> chargesDTOS){
-        ResidentDTO residentDTO = null;
-        List<ResidentDTO> residentDTOS = this.residentService.findEnabledByHouseId(null,house.getId()).getContent();
-        for (int i = 0; i < residentDTOS.size(); i++) {
-            if(residentDTOS.get(i).getPrincipalContact()==1){
-                residentDTO = residentDTOS.get(i);
-            }
-        }
+        ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
         if(residentDTO!=null){
             Context contextTemplate = new Context();
             contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
             contextTemplate.setVariable(HOUSE,house);
             contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
-            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));
             Locale locale = new Locale("es", "CR");
-            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
             double subchargeTotal = 0;
             for (int i = 0; i < chargesDTOS.size(); i++) {
                 ChargeDTO chargeDTO = chargesDTOS.get(i);
                 chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
                 subchargeTotal = subchargeTotal + Double.parseDouble(chargeDTO.getSubcharge());
-                chargeDTO.setAmmount("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
-                chargeDTO.setSubcharge("₡"+currencyFormatter.format(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
-                chargeDTO.setPaymentAmmount("₡"+currencyFormatter.format(chargeDTO.getTotal()).substring(1));
+                chargeDTO.setAmmount("₡"+formatMoney(Double.parseDouble(chargeDTO.getAmmount())).substring(1));
+                chargeDTO.setSubcharge("₡"+formatMoney(Double.parseDouble(chargeDTO.getSubcharge())).substring(1));
+                chargeDTO.setPaymentAmmount("₡"+formatMoney(chargeDTO.getTotal()).substring(1));
             }
             CompanyDTO company = this.companyService.findOne(house.getCompanyId());
             contextTemplate.setVariable(COMPANY,company);
-            contextTemplate.setVariable(SUBCHARGE_TOTAL,currencyFormatter.format(subchargeTotal).substring(1));
+            contextTemplate.setVariable(SUBCHARGE_TOTAL,formatMoney(subchargeTotal).substring(1));
             contextTemplate.setVariable(CHARGES,chargesDTOS);
             contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
             String content = templateEngine.process("subchargeReminderEmail", contextTemplate);
             String subject = "Recordatorio de pago, Filial # "+house.getHousenumber()+" ,"+company.getName();
             this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
         }
+    }
 
+
+
+    @Async
+    public void sendChargeEmail(AdministrationConfigurationDTO administrationConfigurationDTO,HouseDTO house, ChargeDTO chargesDTO){
+        ResidentDTO residentDTO = this.residentService.findPrincipalContactByHouse(house.getId());
+        if(residentDTO!=null){
+            Context contextTemplate = new Context();
+            contextTemplate.setVariable(CONTACTO,residentDTO.getName()+" "+residentDTO.getLastname()+" "+residentDTO.getSecondlastname());
+            contextTemplate.setVariable(HOUSE,house);
+            contextTemplate.setVariable(ADMINISTRATION_CONFIGURATION,administrationConfigurationDTO);
+            Locale locale = new Locale("es", "CR");
+            DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", locale);
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+            ChargeDTO chargeDTO = chargesDTO;
+            chargeDTO.setFormatedDate(spanish.format(chargeDTO.getDate()));
+            double total = Double.parseDouble(chargeDTO.getAmmount())+Double.parseDouble(chargeDTO.getSubcharge());
+            chargeDTO.setAmmount("₡" + formatMoney(Double.parseDouble(chargeDTO.getAmmount())));
+            chargeDTO.setSubcharge("₡" + formatMoney(Double.parseDouble(chargeDTO.getSubcharge()!=null?chargeDTO.getSubcharge():"0")));
+            chargeDTO.setPaymentAmmount("₡" + formatMoney(chargeDTO.getTotal()));
+            chargeDTO.setTotal(total);
+            chargeDTO.setTotalFormatted("₡" +chargeDTO.getTotalFormatted());
+            CompanyDTO company = this.companyService.findOne(house.getCompanyId());
+            contextTemplate.setVariable(COMPANY,company);
+            contextTemplate.setVariable(CHARGE,chargeDTO);
+            contextTemplate.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+            String content = templateEngine.process("newChargeEmail", contextTemplate);
+            String subject = "Nueva cuota '"+ chargeDTO.getConcept()+"', Filial # "+house.getHousenumber()+" , "+company.getName();
+            this.mailService.sendEmail(residentDTO.getEmail(), subject, content,false,true);
+        }
     }
 }
 

@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -38,6 +38,7 @@
         $timeout(function () {
             angular.element('#username').focus();
         });
+
         function cancel() {
             vm.credentials = {
                 username: null,
@@ -46,9 +47,11 @@
             };
             vm.authenticationError = false;
         }
+
         function showLoginHelp() {
             Modal.dialog("Nombre de usuario", "Tu nombre de usuario está constituido por la primera letra de tu nombre, tu primer apellido y la primera letra de tu segundo apellido. Ejemplo: Nombre: Antonio Vega Castro. Usuario: avegac", "¡Entendido!")
         }
+
         function login(event) {
             event.preventDefault();
             Auth.login({
@@ -73,7 +76,7 @@
                                 var companiesConfigArray = "";
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + "|";
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea + ";" + companyConfig.initialConfiguration + "|";
                                         if (user.companies.length == i) {
                                             $rootScope.companyId = user.companies[0].id;
                                             vm.backgroundSelectCompany = true;
@@ -99,9 +102,13 @@
                                     $localStorage.houseSelected = house;
                                     var companiesConfigArray = "";
                                     CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + "|";
                                         vm.backgroundSelectCompany = true;
-                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                        AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                            var administrationConfiguration = result;
+                                            console.log(administrationConfiguration)
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea +  ";" + companyConfig.initialConfiguration +"|";
+                                            $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                        });
                                         setTimeout(function () {
                                             $state.go('announcement-user');
                                         }, 300);

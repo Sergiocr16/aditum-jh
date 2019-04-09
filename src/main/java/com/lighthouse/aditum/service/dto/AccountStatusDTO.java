@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
@@ -22,13 +24,6 @@ public class AccountStatusDTO {
     private String totalTotalFormatted;
 
     private List<AccountStatusItemDTO> listaAccountStatusItems;
-
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
 
 
     public double getSaldoInicial() {
@@ -53,7 +48,7 @@ public class AccountStatusDTO {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
-        this.setSaldoFormatted(formatMoney(this.saldo));
+        this.setSaldoFormatted(RandomUtil.formatMoney(this.saldo));
     }
 
     public double getTotalCharge() {
@@ -62,7 +57,7 @@ public class AccountStatusDTO {
 
     public void setTotalCharge(double totalCharge) {
         this.totalCharge = this.totalCharge + totalCharge;
-        this.setTotalChargeFormatted(formatMoney(this.totalCharge));
+        this.setTotalChargeFormatted(RandomUtil.formatMoney(this.totalCharge));
     }
 
     public double getTotalRecharge() {
@@ -71,7 +66,7 @@ public class AccountStatusDTO {
 
     public void setTotalRecharge(double totalRecharge) {
         this.totalRecharge = this.totalRecharge + totalRecharge;
-        this.setTotalRechargeFormatted(formatMoney(this.totalRecharge));
+        this.setTotalRechargeFormatted(RandomUtil.formatMoney(this.totalRecharge));
     }
 
     public double getTotalTotal() {
@@ -80,7 +75,7 @@ public class AccountStatusDTO {
 
     public void setTotalTotal(double totalTotal) {
         this.totalTotal =  this.totalTotal + totalTotal;
-        this.setTotalTotalFormatted(formatMoney(this.totalTotal));
+        this.setTotalTotalFormatted(RandomUtil.formatMoney(this.totalTotal));
     }
 
     public double getTotalAbono() {
@@ -89,7 +84,7 @@ public class AccountStatusDTO {
 
     public void setTotalAbono(double totalAbono) {
         this.totalAbono =  this.totalAbono + totalAbono;
-        this.setTotalAbonoFormatted(formatMoney(this.totalAbono));
+        this.setTotalAbonoFormatted(RandomUtil.formatMoney(this.totalAbono));
     }
 
     public String getSaldoInicialFormatted() {

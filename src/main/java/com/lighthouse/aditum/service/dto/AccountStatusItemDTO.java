@@ -1,5 +1,7 @@
 package com.lighthouse.aditum.service.dto;
 
+import com.lighthouse.aditum.service.util.RandomUtil;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
@@ -32,9 +34,9 @@ public class AccountStatusItemDTO {
         this.charge = charge;
         this.recharge = recharge;
         this.total = charge + recharge;
-        this.chargeFormatted = formatMoney(charge);
-        this.rechargeFormatted = formatMoney(recharge);
-        this.totalFormatted = formatMoney(this.total);
+        this.chargeFormatted = RandomUtil.formatMoney(charge);
+        this.rechargeFormatted = RandomUtil.formatMoney(recharge);
+        this.totalFormatted = RandomUtil.formatMoney(this.total);
         this.showDetail = false;
 
     }
@@ -49,15 +51,10 @@ public class AccountStatusItemDTO {
 
         this.abono = abono;
         this.charges = charges;
-        this.abonoFormatted = formatMoney(this.abono);
+        this.abonoFormatted = RandomUtil.formatMoney(this.abono);
         this.showDetail = false;
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
     public String getConcept() {
         return concept;
     }
@@ -96,7 +93,7 @@ public class AccountStatusItemDTO {
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
-        this.saldoFormatted = formatMoney(this.saldo);
+        this.saldoFormatted = RandomUtil.formatMoney(this.saldo);
     }
 
     public double getAbono() {

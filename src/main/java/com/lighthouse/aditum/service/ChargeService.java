@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -145,54 +144,11 @@ public class ChargeService {
                 charge.setPaymentDate(ZonedDateTime.now());
             }
             charge = chargeRepository.save(charge);
-//
-//            switch (chargeDTO.getType()) {
-//                case 1:
-//                    int newMaintBalance = 0;
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
-//                            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(chargeDTO.getAmmount());
-//
-//                        }
-//                    } else {
-//                        newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(chargeDTO.getAmmount());
-//                    }
-//                    balanceDTO.setMaintenance(newMaintBalance + "");
-//                    break;
-//                case 2:
-//                    int newExtraBalance = 0;
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getExtraordinary()) >= 0) {
-//                            newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) + Integer.parseInt(chargeDTO.getAmmount());
-//                        }
-//                    } else {
-//                        newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) - Integer.parseInt(chargeDTO.getAmmount());
-//                    }
-//                    balanceDTO.setExtraordinary(newExtraBalance + "");
-//                    break;
-//                case 3:
-//                    int newCommonBalance = 0;
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getCommonAreas()) >= 0) {
-//                            newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) + Integer.parseInt(chargeDTO.getAmmount());
-//
-//                        }
-//                    } else {
-//                        newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) - Integer.parseInt(chargeDTO.getAmmount());
-//                    }
-//                    balanceDTO.setCommonAreas(newCommonBalance + "");
-//                    break;
-//            }
-//            balanceService.save(balanceDTO);
         }
-
-        return chargeMapper.toDto(charge);
+        if(chargeDTO.getDate().getDayOfYear()==ZonedDateTime.now().getDayOfYear()){
+            this.paymentEmailSenderService.sendChargeEmail(administrationConfigurationDTO,this.houseService.findOne(chargeDTO.getHouseId()),chargeDTO);
+        }
+        return  chargeMapper.toDto(charge);
     }
 
     private String formatColonesD(double text) {
@@ -219,8 +175,7 @@ public class ChargeService {
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
         charge.setDate(charge.getDate().withHour(10));
         Charge savedCharge = chargeRepository.save(charge);
-
-
+      
         if(chargeDTO.getDeleted()==1 || Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
             LocalDateTime today = LocalDateTime.now();
             ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
@@ -243,109 +198,9 @@ public class ChargeService {
 
         }
 
-//        }
-//        }else {
-//            int newAmmount = Integer.parseInt(newCharge.getAmmount());
-//            int oldAmmount = Integer.parseInt(oldCharge.getAmmount());
-//            int ammountModyfyingBalance = 0;
-//            if(oldCharge.getType()!=newCharge.getType()){
-//                ammountModyfyingBalance =  -newAmmount;
-//            }else {
-//                ammountModyfyingBalance = oldAmmount - newAmmount;
-//            }
-//            BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
-//
-//            switch (chargeDTO.getType()) {
-//                case 1:
-//                    balanceDTO = modifyIfTypeChanged(oldCharge,newCharge);
-//                    int newMaintBalance = 0;
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
-//                            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(chargeDTO.getAmmount());
-//                        }
-//                    } else {
-//                        newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + ammountModyfyingBalance;
-//
-//                    }
-//
-//                    balanceDTO.setMaintenance(newMaintBalance + "");
-//                    break;
-//                case 2:
-//                    int newExtraBalance = 0;
-//                    balanceDTO = modifyIfTypeChanged(oldCharge,newCharge);
-//
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getExtraordinary()) >= 0) {
-//                            newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) + Integer.parseInt(chargeDTO.getAmmount());
-//
-//                        }
-//                    } else {
-//                        newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) + ammountModyfyingBalance;
-//                    }
-//                    balanceDTO.setExtraordinary(newExtraBalance+ "");
-//                    break;
-//                case 3:
-//                    int newCommonBalance = 0;
-//                    balanceDTO = modifyIfTypeChanged(oldCharge,newCharge);
-//
-//                    if (chargeDTO.getDeleted() == 1) {
-//                        if (Integer.parseInt(balanceDTO.getCommonAreas()) >= 0) {
-//                            newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) - Integer.parseInt(chargeDTO.getAmmount());
-//                        } else {
-//                            newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) + Integer.parseInt(chargeDTO.getAmmount());
-//
-//                        }
-//                    } else {
-//                        newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) + ammountModyfyingBalance;
-//                    }
-//                    balanceDTO.setCommonAreas(newCommonBalance+ "");
-//                    break;
-//            }
-//            chargeRepository.save(newCharge);
-//            balanceService.save(balanceDTO);
-//        }
         return chargeMapper.toDto(savedCharge);
     }
 
-//    private BalanceDTO modifyIfTypeChanged(Charge oldCharge, Charge newCharge){
-//        BalanceDTO balanceDTO = balanceService.findOneByHouse(oldCharge.getHouse().getId());
-//        if(oldCharge.getType()!=newCharge.getType()){
-//            switch (oldCharge.getType()) {
-//                case 1:
-//                    int newMaintBalance= 0;
-//                    if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
-//                        newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(oldCharge.getAmmount());
-//                    } else {
-//                        newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(oldCharge.getAmmount());
-//                    }
-//                    balanceDTO.setMaintenance(newMaintBalance + "");
-//                    break;
-//                case 2:
-//                    int newExtraBalance = 0;
-//                    if (Integer.parseInt(balanceDTO.getExtraordinary()) >= 0) {
-//                        newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) - Integer.parseInt(oldCharge.getAmmount());
-//                    } else {
-//                        newExtraBalance = Integer.parseInt(balanceDTO.getExtraordinary()) + Integer.parseInt(oldCharge.getAmmount());
-//                    }
-//                    balanceDTO.setExtraordinary(newExtraBalance+ "");
-//                    break;
-//                case 3:
-//                    int newCommonBalance = 0;
-//                    if (Integer.parseInt(balanceDTO.getCommonAreas()) >= 0) {
-//                        newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) - Integer.parseInt(oldCharge.getAmmount());
-//                    } else {
-//                        newCommonBalance = Integer.parseInt(balanceDTO.getCommonAreas()) + Integer.parseInt(oldCharge.getAmmount());
-//                    }
-//                    balanceDTO.setCommonAreas(newCommonBalance+ "");
-//                    break;
-//            }
-//        }
-//        return balanceDTO;
-//    }
 
     /**
      * Get all the charges.
@@ -472,14 +327,6 @@ public class ChargeService {
                 newCharge.setAmmount(charge.getTotal() - Double.parseDouble(payment.getAmmountLeft()) + "");
                 newCharge.setPaymentDate(now.plusMinutes(10));
                 newCharge = this.create(newCharge);
-//                int newMaintBalance = 0;
-//                if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
-//                    newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(newCharge.getAmmount());
-//                } else {
-//                    newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(newCharge.getAmmount());
-//                }
-//                balanceDTO.setMaintenance(newMaintBalance+"");
-//                balanceDTO = balanceService.save(balanceDTO);
                 charge.setAmmount(payment.getAmmountLeft());
                 payment.setAmmountLeft(0 + "");
                 charge.setSplitedCharge(newCharge.getId().intValue());
@@ -501,13 +348,7 @@ public class ChargeService {
         }
 
         Charge savedCharge = chargeRepository.save(chargeEntity);
-//        int newMaintBalance = 0;
-//        if (Integer.parseInt(balanceDTO.getMaintenance()) >= 0) {
-//            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) - Integer.parseInt(savedCharge.getAmmount());
-//        } else {
-//            newMaintBalance = Integer.parseInt(balanceDTO.getMaintenance()) + Integer.parseInt(savedCharge.getAmmount());
-//        }
-//        balanceDTO.setMaintenance(newMaintBalance+"");
+
         ChargeDTO savedChargeDTO = this.chargeMapper.toDto(savedCharge);
         savedChargeDTO.setPaymentAmmount(DateTimeFormatter.ofPattern("dd/MM/yyyy").format(savedChargeDTO.getDate()));
         if (payment != null) {
@@ -525,7 +366,6 @@ public class ChargeService {
                 this.paymentEmailSenderService.sendPaymentEmail(payment, true);
             }
         }
-//        balanceService.save(balanceDTO);
         if (newCharge != charge) {
             return this.payIfBalanceIsPositive(newCharge);
         } else {
@@ -568,6 +408,7 @@ public class ChargeService {
                 }
             }
         }
+        chargeDTO.setSubcharge(chargeDTO.getSubcharge()==null?"0":chargeDTO.getSubcharge());
         return chargeDTO;
     }
 
@@ -650,4 +491,5 @@ public class ChargeService {
         chargesReport.setDueHouses(finalHouses);
         return chargesReport;
     }
+
 }

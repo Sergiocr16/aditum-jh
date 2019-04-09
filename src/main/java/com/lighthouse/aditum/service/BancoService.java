@@ -172,9 +172,8 @@ public class BancoService {
     @Transactional(readOnly = true)
     public BancoDTO getAccountStatus(ZonedDateTime firstMonthDay,ZonedDateTime final_capital_date,ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         BancoDTO bancoDTO = this.findOne(accountId);
-        String a = "a";
-        bancoDTO = getInicialBalance(firstMonthDay, bancoDTO, final_capital_date);
-        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime, finalTime, bancoDTO.getId(), bancoDTO.getCompanyId());
+        bancoDTO = getInicialBalance(firstMonthDay,bancoDTO,final_capital_date);
+        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime,finalTime,bancoDTO.getId(),bancoDTO.getCompanyId());
         bancoDTO.setMovimientos(bancoMovements);
         bancoDTO = calculateBalance(bancoDTO.getCapitalInicialTemporal(), bancoDTO.getMovimientos(), bancoDTO);
         bancoDTO.setTotalBalance(bancoDTO.getTotalBalance());
@@ -225,7 +224,6 @@ public class BancoService {
 
         }
         Collections.sort(movements, Comparator.comparing(BancoMovementDTO::getDate));
-        String a = "a";
         return movements;
     }
 

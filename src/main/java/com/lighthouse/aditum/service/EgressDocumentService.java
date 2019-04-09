@@ -26,6 +26,8 @@ package com.lighthouse.aditum.service;
     import java.util.List;
     import java.util.Locale;
 
+    import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 @Service
 @Transactional
 public class EgressDocumentService {
@@ -54,12 +56,7 @@ public class EgressDocumentService {
         this.templateEngine = templateEngine;
         this.mailService = mailService;
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public File obtainFileToPrint(EgressReportDTO egressReportDTO,String initialTime, String finalTime,Long companyId) {
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es","ES"));

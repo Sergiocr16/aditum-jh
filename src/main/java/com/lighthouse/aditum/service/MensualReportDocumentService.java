@@ -22,6 +22,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 @Service
 @Transactional
 public class MensualReportDocumentService {
@@ -72,12 +74,7 @@ public class MensualReportDocumentService {
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public File obtainFileToPrint(Long companyId, String initialTime, String finalTime, MensualReportDTO mensualReportDTO,int withPresupuesto) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
@@ -126,15 +123,15 @@ public class MensualReportDocumentService {
             double egressBudgetDiference = mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal() - totalEgressBudget;
 
             contextTemplate.setVariable(INGRESSBUDGETDIFERENCE,ingressBudgetDiference);
-            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,this.formatMoney(ingressBudgetDiference));
+            contextTemplate.setVariable(INGRESSBUDGETDIFERENCEFORMATTED,formatMoney(ingressBudgetDiference));
 
             contextTemplate.setVariable(ALLEGRESSPERCENTAGEQUANTITY,allEgressPercentageQuantity);
 
             contextTemplate.setVariable(TOTALEGRESSBUDGET,totalEgressBudget);
-            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,this.formatMoney(totalEgressBudget));
+            contextTemplate.setVariable(TOTALEGRESSBUDGETFORMATTED,formatMoney(totalEgressBudget));
 
             contextTemplate.setVariable(EGRESSBUDGETDIFERENCE,egressBudgetDiference);
-            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,this.formatMoney(egressBudgetDiference));
+            contextTemplate.setVariable(EGRESSBUDGETDIFERENCEFORMATTED,formatMoney(egressBudgetDiference));
 
             contextTemplate.setVariable(SUPERHABITPERCENTAGE,100 - allEgressPercentageQuantity);
 
@@ -142,10 +139,10 @@ public class MensualReportDocumentService {
 
             contextTemplate.setVariable(SUPERHABIT,superHabit);
 
-            contextTemplate.setVariable(SUPERHABITFORMATTED,this.formatMoney(superHabit));
+            contextTemplate.setVariable(SUPERHABITFORMATTED,formatMoney(superHabit));
             double saldoNeto = mensualReportDTO.getTotalInitialBalance() + mensualReportDTO.getMensualIngressReport().getAllIngressCategoriesTotal() - mensualReportDTO.getMensualEgressReport().getAllEgressCategoriesTotal();
             contextTemplate.setVariable(SALDONETO,saldoNeto);
-            contextTemplate.setVariable(SALDONETOFORMATTED,this.formatMoney(saldoNeto));
+            contextTemplate.setVariable(SALDONETOFORMATTED,formatMoney(saldoNeto));
 
             ZonedDateTime date = ZonedDateTime.now();
             String timeNowFormatted = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mma").format(date);

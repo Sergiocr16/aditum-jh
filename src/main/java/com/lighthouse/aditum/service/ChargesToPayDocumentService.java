@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
     import com.lighthouse.aditum.domain.Company;
     import com.lighthouse.aditum.service.dto.ChargesToPayReportDTO;
     import com.lighthouse.aditum.service.mapper.CompanyMapper;
+    import com.lighthouse.aditum.service.util.RandomUtil;
     import com.lowagie.text.DocumentException;
     import io.github.jhipster.config.JHipsterProperties;
     import org.slf4j.Logger;
@@ -18,6 +19,9 @@ package com.lighthouse.aditum.service;
     import java.time.format.DateTimeFormatter;
     import java.time.format.FormatStyle;
     import java.util.Locale;
+
+    import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+    import static com.lighthouse.aditum.service.util.RandomUtil.formatMoneyString;
 
 @Service
 @Transactional
@@ -44,27 +48,7 @@ public class ChargesToPayDocumentService {
         this.templateEngine = templateEngine;
         this.chargeService = chargeService;
     }
-    private String formatColonesD(double text) {
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if(text==0){
-            return currencyFormatter.format(text).substring(1);
-        }else {
-            String t = currencyFormatter.format(text).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
-    private String formatColonesS(String text) {
-        double ammount = Double.parseDouble(text);
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if(ammount==0){
-            return currencyFormatter.format(ammount).substring(1);
-        }else {
-            String t = currencyFormatter.format(ammount).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
+
     public File obtainFileToPrint(ZonedDateTime finalDate,int type, Long companyId) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
         String fileName = "Reporte de cuotas por cobrar.pdf";
@@ -77,9 +61,9 @@ public class ChargesToPayDocumentService {
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.FULL).withLocale(locale);
             chargesToPayReportDTO.getDueHouses().forEach(dueHouseDTO -> {
                 dueHouseDTO.getDues().forEach(chargeDTO -> {
-                    chargeDTO.setPaymentAmmount(formatColonesD(chargeDTO.getTotal()));
-                    chargeDTO.setAmmount(formatColonesS(chargeDTO.getAmmount()));
-                    chargeDTO.setSubcharge(formatColonesS(chargeDTO.getSubcharge()));
+                    chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
+                    chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
+                    chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
                     chargeDTO.setFormatedDate(pattern.ofPattern("dd MMMM yyyy").format(chargeDTO.getDate()));
                 });
             });

@@ -5,6 +5,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 /**
  * Created by Sergio on 13/07/2018.
  */
@@ -40,12 +42,7 @@ public class MensualCollectionDTO implements Serializable {
     //  0 = libre 1 = morosa
     private int state;
 
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0;₡-#,##0");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
     public double getMensualBalance() {
         return mensualBalance;
     }

@@ -29,18 +29,18 @@ public interface VisitantRepository extends JpaRepository<Visitant, Long> {
     List<Visitant> findByHouseInLastMonth(ZonedDateTime firstDayOfMonth, Long houseId, Integer isInvited);
 
 
-    Page<Visitant> findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvited(Pageable pageable, Long companyId, ZonedDateTime initialDate, ZonedDateTime finalDate, Integer isinvited);
+    Page<Visitant> findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedOrderByArrivaltimeDesc(Pageable pageable, Long companyId, ZonedDateTime initialDate, ZonedDateTime finalDate, Integer isinvited);
 
-    Page<Visitant> findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContains(
+    Page<Visitant> findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
         Pageable pageable, Long companyId1, ZonedDateTime initialDate1, ZonedDateTime finalDate1, Integer isinvited1, String name1,
         Long companyId2, ZonedDateTime initialDate2, ZonedDateTime finalDate2, Integer isinvited2, String name2,
         Long companyId3, ZonedDateTime initialDate3, ZonedDateTime finalDate3, Integer isinvited3, String name3,
         Long companyId4, ZonedDateTime initialDate4, ZonedDateTime finalDate4, Integer isinvited4, String name4,
         Long companyId5, ZonedDateTime initialDate5, ZonedDateTime finalDate5, Integer isinvited5, String name5);
 
-    Page<Visitant> findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvited(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, Integer isinvited);
+    Page<Visitant> findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedOrderByArrivaltimeDesc(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, Integer isinvited);
 
-    Page<Visitant> findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContains(
+    Page<Visitant> findByArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndNameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndSecondlastnameContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndIdentificationnumberContainsOrArrivaltimeAfterAndArrivaltimeBeforeAndHouseIdAndIsinvitedAndLicenseplateContainsOrderByArrivaltimeDesc(
         Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long houseId, Integer isinvited, String name,
         ZonedDateTime initialDate1, ZonedDateTime finalDate1, Long houseId1, Integer isinvited1, String name1,
         ZonedDateTime initialDate2, ZonedDateTime finalDate2, Long houseId2, Integer isinvited2, String name2,

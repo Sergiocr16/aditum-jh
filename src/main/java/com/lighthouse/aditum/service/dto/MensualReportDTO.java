@@ -5,6 +5,8 @@ import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 public class MensualReportDTO {
     private Locale locale = new Locale("es", "CR");
     private MensualIngressReportDTO mensualIngressReport;
@@ -51,12 +53,6 @@ public class MensualReportDTO {
         this.totalInitialBalance = totalBalance;
         this.setTotalInitialBalanceFormatted(formatMoney(totalBalance));
 
-    }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
     }
 
     public double getFlujo() {

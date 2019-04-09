@@ -44,7 +44,12 @@
                                 return {
                                     companyId: companyId,
                                     hasContability: companiesArray[i].split(";")[1],
-                                    minDate: new Date(companiesArray[i].split(";")[2])
+                                    minDate: new Date(companiesArray[i].split(";")[2]),
+                                    hasWatches: companiesArray[i].split(";")[3]=="1",
+                                    showEstadoResultados: companiesArray[i].split(";")[4]=="true",
+                                    showEjecPresu: companiesArray[i].split(";")[5]=="true",
+                                    bookCommonArea: companiesArray[i].split(";")[6]=="true",
+                                    initialConfiguration: companiesArray[i].split(";")[7],
                                 }
                             }
                         }

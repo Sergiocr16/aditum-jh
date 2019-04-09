@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 public class SumEgressDTO {
     private Locale locale = new Locale("es", "CR");
     private String concept;
@@ -36,12 +38,7 @@ public class SumEgressDTO {
         this.setConcept(concept);
 
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public double getPercentage() {
         return percentage;

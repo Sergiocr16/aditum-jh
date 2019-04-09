@@ -98,7 +98,7 @@
                              class="fade-in margin-top-15">
                             <div flex layout="row" layout-align="center center">
                                 <md-radio-group flex layout="column"
-                                                ng-model="vm.administrationConfiguration.usingSubchargePercentage">
+                                                ng-model="vm.usingSubchargePercentage">
                                     <md-radio-button value="0" class="md-primary">Recargo por monto fijo
                                     </md-radio-button>
                                     <md-radio-button value="1" class="md-primary">Recargo por porcentaje de
@@ -106,14 +106,14 @@
                                     </md-radio-button>
                                 </md-radio-group>
                                 <md-input-container flex class="fade-in md-block"
-                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==0"
+                                                    ng-if="vm.usingSubchargePercentage==0"
                                                     flex>
                                     <label>Cuota fija de recargo</label>
                                     <input format="currency" ng-model="vm.administrationConfiguration.subchargeAmmount"
                                            required>
                                 </md-input-container>
                                 <md-input-container flex class="fade-in md-block"
-                                                    ng-if="vm.administrationConfiguration.usingSubchargePercentage==1"
+                                                    ng-if="vm.usingSubchargePercentage==1"
                                                     flex>
                                     <label>Porcentaje de recargo en base a la cuota morosa</label>
                                     <input type="number" min="1"
@@ -172,7 +172,7 @@
                         </div>
                         <div class="margin-top-15" layout="row">
                             <div flex>
-                                <h5 class="bold">Estado de resultados</h5>
+                                <h5 class="bold">Mostrar Estado de resultados</h5>
                                 Esto define si los usuarios podrán visualizar el estado de resultados.
                             </div>
                             <div layout="row" flex>
@@ -188,8 +188,8 @@
                         </div>
                         <div class="margin-top-15" layout="row">
                             <div flex>
-                                <h5 class="bold">Mostrar mes actual en estado de resultados</h5>
-                                Esto define si los usuarios podrán visualizar los movimientos del mes vigente.
+                                <h5 class="bold">Mostrar Ejecución presupuestaria</h5>
+                                Esto define si los usuarios podrán visualizar la ejecución presupuestaria.
                             </div>
                             <div layout="row" flex>
                                 <md-switch ng-model="vm.administrationConfiguration.monthlyIncomeStatement" flex>

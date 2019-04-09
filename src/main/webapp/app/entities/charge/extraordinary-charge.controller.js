@@ -22,7 +22,8 @@
         vm.verificando = false;
         vm.selectedAll = false;
         vm.companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-
+        vm.alreadyClickedDivided = false;
+        vm.dividedCharge = false;
         vm.isDivided = false;
         vm.dividedChargeQuantity = 2;
         vm.totalPerHouseAmmount = 0;
@@ -59,6 +60,7 @@
         vm.changeDividedCharge = function () {
             if(!vm.dividedCharge){
                 vm.isDivided = false;
+                vm.alreadyClickedDivided = false;
             }
         }
 
@@ -73,6 +75,7 @@
         }
         vm.generateDividedCharges = function () {
             vm.dividedCharges = [];
+            vm.alreadyClickedDivided = true;
             var ammount = vm.dividedChargeAmmount;
             var date = vm.dividedChargeDate;
             for (var i = 1; i <= vm.dividedChargeQuantity; i++) {

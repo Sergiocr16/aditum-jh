@@ -43,12 +43,7 @@ public class AnualReportDocumentService {
         this.jHipsterProperties = jHipsterProperties;
         this.templateEngine = templateEngine;
     }
-    private String formatMoney(double ammount){
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        String total = format.format(ammount);
-        return total;
-    }
+
 
     public File obtainFileToPrint(String actualMonth,AnualReportDTO anualReportDTO,Long companyId,int withPresupuesto) {
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(companyId));
