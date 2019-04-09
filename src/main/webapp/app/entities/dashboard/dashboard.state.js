@@ -43,6 +43,38 @@
                     });
                 }]
             })
+            .state('dashboard.initialConfiguration', {
+                parent: 'dashboard',
+                url: '/configuracion-inicial',
+                data: {
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER']
+                },
+                onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                    $uibModal.open({
+                        templateUrl: 'app/entities/dashboard/initialConfiguration.html',
+                        controller: 'InitialConfigurationController',
+                        controllerAs: 'vm',
+                        backdrop: 'static',
+                        size: 'lg',
+                        resolve: {
+                            globalCompanyId: ['CommonMethods', '$localStorage', function (CommonMethods, $localStorage) {
+                                if ($localStorage.companyId != undefined || $localStorage.companyId != null) {
+                                    return CommonMethods.decryptIdUrl($localStorage.companyId)
+                                } else {
+                                    return null;
+                                }
+                            }],
+                            entity: ['globalCompany', 'AdministrationConfiguration', function(globalCompany, AdministrationConfiguration) {
+                                return AdministrationConfiguration.get({companyId : globalCompany.getId()}).$promise;
+                            }],
+                        }
+                    }).result.then(function() {
+                        $state.go('dashboard', null, { reload: 'dashboard' });
+                    }, function() {
+                        $state.go('dashboard');
+                    });
+                }]
+            })
     }
 
 })();

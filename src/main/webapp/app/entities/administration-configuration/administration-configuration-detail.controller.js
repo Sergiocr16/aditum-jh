@@ -36,6 +36,8 @@
                 function(){
                     vm.isSaving = true;
                     vm.administrationConfiguration.usingSubchargePercentage = vm.usingSubchargePercentage=="0"?false:true;
+                    vm.administrationConfiguration.saveInBitacora = 1;
+
                     if (vm.administrationConfiguration.id !== null) {
                         AdministrationConfiguration.update(vm.administrationConfiguration, onSaveSuccess, onSaveError);
                     } else {

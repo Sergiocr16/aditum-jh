@@ -29,6 +29,9 @@ public class ChargeDTO implements Serializable {
     @NotNull
     private String ammount;
 
+    @NotNull
+    private String temporalAmmount;
+
 
     private Integer state;
 
@@ -319,5 +322,14 @@ public class ChargeDTO implements Serializable {
 
     public void setSplitedCharge(Integer splitedCharge) {
         this.splitedCharge = splitedCharge;
+    }
+
+    @NotNull
+    public String getTemporalAmmount() {
+        return temporalAmmount;
+    }
+
+    public void setTemporalAmmount(@NotNull String temporalAmmount) {
+        this.temporalAmmount = temporalAmmount;
     }
 }

@@ -121,7 +121,7 @@ public class EgressResource {
         log.debug("REST request to get a page of Egresses");
         Page<EgressDTO> page = egressService.findAll(pageable, companyId);
         page.getContent().forEach(egressDTO -> {
-            egressDTO.setCategory(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
+            egressDTO.setCategoryName(egressCategoryService.findOne(Long.parseLong(egressDTO.getCategory())).getCategory());
 
         });
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/egresses");

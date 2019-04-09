@@ -32,6 +32,7 @@
             "egressFolio": "Egress Folio",
             "egressFolioSerie": "Egress Folio Serie",
             "egressFolioNumber": "Egress Folio Number",
+            "initialConfiguration": "Initial Configuration",
             "company": "Company"
         }
     }

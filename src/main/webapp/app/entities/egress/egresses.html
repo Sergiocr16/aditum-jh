@@ -157,13 +157,13 @@
                         <span class="fa fa-sort" style="color:#D8D8D8"></span></th>
                     <th ng-click="vm.sortBy('category')">Categoría <span class="fa fa-sort"
                                                                          style="color:#D8D8D8"></span></th>
-                    <th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"
-                                                                           style="color:#D8D8D8"></span></th>
+                    <!--<th ng-click="vm.sortBy('proveedor') ">Proveedor <span class="fa fa-sort"-->
+                                                                           <!--style="color:#D8D8D8"></span></th>-->
                     <th ng-click="vm.sortBy('expirationDate') "><span>Vencimiento</span> </span> <span
-                        class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
                     <th ng-click="vm.sortBy('paymentDate')"><span>Fecha pagado </span> </span> <span
-                        class="fa fa-sort" style="color:#D8D8D8"></span></th>
+                        class="fa fa-sort text-center" style="color:#D8D8D8"></span></th>
 
 
                     <th ng-click="vm.sortBy('total')"><span data-translate="aditumApp.egress.total">Total </span>
@@ -174,7 +174,7 @@
                     <th class="text-center" ng-click="vm.sortBy('state')"><span>Estado </span><span
                         class="fa fa-sort" style="color:#D8D8D8; "></span></th>
                     <th class="text-center"><span>Pagar </span></th>
-
+                    <th class="text-center"><span>Eliminar </span></th>
                 </tr>
                 </thead>
                 <tbody>
@@ -183,10 +183,10 @@
                 <tr ng-repeat="egress in vm.egresses | orderBy:vm.propertyName:vm.reverse">
                     <td> {{egress.concept}}</td>
                     <td>{{egress.folio}}</td>
-                    <td>{{egress.category}}</td>
-                    <td>{{egress.proveedor}}</td>
-                    <td>{{egress.expirationDate | date:'mediumDate'}}</td>
-                    <td>{{egress.paymentDate | date:'mediumDate'}}</td>
+                    <td>{{egress.categoryName}}</td>
+                    <!--<td>{{egress.proveedor}}</td>-->
+                    <td  class="text-center">{{egress.expirationDate | date:'mediumDate'}}</td>
+                    <td  class="text-center">{{egress.paymentDate | date:'mediumDate'}}</td>
                     <td>₡{{vm.formatearNumero(egress.total+"")}}</td>
 
                     <td class="text-center"><a class="light-gray-font" ng-click="vm.detailEgress(egress.id)"><i
@@ -212,6 +212,9 @@
                         class="material-icons">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Realizar pago</md-tooltip>
                         payment</i></a></td>
+                    <td class="text-center"> <a class="light-gray-font" ng-click="vm.deleteEgress(egress)" ng-if="egress.state!=2"><i class="material-icons">
+                        delete
+                    </i></a></td>
 
                 </tr>
                 </tbody>

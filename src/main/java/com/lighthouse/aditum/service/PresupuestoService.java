@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Presupuesto;
 import com.lighthouse.aditum.repository.PresupuestoRepository;
+import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.PresupuestoDTO;
 import com.lighthouse.aditum.service.mapper.PresupuestoMapper;
 import org.slf4j.Logger;
@@ -11,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,9 +32,19 @@ public class PresupuestoService {
 
     private final PresupuestoMapper presupuestoMapper;
 
-    public PresupuestoService(PresupuestoRepository presupuestoRepository, PresupuestoMapper presupuestoMapper) {
+
+    private final BitacoraAccionesService bitacoraAccionesService;
+
+    private final AdminInfoService adminInfoService;
+
+    private final UserService userService;
+
+    public PresupuestoService(UserService userService,AdminInfoService adminInfoService,BitacoraAccionesService bitacoraAccionesService,PresupuestoRepository presupuestoRepository, PresupuestoMapper presupuestoMapper) {
         this.presupuestoRepository = presupuestoRepository;
         this.presupuestoMapper = presupuestoMapper;
+        this.bitacoraAccionesService = bitacoraAccionesService;
+        this.adminInfoService = adminInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -44,6 +57,31 @@ public class PresupuestoService {
         log.debug("Request to save Presupuesto : {}", presupuestoDTO);
         Presupuesto presupuesto = presupuestoMapper.toEntity(presupuestoDTO);
         presupuesto = presupuestoRepository.save(presupuesto);
+
+
+        LocalDateTime today = LocalDateTime.now();
+        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
+        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+
+        if(presupuestoDTO.getId()==null){
+            bitacoraAccionesDTO.setConcept("Registro de nuevo presupuesto: " + presupuestoDTO.getAnno());
+        }else if(presupuestoDTO.getId()!=null && presupuestoDTO.getDeleted()==0){
+            bitacoraAccionesDTO.setConcept("Edición del presupuesto: " + presupuestoDTO.getAnno());
+        }else{
+            bitacoraAccionesDTO.setConcept("Eliminación del presupuesto: " + presupuestoDTO.getAnno());
+        }
+
+        bitacoraAccionesDTO.setType(4);
+        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+        bitacoraAccionesDTO.setCategory("Presupuestos");
+        bitacoraAccionesDTO.setUrlState("presupuesto-detail");
+        bitacoraAccionesDTO.setIdReference(presupuesto.getId());
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setCompanyId(presupuesto.getCompany().getId());
+        bitacoraAccionesService.save(bitacoraAccionesDTO);
+
+
         return presupuestoMapper.toDto(presupuesto);
     }
 

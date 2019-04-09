@@ -1,58 +1,57 @@
-<div>
-    <h2 data-translate="aditumApp.brand.home.title">Brands</h2>
-    <jhi-alert></jhi-alert>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="brand.new" >
-                    <span class="glyphicon glyphicon-plus"></span>
-                    <span  data-translate="aditumApp.brand.home.createLabel">
-                        Create new Brand
-                    </span>
-                </button>
-                <!--<button class="btn btn-primary" ng-click="vm.fillInfo()" >-->
-                    <!--<span class="glyphicon glyphicon-plus"></span>-->
-                    <!--<span >-->
-                        <!--Create info-->
-                    <!--</span>-->
-                <!--</button>-->
 
-                <!--<button ng-click="vm.createInFirebase()">Crear</button>-->
+<div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill  layout-align="space-around center">
+    <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
+</div>
+
+<div ng-if="vm.isReady" class="row fade-in" >
+    <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
+        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Marcas de vehículos</h3>
+
+        <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.brands.length> 0 ">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar" ng-model="vm.search">
+                    </div>
+                </div>
+
             </div>
         </div>
+        <br/>
+        <div class="portlet-body ">
+
+
+            <no-content ng-if="vm.brands.length == 0" icon="directions_car" text="No hay marcas registradas"></no-content>
+
+
+            <div class="table-scrollable gray-font " ng-show="vm.brands.length>0" style="border: 0px!important;">
+                <table  class="table  table-hover font-13 tableMaterialDesign">
+                    <thead  style="background-color: #fafafa;" class="">
+                    <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th class="text-center">Marca</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+                    <tr class="text-center" ng-repeat="brand in vm.brands  | filter:vm.search  | orderBy:'id'" >
+
+                        <td>{{brand.brand}}</td>
+
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
-    <br/>
-    <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr>
-                    <th><span data-translate="global.field.id">ID</span></th>
-                    <th><span data-translate="aditumApp.brand.brand">Brand</span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="brand in vm.brands track by brand.id">
-                    <td><a ui-sref="brand-detail({id:brand.id})">{{brand.id}}</a></td>
-                    <td>{{brand.brand}}</td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="brand.edit({id:brand.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="brand.delete({id:brand.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <md-button ui-sref="brand.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar marca</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
 </div>

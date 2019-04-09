@@ -1,0 +1,138 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAdministrationConfigurationLabel" data-translate="aditumApp.administrationConfiguration.home.createOrEditLabel">Create or edit a Administration Configuration</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.administrationConfiguration.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.administrationConfiguration.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.squareMetersPrice" for="field_squareMetersPrice">Square Meters Price</label>
+            <input type="text" class="form-control" name="squareMetersPrice" id="field_squareMetersPrice"
+                    ng-model="vm.administrationConfiguration.squareMetersPrice"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.folioSerie" for="field_folioSerie">Folio Serie</label>
+            <input type="text" class="form-control" name="folioSerie" id="field_folioSerie"
+                    ng-model="vm.administrationConfiguration.folioSerie"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.folioNumber" for="field_folioNumber">Folio Number</label>
+            <input type="number" class="form-control" name="folioNumber" id="field_folioNumber"
+                    ng-model="vm.administrationConfiguration.folioNumber"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.daysTobeDefaulter" for="field_daysTobeDefaulter">Days Tobe Defaulter</label>
+            <input type="number" class="form-control" name="daysTobeDefaulter" id="field_daysTobeDefaulter"
+                    ng-model="vm.administrationConfiguration.daysTobeDefaulter"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.hasSubcharges" for="field_hasSubcharges">Has Subcharges</label>
+                <input type="checkbox" name="hasSubcharges" id="field_hasSubcharges"
+                          ng-model="vm.administrationConfiguration.hasSubcharges"/>
+            <div ng-show="editForm.hasSubcharges.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.hasSubcharges.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.subchargePercentage" for="field_subchargePercentage">Subcharge Percentage</label>
+            <input type="number" class="form-control" name="subchargePercentage" id="field_subchargePercentage"
+                    ng-model="vm.administrationConfiguration.subchargePercentage"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.subchargeAmmount" for="field_subchargeAmmount">Subcharge Ammount</label>
+            <input type="number" class="form-control" name="subchargeAmmount" id="field_subchargeAmmount"
+                    ng-model="vm.administrationConfiguration.subchargeAmmount"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.daysToSendEmailBeforeBeDefaulter" for="field_daysToSendEmailBeforeBeDefaulter">Days To Send Email Before Be Defaulter</label>
+            <input type="number" class="form-control" name="daysToSendEmailBeforeBeDefaulter" id="field_daysToSendEmailBeforeBeDefaulter"
+                    ng-model="vm.administrationConfiguration.daysToSendEmailBeforeBeDefaulter"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.usingSubchargePercentage" for="field_usingSubchargePercentage">Using Subcharge Percentage</label>
+                <input type="checkbox" name="usingSubchargePercentage" id="field_usingSubchargePercentage"
+                          ng-model="vm.administrationConfiguration.usingSubchargePercentage"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.bookCommonArea" for="field_bookCommonArea">Book Common Area</label>
+                <input type="checkbox" name="bookCommonArea" id="field_bookCommonArea"
+                          ng-model="vm.administrationConfiguration.bookCommonArea"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.incomeStatement" for="field_incomeStatement">Income Statement</label>
+                <input type="checkbox" name="incomeStatement" id="field_incomeStatement"
+                          ng-model="vm.administrationConfiguration.incomeStatement"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.monthlyIncomeStatement" for="field_monthlyIncomeStatement">Monthly Income Statement</label>
+                <input type="checkbox" name="monthlyIncomeStatement" id="field_monthlyIncomeStatement"
+                          ng-model="vm.administrationConfiguration.monthlyIncomeStatement"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.egressReport" for="field_egressReport">Egress Report</label>
+                <input type="checkbox" name="egressReport" id="field_egressReport"
+                          ng-model="vm.administrationConfiguration.egressReport"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.incomeFolio" for="field_incomeFolio">Income Folio</label>
+                <input type="checkbox" name="incomeFolio" id="field_incomeFolio"
+                          ng-model="vm.administrationConfiguration.incomeFolio"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.egressFolio" for="field_egressFolio">Egress Folio</label>
+                <input type="checkbox" name="egressFolio" id="field_egressFolio"
+                          ng-model="vm.administrationConfiguration.egressFolio"/>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.egressFolioSerie" for="field_egressFolioSerie">Egress Folio Serie</label>
+            <input type="text" class="form-control" name="egressFolioSerie" id="field_egressFolioSerie"
+                    ng-model="vm.administrationConfiguration.egressFolioSerie"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.egressFolioNumber" for="field_egressFolioNumber">Egress Folio Number</label>
+            <input type="text" class="form-control" name="egressFolioNumber" id="field_egressFolioNumber"
+                    ng-model="vm.administrationConfiguration.egressFolioNumber"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.administrationConfiguration.initialConfiguration" for="field_initialConfiguration">Initial Configuration</label>
+            <input type="number" class="form-control" name="initialConfiguration" id="field_initialConfiguration"
+                    ng-model="vm.administrationConfiguration.initialConfiguration"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.administrationConfiguration.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.administrationConfiguration.companyId" ng-options="company.id as company.id for company in vm.companies"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

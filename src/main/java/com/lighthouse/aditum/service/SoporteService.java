@@ -26,9 +26,12 @@ public class SoporteService {
 
     private final SoporteMapper soporteMapper;
 
-    public SoporteService(SoporteRepository soporteRepository, SoporteMapper soporteMapper) {
+    private final SoporteMailService soporteMailService;
+
+    public SoporteService(SoporteMailService soporteMailService,SoporteRepository soporteRepository, SoporteMapper soporteMapper) {
         this.soporteRepository = soporteRepository;
         this.soporteMapper = soporteMapper;
+        this.soporteMailService = soporteMailService;
     }
 
     /**
@@ -41,6 +44,10 @@ public class SoporteService {
         log.debug("Request to save Soporte : {}", soporteDTO);
         Soporte soporte = soporteMapper.toEntity(soporteDTO);
         soporte = soporteRepository.save(soporte);
+
+        if(soporteDTO.getId()==null){
+            this.soporteMailService.sendEmail(soporteDTO);
+        }
         return soporteMapper.toDto(soporte);
     }
 

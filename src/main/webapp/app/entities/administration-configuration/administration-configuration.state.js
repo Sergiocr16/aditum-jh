@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/administration-config',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.administrationConfiguration.detail.title'
             },
             views: {

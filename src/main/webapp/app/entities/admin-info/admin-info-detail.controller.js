@@ -11,7 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.adminInfo = entity;
-
+        vm.isReady = false;
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -21,9 +21,9 @@
         Company.get({id:parseInt(vm.adminInfo.companyId)},onSuccess)
         function onSuccess (data){
             vm.company = data;
-        }
 
-        vm.title = 'Administrador '+vm.adminInfo.name + " " + vm.adminInfo.lastname + " " + vm.adminInfo.secondlastname;
+        }
+        vm.isReady = true;
 
         var unsubscribe = $rootScope.$on('aditumApp:adminInfoUpdate', function(event, result) {
             vm.adminInfo = result;

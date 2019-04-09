@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ExtraordinaryChargeController', ExtraordinaryChargeController);
 
-    ExtraordinaryChargeController.$inject = ['$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
+    ExtraordinaryChargeController.$inject = ['companyUser','BitacoraAcciones','$state', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', '$rootScope', '$scope', 'AdministrationConfiguration', 'Charge', 'CommonMethods', 'globalCompany', 'Modal'];
 
-    function ExtraordinaryChargeController($state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
+    function ExtraordinaryChargeController(companyUser,BitacoraAcciones,$state, House, ParseLinks, AlertService, paginationConstants, pagingParams, $rootScope, $scope, AdministrationConfiguration, Charge, CommonMethods, globalCompany, Modal) {
         var vm = this;
         $rootScope.active = 'extraordinary';
         vm.loadPage = loadPage;
@@ -205,13 +205,17 @@
         }
         vm.createDuesNormal = function () {
             var allReady = 0;
+            var selectedHouses = "";
             Modal.showLoadingBar();
             angular.forEach(vm.selectedHouses, function (house, i) {
                 if (house.cuota.ammount != 0) {
                     Charge.save(buildCharge(house), function (result) {
+                        selectedHouses = selectedHouses + house.housenumber + ", ";
                         allReady++;
                         if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
                             Modal.hideLoadingBar();
+                            var concept = "Creación de cuota extraordinaria" + ": " + vm.globalConcept.text + ", " + " a las filiales: " + selectedHouses;
+                            BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
                             Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
                             $state.go('extraordinaryCharge', null, {
                                 reload: true
@@ -235,6 +239,12 @@
                         }
                         if (parseInt(allReady) == parseInt(vm.selectedHouses.length)) {
                             Modal.hideLoadingBar();
+                            var selectedHouses = "";
+                            angular.forEach(vm.selectedHouses, function (house, i) {
+                                selectedHouses = selectedHouses + house.housenumber + ",";
+                            });
+                            var concept = "Creación de cuota extraordinaria" + ": " + vm.dividedChargeConcept + ", " + " dividida en " + vm.dividedChargeQuantity + " cuotas de "  + vm.formatearNumero(vm.dividedChargeAmmount+"") + " colones " + " a las filiales: " + selectedHouses;
+                            BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
                             Modal.toast("Se generaron las cuotas extraordinarias correctamente.")
                             $state.go('extraordinaryCharge', null, {
                                 reload: true
@@ -246,6 +256,32 @@
             })
         }
 
+
+        vm.formatearNumero = function (nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+        function mapBitacoraAcciones (concept){
+            vm.bitacoraAcciones = {};
+            vm.bitacoraAcciones.concept = concept.substring(0, concept.length - 2);
+            vm.bitacoraAcciones.type = 6;
+            vm.bitacoraAcciones.ejecutionDate = new Date();
+            vm.bitacoraAcciones.category = "Cuotas";
+            vm.bitacoraAcciones.idReference = 1;
+            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.companyId = globalCompany.getId();
+
+            return vm.bitacoraAcciones;
+
+        }
         function loadAll() {
             House.query({
                 page: pagingParams.page - 1,

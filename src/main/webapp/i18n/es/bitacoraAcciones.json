@@ -1,0 +1,27 @@
+{
+    "aditumApp": {
+        "bitacoraAcciones" : {
+            "home": {
+                "title": "Bitacora Acciones",
+                "createLabel": "Crear nuevo Bitacora Acciones",
+                "createOrEditLabel": "Crear o editar Bitacora Acciones"
+            },
+            "created": "Un nuevo Bitacora Acciones ha sido creado con el identificador {{ param }}",
+            "updated": "Un Bitacora Acciones ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Bitacora Acciones ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Bitacora Acciones {{ id }}?"
+            },
+            "detail": {
+                "title": "Bitacora Acciones"
+            },
+            "concept": "Concept",
+            "type": "Type",
+            "idReference": "Id Reference",
+            "idResponsable": "Id Responsable",
+            "ejecutionDate": "Ejecution Date",
+            "category": "Category",
+            "company": "Company"
+        }
+    }
+}

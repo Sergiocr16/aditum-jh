@@ -12,6 +12,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
+        vm.isReady = false;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
@@ -43,6 +44,7 @@
                 sort: sort()
             }, onSuccess, onError);
             function sort() {
+                vm.isReady = true;
                 var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
                 if (vm.predicate !== 'id') {
                     result.push('id');

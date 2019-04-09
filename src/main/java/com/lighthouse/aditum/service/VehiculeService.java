@@ -2,6 +2,7 @@ package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.Vehicule;
 import com.lighthouse.aditum.repository.VehiculeRepository;
+import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.VehiculeDTO;
 import com.lighthouse.aditum.service.mapper.VehiculeMapper;
 import org.slf4j.Logger;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,11 +37,20 @@ public class VehiculeService {
 
     private final HouseService houseService;
 
+    private final BitacoraAccionesService bitacoraAccionesService;
 
-    public VehiculeService(VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper, @Lazy HouseService houseService) {
+    private final AdminInfoService adminInfoService;
+
+    private final UserService userService;
+
+
+    public VehiculeService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper, @Lazy HouseService houseService) {
         this.vehiculeRepository = vehiculeRepository;
         this.vehiculeMapper = vehiculeMapper;
         this.houseService = houseService;
+        this.bitacoraAccionesService = bitacoraAccionesService;
+        this.adminInfoService = adminInfoService;
+        this.userService = userService;
     }
 
     /**
@@ -48,9 +61,42 @@ public class VehiculeService {
      */
     public VehiculeDTO save(VehiculeDTO vehiculeDTO) {
         log.debug("Request to save Vehicule : {}", vehiculeDTO);
+        VehiculeDTO vehiculeTemporal = new VehiculeDTO();
+        if(vehiculeDTO.getId()!=null){
+            vehiculeTemporal = this.findOne(vehiculeDTO.getId());
+        }
         Vehicule vehicule = vehiculeMapper.toEntity(vehiculeDTO);
         vehicule = vehiculeRepository.save(vehicule);
         vehicule.setDeleted(0);
+
+            LocalDateTime today = LocalDateTime.now();
+            ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
+            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
+            BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+
+            if (vehiculeDTO.getId() == null) {
+                bitacoraAccionesDTO.setConcept("Registro de un nuevo vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+            }else if (vehiculeDTO.getEnabled() == 0 && vehiculeTemporal.getEnabled() == 1) {
+                bitacoraAccionesDTO.setConcept("Se deshabilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+            }else if (vehiculeDTO.getEnabled() == 1 && vehiculeTemporal.getEnabled() == 0) {
+                bitacoraAccionesDTO.setConcept("Se habilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+            }else if (vehiculeDTO.getId() != null && vehiculeDTO.getDeleted() == 0) {
+                bitacoraAccionesDTO.setConcept("Modificación de los datos del vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+            }
+
+            bitacoraAccionesDTO.setType(9);
+            bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+            bitacoraAccionesDTO.setCategory("Vehículos");
+
+            bitacoraAccionesDTO.setIdReference(vehicule.getId());
+            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+            bitacoraAccionesDTO.setCompanyId(vehicule.getCompany().getId());
+            bitacoraAccionesService.save(bitacoraAccionesDTO);
+
+
+
+
+
         VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;
     }
@@ -115,6 +161,24 @@ public class VehiculeService {
         log.debug("Request to delete Vehicule : {}", id);
         Vehicule vehicule = vehiculeMapper.toEntity(this.findOne(id));
         vehicule.setDeleted(1);
+
+        LocalDateTime today = LocalDateTime.now();
+        ZoneId id2 = ZoneId.of("America/Costa_Rica");  //Create timezone
+        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id2);
+        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+        bitacoraAccionesDTO.setConcept("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate());
+
+
+        bitacoraAccionesDTO.setType(9);
+        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
+        bitacoraAccionesDTO.setCategory("Vehículos");
+
+        bitacoraAccionesDTO.setIdReference(vehicule.getId());
+        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        bitacoraAccionesDTO.setCompanyId(vehicule.getCompany().getId());
+        bitacoraAccionesService.save(bitacoraAccionesDTO);
+
+
         vehiculeRepository.save(vehicule);
     }
 

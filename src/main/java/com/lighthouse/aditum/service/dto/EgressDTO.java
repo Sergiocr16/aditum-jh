@@ -65,6 +65,8 @@ public class EgressDTO implements Serializable {
 
     private String expirationDateFormatted;
 
+    private int deleted;
+
     public Long getId() {
         return id;
     }
@@ -313,5 +315,13 @@ public class EgressDTO implements Serializable {
 
     public void setStateFormatted(String stateFormatted) {
         this.stateFormatted = stateFormatted;
+    }
+
+    public int getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(int deleted) {
+        this.deleted = deleted;
     }
 }

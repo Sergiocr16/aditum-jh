@@ -6,9 +6,9 @@
         .module('aditumApp')
         .controller('CommonAreaReservationsDetailController', CommonAreaReservationsDetailController);
 
-    CommonAreaReservationsDetailController.$inject = ['globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
+    CommonAreaReservationsDetailController.$inject = ['companyUser','BitacoraAcciones','globalCompany','Principal','$timeout', '$scope', '$stateParams', 'entity', 'CommonAreaReservations','Resident','House','CommonArea','Charge','$rootScope','CommonMethods','$state','Modal'];
 
-    function CommonAreaReservationsDetailController (globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
+    function CommonAreaReservationsDetailController (companyUser,BitacoraAcciones,globalCompany,Principal,$timeout, $scope, $stateParams, entity, CommonAreaReservations,Resident,House,CommonArea,Charge,$rootScope,CommonMethods,$state,Modal) {
         var vm = this;
         vm.commonAreaReservations = entity;
         vm.isAuthenticated = Principal.isAuthenticated;
@@ -46,6 +46,7 @@
                 id:  vm.commonAreaReservations.houseId
             }, function(result) {
                 vm.commonAreaReservations.houseNumber = result.housenumber;
+                vm.houseNumber = result.housenumber;
                 Resident.get({
                     id: vm.commonAreaReservations.residentId
                 }, function(result) {
@@ -168,7 +169,6 @@
                 vm.commonAreaReservations.chargeEmail = null;
                 vm.commonAreaReservations.sendPendingEmail = false ;
             }
-            console.log(vm.commonAreaReservations.reservationCharge)
 
             if (vm.commonAreaReservations.reservationCharge == null || vm.commonAreaReservations.reservationCharge ===0) {
                 vm.commonAreaReservations.status = 2;
@@ -177,6 +177,12 @@
             } else {
                 vm.charge.companyId = $rootScope.companyId;
                 Charge.save(vm.charge, function (result) {
+
+                    var concept = "Creación de cuota de áreas comunes" + ": " + vm.charge.concept + ", "+ " a la filial " + vm.houseNumber + " por " + vm.formatearNumero(vm.charge.ammount+"") + " colones";
+
+                    BitacoraAcciones.save(mapBitacoraAcciones(concept), function () {});
+
+
 
                     vm.commonAreaReservations.status = 2;
                     vm.commonAreaReservations.reservationCharge = vm.charge.ammount;
@@ -192,6 +198,34 @@
                 Modal.toast("Se ha aprobado la reservación correctamente.")
                 Modal.hideLoadingBar()
             }
+        }
+
+
+        vm.formatearNumero = function (nStr) {
+
+            var x = nStr.split('.');
+            var x1 = x[0];
+            var x2 = x.length > 1 ? ',' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1)) {
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            }
+            return x1 + x2;
+        }
+
+
+        function mapBitacoraAcciones (concept){
+            vm.bitacoraAcciones = {};
+            vm.bitacoraAcciones.concept = concept;
+            vm.bitacoraAcciones.type = 6;
+            vm.bitacoraAcciones.ejecutionDate = new Date();
+            vm.bitacoraAcciones.category = "Cuotas";
+            vm.bitacoraAcciones.idReference = 1;
+            vm.bitacoraAcciones.idResponsable = companyUser.id;
+            vm.bitacoraAcciones.companyId = globalCompany.getId();
+
+            return vm.bitacoraAcciones;
+
         }
 
         vm.cancelReservation = function() {
