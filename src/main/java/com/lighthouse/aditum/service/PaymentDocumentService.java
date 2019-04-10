@@ -95,11 +95,11 @@ public class PaymentDocumentService {
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         payment.getCharges().forEach(chargeDTO -> {
             if(payment.getTransaction().equals("1")) {
-                chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
+                chargeDTO.setPaymentAmmount(formatMoney(Double.parseDouble(chargeDTO.getAmmount())+Double.parseDouble(chargeDTO.getSubcharge())));
                 chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
             }else{
-                chargeDTO.setPaymentAmmount(formatMoney(chargeDTO.getTotal()));
+                chargeDTO.setPaymentAmmount(formatMoney(Double.parseDouble(chargeDTO.getAmmount())+Double.parseDouble(chargeDTO.getSubcharge())));
                 chargeDTO.setAmmount(formatMoneyString(chargeDTO.getAmmount()));
                 chargeDTO.setSubcharge(formatMoneyString(chargeDTO.getSubcharge()));
             }
@@ -145,7 +145,7 @@ public class PaymentDocumentService {
         for (int i = 0; i < payment.getEmailTo().size(); i++) {
             if(payment.getEmailTo().get(i).getPrincipalContact()==1){
                 resident = payment.getEmailTo().get(i);
-                contactoPrincipal = resident.getName()+" "+ resident.getLastname()+" "+resident.getLastname();
+                contactoPrincipal = resident.getName()+" "+ resident.getLastname()+" "+resident.getSecondlastname();
             }
         }
         Company company = companyMapper.companyDTOToCompany(companyService.findOne(Long.valueOf(payment.getCompanyId())));

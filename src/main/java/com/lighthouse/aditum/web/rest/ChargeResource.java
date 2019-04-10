@@ -34,6 +34,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
+
 /**
  * REST controller for managing Charge.
  */
@@ -69,7 +71,7 @@ public class ChargeResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new charge cannot already have an ID")).body(null);
         }
 
-        chargeDTO.setDate(chargeDTO.getDate().withHour(10));
+        chargeDTO.setDate(formatDateTime(chargeDTO.getDate()));
         ChargeDTO result = chargeService.save(chargeDTO);
         return ResponseEntity.created(new URI("/api/charges/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

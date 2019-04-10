@@ -27,7 +27,8 @@
                 deleteFromArray: deleteFromArray,
                 deleteFromArrayWithId: deleteFromArrayWithId,
                 getCurrentCompanyConfig: getCurrentCompanyConfig,
-
+                getInitialConfig: getInitialConfig,
+                setInitialConfigReady:setInitialConfigReady
             };
 
             function getCurrentCompanyConfig(compaId) {
@@ -40,23 +41,60 @@
                         for (var i = 0; i < companiesArray.length; i++) {
                             var companyId = companiesArray[i].split(";")[0];
                             if (companyId == compaId) {
-                                console.log(companiesArray[i].split(";"))
                                 return {
                                     companyId: companyId,
                                     hasContability: companiesArray[i].split(";")[1],
                                     minDate: new Date(companiesArray[i].split(";")[2]),
-                                    hasWatches: companiesArray[i].split(";")[3]=="1",
-                                    showEstadoResultados: companiesArray[i].split(";")[4]=="true",
-                                    showEjecPresu: companiesArray[i].split(";")[5]=="true",
-                                    bookCommonArea: companiesArray[i].split(";")[6]=="true",
+                                    hasWatches: companiesArray[i].split(";")[3] == "1",
+                                    showEstadoResultados: companiesArray[i].split(";")[4] == "true",
+                                    showEjecPresu: companiesArray[i].split(";")[5] == "true",
+                                    bookCommonArea: companiesArray[i].split(";")[6] == "true",
                                     initialConfiguration: companiesArray[i].split(";")[7],
                                 }
                             }
                         }
                     }
-                }else{
+                } else {
                     return "admin";
                 }
+            }
+
+            function getInitialConfig(compaId) {
+                if ($localStorage.initialConfig != undefined) {
+                    var initialConfig = decryptIdUrl($localStorage.initialConfig);
+                    if (initialConfig == "admin") {
+                        return "admin";
+                    } else {
+                        var companiesArray = initialConfig.split("|");
+                        for (var i = 0; i < companiesArray.length; i++) {
+                            var companyId = companiesArray[i].split(";")[0];
+                            if (companyId == compaId) {
+                                return {
+                                    companyId: companyId,
+                                    initialConfiguration: companiesArray[i].split(";")[1],
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    return "admin";
+                }
+            }
+
+            function setInitialConfigReady(compaId) {
+                var initialConfig = decryptIdUrl($localStorage.initialConfig);
+                var companies = initialConfig.split("|");
+                var showInitialConfigArray = "";
+                for (var i = 0; i < companies.length; i++) {
+                    var companyId = companies[i].split(";")[0];
+                    var companyConfig = this.getInitialConfig(companyId)
+                    if (compaId != companyId) {
+                        showInitialConfigArray += companyConfig.companyId + ";" + companyConfig.initialConfiguration + "|";
+                    } else {
+                        showInitialConfigArray += companyConfig.companyId + ";" + "1" + "|";
+                    }
+                }
+                $localStorage.initialConfig = this.encryptIdUrl(showInitialConfigArray);
             }
 
             function deleteFromArrayWithId(object, array) {
@@ -151,9 +189,11 @@
                 return CryptoJS.AES.decrypt(encryptedId.toString(), "Ankara06").toString(CryptoJS.enc.Utf8);
 
             }
+
             function encryptString(id) {
                 return CryptoJS.AES.encrypt(id, "Ankara06").toString();
             }
+
             function decryptString(encryptedId) {
                 return CryptoJS.AES.decrypt(encryptedId, "Ankara06").toString(CryptoJS.enc.Utf8);
             }

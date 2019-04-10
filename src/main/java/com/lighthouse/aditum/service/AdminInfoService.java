@@ -36,7 +36,7 @@ public class AdminInfoService {
 
     private final CompanyRepository companyRepository;
 
-    public AdminInfoService(AdminInfoRepository adminInfoRepository, AdminInfoMapper adminInfoMapper,CompanyMapper companyMapper,CompanyRepository companyRepository) {
+    public AdminInfoService(AdminInfoRepository adminInfoRepository, AdminInfoMapper adminInfoMapper, CompanyMapper companyMapper, CompanyRepository companyRepository) {
         this.adminInfoRepository = adminInfoRepository;
         this.adminInfoMapper = adminInfoMapper;
         this.companyMapper = companyMapper;
@@ -66,10 +66,10 @@ public class AdminInfoService {
     }
 
     /**
-     *  Get all the adminInfos.
+     * Get all the adminInfos.
      *
-     *  @param pageable the pagination information
-     *  @return the list of entities
+     * @param pageable the pagination information
+     * @return the list of entities
      */
     @Transactional(readOnly = true)
     public Page<AdminInfoDTO> findAll(Pageable pageable) {
@@ -79,23 +79,23 @@ public class AdminInfoService {
         return result.map(adminInfo -> {
             Set<Company> companies = new HashSet<>();
             adminInfo.setCompanies(adminInfo.getCompanies());
-            return  adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
+            return adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
         });
     }
 
     @Transactional(readOnly = true)
-    public Page<AdminInfoDTO> findAllByCompany(Pageable pageable,Long companyId) {
+    public Page<AdminInfoDTO> findAllByCompany(Pageable pageable, Long companyId) {
         log.debug("Request to get all AdminInfos");
         Company company = companyRepository.findOne(companyId);
         List<AdminInfo> targetList = new ArrayList<>(company.getAdminInfos());
-        return  new PageImpl<AdminInfo>(targetList).map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
+        return new PageImpl<AdminInfo>(targetList).map(adminInfo -> adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo));
     }
 
     /**
-     *  Get one adminInfo by id.
+     * Get one adminInfo by id.
      *
-     *  @param id the id of the entity
-     *  @return the entity
+     * @param id the id of the entity
+     * @return the entity
      */
     @Transactional(readOnly = true)
     public AdminInfoDTO findOne(Long id) {
@@ -114,19 +114,20 @@ public class AdminInfoService {
         log.debug("Request to get AdminInfo : {}", id);
         AdminInfo adminInfo = adminInfoRepository.findOneByUserId(id);
         AdminInfoDTO adminInfoDTO = adminInfoMapper.adminInfoToAdminInfoDTO(adminInfo);
-        adminInfoDTO.setImage_url(adminInfo.getImage_url());
-        Set<CompanyDTO> companies = new HashSet<>();
-        List<Company> c = new ArrayList<Company>(adminInfo.getCompanies());
-        adminInfo.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
-
-        adminInfoDTO.setCompanies(companies);
+        if (adminInfo != null) {
+            adminInfoDTO.setImage_url(adminInfo.getImage_url());
+            Set<CompanyDTO> companies = new HashSet<>();
+            List<Company> c = new ArrayList<Company>(adminInfo.getCompanies());
+            adminInfo.getCompanies().forEach(company -> companies.add(companyMapper.companyToCompanyDTO(company)));
+            adminInfoDTO.setCompanies(companies);
+        }
         return adminInfoDTO;
     }
 
     /**
-     *  Delete the  adminInfo by id.
+     * Delete the  adminInfo by id.
      *
-     *  @param id the id of the entity
+     * @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete AdminInfo : {}", id);

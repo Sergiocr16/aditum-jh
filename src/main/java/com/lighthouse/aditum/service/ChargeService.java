@@ -5,6 +5,7 @@ import com.lighthouse.aditum.domain.Payment;
 import com.lighthouse.aditum.repository.ChargeRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.ChargeMapper;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 import static java.lang.Math.toIntExact;
 
 
@@ -83,7 +86,7 @@ public class ChargeService {
         charge.setId(null);
         charge.setState(1);
         charge.setPayedSubcharge(chargeDTO.isPayedSubcharge());
-        charge.setDate(charge.getDate().withHour(14));
+        charge.setDate(formatDateTime(charge.getDate()));
         charge = chargeRepository.save(charge);
         return this.formatCharge(chargeMapper.toDto(charge));
     }
@@ -96,7 +99,7 @@ public class ChargeService {
         charge.setCompany(chargeMapper.companyFromId(payment.getCompanyId().longValue()));
         charge.setPaymentDate(payment.getDate());
         charge.setState(2);
-        charge.setDate(charge.getDate().withHour(10));
+        charge.setDate(formatDateTime(charge.getDate()));
         charge = chargeRepository.save(charge);
 
 //        BalanceDTO balanceDTO = balanceService.findOneByHouse(chargeDTO.getHouseId());
@@ -151,17 +154,6 @@ public class ChargeService {
         return  chargeMapper.toDto(charge);
     }
 
-    private String formatColonesD(double text) {
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
-        if (text == 0) {
-            return currencyFormatter.format(text).substring(1);
-        } else {
-            String t = currencyFormatter.format(text).substring(1);
-            return t.substring(0, t.length() - 3).replace(",", ".");
-        }
-    }
-
     public ChargeDTO update(ChargeDTO chargeDTO) {
         log.debug("Request to save Charge : {}", chargeDTO);
         Charge charge = chargeMapper.toEntity(chargeDTO);
@@ -173,7 +165,7 @@ public class ChargeService {
         }
         charge = chargeMapper.toEntity(chargeDTO);
         charge.setHouse(chargeMapper.houseFromId(chargeDTO.getHouseId()));
-        charge.setDate(charge.getDate().withHour(10));
+        charge.setDate(formatDateTime(charge.getDate()));
         Charge savedCharge = chargeRepository.save(charge);
       
         if(chargeDTO.getDeleted()==1 || Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
@@ -182,9 +174,9 @@ public class ChargeService {
             ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
             BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
             if(chargeDTO.getDeleted()==1){
-                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatColonesD(Integer.parseInt( chargeDTO.getAmmount()))   + " colones");
+                bitacoraAccionesDTO.setConcept("Eliminación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt( chargeDTO.getAmmount()))   + " colones");
             }else if(Integer.parseInt(chargeDTO.getAmmount())!=Integer.parseInt(chargeDTO.getTemporalAmmount())){
-                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatColonesD(Integer.parseInt( chargeDTO.getTemporalAmmount())) + " colones a " + formatColonesD(Integer.parseInt( chargeDTO.getAmmount())) + " colones");
+                bitacoraAccionesDTO.setConcept("Modificación de la cuota: " + chargeDTO.getConcept() + " de " + formatMoney(Integer.parseInt( chargeDTO.getTemporalAmmount())) + " colones a " + formatMoney(Integer.parseInt( chargeDTO.getAmmount())) + " colones");
             }
 
             bitacoraAccionesDTO.setType(6);

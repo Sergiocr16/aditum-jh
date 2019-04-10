@@ -74,15 +74,22 @@
                                 $rootScope.showSelectCompany = false;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
                                 var companiesConfigArray = "";
+                                var showInitialConfigArray = "";
+
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
-                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea + ";" + companyConfig.initialConfiguration + "|";
-                                        if (user.companies.length == i) {
-                                            $rootScope.companyId = user.companies[0].id;
-                                            vm.backgroundSelectCompany = true;
-                                            $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
-                                            $state.go('dashboard');
-                                        }
+                                        AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
+                                            var administrationConfiguration = result;
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
+                                            showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
+                                            if (user.companies.length == i) {
+                                                $rootScope.companyId = user.companies[0].id;
+                                                vm.backgroundSelectCompany = true;
+                                                $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                                $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
+                                                $state.go('dashboard');
+                                            }
+                                        });
                                     })
                                 }
                             })
@@ -106,7 +113,7 @@
                                         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                             var administrationConfiguration = result;
                                             console.log(administrationConfiguration)
-                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement +";" + administrationConfiguration.bookCommonArea +  ";" + companyConfig.initialConfiguration +"|";
+                                            companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
                                             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                         });
                                         setTimeout(function () {

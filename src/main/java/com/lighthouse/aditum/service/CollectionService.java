@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 
 /**
  * Service Implementation for managing Collection.
@@ -159,9 +161,8 @@ public class CollectionService {
         } else {
             finalTotal = payedAmmount;
         }
-        DecimalFormat format = new DecimalFormat("₡#,##0.00;₡-#,##0.00");
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(this.locale);
-        mensualCollectionDTO.setMensualBalanceToShow(format.format((double) finalTotal));
+        mensualCollectionDTO.setMensualBalanceToShow(formatMoney(finalTotal));
         mensualCollectionDTO.setMensualBalance(finalTotal);
         return mensualCollectionDTO;
     }

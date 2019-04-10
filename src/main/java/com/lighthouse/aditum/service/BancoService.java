@@ -21,6 +21,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
+
 
 /**
  * Service Implementation for managing Banco.
@@ -97,7 +99,9 @@ public class BancoService {
             bitacoraAccionesDTO.setCategory("Bancos");
 
             bitacoraAccionesDTO.setIdReference(banco.getId());
-            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+            if (adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()) != null) {
+                bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+            }
             bitacoraAccionesDTO.setCompanyId(banco.getCompany().getId());
             bitacoraAccionesService.save(bitacoraAccionesDTO);
         }
@@ -118,22 +122,18 @@ public class BancoService {
     }
 
     @Transactional(readOnly = true)
-    public BancoDTO getInicialBalance(ZonedDateTime firstMonthDay,BancoDTO bancoDTO,ZonedDateTime initialTime){
-        Locale locale = new Locale("es", "CR");
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
+    public BancoDTO getInicialBalance(ZonedDateTime firstMonthDay, BancoDTO bancoDTO, ZonedDateTime initialTime) {
         double saldo;
         List<BalanceByAccountDTO> balances = balanceByAccountService.findByDatesBetweenAndAccount(firstMonthDay, firstMonthDay, bancoDTO.getId());
-        String f = "a";
         if (balances.size() > 0) {
             bancoDTO.setCapitalInicialTemporal(balances.get(0).getBalance());
             saldo = balances.get(0).getBalance();
         } else {
             saldo = Double.parseDouble(bancoDTO.getCapitalInicial());
         }
-        String a = "a";
         List<BancoMovementDTO> bancoMovements = bancoMovements(firstMonthDay, initialTime, bancoDTO.getId(), bancoDTO.getCompanyId());
         bancoDTO = calculateBalance(saldo, bancoMovements, bancoDTO);
-        bancoDTO.setCapitalInicialFormatted(currencyFormatter.format(bancoDTO.getTotalBalance()).substring(1));
+        bancoDTO.setCapitalInicialFormatted(formatMoney(bancoDTO.getTotalBalance()));
         bancoDTO.setCapitalInicialTemporal(bancoDTO.getTotalBalance());
         return bancoDTO;
     }
@@ -141,14 +141,12 @@ public class BancoService {
     private BancoDTO calculateBalance(double saldo, List<BancoMovementDTO> bancoMovements, BancoDTO bancoDTO) {
         double totalEgress = 0;
         double totalIngress = 0;
-        Locale locale = new Locale("es", "CR");
         DateTimeFormatter spanish = DateTimeFormatter.ofPattern("dd MMMM yyyy", new Locale("es", "ES"));
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(locale);
         for (int i = 0; i < bancoMovements.size(); i++) {
 
             bancoMovements.get(i).setDateFormatted(spanish.format(bancoMovements.get(i).getDate()));
-            bancoMovements.get(i).setEgressFormatted(currencyFormatter.format(bancoMovements.get(i).getEgress()).substring(1));
-            bancoMovements.get(i).setIngressFormatted(currencyFormatter.format(bancoMovements.get(i).getIngress()).substring(1));
+            bancoMovements.get(i).setEgressFormatted(formatMoney(bancoMovements.get(i).getEgress()));
+            bancoMovements.get(i).setIngressFormatted(formatMoney(bancoMovements.get(i).getIngress()));
             if (bancoMovements.get(i).getType() == 1 || bancoMovements.get(i).getType() == 2) {
                 saldo = saldo - bancoMovements.get(i).getEgress();
                 totalEgress = totalEgress + bancoMovements.get(i).getEgress();
@@ -164,16 +162,16 @@ public class BancoService {
         bancoDTO.setTotalBalance(saldo);
         bancoDTO.setTotalEgress(totalEgress);
         bancoDTO.setTotalIngress(totalIngress);
-        bancoDTO.setTotalEgressFormatted(currencyFormatter.format(bancoDTO.getTotalEgress()).substring(1));
-        bancoDTO.setTotalIngressFormatted(currencyFormatter.format(bancoDTO.getTotalIngress()).substring(1));
+        bancoDTO.setTotalEgressFormatted(formatMoney(bancoDTO.getTotalEgress()));
+        bancoDTO.setTotalIngressFormatted(formatMoney(bancoDTO.getTotalIngress()));
         return bancoDTO;
     }
 
     @Transactional(readOnly = true)
-    public BancoDTO getAccountStatus(ZonedDateTime firstMonthDay,ZonedDateTime final_capital_date,ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
+    public BancoDTO getAccountStatus(ZonedDateTime firstMonthDay, ZonedDateTime final_capital_date, ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId) {
         BancoDTO bancoDTO = this.findOne(accountId);
-        bancoDTO = getInicialBalance(firstMonthDay,bancoDTO,final_capital_date);
-        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime,finalTime,bancoDTO.getId(),bancoDTO.getCompanyId());
+        bancoDTO = getInicialBalance(firstMonthDay, bancoDTO, final_capital_date);
+        List<BancoMovementDTO> bancoMovements = bancoMovements(initialTime, finalTime, bancoDTO.getId(), bancoDTO.getCompanyId());
         bancoDTO.setMovimientos(bancoMovements);
         bancoDTO = calculateBalance(bancoDTO.getCapitalInicialTemporal(), bancoDTO.getMovimientos(), bancoDTO);
         bancoDTO.setTotalBalance(bancoDTO.getTotalBalance());
@@ -187,7 +185,7 @@ public class BancoService {
 
     }
 
-    private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime,Long accountId,Long companyId){
+    private List<BancoMovementDTO> bancoMovements(ZonedDateTime initialTime, ZonedDateTime finalTime, Long accountId, Long companyId) {
         List<BancoMovementDTO> movements = new ArrayList<>();
 
         Page<EgressDTO> egresos = egressService.findByDatesBetweenAndCompanyAndAccount(null, initialTime, finalTime, companyId, accountId + "");

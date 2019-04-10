@@ -81,7 +81,7 @@ public class EgressService {
         log.debug("Request to save Egress : {}", egressDTO);
         Egress egress = egressMapper.toEntity(egressDTO);
         if (egress.getPaymentDate() != null) {
-            ZonedDateTime n = ZonedDateTime.now().plusHours(5);
+            ZonedDateTime n = ZonedDateTime.now();
             egress.setPaymentDate(egress.getPaymentDate().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
             this.balanceByAccountService.modifyBalancesInPastEgress(egress);
 

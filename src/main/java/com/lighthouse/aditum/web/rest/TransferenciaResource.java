@@ -56,6 +56,9 @@ public class TransferenciaResource {
         if (transferencia.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new transferencia cannot already have an ID")).body(null);
         }
+        ZonedDateTime n = ZonedDateTime.now();
+        transferencia.setFecha(transferencia.getFecha().withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond()));
+
         Transferencia result = transferenciaService.save(transferencia);
         return ResponseEntity.created(new URI("/api/transferencias/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

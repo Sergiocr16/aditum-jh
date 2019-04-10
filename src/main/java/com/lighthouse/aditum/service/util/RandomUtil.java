@@ -4,6 +4,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 
 /**
@@ -64,5 +65,10 @@ public final class RandomUtil {
                 return formatted.substring(0, formatted.length() - 3).replace(",", ".");
             }
         }
+    }
+
+    public static ZonedDateTime formatDateTime(ZonedDateTime date) {
+        ZonedDateTime n = ZonedDateTime.now();
+        return date.withHour(n.getHour()).withMinute(n.getMinute()).withSecond(n.getSecond());
     }
 }

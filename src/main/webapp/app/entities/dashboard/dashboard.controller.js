@@ -24,8 +24,8 @@
             vm.hasContability = false;
         }
 
-        console.log(companyConfig.initialConfiguration)
-        if(companyConfig.initialConfiguration==0){
+
+        if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0){
             $state.go('dashboard.initialConfiguration');
         }
 

@@ -27,7 +27,7 @@
                 <div class="portlet-body col-md-12 ">
                     <div layout="column">
 
-                        <div layout="row" ng-if="vm.administrationConfiguration.initlaConfiguration==0">
+                        <div layout="row" ng-if="vm.administrationConfiguration.initialConfiguration==0">
                             <div flex>
                                 <h5 class="bold">Saldo inicial de la caja chica</h5>
                                 Este monto no puede ser editado posteriormente.
@@ -204,8 +204,9 @@
                         </div>
                         <div class="margin-top-15" layout="row">
                             <div flex>
-                                <h5 class="bold">Mostrar mes actual en estado de resultados</h5>
-                                Esto define si los usuarios podrán visualizar los movimientos del mes vigente.
+                                <h5 class="bold">Mostrar Ejecución presupuestaria</h5>
+                                Esto define si los usuarios podrán visualizar la ejecución presupuestaria.
+
                             </div>
                             <div layout="row" flex>
                                 <md-switch ng-model="vm.administrationConfiguration.monthlyIncomeStatement" flex>

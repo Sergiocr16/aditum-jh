@@ -9,6 +9,7 @@
 
     function PresupuestoDetailController($state, DetallePresupuesto, $scope, $rootScope, $stateParams, previousState, entity, Presupuesto, $localStorage,Modal) {
         var vm = this;
+        console.log('hola');
         $rootScope.active = "presupuestos";
         vm.presupuesto = entity;
         vm.previousState = previousState.name;

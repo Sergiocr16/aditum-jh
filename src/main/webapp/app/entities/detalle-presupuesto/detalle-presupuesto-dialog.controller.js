@@ -333,11 +333,14 @@
                 detallePresupuesto.presupuestoId = result.id;
                 DetallePresupuesto.save(detallePresupuesto);
 
-          })
+          });
+          console.log(result);
            Modal.toast("Se ha creado el presupuesto correctamente");
-           $localStorage.budgetAction = 1;
-           $state.go('presupuesto-detail', {id:result.id});
-
+            $localStorage.budgetAction = 1;
+            var encryptedId = CommonMethods.encryptIdUrl(result.id)
+            $state.go('presupuesto-detail', {
+                id: encryptedId
+            });
         }
 
 

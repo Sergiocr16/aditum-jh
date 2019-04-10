@@ -61,7 +61,9 @@ public class BitacoraAccionesService {
             Page<BitacoraAccionesDTO> accionesDTO = bitacoraAccionesRepository.findByCompanyId(pageable,companyId)
                 .map(bitacoraAccionesMapper::toDto);
             for (int i = 0; i < accionesDTO.getContent().size(); i++) {
-                accionesDTO.getContent().get(i).setResponsable(adminInfoService.findOne(accionesDTO.getContent().get(i).getIdResponsable()));
+                if(accionesDTO.getContent().get(i).getIdResponsable()!=null){
+                    accionesDTO.getContent().get(i).setResponsable(adminInfoService.findOne(accionesDTO.getContent().get(i).getIdResponsable()));
+                }
                 accionesDTO.getContent().get(i).setUrlState(acciones.getContent().get(i).getUrlState());
 
             }
@@ -73,7 +75,6 @@ public class BitacoraAccionesService {
             for (int i = 0; i < accionesDTO.getContent().size(); i++) {
                 accionesDTO.getContent().get(i).setResponsable(adminInfoService.findOne(accionesDTO.getContent().get(i).getIdResponsable()));
                 accionesDTO.getContent().get(i).setUrlState(acciones.getContent().get(i).getUrlState());
-
             }
             return accionesDTO;
         }

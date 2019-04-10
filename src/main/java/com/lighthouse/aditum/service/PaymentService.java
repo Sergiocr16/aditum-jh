@@ -22,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
 
@@ -98,7 +99,7 @@ public class PaymentService {
         }
         payment.setHouse(paymentMapper.houseFromId(paymentDTO.getHouseId()));
         payment.setAccount(paymentDTO.getAccount().split(";")[1]);
-        payment.setDate(payment.getDate().withHour(12));
+        payment.setDate(formatDateTime(payment.getDate()));
         payment = paymentRepository.save(payment);
         bancoService.increaseSaldo(Long.valueOf(paymentDTO.getAccount().split(";")[1]).longValue(), paymentDTO.getAmmount());
         List<ChargeDTO> paymentCharges = this.filterCharges(paymentDTO);
@@ -124,9 +125,9 @@ public class PaymentService {
 
 
         if(paymentDTO.getHouseId()!=null){
-            bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+            bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
         }else{
-            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatColonesD(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
 
         }
 
@@ -390,7 +391,7 @@ public class PaymentService {
     }
 
     private ChargeDTO newCharge(ChargeDTO chargeDTO) {
-        return new ChargeDTO(null, chargeDTO.getType(), chargeDTO.getDate().withHour(14), chargeDTO.getConcept(),
+        return new ChargeDTO(null, chargeDTO.getType(), formatDateTime(chargeDTO.getDate()), chargeDTO.getConcept(),
             chargeDTO.getAmmount(), chargeDTO.getState(), chargeDTO.getDeleted(),
             chargeDTO.getPaymentDate(), chargeDTO.getSubcharge(),
             chargeDTO.getPaymentAmmount(), chargeDTO.getLeft(), chargeDTO.getTotal(),
