@@ -19,6 +19,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+
 /**
  * Service Implementation for managing Presupuesto.
  */
@@ -59,28 +61,18 @@ public class PresupuestoService {
         presupuesto = presupuestoRepository.save(presupuesto);
 
 
-        LocalDateTime today = LocalDateTime.now();
-        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
 
+
+        String concepto = "";
         if(presupuestoDTO.getId()==null){
-            bitacoraAccionesDTO.setConcept("Registro de nuevo presupuesto: " + presupuestoDTO.getAnno());
+            concepto = "Registro de nuevo presupuesto: " + presupuestoDTO.getAnno();
         }else if(presupuestoDTO.getId()!=null && presupuestoDTO.getDeleted()==0){
-            bitacoraAccionesDTO.setConcept("Edición del presupuesto: " + presupuestoDTO.getAnno());
+            concepto = "Edición del presupuesto: " + presupuestoDTO.getAnno();
         }else{
-            bitacoraAccionesDTO.setConcept("Eliminación del presupuesto: " + presupuestoDTO.getAnno());
+            concepto = "Eliminación del presupuesto: " + presupuestoDTO.getAnno();
         }
 
-        bitacoraAccionesDTO.setType(4);
-        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-        bitacoraAccionesDTO.setCategory("Presupuestos");
-        bitacoraAccionesDTO.setUrlState("presupuesto-detail");
-        bitacoraAccionesDTO.setIdReference(presupuesto.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesDTO.setCompanyId(presupuesto.getCompany().getId());
-        bitacoraAccionesService.save(bitacoraAccionesDTO);
-
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,4, "presupuesto-detail","Presupuestos",presupuesto.getId(),presupuesto.getCompany().getId()));
 
         return presupuestoMapper.toDto(presupuesto);
     }

@@ -571,7 +571,7 @@
                                 },
                                 {
                                     title: "Otro ingreso",
-                                    icon: "money",
+                                    icon: "monetization_on",
                                     authoritites: "ROLE_MANAGER",
                                     activeOn: "otroIngreso",
                                     collapsable: false,

@@ -5,6 +5,7 @@ import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 /**
  * Service Implementation for managing Resident.
  */
@@ -44,6 +45,7 @@ public class ResidentService {
     private final AdminInfoService adminInfoService;
 
     private final UserService userService;
+
 
     public ResidentService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
@@ -91,33 +93,17 @@ public class ResidentService {
         }
         resident = residentRepository.save(resident);
 
-
-
-            LocalDateTime today = LocalDateTime.now();
-            ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-            BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-
-            if (residentDTO.getId() == null) {
-                bitacoraAccionesDTO.setConcept("Registro de un nuevo usuario: " + residentDTO.getName() + " " + residentDTO.getLastname());
-            }else if (residentDTO.getEnabled() == 0 && residentTemporal.getEnabled() == 1) {
-                bitacoraAccionesDTO.setConcept("Se deshabilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname());
-            }else if (residentDTO.getEnabled() == 1 && residentTemporal.getEnabled() == 0) {
-                bitacoraAccionesDTO.setConcept("Se habilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname());
-            }else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
-                bitacoraAccionesDTO.setConcept("Modificación de los datos del usuario: " + residentDTO.getName() + " " + residentDTO.getLastname());
-            }
-            bitacoraAccionesDTO.setType(8);
-            bitacoraAccionesDTO.setUrlState("resident-detail");
-            bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-            bitacoraAccionesDTO.setCategory("Usuarios");
-
-            bitacoraAccionesDTO.setIdReference(resident.getId());
-            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-            bitacoraAccionesDTO.setCompanyId(resident.getCompany().getId());
-            bitacoraAccionesService.save(bitacoraAccionesDTO);
-
-
+        String concepto = "";
+        if (residentDTO.getId() == null) {
+            concepto = "Registro de un nuevo usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
+        }else if (residentDTO.getEnabled() == 0 && residentTemporal.getEnabled() == 1) {
+            concepto = "Se deshabilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
+        }else if (residentDTO.getEnabled() == 1 && residentTemporal.getEnabled() == 0) {
+            concepto = "Se habilitó el usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
+        }else if (residentDTO.getId() != null && residentDTO.getDeleted() == 0) {
+            concepto = "Modificación de los datos del usuario: " + residentDTO.getName() + " " + residentDTO.getLastname();
+        }
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,8, "resident-detail","Usuarios",resident.getId(),resident.getCompany().getId()));
 
         ResidentDTO result = residentMapper.toDto(resident);
         return result;
@@ -214,10 +200,8 @@ public class ResidentService {
         Resident resident = residentMapper.toEntity(this.findOne(id));
         resident.setDeleted(1);
 
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
-        LocalDateTime today = LocalDateTime.now();
-        ZoneId id2 = ZoneId.of("America/Costa_Rica");  //Create timezone
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id2);
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
         bitacoraAccionesDTO.setConcept("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname());
 

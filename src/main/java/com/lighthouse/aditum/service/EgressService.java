@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+
 
 /**
  * Service Implementation for managing Egress.
@@ -88,26 +90,18 @@ public class EgressService {
         }
         egress.setDeleted(egressDTO.getDeleted());
         egress = egressRepository.save(egress);
-        LocalDateTime today = LocalDateTime.now();
-        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+
+        String concepto = "";
         if(egressDTO.getId()==null){
-            bitacoraAccionesDTO.setType(1);
-            bitacoraAccionesDTO.setConcept("Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones");
-        }else{
-            bitacoraAccionesDTO.setType(1);
-            bitacoraAccionesDTO.setConcept("Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones");
+            concepto = "Registro de nuevo egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal()))   + " colones";
+        }else if(egressDTO.getId()!=null && egressDTO.getDeleted()==0){
+            concepto = "Pago de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
         }
+        else if(egressDTO.getId()!=null && egressDTO.getDeleted()==1){
+            concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
+        }
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId()));
 
-
-        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-        bitacoraAccionesDTO.setCategory("Egresos");
-        bitacoraAccionesDTO.setUrlState("egress-detail");
-        bitacoraAccionesDTO.setIdReference(egress.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesDTO.setCompanyId(egress.getCompany().getId());
-        bitacoraAccionesService.save(bitacoraAccionesDTO);
         return egressMapper.toDto(egress);
     }
 

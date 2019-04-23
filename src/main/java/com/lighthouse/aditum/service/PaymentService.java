@@ -22,6 +22,7 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatDateTime;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
@@ -114,34 +115,15 @@ public class PaymentService {
         }
         this.balanceByAccountService.modifyBalancesInPastPayment(payment);
 
-
-        LocalDateTime today = LocalDateTime.now();
-        ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-
-
-        bitacoraAccionesDTO.setType(5);
-
-
+        String concepto = "";
         if(paymentDTO.getHouseId()!=null){
-            bitacoraAccionesDTO.setConcept("Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+            concepto = "Captura de ingreso de la filial " + houseService.findOne(paymentDTO.getHouseId()).getHousenumber() + ", por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones";
         }else{
-            bitacoraAccionesDTO.setConcept("Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones");
+            concepto = "Captura de ingreso en la categoría otros: " + paymentDTO.getConcept()+ " por " + formatMoney(Integer.parseInt( paymentDTO.getAmmount())) + " colones";
 
         }
 
-
-        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-        bitacoraAccionesDTO.setCategory("Ingresos");
-
-        bitacoraAccionesDTO.setIdReference(payment.getId());
-
-        bitacoraAccionesDTO.setCompanyId(Long.parseLong(paymentDTO.getCompanyId()+""));
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesService.save(bitacoraAccionesDTO);
-
-
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,5, null,"Ingresos",payment.getId(),Long.parseLong(paymentDTO.getCompanyId()+"")));
 
         return paymentMapper.toDto(payment);
     }

@@ -14,7 +14,10 @@
         vm.save = save;
         vm.houses = House.query();
         vm.isReady = true;
-
+        Modal.enteringForm(save);
+        $scope.$on("$destroy", function () {
+            Modal.leavingForm();
+        });
         $timeout(function () {
             angular.element('.form-group:eq(1)>input').focus();
         });

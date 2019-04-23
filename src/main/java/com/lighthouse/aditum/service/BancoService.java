@@ -5,6 +5,7 @@ import com.lighthouse.aditum.domain.Transferencia;
 import com.lighthouse.aditum.repository.BancoRepository;
 import com.lighthouse.aditum.service.dto.*;
 import com.lighthouse.aditum.service.mapper.BancoMapper;
+import com.lighthouse.aditum.service.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +21,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
-
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
 import static com.lighthouse.aditum.service.util.RandomUtil.formatMoney;
 
 
@@ -55,6 +56,7 @@ public class BancoService {
 
     private final UserService userService;
 
+
     public BancoService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, BancoRepository bancoRepository, BancoMapper bancoMapper, BalanceByAccountService balanceByAccountService, @Lazy EgressService egressService, TransferenciaService transferenciaService, @Lazy PaymentService paymentService, @Lazy CommonAreaReservationsService commonAreaReservationsService, @Lazy HouseService houseService) {
         this.bancoRepository = bancoRepository;
         this.bancoMapper = bancoMapper;
@@ -67,6 +69,7 @@ public class BancoService {
         this.bitacoraAccionesService = bitacoraAccionesService;
         this.adminInfoService = adminInfoService;
         this.userService = userService;
+
     }
 
     /**
@@ -83,27 +86,17 @@ public class BancoService {
         banco = bancoRepository.save(banco);
 
         if (bancoDTO.getId() != null && bancoDTO.getDeleted() != 1 || bancoDTO.getId() == null) {
-            LocalDateTime today = LocalDateTime.now();
-            ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-            BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
 
+            String concepto = "";
             if (bancoDTO.getId() == null) {
-                bitacoraAccionesDTO.setConcept("Registro de nuevo banco: " + bancoDTO.getBeneficiario());
+                concepto = "Registro de nuevo banco: " + bancoDTO.getBeneficiario();
             } else if (bancoDTO.getId() != null && bancoDTO.getDeleted() == 0) {
-                bitacoraAccionesDTO.setConcept("Eliminación del banco: " + bancoDTO.getBeneficiario());
+                concepto = "Eliminación del banco: " + bancoDTO.getBeneficiario();
             }
 
-            bitacoraAccionesDTO.setType(2);
-            bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-            bitacoraAccionesDTO.setCategory("Bancos");
+            bitacoraAccionesService.save(createBitacoraAcciones(concepto,2, null,"Bancos",banco.getId(),banco.getCompany().getId()));
 
-            bitacoraAccionesDTO.setIdReference(banco.getId());
-            if (adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()) != null) {
-                bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-            }
-            bitacoraAccionesDTO.setCompanyId(banco.getCompany().getId());
-            bitacoraAccionesService.save(bitacoraAccionesDTO);
+
         }
         return bancoMapper.toDto(banco);
     }

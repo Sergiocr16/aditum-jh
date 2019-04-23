@@ -276,7 +276,6 @@
             vm.bitacoraAcciones.ejecutionDate = new Date();
             vm.bitacoraAcciones.category = "Cuotas";
             vm.bitacoraAcciones.idReference = 1;
-            vm.bitacoraAcciones.idResponsable = companyUser.id;
             vm.bitacoraAcciones.companyId = globalCompany.getId();
 
             return vm.bitacoraAcciones;

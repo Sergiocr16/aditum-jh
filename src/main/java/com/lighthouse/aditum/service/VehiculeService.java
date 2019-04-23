@@ -22,6 +22,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+
 /**
  * Service Implementation for managing Vehicule.
  */
@@ -69,33 +71,20 @@ public class VehiculeService {
         vehicule = vehiculeRepository.save(vehicule);
         vehicule.setDeleted(0);
 
-            LocalDateTime today = LocalDateTime.now();
-            ZoneId id = ZoneId.of("America/Costa_Rica");  //Create timezone
-            ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id);
-            BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
+        String concepto = "";
 
             if (vehiculeDTO.getId() == null) {
-                bitacoraAccionesDTO.setConcept("Registro de un nuevo vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+                concepto = "Registro de un nuevo vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate();
             }else if (vehiculeDTO.getEnabled() == 0 && vehiculeTemporal.getEnabled() == 1) {
-                bitacoraAccionesDTO.setConcept("Se deshabilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+                concepto = "Se deshabilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate();
             }else if (vehiculeDTO.getEnabled() == 1 && vehiculeTemporal.getEnabled() == 0) {
-                bitacoraAccionesDTO.setConcept("Se habilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+                concepto = "Se habilitó el vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate();
             }else if (vehiculeDTO.getId() != null && vehiculeDTO.getDeleted() == 0) {
-                bitacoraAccionesDTO.setConcept("Modificación de los datos del vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate());
+                concepto = "Modificación de los datos del vehículo: " + vehiculeDTO.getBrand() + ", placa: " + vehiculeDTO.getLicenseplate();
             }
 
-            bitacoraAccionesDTO.setType(9);
-            bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-            bitacoraAccionesDTO.setCategory("Vehículos");
 
-            bitacoraAccionesDTO.setIdReference(vehicule.getId());
-            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-            bitacoraAccionesDTO.setCompanyId(vehicule.getCompany().getId());
-            bitacoraAccionesService.save(bitacoraAccionesDTO);
-
-
-
-
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
 
         VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;
@@ -162,9 +151,7 @@ public class VehiculeService {
         Vehicule vehicule = vehiculeMapper.toEntity(this.findOne(id));
         vehicule.setDeleted(1);
 
-        LocalDateTime today = LocalDateTime.now();
-        ZoneId id2 = ZoneId.of("America/Costa_Rica");  //Create timezone
-        ZonedDateTime zonedDateTime = ZonedDateTime.of(today, id2);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
         bitacoraAccionesDTO.setConcept("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate());
 

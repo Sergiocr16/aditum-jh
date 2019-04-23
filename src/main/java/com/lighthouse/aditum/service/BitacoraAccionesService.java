@@ -27,10 +27,14 @@ public class BitacoraAccionesService {
 
     private final AdminInfoService adminInfoService;
 
-    public BitacoraAccionesService(AdminInfoService adminInfoService,BitacoraAccionesRepository bitacoraAccionesRepository, BitacoraAccionesMapper bitacoraAccionesMapper) {
+    private final UserService userService;
+
+    public BitacoraAccionesService(UserService userService, AdminInfoService adminInfoService,BitacoraAccionesRepository bitacoraAccionesRepository, BitacoraAccionesMapper bitacoraAccionesMapper) {
         this.bitacoraAccionesRepository = bitacoraAccionesRepository;
         this.bitacoraAccionesMapper = bitacoraAccionesMapper;
         this.adminInfoService = adminInfoService;
+        this.userService = userService;
+
     }
 
     /**
@@ -41,8 +45,13 @@ public class BitacoraAccionesService {
      */
     public BitacoraAccionesDTO save(BitacoraAccionesDTO bitacoraAccionesDTO) {
         log.debug("Request to save BitacoraAcciones : {}", bitacoraAccionesDTO);
+        if (adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()) != null) {
+            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        }
+
         BitacoraAcciones bitacoraAcciones = bitacoraAccionesMapper.toEntity(bitacoraAccionesDTO);
         bitacoraAcciones.setUrlState(bitacoraAccionesDTO.getUrlState());
+
         bitacoraAcciones = bitacoraAccionesRepository.save(bitacoraAcciones);
         return bitacoraAccionesMapper.toDto(bitacoraAcciones);
     }
