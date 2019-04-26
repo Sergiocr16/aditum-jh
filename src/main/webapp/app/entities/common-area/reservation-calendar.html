@@ -73,7 +73,7 @@
          style="cursor:pointer; margin-bottom:20px;" id="calendarData"></div>
     <div class="hidden-sm hidden-lg hidden-md" ui-calendar="vm.uiConfig.calendar1" ng-model="vm.eventSources"
          style="cursor:pointer; margin-bottom:20px;" id="calendarData1"></div>
-    <md-button ng-click="vm.createReservationWithOutDate()" style="position: fixed"
+    <md-button has-authority="ROLE_MANAGER" ng-click="vm.createReservationWithOutDate()" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial " aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nueva reservación</md-tooltip>
         <md-icon class="white-color">add</md-icon>

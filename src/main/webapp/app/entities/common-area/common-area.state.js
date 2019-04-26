@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/common-area-administration',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER','ROLE_JD'],
                 },
                 views: {
                     'content@': {
@@ -72,7 +72,7 @@
                 parent: 'common-area-administration',
                 url: '/common-area?page&sort&search',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD'],
                     pageTitle: 'aditumApp.commonArea.home.title'
                 },
 
@@ -241,7 +241,7 @@
             .state('common-area-administration.reservation-calendar', {
                 url: '/{id}/reservation-calendar',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
                 templateUrl:'app/entities/common-area/reservation-calendar.html',
                 controller: 'ReservationCalendarController',
@@ -264,7 +264,7 @@
             .state('common-area-administration.general-reservation-calendar', {
                 url: '/general-reservation-calendar',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
                 templateUrl:'app/entities/common-area/general-reservation-calendar.html',
                 controller: 'GeneralReservationCalendarController',

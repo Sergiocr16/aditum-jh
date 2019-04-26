@@ -1244,8 +1244,6 @@
 
                     ]
                 },
-
-
                 {
                     title: "Condominio",
                     activeOn: "",
@@ -1352,7 +1350,7 @@
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: true,
-                    hasContability: true,
+                    hasContability: vm.hasContability,
                     secondaryItems: [
                         {
                             title: "Presupuestos",
@@ -1415,7 +1413,7 @@
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: false,
-                    hasContability: true,
+                    hasContability: vm.hasContability,
                     secondaryItems: [
                         {
                             title: "Estado de resultados",
@@ -1492,6 +1490,64 @@
                     ]
                 },
                 {
+                    title: "Áreas comunes",
+                    activeOn: "",
+                    authoritites: "ROLE_JD",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Ver áreas",
+                            icon: "view_agenda",
+                            authoritites: "ROLE_JD",
+                            activeOn: "reservationAdministration",
+                            collapsable: false,
+                            uisref: "common-area-administration.common-area",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Reservaciones",
+                            icon: "view_comfy",
+                            authoritites: "ROLE_JD",
+                            activeOn: "reservations",
+                            collapsable: false,
+                            uisref: "common-area-administration.common-area-reservations",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Ver calendario",
+                            icon: "event_note",
+                            authoritites: "ROLE_JD",
+                            activeOn: "generaCalendar",
+                            collapsable: false,
+                            uisref: "common-area-administration.general-reservation-calendar",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Devoluciones",
+                            icon: "payment",
+                            authoritites: "ROLE_JD",
+                            activeOn: "devolutions",
+                            collapsable: false,
+                            uisref: "common-area-devolution-administration.pending-devolution",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+
+                    ]
+                },
+                {
                     title: "Soporte",
                     icon: "contact_support",
                     authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
@@ -1517,19 +1573,6 @@
                             showLg: true,
                             secondItems: []
                         },
-                        // {
-                        //     title: "Manual de usuario",
-                        //     icon: "book",
-                        //     authoritites: "ROLE_USER",
-                        //     activeOn: "manualResidente",
-                        //     collapsable: false,
-                        //     uisref: "manualResidente",
-                        //     menuId: "",
-                        //     hover: false,
-                        //     showXs: true,
-                        //     showLg: true,
-                        //     secondItems: []
-                        // },
                     ]
                 },
             ];
@@ -1552,6 +1595,7 @@
                     vm.hasContability = false;
                 }
             }
+            console.log(companyConfig)
             vm.chargeMenu();
         };
 

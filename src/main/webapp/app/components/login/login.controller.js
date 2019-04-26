@@ -112,7 +112,6 @@
                                         vm.backgroundSelectCompany = true;
                                         AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
                                             var administrationConfiguration = result;
-                                            console.log(administrationConfiguration)
                                             companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
                                             $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                         });
@@ -128,13 +127,25 @@
                             $state.go('company-rh');
                             break;
                         case "ROLE_JD":
+                            console.log("JD")
                             MultiCompany.getCurrentUserCompany().then(function (data) {
                                 $rootScope.companyUser = data;
                                 $rootScope.showSelectCompany = false;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.companyId = data.companyId;
-                                vm.backgroundSelectCompany = true;
-                                $state.go('dashboard');
+                                var companiesConfigArray = "";
+                                CompanyConfiguration.get({id: data.companyId}, function (companyConfig) {
+                                    vm.backgroundSelectCompany = true;
+                                    AdministrationConfiguration.get({companyId: data.companyId}, function (result) {
+                                        var administrationConfiguration = result;
+                                        companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
+                                        $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                    });
+                                    setTimeout(function () {
+                                        vm.backgroundSelectCompany = true;
+                                        $state.go('dashboard');
+                                    }, 300);
+                                })
                             });
                             break;
                     }

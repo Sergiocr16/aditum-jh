@@ -20,7 +20,7 @@
                                     <th>Fecha reservado</th>
                                     <th class="text-center" >Horario</th>
                                     <th class="text-center">Estado</th>
-                                    <th class="text-center">Opciones</th>
+                                    <th class="text-center" has-authority="ROLE_MANAGER">Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -39,8 +39,8 @@
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Pendiente de aprobación</md-tooltip>
                                 lens</i></span>
 
-                                    <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                                        <md-menu md-position-mode="target-right target" >
+                                    <td class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;" has-authority="ROLE_MANAGER">
+                                        <md-menu  md-position-mode="target-right target" >
                                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                                        ng-click="$mdMenu.open($event)">
                                                 <i class="material-icons" style="color:#999">
@@ -118,7 +118,7 @@
 
         </div>
     </div>
-    <md-button ui-sref="common-area-administration.newReservation" style="position: fixed"
+    <md-button has-authority="ROLE_MANAGER" ui-sref="common-area-administration.newReservation" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Crear nueva reservación</md-tooltip>
         <md-icon class="white-color">add</md-icon>

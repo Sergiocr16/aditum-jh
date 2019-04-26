@@ -48,10 +48,8 @@ public class BitacoraAccionesService {
         if (adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()) != null) {
             bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
         }
-
         BitacoraAcciones bitacoraAcciones = bitacoraAccionesMapper.toEntity(bitacoraAccionesDTO);
         bitacoraAcciones.setUrlState(bitacoraAccionesDTO.getUrlState());
-
         bitacoraAcciones = bitacoraAccionesRepository.save(bitacoraAcciones);
         return bitacoraAccionesMapper.toDto(bitacoraAcciones);
     }

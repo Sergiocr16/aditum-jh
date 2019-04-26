@@ -1,13 +1,9 @@
-<div ng-cloak>
-    <div class="row">
-        <div class="col-md-4">
-            <span class="hipster img-responsive img-rounded"></span>
-        </div>
-        <div class="col-md-8">
-            <h1 data-translate="error.title">Error!</h1>
-
-            <div class="alert alert-danger" data-translate="error.403">No estás autorizado para acceder a esta página.
-            </div>
-        </div>
+<div flex style="align-items: stretch;justify-content: center;margin-top: 100px">
+    <div class="text-center">
+        <i class="material-icons md-48 md-inactive md-dark circle-icon" >sentiment_very_dissatisfied</i>
+        <h3 class="text-center" style="font-weight: 400;color: rgba(0, 0, 0, 0.50);">¡Ups! No tienes permiso para acceder a esta página.</h3>
+        <md-button class="md-primary md-raised" ng-click="back()">
+            Atrás
+        </md-button>
     </div>
 </div>

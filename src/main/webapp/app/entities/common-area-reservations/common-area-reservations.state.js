@@ -13,7 +13,7 @@
 
             url: '/common-area-reservations?page&sort&search',
             data: {
-                authorities: ['ROLE_MANAGER'],
+                authorities: ['ROLE_MANAGER','ROLE_JD'],
                 pageTitle: 'aditumApp.commonAreaReservations.home.title'
             },
             templateUrl: 'app/entities/common-area-reservations/common-area-reservations.html',
@@ -53,7 +53,7 @@
 
                 url: '/common-area-all-reservations?page&sort&search',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
                 templateUrl: 'app/entities/common-area-reservations/common-area-all-reservations.html',
                 controller: 'CommonAreaAllReservationsController',
@@ -254,7 +254,7 @@
             .state('common-area-administration.reservationDetail', {
                 url: '/{id}/detail',
                 data: {
-                    authorities: ['ROLE_MANAGER']
+                    authorities: ['ROLE_MANAGER','ROLE_JD']
                 },
                 templateUrl: 'app/entities/common-area-reservations/common-area-reservations-detail.html',
                 controller: 'CommonAreaReservationsDetailController',
@@ -277,7 +277,7 @@
             .state('common-area-administration.acceptedReservationsDetail', {
                 url: '/{id}/accepted-reservation-detail',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_USER']
+                    authorities: ['ROLE_MANAGER','ROLE_USER','ROLE_JD']
                 },
                 templateUrl: 'app/entities/common-area-reservations/reservation-calendar-accepted-reservations.html',
                 controller: 'ReservationsCalentarAcceptedReservations',
