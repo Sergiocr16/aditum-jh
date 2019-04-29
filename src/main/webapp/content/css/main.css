@@ -4,28 +4,56 @@ html {
     overflow: hidden;
 }
 
+/*!* width *!*/
+/*::-webkit-scrollbar {*/
+    /*width: 6px;*/
+    /*padding: 4px 0;*/
+/*}*/
+
+/*!* Track *!*/
+/*::-webkit-scrollbar-track {*/
+    /*background: white;*/
+/*}*/
+/*panel-heading*/
+/*!* Handle *!*/
+/*::-webkit-scrollbar-thumb {*/
+    /*background-color: rgba(30, 30, 30, 1);*/
+    /*margin: 4px 0;*/
+/*}*/
+
+/*!* Handle on hover *!*/
+/*::-webkit-scrollbar-thumb:hover {*/
+    /*background: #979797;*/
+/*}*/
 /* width */
 ::-webkit-scrollbar {
-    width: 6px;
-    padding: 4px 0;
+    width: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: white;
+    background: #f1f1f1;
 }
-panel-heading
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(30, 30, 30, 0.3);
-    margin: 4px 0;
+    background: #bdbdbd;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-    background: #979797;
+    background: #8d8d8d;
 }
 
+.flexcroll {
+    scrollbar-face-color: #367CD2;
+    scrollbar-shadow-color: #FFFFFF;
+    scrollbar-highlight-color: #FFFFFF;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-darkshadow-color: #FFFFFF;
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-arrow-color: #FFFFFF;
+}​
 body {
     background: #fafafa;
     overflow: hidden !important;

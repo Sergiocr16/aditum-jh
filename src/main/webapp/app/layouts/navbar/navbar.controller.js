@@ -1595,7 +1595,6 @@
                     vm.hasContability = false;
                 }
             }
-            console.log(companyConfig)
             vm.chargeMenu();
         };
 
