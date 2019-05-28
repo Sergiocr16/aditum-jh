@@ -1,11 +1,13 @@
 package com.lighthouse.aditum.service;
 
 import com.lighthouse.aditum.domain.BitacoraAcciones;
+import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.BitacoraAccionesRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.mapper.BitacoraAccionesMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,11 +31,14 @@ public class BitacoraAccionesService {
 
     private final UserService userService;
 
-    public BitacoraAccionesService(UserService userService, AdminInfoService adminInfoService,BitacoraAccionesRepository bitacoraAccionesRepository, BitacoraAccionesMapper bitacoraAccionesMapper) {
+    private final ResidentService residentService;
+
+    public BitacoraAccionesService(@Lazy ResidentService residentService, UserService userService, AdminInfoService adminInfoService, BitacoraAccionesRepository bitacoraAccionesRepository, BitacoraAccionesMapper bitacoraAccionesMapper) {
         this.bitacoraAccionesRepository = bitacoraAccionesRepository;
         this.bitacoraAccionesMapper = bitacoraAccionesMapper;
         this.adminInfoService = adminInfoService;
         this.userService = userService;
+        this.residentService = residentService;
 
     }
 
@@ -45,8 +50,8 @@ public class BitacoraAccionesService {
      */
     public BitacoraAccionesDTO save(BitacoraAccionesDTO bitacoraAccionesDTO) {
         log.debug("Request to save BitacoraAcciones : {}", bitacoraAccionesDTO);
-        if (adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()) != null) {
-            bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
+        if (userService.getUserWithAuthorities().getId() != null) {
+            bitacoraAccionesDTO.setIdResponsable(userService.getUserWithAuthorities().getId());
         }
         BitacoraAcciones bitacoraAcciones = bitacoraAccionesMapper.toEntity(bitacoraAccionesDTO);
         bitacoraAcciones.setUrlState(bitacoraAccionesDTO.getUrlState());
@@ -69,7 +74,7 @@ public class BitacoraAccionesService {
                 .map(bitacoraAccionesMapper::toDto);
             for (int i = 0; i < accionesDTO.getContent().size(); i++) {
                 if(accionesDTO.getContent().get(i).getIdResponsable()!=null){
-                    accionesDTO.getContent().get(i).setResponsable(adminInfoService.findOne(accionesDTO.getContent().get(i).getIdResponsable()));
+                    accionesDTO.getContent().get(i).setResponsable(userService.findOneByUserId(accionesDTO.getContent().get(i).getIdResponsable()));
                 }
                 accionesDTO.getContent().get(i).setUrlState(acciones.getContent().get(i).getUrlState());
 
@@ -80,7 +85,7 @@ public class BitacoraAccionesService {
             Page<BitacoraAccionesDTO> accionesDTO = bitacoraAccionesRepository.findByCompanyIdAndType(pageable,companyId,type)
                 .map(bitacoraAccionesMapper::toDto);
             for (int i = 0; i < accionesDTO.getContent().size(); i++) {
-                accionesDTO.getContent().get(i).setResponsable(adminInfoService.findOne(accionesDTO.getContent().get(i).getIdResponsable()));
+                accionesDTO.getContent().get(i).setResponsable(userService.findOneByUserId(accionesDTO.getContent().get(i).getIdResponsable()));
                 accionesDTO.getContent().get(i).setUrlState(acciones.getContent().get(i).getUrlState());
             }
             return accionesDTO;

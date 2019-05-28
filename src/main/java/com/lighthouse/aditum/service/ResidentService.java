@@ -202,19 +202,7 @@ public class ResidentService {
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
 
-        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-        bitacoraAccionesDTO.setConcept("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname());
-
-        bitacoraAccionesDTO.setType(8);
-        bitacoraAccionesDTO.setUrlState("resident-detail");
-        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-        bitacoraAccionesDTO.setCategory("Usuarios");
-
-        bitacoraAccionesDTO.setIdReference(resident.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesDTO.setCompanyId(resident.getCompany().getId());
-        bitacoraAccionesService.save(bitacoraAccionesDTO);
-
+        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del usuario: " + resident.getName() + " " + resident.getLastname(),8, "resident-detail","Usuarios",resident.getId(),resident.getCompany().getId()));
 
         residentRepository.save(resident);
     }

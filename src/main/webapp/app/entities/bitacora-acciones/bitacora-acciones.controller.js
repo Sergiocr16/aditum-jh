@@ -65,6 +65,7 @@
                 vm.queryCount = vm.totalItems;
                 vm.bitacoraAcciones = data;
                 vm.page = pagingParams.page;
+                console.log(data)
             }
             function onError(error) {
                 AlertService.error(error.data.message);

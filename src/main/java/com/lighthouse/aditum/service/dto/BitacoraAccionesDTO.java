@@ -25,7 +25,7 @@ public class BitacoraAccionesDTO implements Serializable {
     private Long idResponsable;
 
 
-    private AdminInfoDTO responsable;
+    private UserDTO responsable;
 
     @NotNull
     private ZonedDateTime ejecutionDate;
@@ -143,11 +143,11 @@ public class BitacoraAccionesDTO implements Serializable {
             "}";
     }
 
-    public AdminInfoDTO getResponsable() {
+    public UserDTO getResponsable() {
         return responsable;
     }
 
-    public void setResponsable(AdminInfoDTO responsable) {
+    public void setResponsable(UserDTO responsable) {
         this.responsable = responsable;
     }
 }

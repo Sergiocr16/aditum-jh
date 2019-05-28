@@ -7,6 +7,7 @@ import com.lighthouse.aditum.config.Constants;
 import com.lighthouse.aditum.repository.UserRepository;
 import com.lighthouse.aditum.security.AuthoritiesConstants;
 import com.lighthouse.aditum.security.SecurityUtils;
+import com.lighthouse.aditum.service.mapper.UserMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
 import com.lighthouse.aditum.service.dto.UserDTO;
 
@@ -37,10 +38,13 @@ public class UserService {
 
     private final AuthorityRepository authorityRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
+    private final UserMapper userMapper;
+
+    public UserService(UserMapper userMapper,UserRepository userRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
+        this.userMapper = userMapper;
     }
 
     public Optional<User> activateRegistration(String key) {
@@ -258,6 +262,17 @@ public class UserService {
     public Optional<User> getUserWithAuthorities(Long id) {
         return userRepository.findOneWithAuthoritiesById(id);
     }
+
+    @Transactional(readOnly = true)
+    public UserDTO findOneByUserId(Long id) {
+        log.debug("Request to get Resident : {}", id);
+        User user = userRepository.findOne(id);
+        UserDTO userDTO = userMapper.userToUserDTO(user);
+        userDTO.setLastName(user.getLastName());
+        userDTO.setFirstName(user.getFirstName());
+        return userDTO;
+    }
+
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {

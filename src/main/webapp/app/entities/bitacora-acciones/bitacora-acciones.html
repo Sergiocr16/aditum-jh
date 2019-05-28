@@ -112,7 +112,7 @@
 
                     <tr class="text-center" ng-repeat="bitacoraAcciones in vm.bitacoraAcciones  | filter:vm.search  | orderBy:'ejecutionDate':true" >
                         <td class="text-left">{{bitacoraAcciones.concept}}</td>
-                        <td>{{bitacoraAcciones.responsable.name}} {{bitacoraAcciones.responsable.lastname}}</td>
+                        <td>{{bitacoraAcciones.responsable.firstName}} {{bitacoraAcciones.responsable.lastName}}</td>
                         <td>{{bitacoraAcciones.ejecutionDate | formatDate}}</td>
                         <td>{{bitacoraAcciones.category}}</td>
                         <td class="text-center">

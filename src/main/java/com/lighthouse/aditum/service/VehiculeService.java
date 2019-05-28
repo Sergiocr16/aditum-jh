@@ -152,19 +152,8 @@ public class VehiculeService {
         vehicule.setDeleted(1);
 
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
-        bitacoraAccionesDTO.setConcept("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate());
 
-
-        bitacoraAccionesDTO.setType(9);
-        bitacoraAccionesDTO.setEjecutionDate(zonedDateTime);
-        bitacoraAccionesDTO.setCategory("Vehículos");
-
-        bitacoraAccionesDTO.setIdReference(vehicule.getId());
-        bitacoraAccionesDTO.setIdResponsable(adminInfoService.findOneByUserId(userService.getUserWithAuthorities().getId()).getId());
-        bitacoraAccionesDTO.setCompanyId(vehicule.getCompany().getId());
-        bitacoraAccionesService.save(bitacoraAccionesDTO);
-
+        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate(),9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
 
         vehiculeRepository.save(vehicule);
     }
