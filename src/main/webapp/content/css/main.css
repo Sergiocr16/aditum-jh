@@ -26,6 +26,13 @@ html {
     /*background: #979797;*/
 /*}*/
 /* width */
+
+@media only screen and (max-width: 600px) {
+    ::-webkit-scrollbar {
+        width: 0px!important;
+    }
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
