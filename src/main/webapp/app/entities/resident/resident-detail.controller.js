@@ -9,9 +9,23 @@
 
     function ResidentDetailController(Modal,$state,$scope, $rootScope, $stateParams, previousState, DataUtils, entity, Resident, User, Company, House,Principal) {
         var vm = this;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_MANAGER":
+                    $rootScope.active = "residents";
+                    break;
+                case "ROLE_USER":
+                    $rootScope.active = "residentsHouses";
+                    break;
+
+            }
+
+
+
+        })
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.resident = entity;
-        $rootScope.active = "residents";
+
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;

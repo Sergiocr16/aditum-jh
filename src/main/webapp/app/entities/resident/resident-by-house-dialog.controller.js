@@ -325,16 +325,16 @@
 
                 }
                 vm.isSaving = false;
-                $state.go('residentByHouse', null, {
-                    reload: true
-                });
-                Modal.hideLoadingBar();
+
+
+                $state.go('residentByHouse');
+
                 if (vm.resident.id !== null) {
                     Modal.toast("Se ha editado el usuario correctamente.");
                 } else {
-                    Modal.toast("Se ha registrado el usuario correctamente.");
+                    Modal.toast("Se ha registrado el usuario correctamentecorrectamente.");
                 }
-
+                Modal.hideLoadingBar();
             }
 
             function onSaveError() {

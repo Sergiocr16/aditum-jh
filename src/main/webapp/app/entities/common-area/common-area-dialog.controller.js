@@ -225,6 +225,7 @@
             if (vm.commonArea.maximunHours == -1) {
                 vm.commonArea.maximunHours = 0;
             }
+
             if (vm.commonArea.id !== null) {
                 if (vm.commonArea.maximunHours == null || vm.commonArea.maximunHours === "") {
                     vm.commonArea.maximunHours = 0;

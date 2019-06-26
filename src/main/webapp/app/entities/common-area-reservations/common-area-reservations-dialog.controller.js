@@ -615,7 +615,7 @@
                     callback: function (result) {
 
                         if (result) {
-                            if (vm.houseSelected.balance.total < 0 && vm.commonarea.reservationWithDebt == 2) {
+                            if (vm.houseSelected.balance.total < 0 && vm.commonarea.reservationWithDebt == 1) {
                                 vm.houseWithDebts = true;
                                 Modal.toast("Esta filial cuenta con deudas pendientes por lo que no puede crear reservaciones.")
                             } else {

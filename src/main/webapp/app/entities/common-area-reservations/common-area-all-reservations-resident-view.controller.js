@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('CommonAreaAllReservationsResidentViewController', CommonAreaAllReservationsResidentViewController);
 
-    CommonAreaAllReservationsResidentViewController.$inject = ['$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','companyUser'];
+    CommonAreaAllReservationsResidentViewController.$inject = ['Modal','$state', 'CommonAreaReservations', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams','CommonArea','House','Resident','$rootScope','CommonMethods','companyUser'];
 
-    function CommonAreaAllReservationsResidentViewController($state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,companyUser) {
+    function CommonAreaAllReservationsResidentViewController(Modal,$state, CommonAreaReservations, ParseLinks, AlertService, paginationConstants, pagingParams,CommonArea,House,Resident,$rootScope,CommonMethods,companyUser) {
 
         var vm = this;
         $rootScope.active = "allReservationsResidentsView";
@@ -87,6 +87,33 @@
             });
             vm.isReady = true;
 
+
+        }
+
+        vm.cancelReservation = function(reservation) {
+
+            Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+
+                    reservation.sendPendingEmail = false ;
+                    reservation.status = 10;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onCancelSuccess);
+
+                });
+
+
+        };
+
+
+        function onCancelSuccess(result) {
+            Modal.hideLoadingBar();
+            vm.isReady = false;
+            Modal.toast("Se ha cancelado la reservación correctamente.")
+            loadAll();
 
         }
         function formatScheduleTime(initialTime, finalTime){

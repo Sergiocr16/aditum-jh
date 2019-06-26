@@ -42,13 +42,17 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
-                vm.commonAreaReservations = data;
+                vm.commonAreaReservations = [];
                 vm.page = pagingParams.page;
                 angular.forEach(data,function(value){
                     value.schedule = formatScheduleTime(value.initialTime, value.finalTime);
+                    if(value.status!==9){
+                        vm.commonAreaReservations.push(value);
+                    }
+
                 });
 
-                    vm.isReady = true;
+                vm.isReady = true;
 
             }
             function onError(error) {
