@@ -139,11 +139,15 @@
                                ng-if="finalListReservations.status==10">
                                 <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por usuario</md-tooltip>
                                 cancel</i>
+                            <i class="material-icons bold" style="color:#c02d00; font-size: 19px; padding: 3px;"
+                               ng-if="finalListReservations.status==11">
+                                <md-tooltip md-direction="left" class="font-13 bold white-color">Cancelada por administrador</md-tooltip>
+                                cancel</i>
                         </td>
 
 
                         <td has-authority="ROLE_MANAGER" class="text-center " style="padding-top: 10px!important; padding-bottom: 0px!important;">
-                            <md-menu  md-position-mode="target-right target" ng-if="finalListReservations.status==1">
+                            <md-menu  md-position-mode="target-right target" ng-if="finalListReservations.status==1 || finalListReservations.status==2">
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            ng-click="$mdMenu.open($event)">
                                     <i class="material-icons" style="color:#999">
@@ -152,7 +156,31 @@
                                         more_vert</i>
                                 </md-button>
                                 <md-menu-content width="4">
-                                    <md-menu-item>
+
+                                    <md-menu-item ng-if="finalListReservations.status==2">
+                                        <md-button ng-click="vm.cancelReservation(finalListReservations)">
+                                            <div layout="row" flex>
+                                                <p flex>Cancelar solicitud</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    </md-menu-item>
+                                    <md-menu-item ng-if="finalListReservations.status==1">
+                                        <md-button ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                                            <div layout="row" flex>
+                                                <p flex>Aprobar solicitud</p>
+                                            </div>
+                                        </md-button>
+
+                                    </md-menu-item>
+                                    <md-menu-item ng-if="finalListReservations.status==1">
+                                        <md-button ng-click="vm.denyReservation(finalListReservations)">
+                                            <div layout="row" flex>
+                                                <p flex>Rechazar solicitud</p>
+                                            </div>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item ng-if="finalListReservations.status==1">
                                         <md-button
                                             ui-sref="common-area-administration.edit({id:finalListReservations.id})">
                                             <div layout="row" flex>
@@ -160,13 +188,7 @@
                                             </div>
                                         </md-button>
                                     </md-menu-item>
-                                    <md-menu-item>
-                                        <md-button ng-click="vm.deleteReservation(finalListReservations)">
-                                            <div layout="row" flex>
-                                                <p flex>Eliminar</p>
-                                            </div>
-                                        </md-button>
-                                    </md-menu-item>
+
                                 </md-menu-content>
                             </md-menu>
                         </td>
@@ -189,12 +211,17 @@
                         <span class="md-subhead" style="">Fecha reservación: {{finalListReservations.initalDate | date:'shortDate'}}</span>
                         <span class="md-subhead" style="">Horario: {{finalListReservations.schedule}}</span>
                         <span class="md-subhead" style="">Filial: {{finalListReservations.houseNumber}}</span>
-                        <span class="md-subhead" style="">Estado: <span ng-if="finalListReservations.status==1"
-                                                                        aria-hidden="false">pendiente</span><span
-                            ng-if="finalListReservations.status==2" aria-hidden="false">aprobada</span><span
-                            ng-if="finalListReservations.status==3" aria-hidden="false">rechazada</span><span
-                            ng-if="finalListReservations.status==5" aria-hidden="false">finalizada</span><span
-                            ng-if="finalListReservations.status==6" aria-hidden="false">finalizada con devolución</span></span>
+                        <span class="md-subhead" style="">Estado:
+                           <span  ng-if="finalListReservations.status==1" aria-hidden="false" style="color:#FDD835;" class="bold">pendiente</span>
+                            <span  ng-if="finalListReservations.status==2" aria-hidden="false" style="color:#156db3"  class="bold">aprobada</span>
+                            <span  ng-if="finalListReservations.status==3" aria-hidden="false" style="color:#c02d00" class="bold">rechazada</span>
+                            <span  ng-if="finalListReservations.status==5" aria-hidden="false" style="color:#21a647" class="bold">finalizado</span>
+                            <span  ng-if="finalListReservations.status==6" aria-hidden="false" style="color:#21a647" class="bold">finalizado con devolución</span>
+                            <span  ng-if="finalListReservations.status==9" aria-hidden="false" style="color:#c02d00" class="bold">caducada sin aprobar</span>
+                            <span  ng-if="finalListReservations.status==10" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por usuario</span>
+                               <span  ng-if="finalListReservations.status==11" aria-hidden="false" style="color:#c02d00" class="bold">cancelada por administrador</span>
+                        </span>
+
                     </md-card-title-text>
                     <md-card-title-media>
                         <div class="md-media-sm card-media"
@@ -228,7 +255,8 @@
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>
-                        <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+
+                        <md-menu ng-if="finalListReservations.status==1 || finalListReservations.status==2"  md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
                             <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                        ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
                                 <i class="material-icons" style="color:#999;">
@@ -237,20 +265,40 @@
                                     more_vert</i>
                             </md-button>
                             <md-menu-content width="4">
-                                <md-menu-item>
+                                <md-menu-item ng-if="finalListReservations.status==1">
+                                    <md-button ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
+                                        <div layout="row" flex>
+                                            <p flex>Aprobar solicitud</p>
+                                        </div>
+                                    </md-button>
+
+                                </md-menu-item>
+                                <md-menu-item ng-if="finalListReservations.status==1">
+                                    <md-button ng-click="vm.denyReservation(finalListReservations)">
+                                        <div layout="row" flex>
+                                            <p flex>Rechazar solicitud</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item ng-if="finalListReservations.status==1">
                                     <md-button ui-sref="common-area-administration.edit({id:finalListReservations.id})">
                                         <div layout="row" flex>
                                             <p flex>Editar</p>
                                         </div>
                                     </md-button>
                                 </md-menu-item>
-                                <md-menu-item>
-                                    <md-button ng-click="vm.deleteReservation(finalListReservations)">
+
+
+
+
+                                <md-menu-item ng-if="finalListReservations.status==2">
+                                    <md-button ng-click="vm.cancelReservation(finalListReservations)">
                                         <div layout="row" flex>
-                                            <p flex>Eliminar</p>
+                                            <p flex>Cancelar solicitud</p>
                                         </div>
                                     </md-button>
                                 </md-menu-item>
+
                             </md-menu-content>
                         </md-menu>
                     </div>

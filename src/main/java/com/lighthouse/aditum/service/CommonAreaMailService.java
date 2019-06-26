@@ -193,6 +193,17 @@ public class CommonAreaMailService {
         }
     }
     @Async
+    public void sendCanceledCommonAreaReservationAprobedEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
+
+        String subject = "Cancelación de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
+        commonAreaReservationsDTO.setEmailTitle("Se ha cancelado la reservación del área común en "  + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName()+".");
+
+        String content = this.defineContentResident(commonAreaReservationsDTO);
+        if(commonAreaReservationsDTO.getResident().getEmail()!=null){
+            this.mailService.sendEmail(commonAreaReservationsDTO.getResident().getEmail(), subject, content, false, true);
+        }
+    }
+    @Async
     public void sendUpdateCommonAreaReservationEmail(CommonAreaReservationsDTO commonAreaReservationsDTO) {
 
         String subject = "Actualización de reservación de " + commonAreaReservationsDTO.getCommonArea().getName() + " - Filial " + commonAreaReservationsDTO.getHouse().getHousenumber() + " - " + this.companyService.findOne(commonAreaReservationsDTO.getCompanyId()).getName();
