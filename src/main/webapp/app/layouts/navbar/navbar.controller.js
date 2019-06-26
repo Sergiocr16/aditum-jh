@@ -10,6 +10,7 @@
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
+        vm.hasContability = false;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -54,7 +55,7 @@
         })
         vm.chargeMenu = function () {
             vm.menu = [
-            {
+                {
                     title: "ADMINISTRACIÓN",
                     activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
                     authoritites: "ROLE_ADMIN",
@@ -172,7 +173,6 @@
 
                     ]
                 },
-
 
 
                 {
@@ -330,7 +330,7 @@
                                     menuId: "",
                                     hover: false,
                                     showXs: true,
-                                    showLg:true
+                                    showLg: true
                                 },
                                 {
                                     title: "Administrar noticias",
@@ -342,112 +342,51 @@
                                     menuId: "",
                                     hover: false,
                                     showXs: true,
-                                    showLg:true
-                                },
-                            ]
-                        },
-                        {
-                            title: "Administración",
-                            icon: "location_city",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "residents,vehicules,houses,adminVisitors",
-                            collapsable: true,
-                            uisref: "",
-                            menuId: "administracionMenu",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                            thirdItems: [
-                                {
-                                    title: "Usuarios",
-                                    icon: "group",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "residents",
-                                    collapsable: false,
-                                    uisref: "resident",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg:true
-                                },
-                                {
-                                    title: "Filiales",
-                                    icon: "home",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "houses",
-                                    collapsable: false,
-                                    uisref: "houses-tabs.house",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg:true
-                                },
-                                {
-                                    title: "Vehículos",
-                                    icon: "directions_car",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "vehicules",
-                                    collapsable: false,
-                                    uisref: "vehicule",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg:true
-                                },
-                                {
-                                    title: "Visitantes",
-                                    icon: "group_add",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "adminVisitors",
-                                    collapsable: false,
-                                    uisref: "visitant-admin",
-                                    menuId: "",
-                                    hover: false,
-                                    showXs: true,
-                                    showLg:true
-                                },
-                            ]
-                        },
-                        {
-                            title: "Seguridad",
-                            icon: "security",
-                            authoritites: "ROLE_MANAGER",
-                            activeOn: "officers,watches",
-                            collapsable: true,
-                            uisref: "",
-                            menuId: "seguridadMenu",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                            thirdItems: [
-                                {
-                                    title: "Oficiales",
-                                    icon: "people_outline",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "officers",
-                                    collapsable: false,
-                                    uisref: "officer",
-                                    menuId: "",
-                                    hover: false,
-                                    thirdItems: [],
-                                    showXs: true,
                                     showLg: true
                                 },
-                                {
-                                    title: "Turnos",
-                                    icon: "access_time",
-                                    authoritites: "ROLE_MANAGER",
-                                    activeOn: "watches",
-                                    collapsable: false,
-                                    uisref: "turno",
-                                    menuId: "",
-                                    hover: false,
-                                    thirdItems: [],
-                                    showXs: vm.hasWatches,
-                                    showLg: vm.hasWatches
-                                },
                             ]
                         },
+                        showCondoAdministrationContability(),
+                        // {
+                        //     title: "Seguridad",
+                        //     icon: "security",
+                        //     authoritites: "ROLE_MANAGER",
+                        //     activeOn: "officers,watches",
+                        //     collapsable: true,
+                        //     uisref: "",
+                        //     menuId: "seguridadMenu",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        //     thirdItems: [
+                        //         {
+                        //             title: "Oficiales",
+                        //             icon: "people_outline",
+                        //             authoritites: "ROLE_MANAGER",
+                        //             activeOn: "officers",
+                        //             collapsable: false,
+                        //             uisref: "officer",
+                        //             menuId: "",
+                        //             hover: false,
+                        //             thirdItems: [],
+                        //             showXs: true,
+                        //             showLg: true
+                        //         },
+                        //         {
+                        //             title: "Turnos",
+                        //             icon: "access_time",
+                        //             authoritites: "ROLE_MANAGER",
+                        //             activeOn: "watches",
+                        //             collapsable: false,
+                        //             uisref: "turno",
+                        //             menuId: "",
+                        //             hover: false,
+                        //             thirdItems: [],
+                        //             showXs: vm.hasWatches,
+                        //             showLg: vm.hasWatches
+                        //         },
+                        //     ]
+                        // },
                         {
                             title: "Gestionar quejas",
                             icon: "sentiment_very_dissatisfied",
@@ -703,6 +642,7 @@
                         }
                     ]
                 },
+                showCondoAdministrationNoContability(),
                 {
                     title: "Áreas comunes",
                     activeOn: "",
@@ -1290,46 +1230,46 @@
                             showLg: true,
                             thirdItems: []
                         },
-                        {
-                            title: "Seguridad",
-                            icon: "security",
-                            authoritites: "ROLE_JD",
-                            activeOn: "officers,watches",
-                            collapsable: true,
-                            uisref: "",
-                            menuId: "seguridadMenuJD",
-                            hover: false,
-                            showXs: true,
-                            showLg: true,
-                            thirdItems: [
-                                {
-                                    title: "Oficiales",
-                                    icon: "people_outline",
-                                    authoritites: "ROLE_JD",
-                                    activeOn: "officers",
-                                    collapsable: false,
-                                    uisref: "officer",
-                                    menuId: "",
-                                    hover: false,
-                                    thirdItems: [],
-                                    showXs: true,
-                                    showLg: true
-                                },
-                                {
-                                    title: "Turnos",
-                                    icon: "timer",
-                                    authoritites: "ROLE_JD",
-                                    activeOn: "watches",
-                                    collapsable: false,
-                                    uisref: "turno",
-                                    menuId: "",
-                                    hover: false,
-                                    thirdItems: [],
-                                    showXs: vm.hasWatches,
-                                    showLg: vm.hasWatches
-                                },
-                            ]
-                        },
+                        // {
+                        //     title: "Seguridad",
+                        //     icon: "security",
+                        //     authoritites: "ROLE_JD",
+                        //     activeOn: "officers,watches",
+                        //     collapsable: true,
+                        //     uisref: "",
+                        //     menuId: "seguridadMenuJD",
+                        //     hover: false,
+                        //     showXs: true,
+                        //     showLg: true,
+                        //     thirdItems: [
+                        //         {
+                        //             title: "Oficiales",
+                        //             icon: "people_outline",
+                        //             authoritites: "ROLE_JD",
+                        //             activeOn: "officers",
+                        //             collapsable: false,
+                        //             uisref: "officer",
+                        //             menuId: "",
+                        //             hover: false,
+                        //             thirdItems: [],
+                        //             showXs: true,
+                        //             showLg: true
+                        //         },
+                        //         {
+                        //             title: "Turnos",
+                        //             icon: "timer",
+                        //             authoritites: "ROLE_JD",
+                        //             activeOn: "watches",
+                        //             collapsable: false,
+                        //             uisref: "turno",
+                        //             menuId: "",
+                        //             hover: false,
+                        //             thirdItems: [],
+                        //             showXs: vm.hasWatches,
+                        //             showLg: vm.hasWatches
+                        //         },
+                        //     ]
+                        // },
                         {
                             title: "Sugerencias",
                             icon: "feedback",
@@ -1603,8 +1543,10 @@
             var items = secondItemsToHideIfHasNoContability;
             var ocultar = 0;
             for (var i = 0; i < items.length; i++) {
-                if (secondItem.title == items[i]) {
-                    ocultar++;
+                if (secondItem != null) {
+                    if (secondItem.title == items[i]) {
+                        ocultar++;
+                    }
                 }
             }
             if (ocultar > 0 && !vm.hasContability) {
@@ -1622,13 +1564,17 @@
 
 
         vm.defineStyleSecondButton = function (item) {
-            if (item.hover) {
-                return vm.colorsMenu.secondButtonHover;
-            }
-            if (this.defineActive(item) == true) {
-                return vm.colorsMenu.secondButtonActive
+            if (item != null) {
+                if (item.hover) {
+                    return vm.colorsMenu.secondButtonHover;
+                }
+                if (this.defineActive(item) == true) {
+                    return vm.colorsMenu.secondButtonActive
+                } else {
+                    return vm.colorsMenu.secondButton
+                }
             } else {
-                return vm.colorsMenu.secondButton
+                return "";
             }
         };
         vm.defineStyleThirdButton = function (item) {
@@ -1685,10 +1631,12 @@
             for (var i = 0; i < vm.menu.length; i++) {
                 for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
                     var secondaryItem = vm.menu[i].secondaryItems[j];
-                    if (secondaryItem.collapsable) {
-                        for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
-                            if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
-                                $("#" + secondaryItem.menuId).collapse('show');
+                    if (secondaryItem != null) {
+                        if (secondaryItem.collapsable) {
+                            for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
+                                if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
+                                    $("#" + secondaryItem.menuId).collapse('show');
+                                }
                             }
                         }
                     }
@@ -1707,6 +1655,139 @@
             return function () {
                 $mdSidenav(componentId).toggle();
             };
+        }
+
+        function showCondoAdministrationNoContability() {
+            if (vm.hasContability == false) {
+                return {
+                    title: "Administración",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
+                };
+            } else {
+                return {};
+            }
+        }
+
+        function showCondoAdministrationContability() {
+            if (vm.hasContability == true) {
+                return {
+                    title: "Administración",
+                    icon: "location_city",
+                    authoritites: "ROLE_MANAGER",
+                    activeOn: "residents,vehicules,houses,adminVisitors",
+                    collapsable: true,
+                    uisref: "",
+                    menuId: "administracionMenu",
+                    hover: false,
+                    showXs: true,
+                    showLg: true,
+                    thirdItems: [
+                        {
+                            title: "Usuarios",
+                            icon: "group",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "residents",
+                            collapsable: false,
+                            uisref: "resident",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Filiales",
+                            icon: "home",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "houses",
+                            collapsable: false,
+                            uisref: "houses-tabs.house",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Vehículos",
+                            icon: "directions_car",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "vehicules",
+                            collapsable: false,
+                            uisref: "vehicule",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "adminVisitors",
+                            collapsable: false,
+                            uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                    ]
+                };
+            } else {
+                return null;
+            }
         }
 
         function unsubscribe() {
@@ -1748,7 +1829,7 @@
                 MultiCompany.getCurrentUserCompany().then(function (data) {
                     if (data != undefined) {
                         if (data.enable == 0 || data.enabled == 0) {
-                             logout();
+                            logout();
                         }
                     }
                 })
