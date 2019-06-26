@@ -210,8 +210,11 @@ public class CommonAreaReservationsService {
             ResidentDTO residentDTO = residentService.findOne(commonAreaReservationsDTOPage.getContent().get(i).getResidentId());
             commonAreaReservationsDTOPage.getContent().get(i).setResidentName(residentDTO.getName() + " " + residentDTO.getLastname());
             ZonedDateTime zonedDateTime = ZonedDateTime.now();
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null || zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0) {
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2|| zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0  && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
+            }
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 1) {
+                commonAreaReservationsDTOPage.getContent().get(i).setStatus(9);
             }
         }
         return commonAreaReservationsDTOPage;

@@ -122,7 +122,6 @@
 
             });
             return times[0] + " - " + times[1]
-            console.log(times)
         }
         function loadPage(page) {
             vm.page = page;
