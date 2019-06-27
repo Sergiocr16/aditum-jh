@@ -59,6 +59,35 @@
                 AlertService.error(error.data.message);
             }
         }
+        function onSaveError(error) {
+            Modal.hideLoadingBar();
+            Modal.toast("Un error inesperado ocurrió");
+            AlertService.error(error.data.message);
+        }
+        vm.denyReservation = function(reservation) {
+
+            Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    reservation.sendPendingEmail = true ;
+                    reservation.status = 3;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onDenySuccess, onSaveError);
+
+                });
+
+
+        };
+        function onDenySuccess(result) {
+
+            loadAll();
+            Modal.toast("Se ha rechazado la reservación correctamente.")
+            Modal.hideLoadingBar();
+
+        }
+
         vm.deleteReservation = function(commonArea) {
             Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
                 function(){

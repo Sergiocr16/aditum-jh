@@ -91,19 +91,21 @@
         }
 
         vm.cancelReservation = function(reservation) {
+        if(reservation.status==1){Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
+            function () {
+                Modal.showLoadingBar()
 
-            Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
-                function () {
-                    Modal.showLoadingBar()
+                reservation.sendPendingEmail = false ;
+                reservation.status = 10;
+                reservation.initalDate = new Date(reservation.initalDate)
+                reservation.initalDate.setHours(0);
+                reservation.initalDate.setMinutes(0);
+                CommonAreaReservations.update(reservation, onCancelSuccess);
 
-                    reservation.sendPendingEmail = false ;
-                    reservation.status = 10;
-                    reservation.initalDate = new Date(reservation.initalDate)
-                    reservation.initalDate.setHours(0);
-                    reservation.initalDate.setMinutes(0);
-                    CommonAreaReservations.update(reservation, onCancelSuccess);
+            });}else{
+            Modal.toast("Para cancelar la reservación aprobada, comuniquese con su respectivo administrador.")
+          }
 
-                });
 
 
         };

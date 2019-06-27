@@ -49,6 +49,22 @@
                                                     more_vert</i>
                                             </md-button>
                                             <md-menu-content width="4">
+                                                <md-menu-item ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})">
+                                                    <md-button >
+                                                        <div layout="row" flex>
+                                                            <p flex>Aprobar solicitud</p>
+                                                        </div>
+                                                    </md-button>
+
+                                                </md-menu-item>
+                                                <md-menu-item ng-click="vm.denyReservation(commonAreaReservations)">
+                                                    <md-button >
+                                                        <div layout="row" flex>
+                                                            <p flex>Rechazar solicitud</p>
+                                                        </div>
+                                                    </md-button>
+                                                </md-menu-item>
+
                                                 <md-menu-item>
                                                     <md-button
                                                         ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">
@@ -57,13 +73,9 @@
                                                         </div>
                                                     </md-button>
                                                 </md-menu-item>
-                                                <md-menu-item>
-                                                    <md-button ng-click="vm.deleteReservation(commonAreaReservations)">
-                                                        <div layout="row" flex>
-                                                            <p flex>Eliminar</p>
-                                                        </div>
-                                                    </md-button>
-                                                </md-menu-item>
+
+
+
                                             </md-menu-content>
                                         </md-menu>
                                     </td>
@@ -110,7 +122,40 @@
                             <md-tooltip md-direction="left" class="font-13 bold white-color">Ver detalle
                             </md-tooltip>
                             remove_red_eye</i>
+                        <md-menu md-position-mode="target-right target" has-any-authority="ROLE_MANAGER">
+                            <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                       ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
+                                <i class="material-icons" style="color:#999;">
+                                    <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                    </md-tooltip>
+                                    more_vert</i>
+                            </md-button>
+                            <md-menu-content width="4">
+                                <md-menu-item ui-sref="common-area-administration.reservationDetail({id:commonAreaReservations.id})">
+                                    <md-button >
+                                        <div layout="row" flex>
+                                            <p flex>Aprobar solicitud</p>
+                                        </div>
+                                    </md-button>
 
+                                </md-menu-item>
+                                <md-menu-item ng-click="vm.denyReservation(commonAreaReservations)">
+                                    <md-button >
+                                        <div layout="row" flex>
+                                            <p flex>Rechazar solicitud</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item >
+                                    <md-button ui-sref="common-area-administration.edit({id:commonAreaReservations.id})">
+                                        <div layout="row" flex>
+                                            <p flex>Editar</p>
+                                        </div>
+                                    </md-button>
+                                </md-menu-item>
+
+                            </md-menu-content>
+                        </md-menu>
                     </div>
 
                 </md-card-actions>

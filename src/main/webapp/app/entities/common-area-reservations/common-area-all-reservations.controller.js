@@ -127,6 +127,26 @@
             vm.page = page;
             vm.transition();
         }
+        vm.denyReservation = function(reservation) {
+
+            Modal.confirmDialog("¿Está seguro que desea rechazar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    reservation.sendPendingEmail = true ;
+                    reservation.status = 3;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onDenySuccess, onSaveError);
+
+                });
+
+
+        };
+        vm.aprobeReservation = function() {
+            Modal.toast("Para aprobar una solicitud debe ingresar al detalle de la reservación.")
+
+        };
         vm.deleteReservation = function(commonArea) {
             Modal.confirmDialog("¿Está seguro que desea eliminar la solicitud de reservación?","",
                 function(){
@@ -140,6 +160,37 @@
                 });
 
         };
+
+        vm.cancelReservation = function(reservation) {
+            Modal.confirmDialog("¿Está seguro que desea cancelar la reservación?", "Una vez registrada esta información no se podrá editar",
+                function () {
+                    Modal.showLoadingBar()
+                    reservation.sendPendingEmail = true ;
+                    reservation.status = 11;
+                    reservation.initalDate = new Date(reservation.initalDate)
+                    reservation.initalDate.setHours(0);
+                    reservation.initalDate.setMinutes(0);
+                    CommonAreaReservations.update(reservation, onCancelSuccess);
+
+                });
+
+
+
+        };
+        function onCancelSuccess(result) {
+            Modal.hideLoadingBar();
+            vm.isReady = false;
+            Modal.toast("Se ha cancelado la reservación correctamente.")
+            loadAll();
+
+        }
+        function onDenySuccess(result) {
+
+            loadAll();
+            Modal.toast("Se ha rechazado la reservación correctamente.")
+            Modal.hideLoadingBar();
+
+        }
 
         function onDeleteSuccess (result) {
 
