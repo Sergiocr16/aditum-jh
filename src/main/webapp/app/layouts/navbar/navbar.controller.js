@@ -53,7 +53,8 @@
         $scope.$on("$destroy", function () {
             vm.menu = [];
         })
-        vm.chargeMenu = function () {
+        vm.chargeMenu = function (hasComta) {
+            console.log(hasComta);
             vm.menu = [
                 {
                     title: "ADMINISTRACIÓN",
@@ -169,12 +170,8 @@
                             showXs: true,
                             showLg: true
                         },
-
-
                     ]
                 },
-
-
                 {
                     title: "ADITUM JHIPSTER",
                     activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
@@ -407,7 +404,7 @@
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: true,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
                         {
                             title: "Contabilidad filiales",
@@ -718,7 +715,7 @@
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: false,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
                         {
                             title: "Estado de resultados",
@@ -799,7 +796,7 @@
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",
                     showXs: false,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
                         {
                             title: "General",
@@ -928,7 +925,7 @@
                             collapsable: false,
                             uisref: "resultStates.mensualReport",
                             menuId: "",
-                            hasContability: vm.hasContability,
+                            hasContability: hasComta,
                             hover: false,
                             showXs: vm.showEstadoResultados,
                             showLg: vm.showEstadoResultados,
@@ -939,7 +936,7 @@
                             authoritites: "ROLE_USER",
                             activeOn: "budgetExecution",
                             collapsable: false,
-                            hasContability: vm.hasContability,
+                            hasContability: hasComta,
                             uisref: "budgetExecution.mensualReport",
                             menuId: "",
                             hover: false,
@@ -954,7 +951,7 @@
                     activeOn: "",
                     authoritites: "ROLE_USER",
                     showXs: true,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
 
                         {
@@ -1290,7 +1287,7 @@
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: true,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
                         {
                             title: "Presupuestos",
@@ -1353,7 +1350,7 @@
                     activeOn: "",
                     authoritites: "ROLE_JD",
                     showXs: false,
-                    hasContability: vm.hasContability,
+                    hasContability: hasComta,
                     secondaryItems: [
                         {
                             title: "Estado de resultados",
@@ -1521,13 +1518,16 @@
 
 
         vm.loadCompanyConfig = function () {
+            vm.hasContability = false;
+            vm.chargeMenu(vm.hasContability);
             var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
             vm.hasWatches = companyConfig.hasWatches;
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
+            console.log(companyConfig)
             if (companyConfig == "admin") {
-                vm.hasContability = true;
+                vm.hasContability = false;
             } else {
                 if (companyConfig.hasContability == 1) {
                     vm.hasContability = true;
@@ -1535,7 +1535,7 @@
                     vm.hasContability = false;
                 }
             }
-            vm.chargeMenu();
+             vm.chargeMenu(vm.hasContability);
         };
 
         vm.showSecondItem = function (secondItem) {
@@ -1555,7 +1555,7 @@
                 return true;
             }
         };
-
+        vm.loadCompanyConfig();
         $scope.$watch(function () {
             return $localStorage.companiesConfig;
         }, function (newCodes, oldCodes) {
@@ -1629,13 +1629,15 @@
 
         function showTheOneThatsActive() {
             for (var i = 0; i < vm.menu.length; i++) {
-                for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
-                    var secondaryItem = vm.menu[i].secondaryItems[j];
-                    if (secondaryItem != null) {
-                        if (secondaryItem.collapsable) {
-                            for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
-                                if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
-                                    $("#" + secondaryItem.menuId).collapse('show');
+                if (vm.menu[i].secondaryItems != null) {
+                    for (var j = 0; j < vm.menu[i].secondaryItems.length; j++) {
+                        var secondaryItem = vm.menu[i].secondaryItems[j];
+                        if (secondaryItem != null) {
+                            if (secondaryItem.collapsable) {
+                                for (var k = 0; k < secondaryItem.thirdItems.length; k++) {
+                                    if (secondaryItem.thirdItems[k].activeOn.includes($rootScope.active)) {
+                                        $("#" + secondaryItem.menuId).collapse('show');
+                                    }
                                 }
                             }
                         }

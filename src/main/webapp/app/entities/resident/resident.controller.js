@@ -174,8 +174,8 @@
             for (var i = 0; i < data.length; i++) {
                 vm.residents.push(data[i])
             }
-            vm.isReady = true;
-            vm.isReady2 = true;
+            // vm.isReady = true;
+            // vm.isReady2 = true;
         }
 
         function onError(error) {
