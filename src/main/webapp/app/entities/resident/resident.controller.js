@@ -174,8 +174,8 @@
             for (var i = 0; i < data.length; i++) {
                 vm.residents.push(data[i])
             }
-            vm.isReady = true;
-            vm.isReady2 = true;
+            // vm.isReady = true;
+            // vm.isReady2 = true;
         }
 
         function onError(error) {
@@ -208,6 +208,7 @@
                                 id: resident.userId
                             }, function (data) {
                                 data.activated = 0;
+                                data.email = data.email+Math.floor(Math.random() * 1000000000);
                                 User.update(data, onSuccessDisabledUser);
 
                                 function onSuccessDisabledUser(data, headers) {
