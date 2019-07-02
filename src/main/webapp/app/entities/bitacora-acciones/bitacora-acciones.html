@@ -102,6 +102,7 @@
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th>Concepto</th>
                         <th class="text-center">Responsable</th>
+                        <th class="text-center">Rol</th>
                         <th class="text-center">Fecha y hora</th>
                         <th class="text-center">Categoría</th>
                         <th class="text-center">Detalle</th>
@@ -113,6 +114,7 @@
                     <tr class="text-center" ng-repeat="bitacoraAcciones in vm.bitacoraAcciones  | filter:vm.search  | orderBy:'ejecutionDate':true" >
                         <td class="text-left">{{bitacoraAcciones.concept}}</td>
                         <td>{{bitacoraAcciones.responsable.firstName}} {{bitacoraAcciones.responsable.lastName}}</td>
+                        <td class="text-center">{{bitacoraAcciones.rol}}</td>
                         <td>{{bitacoraAcciones.ejecutionDate | formatDate}}</td>
                         <td>{{bitacoraAcciones.category}}</td>
                         <td class="text-center">

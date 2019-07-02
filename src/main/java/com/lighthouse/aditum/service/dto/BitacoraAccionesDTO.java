@@ -36,6 +36,8 @@ public class BitacoraAccionesDTO implements Serializable {
 
     private Long companyId;
 
+    private String rol;
+
     public Long getId() {
         return id;
     }
@@ -149,5 +151,13 @@ public class BitacoraAccionesDTO implements Serializable {
 
     public void setResponsable(UserDTO responsable) {
         this.responsable = responsable;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 }
