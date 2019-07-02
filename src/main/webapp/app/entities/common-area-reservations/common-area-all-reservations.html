@@ -164,6 +164,7 @@
                                             </div>
                                         </md-button>
                                     </md-menu-item>
+
                                     </md-menu-item>
                                     <md-menu-item ng-if="finalListReservations.status==1">
                                         <md-button ui-sref="common-area-administration.reservationDetail({id:finalListReservations.id})">
@@ -171,7 +172,6 @@
                                                 <p flex>Aprobar solicitud</p>
                                             </div>
                                         </md-button>
-
                                     </md-menu-item>
                                     <md-menu-item ng-if="finalListReservations.status==1">
                                         <md-button ng-click="vm.denyReservation(finalListReservations)">

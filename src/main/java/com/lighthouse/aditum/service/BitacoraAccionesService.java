@@ -1,7 +1,9 @@
 package com.lighthouse.aditum.service;
 
+import com.lighthouse.aditum.domain.Authority;
 import com.lighthouse.aditum.domain.BitacoraAcciones;
 import com.lighthouse.aditum.domain.Resident;
+import com.lighthouse.aditum.domain.User;
 import com.lighthouse.aditum.repository.BitacoraAccionesRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
 import com.lighthouse.aditum.service.mapper.BitacoraAccionesMapper;
@@ -12,6 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.Set;
 
 
 /**
@@ -75,6 +80,15 @@ public class BitacoraAccionesService {
             for (int i = 0; i < accionesDTO.getContent().size(); i++) {
                 if(accionesDTO.getContent().get(i).getIdResponsable()!=null){
                     accionesDTO.getContent().get(i).setResponsable(userService.findOneByUserId(accionesDTO.getContent().get(i).getIdResponsable()));
+                    Optional<User> user =  userService.getUserWithAuthorities(accionesDTO.getContent().get(i).getIdResponsable());
+                    Set<Authority> autorithies = user.get().getAuthorities();
+
+                    accionesDTO.getContent().get(i).setRol(autorithies.iterator().next().getName());
+                    if( accionesDTO.getContent().get(i).getRol().equals("ROLE_MANAGER")){
+                        accionesDTO.getContent().get(i).setRol("Administrador");
+                    }else if(accionesDTO.getContent().get(i).getRol().equals("ROLE_USER")){
+                        accionesDTO.getContent().get(i).setRol("Residente");
+                    }
                 }
                 accionesDTO.getContent().get(i).setUrlState(acciones.getContent().get(i).getUrlState());
 
