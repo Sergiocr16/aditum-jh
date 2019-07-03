@@ -54,6 +54,7 @@
         "paymentProof": "Payment Proof",
         "documentFile": "Document File",
         "bitacoraAcciones": "Bitacora Acciones",
+        "macroCondominium": "Macro Condominium",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

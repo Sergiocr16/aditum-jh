@@ -54,15 +54,28 @@
             vm.menu = [];
         })
         vm.chargeMenu = function (hasComta) {
-            console.log(hasComta);
             vm.menu = [
                 {
                     title: "ADMINISTRACIÓN",
-                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
+                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress,macro-condominium",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
+                        {
+                            title: "Condominios Macro",
+                            icon: "account_balance",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "macro-condominium",
+                            collapsable: false,
+                            uisref: "macro-condominium",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
                         {
                             title: "Condominios",
                             icon: "home",
@@ -1525,7 +1538,6 @@
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
-            console.log(companyConfig)
             if (companyConfig == "admin") {
                 vm.hasContability = false;
             } else {

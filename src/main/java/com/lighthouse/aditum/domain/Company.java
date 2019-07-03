@@ -7,6 +7,7 @@ import org.hibernate.annotations.BatchSize;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -127,5 +128,9 @@ public class Company implements Serializable {
             ", name='" + name + "'" +
             ", active='" + active + "'" +
             '}';
+    }
+
+    public Collection<MacroCondominium> getMacroCondominiums() {
+        return null;
     }
 }

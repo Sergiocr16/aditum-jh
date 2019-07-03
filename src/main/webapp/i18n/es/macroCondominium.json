@@ -1,0 +1,23 @@
+{
+    "aditumApp": {
+        "macroCondominium" : {
+            "home": {
+                "title": "Macro Condominiums",
+                "createLabel": "Crear nuevo Macro Condominium",
+                "createOrEditLabel": "Crear o editar Macro Condominium"
+            },
+            "created": "Un nuevo Macro Condominium ha sido creado con el identificador {{ param }}",
+            "updated": "Un Macro Condominium ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Macro Condominium ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Macro Condominium {{ id }}?"
+            },
+            "detail": {
+                "title": "Macro Condominium"
+            },
+            "name": "Name",
+            "enabled": "Enabled",
+            "company": "Company"
+        }
+    }
+}
