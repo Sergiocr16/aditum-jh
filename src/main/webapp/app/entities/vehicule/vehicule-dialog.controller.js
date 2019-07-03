@@ -5,28 +5,22 @@
         .module('aditumApp')
         .controller('VehiculeDialogController', VehiculeDialogController);
 
-    VehiculeDialogController.$inject = ['$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand', 'globalCompany', 'Modal'];
+    VehiculeDialogController.$inject = ['$localStorage','$state', 'CommonMethods', '$rootScope', 'Principal', '$timeout', '$scope', '$stateParams', 'entity', 'Vehicule', 'House', 'Company', 'WSVehicle', 'Brand', 'globalCompany', 'Modal'];
 
-    function VehiculeDialogController($state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand, globalCompany, Modal) {
+    function VehiculeDialogController($localStorage,$state, CommonMethods, $rootScope, Principal, $timeout, $scope, $stateParams, entity, Vehicule, House, Company, WSVehicle, Brand, globalCompany, Modal) {
         $rootScope.active = "vehicules";
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.vehicule = entity;
+        vm.titleHouse = "";
 
-        if (vm.vehicule.id == undefined) {
-            vm.button = "Registrar";
-            vm.title = "Registrar vehículo";
-        } else {
-            vm.button = "Editar";
-            vm.title = "Editar vehículo";
-        }
         vm.options = {
             label: "",
             icon: "",
             default: "#ffffff",
             openOnInput: true
         };
-        $rootScope.mainTitle = vm.title;
+
 
         vm.isReady = false;
         vm.myPlate = vm.vehicule.licenseplate;
@@ -52,9 +46,42 @@
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
+        vm.changeHouse = function(houseId){
+            console.log(vm.title)
+            angular.forEach(vm.houses, function (value, key) {
+                if(value.id == houseId){
+                    vm.titleHouse = " filial " + value.housenumber;
+                    $localStorage.infoHouseNumber = value;
+                    console.log(vm.title)
+                    console.log(vm.titleHouse)
+                    $rootScope.mainTitle = vm.title + vm.titleHouse;
+                }
+            });
 
+        };
         function onSuccessHouses(data, headers) {
+
             vm.houses = data;
+            if (vm.vehicule.id !== null) {
+                angular.forEach(vm.houses, function (value, key) {
+                    if(value.id == vm.vehicule.houseId){
+                        vm.titleHouse = " filial " + value.housenumber;
+
+                    }
+                });
+                vm.title = "Editar vehículo";
+                vm.button = "Editar";
+            }else{
+                if($localStorage.infoHouseNumber!==undefined){
+                    vm.vehicule.houseId = $localStorage.infoHouseNumber.id;
+                    vm.titleHouse = " filial " + $localStorage.infoHouseNumber.housenumber;
+                }
+                vm.title = "Registrar vehículo";
+                vm.button = "Registrar";
+
+
+            }
+            $rootScope.mainTitle = vm.title + vm.titleHouse;
             vm.isReady = true;
         }
 
@@ -140,7 +167,8 @@
         };
 
         function save() {
-            var wordOnModal = vm.vehicule.id === undefined ? "registrar" : "modificar"
+            console.log(vm.vehicule.id)
+            var wordOnModal = vm.vehicule.id === null ? "registrar" : "modificar"
             if (vm.validate()) {
                 Modal.confirmDialog("¿Está seguro que desea " + wordOnModal + " el vehículo?", "", function () {
                     vm.vehicule.enabled = 1;

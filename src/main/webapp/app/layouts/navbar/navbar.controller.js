@@ -2000,6 +2000,7 @@
         vm.selectCompany = function (company) {
             $localStorage.companyId = CommonMethods.encryptIdUrl(company.id);
             $localStorage.houseSelected = undefined;
+            $localStorage.infoHouseNumber = undefined;
             setTimeout(function () {
                 $scope.$apply(function () {
                     vm.getAcount();
