@@ -1,69 +1,53 @@
-
-<div>
-    <!--<div class="row fixed-tabs" >-->
-        <!--<md-content class="no-padding row background-white" style="margin-top: -15px!important;">-->
-            <!--<md-tabs hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""-->
-                     <!--class="md-fixed-tabs hidden-xs">-->
-                <!--<md-tab ng-click="vm.switchEnabledVehicules()" label="VEHÍCULOS HABILITADOS">-->
-                <!--</md-tab>-->
-                <!--<md-tab label="VEHÍCULOS DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">-->
-                <!--</md-tab>-->
-
-            <!--</md-tabs>-->
-            <!--<md-tabs hide-lg hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""-->
-                     <!--class="md-fixed-tabs hidden-md hidden-lg hidden-sm">-->
-                <!--<md-tab ng-click="vm.switchEnabledVehicules()" label="HABILITADOS">-->
-                <!--</md-tab>-->
-                <!--<md-tab label="DESHABILITADOS" ng-click="vm.switchDisabledVehicules()">-->
-                <!--</md-tab>-->
-
-            <!--</md-tabs>-->
-        <!--</md-content>-->
-    <!--</div>-->
+<div class="row" layout="column" flex>
 
 
-    <div ng-if="true" style="position:fixed;width:100%;z-index:1" class="background-white">
-        <md-content class="no-padding row background-white" style="margin-top: -15px!important">
-            <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 green-bg-on-xs">
-                <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
-                </md-tab>
-                <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
-                        ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
-                </md-tab>
-            </md-tabs>
+    <md-content class=" background-white "
+                style="width:100%; margin-top: -16px!important; min-height: 50px!important;">
+        <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
+                 class=" green-bg-on-xs  ">
+            <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
+            </md-tab>
+            <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
+                    ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
+            </md-tab>
+        </md-tabs>
 
-        </md-content>
-    </div>
+    </md-content>
+
     <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
          layout-align="space-around center">
         <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
     </div>
-    <div ng-if="vm.isReady" class=" fade-in">
-
-        <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
-                    text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+    <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
+                text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
 
 
+    <md-content class="no-padding no-margin" style="background-color: white;">
 
-
-    <div class="row fade-in marging-top-40" ng-if="vm.isReady">
-        <div class="col-lg-12 col-md-12">
-            <div class="col-md-12 no-padding" layout="row" layout-align="space-between center" layout-xs="column" layout-sm="column">
+        <div class="col-lg-12 col-md-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
+            <div class="col-md-12 no-padding" layout="row" layout-align="space-between center"
+                 layout-xs="column"
+                 layout-sm="column">
                 <div class="pull-left">
-                    <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm" style="font-size:20px">
-                         <span ng-if="vm.infoHouseVehicule!==undefined">Vehículos de la filial {{vm.infoHouseVehicule.housenumber;}} <span ng-if="vm.filter.enabled==0"> (Deshabilitados)</span>  <span style="padding:5px 10px; margin-right:13px; margin-top: -40px!important;" ng-show="vm.infoHouseVehicule.isdesocupated == 1"
-                                                                                                                                                                                                        class="label label-sm label-danger bold">
+                    <h2 class="caption-subject font-green-sharp font-weight-600 hidden-xs hidden-sm"
+                        style="font-size:20px">
+                         <span ng-if="vm.infoHouseVehicule!==undefined">Vehículos de la filial {{vm.infoHouseVehicule.housenumber;}} <span
+                             ng-if="vm.filter.enabled==0"> (Deshabilitados)</span>  <span
+                             style="padding:5px 10px; margin-right:13px; margin-top: -40px!important;"
+                             ng-show="vm.infoHouseVehicule.isdesocupated == 1"
+                             class="label label-sm label-danger bold">
 										Deshabitada </span></span>
-                        <span ng-if="vm.infoHouseVehicule==undefined">Vehículos de todas las filiales <span ng-if="vm.filter.enabled==0"> (Deshabilitados)</span></span>
+                        <span ng-if="vm.infoHouseVehicule==undefined">Vehículos de todas las filiales <span
+                            ng-if="vm.filter.enabled==0"> (Deshabilitados)</span></span>
                     </h2>
                 </div>
-                <div  class="btn-group pull-right margin-top-10">
+                <div class="btn-group pull-right margin-top-10">
                     <div class="form-group form-md-radios">
                         <div class="md-radio-inline">
 
-                            <div class="md-radio" >
-                                <input type="radio" id="radio23" name="radio2" class="md-radiobtn" ng-checked="vm.filter.enabled==1"  ng-click="vm.switchEnabledVehicules()">
+                            <div class="md-radio">
+                                <input type="radio" id="radio23" name="radio2" class="md-radiobtn"
+                                       ng-checked="vm.filter.enabled==1" ng-click="vm.switchEnabledVehicules()">
                                 <label for="radio23" style="color:#45B6AF">
                                     <span class="inc"></span>
                                     <span class="check"></span>
@@ -71,7 +55,9 @@
                                     Habilitados </label>
                             </div>
                             <div class="md-radio has-error">
-                                <input type="radio" id="radio24" name="radio2" class="md-radiobtn" ng-checked="vm.filter.enabled==0" ng-click="vm.switchDisabledVehicules()">
+                                <input type="radio" id="radio24" name="radio2" class="md-radiobtn"
+                                       ng-checked="vm.filter.enabled==0"
+                                       ng-click="vm.switchDisabledVehicules()">
                                 <label for="radio24">
                                     <span class="inc"></span>
                                     <span class="check"></span>
@@ -85,7 +71,7 @@
             </div>
 
 
-            <div  class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-10" style="margin-bottom: 8px; ">
+            <div class="col-md-12 col-xs-12 col-sm-12 no-padding margin-top-10" style="margin-bottom: 8px; ">
                 <div class=" no-padding col-md-10 col-sm-8 col-xs-8" style="margin-bottom: 0px;"
                      id="index-search-bar">
                     <form ng-submit="vm.filterVehicules()">
@@ -100,7 +86,7 @@
                 <div class="col-md-1 col-sm-2 col-xs-2 no-padding-right">
                     <button ng-click="vm.filterVehicules()" type="button"
                             class="btn col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding "
-                            style="height: 34px!important; padding-top: 5px!important;" >
+                            style="height: 34px!important; padding-top: 5px!important;">
                         <md-tooltip md-direction="left" class="font-13 bold white-color">Buscar</md-tooltip>
                         <i class="material-icons " style="font-size: 24px!important;">search</i></button>
                 </div>
@@ -113,10 +99,10 @@
                 </div>
             </div>
 
-            <div class="portlet-body fade-in"  infinite-scroll="vm.loadPage(vm.page + 1)"
+            <div class="portlet-body fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
                  infinite-scroll-disabled="vm.page >= vm.links['last']"
                  infinite-scroll-distance="1"
-                 infinite-scroll-container="'.all-content'" >
+                 infinite-scroll-container="'.all-content'">
                 <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
                             text="No hay vehículos registrados" class="margin-top-30"></no-content>
                 <div class="col-md-4 no-padding col-sm-6 col-xs-12   "
@@ -126,16 +112,19 @@
                              md-theme-watch>
                         <md-card-title class="no-padding-bottom">
                             <md-card-title-text>
-                                <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
+                                        <span
+                                            class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
                                 <span class="md-subhead">Filial: {{vehicule.house.housenumber}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div class="md-media-sm card-media">
-                                    <i ng-show="vehicule.type=='Automóvil'" class=" text-center fa fa-car outline-car "
+                                    <i ng-show="vehicule.type=='Automóvil'"
+                                       class=" text-center fa fa-car outline-car "
                                        style="color: {{vehicule.color}};font-size:45px!important;padding-top: 30px;"
                                        aria-hidden="true ">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Automóvil
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                            Automóvil
                                         </md-tooltip>
 
                                     </i>
@@ -143,7 +132,8 @@
                                        class=" text-center fa fa-motorcycle outline "
                                        style="color: {{vehicule.color}}; font-size:45px!important;padding-top: 30px;"
                                        aria-hidden="true ">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Motocicleta
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                            Motocicleta
                                         </md-tooltip>
 
                                     </i>
@@ -157,7 +147,8 @@
                                 <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
                                            ng-click="$mdMenu.open($event)" style="padding-top: 7px!important">
                                     <i class="material-icons" style="color:#999;">
-                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                            Opciones
                                         </md-tooltip>
                                         more_vert</i>
                                 </md-button>
@@ -192,18 +183,17 @@
                 </div>
 
             </div>
-
         </div>
-        <md-button ui-sref="vehicule.new" style="position: fixed"
-                   class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
-            <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
-            <md-icon class="white-color">add</md-icon>
-        </md-button>
-    </div>
+    </md-content>
+
+    <md-button ui-sref="vehicule.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+
 
 </div>
-
-
 
 
 

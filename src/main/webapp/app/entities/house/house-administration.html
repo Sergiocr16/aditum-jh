@@ -1,183 +1,204 @@
-<div>
-    <div ng-if="true" style="position:fixed;width:100%;z-index:1" class="background-white">
-        <md-content class="no-padding row background-white" style="margin-top: -15px!important">
-            <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 green-bg-on-xs">
-                <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
-                        ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
-                </md-tab>
-            </md-tabs>
+<div class="row" layout="column" flex>
 
-        </md-content>
-    </div>
 
-    <div class="col-md-12 col-xs-12 no-padding margin-bottom-10" ng-if="vm.houses.length> 0 " style="margin-top: 55px !important">
-        <div class="">
-            <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
-                 id="index-search-bar">
-                <div class="input-icon" style="color:#484848!important;">
-                    <i class="fa fa-search"></i>
-                    <input type="text" class="form-control "
-                           style="background-color: #f5f5f5; border:0px!important; "
-                           placeholder="Buscar casa" ng-model="vm.query.housenumber">
+    <md-content class=" background-white "
+                style="width:100%; margin-top: -16px!important; min-height: 50px!important;">
+        <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
+                 class=" green-bg-on-xs  ">
+            <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
+                    ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
+            </md-tab>
+        </md-tabs>
+
+    </md-content>
+
+    <md-content class="no-padding no-margin" style="background-color: white;">
+
+        <div class="col-md-12 col-xs-12  margin-bottom-10" ng-if="vm.houses.length> 0 "
+             style="margin-top: 15px !important">
+            <div class="">
+                <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
+                     id="index-search-bar">
+                    <div class="input-icon" style="color:#484848!important;">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control "
+                               style="background-color: #f5f5f5; border:0px!important; "
+                               placeholder="Buscar casa" ng-model="vm.query.housenumber">
+                    </div>
                 </div>
+
             </div>
-
         </div>
-    </div>
 
-    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
-         layout-align="space-around center">
-        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
-    </div>
-    <div ng-if="vm.isReady" class=" fade-in"
-         ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }">
+        <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+             layout-align="space-around center">
+            <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+        </div>
+        <div ng-if="vm.isReady" class="col-md-12 col-xs-12 col-sm-12 col-lg-12 fade-in"
+             ng-class="{'portlet light bordered scroll-vertical portlet-fullscreen':vm.expanding }">
 
-        <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
-                    text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
-        <div class="col-md-12 no-padding" ng-if="vm.houses.length!=0">
+            <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
+                        text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
+            <div class="col-md-12 no-padding" ng-if="vm.houses.length!=0">
 
-            <div class="col-md-12 col-xs-12 no-padding">
-                <h3 hide-xs hide-sm hide-md class="caption-subject font-green-sharp font-weight-600 " style="margin-bottom: 0px!important;">Filial
-                    {{vm.house.housenumber}}
-                    <div class="btn-group pull-right">
+                <div class="col-md-12 col-xs-12 no-padding">
+                    <h3 hide-xs hide-sm hide-md class="caption-subject font-green-sharp font-weight-600 "
+                        style="margin-bottom: 0px!important;">Filial
+                        {{vm.house.housenumber}}
+                        <div class="btn-group pull-right">
                     <span style="padding:5px 10px; margin-right:13px;" ng-show="vm.house.isdesocupated == 1"
                           class="label label-sm label-danger bold">
 										Deshabitada </span>
-                        <button class="btn btn-circle btn-icon-only btn-default fullscreen"
-                                style="margin-top:-5px; float:none!important;" ng-click="vm.expand()"><i
-                            class="fa fa-expand" aria-hidden="true"></i></button>
+                            <button class="btn btn-circle btn-icon-only btn-default fullscreen"
+                                    style="margin-top:-5px; float:none!important;" ng-click="vm.expand()"><i
+                                class="fa fa-expand" aria-hidden="true"></i></button>
 
-                    </div>
-                </h3>
+                        </div>
+                    </h3>
 
-                <div class="col-md-12 col-sm-12 no-padding hidden-xs "
-                     style="margin-bottom:20px; ">
-                    <div class="col-md-9 col-sm-9 no-padding gray-font">
-                        <h5 class="text-center font-14"><b>Saldos generales</b></h5>
-                        <div class="col-md-12 col-sm-12 no-padding" style="background-color: #fafafa">
-                            <div class="col-md-4 col-sm-4 ">
-                                <h5 class="text-center font-14" style="font-weight:600">Mantenimiento</h5>
-                                <h5 style="font-weight:600"
-                                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡
-                                    {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                    <div class="col-md-12 col-sm-12 no-padding hidden-xs "
+                         style="margin-bottom:20px; ">
+                        <div class="col-md-9 col-sm-9 no-padding gray-font">
+                            <h5 class="text-center font-14"><b>Saldos generales</b></h5>
+                            <div class="col-md-12 col-sm-12 no-padding" style="background-color: #fafafa">
+                                <div class="col-md-4 col-sm-4 ">
+                                    <h5 class="text-center font-14" style="font-weight:600">Mantenimiento</h5>
+                                    <h5 style="font-weight:600"
+                                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">
+                                        ₡
+                                        {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                                </div>
+                                <div class="col-md-4  col-sm-4">
+                                    <h5 class="text-center font-14" style="font-weight:600">Extraordinarias</h5>
+                                    <h5 style="font-weight:600"
+                                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">
+                                        ₡
+                                        {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                                </div>
+                                <div class="col-md-4  col-sm-4">
+                                    <h5 class="text-center font-14" style="font-weight:600">Áreas comunes</h5>
+                                    <h5 style="font-weight:600"
+                                        class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">
+                                        ₡
+                                        {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                                </div>
                             </div>
-                            <div class="col-md-4  col-sm-4">
-                                <h5 class="text-center font-14" style="font-weight:600">Extraordinarias</h5>
-                                <h5 style="font-weight:600"
-                                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡
-                                    {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
-                            </div>
-                            <div class="col-md-4  col-sm-4">
-                                <h5 class="text-center font-14" style="font-weight:600">Áreas comunes</h5>
-                                <h5 style="font-weight:600"
-                                    class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡
-                                    {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
-                            </div>
+
                         </div>
 
-                    </div>
-
-                    <div class="col-md-3 col-sm-3 no-padding-right">
-                        <h5 class="text-center font-14 gray-font"><b>Adeudos totales</b></h5>
-                        <div class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
-                            <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
-                                {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                        <div class="col-md-3 col-sm-3 no-padding-right">
+                            <h5 class="text-center font-14 gray-font"><b>Adeudos totales</b></h5>
+                            <div
+                                class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
+                                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
+                                    {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12 col-sm-12 no-padding hidden-sm hidden-lg hidden-md gray-font "
-                     style="margin-bottom:20px; ">
-                    <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Saldos generales</b></h5>
+                    <div class="col-md-12 col-sm-12 no-padding hidden-sm hidden-lg hidden-md gray-font "
+                         style="margin-bottom:20px; ">
+                        <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Saldos generales</b></h5>
 
-                    <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;" >
-                        <h5 class="text-center font-14" style="font-weight:bold">Mantenimiento</h5>
-                        <h5 style="font-weight:bold"
-                            class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡
-                            {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
-                    </div>
-                    <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;" >
-                        <h5 class="text-center font-14" style="font-weight:bold">Extraordinarias</h5>
-                        <h5 style="font-weight:bold"
-                            class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡
-                            {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
-                    </div>
-                    <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;" >
-                        <h5 class="text-center font-14" style="font-weight:bold">Áreas comunes</h5>
-                        <h5 style="font-weight:bold"
-                            class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡
-                            {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
-                    </div>
+                        <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Mantenimiento</h5>
+                            <h5 style="font-weight:bold"
+                                class="text-center {{vm.defineBalanceClass(houseSelected.balance.maintenance)}}">₡
+                                {{houseSelected.balance.maintenance | currency : "" : 0}}</h5>
+                        </div>
+                        <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Extraordinarias</h5>
+                            <h5 style="font-weight:bold"
+                                class="text-center {{vm.defineBalanceClass(houseSelected.balance.extraordinary)}}">₡
+                                {{houseSelected.balance.extraordinary | currency : "" : 0}}</h5>
+                        </div>
+                        <div class="col-xs-12 margin-bottom-20" style="background-color: #fafafa;">
+                            <h5 class="text-center font-14" style="font-weight:bold">Áreas comunes</h5>
+                            <h5 style="font-weight:bold"
+                                class="text-center {{vm.defineBalanceClass(houseSelected.balance.commonAreas)}}">₡
+                                {{houseSelected.balance.commonAreas | currency : "" : 0}}</h5>
+                        </div>
 
 
-                    <div class="col-md-3 col-sm-3 no-padding">
-                        <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Adeudos totales</b></h5>
-                        <div class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
-                            <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
-                                {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                        <div class="col-md-3 col-sm-3 no-padding">
+                            <h5 class="text-center font-14 caption-subject font-green-sharp "><b>Adeudos totales</b>
+                            </h5>
+                            <div
+                                class="col-md-12 col-sm-12 {{vm.defineBalanceTotalClass(houseSelected.balance.total)}}">
+                                <h4 class="text-center {{vm.defineBalanceClass(houseSelected.balance.total)}}"><b>₡
+                                    {{houseSelected.balance.total | currency : "" : 0}}</b></h4>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="little-container col-md-12 col-sm-12 font-14  hidden-xs gray-font" style="color: #4c4c4c!important;">
-                    <div class="col-md-4 col-sm-4">
-                        <b>Área m2:</b> {{vm.house.squareMeters}}
+                    <div class="little-container col-md-12 col-sm-12 font-14  hidden-xs gray-font"
+                         style="color: #4c4c4c!important;">
+                        <div class="col-md-4 col-sm-4">
+                            <b>Área m2:</b> {{vm.house.squareMeters}}
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+                        </div>
+                        <div class="col-md-4  col-sm-4">
+                            <b>Número de telefono: </b>
+                            <span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>
+                            <span
+                                ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
+                        </div>
                     </div>
-                    <div class="col-md-4  col-sm-4">
-                        <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+                    <div
+                        class="little-container col-md-12 col-sm-12 font-14 hidden-md hidden-lg hidden-sm padding-top-10"
+                        style="color: #4c4c4c!important;">
+                        <div class="col-md-4 col-sm-4 margin-bottom-10">
+                            <b>Área m2:</b> {{vm.house.squareMeters}}
+                        </div>
+                        <div class="col-md-4  col-sm-4 margin-bottom-10">
+                            <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
+                        </div>
+                        <div class="col-md-4  col-sm-4 margin-bottom-10">
+                            <b>Número de telefono: </b>
+                            <span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>
+                            <span
+                                ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
+                        </div>
                     </div>
-                    <div class="col-md-4  col-sm-4">
-                        <b>Número de telefono: </b>
-                        <span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>
-                        <span
-                            ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
-                    </div>
-                </div>
-                <div class="little-container col-md-12 col-sm-12 font-14 hidden-md hidden-lg hidden-sm padding-top-10" style="color: #4c4c4c!important;">
-                    <div class="col-md-4 col-sm-4 margin-bottom-10">
-                        <b>Área m2:</b> {{vm.house.squareMeters}}
-                    </div>
-                    <div class="col-md-4  col-sm-4 margin-bottom-10">
-                        <b>Cuota:</b> ₡ {{vm.house.due | currency : "" : 0}}
-                    </div>
-                    <div class="col-md-4  col-sm-4 margin-bottom-10">
-                        <b>Número de telefono: </b>
-                        <span ng-show="vm.house.extension==undefined || vm.house.extension==''">No definido</span>
-                        <span
-                            ng-hide="vm.house.extension==undefined || vm.house.extension==''">{{vm.house.extension}}</span>
-                    </div>
-                </div>
-                <div style="padding-top: 0 !important" class="tab_container" flex layout="row">
-                    <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"
-                           ui-sref="houseAdministration.accountStatus"><i
-                        class="material-icons material-icons-with-text icon-finanzes">account_balance</i> <span hide-xs
-                                                                                                                hide-sm
-                                                                                                                hide-md>Estado de cuenta</span></label>
-                    <label flex ng-class="{'active-tab-charge' : $state.includes('houseAdministration.chargePerHouse')}"
-                           ui-sref="houseAdministration.chargePerHouse"><i
-                        class="material-icons material-icons-with-text icon-finanzes">list</i> <span hide-xs hide-sm
+                    <div style="padding-top: 0 !important" class="tab_container" flex layout="row">
+                        <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.accountStatus')}"
+                               ui-sref="houseAdministration.accountStatus"><i
+                            class="material-icons material-icons-with-text icon-finanzes">account_balance</i> <span
+                            hide-xs
+                            hide-sm
+                            hide-md>Estado de cuenta</span></label>
+                        <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.chargePerHouse')}"
+                               ui-sref="houseAdministration.chargePerHouse"><i
+                            class="material-icons material-icons-with-text icon-finanzes">list</i> <span hide-xs hide-sm
                                                                                                          hide-md>Cuotas</span></label>
-                    <label flex
-                           ng-class="{'active-tab-charge' : $state.includes('houseAdministration.paymentsPerHouse')}"
-                           ui-sref="houseAdministration.paymentsPerHouse"><i
-                        class="material-icons material-icons-with-text icon-finanzes">payment</i> <span hide-xs hide-sm
-                                                                                                        hide-md>Pagos</span></label>
-                    <label flex
-                           ng-class="{'active-tab-charge' : $state.includes('houseAdministration.residentsByHouse')}"
-                           ui-sref="houseAdministration.residentsByHouse"><i
-                        class="material-icons material-icons-with-text icon-finanzes">people</i> <span hide-xs hide-sm
-                                                                                                       hide-md>Residentes</span></label>
-                    <label flex
-                           ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}"
-                           ui-sref="houseAdministration.vehiculesByHouse"><i
-                        class="material-icons material-icons-with-text icon-finanzes">directions_car</i> <span hide-xs
-                                                                                                               hide-sm
-                                                                                                               hide-md>Vehículos</span></label>
+                        <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.paymentsPerHouse')}"
+                               ui-sref="houseAdministration.paymentsPerHouse"><i
+                            class="material-icons material-icons-with-text icon-finanzes">payment</i> <span hide-xs
+                                                                                                            hide-sm
+                                                                                                            hide-md>Pagos</span></label>
+                        <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.residentsByHouse')}"
+                               ui-sref="houseAdministration.residentsByHouse"><i
+                            class="material-icons material-icons-with-text icon-finanzes">people</i> <span hide-xs
+                                                                                                           hide-sm
+                                                                                                           hide-md>Residentes</span></label>
+                        <label flex
+                               ng-class="{'active-tab-charge' : $state.includes('houseAdministration.vehiculesByHouse')}"
+                               ui-sref="houseAdministration.vehiculesByHouse"><i
+                            class="material-icons material-icons-with-text icon-finanzes">directions_car</i> <span
+                            hide-xs
+                            hide-sm
+                            hide-md>Vehículos</span></label>
+                    </div>
                 </div>
-            </div>
-            <div ui-view class="col-md-12 no-padding col-xs-12" style="overflow-y: auto" layout="column">
-                <!-- First Level -->
+                <div ui-view class="col-md-12 no-padding col-xs-12" style="overflow-y: auto" layout="column">
+                    <!-- First Level -->
+                </div>
             </div>
         </div>
-    </div>
+    </md-content>
 </div>
-</div>
+
