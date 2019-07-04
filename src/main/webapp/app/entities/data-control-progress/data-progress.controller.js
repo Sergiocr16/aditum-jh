@@ -37,7 +37,6 @@
                     "baseColor": "",
                     "colors": [
                         "#F3565D",
-                        "#4d90d6",
                         "#dfba49",
                         "#45B6AF",
                         "#32363d"
@@ -54,13 +53,10 @@
                     },
                     "titles": [],
                     "dataProvider": [{
-                            "category": "Sin redimir",
+                            "category": "Sin ingreso de datos",
                             "column-1": noRedimido
                         },
-                        {
-                            "category": "Redimido",
-                            "column-1": redimido
-                        },
+
                         {
                             "category": "En progreso",
                             "column-1": enProgreso
@@ -77,16 +73,14 @@
                 });
             }
             var redimido = 0;
-            var sinRedimir = 0;
             var enProgreso = 0;
             var listo = 0;
             var deshabitada = 0;
 
 
-            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);
+            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir,enProgreso, listo,deshabitada);
         }
         function residentsEnabledGraphInit() {
-            var redimido = 0;
             var sinRedimir = 0;
             var enProgreso = 0;
             var listo = 0;
@@ -98,9 +92,6 @@
                     switch (vm.houses[i].codeStatus) {
                         case 0:
                             sinRedimir++;
-                            break;
-                        case 1:
-                            redimido++;
                             break;
                         case 2:
                             enProgreso++;
@@ -119,13 +110,9 @@
             }
             var rows = [];
             var colums = [];
-            colums.push({"v": "Sin redimir"});
+            colums.push({"v": "Sin ingresar información"});
             colums.push({"v": sinRedimir});
             rows.push({"c": colums})
-            var colums = [];
-            colums.push({"v": "Redimido"});
-            colums.push({"v": redimido});
-            rows.push({"c": colums});
             var colums = [];
             colums.push({"v": "En progreso"});
             colums.push({"v": enProgreso});
@@ -148,11 +135,6 @@
                             "id": "enable",
                             "label": "enable",
                             "type": "string"
-                        },
-                        {
-                            "id": "sin-redimir-id",
-                            "label": "Sin redimir",
-                            "type": "number"
                         },
                         {
                             "id": "redimido-id",
@@ -190,7 +172,7 @@
                         easing: 'out',
                     },
                     "displayExactValues": true,
-                    colors: ['#f44336', '#3949ab', '#ffc107', '#4caf50', '#78909c']
+                    colors: ['#f44336',  '#ffc107', '#4caf50', '#78909c']
                 }
             }
         }
@@ -222,7 +204,7 @@
         };
         function onSaveSuccess() {
 
-            Modal.toast("El estado del ingreso de datos se actualizó correctamente.");
+
             vm.loadHouses(globalCompany.getId());
         }
         function onSaveError() {
