@@ -41,15 +41,15 @@
         <div class="slide-box slide-toggle-js col-md-12 no-padding" ng-if="vm.showFilterDiv">
 
             <!--<md-input-container class=" no-margin" has-authority="ROLE_MANAGER"-->
-                                <!--ng-if="vm.houses.length> 0 || vm.house!='-1'">-->
+            <!--ng-if="vm.houses.length> 0 || vm.house!='-1'">-->
 
-                <!--<md-select ng-model="vm.filterStateHouseTemporal" ng-change="vm.changeFilterStateHouse(vm.filterStateHouseTemporal)">-->
-                    <!--<md-option ng-value="-1" selected="true">Todas las filiales</md-option>-->
-                    <!--<md-option ng-repeat="house in vm.houses  track by house.id"-->
-                               <!--ng-model="vm.filterHouse" ng-value="house">-->
-                        <!--{{house.housenumber}}-->
-                    <!--</md-option>-->
-                <!--</md-select>-->
+            <!--<md-select ng-model="vm.filterStateHouseTemporal" ng-change="vm.changeFilterStateHouse(vm.filterStateHouseTemporal)">-->
+            <!--<md-option ng-value="-1" selected="true">Todas las filiales</md-option>-->
+            <!--<md-option ng-repeat="house in vm.houses  track by house.id"-->
+            <!--ng-model="vm.filterHouse" ng-value="house">-->
+            <!--{{house.housenumber}}-->
+            <!--</md-option>-->
+            <!--</md-select>-->
             <!--</md-input-container>-->
             <md-input-container class=" no-margin" has-authority="ROLE_MANAGER"
             >
@@ -89,11 +89,12 @@
                     <div class="col-xs-6" ng-if="house.isdesocupated==0">
                         <span style="height:100%!important;background-color: #f44336" ng-if="house.codeStatus == 0"
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm"
-                              aria-hidden="false">Código sin redimir </span>
+                              aria-hidden="false">Sin ingresar datos</span>
                         <span style="height:100%!important;background-color: #3949ab" ng-if="house.codeStatus == 1"
                               class="padding-10  col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm "
                               aria-hidden="false" style="background-color:#4d90d6!important">Código redimido </span>
-                        <span style="height:100%!important;background-color: #ffc107" ng-if="house.codeStatus == 2"
+                        <span style="height:100%!important;background-color: #ffc107"
+                              ng-if="house.codeStatus == 2 || house.codeStatus == 3 || house.codeStatus == 4  "
                               class="padding-10 col-lg-12 col-md-12 col-sm-12 col-xs-12 label label-sm "
                               aria-hidden="false">Ingreso de datos en progreso </span>
                         <span style="height:100%!important;background-color: #4caf50" ng-if="house.codeStatus == 5"
@@ -116,6 +117,7 @@
                             <th class="text-center">Número de filial</th>
                             <th class="text-center">Código de ingreso</th>
                             <th class="text-center">Progreso de ingreso de datos</th>
+                            <th class="text-center">Marcar progreso</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -125,24 +127,50 @@
                             <td ng-if="house.isdesocupated==1" class="text-center">
 
                                 <span style="padding:5px; font-size: 15px!important;;background-color: #78909c"
-                                      ng-if="house.codeStatus == 0"
-                                      class="label label-sm  col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Deshabitada</span>
+
+                                      class="label label-sm bold  col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Deshabitada</span>
                             </td>
-                            <td ng-if="house.isdesocupated==0" class="text-center">
+                            <td ng-if="house.isdesocupated==0" class="text-center ">
                                 <span style="padding:5px; font-size: 15px!important;;background-color: #f44336"
                                       ng-if="house.codeStatus == 0"
-                                      class="label label-sm  col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Código sin redimir</span>
+                                      class="label label-sm bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Sin ingresar información</span>
                                 <span style="padding:5px; font-size: 15px!important;background-color: #3949ab"
                                       ng-if="house.codeStatus == 1"
-                                      class="label label-sm col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Código redimido</span>
+                                      class="label label-sm  bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Código redimido</span>
                                 <span style="padding:5px; font-size: 15px!important;background-color: #ffc107"
-                                      ng-if="house.codeStatus == 2"
-                                      class="label label-sm l col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Ingreso de datos en progreso</span>
+                                      ng-if="house.codeStatus == 2 || house.codeStatus == 3 || house.codeStatus == 4  "
+                                      class="label label-sm l bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Ingreso de datos en progreso</span>
                                 <span style="padding:5px; font-size: 15px!important;background-color: #4caf50"
                                       ng-if="house.codeStatus == 5"
-                                      class="label label-sm  col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Todo Listo</span>
+                                      class="label label-sm bold col-lg-offset-3 col-lg-6 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-3 col-xs-6">Información ingresada</span>
                             </td>
-
+                            <td class="text-center">
+                                <a ng-if="house.isdesocupated==0" class="light-gray-font"
+                                   ng-click="vm.changeStatus(house,5)">
+                                    <i style="color:#21a647; font-size: 24px; "
+                                       class="material-icons">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Marcar como
+                                            "lista"
+                                        </md-tooltip>
+                                        check_circle</i>
+                                </a>
+                                <a ng-if="house.isdesocupated==0" class="light-gray-font"
+                                   ng-click="vm.changeStatus(house,2)">
+                                    <i style="color:#FDD835; font-size: 24px; margin-right: 8px; margin-left: 8px;"
+                                       class="material-icons">
+                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">Marcar como
+                                            "en progreso"
+                                        </md-tooltip>
+                                        report_problem</i>
+                                </a>
+                                <a ng-if="house.isdesocupated==0" class="light-gray-font" ng-click="vm.changeStatus(house,0)">
+                                    <i style="color:#c02d00; font-size: 24px;" class="material-icons">
+                                        <md-tooltip md-direction="left" class="font-13 bold white-color">Marcar como
+                                            "sin ingresar información"
+                                        </md-tooltip>
+                                        cancel</i>
+                                </a>
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -152,13 +180,13 @@
     </div>
 </div>
 
-<md-button ng-click="vm.exportarCodigos()" ng-show="vm.houses.length>0"
-           class="md-fab md-fab-bottom-right red-button-oficial"
-           style="position: fixed;"
-           aria-label="Add new">
-    <md-tooltip md-direction="left" class="font-13 bold white-color">Exportar
-        códigos a .txt
-    </md-tooltip>
-    <md-icon class="white-color">cloud_download</md-icon>
-</md-button>
+<!--<md-button ng-click="vm.exportarCodigos()" ng-show="vm.houses.length>0"-->
+           <!--class="md-fab md-fab-bottom-right red-button-oficial"-->
+           <!--style="position: fixed;"-->
+           <!--aria-label="Add new">-->
+    <!--<md-tooltip md-direction="left" class="font-13 bold white-color">Exportar-->
+        <!--códigos a .txt-->
+    <!--</md-tooltip>-->
+    <!--<md-icon class="white-color">cloud_download</md-icon>-->
+<!--</md-button>-->
 
