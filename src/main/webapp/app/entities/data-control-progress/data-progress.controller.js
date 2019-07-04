@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DataProgressController', DataProgressController);
 
-    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage','globalCompany'];
+    DataProgressController.$inject = ['Modal','$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage','globalCompany'];
 
-    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
+    function DataProgressController(Modal,$rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
 
         var vm = this;
         vm.isReady = false;
@@ -16,7 +16,7 @@
         vm.house ='-1';
         vm.filterStateTemporal = "-1";
         vm.filterState = "";
-        loadCompanies()
+        loadCompanies();
         function loadCompanies() {
             Company.query({}).$promise.then(onSuccessCompanies);
             function onSuccessCompanies(data, headers) {
@@ -37,7 +37,6 @@
                     "baseColor": "",
                     "colors": [
                         "#F3565D",
-                        "#4d90d6",
                         "#dfba49",
                         "#45B6AF",
                         "#32363d"
@@ -54,13 +53,10 @@
                     },
                     "titles": [],
                     "dataProvider": [{
-                            "category": "Sin redimir",
+                            "category": "Sin ingreso de datos",
                             "column-1": noRedimido
                         },
-                        {
-                            "category": "Redimido",
-                            "column-1": redimido
-                        },
+
                         {
                             "category": "En progreso",
                             "column-1": enProgreso
@@ -77,16 +73,14 @@
                 });
             }
             var redimido = 0;
-            var sinRedimir = 0;
             var enProgreso = 0;
             var listo = 0;
             var deshabitada = 0;
 
 
-            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir, redimido, enProgreso, listo,deshabitada);
+            handleAnimatedPieChart("codigos-pie-chart", "Códigos de ingreso", sinRedimir,enProgreso, listo,deshabitada);
         }
         function residentsEnabledGraphInit() {
-            var redimido = 0;
             var sinRedimir = 0;
             var enProgreso = 0;
             var listo = 0;
@@ -99,10 +93,13 @@
                         case 0:
                             sinRedimir++;
                             break;
-                        case 1:
-                            redimido++;
-                            break;
                         case 2:
+                            enProgreso++;
+                            break;
+                        case 3:
+                            enProgreso++;
+                            break;
+                        case 4:
                             enProgreso++;
                             break;
                         case 5:
@@ -113,13 +110,9 @@
             }
             var rows = [];
             var colums = [];
-            colums.push({"v": "Sin redimir"});
+            colums.push({"v": "Sin ingresar información"});
             colums.push({"v": sinRedimir});
             rows.push({"c": colums})
-            var colums = [];
-            colums.push({"v": "Redimido"});
-            colums.push({"v": redimido});
-            rows.push({"c": colums});
             var colums = [];
             colums.push({"v": "En progreso"});
             colums.push({"v": enProgreso});
@@ -142,11 +135,6 @@
                             "id": "enable",
                             "label": "enable",
                             "type": "string"
-                        },
-                        {
-                            "id": "sin-redimir-id",
-                            "label": "Sin redimir",
-                            "type": "number"
                         },
                         {
                             "id": "redimido-id",
@@ -184,7 +172,7 @@
                         easing: 'out',
                     },
                     "displayExactValues": true,
-                    colors: ['#f44336', '#3949ab', '#ffc107', '#4caf50', '#78909c']
+                    colors: ['#f44336',  '#ffc107', '#4caf50', '#78909c']
                 }
             }
         }
@@ -206,8 +194,23 @@
                 residentsEnabledGraphInit()
                 vm.isReady = true;
             }
-        }
+        };
 
+        vm.changeStatus = function(house, status) {
+            house.codeStatus = status;
+
+
+            House.update(house, onSaveSuccess, onSaveError);
+        };
+        function onSaveSuccess() {
+
+
+            vm.loadHouses(globalCompany.getId());
+        }
+        function onSaveError() {
+            Modal.toast("Un error inespesperado sucedió.");
+            vm.isReady = true;
+        }
         function saveTextAsFile(data, filename) {
 
             if (!data) {

@@ -14,7 +14,7 @@
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
                     <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                         <label>Número de filial</label>
-                        <md-select ng-model="vm.vehicule.houseId" required>
+                        <md-select ng-model="vm.vehicule.houseId" ng-change="vm.changeHouse(vm.vehicule.houseId)" required>
                             <md-option ng-repeat="house in vm.houses" ng-value="house.id">
                                 {{house.housenumber}}
                             </md-option>

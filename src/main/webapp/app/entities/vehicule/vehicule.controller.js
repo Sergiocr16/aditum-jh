@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VehiculeController', VehiculeController);
 
-    VehiculeController.$inject = ['$scope', '$mdDialog', '$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany', 'Modal'];
+    VehiculeController.$inject = ['$localStorage','$scope', '$mdDialog', '$state', 'CommonMethods', '$rootScope', 'Vehicule', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'WSVehicle', 'WSDeleteEntity', 'globalCompany', 'Modal'];
 
-    function VehiculeController($scope, $mdDialog, $state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany, Modal) {
+    function VehiculeController($localStorage,$scope, $mdDialog, $state, CommonMethods, $rootScope, Vehicule, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, WSVehicle, WSDeleteEntity, globalCompany, Modal) {
         $rootScope.active = "vehicules";
         var enabledOptions = true;
         var vm = this;
@@ -17,7 +17,7 @@
         vm.reverse = pagingParams.ascending;
         vm.radioEnablestatus = true;
         vm.transition = transition;
-        $rootScope.mainTitle = "Vehículos";
+        $rootScope.mainTitle = "Vehículos de todas las filiales";
         vm.isReady = false;
         vm.page = 0;
         vm.links = {
@@ -43,7 +43,22 @@
             $mdDialog.hide();
         };
         vm.closeAndFilter = function () {
-            vm.filterVehicules();
+            if(vm.filter.houseId!=="empty"){
+                House.get({
+                    id: vm.filter.houseId
+                }, function (house) {
+                    $localStorage.infoHouseNumber = house;
+                    vm.infoHouseVehicule = house;
+                    $rootScope.mainTitle = "Vehículos de la filial " + house.housenumber;
+                    vm.filterVehicules();
+                });
+            }else{
+                $rootScope.mainTitle = "Vehículos de todas las filiales" ;
+                vm.filterVehicules();
+            }
+
+
+
             $mdDialog.hide();
         };
         vm.filterVehicules = function () {
@@ -54,7 +69,32 @@
             };
             vm.vehicules = [];
             loadVehicules();
-        }
+        };
+        vm.changeHouse = function (house,i) {
+            vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            $localStorage.infoHouseNumber = house;
+            vm.infoHouseVehicule = house;
+
+            if(house!==undefined){
+                vm.selectedIndex = i+1;
+                vm.filter.houseId = house.id;
+                $rootScope.mainTitle = "Vehículos de la filial " + house.housenumber;
+            }else{
+                $rootScope.mainTitle = "Vehículos de todas las filiales" ;
+                vm.selectedIndex = 0;
+                vm.filter.houseId = house;
+            }
+
+
+            vm.vehicules = [];
+            loadVehicules();
+
+        };
+
         vm.itemsPerPage = 12;
         vm.vehicules = [];
         vm.editVehicle = function (id) {
@@ -81,7 +121,7 @@
                 vm.titleDisabledButton = "Habilitar vehículo";
                 vm.color = "green";
             }
-        }
+        };
         loadHouses();
 
         function loadHouses() {
@@ -89,7 +129,12 @@
 
             function onSuccessHouses(data, headers) {
                 vm.houses = data;
-                loadVehicules();
+                if($localStorage.infoHouseNumber!==undefined || $localStorage.infoHouseNumber!==null){
+                    vm.changeHouse($localStorage.infoHouseNumber,1);
+                }else{
+                    loadVehicules();
+                }
+
             }
         }
 
@@ -126,6 +171,14 @@
                     vm.vehicules.push(data[i])
                 }
                 vm.isReady = true;
+                angular.forEach(vm.houses, function (value, key) {
+                    if ($localStorage.infoHouseNumber != undefined) {
+                        if(value.id == $localStorage.infoHouseNumber.id ){
+                            vm.selectedIndex = key+1;
+                            vm.filter.houseId = value.id;
+                        }
+                    }
+                });
             }
 
             function onError(error) {

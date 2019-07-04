@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentDialogController', ResidentDialogController);
 
-    ResidentDialogController.$inject = ['$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
+    ResidentDialogController.$inject = ['$localStorage','$state', '$timeout', '$scope', '$rootScope', '$stateParams', 'CommonMethods', 'previousState', 'DataUtils', '$q', 'entity', 'Resident', 'User', 'Company', 'House', 'Principal', 'companyUser', 'WSResident', 'SaveImageCloudinary', 'PadronElectoral', 'Modal', 'globalCompany'];
 
-    function ResidentDialogController($state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
+    function ResidentDialogController($localStorage,$state, $timeout, $scope, $rootScope, $stateParams, CommonMethods, previousState, DataUtils, $q, entity, Resident, User, Company, House, Principal, companyUser, WSResident, SaveImageCloudinary, PadronElectoral, Modal, globalCompany) {
         $rootScope.active = "residents";
         var vm = this;
         vm.isReady = false;
@@ -27,6 +27,7 @@
         vm.previousState = previousState.name;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
+        vm.titleHouse = "";
         vm.save = save;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
@@ -92,21 +93,45 @@
             if (vm.resident.isOwner == 1) {
                 vm.resident.isOwner = true;
             }
+
         } else {
-            vm.title = "Registrar usuario";
+            if($localStorage.infoHouseNumber!==undefined){
+                vm.resident.houseId = $localStorage.infoHouseNumber.id;
+                vm.titleHouse = " filial " + $localStorage.infoHouseNumber.housenumber;
+            }
+            vm.title = "Registrar usuario ";
             vm.button = "Registrar";
         }
-        $rootScope.mainTitle = vm.title;
+        $rootScope.mainTitle = vm.title + vm.titleHouse;
 
 
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
 
         function onSuccessHouses(data, headers) {
             vm.houses = data;
+            if (vm.resident.id !== null) {
+                angular.forEach(vm.houses, function (value, key) {
+                    if(value.id == vm.resident.houseId){
+                        vm.titleHouse = " filial " + value.housenumber;
+                        $rootScope.mainTitle = vm.title + vm.titleHouse;
+                    }
+                });
+            }
+
+
             vm.isReady = true;
         }
 
+        vm.changeHouse = function(houseId){
+            angular.forEach(vm.houses, function (value, key) {
+                if(value.id == houseId){
+                    vm.titleHouse = " filial " + value.housenumber;
+                    $localStorage.infoHouseNumber = value;
+                    $rootScope.mainTitle = vm.title + vm.titleHouse;
+                }
+            });
 
+        };
         function haswhiteCedula(s) {
             return /\s/g.test(s);
         }

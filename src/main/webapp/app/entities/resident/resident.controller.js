@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('ResidentController', ResidentController);
 
-    ResidentController.$inject = ['$scope','$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany','$mdDialog'];
+    ResidentController.$inject = ['$localStorage','$scope','$state', 'DataUtils', 'Resident', 'User', 'CommonMethods', 'House', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', 'Company', 'MultiCompany', '$rootScope', 'WSResident', 'WSDeleteEntity', 'Modal', 'globalCompany','$mdDialog'];
 
-    function ResidentController($scope,$state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany,$mdDialog) {
+    function ResidentController($localStorage,$scope,$state, DataUtils, Resident, User, CommonMethods, House, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, Company, MultiCompany, $rootScope, WSResident, WSDeleteEntity, Modal, globalCompany,$mdDialog) {
         $rootScope.active = "residents";
         var vm = this;
 
@@ -25,7 +25,20 @@
             $mdDialog.hide();
         };
         vm.closeAndFilter = function() {
-            vm.filterResidents();
+            if(vm.filter.houseId!=="empty"){
+                House.get({
+                    id: vm.filter.houseId
+                }, function (house) {
+                    $localStorage.infoHouseNumber = house;
+                    vm.infoHouseResident= house;
+                    $rootScope.mainTitle = "Usuarios de la filial " + house.housenumber;
+                    vm.filterResidents();
+                });
+            }else{
+                $rootScope.mainTitle = "Usuarios de todas las filiales" ;
+                vm.filterResidents();
+            }
+
             $mdDialog.hide();
         };
         vm.filterResidents = function(){
@@ -36,8 +49,32 @@
             };
             vm.residents= [];
             loadResidents();
-        }
+        };
+        vm.changeHouse = function (house,i) {
+            vm.isReady = false;
+            vm.page = 0;
+            vm.links = {
+                last: 0
+            };
+            vm.residents= [];
+            $localStorage.infoHouseNumber = house;
+            vm.infoHouseResident = house;
 
+            if(house!==undefined){
+                vm.selectedIndex = i+1;
+                vm.filter.houseId = house.id;
+                $rootScope.mainTitle = "Usuarios de la filial " + house.housenumber;
+            }else{
+                $rootScope.mainTitle = "Usuarios de todas las filiales" ;
+                vm.selectedIndex = 0;
+                vm.filter.houseId = house;
+            }
+
+
+            vm.vehicules = [];
+            loadResidents();
+
+        };
         vm.enabledOptions = true;
         vm.page = 0;
         vm.links = {
@@ -49,27 +86,29 @@
             houseId: "empty",
             name:" ",
             enabled: 1
-        }
+        };
         vm.residents = [];
         vm.radiostatus = true;
-        $rootScope.mainTitle = "Usuarios autorizados";
+        $rootScope.mainTitle = "Usuarios de todas las filiales";
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.showFilterDiv = false;
         vm.consulting = false;
+
         vm.editResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident.edit', {
                 id: encryptedId
             })
-        }
+        };
 
         vm.detailResident = function (id) {
             var encryptedId = CommonMethods.encryptIdUrl(id)
             $state.go('resident-detail', {
                 id: encryptedId
             })
-        }
+        };
+
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -77,6 +116,7 @@
         vm.openFile = DataUtils.openFile;
         vm.byteSize = DataUtils.byteSize;
         vm.filterAuthorized = "";
+
         vm.setAuthorizedView = function (val) {
             vm.filterAuthorized = val;
         }
@@ -113,7 +153,7 @@
                 vm.titleDisabledButton = "Habilitar usuario";
                 vm.color = "green";
             }
-        }
+        };
 
         function loadPage(page) {
             vm.page = page;
@@ -122,8 +162,13 @@
         House.query({companyId: globalCompany.getId()}).$promise.then(onSuccessHouses);
         function onSuccessHouses(data, headers) {
             vm.houses = data;
+            if($localStorage.infoHouseNumber!==undefined || $localStorage.infoHouseNumber!==null){
+                vm.changeHouse($localStorage.infoHouseNumber,1);
+            }else{
+                loadResidents();
+            }
         }
-        loadResidents();
+
 
 
         function loadResidents() {
@@ -174,8 +219,17 @@
             for (var i = 0; i < data.length; i++) {
                 vm.residents.push(data[i])
             }
+            angular.forEach(vm.houses, function (value, key) {
+                if ($localStorage.infoHouseNumber != null || $localStorage.infoHouseNumber != undefined) {
+                    if(value.id == $localStorage.infoHouseNumber.id ){
+                        vm.selectedIndex = key+1;
+                        vm.filter.houseId = value.id;
+                    }
+                }
+            });
             vm.isReady = true;
             vm.isReady2 = true;
+
         }
 
         function onError(error) {

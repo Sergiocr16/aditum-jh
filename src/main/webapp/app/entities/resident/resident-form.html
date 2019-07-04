@@ -7,7 +7,7 @@
      class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
     <md-toolbar class="form-title" hide-sm hide-xs>
         <h2 ng-if="vm.resident.userLogin===null || vm.resident.id === null" class="caption-subject bold uppercase">
-            {{vm.title }}</h2>
+            {{vm.title }} {{vm.titleHouse}}</h2>
         <h2 ng-if="vm.resident.userLogin!==null && vm.resident.id !== null" class="caption-subject bold uppercase">
             Editar información [{{vm.resident.userLogin}}]</h2>
     </md-toolbar>
@@ -127,7 +127,7 @@
 
                         <md-input-container class="md-block" has-authority="ROLE_MANAGER">
                             <label>Número de filial</label>
-                            <md-select ng-model="vm.resident.houseId" required>
+                            <md-select ng-model="vm.resident.houseId" ng-change="vm.changeHouse(vm.resident.houseId)" required>
                                 <md-option ng-repeat="house in vm.houses" ng-value="house.id">
                                     {{house.housenumber}}
                                 </md-option>
