@@ -47,14 +47,18 @@
             "showMethod": "slideDown",
             "hideMethod": "fadeOut"
         }
-        loadAll();
-        loadHouses();
-        loadDestinies();
-        loadEmergencies();
-        loadOfficers();
-        subscribe();
-
-
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_OFFICER":
+                    loadAll();
+                    loadHouses();
+                    loadDestinies();
+                    loadEmergencies();
+                    loadOfficers();
+                    subscribe();
+                    break;
+            }
+        });
         function loadDestinies() {
             Destinies.query(function (destinies) {
                 formatDestinies(destinies);
@@ -605,7 +609,6 @@
             $rootScope.id_number = undefined;
             $rootScope.id_vehicule = undefined;
             $rootScope.mainTitle = "Puerta de acceso";
-
             $state.go('main-access-door')
         }
         vm.registerVisitor = function () {

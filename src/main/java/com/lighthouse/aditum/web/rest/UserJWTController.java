@@ -45,7 +45,11 @@ public class UserJWTController {
 
     private JuntaDirectivaAccountService juntaDirectivaAccountService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService) {
+    private MacroOfficerAccountService macroOfficerAccountService;
+
+    private MacroCondominiumService macroCondominiumService;
+
+    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService, MacroOfficerAccountService macroOfficerAccountService, MacroCondominiumService macroCondominiumService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -54,6 +58,8 @@ public class UserJWTController {
         this.managerService = managerService;
         this.residentService = residentService;
         this.juntaDirectivaAccountService = juntaDirectivaAccountService;
+        this.macroOfficerAccountService = macroOfficerAccountService;
+        this.macroCondominiumService = macroCondominiumService;
     }
 
     @PostMapping("/authenticate")
@@ -100,6 +106,12 @@ public class UserJWTController {
                     case AuthoritiesConstants.JD:
                         JuntaDirectivaAccountDTO juntaDirectivaAccountDTO = juntaDirectivaAccountService.findOneByUserId(user.getId());
                         if(this.companyService.findOne(juntaDirectivaAccountDTO.getCompanyId()).getActive() == 1){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.OFFICERMACRO:
+                        MacroOfficerAccountDTO macroOfficerAccountDTO = macroOfficerAccountService.findOneByUserId(user.getId());
+                        if(this.macroCondominiumService.findOne(macroOfficerAccountDTO.getMacroCondominiumId()).isEnabled()){
                             activeCompany = true;
                         }
                         break;

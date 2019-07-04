@@ -2,7 +2,7 @@
     <div ng-if="true" style="position:fixed;width:100%;z-index:1" class="background-white">
         <md-content class="no-padding row background-white" style="margin-top: -15px!important">
             <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
-                     class="padding-left-10 green-bg-on-xs">
+                     class="padding-left-10 green-bg-on-xs" md-stretch-tabs="auto">
                 <md-tab ng-repeat="house in vm.houses | filter:vm.query track by $index"
                         ng-click="vm.changeHouse(house,$index)" label="{{house.housenumber}}">
                 </md-tab>

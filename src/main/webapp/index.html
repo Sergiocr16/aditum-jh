@@ -56,16 +56,15 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO"></div>
     <section layout="row" flex="">
         <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
         </div>
  
-
-
         <md-progress-linear md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
         <div ui-view="access_door" has-authority="ROLE_OFFICER" flex="100" ></div>
+        <div ui-view="access_door_macro" has-authority="ROLE_OFFICER_MACRO" flex="100" ></div>
         <md-content flex layout="row" style="overflow-x: hidden;background:white" class="all-content" id="content"
                     has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
             <div ui-view="content" flex layout="column" style="background-color: white!important" ng-if="!isInManual"
@@ -484,6 +483,18 @@
 
 <script src="app/entities/manuals/manual-residente.controller.js"></script>
 
+<script src="app/entities/macro-officer-account/macro-officer-account-dialog.controller.js"></script>
+
+<script src="app/entities/macro-officer-account/macro-officer-account-detail.controller.js"></script>
+
+<script src="app/entities/macro-officer-account/macro-officer-account-delete-dialog.controller.js"></script>
+
+<script src="app/entities/macro-officer-account/macro-officer-account.state.js"></script>
+
+<script src="app/entities/macro-officer-account/macro-officer-account.service.js"></script>
+
+<script src="app/entities/macro-officer-account/macro-officer-account.controller.js"></script>
+
 <script src="app/entities/macro-condominium/macro-condominium-dialog.controller.js"></script>
 
 <script src="app/entities/macro-condominium/macro-condominium-detail.controller.js"></script>
@@ -865,6 +876,18 @@
 <script src="app/entities/account-status/accountStatus.service.js"></script>
 
 <script src="app/entities/account-status/accountStatus.controller.js"></script>
+
+<script src="app/entities/access-door-macro/macro-register-visitor.controller.js"></script>
+
+<script src="app/entities/access-door-macro/macro-notes.controller.js"></script>
+
+<script src="app/entities/access-door-macro/macro-houses-info.controller.js"></script>
+
+<script src="app/entities/access-door-macro/access-door-macro.state.js"></script>
+
+<script src="app/entities/access-door-macro/access-door-macro.service.js"></script>
+
+<script src="app/entities/access-door-macro/access-door-macro.controller.js"></script>
 
 <script src="app/entities/access-door/register-visitor.controller.js"></script>
 

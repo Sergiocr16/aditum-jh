@@ -11,6 +11,7 @@
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.hasContability = false;
+        $rootScope.currentUserImage = null;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -1823,6 +1824,10 @@
                         $timeout.cancel($rootScope.timerAd);
                         unsubscribe();
                         break;
+                    case "ROLE_OFFICER_MACRO":
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
+                        break;
                 }
             });
             Auth.logout();
@@ -1907,6 +1912,18 @@
                                     logout();
                                 }
                             });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_OFFICER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            if (data != null) {
+                                vm.contextLiving = $rootScope.companyUser.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
                             $rootScope.hideFilial = true;
                         });
                         break;

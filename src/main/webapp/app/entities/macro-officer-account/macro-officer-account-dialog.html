@@ -1,0 +1,83 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+    <div class="no-padding no-margin col-md-12 col-lg-12 col-sm-12 col-xs-12" style="margin-bottom:0px!important">
+        <div layout="column" class="layout-column">
+            <md-toolbar class="form-title _md _md-toolbar-transitions">
+                <h2>Cuenta de oficial en {{vm.macroCondo.name}}</h2>
+            </md-toolbar>
+        </div>
+    </div>
+    <!--<div class="modal-header">-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"-->
+                <!--ng-click="vm.clear()">&times;</button>-->
+        <!--<h4 class="modal-title" id="myMacroOfficerAccountLabel" data-translate="aditumApp.macroOfficerAccount.home.createOrEditLabel">Create or edit a Macro Officer Account</h4>-->
+    <!--</div>-->
+    <div class="modal-body">
+        <div flex class="col-md-12 white-bg divFormsMDXS" style="margin-top:20px">
+            <md-input-container class="md-block">
+                <label>Usuario</label>
+                <input required  ng-model="vm.macroOfficerAccount.name" type="text">
+            </md-input-container>
+        </div>
+        <div flex class="col-md-12 white-bg divFormsMDXS" style="margin-top:20px">
+            <md-input-container class="md-block">
+                <label>Login</label>
+                <input required  ng-model="vm.macroOfficerAccount.login" type="text">
+            </md-input-container>
+        </div>
+        <div flex class="col-md-12 white-bg divFormsMDXS">
+            <md-input-container class="md-block">
+                <label>Contraseña</label>
+                <input  ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-model="vm.macroOfficerAccount.password" type="text" autocomplete="off"
+                        maxlength="20" class="{{vm.class}} md-input" required>
+                <md-icon style="display:inline-block;"> <i class="material-icons outline-none" style="color:#999; " ng-click="vm.showPassword()">
+                    <md-tooltip md-direction="left"  class="font-13 bold white-color outline-none">Ver contraseña
+                    </md-tooltip>
+                    remove_red_eye</i></md-icon>
+            </md-input-container>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroOfficerAccount.enabled" for="field_enabled">Enabled</label>
+            <input type="checkbox" name="enabled" id="field_enabled"
+                   ng-model="vm.macroOfficerAccount.enabled"/>
+            <div ng-show="editForm.enabled.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.enabled.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.macroOfficerAccount.user" for="field_user">User</label>-->
+            <!--<select class="form-control" id="field_user" name="user" ng-model="vm.macroOfficerAccount.userId" ng-options="user.id as user.login for user in vm.users"             required>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div ng-show="editForm.user.$invalid">-->
+            <!--<p class="help-block"-->
+                <!--ng-show="editForm.user.$error.required" data-translate="entity.validation.required">-->
+                <!--This field is required.-->
+            <!--</p>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label data-translate="aditumApp.macroOfficerAccount.macroCondominium" for="field_macroCondominium">Macro Condominium</label>-->
+            <!--<select class="form-control" id="field_macroCondominium" name="macroCondominium" ng-model="vm.macroOfficerAccount.macroCondominiumId" ng-options="macroCondominium.id as macroCondominium.name for macroCondominium in vm.macrocondominiums"             required>-->
+            <!--</select>-->
+        <!--</div>-->
+        <!--<div ng-show="editForm.macroCondominium.$invalid">-->
+            <!--<p class="help-block"-->
+                <!--ng-show="editForm.macroCondominium.$error.required" data-translate="entity.validation.required">-->
+                <!--This field is required.-->
+            <!--</p>-->
+        <!--</div>-->
+    </div>
+    <div class="modal-footer">
+        <div layout="row" class="white-bg layout-align-end-center layout-row" layout-align="end center">
+            <button class="md-primary md-raised md-warn md-button md-ink-ripple" type="button"  ng-click="vm.clear()"><span>
+                                Cancelar
+                            </span><div class="md-ripple-container" style=""></div></button>
+            <button class="md-primary md-raised md-button md-ink-ripple" type="submit"  ng-disabled="editForm.$invalid || vm.isSaving" ><span>
+                                Aceptar
+                            </span></button>
+        </div>
+    </div>
+</form>

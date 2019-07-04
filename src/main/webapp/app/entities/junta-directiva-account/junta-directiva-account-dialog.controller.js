@@ -25,12 +25,10 @@
         }, companySuccess, onSaveError)
 
         function companySuccess(result) {
-
             vm.company = result;
             JuntaDirectivaAccount.getByCompanyId({
                 companyId: globalCompany.getId()
             }, successJuntaDirectiva, onSaveErrorJuntaDirectiva)
-
         }
 
         function save() {
@@ -53,7 +51,6 @@
                 vm.user.authorities = authorities;
                 vm.user.login = vm.juntaDirectivaAccount.login;
                 User.createUserWithoutSendEmailWithPassword(vm.user, onSaveUserSuccess, onSaveUserError);
-
             }
         }
 
@@ -76,7 +73,6 @@
         }
 
         function successJuntaDirectiva(result) {
-            console.log(result.userId)
             User.getUserById({
                 id: result.userId
             }, function (user) {
@@ -85,9 +81,7 @@
                 vm.juntaDirectivaAccount = result;
                 vm.juntaDirectivaAccount.password = CommonMethods.decryptIdUrl(user.lastName);
                 vm.juntaDirectivaAccount.login = user.login;
-
             }, onSaveError)
-
         }
 
         function generateRandomEmail() {

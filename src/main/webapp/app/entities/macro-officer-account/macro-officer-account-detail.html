@@ -1,0 +1,39 @@
+
+<div>
+    <h2><span data-translate="aditumApp.macroOfficerAccount.detail.title">Macro Officer Account</span> {{vm.macroOfficerAccount.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.macroOfficerAccount.name">Name</span></dt>
+        <dd>
+            <span>{{vm.macroOfficerAccount.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroOfficerAccount.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.macroOfficerAccount.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroOfficerAccount.login">Login</span></dt>
+        <dd>
+            <span>{{vm.macroOfficerAccount.login}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroOfficerAccount.user">User</span></dt>
+        <dd>
+            {{vm.macroOfficerAccount.userLogin}}
+        </dd>
+        <dt><span data-translate="aditumApp.macroOfficerAccount.macroCondominium">Macro Condominium</span></dt>
+        <dd>
+            <a ui-sref="macro-condominium-detail({id:vm.macroOfficerAccount.macroCondominiumId})">{{vm.macroOfficerAccount.macroCondominiumName}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="macro-officer-account-detail.edit({id:vm.macroOfficerAccount.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
