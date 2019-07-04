@@ -11,6 +11,7 @@
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.hasContability = false;
+        $rootScope.currentUserImage = null;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -54,15 +55,28 @@
             vm.menu = [];
         })
         vm.chargeMenu = function (hasComta) {
-            console.log(hasComta);
             vm.menu = [
                 {
                     title: "ADMINISTRACIÓN",
-                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
+                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress,macro-condominium",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
+                        {
+                            title: "Condominios Macro",
+                            icon: "account_balance",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "macro-condominium",
+                            collapsable: false,
+                            uisref: "macro-condominium",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
                         {
                             title: "Condominios",
                             icon: "home",
@@ -1525,7 +1539,6 @@
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
-            console.log(companyConfig)
             if (companyConfig == "admin") {
                 vm.hasContability = false;
             } else {
@@ -1811,6 +1824,10 @@
                         $timeout.cancel($rootScope.timerAd);
                         unsubscribe();
                         break;
+                    case "ROLE_OFFICER_MACRO":
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
+                        break;
                 }
             });
             Auth.logout();
@@ -1895,6 +1912,18 @@
                                     logout();
                                 }
                             });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_OFFICER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            if (data != null) {
+                                vm.contextLiving = $rootScope.companyUser.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
                             $rootScope.hideFilial = true;
                         });
                         break;

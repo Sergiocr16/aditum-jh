@@ -97,6 +97,9 @@
                         case "ROLE_OFFICER":
                             $state.go('main-access-door');
                             break;
+                        case "ROLE_OFFICER_MACRO":
+                            $state.go('access-door-macro');
+                            break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
                                 House.get({id: data.houseId}, function (house) {

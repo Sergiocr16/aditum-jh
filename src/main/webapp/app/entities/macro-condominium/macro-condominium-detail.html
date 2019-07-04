@@ -1,0 +1,33 @@
+
+<div>
+    <h2><span data-translate="aditumApp.macroCondominium.detail.title">Macro Condominium</span> {{vm.macroCondominium.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.macroCondominium.name">Name</span></dt>
+        <dd>
+            <span>{{vm.macroCondominium.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroCondominium.enabled">Enabled</span></dt>
+        <dd>
+            <span>{{vm.macroCondominium.enabled}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroCondominium.company">Company</span></dt>
+        <dd>
+            <span ng-repeat="company in vm.macroCondominium.companies">
+                <a ui-sref="company-detail({id: company.id})">{{company.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="macro-condominium-detail.edit({id:vm.macroCondominium.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>
