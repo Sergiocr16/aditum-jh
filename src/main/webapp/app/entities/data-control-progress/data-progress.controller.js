@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('DataProgressController', DataProgressController);
 
-    DataProgressController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage','globalCompany'];
+    DataProgressController.$inject = ['Modal','$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', 'Company', '$localStorage','globalCompany'];
 
-    function DataProgressController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
+    function DataProgressController(Modal,$rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, Company, $localStorage,globalCompany) {
 
         var vm = this;
         vm.isReady = false;
@@ -16,7 +16,7 @@
         vm.house ='-1';
         vm.filterStateTemporal = "-1";
         vm.filterState = "";
-        loadCompanies()
+        loadCompanies();
         function loadCompanies() {
             Company.query({}).$promise.then(onSuccessCompanies);
             function onSuccessCompanies(data, headers) {
@@ -103,6 +103,12 @@
                             redimido++;
                             break;
                         case 2:
+                            enProgreso++;
+                            break;
+                        case 3:
+                            enProgreso++;
+                            break;
+                        case 4:
                             enProgreso++;
                             break;
                         case 5:
@@ -206,8 +212,23 @@
                 residentsEnabledGraphInit()
                 vm.isReady = true;
             }
-        }
+        };
 
+        vm.changeStatus = function(house, status) {
+            house.codeStatus = status;
+
+
+            House.update(house, onSaveSuccess, onSaveError);
+        };
+        function onSaveSuccess() {
+
+            Modal.toast("El estado del ingreso de datos se actualizó correctamente.");
+            vm.loadHouses(globalCompany.getId());
+        }
+        function onSaveError() {
+            Modal.toast("Un error inespesperado sucedió.");
+            vm.isReady = true;
+        }
         function saveTextAsFile(data, filename) {
 
             if (!data) {
