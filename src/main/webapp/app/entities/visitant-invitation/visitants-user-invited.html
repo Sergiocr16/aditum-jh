@@ -1,0 +1,303 @@
+<div class="row" ng-if="true">
+    <md-content class="no-padding row background-white" style="margin-top: -15px!important;">
+        <md-tabs md-selected="vm.timeFormat" hide-xs md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10 hidden-xs">
+            <md-tab  ng-click="vm.changeTimeFormat(0)" label="INTERVALO DE FECHAS">
+            </md-tab>
+            <md-tab  label="PROGRAMADAS SEMANALMENTE" ng-click="vm.changeTimeFormat(1)">
+            </md-tab>
+
+        </md-tabs>
+        <md-tabs md-selected="vm.timeFormat" hide-lg hide-md hide-sm md-stretch-tabs='always' md-dynamic-height="" md-border-bottom=""
+                 class="padding-left-10 hidden-md hidden-lg hidden-sm">
+            <md-tab ng-click="vm.changeTimeFormat(0)" label="INTERVALO DE FECHAS">
+            </md-tab>
+            <md-tab label="PROGRAMACIÓN SEMANAL" ng-click="vm.changeTimeFormat(1)">
+            </md-tab>
+
+        </md-tabs>
+    </md-content>
+</div>
+<div ng-if="vm.isReady" class=" fade-in col-md-12 no-padding ">
+
+    <div class="col-md-12 no-padding margin-top-30" ng-if="vm.visitants.length>0">
+        <div class="">
+            <h4 hide-xs hide-sm
+                class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 font-green-sharp font-weight-600 font-22 "
+                style="color: #00b19d">{{mainTitle}} {{vm.timeFormatTitle}}</h4>
+            <div class="form-group col-md-12 col-lg-12 col-xs-12 col-sm-12 no-padding"
+                 id="index-search">
+                <div class="input-icon" style="color:#484848!important;">
+                    <i class="fa fa-search"></i>
+                    <input type="text" class="form-control "
+                           style="background-color: #f5f5f5; border:0px!important; "
+                           placeholder="Buscar" ng-model="vm.search">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div ng-if="!vm.isReady" layout="row" class="content-loader" layout-sm="column" layout-fill
+         layout-align="space-around center">
+        <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+    </div>
+    <div class=" fade-in col-md-12 no-padding ">
+        <div class="col-md-12 col-sm-12 no-padding">
+            <div class="portlet-body ">
+                <no-content ng-if="vm.visitants.length == 0" icon="group_add"
+                            text="No hay visitantes registrados"></no-content>
+
+                <div class="table-scrollable margin-bottom-40 " ng-if="vm.visitants.length>0" style="border: 0px!important;" hide-xs
+                     hide-sm
+                     hide-md>
+                    <table class="table table-bordered margin-bottom-30 table-hover font-13 gray-font tableMaterialDesign">
+                        <thead style="background-color: #fafafa;">
+
+                        <tr>
+                            <th>Nombre completo</th>
+                            <th class="text-center">Cédula</th>
+                            <th class="text-center">Placa</th>
+                            <th ng-if="vm.timeFormat==0">Desde</th>
+                            <th ng-if="vm.timeFormat==0">Hasta</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">L</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">K</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">M</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">J</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">V</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">S</th>
+                            <th class="text-center" ng-if="vm.timeFormat==1">D</th>
+                            <th class="text-center">Permiso</th>
+                            <th class="text-center">Opciones</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr ng-repeat="visitor in vm.visitants | filter:vm.search | orderBy:'fullName'">
+                            <td style="text-transform: capitalize;">{{visitor.fullName}}</td>
+                            <td class="text-center" ng-show='visitor.identificationnumber!=null'>
+                                {{visitor.identificationnumber.toUpperCase()}}
+                            </td>
+                            <td class="text-center" ng-show='visitor.identificationnumber==null'>No se registró</td>
+                            <td class="text-center" ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
+                            <td class="text-center" ng-show="visitor.licenseplate==null">No se registró</td>
+                            <td ng-if="vm.timeFormat==0">{{visitor.invitationstartingtime | formatDate}}</td>
+                            <td ng-if="vm.timeFormat==0">{{visitor.invitationlimittime | formatDate}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.lunes}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.martes}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.miercoles}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.jueves}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.viernes}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.sabado}}</td>
+                            <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.domingo}}</td>
+                            <td class="text-center">
+                                <a ng-if="vm.timeFormat==0">
+                                    <i class="material-icons" style="color:#FF3D00; font-size: 23px"
+                                       ng-if="!vm.hasPermission(visitor)">
+                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">
+                                            <span>No vigente o caducado</span>
+                                        </md-tooltip>
+                                        lens
+                                    </i>
+                                    <i class="material-icons" style="color:#26A69A ; font-size: 23px"
+                                       ng-show="vm.hasPermission(visitor)">
+                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">Activo
+                                        </md-tooltip>
+                                        lens
+                                    </i>
+                                </a>
+                                <a ng-if="vm.timeFormat==1">
+                                    <i class="material-icons" style="color:#FF3D00; font-size: 23px"
+                                       ng-if="!vm.hasPermissionSchedule(visitor)">
+                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">
+                                            <span>No vigente</span>
+                                        </md-tooltip>
+                                        lens
+                                    </i>
+                                    <i class="material-icons" style="color:#26A69A ; font-size: 23px"
+                                       ng-show="vm.hasPermissionSchedule(visitor)">
+                                        <md-tooltip md-direction="bottom" class="font-13 bold white-color">Activo
+                                        </md-tooltip>
+                                        lens
+                                    </i>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <md-menu md-position-mode="target-right target"
+                                         style=" margin-top: 6px;margin-right: 0!important;">
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               style="margin-right: 0!important;"
+                                               ng-click="$mdMenu.open($event)">
+                                        <i class="material-icons" style="color:#999">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item ng-show="!vm.hasPermission(visitor) && vm.timeFormat==0">
+                                            <md-button ng-click="vm.renewVisitor(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Renovar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="(!vm.hasPermissionSchedule(visitor)) && vm.timeFormat==1">
+                                            <md-button ng-click="vm.renewVisitorWithSchedule(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Renovar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="vm.hasPermission(visitor) && vm.timeFormat==0">
+                                            <md-button ng-click="vm.cancelInvitation(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Cancelar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="vm.hasPermissionSchedule(visitor) && vm.timeFormat==1">
+                                            <md-button ng-click="vm.cancelInvitation(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Cancelar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.deleteInvitedVisitor(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar registro</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 col-xs-12 col-sm-12 no-padding residentDivContainerXs" hide-lg hide-xl
+                     ng-repeat="visitor in vm.visitants | filter:vm.search | orderBy:'fullName'">
+                    <md-card md-theme="{{ showDarkTheme ? 'dark-blue' : 'default' }}"
+                             class="margin-bottom-10 residentCardContainer"
+                             md-theme-watch>
+                        <md-card-title>
+                            <md-card-title-text>
+                            <span class="md-headline font-15" style="color:grey;font-weight: 550"> {{visitor.fullName.toUpperCase()}}
+                             <a ng-if="vm.timeFormat==0"><i class="material-icons"
+                                                            style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
+                                                            ng-if="!vm.hasPermission(visitor)">
+                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
+                                    <span>No vigente o caducado</span></md-tooltip>
+                                lens</i>
+                                <i class="material-icons"
+                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
+                                   ng-show="vm.hasPermission(visitor)">
+                                    <md-tooltip md-direction="bottom"
+                                                class="font-13 bold white-color">Activo</md-tooltip>
+                                    lens</i></a>
+                                         <a ng-if="vm.timeFormat==1"><i class="material-icons"
+                                                                        style="color:#FF3D00; font-size: 23px;margin: 5px 5px 0 0;float:left"
+                                                                        ng-if="!vm.hasPermissionSchedule(visitor)">
+                                <md-tooltip md-direction="bottom" class="font-13 bold white-color">
+                                    <span>No vigente</span></md-tooltip>
+                                lens</i>
+                                <i class="material-icons"
+                                   style="color:#26A69A ; font-size: 23px;;margin: 5px 5px 0 0;float:left"
+                                   ng-show="vm.hasPermissionSchedule(visitor)">
+                                    <md-tooltip md-direction="bottom"
+                                                class="font-13 bold white-color">Activo</md-tooltip>
+                                    lens</i></a>
+                            </span>
+                                <span class="md-subhead" style="padding-top: 15px!important;"
+                                      ng-show='visitor.identificationnumber!=null'>Cédula: {{visitor.identificationnumber.toUpperCase()}}</span>
+                                <span class="md-subhead" style="padding-top: 15px!important;"
+                                      ng-show='visitor.identificationnumber==null'>Cédula: No se registró</span>
+                                <span class="md-subhead">Número de placa: <span ng-show="visitor.licenseplate!=null"><b>{{visitor.licenseplate}}</b></span><span
+                                    ng-show="visitor.licenseplate==null">No se registró</span></span>
+                                <span ng-if="vm.timeFormat==0" class="md-subhead">Desde: {{visitor.invitationstartingtime | formatDate}}</span>
+                                <span ng-if="vm.timeFormat==0" class="md-subhead">Hasta: {{visitor.invitationlimittime | formatDate}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.lunes!== null" class="md-subhead">Lunes: {{visitor.lunes}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.martes!== null" class="md-subhead">Martes: {{visitor.martes}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.miercoles!== null" class="md-subhead">Miercoles: {{visitor.miercoles}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.jueves!== null" class="md-subhead">Jueves: {{visitor.jueves}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.viernes!== null" class="md-subhead">Viernes: {{visitor.viernes}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.sabado!== null" class="md-subhead">Sábado: {{visitor.sabado}}</span>
+                                <span ng-if="vm.timeFormat==1 && visitor.domingo!== null" class="md-subhead">Domingo: {{visitor.domingo}}</span>
+                            </md-card-title-text>
+                            <md-card-title-media layout="column" layout-align="space-between center">
+                                <div style="width: 60px;height: 60px;">
+                                    <img src="content/images/nobody-image.jpg" height="60"
+                                         width="60"/>
+                                </div>
+
+
+                                <md-menu md-position-mode="target-right target"
+                                         style="float: right;">
+                                    <md-button aria-label="Open demo menu" class="md-icon-button no-padding"
+                                               style="margin-right: 0!important;"
+                                               ng-click="$mdMenu.open($event)">
+                                        <i class="material-icons" style="color:#999">
+                                            <md-tooltip md-direction="left" class="font-13 bold white-color">Opciones
+                                            </md-tooltip>
+                                            more_vert</i>
+                                    </md-button>
+                                    <md-menu-content width="4">
+                                        <md-menu-item ng-show="!vm.hasPermission(visitor)" ng-if="vm.timeFormat==0">
+                                            <md-button ng-click="vm.renewVisitor(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Renovar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="(!vm.hasPermissionSchedule(visitor)) && vm.timeFormat==1">
+                                            <md-button ng-click="vm.renewVisitorWithSchedule(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Renovar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="vm.hasPermissionSchedule(visitor) && vm.timeFormat==1">
+                                            <md-button ng-click="vm.cancelInvitation(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Cancelar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item ng-show="vm.hasPermission(visitor) && vm.timeFormat==0">
+                                            <md-button ng-click="vm.cancelInvitation(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Cancelar invitación</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-click="vm.deleteInvitedVisitor(visitor)">
+                                                <div layout="row" flex>
+                                                    <p flex>Eliminar registro</p>
+                                                </div>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </md-card-title-media>
+
+                        </md-card-title>
+
+                    </md-card>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <md-button ui-sref="visitant-invited-user.new" style="position: fixed"
+               class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Reportar visitante</md-tooltip>
+        <md-icon class="white-color">add</md-icon>
+    </md-button>
+</div>
+
+

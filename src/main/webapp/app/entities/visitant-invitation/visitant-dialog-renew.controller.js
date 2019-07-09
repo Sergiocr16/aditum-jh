@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantDialogRenewController', VisitantDialogRenewController);
 
-    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'Visitant', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitor', 'Modal'];
+    VisitantDialogRenewController.$inject = ['$timeout', '$interval', '$scope', '$stateParams', 'VisitantInvitation', '$state', 'Principal', '$rootScope', 'CommonMethods', 'entity', '$uibModalInstance', 'WSVisitor', 'Modal'];
 
-    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, Visitant, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitor, Modal) {
+    function VisitantDialogRenewController($timeout, $interval, $scope, $stateParams, VisitantInvitation, $state, Principal, $rootScope, CommonMethods, entity, $uibModalInstance, WSVisitor, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.visitor = entity;
@@ -16,7 +16,7 @@
         vm.datePickerOpenStatus = {};
         vm.openCalendarInit = openCalendarInit;
         vm.openCalendarFinal = openCalendarFinal;
-        vm.save = save;
+
         vm.dates = {
             initial_time: new Date(),
             final_time: new Date()
@@ -187,10 +187,10 @@
         }
 
         function formatVisitor() {
-            vm.visitor.isinvited = 1;
+            vm.visitor.status = 1;
             vm.visitor.invitationstaringtime = vm.dates.initial_time;
             vm.visitor.invitationlimittime = vm.dates.final_time;
-            vm.visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
+            vm.visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             vm.visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
             if (vm.visitor.licenseplate != undefined) {
                 vm.visitor.licenseplate = vm.visitor.licenseplate.toUpperCase();
@@ -200,32 +200,32 @@
             }
         }
 
-        function save() {
+        vm.validateForm = function() {
             if (vm.validate()) {
                
                 if (isValidDates()) {
                     Modal.confirmDialog("¿Está seguro que desea renovar la invitación?","",function(){
                         Modal.showLoadingBar();
                         formatVisitor();
-                        Visitant.update(vm.visitor, onSuccess, onSaveError);
+                        VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
                     })
                    
 
 
                 }
 
-                function onSuccess(result) {
-                    WSVisitor.sendActivity(result);
-                    Modal.hideLoadingBar();
 
-                    Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-                    $scope.$emit('aditumApp:visitantUpdate', result);
-                    $state.reload();
-                    $uibModalInstance.close(result);
-                }
             }
         }
+        function onSuccess(result) {
+            WSVisitor.sendActivity(result);
+            Modal.hideLoadingBar();
 
+            Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+            $scope.$emit('aditumApp:visitantUpdate', result);
+            $state.reload();
+            $uibModalInstance.close(result);
+        }
         function onSaveError() {
             vm.isSaving = false;
         }

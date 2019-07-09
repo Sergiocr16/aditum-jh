@@ -1,0 +1,44 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "lunes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "martes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "miercoles",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "jueves",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "viernes",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "sabado",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "domingo",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "visitantInvitationId",
+            "fieldType": "Long"
+        }
+    ],
+    "changelogDate": "20190704194545",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "invitation_schedule",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}
