@@ -350,8 +350,8 @@
 
         vm.showKeys = function (data) {
             var emergencyKey, securityKey;
-            emergencyKey = data.house.emergencyKey == null ? "No defninida" : data.house.emergencyKey;
-            securityKey = data.house.securityKey == null ? "No defninida" : data.house.securityKey;
+            emergencyKey = data.house.emergencyKey == null ? "No definida" : data.house.emergencyKey;
+            securityKey = data.house.securityKey == null ? "No definida" : data.house.securityKey;
             Modal.customDialog("<md-dialog>" +
                 "<md-dialog-content class='md-dialog-content text-center'>" +
                 "<h1 class='md-title'>Claves filial <b>" + data.house.housenumber + "</b></h1>" +

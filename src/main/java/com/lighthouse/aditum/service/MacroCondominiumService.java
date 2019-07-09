@@ -25,6 +25,7 @@ public class MacroCondominiumService {
 
     private final MacroCondominiumMapper macroCondominiumMapper;
 
+
     public MacroCondominiumService(MacroCondominiumRepository macroCondominiumRepository, MacroCondominiumMapper macroCondominiumMapper) {
         this.macroCondominiumRepository = macroCondominiumRepository;
         this.macroCondominiumMapper = macroCondominiumMapper;
@@ -66,6 +67,14 @@ public class MacroCondominiumService {
     public MacroCondominiumDTO findOne(Long id) {
         log.debug("Request to get MacroCondominium : {}", id);
         MacroCondominium macroCondominium = macroCondominiumRepository.findOneWithEagerRelationships(id);
+        return macroCondominiumMapper.toDto(macroCondominium);
+    }
+
+    @Transactional(readOnly = true)
+    public MacroCondominiumDTO findMicrosInOne(Long id) {
+        log.debug("Request to get MacroCondominium : {}", id);
+        MacroCondominium macroCondominium = macroCondominiumRepository.findOneWithEagerRelationships(id);
+
         return macroCondominiumMapper.toDto(macroCondominium);
     }
 

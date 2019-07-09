@@ -11,6 +11,10 @@
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'getCondos': {
+                method: 'GET',
+                url:'api/macro-condominiums/find-micros/:id'
+            },
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

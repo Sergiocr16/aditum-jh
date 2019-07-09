@@ -4,9 +4,9 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company','MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company,MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
@@ -1924,6 +1924,11 @@
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = null;
                             }
+                            MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                if (!condo.enabled || !data.enabled) {
+                                    logout();
+                                }
+                            })
                             $rootScope.hideFilial = true;
                         });
                         break;
@@ -1936,6 +1941,13 @@
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = null;
                             }
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                if (condo.active == 0 || data.enable == 0) {
+                                    logout();
+                                }
+                            })
                             $rootScope.hideFilial = true;
                         });
                         break;

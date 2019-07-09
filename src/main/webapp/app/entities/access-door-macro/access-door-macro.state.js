@@ -17,11 +17,20 @@
                 },
                 views: {
                     'access_door_macro@': {
-                        templateUrl: 'app/entities/access-door-macro/access-door-macro.html',
-                        controller: 'AccessDoorMacroController',
+                        templateUrl: 'app/entities/access-door-macro/container-macro.html',
+                        controller: 'ContainerMacroController',
                         controllerAs: 'vm'
                     }
                 },
+            })
+            .state('access-door-macro.access', {
+                url: '/access',
+                data: {
+                    authorities: ['ROLE_OFFICER_MACRO']
+                },
+                templateUrl: 'app/entities/access-door-macro/access-door-macro.html',
+                controller: 'AccessDoorMacroController',
+                controllerAs: 'vm',
             })
             .state('access-door-macro.register-visitor', {
                 url: '/register-visitor',
@@ -40,6 +49,7 @@
                 templateUrl: 'app/entities/access-door-macro/macro-houses-info.html',
                 controller: 'MacroHousesAccessDoorController',
                 controllerAs: 'vm',
+
             })
             .state('access-door-macro.notes', {
                 url: '/notes',

@@ -83,7 +83,6 @@
                                             companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
                                             if (user.companies.length == i) {
-                                                $rootScope.companyId = user.companies[0].id;
                                                 vm.backgroundSelectCompany = true;
                                                 $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                                 $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
@@ -98,7 +97,10 @@
                             $state.go('main-access-door');
                             break;
                         case "ROLE_OFFICER_MACRO":
-                            $state.go('access-door-macro');
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                                $state.go('access-door-macro.access');
+                            });
                             break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {
