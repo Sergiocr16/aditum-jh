@@ -1,0 +1,193 @@
+<div ng-cloak layout="column"
+     class="md-inline-form col-md-12 col-lg-12 form-wrapper no-padding fade-in">
+    <md-toolbar class="form-title" hide-sm hide-xs>
+        <h2 class="caption-subject bold uppercase">
+            Reportar visitante</h2>
+    </md-toolbar>
+    <md-content layout-padding class="form-content">
+        <form name="form" ng-submit="vm.validateForm()" autocomplete="nope">
+            <span ng-hide="true">{{setInvalidForm(form.$invalid)}}</span>
+            <div layout="row" layout-xs="column" class="marging-top-20 ">
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Nacionalidad</label>
+                        <md-select ng-model="vm.visitor.type" ng-required='vm.required==1'>
+                            <md-option value="9">
+                                Costarricense
+                            </md-option>
+                            <md-option value="20">
+                                Extranjero
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container class="md-block" >
+                        <label>Formato de tiempo</label>
+                        <md-select ng-model="vm.timeFormat" ng-required='vm.required==1'>
+                            <md-option value="0">
+                                Intervalo de fechas
+                            </md-option>
+                            <md-option value="1">
+                                Programación de días semanales
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding fade-in" ng-if="vm.timeFormat==0">
+                        <h3 class="font-15 text-center">Fecha desde la cual puede ingresar:</h3>
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12  no-padding">
+
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <md-input-container class="md-block no-margin">
+                                    <md-datepicker class="datePicker" readonlydatepicker md-min-date="vm.minInitialDate"
+                                                   md-max-date="vm.dates.final_date"
+                                                   required ng-model="vm.dates.initial_date"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha inicial" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+
+
+                            </div>
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input id="la" type="time" ng-change="vm.updateTimePicker()"
+                                       ng-model="vm.dates.initial_time"
+                                       class="form-control letters gray-font text-center dating" required>
+                            </div>
+                        </div>
+                        <h3 class="font-15 text-center">Fecha hasta la cual puede ingresar:</h3>
+
+                        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12 no-padding">
+
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <md-input-container class="md-block no-margin">
+                                    <md-datepicker class="datePicker" readonlydatepicker
+                                                   md-min-date="vm.dates.initial_date" required
+                                                   ng-model="vm.dates.final_date"
+                                                   md-hide-icons="calendar"
+                                                   md-placeholder="Fecha final" md-open-on-focus
+                                                   required></md-datepicker>
+                                </md-input-container>
+
+                            </div>
+                            <div class="form-group form-md-line-input col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <input type="time" ng-change="vm.updateTimePicker()" ng-model="vm.dates.final_time "
+                                       class="form-control gray-font text-center" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <md-input-container class="md-block" flex hide-xs ng-if="vm.timeFormat==1">
+                        <div style="margin-bottom: 25px;">
+                            <label>Días permitidos para el ingreso del visitante</label>
+                        </div>
+                        <div>
+
+                            <md-checkbox  ng-model="vm.lunesSelected"  ng-click="vm.selectDay(0)" class="col-md-6 col-xs-6">
+                                Lunes
+                            </md-checkbox>
+                            <md-checkbox ng-model="vm.viernesSelected"  ng-click="vm.selectDay(4)" class="col-md-6 col-xs-6">
+                                Viernes
+                            </md-checkbox>
+                            <md-checkbox ng-model="vm.martesSelected"  ng-click="vm.selectDay(1)" class="col-md-6 col-xs-6">
+                                Martes
+                            </md-checkbox>
+                            <md-checkbox  ng-model="vm.sabadoSelected"  ng-click="vm.selectDay(5)" class="col-md-6 col-xs-6">
+                                Sábado
+                            </md-checkbox>
+                            <md-checkbox ng-model="vm.miercolesSelected"  ng-click="vm.selectDay(2)" class="col-md-6 col-xs-6">
+                                Miercoles
+                            </md-checkbox>
+                            <md-checkbox  ng-model="vm.domingoSelected"  ng-click="vm.selectDay(6)" class="col-md-6 col-xs-6">
+                                Domingo
+                            </md-checkbox>
+                            <md-checkbox ng-model="vm.juevesSelected"  ng-click="vm.selectDay(3)" class="col-md-6 col-xs-6">
+                                Jueves
+                            </md-checkbox>
+
+
+                        </div>
+                    </md-input-container>
+                    <div  ng-if="item.selected && vm.timeFormat==1" ng-repeat="item in vm.daysOfWeek">
+                        <div class="col-md-12 no-padding margin-bottom-10">    <label>Horas permitidas para el ingreso el {{item.day}} </label></div>
+
+                        <div class="col-md-6 no-padding-left margin-top-10">
+                            <md-input-container class="md-block">
+                                <label >Hora de inicio</label>
+                                <div class="form-group form-md-line-input col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <input type="time" ng-change="vm.validateHoursPerDay(item)" ng-model="item.initialTime "
+                                           class="form-control gray-font " required>
+                                </div>
+
+
+                            </md-input-container>
+
+                        </div>
+                        <div class="col-md-6 no-padding margin-top-10">
+                            <md-input-container class="md-block" ng-class="{'md-input-invalid': item.isValid==false}">
+                                <label>Hora de fin</label>
+                                <div ng-class="{'has-error': item.isValid==false}" class="form-group form-md-line-input  col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding no-margin">
+                                    <input    type="time" ng-change="vm.validateHoursPerDay(item)" ng-model="item.finalTime"
+                                           class="form-control gray-font  " required>
+                                </div>
+
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container class="md-block">
+                        <label>Número de cédula</label>
+                        <input ng-class="{redBorder: vm.visitor.validIdentification == 0}"
+                               class="uppercase" autocomplete="new-password" ng-change="vm.findInPadron(vm.visitor)"
+                               maxlength="{{vm.visitor.nationality}}" ng-model="vm.visitor.identificationnumber">
+                        <div class="hint">Escriba el número de cédula sin guiones ni espacios.</div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label>Nombre</label>
+                        <input required autocomplete="nope" ng-model="vm.visitor.name" type="text"
+                               ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block">
+                        <label>Primer Apellido</label>
+                        <input required autocomplete="nope" ng-model="vm.visitor.lastname" type="text"
+                               ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block no-margin-bottom">
+                        <label>Segundo Apellido</label>
+                        <input required autocomplete="nope" ng-model="vm.visitor.secondlastname" type="text"
+                               ng-disabled="vm.visitor.found==1"
+                               class="uppercase" required>
+                    </md-input-container>
+
+                    <md-input-container class="md-block"
+                                        ng-class="{'md-input-invalid': vm.visitor.validPlateNumber == 0}">
+                        <label>Número de placa (Opcional)</label>
+                        <input ng-focus="expression==1" ng-model="vm.visitor.licenseplate" type="text"
+                               ng-change="vm.validPlate(vm.visitor)"
+                               maxlength="20" class="uppercase" autocomplete="nope">
+                        <div class="hint">Escriba el número de placa sin guiones.</div>
+                    </md-input-container>
+
+                </div>
+            </div>
+
+            <div layout="row" class="white-bg" layout-align="end center" hide-sm hide-xs>
+                <md-button type="button" ng-click="back()"
+                           class="md-warn md-raised">Cancelar
+                </md-button>
+                <md-button class="md-primary md-raised"
+                           ng-disabled="form.$invalid || vm.isSaving ||  vm.visitor.validPlateNumber == 0"
+                           type="submit">
+                    Reportar visitante
+                </md-button>
+            </div>
+        </form>
+    </md-content>
+
+</div>

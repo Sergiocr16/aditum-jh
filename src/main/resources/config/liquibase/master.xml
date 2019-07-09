@@ -48,6 +48,8 @@
     <include file="config/liquibase/changelog/20190306014214_added_entity_DocumentFile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_Note.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190325212922_added_entity_BitacoraAcciones.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190704191044_added_entity_VisitantInvitation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190704194545_added_entity_InvitationSchedule.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190703190907_added_entity_MacroCondominium.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190703211348_added_entity_MacroOfficerAccount.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->

@@ -1,0 +1,34 @@
+{
+    "aditumApp": {
+        "visitantInvitation" : {
+            "home": {
+                "title": "Visitant Invitations",
+                "createLabel": "Crear nuevo Visitant Invitation",
+                "createOrEditLabel": "Crear o editar Visitant Invitation"
+            },
+            "created": "Un nuevo Visitant Invitation ha sido creado con el identificador {{ param }}",
+            "updated": "Un Visitant Invitation ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Visitant Invitation ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Visitant Invitation {{ id }}?"
+            },
+            "detail": {
+                "title": "Visitant Invitation"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "identificationnumber": "Identificationnumber",
+            "invitationstartingtime": "Invitationstartingtime",
+            "invitationlimittime": "Invitationlimittime",
+            "licenseplate": "Licenseplate",
+            "hasschedule": "Hasschedule",
+            "destiny": "Destiny",
+            "houseId": "House Id",
+            "companyId": "Company Id",
+            "adminId": "Admin Id",
+            "scheduleId": "Schedule Id",
+            "status": "Status"
+        }
+    }
+}

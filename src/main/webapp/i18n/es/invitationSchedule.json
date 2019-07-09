@@ -1,0 +1,28 @@
+{
+    "aditumApp": {
+        "invitationSchedule" : {
+            "home": {
+                "title": "Invitation Schedules",
+                "createLabel": "Crear nuevo Invitation Schedule",
+                "createOrEditLabel": "Crear o editar Invitation Schedule"
+            },
+            "created": "Un nuevo Invitation Schedule ha sido creado con el identificador {{ param }}",
+            "updated": "Un Invitation Schedule ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Invitation Schedule ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Invitation Schedule {{ id }}?"
+            },
+            "detail": {
+                "title": "Invitation Schedule"
+            },
+            "lunes": "Lunes",
+            "martes": "Martes",
+            "miercoles": "Miercoles",
+            "jueves": "Jueves",
+            "viernes": "Viernes",
+            "sabado": "Sabado",
+            "domingo": "Domingo",
+            "visitantInvitationId": "Visitant Invitation Id"
+        }
+    }
+}

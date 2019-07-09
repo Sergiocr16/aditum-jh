@@ -1,0 +1,51 @@
+
+<div>
+    <h2><span data-translate="aditumApp.invitationSchedule.detail.title">Invitation Schedule</span> {{vm.invitationSchedule.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.invitationSchedule.lunes">Lunes</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.lunes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.martes">Martes</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.martes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.miercoles">Miercoles</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.miercoles}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.jueves">Jueves</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.jueves}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.viernes">Viernes</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.viernes}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.sabado">Sabado</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.sabado}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.domingo">Domingo</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.domingo}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.invitationSchedule.visitantInvitationId">Visitant Invitation Id</span></dt>
+        <dd>
+            <span>{{vm.invitationSchedule.visitantInvitationId}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="invitation-schedule-detail.edit({id:vm.invitationSchedule.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

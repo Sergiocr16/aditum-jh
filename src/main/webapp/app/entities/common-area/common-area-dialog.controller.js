@@ -118,7 +118,6 @@
                 vm.daysOfWeek[0].selected = true;
                 vm.lunesSelected = true;
                 var times = data[0].lunes.split("-");
-                console.log(times)
                 vm.daysOfWeek[0].initialTime = parseInt(times[0]);
                 vm.daysOfWeek[0].finalTime = parseInt(times[1]);
 
@@ -293,7 +292,6 @@
             commonAreaScheadule.commonAreaId = result.id;
             if (vm.commonArea.id !== null) {
                 commonAreaScheadule.id = vm.scheduleId;
-                console.log(commonAreaScheadule.id)
                 CommonAreaSchedule.update(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
             } else {
                 CommonAreaSchedule.save(commonAreaScheadule, onSaveScheduleSuccess, onSaveError);
