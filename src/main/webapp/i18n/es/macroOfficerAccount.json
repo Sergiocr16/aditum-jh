@@ -1,0 +1,25 @@
+{
+    "aditumApp": {
+        "macroOfficerAccount" : {
+            "home": {
+                "title": "Macro Officer Accounts",
+                "createLabel": "Crear nuevo Macro Officer Account",
+                "createOrEditLabel": "Crear o editar Macro Officer Account"
+            },
+            "created": "Un nuevo Macro Officer Account ha sido creado con el identificador {{ param }}",
+            "updated": "Un Macro Officer Account ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Macro Officer Account ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Macro Officer Account {{ id }}?"
+            },
+            "detail": {
+                "title": "Macro Officer Account"
+            },
+            "name": "Name",
+            "enabled": "Enabled",
+            "login": "Login",
+            "user": "User",
+            "macroCondominium": "Macro Condominium"
+        }
+    }
+}

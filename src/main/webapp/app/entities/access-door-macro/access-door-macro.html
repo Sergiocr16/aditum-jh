@@ -1,0 +1,22 @@
+<h1>Puerta de acceso macro</h1>
+<div class="tab_container" layout="row" style="position:fixed;bottom:0;padding-top:0;">
+    <label class="no-margin label-tab-container-ad outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.current.name === 'access-door-macro'}"
+            ui-sref="access-door-macro"><i class="material-icons material-icons-with-text icon-finanzes">beenhere</i>
+        <span hide-xs hide-sm hide-md>Puerta de acceso</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('access-door-macro.register-visitor')}"
+           ui-sref="access-door-macro.register-visitor"><i
+        class="material-icons material-icons-with-text icon-finanzes">face</i> <span hide-xs hide-sm hide-md>Registrar visitante</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('access-door-macro.houses')}"
+           ui-sref="access-door-macro.houses"><i
+        class="material-icons material-icons-with-text icon-finanzes">home</i> <span hide-xs hide-sm hide-md>Información de filiales</span></label>
+    <label class="no-margin label-tab-container-ad  outline-none" flex
+           ng-class="{'active-tab-charge-invert-ad' : $state.includes('access-door-macro.notes')}"
+           ui-sref="access-door-macro.notes" ng-click="vm.showNotificationNote=false"><i
+        class="material-icons material-icons-with-text icon-finanzes">note</i> <span hide-xs hide-sm hide-md>Notas de condóminos</span>
+        <i ng-if="vm.showNotificationNote" class="material-icons material-icons-with-text icon-finanzes fade-in" style="color: yellow;
+    ">notification_important</i>
+    </label>
+</div>

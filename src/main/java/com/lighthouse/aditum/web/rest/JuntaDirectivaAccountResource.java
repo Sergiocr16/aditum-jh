@@ -86,7 +86,7 @@ public class JuntaDirectivaAccountResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, juntaDirectivaAccountDTO.getId().toString()))
             .body(result);
     }
-    @GetMapping("/junta-directiva-accounts//findByUserId/{id}")
+    @GetMapping("/junta-directiva-accounts/findByUserId/{id}")
     @Timed
     public ResponseEntity<JuntaDirectivaAccountDTO> getByUserId(@PathVariable Long id) {
         JuntaDirectivaAccountDTO juntaDirectivaAccountDTO = juntaDirectivaAccountService.findOneByUserId(id);
