@@ -66,6 +66,10 @@
         {
             "fieldName": "status",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "proveedor",
+            "fieldType": "String"
         }
     ],
     "changelogDate": "20190704191044",

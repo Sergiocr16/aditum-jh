@@ -82,6 +82,24 @@ public class VisitantService {
             return visitantDTO;
         });
     }
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findByDatesBetweenForAdmin(ZonedDateTime initialTime, ZonedDateTime finalTime, Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        List<Visitant> result = visitantRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdAndIsinvited(zd_initialTime, zd_finalTime, companyId, 3);
+        List<Visitant> result1 = new ArrayList<>();
+        for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
+                result1.add(result.get(i));
+            }
+        }
+        Collections.reverse(result1);
+        return new PageImpl<>(result1).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+            return visitantDTO;
+        });
+    }
 
     @Transactional(readOnly = true)
     public Page<VisitantDTO> findByFilter(Pageable pageable, Long companyId, String houseId,
@@ -140,6 +158,27 @@ public class VisitantService {
             }else{
                 visitantDTO.setHouseNumber(visitant.getResponsableofficer());
             }
+            return visitantDTO;
+        });
+    }
+    @Transactional(readOnly = true)
+    public Page<VisitantDTO> findForAdminInLastMonth(Long companyId) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime firstDayOfMonth = ZonedDateTime.now().withDayOfMonth(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        List<Visitant> result = visitantRepository.findForAdminInLastMonth(firstDayOfMonth, companyId, 3);
+
+        List<Visitant> result1 = new ArrayList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).getResponsableofficer().equals("Oficina de administrador")){
+                result1.add(result.get(i));
+            }
+        }
+
+        Collections.reverse(result1);
+        return new PageImpl<>(result1).map(visitant -> {
+            VisitantDTO visitantDTO = visitantMapper.visitantToVisitantDTO(visitant);
+
             return visitantDTO;
         });
     }

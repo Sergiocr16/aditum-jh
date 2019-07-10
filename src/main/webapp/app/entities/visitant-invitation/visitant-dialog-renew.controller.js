@@ -47,13 +47,11 @@
         vm.updateDatePicker = function () {
             vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD")
             vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD")
-            console.log(vm.dates.initial_date)
         }
 
         vm.updateTimePicker = function () {
             vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
             vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
-            console.log(moment("Init " + vm.dates.final_time).format('HH:mm'))
         }
         vm.validPlate = function (visitor) {
             if (hasCaracterEspecial(visitor.licenseplate) || hasWhiteSpace(visitor.licenseplate)) {

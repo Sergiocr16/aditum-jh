@@ -5,46 +5,65 @@
         .module('aditumApp')
         .controller('VisitantInvitedUserController', VisitantInvitedUserController);
 
-    VisitantInvitedUserController.$inject = ['$localStorage','InvitationSchedule','VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInvitedUserController.$inject = ['$localStorage', 'InvitationSchedule', 'VisitantInvitation', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', '$state', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'companyUser', 'globalCompany', 'Modal'];
 
-    function VisitantInvitedUserController($localStorage,InvitationSchedule,VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitor, WSDeleteEntity, companyUser, globalCompany, Modal) {
+    function VisitantInvitedUserController($localStorage, InvitationSchedule, VisitantInvitation, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, $state, CommonMethods, WSVisitor, WSDeleteEntity, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.Principal;
         $rootScope.active = "residentsInvitedVisitors";
         $rootScope.mainTitle = "Visitantes invitados";
         vm.isReady = false;
         vm.isAuthenticated = Principal.isAuthenticated;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
 
-
-        if($localStorage.timeFormat!=undefined){
+        if ($localStorage.timeFormat != undefined) {
             loadAll($localStorage.timeFormat);
-        }else{
+        } else {
             loadAll(0);
-        };
+        }
+        ;
 
 
         function loadAll(timeFormat) {
             vm.timeFormat = timeFormat;
             vm.isReady = false;
             vm.timeFormatTitle = timeFormat == 0 ? 'por intervalo de fechas' : 'por programaciones semanales';
+            if (vm.userType == 1) {
+                VisitantInvitation.findInvitedByHouse({
+                    companyId: globalCompany.getId(),
+                    houseId: companyUser.houseId,
+                    timeFormat: timeFormat
+                }).$promise.then(onSuccess);
+            }else{
+                VisitantInvitation.findInvitedForAdmins({
+                    companyId: globalCompany.getId(),
+                    timeFormat: timeFormat
+                }).$promise.then(onSuccess);
 
-            VisitantInvitation.findInvitedByHouse({
-                companyId: globalCompany.getId(),
-                houseId: companyUser.houseId,
-                timeFormat: timeFormat
-            }).$promise.then(onSuccess);
-
-            function sort() {
-                var result = [vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc')];
-                if (vm.predicate !== 'id') {
-                    result.push('id');
-                }
-                return result;
             }
 
             function onSuccess(data) {
@@ -56,7 +75,7 @@
                         }
                     });
 
-                }else{
+                } else {
                     angular.forEach(data, function (value, key) {
                         value.fullName = value.name + " " + value.lastname + " " + value.secondlastname;
                         if (value.identificationnumber == "") {

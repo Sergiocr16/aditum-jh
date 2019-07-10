@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -56,6 +57,24 @@ public class VisitantInvitationService {
         Collections.reverse(result);
         return new PageImpl<VisitantInvitation>(result).map(visitant -> visitantInvitationMapper.toDto(visitant));
     }
+    @Transactional(readOnly = true)
+    public Page<VisitantInvitationDTO> findInvitedVisitorsForAdmins(Long companyId, int timeFormat) {
+        log.debug("Request to get all Visitants");
+        List<VisitantInvitation> result = visitantInvitationRepository.findByCompanyIdAndStatusAndHasscheduleOrCompanyIdAndStatusAndHasschedule(companyId,1, timeFormat,companyId,2,timeFormat);
+
+        List<VisitantInvitation> result1 = new ArrayList<>();
+
+        for (int i = 0; i < result.size(); i++) {
+            if(result.get(i).getHouseId()==null){
+                result1.add(result.get(i));
+            }
+        }
+
+        Collections.reverse(result1);
+        return new PageImpl<VisitantInvitation>(result1).map(visitant -> visitantInvitationMapper.toDto(visitant));
+    }
+
+
     /**
      * Get all the visitantInvitations.
      *

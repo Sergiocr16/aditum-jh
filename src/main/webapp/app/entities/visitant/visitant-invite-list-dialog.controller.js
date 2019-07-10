@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('VisitantInviteListDialogController', VisitantInviteListDialogController);
 
-    VisitantInviteListDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
+    VisitantInviteListDialogController.$inject = ['VisitantInvitation','$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'companyUser', 'globalCompany', 'Modal'];
 
-    function VisitantInviteListDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, companyUser, globalCompany, Modal) {
+    function VisitantInviteListDialogController(VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, companyUser, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.clear = clear;
@@ -288,9 +288,10 @@
         }
 
         function formatVisitor(visitor) {
-            visitor.isinvited = 1;
+            visitor.status = 1;
+            visitor.hasschedule = 0;
             visitor.houseId = companyUser.houseId;
-            visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
+            visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
             visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
             visitor.companyId = globalCompany.getId();
             if (visitor.licenseplate != undefined) {
@@ -362,7 +363,8 @@
                         angular.forEach(vm.visitors, function (val, i) {
                             var newVisitor = formatVisitor(val);
                             vm.isSaving = true;
-                            Visitant.save(newVisitor, onSaveSuccess, onSaveError);
+console.log(newVisitor)
+                            VisitantInvitation.save(newVisitor, onSaveSuccess, onSaveError);
                         })
                     })
                 }

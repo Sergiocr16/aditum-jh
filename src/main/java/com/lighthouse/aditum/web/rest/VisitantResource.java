@@ -148,6 +148,15 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/visitants/ForAdmin/lastMonth/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getVisitorsForAdminInLastMonth(@PathVariable Long  companyId )
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantDTO> page = visitantService.findForAdminInLastMonth(companyId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
 
     @GetMapping("/visitants/between/{initial_time}/{final_time}/byHouse/{houseId}")
     @Timed
@@ -158,6 +167,18 @@ public class VisitantResource {
         throws URISyntaxException {
         log.debug("REST request to get a Watches between dates");
         Page<VisitantDTO> page = visitantService.findByDatesBetweenAndHouse(initial_time,final_time,houseId);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+    @GetMapping("/visitants/between/{initial_time}/{final_time}/ForAdmin/{companyId}")
+    @Timed
+    public ResponseEntity<List<VisitantDTO>> getBetweenDatesForAdmin(
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable(value = "companyId")  Long companyId)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<VisitantDTO> page = visitantService.findByDatesBetweenForAdmin(initial_time,final_time,companyId);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitant");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
@@ -187,6 +208,7 @@ public class VisitantResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
     @GetMapping("/visitants/file/{initial_time}/{final_time}/{companyId}/{houseId}")
     @Timed
     public void getVisitantReportFile(
