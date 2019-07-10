@@ -202,7 +202,7 @@
                 parent: 'visitant-invited-user',
                 url: 'new',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_MANAGER']
                 },
                 views: {
                     'content@': {
@@ -232,7 +232,7 @@
                 parent: 'visitant-invited-user',
                 url: 'renew/schedule/:id',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -264,7 +264,7 @@
                 parent: 'visitant-invited-user',
                 url: 'renew/:id',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_MANAGER']
                 },
                 onEnter: ['$stateParams', '$state', '$uibModal', 'CommonMethods', function ($stateParams, $state, $uibModal, CommonMethods) {
                     $uibModal.open({
@@ -296,7 +296,7 @@
                 parent: 'entity',
                 url: '/visitant/invited/user/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER']
+                    authorities: ['ROLE_USER','ROLE_MANAGER']
 
                 },
                 views: {

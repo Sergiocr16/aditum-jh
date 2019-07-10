@@ -77,6 +77,14 @@
                 },
                 isArray: true,
             },
+            'findForAdminInLastMonth': {
+                url: 'api/visitants/ForAdmin/lastMonth/:companyId',
+                method: 'GET',
+                params: {
+                    companyId: '@companyId'
+                },
+                isArray: true
+            },
             'findBetweenDatesByHouse': {
                 method: 'GET',
                 url: 'api/visitants/between/:initial_time/:final_time/byHouse/:houseId',
@@ -84,7 +92,17 @@
                 params: {
                     initial_time: '@initial_time',
                     final_time: '@final_time',
-                    houseId: '@houseId',
+                    houseId: '@houseId'
+                }
+            },
+            'findBetweenDatesForAdmin': {
+                method: 'GET',
+                url: 'api/visitants/between/:initial_time/:final_time/ForAdmin/:companyId',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    companyId: '@companyId'
                 }
             },
             'findByCompanyInLastMonth': {

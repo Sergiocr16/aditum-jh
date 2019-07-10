@@ -85,6 +85,16 @@ public class VisitantInvitationResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+    @GetMapping("/visitant-invitations/invited/forAdmins/{companyId}/{timeFormat}")
+    @Timed
+    public ResponseEntity<List<VisitantInvitationDTO>> getInvitedVisitorsForAdmins(@PathVariable(value = "companyId")  Long companyId,
+                                                                                 @PathVariable(value = "timeFormat")  int timeFormat)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Visitants");
+        Page<VisitantInvitationDTO> page = visitantInvitationService.findInvitedVisitorsForAdmins(companyId,timeFormat);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/visitants");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
     /**
      * PUT  /visitant-invitations : Updates an existing visitantInvitation.
      *

@@ -33,6 +33,15 @@
                 },
                 isArray: true
             },
+            'findInvitedForAdmins': {
+                url: 'api/visitant-invitations/invited/forAdmins/:companyId/:timeFormat',
+                method: 'GET',
+                params: {
+                    companyId: '@companyId',
+                    timeFormat: '@timeFormat'
+                },
+                isArray: true
+            },
             'findInvitedByHouseAndIdentificationNumber': {
                 url: 'api/visitant-invitations/invited/findOneByHouse/:identificationNumber/:houseId/:companyId/:hasSchedule',
                 method: 'GET',

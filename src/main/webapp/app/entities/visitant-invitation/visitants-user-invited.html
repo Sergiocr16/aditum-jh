@@ -56,6 +56,7 @@
 
                         <tr>
                             <th>Nombre completo</th>
+                            <th ng-if="vm.userType==2">Empresa</th>
                             <th class="text-center">Cédula</th>
                             <th class="text-center">Placa</th>
                             <th ng-if="vm.timeFormat==0">Desde</th>
@@ -75,12 +76,14 @@
 
                         <tr ng-repeat="visitor in vm.visitants | filter:vm.search | orderBy:'fullName'">
                             <td style="text-transform: capitalize;">{{visitor.fullName}}</td>
+                            <td ng-if="vm.userType==2 && visitor.proveedor!==null" > {{visitor.proveedor}}</td>
+                            <td ng-if="vm.userType==2 && visitor.proveedor==null" > No registrado</td>
                             <td class="text-center" ng-show='visitor.identificationnumber!=null'>
                                 {{visitor.identificationnumber.toUpperCase()}}
                             </td>
-                            <td class="text-center" ng-show='visitor.identificationnumber==null'>No se registró</td>
+                            <td class="text-center" ng-show='visitor.identificationnumber==null'>No registrado</td>
                             <td class="text-center" ng-show="visitor.licenseplate!=null">{{visitor.licenseplate}}</td>
-                            <td class="text-center" ng-show="visitor.licenseplate==null">No se registró</td>
+                            <td class="text-center" ng-show="visitor.licenseplate==null">No registrado</td>
                             <td ng-if="vm.timeFormat==0">{{visitor.invitationstartingtime | formatDate}}</td>
                             <td ng-if="vm.timeFormat==0">{{visitor.invitationlimittime | formatDate}}</td>
                             <td class="text-center" ng-if="vm.timeFormat==1">{{visitor.lunes}}</td>

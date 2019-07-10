@@ -19,6 +19,7 @@
                                     <span class="md-headline font-15" style="color:grey;font-weight: 550"> {{vm.visitor.name + " "+vm.visitor.lastname+" "+vm.visitor.secondlastname}}</span>
                                     <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.identificationnumber!=null'>Cédula: {{vm.visitor.identificationnumber.toUpperCase()}}</span>
                                     <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.identificationnumber==null'>Cédula: No se registró</span>
+                                        <span class="md-subhead" style="color:grey;font-size: 12px" ng-show='vm.visitor.proveedor!=null'>Empresa:  {{vm.visitor.proveedor}}</span>
                                     </div>
                                     <div style="width: 60px;height: 60px;">
                                         <img src="content/images/nobody-image.jpg" height="60"

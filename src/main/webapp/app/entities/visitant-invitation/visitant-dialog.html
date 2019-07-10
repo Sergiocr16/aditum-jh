@@ -76,7 +76,7 @@
                         </div>
                     </div>
 
-                    <md-input-container class="md-block" flex hide-xs ng-if="vm.timeFormat==1">
+                    <md-input-container class="md-block" flex ng-if="vm.timeFormat==1">
                         <div style="margin-bottom: 25px;">
                             <label>Días permitidos para el ingreso del visitante</label>
                         </div>
@@ -137,6 +137,10 @@
                 </div>
 
                 <div flex class="col-lg-6 col-md-6 col-sm-6 white-bg divFormsMDXS">
+                    <md-input-container ng-if="vm.userType==2" class="md-block">
+                        <label>Nombre de empresa (opcional)</label>
+                        <input class="uppercase" autocomplete="new-password"  ng-model="vm.visitor.proveedor">
+                    </md-input-container>
                     <md-input-container class="md-block">
                         <label>Número de cédula</label>
                         <input ng-class="{redBorder: vm.visitor.validIdentification == 0}"

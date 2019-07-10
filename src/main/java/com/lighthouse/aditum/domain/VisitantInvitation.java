@@ -66,6 +66,9 @@ public class VisitantInvitation implements Serializable {
     @Column(name = "status")
     private Integer status;
 
+    @Column(name = "proveedor")
+    private String proveedor;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -256,6 +259,19 @@ public class VisitantInvitation implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public VisitantInvitation proveedor(String proveedor) {
+        this.proveedor = proveedor;
+        return this;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -296,6 +312,7 @@ public class VisitantInvitation implements Serializable {
             ", adminId=" + getAdminId() +
             ", scheduleId=" + getScheduleId() +
             ", status=" + getStatus() +
+            ", proveedor='" + getProveedor() + "'" +
             "}";
     }
 }

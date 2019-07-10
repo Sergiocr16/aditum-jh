@@ -44,6 +44,8 @@ public class VisitantInvitationDTO implements Serializable {
 
     private Integer status;
 
+    private String proveedor;
+
     public Long getId() {
         return id;
     }
@@ -164,6 +166,14 @@ public class VisitantInvitationDTO implements Serializable {
         this.status = status;
     }
 
+    public String getProveedor() {
+        return proveedor;
+    }
+
+    public void setProveedor(String proveedor) {
+        this.proveedor = proveedor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -203,6 +213,7 @@ public class VisitantInvitationDTO implements Serializable {
             ", adminId=" + getAdminId() +
             ", scheduleId=" + getScheduleId() +
             ", status=" + getStatus() +
+            ", proveedor='" + getProveedor() + "'" +
             "}";
     }
 }

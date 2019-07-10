@@ -5,11 +5,21 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
+    VisitantDialogController.$inject = ['$localStorage','InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantDialogController(InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
+    function VisitantDialogController($localStorage,InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
         vm.visitor = {};
         vm.clear = clear;
         $rootScope.active = "reportInvitation";
@@ -146,27 +156,25 @@
             vm.minInitialDate = currentDate;
 
 //            HORAS
-            vm.dates.initial_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)
-            vm.dates.final_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes() + 30, 0)
-            vm.minInitialTime = moment(new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm')
+            vm.dates.initial_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0);
+            vm.dates.final_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes() + 30, 0);
+            vm.minInitialTime = moment(new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm');
             setTimeout(function () {
-                vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
-                vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
+                vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm');
+                vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm');
 
             }, 300)
-        }
+        };
 
         vm.updateDatePicker = function () {
-            vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD")
-            vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD")
-            console.log(vm.dates.initial_date)
-        }
+            vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD");
+            vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD");
+        };
 
         vm.updateTimePicker = function () {
-            vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
-            vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
-            console.log(moment("Init " + vm.dates.final_time).format('HH:mm'))
-        }
+            vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm');
+            vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm');
+        };
 
         function hasWhiteSpace(s) {
             function tiene(s) {
@@ -355,7 +363,12 @@
             }
 
             visitor.status = 1;
-            visitor.houseId = $rootScope.companyUser.houseId;
+            if(vm.userType==1){
+                visitor.houseId = $rootScope.companyUser.houseId;
+            }else{
+                visitor.destiny = "Oficina de administrador";
+            }
+
 
             visitor.companyId = globalCompany.getId();
             if (visitor.licenseplate != undefined) {
@@ -437,6 +450,7 @@
         };
 
         function save() {
+            $localStorage.timeFormat = vm.timeFormat;
             Modal.confirmDialog("¿Está seguro que desea reportar este visitante?", "", function () {
                 if (vm.timeFormat == 0) {
                     if (isValidDates()) {
@@ -473,12 +487,10 @@
                     WSVisitor.sendActivity(data);
                     Modal.hideLoadingBar();
                     if(vm.timeFormat == 1){
-                        console.log(data.id)
                         var invitationSchedule = formateTimesSchedule(data);
                         InvitationSchedule.findSchedulesByInvitation({
                             invitationId: data.id
                         },function (schedule) {
-                            console.log(schedule)
                             invitationSchedule.id = schedule[0].id;
                             InvitationSchedule.update(invitationSchedule, function () {
                                 $state.go('visitant-invited-user');

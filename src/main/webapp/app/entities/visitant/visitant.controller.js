@@ -5,14 +5,24 @@
         .module('aditumApp')
         .controller('VisitantController', VisitantController);
 
-    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'companyUser'];
+    VisitantController.$inject = ['Visitant', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams', 'Principal', '$rootScope', 'companyUser','globalCompany'];
 
-    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, companyUser) {
+    function VisitantController(Visitant, ParseLinks, AlertService, paginationConstants, pagingParams, Principal, $rootScope, companyUser,globalCompany) {
         $rootScope.active = "residentsVisitors";
         var vm = this;
         vm.Principal;
         $rootScope.mainTitle = "Bitácora de visitantes";
         vm.isAuthenticated = Principal.isAuthenticated;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
         vm.loadPage = loadPage;
         vm.consult = consult;
         vm.predicate = pagingParams.predicate;
@@ -81,11 +91,21 @@
         function consult() {
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
             vm.isReady = false;
-            Visitant.findBetweenDatesByHouse({
-                initial_time: moment(vm.dates.initial_time).format(),
-                final_time: moment(vm.dates.final_time).format(),
-                houseId: companyUser.houseId
-            }).$promise.then(onSuccess);
+
+            if(vm.userType ==1){
+                Visitant.findBetweenDatesByHouse({
+                    initial_time: moment(vm.dates.initial_time).format(),
+                    final_time: moment(vm.dates.final_time).format(),
+                    houseId: companyUser.houseId
+                }).$promise.then(onSuccess);
+            }else{
+                Visitant.findBetweenDatesForAdmin({
+                    initial_time: moment(vm.dates.initial_time).format(),
+                    final_time: moment(vm.dates.final_time).format(),
+                    companyId: globalCompany.getId(),
+                }).$promise.then(onSuccess);
+            }
+
 
             function onSuccess(data) {
                 vm.visitants = data;
@@ -116,9 +136,19 @@
             vm.path = '/api/visitants/file/' + moment(vm.dates.initial_time).format() + "/" + moment(vm.dates.final_time).format() + "/" + companyUser.companyId + '/' + companyUser.houseId;
 
             vm.isReady = false;
-            Visitant.findByHouseInLastMonth({
-                houseId: companyUser.houseId,
-            }).$promise.then(onSuccess);
+
+            if(vm.userType ==1){
+                Visitant.findByHouseInLastMonth({
+                    houseId: companyUser.houseId,
+                }).$promise.then(onSuccess);
+
+            }else{
+                Visitant.findForAdminInLastMonth({
+                    companyId: globalCompany.getId(),
+                }).$promise.then(onSuccess);
+            }
+
+
 
             function onSuccess(data) {
                 vm.visitants = data;
