@@ -231,8 +231,8 @@
                             vm.residentRegisteredTitle = "Residente habilitado";
                             vm.colorResidentRegistered = "material-green-font";
                         }
-                        if (resident.house.housenumber == 9999) {
-                            resident.house.housenumber = 'Oficina';
+                        if (resident.houseClean.housenumber == 9999) {
+                            resident.houseClean.housenumber = 'Oficina';
                         }
                         vm.residentFound = 1;
                         vm.resident = resident;
@@ -244,8 +244,8 @@
                         if (visitor.identificationnumber.toUpperCase() == vm.id_number.toUpperCase() && visitor.isinvited == 1) {
                             if (verifyVisitantInivitedDate(visitor)) {
                                 vm.resident = visitor;
-                                vm.resident.house = {};
-                                vm.resident.house.housenumber = visitor.houseNumber;
+                                vm.resident.houseClean = {};
+                                vm.resident.houseClean.housenumber = visitor.houseNumber;
                                 vm.resident.image_url = null;
                                 if (visitor.licenseplate == null || visitor.licenseplate == undefined || visitor.licenseplate == "") {
                                     vm.resident.licenseplate = "NINGUNA";
@@ -292,8 +292,8 @@
                         if (visitor.licenseplate != null && visitor.licenseplate.toUpperCase() == vm.id_vehicule.toUpperCase() && visitor.isinvited == 1) {
                             if (verifyVisitantInivitedDate(visitor)) {
                                 vm.resident = visitor;
-                                vm.resident.house = {};
-                                vm.resident.house.housenumber = visitor.houseNumber;
+                                vm.resident.houseClean = {};
+                                vm.resident.houseClean.housenumber = visitor.houseNumber;
                                 vm.resident.image_url = null;
                                 if (visitor.licenseplate == null || visitor.licenseplate == undefined || visitor.licenseplate == "") {
                                     vm.resident.licenseplate = "NINGUNA";
@@ -313,7 +313,7 @@
         vm.insertVisitantInvited = function () {
             Modal.confirmDialog("¿Está seguro que desea realizar esta acción?", "Registrará la visita de "
                 + vm.resident.name + " " + vm.resident.lastname +
-                " a la filial " + vm.resident.house.housenumber, function () {
+                " a la filial " + vm.resident.houseClean.housenumber, function () {
                 vm.savingVisitor = true;
                 var visitant = {
                     name: vm.resident.name,

@@ -20,6 +20,11 @@
                     return data;
                 }
             },
+            'findVehiculesMacroByFilter': {
+                method: 'GET',
+                isArray: true,
+                url:'api/vehicules/macro/:macroId/filter/:filter'
+            },
             'getVehicules': {
                 method: 'GET',
                 url: 'api/allVehicules/:companyId/:houseId/:enabled/:licencePlate',

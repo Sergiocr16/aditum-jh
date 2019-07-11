@@ -1954,10 +1954,10 @@
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            House.get({id: parseInt(data.houseId)}, function (house) {
+                            // House.get({id: parseInt(data.houseId)}, function (house) {
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = house.housenumber;
+                                $rootScope.filialNumber = data.houseClean.housenumber;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
@@ -1968,8 +1968,8 @@
                                         logout();
                                     }
                                 })
-                            })
-                        })
+                            // })
+                        });
                         break;
                     case "ROLE_RH":
                         MultiCompany.getCurrentUserCompany().then(function (data) {

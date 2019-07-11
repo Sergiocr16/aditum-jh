@@ -99,7 +99,7 @@
             </div>
             <div flex="100" layout="column" style="padding-left:12px!important">
                 <div layout="column" class="fade-in" layout-align="center center"
-                     ng-if="vm.houseSelected===-1 && vm.consultingAll===true">
+                     ng-if="vm.houseSelected===-1 && vm.consultingAll===true || vm.condominiumSelected===-1 && vm.consultingAll===true">
                     <form ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
                         <div layout="row" layout-align="center center">
                             <div flex="95" class="input-icon"
@@ -161,8 +161,12 @@
                          infinite-scroll-disabled="vm.page >= vm.links['last']"
                          infinite-scroll-container='".info-container-access-door"' infinite-scroll-distance="1"
                          infinite-scroll-parent="true">
-                        <no-content style="margin-top: 50px!important" ng-if="vm.residents.length == 0 && vm.showingData===true" icon="group"
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.residents.length == 0 && vm.showingData===true" icon="group"
                                     text="No hay usuarios registrados"></no-content>
+                        <!--<no-content style="margin-top: 50px!important"-->
+                                    <!--ng-if="vm.residents.length == 0 && vm.showingData===true && vm.noDataFound ===true" icon="sentiment_very_dissatisfied"-->
+                                    <!--text="No hay usuarios con este filtro"></no-content>-->
                         <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
                              ng-repeat="resident in vm.residents ">
                             <md-card class="margin-bottom-10 residentCardContainer">
@@ -181,12 +185,14 @@
                                         <span class="md-subhead" ng-if="resident.type==2">Residente inquilino</span>
                                         <span class="md-subhead" ng-if="resident.type==3">Visitante autorizado</span>
                                         <span class="md-subhead" ng-if="resident.type==null">Tipo de residente no definido</span>
-                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{resident.house.housenumber}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.condominiumSelected===-1"><b>Condominio: {{resident.companyName}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{resident.houseClean.housenumber}}</b></span>
                                         <span
                                             class="md-subhead">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                         <span class="md-subhead">Teléfono: <span
                                             ng-if="resident.phonenumber==undefined">No definido</span>
-                                 <span ng-if="resident.phonenumber!=undefined">{{resident.phonenumber}}</span></span>
+                                        <span
+                                            ng-if="resident.phonenumber!=undefined">{{resident.phonenumber}}</span></span>
                                     </md-card-title-text>
                                     <md-card-title-media>
                                         <div class="md-media-md card-media  hidden-md hidden-lg"
@@ -220,17 +226,20 @@
                          infinite-scroll-disabled="vm.page >= vm.links['last']"
                          infinite-scroll-container='".info-container-access-door"' infinite-scroll-distance="1"
                          infinite-scroll-parent="true">
-                        <no-content style="margin-top: 50px!important" ng-if="vm.vehicules.length == 0 && vm.showingData===true" icon="directions_car"
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.vehicules.length == 0 && vm.showingData===true && vm.noDataFound ===false" icon="directions_car"
                                     text="No hay vehículos registrados"></no-content>
                         <div class="col-md-4 no-padding col-sm-6 col-xs-12"
                              ng-repeat="vehicule in vm.vehicules">
-                            <md-card  class="margin-bottom-10 residentCardContainer padding-bottom-15"
+                            <md-card class="margin-bottom-10 residentCardContainer padding-bottom-15"
                                      md-theme-watch>
                                 <md-card-title class="no-padding-bottom">
                                     <md-card-title-text>
-                                        <span class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
+                                        <span
+                                            class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
                                         <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
-                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{vehicule.house.housenumber}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.condominiumSelected===-1"><b>Condominio: {{vehicule.companyName}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{vehicule.houseClean.housenumber}}</b></span>
                                     </md-card-title-text>
                                     <md-card-title-media>
                                         <div class="md-media-sm card-media">
@@ -256,8 +265,6 @@
                             </md-card>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
