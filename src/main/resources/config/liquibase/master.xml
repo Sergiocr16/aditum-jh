@@ -86,7 +86,6 @@
     <include file="config/liquibase/changelog/20190306014214_added_entity_constraints_DocumentFile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20170228214136_added_entity_constraints_Note.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190325212922_added_entity_constraints_BitacoraAcciones.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180324021545_added_entity_constraints_Egress.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180328213553_added_entity_constraints_AdministrationConfiguration.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190703190907_added_entity_constraints_MacroCondominium.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190703211348_added_entity_constraints_MacroOfficerAccount.xml" relativeToChangelogFile="false"/>

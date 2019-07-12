@@ -209,7 +209,6 @@
                 sort: sortVehicules(),
                 companyId: vm.condominiumSelected.id,
             }, onSuccessVehicules, onError);
-
         }
 
         function loadVehiculesMacro() {
@@ -225,7 +224,6 @@
                 macroId: $rootScope.macroCondominium.id,
                 filter: filter,
             }, onSuccessVehicules, onError);
-
         }
 
         function sortVehicules() {
