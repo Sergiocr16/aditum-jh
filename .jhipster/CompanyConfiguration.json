@@ -44,6 +44,10 @@
         {
             "fieldName": "hasAccessDoor",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "hasTransit",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20170228214136",

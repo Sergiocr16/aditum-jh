@@ -21,6 +21,7 @@
             "hasContability": "Has Contability",
             "minDate": "Min Date",
             "hasAccessDoor": "Has Access Door",
+            "hasTransit": "Has Transit",
             "company": "Company"
         }
     }
