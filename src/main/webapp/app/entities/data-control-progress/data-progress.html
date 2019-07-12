@@ -67,8 +67,7 @@
             <div class="col-lg-2 col-md-2" has-authority="ROLE_ADMIN"></div>
 
             <div class="portlet-body ">
-                <h2 ng-show="vm.houses.length==0" class="text-center gray-font ">No existen casas en este
-                    condominio</h2>
+
                 <div style="padding:5px" class="hidden-lg hidden-md hidden-sm col-xs-12"
                      ng-if="house.isdesocupated == 0"
                      ng-repeat="house in vm.houses | filter:vm.filterStateHouseTemporal |  filter: {housenumber:vm.filterState}">

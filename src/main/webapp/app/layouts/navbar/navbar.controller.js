@@ -725,6 +725,39 @@
                     ]
                 },
                 {
+                    title: "Mis visitas",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reportar visita",
+                            icon: "perm_identity",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "reportInvitation",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Visitantes invitados",
+                            icon: "account_circle",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "residentsInvitedVisitors",
+                            collapsable: false,
+                            uisref: "visitant-invited-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        }
+                    ]
+                },
+                {
                     title: "Reportes",
                     activeOn: "",
                     authoritites: "ROLE_MANAGER",

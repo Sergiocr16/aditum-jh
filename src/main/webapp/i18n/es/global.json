@@ -54,6 +54,10 @@
         "paymentProof": "Payment Proof",
         "documentFile": "Document File",
         "bitacoraAcciones": "Bitacora Acciones",
+
+        "visitantInvitation": "Visitant Invitation",
+        "invitationSchedule": "Invitation Schedule",
+
         "macroCondominium": "Macro Condominium",
         "macroOfficerAccount": "Macro Officer Account",
         "macroAdminAccount": "Macro Admin Account",

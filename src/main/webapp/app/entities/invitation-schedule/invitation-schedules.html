@@ -1,0 +1,74 @@
+<div>
+    <h2 data-translate="aditumApp.invitationSchedule.home.title">Invitation Schedules</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="invitation-schedule.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="aditumApp.invitationSchedule.home.createLabel">
+                        Create new Invitation Schedule
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="lunes"><span data-translate="aditumApp.invitationSchedule.lunes">Lunes</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="martes"><span data-translate="aditumApp.invitationSchedule.martes">Martes</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="miercoles"><span data-translate="aditumApp.invitationSchedule.miercoles">Miercoles</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="jueves"><span data-translate="aditumApp.invitationSchedule.jueves">Jueves</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="viernes"><span data-translate="aditumApp.invitationSchedule.viernes">Viernes</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="sabado"><span data-translate="aditumApp.invitationSchedule.sabado">Sabado</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="domingo"><span data-translate="aditumApp.invitationSchedule.domingo">Domingo</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="visitantInvitationId"><span data-translate="aditumApp.invitationSchedule.visitantInvitationId">Visitant Invitation Id</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="invitationSchedule in vm.invitationSchedules track by invitationSchedule.id">
+                    <td><a ui-sref="invitation-schedule-detail({id:invitationSchedule.id})">{{invitationSchedule.id}}</a></td>
+                    <td>{{invitationSchedule.lunes}}</td>
+                    <td>{{invitationSchedule.martes}}</td>
+                    <td>{{invitationSchedule.miercoles}}</td>
+                    <td>{{invitationSchedule.jueves}}</td>
+                    <td>{{invitationSchedule.viernes}}</td>
+                    <td>{{invitationSchedule.sabado}}</td>
+                    <td>{{invitationSchedule.domingo}}</td>
+                    <td>{{invitationSchedule.visitantInvitationId}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="invitation-schedule-detail({id:invitationSchedule.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="invitation-schedule.edit({id:invitationSchedule.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="invitation-schedule.delete({id:invitationSchedule.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

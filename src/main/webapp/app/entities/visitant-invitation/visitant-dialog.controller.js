@@ -5,11 +5,21 @@
         .module('aditumApp')
         .controller('VisitantDialogController', VisitantDialogController);
 
-    VisitantDialogController.$inject = ['$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
+    VisitantDialogController.$inject = ['$localStorage','InvitationSchedule', 'VisitantInvitation', '$state', '$timeout', '$interval', '$scope', '$stateParams', 'Visitant', 'House', 'Company', 'Principal', '$rootScope', 'CommonMethods', 'WSVisitor', 'WSDeleteEntity', 'PadronElectoral', 'globalCompany', 'Modal'];
 
-    function VisitantDialogController($state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
+    function VisitantDialogController($localStorage,InvitationSchedule, VisitantInvitation, $state, $timeout, $interval, $scope, $stateParams, Visitant, House, Company, Principal, $rootScope, CommonMethods, WSVisitor, WSDeleteEntity, PadronElectoral, globalCompany, Modal) {
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
+        Principal.identity().then(function (account) {
+            switch (account.authorities[0]) {
+                case "ROLE_USER":
+                    vm.userType = 1;
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    break;
+            }
+        });
         vm.visitor = {};
         vm.clear = clear;
         $rootScope.active = "reportInvitation";
@@ -19,6 +29,7 @@
         vm.openCalendarFinal = openCalendarFinal;
         vm.save = save;
         vm.save = save;
+        vm.timeFormat = 0;
         Modal.enteringForm(save);
         $scope.$on("$destroy", function () {
             Modal.leavingForm();
@@ -29,13 +40,46 @@
             initial_time: new Date(),
             final_time: new Date()
         };
+        vm.visitor = {type: "9", found: 0, validIdentification: 1, validPlateNumber: 1};
+
+        vm.initialDate = new Date(1970, 0, 1, 16, 0, 0)
+        vm.finalDate = new Date(1970, 0, 1, 16, 30, 0)
+        vm.daysOfWeek = [{day: 'Lunes', selected: false, initialTime: vm.initialDate, finalTime: vm.finalDate}, {
+            day: 'Martes',
+            selected: false,
+            initialTime: vm.initialDate, finalTime: vm.finalDate
+        }, {day: 'Miercoles', selected: false, initialTime: vm.initialDate, finalTime: vm.finalDate}, {
+            day: 'Jueves',
+            selected: false,
+            initialTime: vm.initialDate, finalTime: vm.finalDate
+        }, {day: 'Viernes', selected: false, initialTime: vm.initialDate, finalTime: vm.finalDate}, {
+            day: 'Sábado',
+            selected: false,
+            initialTime: vm.initialDate, finalTime: vm.finalDate
+        }, {day: 'Domingo', selected: false, initialTime: vm.initialDate, finalTime: vm.finalDate}];
+
+        vm.selectDay = function (index) {
+            vm.spaceInvalid3 = false;
+            vm.daysOfWeek[index].selected = !vm.daysOfWeek[index].selected;
+
+        };
+
+        vm.validateHoursPerDay = function (item) {
+            if (item.initialTime !== undefined && item.finalTime !== undefined) {
+                if (item.initialTime >= item.finalTime) {
+                    item.isValid = false;
+                    Modal.toast("Debe seleccionar una hora final posterior a la hora anterior");
+                } else {
+                    item.isValid = true;
+
+                }
+            }
+
+
+        };
+
+
         angular.element(document).ready(function () {
-            setTimeout(function () {
-                $("#loadingIcon").fadeOut(300);
-            }, 400)
-            setTimeout(function () {
-                $("#all").fadeIn('slow');
-            }, 900)
 
             vm.formatInitPickers();
         });
@@ -112,27 +156,25 @@
             vm.minInitialDate = currentDate;
 
 //            HORAS
-            vm.dates.initial_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)
-            vm.dates.final_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes() + 30, 0)
-            vm.minInitialTime = moment(new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm')
+            vm.dates.initial_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0);
+            vm.dates.final_time = new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes() + 30, 0);
+            vm.minInitialTime = moment(new Date(1970, 0, 1, currentDate.getHours(), currentDate.getMinutes(), 0)).format('HH:mm');
             setTimeout(function () {
-                vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
-                vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
-                vm.visitor = {type: "9", found: 0, validIdentification: 1, validPlateNumber: 1};
+                vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm');
+                vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm');
+
             }, 300)
-        }
+        };
 
         vm.updateDatePicker = function () {
-            vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD")
-            vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD")
-            console.log(vm.dates.initial_date)
-        }
+            vm.initialDateMinMax = moment(vm.dates.initial_date).format("YYYY-MM-DD");
+            vm.finalDateMinMax = moment(vm.dates.final_date).format("YYYY-MM-DD");
+        };
 
         vm.updateTimePicker = function () {
-            vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm')
-            vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm')
-            console.log(moment("Init " + vm.dates.final_time).format('HH:mm'))
-        }
+            vm.initialTimeMinMax = moment(vm.dates.initial_time).format('HH:mm');
+            vm.finalTimeMinMax = moment(vm.dates.final_time).format('HH:mm');
+        };
 
         function hasWhiteSpace(s) {
             function tiene(s) {
@@ -311,10 +353,23 @@
         }
 
         function formatVisitor(visitor) {
-            visitor.isinvited = 1;
-            visitor.houseId = $rootScope.companyUser.houseId;
-            visitor.invitationstaringtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
-            visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
+
+            if (vm.timeFormat == 0) {
+                visitor.invitationstartingtime = vm.formatDate(vm.dates.initial_date, vm.dates.initial_time);
+                visitor.invitationlimittime = vm.formatDate(vm.dates.final_date, vm.dates.final_time);
+                visitor.hasschedule = 0;
+            } else {
+                visitor.hasschedule = 1;
+            }
+
+            visitor.status = 1;
+            if(vm.userType==1){
+                visitor.houseId = $rootScope.companyUser.houseId;
+            }else{
+                visitor.destiny = "Oficina de administrador";
+            }
+
+
             visitor.companyId = globalCompany.getId();
             if (visitor.licenseplate != undefined) {
                 visitor.licenseplate = visitor.licenseplate.toUpperCase();
@@ -331,67 +386,229 @@
             return visitor;
         }
 
-        function save() {
-            var arrayVisitor = []
-            arrayVisitor.push(vm.visitor)
-            if (vm.validArray(arrayVisitor)) {
-                Modal.confirmDialog("¿Está seguro que desea reportar este visitante?","", function () {
-                    if (isValidDates()) {
-                        Visitant.findInvitedByHouseAndIdentificationNumber({
-                            identificationNumber: vm.visitor.identificationnumber,
-                            houseId: $rootScope.companyUser.houseId,
-                            companyId: globalCompany.getId(),
-                        }, success, error)
-                    }
+        vm.isAnyDaySelected = function () {
 
-                    function success(data) {
+            var selectedDays = 0;
+            angular.forEach(vm.daysOfWeek, function (item, key) {
+                if (item.selected) {
+                    selectedDays++;
+                }
 
-                        Modal.confirmDialog("Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad.", " ¿Desea renovar su invitación y actualizar sus datos?", function () {
-                            Modal.showLoadingBar()
+            })
+            if (selectedDays > 0) {
 
-                            vm.visitor.id = data.id;
-                            formatVisitor(vm.visitor);
-                            Visitant.update(vm.visitor, onSuccess, onSaveError);
-                            function onSuccess(data) {
-                                WSVisitor.sendActivity(data);
-                                Modal.hideLoadingBar()
-                                $state.go('visitant-invited-user')
-                                Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
-                            }
+                return true;
+            } else {
 
-                        })
-                    }
-
-                    function error() {
-                        Modal.showLoadingBar()
-
-                        formatVisitor(vm.visitor);
-                        vm.isSaving = true;
-                        console.log(vm.visitor)
-                        vm.visitor.name = CommonMethods.capitalizeFirstLetter(vm.visitor.name);
-                        vm.visitor.lastname = CommonMethods.capitalizeFirstLetter(vm.visitor.lastname);
-                        vm.visitor.secondlastname = CommonMethods.capitalizeFirstLetter(vm.visitor.secondlastname);
-                        Visitant.save(vm.visitor, onSaveSuccess, onSaveError);
-
-                    }
-
-
-                })
+                return false;
             }
         }
 
+        vm.validateForm = function () {
+            if (vm.timeFormat == 0) {
+                var arrayVisitor = [];
+                arrayVisitor.push(vm.visitor);
+                if (vm.validArray(arrayVisitor)) {
+                    save();
+                }
+            } else if (vm.timeFormat == 1) {
+
+                if (!vm.isAnyDaySelected()) {
+                    setTimeout(function () {
+                        $scope.$apply(function () {
+                            vm.spaceInvalid3 = true;
+                        });
+                    }, 200);
+                    Modal.toast("Debe seleccionar al menos un día permitido para el ingreso del visitante");
+                } else {
+                    if (vm.isAllHoursValid() == false) {
+                        Modal.toast("Debe corregir las horas permitidas para el ingreso del visitante");
+                    } else {
+
+                        save();
+                    }
+                }
+
+            }
+        };
+
+        vm.isAllHoursValid = function () {
+
+            var invalid = 0;
+            angular.forEach(vm.daysOfWeek, function (item, key) {
+                if (item.isValid == false) {
+                    invalid++;
+                }
+            });
+            if (invalid > 0) {
+
+                return false;
+            } else {
+
+                return true;
+            }
+        };
+
+        function save() {
+            $localStorage.timeFormat = vm.timeFormat;
+            Modal.confirmDialog("¿Está seguro que desea reportar este visitante?", "", function () {
+                if (vm.timeFormat == 0) {
+                    if (isValidDates()) {
+                        findIfVisitandExists();
+                    }
+                } else {
+                    findIfVisitandExists();
+                }
+
+
+            })
+        }
+
+        function findIfVisitandExists() {
+
+            VisitantInvitation.findInvitedByHouseAndIdentificationNumber({
+                identificationNumber: vm.visitor.identificationnumber,
+                houseId: $rootScope.companyUser.houseId,
+                companyId: globalCompany.getId(),
+                hasSchedule: vm.timeFormat
+            }, visitantExistsInBD, visitantNoExistsInBD)
+        }
+
+        function visitantExistsInBD(data) {
+
+            Modal.confirmDialog("Un visitante con la cédula " + vm.visitor.identificationnumber + " ya se ha invitado con anterioridad.", " ¿Desea renovar su invitación y actualizar sus datos?", function () {
+                Modal.showLoadingBar();
+
+                vm.visitor.id = data.id;
+                formatVisitor(vm.visitor);
+                VisitantInvitation.update(vm.visitor, onSuccess, onSaveError);
+
+                function onSuccess(data) {
+                    WSVisitor.sendActivity(data);
+                    Modal.hideLoadingBar();
+                    if(vm.timeFormat == 1){
+                        var invitationSchedule = formateTimesSchedule(data);
+                        InvitationSchedule.findSchedulesByInvitation({
+                            invitationId: data.id
+                        },function (schedule) {
+                            invitationSchedule.id = schedule[0].id;
+                            InvitationSchedule.update(invitationSchedule, function () {
+                                $state.go('visitant-invited-user');
+
+                                Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                            }, onSaveError);
+                        });
+
+                    }else{
+                        $state.go('visitant-invited-user')
+                        Modal.toast("Se ha renovado la invitación de " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
+                    }
+
+
+
+                }
+
+            })
+        }
+
+        function visitantNoExistsInBD(result) {
+            Modal.showLoadingBar();
+            formatVisitor(vm.visitor);
+            vm.isSaving = true;
+            VisitantInvitation.save(vm.visitor, onSaveSuccess, onSaveError);
+
+        }
 
         function onSaveSuccess(result) {
             WSVisitor.sendActivity(result);
             $scope.$emit('aditumApp:visitorUpdate', result);
-            $state.go('visitant-invited-user')
-            Modal.hideLoadingBar()
+            if (vm.timeFormat == 0) {
+                finalOnSuccess();
+            } else {
+                var invitationSchedule = formateTimesSchedule(result);
+                InvitationSchedule.save(invitationSchedule, finalOnSuccess, onSaveError);
+
+            }
+
+        }
+
+
+        function formateTimesSchedule(visitant) {
+            var invitationSchedule = {};
+            if (vm.daysOfWeek[0].selected) {
+
+                var lunesInitial = vm.daysOfWeek[0].initialTime + "";
+                var lunesFinal = vm.daysOfWeek[0].finalTime + "";
+                invitationSchedule.lunes = lunesInitial.split(" ")[4].split(":")[0] + ":" + lunesInitial.split(" ")[4].split(":")[1] + "-" + lunesFinal.split(" ")[4].split(":")[0] + ":" + lunesFinal.split(" ")[4].split(":")[1];
+
+            } else {
+                invitationSchedule.lunes = null;
+            }
+
+            if (vm.daysOfWeek[1].selected) {
+
+                var martesInitial = vm.daysOfWeek[1].initialTime + "";
+                var martesFinal = vm.daysOfWeek[1].finalTime + "";
+                invitationSchedule.martes = martesInitial.split(" ")[4].split(":")[0] + ":" + martesInitial.split(" ")[4].split(":")[1] + "-" + martesFinal.split(" ")[4].split(":")[0] + ":" + martesFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.martes = null;
+            }
+
+            if (vm.daysOfWeek[2].selected) {
+
+                var miercolesInitial = vm.daysOfWeek[2].initialTime + "";
+                var miercolesFinal = vm.daysOfWeek[2].finalTime + "";
+                invitationSchedule.miercoles = miercolesInitial.split(" ")[4].split(":")[0] + ":" + miercolesInitial.split(" ")[4].split(":")[1] + "-" + miercolesFinal.split(" ")[4].split(":")[0] + ":" + miercolesFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.miercoles = null;
+            }
+
+            if (vm.daysOfWeek[3].selected) {
+                var juevesInitial = vm.daysOfWeek[3].initialTime + "";
+                var juevesFinal = vm.daysOfWeek[3].finalTime + "";
+                invitationSchedule.jueves = juevesInitial.split(" ")[4].split(":")[0] + ":" + juevesInitial.split(" ")[4].split(":")[1] + "-" + juevesFinal.split(" ")[4].split(":")[0] + ":" + juevesFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.jueves = null;
+            }
+
+            if (vm.daysOfWeek[4].selected) {
+                var viernesInitial = vm.daysOfWeek[4].initialTime + "";
+                var viernesFinal = vm.daysOfWeek[4].finalTime + "";
+                invitationSchedule.viernes = viernesInitial.split(" ")[4].split(":")[0] + ":" + viernesInitial.split(" ")[4].split(":")[1] + "-" + viernesFinal.split(" ")[4].split(":")[0] + ":" + viernesFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.viernes = null;
+            }
+
+            if (vm.daysOfWeek[5].selected) {
+                var sabadoInitial = vm.daysOfWeek[5].initialTime + "";
+                var sabadoFinal = vm.daysOfWeek[5].finalTime + "";
+                invitationSchedule.sabado = sabadoInitial.split(" ")[4].split(":")[0] + ":" + sabadoInitial.split(" ")[4].split(":")[1] + "-" + sabadoFinal.split(" ")[4].split(":")[0] + ":" + sabadoFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.sabado = null;
+            }
+
+            if (vm.daysOfWeek[6].selected) {
+                var domingoInitial = vm.daysOfWeek[6].initialTime + "";
+                var domingoFinal = vm.daysOfWeek[6].finalTime + "";
+                invitationSchedule.domingo = domingoInitial.split(" ")[4].split(":")[0] + ":" + domingoInitial.split(" ")[4].split(":")[1] + "-" + domingoFinal.split(" ")[4].split(":")[0] + ":" + domingoFinal.split(" ")[4].split(":")[1];
+            } else {
+                invitationSchedule.domingo = null;
+            }
+
+            invitationSchedule.visitantInvitationId = visitant.id;
+            return invitationSchedule;
+        }
+
+        function finalOnSuccess() {
+            $state.go('visitant-invited-user');
+            Modal.hideLoadingBar();
             Modal.toast("Se ha reportado como visitante invitado a " + vm.visitor.name + " " + vm.visitor.lastname + " " + "exitosamente");
             vm.isSaving = false;
         }
 
         function onSaveError() {
             vm.isSaving = false;
+            Modal.toast("Un error inesperado ocurrió");
             Modal.hideLoadingBar();
         }
 

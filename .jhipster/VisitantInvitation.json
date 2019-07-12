@@ -1,0 +1,81 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "secondlastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "identificationnumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "invitationstartingtime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "invitationlimittime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "licenseplate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "hasschedule",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "destiny",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "houseId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "companyId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "adminId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "scheduleId",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "proveedor",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20190704191044",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "visitant_invitation",
+    "jpaMetamodelFiltering": false,
+    "pagination": "pagination"
+}
