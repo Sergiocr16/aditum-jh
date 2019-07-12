@@ -56,9 +56,9 @@
 
 
 <div layout="row" flex ng-cloak="">
-    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO"></div>
+    <div ui-view="navbar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_OFFICER,ROLE_OFFICER_MACRO,ROLE_MANAGER_MACRO"></div>
     <section layout="row" flex="">
-        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD">
+        <div ui-view="menu" id="menu-side-bar" has-any-authority="ROLE_MANAGER,ROLE_ADMIN,ROLE_USER,ROLE_RH,ROLE_JD,ROLE_MANAGER_MACRO">
         </div>
         <md-progress-linear  md-mode="indeterminate" class="loading-bar md-warn"
                             ng-if="isShowingLoadingBar"></md-progress-linear>
@@ -508,6 +508,18 @@
 <script src="app/entities/macro-condominium/macro-condominium.service.js"></script>
 
 <script src="app/entities/macro-condominium/macro-condominium.controller.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account-dialog.controller.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account-detail.controller.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account-delete-dialog.controller.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account.state.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account.service.js"></script>
+
+<script src="app/entities/macro-admin-account/macro-admin-account.controller.js"></script>
 
 <script src="app/entities/loginCode/registerResidents.controller.js"></script>
 

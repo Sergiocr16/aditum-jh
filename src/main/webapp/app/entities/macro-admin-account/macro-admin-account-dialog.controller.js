@@ -3,19 +3,31 @@
 
     angular
         .module('aditumApp')
-        .controller('AdminInfoDialogController', AdminInfoDialogController);
+        .controller('MacroAdminAccountDialogController', MacroAdminAccountDialogController);
 
-    AdminInfoDialogController.$inject = ['$rootScope', '$state', 'CommonMethods', '$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'DataUtils', 'entity', 'AdminInfo', 'User', 'Company', 'Principal', 'SaveImageCloudinary'];
+    MacroAdminAccountDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', '$q', 'entity', 'MacroAdminAccount', 'MacroCondominium', 'User', '$rootScope', 'DataUtils', 'Principal', 'CommonMethods', 'SaveImageCloudinary'];
 
-    function AdminInfoDialogController($rootScope, $state, CommonMethods, $timeout, $scope, $stateParams, $uibModalInstance, $q, DataUtils, entity, AdminInfo, User, Company, Principal, SaveImageCloudinary) {
+    function MacroAdminAccountDialogController($timeout, $scope, $stateParams, $uibModalInstance, $q, entity, MacroAdminAccount, MacroCondominium, User, $rootScope, DataUtils, Principal, CommonMethods, SaveImageCloudinary) {
+        var vm = this;
+        $rootScope.active = "macro-condominium";
+        vm.class = "small-caption";
+        vm.macroCondoId = $stateParams.id;
+        vm.macroAdminAccount = entity;
+        vm.clear = clear;
+        vm.save = save;
+        // vm.macrocondominiums = MacroCondominium.query();
+        // vm.users = User.query();
+        MacroCondominium.get({id: vm.macroCondoId}, function (result) {
+            vm.macroCondo = result;
+        });
 
         var vm = this;
         var fileImage = null;
         vm.loginStringCount = 0;
-        if (entity.image_url == undefined) {
-            entity.image_url = null;
+        if (entity.imageUrl == undefined) {
+            entity.imageUrl = null;
         }
-        vm.adminInfo = entity;
+        vm.macroAdminAccount = entity;
         vm.clear = clear;
         vm.byteSize = DataUtils.byteSize;
         vm.openFile = DataUtils.openFile;
@@ -23,9 +35,6 @@
         vm.user = entity;
 
         vm.required = 1;
-        vm.users = User.query();
-        vm.company = Company.query();
-        vm.companies = Company.query();
         vm.isAuthenticated = Principal.isAuthenticated;
 
         $timeout(function () {
@@ -38,25 +47,21 @@
         }
 
         vm.isAuthenticated = Principal.isAuthenticated;
-        angular.element(document).ready(function () {
-            $("#myInfo").fadeIn(600);
-        });
 
-        if (vm.adminInfo.id !== null) {
-            User.getUserById({id: vm.adminInfo.userId}, onSuccess);
+        if (vm.macroAdminAccount.id !== null) {
+            User.getUserById({id: vm.macroAdminAccount.userId}, onSuccess);
         }
 
         function onSuccess(user, headers) {
             vm.user = user;
-            vm.adminInfo.email = vm.user.email;
+            vm.macroAdminAccount.email = vm.user.email;
         }
 
 
         function save() {
             vm.isSaving = true;
-
-            if (vm.adminInfo.id !== null) {
-                vm.imageUser = {user: vm.adminInfo.id};
+            if (vm.macroAdminAccount.id !== null) {
+                vm.imageUser = {user: vm.macroAdminAccount.id};
                 if (fileImage !== null) {
                     SaveImageCloudinary
                         .save(fileImage, vm.imageUser)
@@ -67,35 +72,32 @@
                     }
 
                     function onSaveImageSuccess(data) {
-                        vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                        AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                        vm.macroAdminAccount.imageUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                        MacroAdminAccount.update(vm.macroAdminAccount, onSaveSuccess, onSaveError);
                         updateAccount();
                     }
                 } else {
-                    AdminInfo.update(vm.adminInfo, onSaveSuccess, onSaveError);
+                    MacroAdminAccount.update(vm.macroAdminAccount, onSaveSuccess, onSaveError);
                     updateAccount();
                 }
             } else {
-                vm.adminInfo.name = CommonMethods.capitalizeFirstLetter(vm.adminInfo.name);
-                vm.adminInfo.lastname = CommonMethods.capitalizeFirstLetter(vm.adminInfo.lastname);
-                vm.adminInfo.secondlastname = CommonMethods.capitalizeFirstLetter(vm.adminInfo.secondlastname);
+                vm.macroAdminAccount.name = CommonMethods.capitalizeFirstLetter(vm.macroAdminAccount.name);
+                vm.macroAdminAccount.lastname = CommonMethods.capitalizeFirstLetter(vm.macroAdminAccount.lastname);
+                vm.macroAdminAccount.secondlastname = CommonMethods.capitalizeFirstLetter(vm.macroAdminAccount.secondlastname);
                 createAccount();
             }
         }
 
 
         function createAccount() {
-            var authorities = ["ROLE_MANAGER"];
-            vm.user.firstName = vm.adminInfo.name;
-            vm.user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
-            vm.user.email = vm.adminInfo.email;
+            var authorities = ["ROLE_MANAGER_MACRO"];
+            vm.user.firstName = vm.macroAdminAccount.name;
+            vm.user.lastName = vm.macroAdminAccount.lastname + ' ' + vm.macroAdminAccount.secondlastname;
+            vm.user.email = vm.macroAdminAccount.email;
             vm.user.activated = true;
             vm.user.authorities = authorities;
             vm.user.login = generateLogin(0);
-
             User.save(vm.user, onSaveUser, onSaveLoginError);
-
-
         }
 
         function onSaveUser(result) {
@@ -120,9 +122,9 @@
         }
 
         function insertAdmin(id) {
-            vm.adminInfo.enabled = 1;
-            vm.adminInfo.companyId = vm.adminInfo.companyId;
-            vm.adminInfo.userId = id;
+            vm.macroAdminAccount.enabled = 1;
+            vm.macroAdminAccount.macroCondominiumId = vm.macroCondo.id;
+            vm.macroAdminAccount.userId = id;
             vm.imageUser = {user: id};
             if (fileImage !== null) {
                 SaveImageCloudinary
@@ -135,8 +137,8 @@
 
                 function onSaveImageSuccess(data) {
 
-                    vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
-                    AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+                    vm.macroAdminAccount.imageUrl = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                    MacroAdminAccount.save(vm.macroAdminAccount, onSaveSuccess, onSaveError);
 
                     function onSaveSuccess(result) {
                         vm.isSaving = false;
@@ -145,7 +147,7 @@
                     }
                 }
             } else {
-                AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
+                MacroAdminAccount.save(vm.macroAdminAccount, onSaveSuccess, onSaveError);
 
                 function onSaveSuccess(result) {
                     vm.isSaving = false;
@@ -157,19 +159,19 @@
         }
 
         function updateAccount() {
-            User.getUserById({id: vm.adminInfo.userId}, onSuccess);
+            User.getUserById({id: vm.macroAdminAccount.userId}, onSuccess);
 
             function onSuccess(user, headers) {
-                user.id = vm.adminInfo.userId;
-                user.activated = vm.adminInfo.enabled;
-                user.firstName = vm.adminInfo.name;
-                user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
-                user.email = vm.adminInfo.email;
+                user.id = vm.macroAdminAccount.userId;
+                user.activated = vm.macroAdminAccount.enabled;
+                user.firstName = vm.macroAdminAccount.name;
+                user.lastName = vm.macroAdminAccount.lastname + ' ' + vm.macroAdminAccount.secondlastname;
+                user.email = vm.macroAdminAccount.email;
 
                 User.update(user, onSuccessUser);
 
                 function onSuccessUser(data, headers) {
-                    AdminInfo.update(vm.adminInfo, onUpdateSuccess, onSaveError);
+                    macroAdminAccount.update(vm.macroAdminAccount, onUpdateSuccess, onSaveError);
 
                 }
             }
@@ -212,13 +214,13 @@
                 return cadena;
             }
 
-            var firstletterFirstName = vm.adminInfo.name.charAt(0);
-            var firstletterSecondName = vm.adminInfo.secondlastname.charAt(0);
+            var firstletterFirstName = vm.macroAdminAccount.name.charAt(0);
+            var firstletterSecondName = vm.macroAdminAccount.secondlastname.charAt(0);
             if (config == 1) {
                 vm.loginStringCount = vm.loginStringCount + 1;
-                return getCleanedString(firstletterFirstName + vm.adminInfo.lastname + firstletterSecondName + vm.loginStringCount);
+                return getCleanedString(firstletterFirstName + vm.macroAdminAccount.lastname + firstletterSecondName + vm.loginStringCount);
             }
-            return getCleanedString(firstletterFirstName + vm.adminInfo.lastname + firstletterSecondName);
+            return getCleanedString(firstletterFirstName + vm.macroAdminAccount.lastname + firstletterSecondName);
         }
 
         function onSaveSuccess(result) {
@@ -231,11 +233,11 @@
         }
 
         function updateAccount() {
-            vm.user.id = vm.adminInfo.userId;
+            vm.user.id = vm.macroAdminAccount.userId;
             vm.user.activated = 1;
-            vm.user.firstName = vm.adminInfo.name;
-            vm.user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
-            vm.user.email = vm.adminInfo.email;
+            vm.user.firstName = vm.macroAdminAccount.name;
+            vm.user.lastName = vm.macroAdminAccount.lastname + ' ' + vm.macroAdminAccount.secondlastname;
+            vm.user.email = vm.macroAdminAccount.email;
             User.update(vm.user, onSuccessUser);
 
             function onSuccessUser(result) {
@@ -243,7 +245,6 @@
                 toastr["success"]("Se ha editado el administrador correctamente.");
             }
         }
-
 
         vm.setImage = function ($file) {
             if ($file && $file.$error === 'pattern') {

@@ -21,6 +21,9 @@ public final class AuthoritiesConstants {
 
     public static final String OFFICERMACRO= "ROLE_OFFICER_MACRO";
 
+    public static final String MANAGERMACRO= "ROLE_MANAGER_MACRO";
+
+
 
     private AuthoritiesConstants() {
     }

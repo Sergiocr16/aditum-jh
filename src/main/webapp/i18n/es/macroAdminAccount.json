@@ -1,0 +1,29 @@
+{
+    "aditumApp": {
+        "macroAdminAccount" : {
+            "home": {
+                "title": "Macro Admin Accounts",
+                "createLabel": "Crear nuevo Macro Admin Account",
+                "createOrEditLabel": "Crear o editar Macro Admin Account"
+            },
+            "created": "Un nuevo Macro Admin Account ha sido creado con el identificador {{ param }}",
+            "updated": "Un Macro Admin Account ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Macro Admin Account ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Macro Admin Account {{ id }}?"
+            },
+            "detail": {
+                "title": "Macro Admin Account"
+            },
+            "name": "Name",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "identificationnumber": "Identificationnumber",
+            "email": "Email",
+            "enabled": "Enabled",
+            "imageUrl": "Image Url",
+            "macroCondominium": "Macro Condominium",
+            "user": "User"
+        }
+    }
+}

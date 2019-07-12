@@ -1915,6 +1915,25 @@
                             $rootScope.hideFilial = true;
                         });
                         break;
+                    case "ROLE_MANAGER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.companyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.macroCondominiumId;
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            }
+                            MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
+                                vm.contextLiving = macroCondo.name;
+                                $rootScope.companyName = macroCondo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = data.imageUrl;
+                                if (data.enabled == 0) {
+                                    logout();
+                                }
+                            });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
                     case "ROLE_OFFICER_MACRO":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
