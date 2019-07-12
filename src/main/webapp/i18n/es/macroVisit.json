@@ -1,0 +1,32 @@
+{
+    "aditumApp": {
+        "macroVisit" : {
+            "home": {
+                "title": "Macro Visits",
+                "createLabel": "Crear nuevo Macro Visit",
+                "createOrEditLabel": "Crear o editar Macro Visit"
+            },
+            "created": "Un nuevo Macro Visit ha sido creado con el identificador {{ param }}",
+            "updated": "Un Macro Visit ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Macro Visit ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Macro Visit {{ id }}?"
+            },
+            "detail": {
+                "title": "Macro Visit"
+            },
+            "name": "Name",
+            "identificationnumber": "Identificationnumber",
+            "lastname": "Lastname",
+            "secondlastname": "Secondlastname",
+            "licenseplate": "Licenseplate",
+            "status": "Status",
+            "arrivaltime": "Arrivaltime",
+            "departuretime": "Departuretime",
+            "destiny": "Destiny",
+            "macroCondominium": "Macro Condominium",
+            "company": "Company",
+            "house": "House"
+        }
+    }
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity MacroVisit.
+    -->
+    <changeSet id="20190712220748-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="macro_condominium_id"
+                                 baseTableName="macro_visit"
+                                 constraintName="fk_macro_visit_macro_condominium_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="macro_condominium"/>
+
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="macro_visit"
+                                 constraintName="fk_macro_visit_company_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"/>
+
+        <addForeignKeyConstraint baseColumnNames="house_id"
+                                 baseTableName="macro_visit"
+                                 constraintName="fk_macro_visit_house_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="house"/>
+
+    </changeSet>
+</databaseChangeLog>

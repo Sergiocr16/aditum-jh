@@ -1,0 +1,155 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myMacroVisitLabel" data-translate="aditumApp.macroVisit.home.createOrEditLabel">Create or edit a Macro Visit</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.macroVisit.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.macroVisit.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.macroVisit.name"
+                    required/>
+            <div ng-show="editForm.name.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.name.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.identificationnumber" for="field_identificationnumber">Identificationnumber</label>
+            <input type="text" class="form-control" name="identificationnumber" id="field_identificationnumber"
+                    ng-model="vm.macroVisit.identificationnumber"
+                    required/>
+            <div ng-show="editForm.identificationnumber.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.identificationnumber.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.lastname" for="field_lastname">Lastname</label>
+            <input type="text" class="form-control" name="lastname" id="field_lastname"
+                    ng-model="vm.macroVisit.lastname"
+                    required/>
+            <div ng-show="editForm.lastname.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.lastname.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.secondlastname" for="field_secondlastname">Secondlastname</label>
+            <input type="text" class="form-control" name="secondlastname" id="field_secondlastname"
+                    ng-model="vm.macroVisit.secondlastname"
+                    required/>
+            <div ng-show="editForm.secondlastname.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.secondlastname.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.licenseplate" for="field_licenseplate">Licenseplate</label>
+            <input type="text" class="form-control" name="licenseplate" id="field_licenseplate"
+                    ng-model="vm.macroVisit.licenseplate"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.status" for="field_status">Status</label>
+            <input type="number" class="form-control" name="status" id="field_status"
+                    ng-model="vm.macroVisit.status"
+                    required/>
+            <div ng-show="editForm.status.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.status.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.status.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.arrivaltime" for="field_arrivaltime">Arrivaltime</label>
+                <div class="input-group">
+                    <input id="field_arrivaltime" type="text" class="form-control" name="arrivaltime" datetime-picker="{{dateformat}}" ng-model="vm.macroVisit.arrivaltime" is-open="vm.datePickerOpenStatus.arrivaltime"
+                    required/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('arrivaltime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+            <div ng-show="editForm.arrivaltime.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.arrivaltime.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.arrivaltime.$error.ZonedDateTimelocal" data-translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.departuretime" for="field_departuretime">Departuretime</label>
+                <div class="input-group">
+                    <input id="field_departuretime" type="text" class="form-control" name="departuretime" datetime-picker="{{dateformat}}" ng-model="vm.macroVisit.departuretime" is-open="vm.datePickerOpenStatus.departuretime"
+                    />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('departuretime')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="aditumApp.macroVisit.destiny" for="field_destiny">Destiny</label>
+            <input type="text" class="form-control" name="destiny" id="field_destiny"
+                    ng-model="vm.macroVisit.destiny"
+                    />
+        </div>
+
+        <div class="form-group">
+            <label data-translate="aditumApp.macroVisit.macroCondominium" for="field_macroCondominium">Macro Condominium</label>
+            <select class="form-control" id="field_macroCondominium" name="macroCondominium" ng-model="vm.macroVisit.macroCondominiumId" ng-options="macroCondominium.id as macroCondominium.name for macroCondominium in vm.macrocondominiums"             required>
+            </select>
+        </div>
+        <div ng-show="editForm.macroCondominium.$invalid">
+            <p class="help-block"
+                ng-show="editForm.macroCondominium.$error.required" data-translate="entity.validation.required">
+                This field is required.
+            </p>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.macroVisit.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.macroVisit.companyId" ng-options="company.id as company.name for company in vm.companies"            >
+                <option value=""></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label data-translate="aditumApp.macroVisit.house" for="field_house">House</label>
+            <select class="form-control" id="field_house" name="house" ng-model="vm.macroVisit.houseId" ng-options="house.id as house.housenumber for house in vm.houses"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

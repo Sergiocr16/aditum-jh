@@ -3,6 +3,7 @@ package com.lighthouse.aditum.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -19,6 +20,8 @@ public class CompanyDTO implements Serializable {
     @Min(value = 0)
     @Max(value = 1)
     private Integer active;
+
+    private List<HouseAccessDoorDTO> houses;
 
     public Long getId() {
         return id;
@@ -70,5 +73,13 @@ public class CompanyDTO implements Serializable {
             ", name='" + name + "'" +
             ", active='" + active + "'" +
             '}';
+    }
+
+    public List<HouseAccessDoorDTO> getHouses() {
+        return houses;
+    }
+
+    public void setHouses(List<HouseAccessDoorDTO> houses) {
+        this.houses = houses;
     }
 }

@@ -1,0 +1,88 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "macroCondominium",
+            "otherEntityName": "macroCondominium",
+            "relationshipType": "many-to-one",
+            "relationshipValidateRules": [
+                "required"
+            ],
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "company",
+            "otherEntityName": "company",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "house",
+            "otherEntityName": "house",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "housenumber"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "identificationnumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "lastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "secondlastname",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "licenseplate",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "status",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "arrivaltime",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "departuretime",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "destiny",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20190712220748",
+    "dto": "mapstruct",
+    "service": "serviceClass",
+    "entityTableName": "macro_visit",
+    "jpaMetamodelFiltering": false,
+    "pagination": "infinite-scroll"
+}

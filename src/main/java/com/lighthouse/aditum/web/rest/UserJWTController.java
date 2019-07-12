@@ -49,7 +49,9 @@ public class UserJWTController {
 
     private MacroCondominiumService macroCondominiumService;
 
-    public UserJWTController(TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService, MacroOfficerAccountService macroOfficerAccountService, MacroCondominiumService macroCondominiumService) {
+    private MacroAdminAccountService macroAdminAccountService;
+
+    public UserJWTController(MacroAdminAccountService macroAdminAccountService,TokenProvider tokenProvider, AuthenticationManager authenticationManager,UserService userService,OfficerAccountService officerAccountService,CompanyService companyService,AdminInfoService managerService,ResidentService residentService,JuntaDirectivaAccountService juntaDirectivaAccountService, MacroOfficerAccountService macroOfficerAccountService, MacroCondominiumService macroCondominiumService) {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
@@ -60,6 +62,7 @@ public class UserJWTController {
         this.juntaDirectivaAccountService = juntaDirectivaAccountService;
         this.macroOfficerAccountService = macroOfficerAccountService;
         this.macroCondominiumService = macroCondominiumService;
+        this.macroAdminAccountService = macroAdminAccountService;
     }
 
     @PostMapping("/authenticate")
@@ -112,6 +115,12 @@ public class UserJWTController {
                     case AuthoritiesConstants.OFFICERMACRO:
                         MacroOfficerAccountDTO macroOfficerAccountDTO = macroOfficerAccountService.findOneByUserId(user.getId());
                         if(this.macroCondominiumService.findOne(macroOfficerAccountDTO.getMacroCondominiumId()).isEnabled()){
+                            activeCompany = true;
+                        }
+                        break;
+                    case AuthoritiesConstants.MANAGERMACRO:
+                        MacroAdminAccountDTO macroAdminAccountDTO = macroAdminAccountService.findOneByUserId(user.getId());
+                        if(this.macroCondominiumService.findOne(macroAdminAccountDTO.getMacroCondominiumId()).isEnabled() && macroAdminAccountDTO.isEnabled()){
                             activeCompany = true;
                         }
                         break;
