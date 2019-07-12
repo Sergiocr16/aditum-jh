@@ -57,6 +57,7 @@
         "macroCondominium": "Macro Condominium",
         "macroOfficerAccount": "Macro Officer Account",
         "macroAdminAccount": "Macro Admin Account",
+        "macroVisit": "Macro Visit",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
