@@ -27,9 +27,11 @@ public class CompanyConfigurationDTO implements Serializable {
     @NotNull
     private Integer hasContability;
 
+    private ZonedDateTime minDate;
+
     private Integer hasAccessDoor;
 
-    private ZonedDateTime minDate;
+    private Boolean hasTransit;
 
     private Long companyId;
 
@@ -81,6 +83,22 @@ public class CompanyConfigurationDTO implements Serializable {
         this.minDate = minDate;
     }
 
+    public Integer getHasAccessDoor() {
+        return hasAccessDoor;
+    }
+
+    public void setHasAccessDoor(Integer hasAccessDoor) {
+        this.hasAccessDoor = hasAccessDoor;
+    }
+
+    public Boolean isHasTransit() {
+        return hasTransit;
+    }
+
+    public void setHasTransit(Boolean hasTransit) {
+        this.hasTransit = hasTransit;
+    }
+
     public Long getCompanyId() {
         return companyId;
     }
@@ -119,14 +137,8 @@ public class CompanyConfigurationDTO implements Serializable {
             ", quantityaccessdoor=" + getQuantityaccessdoor() +
             ", hasContability=" + getHasContability() +
             ", minDate='" + getMinDate() + "'" +
+            ", hasAccessDoor=" + getHasAccessDoor() +
+            ", hasTransit='" + isHasTransit() + "'" +
             "}";
-    }
-
-    public Integer getHasAccessDoor() {
-        return hasAccessDoor;
-    }
-
-    public void setHasAccessDoor(Integer hasAccessDoor) {
-        this.hasAccessDoor = hasAccessDoor;
     }
 }

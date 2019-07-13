@@ -20,8 +20,8 @@
         vm.macroOfficerAccount = entity;
         vm.clear = clear;
         vm.save = save;
-        vm.users = User.query();
-        vm.macrocondominiums = MacroCondominium.query();
+        // vm.users = User.query();
+        // vm.macrocondominiums = MacroCondominium.query();
         MacroCondominium.get({id : vm.macroCondoId },function(result){
             vm.macroCondo = result;
             if(vm.macroOfficerAccount.id==null) {

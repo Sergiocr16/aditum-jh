@@ -4,6 +4,7 @@ import com.lighthouse.aditum.AditumApp;
 
 import com.lighthouse.aditum.domain.MacroCondominium;
 import com.lighthouse.aditum.repository.MacroCondominiumRepository;
+import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.MacroCondominiumService;
 import com.lighthouse.aditum.service.dto.MacroCondominiumDTO;
 import com.lighthouse.aditum.service.mapper.MacroCondominiumMapper;
@@ -57,6 +58,9 @@ public class MacroCondominiumResourceIntTest {
     private MacroCondominiumService macroCondominiumService;
 
     @Autowired
+    private HouseService houseService;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -72,10 +76,11 @@ public class MacroCondominiumResourceIntTest {
 
     private MacroCondominium macroCondominium;
 
+
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final MacroCondominiumResource macroCondominiumResource = new MacroCondominiumResource(macroCondominiumService);
+        final MacroCondominiumResource macroCondominiumResource = new MacroCondominiumResource(houseService,macroCondominiumService);
         this.restMacroCondominiumMockMvc = MockMvcBuilders.standaloneSetup(macroCondominiumResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

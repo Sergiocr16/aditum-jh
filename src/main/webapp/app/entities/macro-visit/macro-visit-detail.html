@@ -1,0 +1,67 @@
+
+<div>
+    <h2><span data-translate="aditumApp.macroVisit.detail.title">Macro Visit</span> {{vm.macroVisit.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="aditumApp.macroVisit.name">Name</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.name}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.identificationnumber">Identificationnumber</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.identificationnumber}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.lastname">Lastname</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.lastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.secondlastname">Secondlastname</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.secondlastname}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.licenseplate">Licenseplate</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.licenseplate}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.status">Status</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.status}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.arrivaltime">Arrivaltime</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.arrivaltime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.departuretime">Departuretime</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.departuretime | date:'medium'}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.destiny">Destiny</span></dt>
+        <dd>
+            <span>{{vm.macroVisit.destiny}}</span>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.macroCondominium">Macro Condominium</span></dt>
+        <dd>
+            <a ui-sref="macro-condominium-detail({id:vm.macroVisit.macroCondominiumId})">{{vm.macroVisit.macroCondominiumName}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.macroVisit.companyId})">{{vm.macroVisit.companyName}}</a>
+        </dd>
+        <dt><span data-translate="aditumApp.macroVisit.house">House</span></dt>
+        <dd>
+            <a ui-sref="house-detail({id:vm.macroVisit.houseId})">{{vm.macroVisit.houseHousenumber}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="macro-visit-detail.edit({id:vm.macroVisit.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

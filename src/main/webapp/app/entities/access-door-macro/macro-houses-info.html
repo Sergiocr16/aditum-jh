@@ -1,0 +1,273 @@
+<div layout="column" flex>
+    <div class="menu-demo-container" layout-align="start center" layout="column">
+        <div layout-wrap="" layout="row" layout-fill="" layout-align="space-between center">
+            <div layout="row" flex="50" flex-sm="100" flex-xs="100">
+                <md-input-container style="min-width: 150px;margin-right: 15px!important" class="no-margin">
+                    <label style="font-size: 20px!important">Condominio</label>
+                    <md-select ng-model="vm.condominiumSelected" ng-change="vm.selectCondo(condo)"
+                               class="md-no-underline select-access">
+                        <md-option ng-value="-1">Todos</md-option>
+                        <md-option ng-value="condo" ng-repeat="condo in macroCondominium.companies">{{condo.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container style="min-width: 150px" class="no-margin">
+                    <label style="font-size: 20px!important">Filial</label>
+                    <md-select ng-model="vm.houseSelected" class="md-no-underline select-access"
+                               ng-change="vm.selectHouse(vm.houseSelected)">
+                        <md-option ng-value="-1">Todas</md-option>
+                        <md-option ng-value="house" ng-repeat="house in condominiumSelected.houses">
+                            {{house.housenumber}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout="row" flex="50" flex-sm="100" flex-xs="100" layout-align="center center">
+                <div ng-if="vm.houseSelected!==-1" flex
+                     class="margin-top-10 layout-align-center-center layout-row fade-in"
+                     layout="row" layout-align="end center"
+                     ng-if="vm.house!='all'" style="">
+                    <!--<div class="little-container font-12 flex-75" flex="75">-->
+                    <!--<div class="col-md-12">-->
+                    <!--<b>Número de telefono o extensión: </b>-->
+                    <!--<span ng-show="vm.houseSelected.extension==undefined || vm.houseSelected.extension==''"-->
+                    <!--aria-hidden="false"-->
+                    <!--class="">No definido</span>-->
+                    <!--<span ng-hide="vm.houseSelected==undefined || vm.houseSelected.extension==''" aria-hidden="true"-->
+                    <!--class="ng-hide"></span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <div flex="25" class="flex-25">
+                        <button style="z-index:1!important;"
+                                class="float-right md-fab md-raised md-mini red-button-oficial md-button md-ink-ripple"
+                                type="button" style="margin-top: -5px;" ng-click="vm.showKeys(vm.houseSelected)"
+                                aria-label="Ver claves">
+                            <md-icon style="color:white!important" class="material-icons">
+                                vpn_key
+                            </md-icon>
+                            <md-tooltip>Ver claves</md-tooltip>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div layout="column" style="border-radius:8px;background: white">
+        <div layout="row" flex="100" class="padding-10">
+            <div flex="7">
+                <!--<div-->
+                <!--style="min-height: 40px;margin:15px!important;border-radius:8px;width: unset!important;padding: 0px!important"-->
+                <!--class="tab_container"-->
+                <!--layout="row">-->
+                <!--<label flex class="outline-none" ng-class="{'active-tab-charge' : vm.queryType==1}"-->
+                <!--ng-click="vm.queryType=1"><i-->
+                <!--class="material-icons material-icons-with-text icon-finanzes">people</i> <span hide-xs hide-sm-->
+                <!--hide-md>Residentes</span></label>-->
+                <!--<label flex class="outline-none" ng-class="{'active-tab-charge' : vm.queryType==2}"-->
+                <!--ng-click="vm.queryType=2"><i class="material-icons material-icons-with-text icon-finanzes">directions_car</i>-->
+                <!--<span hide-xs hide-sm hide-md>Vehículos</span></label>-->
+                <!--<label flex class="outline-none" ng-class="{'active-tab-charge' : vm.queryType==3}"-->
+                <!--ng-click="vm.queryType=3"><i-->
+                <!--class="material-icons material-icons-with-text icon-finanzes">face</i> <span hide-xs hide-sm-->
+                <!--hide-md>Visitantes Invitados</span></label>-->
+                <!--</div>-->
+                <div class="tab_container-macro" layout="column" style="position:unset!important;">
+                    <label
+                        class="width-100  label-tab-container-macro-ad  outline-none width-100 padding-10-0 margin-bottom-15"
+                        flex
+                        ng-class="{'active-tab-charge-invert-macro-ad' : vm.queryType==1}"
+                        ng-click="vm.changeQueryType(1)"><i
+                        class="material-icons material-icons-with-text icon-finanzes font-30">supervisor_account</i>
+                        <span hide-xs hide-sm hide-md class="block">Residentes</span>
+                    </label>
+                    <label class="width-100 label-tab-container-macro-ad outline-none padding-10-0 margin-bottom-15"
+                           flex
+                           ng-class="{'active-tab-charge-invert-macro-ad' : vm.queryType==2}"
+                           ng-click="vm.changeQueryType(2)"><i
+                        class="material-icons material-icons-with-text icon-finanzes font-30">directions_car</i>
+                        <span hide-xs hide-sm hide-md class="block">Vehículos</span>
+                    </label>
+                    <label class="width-100  label-tab-container-macro-ad  outline-none padding-10-0 margin-bottom-15"
+                           flex
+                           ng-class="{'active-tab-charge-invert-macro-ad' : vm.queryType==3}"
+                           ng-click="vm.changeQueryType(3)"><i
+                        class="material-icons material-icons-with-text icon-finanzes font-30">face</i>
+                        <span hide-xs hide-sm hide-md class="block">Visitantes</span>
+                    </label>
+                </div>
+            </div>
+            <div flex="100" layout="column" style="padding-left:12px!important">
+                <div layout="column" class="fade-in" layout-align="center center"
+                     ng-if="vm.houseSelected===-1 && vm.consultingAll===true || vm.condominiumSelected===-1 && vm.consultingAll===true">
+                    <form ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
+                        <div layout="row" layout-align="center center">
+                            <div flex="95" class="input-icon"
+                                 style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
+                                <i class="fa fa-search" style="font-size: 30px!important;margin: 16px!important;"></i>
+                                <input type="text"
+                                       class="form-control ng-valid ng-not-empty ng-touched ng-dirty ng-valid-parse"
+                                       style="font-size: 35px;border: 0px !important;height: 50px; padding-left: 60px;background-color:#f1f3f4;"
+                                       placeholder="Buscar"
+                                       ng-model="vm.filter"
+                                       aria-invalid="false"
+                                       required>
+                            </div>
+                            <div flex="5">
+                                <button type="submit" style="background: white" type="button" class="btn"
+                                        aria-label="Buscar"
+                                        md-labeled-by-tooltip="md-tooltip-62">
+                                    <i class="material-icons search-access"
+                                       style="font-size: 42px!important;margin-top: 10px;">search</i>
+                                    <md-tooltip>Realizar Búsqueda</md-tooltip>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="fade-in" layout="column" layout-align="center center"
+                     ng-if="vm.houseSelected!==-1 || vm.consultingAll===false">
+                    <form layout="row" style="height: 40px" ng-submit="vm.filterInfo()" class="ng-valid ng-dirty">
+                        <div flex="95" class="input-icon"
+                             style="color:#484848!important;padding:10px;background-color:#f1f3f4;border-radius: 8px">
+                            <i class="fa fa-search" style="font-size: 18px!important;margin: 4px!important;"></i>
+                            <input type="text"
+                                   class="form-control ng-valid ng-not-empty ng-touched ng-dirty ng-valid-parse"
+                                   style="font-size: 20px;border: 0px !important;height: 20px; padding-left: 30px;background-color:#f1f3f4;"
+                                   placeholder="Buscar"
+                                   ng-model="vm.filter"
+                                   aria-invalid="false" ng-required="vm.houseSelected===-1">
+                        </div>
+                        <div flex="5">
+                            <button type="submit" style="background: white" type="button" class="btn"
+                                    aria-label="Buscar"
+                                    md-labeled-by-tooltip="md-tooltip-62">
+                                <i class="material-icons search-access"
+                                   style="font-size: 35px!important;margin-top: -3px;">search</i>
+                                <md-tooltip>Realizar Búsqueda</md-tooltip>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="!vm.isReady" layout="row" class="content-loader"
+                     style="height:unset!important;min-height:70% !important" layout-sm="column" layout-fill
+                     layout-align="space-around center">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="90px"></md-progress-circular>
+                </div>
+                <!--MOSTRAR RESIDENTES-->
+                <div class="infinity-scroll-content info-container-access-door" layout="column">
+                    <div ng-if="vm.queryType===1 && vm.isReady" class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
+                         infinite-scroll="vm.loadPageResidents(vm.page + 1)"
+                         infinite-scroll-disabled="vm.page >= vm.links['last']"
+                         infinite-scroll-container='".info-container-access-door"' infinite-scroll-distance="1"
+                         infinite-scroll-parent="true">
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.residents.length == 0 && vm.showingData===true" icon="group"
+                                    text="No hay usuarios registrados"></no-content>
+                        <!--<no-content style="margin-top: 50px!important"-->
+                                    <!--ng-if="vm.residents.length == 0 && vm.showingData===true && vm.noDataFound ===true" icon="sentiment_very_dissatisfied"-->
+                                    <!--text="No hay usuarios con este filtro"></no-content>-->
+                        <div class="col-md-4 col-xs-12 col-sm-6 no-padding residentDivContainerXs"
+                             ng-repeat="resident in vm.residents ">
+                            <md-card class="margin-bottom-10 residentCardContainer">
+                                <md-card-title>
+                                    <md-card-title-text>
+                                    <span class="md-headline font-15 " layout="row" layout-align="start center">{{resident.name.toUpperCase()}}  {{resident.lastname.toUpperCase()}}
+                                         <i class="material-icons greenBalance"
+                                            style="color: #999; padding-left: 5px!important;"
+                                            ng-if="resident.principalContact==1">
+                                    <md-tooltip md-direction="right" class="font-13 bold white-color">Contacto principal
+                                        de la filial
+                                    </md-tooltip>
+                                    assignment_ind</i>
+                                    </span>
+                                        <span class="md-subhead" ng-if="resident.type==1">Residente propietario </span>
+                                        <span class="md-subhead" ng-if="resident.type==2">Residente inquilino</span>
+                                        <span class="md-subhead" ng-if="resident.type==3">Visitante autorizado</span>
+                                        <span class="md-subhead" ng-if="resident.type==null">Tipo de residente no definido</span>
+                                        <span class="md-subhead" ng-if="vm.condominiumSelected===-1"><b>Condominio: {{resident.companyName}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{resident.houseClean.housenumber}}</b></span>
+                                        <span
+                                            class="md-subhead">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
+                                        <span class="md-subhead">Teléfono: <span
+                                            ng-if="resident.phonenumber==undefined">No definido</span>
+                                        <span
+                                            ng-if="resident.phonenumber!=undefined">{{resident.phonenumber}}</span></span>
+                                    </md-card-title-text>
+                                    <md-card-title-media>
+                                        <div class="md-media-md card-media  hidden-md hidden-lg"
+                                             style="padding-top: 10px!important;">
+                                            <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg"
+                                                 height="100"
+                                                 width="100"/>
+                                            <img style="cursor: pointer" data-toggle="modal"
+                                                 data-target="{{'#myModal'+resident.id}}"
+                                                 ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                                 class="object-fit_scale-down-index-xs"/>
+                                        </div>
+                                        <div class="md-media-sm card-media hidden-xs hidden-sm"
+                                             style="padding-top: 10px!important;">
+                                            <img ng-hide="resident.image_url" src="content/images/nobody-image.jpg"
+                                                 height="80"
+                                                 width="80"/>
+                                            <img style="cursor: pointer" data-toggle="modal"
+                                                 data-target="{{'#myModal'+resident.id}}"
+                                                 ng-show="resident.image_url!==null" src="{{resident.image_url}}"
+                                                 class="object-fit_scale-down-index"/>
+                                        </div>
+                                    </md-card-title-media>
+                                </md-card-title>
+                            </md-card>
+                        </div>
+                    </div>
+                    <!--VEHICULOS-->
+                    <div ng-if="vm.queryType===2 && vm.isReady" class="col-lg-12 col-md-12 col-xs-12 no-padding fade-in"
+                         infinite-scroll="vm.loadPageVehicules(vm.page + 1)"
+                         infinite-scroll-disabled="vm.page >= vm.links['last']"
+                         infinite-scroll-container='".info-container-access-door"' infinite-scroll-distance="1"
+                         infinite-scroll-parent="true">
+                        <no-content style="margin-top: 50px!important"
+                                    ng-if="vm.vehicules.length == 0 && vm.showingData===true && vm.noDataFound ===false" icon="directions_car"
+                                    text="No hay vehículos registrados"></no-content>
+                        <div class="col-md-4 no-padding col-sm-6 col-xs-12"
+                             ng-repeat="vehicule in vm.vehicules">
+                            <md-card class="margin-bottom-10 residentCardContainer padding-bottom-15"
+                                     md-theme-watch>
+                                <md-card-title class="no-padding-bottom">
+                                    <md-card-title-text>
+                                        <span
+                                            class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
+                                        <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
+                                        <span class="md-subhead" ng-if="vm.condominiumSelected===-1"><b>Condominio: {{vehicule.companyName}}</b></span>
+                                        <span class="md-subhead" ng-if="vm.houseSelected===-1"><b>Filial: {{vehicule.houseClean.housenumber}}</b></span>
+                                    </md-card-title-text>
+                                    <md-card-title-media>
+                                        <div class="md-media-sm card-media">
+                                            <i ng-show="vehicule.type=='Automóvil'"
+                                               class=" text-center fa fa-car outline-car "
+                                               style="color: {{vehicule.color}};font-size:45px!important;padding-top: 30px;"
+                                               aria-hidden="true ">
+                                                <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                                    Automóvil
+                                                </md-tooltip>
+                                            </i>
+                                            <i ng-show="vehicule.type=='Motocicleta'"
+                                               class=" text-center fa fa-motorcycle outline "
+                                               style="color: {{vehicule.color}}; font-size:45px!important;padding-top: 30px;"
+                                               aria-hidden="true ">
+                                                <md-tooltip md-direction="left" class="font-13 bold white-color">
+                                                    Motocicleta
+                                                </md-tooltip>
+                                            </i>
+                                        </div>
+                                    </md-card-title-media>
+                                </md-card-title>
+                            </md-card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
