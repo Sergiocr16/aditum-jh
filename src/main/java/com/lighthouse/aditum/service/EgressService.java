@@ -100,7 +100,7 @@ public class EgressService {
         else if(egressDTO.getId()!=null && egressDTO.getDeleted()==1){
             concepto = "Eliminación de un egreso: " + egressDTO.getConcept() + " por " + formatColonesD(Integer.parseInt( egressDTO.getTotal())) + " colones";
         }
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,1, "egress-detail","Egresos",egress.getId(),egress.getCompany().getId(),null));
 
         return egressMapper.toDto(egress);
     }

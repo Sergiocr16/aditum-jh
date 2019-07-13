@@ -1762,6 +1762,18 @@
                             showXs: true,
                             showLg: true
                         },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
                     ]
                 };
             } else {
@@ -1826,6 +1838,18 @@
                             activeOn: "adminVisitors",
                             collapsable: false,
                             uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
                             menuId: "",
                             hover: false,
                             showXs: true,

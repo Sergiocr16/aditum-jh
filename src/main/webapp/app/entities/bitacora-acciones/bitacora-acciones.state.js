@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/bitacora-acciones?page&sort&search',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
                 pageTitle: 'aditumApp.bitacoraAcciones.home.title'
             },
             views: {

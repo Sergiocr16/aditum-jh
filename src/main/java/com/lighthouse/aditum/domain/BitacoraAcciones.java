@@ -44,6 +44,9 @@ public class BitacoraAcciones implements Serializable {
     @Column(name = "url_state")
     private String urlState;
 
+    @Column(name = "house_id")
+    private Long houseId;
+
     @ManyToOne
     private Company company;
 
@@ -147,6 +150,19 @@ public class BitacoraAcciones implements Serializable {
         this.urlState = urlState;
     }
 
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public BitacoraAcciones houseId(Long houseId) {
+        this.houseId = houseId;
+        return this;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
+    }
+
     public Company getCompany() {
         return company;
     }
@@ -192,6 +208,7 @@ public class BitacoraAcciones implements Serializable {
             ", ejecutionDate='" + getEjecutionDate() + "'" +
             ", category='" + getCategory() + "'" +
             ", urlState='" + getUrlState() + "'" +
+            ", houseId=" + getHouseId() +
             "}";
     }
 }

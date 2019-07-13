@@ -84,7 +84,7 @@ public class VehiculeService {
             }
 
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
 
         VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;
@@ -151,9 +151,7 @@ public class VehiculeService {
         Vehicule vehicule = vehiculeMapper.toEntity(this.findOne(id));
         vehicule.setDeleted(1);
 
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-
-        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate(),9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate(),9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
 
         vehiculeRepository.save(vehicule);
     }

@@ -11,6 +11,7 @@
         var vm = this;
         vm.isAuthenticated = Principal.isAuthenticated;
         Principal.identity().then(function (account) {
+            vm.adminInfo = account;
             switch (account.authorities[0]) {
                 case "ROLE_USER":
                     vm.userType = 1;
@@ -366,6 +367,7 @@
             if(vm.userType==1){
                 visitor.houseId = $rootScope.companyUser.houseId;
             }else{
+                visitor.adminId = vm.adminInfo.id;
                 visitor.destiny = "Oficina de administrador";
             }
 
