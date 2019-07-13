@@ -53,6 +53,12 @@ public interface ResidentRepository extends JpaRepository<Resident, Long> {
         , Integer state2, Long companyId2, Integer deleted2, Long houseId2, String name2
         , Integer state3, Long companyId3, Integer deleted3, Long houseId3, String name3);
 
+    Page<Resident> findByEnabledAndDeletedAndNameContainsAndCompanyIdInOrEnabledAndDeletedAndLastnameContainsAndCompanyIdInOrEnabledAndDeletedAndSecondlastnameContainsAndCompanyIdInOrEnabledAndDeletedAndIdentificationnumberContainsAndCompanyIdIn(
+        Pageable pageable,
+        Integer enabled, Integer deleted,String filter,List<Long> companiesId,
+        Integer enabled1, Integer deleted1,String filter1,List<Long> companiesId1,
+        Integer enabled2, Integer deleted2,String filter2,List<Long> companiesId2,
+        Integer enabled3, Integer deleted3,String filter3,List<Long> companiesId3);
 
     List<Resident> findByCompanyIdAndDeleted(Long companyId, Integer deleted);
     List<Resident> findByPrincipalContactAndCompanyIdAndDeleted(Integer principalContact,Long houseId, Integer deleted);

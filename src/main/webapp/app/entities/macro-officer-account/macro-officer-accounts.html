@@ -7,7 +7,7 @@
 <div ng-if="vm.isReady" class="row fade-in" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
         <h4 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">
-            <i class="material-icons material-icons-with-text outline-none hide-sm hide-xs" hide-sm="" hide-xs="" ui-sref="macro-condominium" role="button" tabindex="0">arrow_back</i> Cuenta de Oficiales {{vm.macroCondo.name}}</h4>
+            <i class="material-icons material-icons-with-text outline-none hide-sm hide-xs" hide-sm="" hide-xs="" ui-sref="macro-condominium" role="button" tabindex="0">arrow_back</i> Cuentas de Oficiales {{vm.macroCondo.name}}</h4>
         <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.macroOfficerAccounts.length> 0 ">
             <div class="">
                 <div class="form-group no-padding col-md-12 col-sm-12 col-xs-12" style="margin-bottom: 0px;"
@@ -19,7 +19,6 @@
                                placeholder="Buscar" ng-model="vm.search">
                     </div>
                 </div>
-
             </div>
         </div>
         <br/>
@@ -75,7 +74,7 @@
     </div>
     <md-button ui-sref="macro-condominium-officer-account.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
-        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear condominio macro</md-tooltip>
+        <md-tooltip md-direction="left" class="font-13 bold white-color">Crear cuenta oficial</md-tooltip>
         <md-icon class="white-color">add</md-icon>
     </md-button>
 </div>

@@ -1,7 +1,11 @@
 package com.lighthouse.aditum.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.lighthouse.aditum.domain.House;
+import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.MacroCondominiumService;
+import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.MacroCondominiumDTO;
@@ -19,6 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,9 +39,13 @@ public class MacroCondominiumResource {
     private static final String ENTITY_NAME = "macroCondominium";
 
     private final MacroCondominiumService macroCondominiumService;
+    private final HouseService houseService;
 
-    public MacroCondominiumResource(MacroCondominiumService macroCondominiumService) {
+
+    public MacroCondominiumResource(HouseService houseService,MacroCondominiumService macroCondominiumService) {
         this.macroCondominiumService = macroCondominiumService;
+        this.houseService = houseService;
+
     }
 
     /**
@@ -107,6 +116,26 @@ public class MacroCondominiumResource {
     public ResponseEntity<MacroCondominiumDTO> getMacroCondominium(@PathVariable Long id) {
         log.debug("REST request to get MacroCondominium : {}", id);
         MacroCondominiumDTO macroCondominiumDTO = macroCondominiumService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroCondominiumDTO));
+    }
+
+    @GetMapping("/macro-condominiums/find-micros/{id}")
+    @Timed
+    public ResponseEntity<MacroCondominiumDTO> getMicroCondominiumsInMacro(@PathVariable Long id) {
+        log.debug("REST request to get MacroCondominium : {}", id);
+        MacroCondominiumDTO macroCondominiumDTO = macroCondominiumService.findMicrosInOne(id);
+        macroCondominiumDTO.getCompanies().forEach(company -> {
+            List<HouseAccessDoorDTO> houseAccessDoorDTOS = new ArrayList<>();
+            houseService.findAll(company.getId()).getContent().forEach(houseDTO -> {
+                HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+                houseClean.setId(houseDTO.getId());
+                houseClean.setHousenumber(houseDTO.getHousenumber());
+                houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+                houseClean.setSecurityKey(houseDTO.getSecurityKey());
+                houseAccessDoorDTOS.add(houseClean);
+            });
+            company.setHouses(houseAccessDoorDTOS);
+        });
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroCondominiumDTO));
     }
 

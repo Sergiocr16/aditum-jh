@@ -1186,7 +1186,36 @@ ui bootstrap tweaks
     text-align: center;
     background: #f9f9f9;
 }
+.tab_container-macro {
+    width: 100%;
+    margin: 0 auto;
+    position: fixed;
+    bottom: 0;
 
+
+}
+
+.tab_container-macro label {
+    font-size: 15px;
+    font-weight: 600;
+    display: block;
+    float: left;
+    width: 20%;
+    padding: 10px 1.5em;
+    color: #757575;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    background: white;
+}
+.label-tab-container-macro-ad {
+    /*color: rgba(255, 255, 255, 0.5) !important;*/
+    /*background: rgb(0, 150, 136) !important;*/
+}
+.active-tab-charge-invert-macro-ad {
+    /*box-shadow: inset 0 3px rgb(0, 150, 136) !important;*/
+    color: rgb(0, 150, 136) !important;
+}
 .active-tab-charge {
     background: #fff !important;
     box-shadow: inset 0 3px #1caf9a !important;
@@ -1198,7 +1227,12 @@ ui bootstrap tweaks
     box-shadow: inset 0 -3px #1caf9a !important;
     color: #1caf9a !important;
 }
-
+.inline{
+    display: inline;
+}
+.block{
+    display: block!important;
+}
 .border-radius-8 {
     border-radius: 8px !important;
 }
@@ -2736,4 +2770,36 @@ color: #009587!important;
     background-image: url(../../content/images/login.jpg);
     background-size: cover;
     background-position-y: 290px;
+}
+.input-macro{
+    background-color: #f1f3f4;
+    border: 1px solid transparent;
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,.1), inset 0 -1px 0 rgba(0,0,0,.07);
+    border-radius: 8px;
+}
+.width-100{
+    width: 100% !important;
+}
+.menudemoMenuDensity .md-menu-demo {
+    padding: 24px; }
+
+.menudemoMenuDensity .menu-demo-container {
+    min-height: 200px; }
+.search-access:hover{
+    color:rgb(0, 150, 136) !important;
+}
+
+.padding-10-0{
+ padding: 10px 0px !important;
+}
+.select-access .md-text{
+    font-size:24px!important;
+    font-weight: 600;
+    color:rgb(0,150,136)!important;
+}
+
+.info-container-access-door{
+    height: 420px;
+    overflow: auto;
+    margin: 15px 0px;
 }

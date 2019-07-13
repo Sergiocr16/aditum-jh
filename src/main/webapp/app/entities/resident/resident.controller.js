@@ -229,7 +229,6 @@
             });
             vm.isReady = true;
             vm.isReady2 = true;
-
         }
 
         function onError(error) {

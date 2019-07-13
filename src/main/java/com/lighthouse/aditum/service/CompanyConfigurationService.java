@@ -42,11 +42,11 @@ public class CompanyConfigurationService {
      */
     public CompanyConfigurationDTO save(CompanyConfigurationDTO companyConfigurationDTO) {
         log.debug("Request to save CompanyConfiguration : {}", companyConfigurationDTO);
-        CompanyConfiguration companyConfiguration = companyConfigurationMapper.companyConfigurationDTOToCompanyConfiguration(companyConfigurationDTO);
+        CompanyConfiguration companyConfiguration = companyConfigurationMapper.toEntity(companyConfigurationDTO);
         companyConfiguration.setMinDate(companyConfigurationDTO.getMinDate());
         companyConfiguration.setHasAccessDoor(companyConfigurationDTO.getHasAccessDoor());
         companyConfiguration = companyConfigurationRepository.save(companyConfiguration);
-        CompanyConfigurationDTO result = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO result = companyConfigurationMapper.toDto(companyConfiguration);
         result.setMinDate(companyConfigurationDTO.getMinDate());
         return result;
     }
@@ -61,7 +61,7 @@ public class CompanyConfigurationService {
     public Page<CompanyConfigurationDTO> findAll(Pageable pageable) {
         log.debug("Request to get all CompanyConfigurations");
         Page<CompanyConfiguration> result = companyConfigurationRepository.findAll(pageable);
-        return result.map(companyConfiguration -> companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration));
+        return result.map(companyConfiguration -> companyConfigurationMapper.toDto(companyConfiguration));
     }
 
     /**
@@ -74,7 +74,7 @@ public class CompanyConfigurationService {
     public CompanyConfigurationDTO findOne(Long id) {
         log.debug("Request to get CompanyConfiguration : {}", id);
         CompanyConfiguration companyConfiguration = companyConfigurationRepository.findOne(id);
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
         companyConfigurationDTO.setMinDate(companyConfiguration.getMinDate());
         companyConfigurationDTO.setHasAccessDoor(companyConfiguration.getHasAccessDoor());
         return companyConfigurationDTO;
@@ -83,13 +83,13 @@ public class CompanyConfigurationService {
     public Page<CompanyConfigurationDTO> getByCompanyId(Pageable pageable,Long companyId) {
         log.debug("Request to get all Residents");
         List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
-        return new PageImpl<>(result).map(configuration->companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(configuration));
+        return new PageImpl<>(result).map(configuration->companyConfigurationMapper.toDto(configuration));
     }
     @Transactional(readOnly = true)
     public Integer getByTotalHousesByCompanyId(Long companyId) {
         log.debug("Request to get all Residents");
         List<CompanyConfiguration> result = companyConfigurationRepository.findByCompanyId(companyId);
-        return companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(result.get(0)).getQuantityhouses();
+        return companyConfigurationMapper.toDto(result.get(0)).getQuantityhouses();
          }
         /**
      *      *  Delete the  companyConfiguration by id.

@@ -82,6 +82,12 @@ public class HouseService {
         });
     }
 
+    /**
+     * Get all the houses.
+     *
+     * @return the list of entities
+     */
+
     @Transactional(readOnly = true)
     public Page<HouseDTO> findAllFilter(Pageable pageable, Long companyId, String desocupated, String houseNumber) {
         log.debug("Request to get all Houses");

@@ -123,6 +123,16 @@ public class VehiculeResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/vehicules/macro/{macroId}/filter/{filter}")
+    @Timed
+    public ResponseEntity<List<VehiculeDTO>> getVehiculesByMacroFilter(@ApiParam Pageable pageable,@PathVariable Long macroId , @PathVariable String filter)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents by Macro with Filter");
+        Page<VehiculeDTO> page = vehiculeService.getAllByMacroWithFilter(pageable,macroId,filter);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/vehiculesDisabled")
     @Timed
     public ResponseEntity<List<VehiculeDTO>> getDisabledVehicules(@ApiParam Pageable pageable, Long companyId)

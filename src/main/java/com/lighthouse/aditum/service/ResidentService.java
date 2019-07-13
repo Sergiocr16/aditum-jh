@@ -3,6 +3,8 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Resident;
 import com.lighthouse.aditum.repository.ResidentRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
+import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.ResidentDTO;
 import com.lighthouse.aditum.service.mapper.ResidentMapper;
 import com.lighthouse.aditum.service.util.RandomUtil;
@@ -42,18 +44,18 @@ public class ResidentService {
 
     private final BitacoraAccionesService bitacoraAccionesService;
 
-    private final AdminInfoService adminInfoService;
+    private final MacroCondominiumService macroCondominiumService;
 
-    private final UserService userService;
+    private final CompanyService companyService;
 
 
-    public ResidentService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
+    public ResidentService(CompanyService companyService, MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, ResidentRepository residentRepository, ResidentMapper residentMapper, @Lazy HouseService houseService) {
         this.residentRepository = residentRepository;
         this.residentMapper = residentMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
-        this.adminInfoService = adminInfoService;
-        this.userService = userService;
+        this.macroCondominiumService = macroCondominiumService;
+        this.companyService = companyService;
     }
 
     /**
@@ -119,9 +121,8 @@ public class ResidentService {
         log.debug("Request to get all Residents");
         List<Resident> result = residentRepository.findByCompanyIdAndDeleted(companyId, 0);
         return new PageImpl<>(result).map(resident -> {
-                ResidentDTO residentDTO = residentMapper.toDto(resident);
-                residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
-                return residentDTO;
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            return formatResidentAccessDoor(residentDTO);
             }
         );
     }
@@ -178,7 +179,7 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOne(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
-        return residentDTO;
+        return formatResidentAccessDoor(residentDTO);
     }
 
     @Transactional(readOnly = true)
@@ -186,8 +187,7 @@ public class ResidentService {
         log.debug("Request to get Resident : {}", id);
         Resident resident = residentRepository.findOneByUserId(id);
         ResidentDTO residentDTO = residentMapper.toDto(resident);
-        residentDTO.setHouse(this.houseService.findOne(residentDTO.getHouseId()));
-        return residentDTO;
+        return formatResidentAccessDoor(residentDTO);
     }
 
     /**
@@ -206,7 +206,24 @@ public class ResidentService {
 
         residentRepository.save(resident);
     }
-
+    @Transactional(readOnly = true)
+    public Page<ResidentDTO> getAllByMacroWithFilter(Pageable pageable, Long macroId,  String filter) {
+        log.debug("Request to get all Residents");
+        Page<Resident> result;
+        List<Long> companiesId = new ArrayList<>();
+        macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
+            companiesId.add(companyDTO.getId());
+        });
+        result = residentRepository.findByEnabledAndDeletedAndNameContainsAndCompanyIdInOrEnabledAndDeletedAndLastnameContainsAndCompanyIdInOrEnabledAndDeletedAndSecondlastnameContainsAndCompanyIdInOrEnabledAndDeletedAndIdentificationnumberContainsAndCompanyIdIn(
+            pageable,1,0,filter,companiesId,
+            1,0,filter,companiesId,
+            1,0,filter,companiesId,
+            1,0,filter,companiesId);
+        return result.map(resident -> {
+            ResidentDTO residentDTO = residentMapper.toDto(resident);
+            return formatResidentAccessDoor(residentDTO);
+        });
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");
@@ -261,8 +278,7 @@ public class ResidentService {
         }
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
-            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
-            return residentDTO;
+            return formatResidentAccessDoor(residentDTO);
         });
     }
 
@@ -272,8 +288,7 @@ public class ResidentService {
         Page<Resident> result = residentRepository.findByEnabledAndCompanyIdAndDeleted(pageable, 0, companyId, 0);
         return result.map(resident -> {
             ResidentDTO residentDTO = residentMapper.toDto(resident);
-            residentDTO.setHouse(houseService.findOne(residentDTO.getHouseId()));
-            return residentDTO;
+            return formatResidentAccessDoor(residentDTO);
         });
     }
 
@@ -289,5 +304,17 @@ public class ResidentService {
         return principal;
     }
 
+    private ResidentDTO formatResidentAccessDoor(ResidentDTO residentDTO){
+        HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+        HouseDTO houseDTO = houseService.findOne(residentDTO.getHouseId());
+        houseClean.setId(houseDTO.getId());
+        houseClean.setHousenumber(houseDTO.getHousenumber());
+        houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+        houseClean.setSecurityKey(houseDTO.getSecurityKey());
+        residentDTO.setHouseClean(houseClean);
+        residentDTO.setHouse(null);
+        residentDTO.setCompanyName(this.companyService.findOne(residentDTO.getCompanyId()).getName());
+        return residentDTO;
+    }
 
 }

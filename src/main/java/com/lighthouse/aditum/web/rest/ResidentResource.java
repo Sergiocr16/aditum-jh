@@ -135,6 +135,16 @@ public class ResidentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("/residents/macro/{macroId}/filter/{filter}")
+    @Timed
+    public ResponseEntity<List<ResidentDTO>> getResidentsByMacroFilter(@ApiParam Pageable pageable,@PathVariable Long macroId , @PathVariable String filter)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Residents by Macro with Filter");
+        Page<ResidentDTO> page = residentService.getAllByMacroWithFilter(pageable,macroId,filter);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/residents");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
     @GetMapping("/residentsDisabled/{companyId}")
     @Timed
     public ResponseEntity<List<ResidentDTO>> getDisabledResidents(@ApiParam Pageable pageable, @PathVariable Long companyId)
