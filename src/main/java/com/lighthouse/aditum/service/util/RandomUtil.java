@@ -54,7 +54,7 @@ public final class RandomUtil {
        return formatMoney(ammount);
     }
 
-    public static BitacoraAccionesDTO createBitacoraAcciones(String concept, int type, String urlState, String category, Long idReference, Long companyId){
+    public static BitacoraAccionesDTO createBitacoraAcciones(String concept, int type, String urlState, String category, Long idReference, Long companyId, Long houseId){
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
         BitacoraAccionesDTO bitacoraAccionesDTO = new BitacoraAccionesDTO();
 
@@ -65,7 +65,7 @@ public final class RandomUtil {
         bitacoraAccionesDTO.setCategory(category);
         bitacoraAccionesDTO.setIdReference(idReference);
         bitacoraAccionesDTO.setCompanyId(companyId);
-
+        bitacoraAccionesDTO.setHouseId(houseId);
         return bitacoraAccionesDTO;
     }
 
