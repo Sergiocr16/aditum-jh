@@ -5,13 +5,18 @@
         .module('aditumApp')
         .controller('MacroAdminAccountController', MacroAdminAccountController);
 
-    MacroAdminAccountController.$inject = ['MacroAdminAccount', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope','$stateParams','MacroCondominium'];
+    MacroAdminAccountController.$inject = ['globalCompany','MacroAdminAccount', 'ParseLinks', 'AlertService', 'paginationConstants', '$rootScope','$stateParams','MacroCondominium'];
 
-    function MacroAdminAccountController(MacroAdminAccount, ParseLinks, AlertService, paginationConstants, $rootScope,$stateParams, MacroCondominium) {
+    function MacroAdminAccountController(globalCompany,MacroAdminAccount, ParseLinks, AlertService, paginationConstants, $rootScope,$stateParams, MacroCondominium) {
 
         var vm = this;
         $rootScope.active = "macro-condominium";
-        vm.macroCondoId = $stateParams.id;
+        if($stateParams.id!==undefined){
+            vm.macroCondoId = $stateParams.id;
+        }else{
+            vm.macroCondoId = globalCompany.getMacroId();
+        }
+
         vm.isReady = false;
         vm.macroAdminAccounts = [];
         vm.loadPage = loadPage;

@@ -7,10 +7,12 @@ import com.lighthouse.aditum.web.rest.util.HeaderUtil;
 import com.lighthouse.aditum.web.rest.util.PaginationUtil;
 import com.lighthouse.aditum.service.dto.MacroVisitDTO;
 import io.github.jhipster.web.util.ResponseUtil;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,6 +84,22 @@ public class MacroVisitResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, macroVisitDTO.getId().toString()))
             .body(result);
     }
+    @GetMapping("/macro-visits/filter/{initial_time}/{final_time}/byMacro/{macroCondominiumId}/byCompany/{companyId}/byName/{name}")
+    @Timed
+    public ResponseEntity<List<MacroVisitDTO>> getByFilter(
+        @ApiParam Pageable pageable,
+        @PathVariable("macroCondominiumId")Long macroCondominiumId,
+        @PathVariable("companyId") String companyId,
+        @PathVariable("initial_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime initial_time,
+        @PathVariable("final_time") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) ZonedDateTime final_time,
+        @PathVariable ("name") String name)
+        throws URISyntaxException {
+        log.debug("REST request to get a Watches between dates");
+        Page<MacroVisitDTO> page = macroVisitService.findByFilter(pageable,macroCondominiumId,companyId,initial_time,final_time,name);
+        HttpHeaders headers  = PaginationUtil.generatePaginationHttpHeaders(page, "/api/macro-visits");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
 
     /**
      * GET  /macro-visits : get all the macroVisits.

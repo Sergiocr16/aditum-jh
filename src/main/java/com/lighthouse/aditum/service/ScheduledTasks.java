@@ -65,19 +65,17 @@ public class ScheduledTasks {
     @Async
     public void registrarRecargosEnCuotas() {
         List<AdministrationConfigurationDTO> administrationConfigurationDTOS = this.administrationConfigurationService.findAll(null).getContent();
-
         administrationConfigurationDTOS.forEach(administrationConfigurationDTO -> {
             if (administrationConfigurationDTO.isHasSubcharges()) {
                 List<HouseDTO> houseDTOS = this.houseService.findAll(administrationConfigurationDTO.getCompanyId()).getContent();
                 houseDTOS.forEach(houseDTO -> {
                     this.chargeService.createSubchargeInCharges(administrationConfigurationDTO, houseDTO);
                 });
-
             }
         });
         log.debug("Creando Recargos");
     }
-
+    //TODOS LOS DIAS A LA 1 am
     @Scheduled(cron = "0 1 1 * * ?")
     @Async
     public void enviarCorreosDeCuotas() {

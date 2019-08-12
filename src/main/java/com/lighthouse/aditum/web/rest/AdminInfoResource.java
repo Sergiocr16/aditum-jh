@@ -52,7 +52,7 @@ public class AdminInfoResource {
      */
     @PostMapping("/admin-infos")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGERMACRO})
     public ResponseEntity<AdminInfoDTO> createAdminInfo(@Valid @RequestBody AdminInfoDTO adminInfoDTO) throws URISyntaxException {
         log.debug("REST request to save AdminInfo : {}", adminInfoDTO);
         if (adminInfoDTO.getId() != null) {

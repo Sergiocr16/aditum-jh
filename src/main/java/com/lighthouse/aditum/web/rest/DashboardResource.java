@@ -124,7 +124,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/{companyId}")
     public ResponseEntity<DashboardDTO> getAdminInfo(@PathVariable Long companyId) throws JSONException {
         log.debug("REST request to info of the dashboard : {}", companyId);
@@ -132,7 +132,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/anualReportIEB/{companyId}/{year}")
     public ResponseEntity<AnualReportDashboardDTO> getAdminInfoIngressEgressBudget(@PathVariable String companyId, @PathVariable String year) throws JSONException {
         log.debug("REST request to info of the ingress, egress and budget for grapsh dashboard : {}", companyId);
@@ -140,7 +140,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/updateByYear/{companyId}")
     public ArrayList<DashboardVisitorDTO> updateYear(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
@@ -148,7 +148,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/updateByMonth/{companyId}")
     public ArrayList updateMonth(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
@@ -156,7 +156,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/updateByWeek/{companyId}")
     public ArrayList<DashboardVisitorDTO> updateWeek(@PathVariable Long companyId) {
         log.debug("REST request to info of the dashboard : {}", companyId);
@@ -164,7 +164,7 @@ public class DashboardResource {
     }
 
     @Timed
-    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER})
+    @Secured({AuthoritiesConstants.JD, AuthoritiesConstants.MANAGER, AuthoritiesConstants.MANAGERMACRO})
     @GetMapping("/dashboard/defaulters/{companyId}/{year}")
     public ArrayList<DefaultersMonthDTO> defaulterPerYear(@PathVariable Long companyId, @PathVariable String year) {
         log.debug("REST request to info of the dashboard : {}", companyId);

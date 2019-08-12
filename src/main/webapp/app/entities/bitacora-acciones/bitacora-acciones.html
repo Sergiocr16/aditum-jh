@@ -98,6 +98,11 @@
                         ng-class="{'accountStatusBtnActive':vm.type==10,'accountStatusBtnDesactive':vm.type!==10}">
                     Visitantes
                 </button>
+                <button ng-click="vm.searchByType(11)" style="border-left:0px!important; border-radius: 0px!Important;"
+                        class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
+                        ng-class="{'accountStatusBtnActive':vm.type==11,'accountStatusBtnDesactive':vm.type!==11}">
+                    Reservaciones
+                </button>
             </div>
             <no-content class="margin-top-30" ng-if="vm.bitacoraAcciones.length == 0" icon="chrome_reader_mode" text="No hay ninguna acción registrada"></no-content>
 

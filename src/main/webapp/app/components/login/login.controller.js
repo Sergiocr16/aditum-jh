@@ -96,10 +96,12 @@
                             MultiCompany.getCurrentUserCompany().then(function (user) {
                                 $rootScope.companyUser = user;
                                 $rootScope.showSelectCompany = false;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
                                 var companiesConfigArray = "";
                                 var showInitialConfigArray = "";
                                 MacroCondominium.get({id: user.macroCondominiumId}, function (macroCondo) {
+                                    $rootScope.companyUser.companies = macroCondo.companies;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(macroCondo.companies[0].id);
+                                    $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
                                     for (var i = 0; i < macroCondo.companies.length; i++) {
                                         CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
                                             AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {

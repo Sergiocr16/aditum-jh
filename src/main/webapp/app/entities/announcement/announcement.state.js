@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/noticias',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {
@@ -34,7 +34,7 @@
             .state('announcements.announcement', {
                 url: '/published',
                 data: {
-                    authorities: ['ROLE_MANAGER'],
+                    authorities: ['ROLE_MANAGER','ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
 
@@ -54,7 +54,7 @@
                 parent: 'entity',
                 url: '/noticias-user',
                 data: {
-                    authorities: ['ROLE_MANAGER', 'ROLE_JD','ROLE_USER'],
+                    authorities: ['ROLE_MANAGER', 'ROLE_JD','ROLE_USER','ROLE_MANAGER_MACRO'],
                     pageTitle: 'aditumApp.announcement.home.title'
                 },
                 views: {

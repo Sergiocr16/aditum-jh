@@ -26,6 +26,24 @@
                     }
                     return null;
                 }
+            },
+            getMacroId: function () {
+                if ($localStorage.macroCompanyId !== undefined || $localStorage.macroCompanyId != null) {
+                    return CommonMethods.decryptIdUrl($localStorage.macroCompanyId)
+                } else {
+                    Auth.logout();
+                    $rootScope.companyUser = undefined;
+                    $localStorage.companyId = undefined;
+                    $rootScope.menu = false;
+                    $rootScope.companyId = undefined;
+                    $rootScope.macroCompanyId = undefined;
+                    $rootScope.showLogin = true;
+                    $rootScope.inicieSesion = false;
+                    if(!$state.includes('finishReset')){
+                        $state.go('home');
+                    }
+                    return null;
+                }
             }
         };
     }

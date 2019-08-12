@@ -239,7 +239,7 @@ public class UserResource {
     }
     @GetMapping("/users/{id}")
     @Timed
-    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH})
+    @Secured({AuthoritiesConstants.ADMIN,AuthoritiesConstants.MANAGER,AuthoritiesConstants.RH,AuthoritiesConstants.MANAGERMACRO})
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
         return ResponseUtil.wrapOrNotFound(
             userService.getUserWithAuthorities(id)

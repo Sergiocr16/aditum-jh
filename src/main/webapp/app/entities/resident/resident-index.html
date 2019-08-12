@@ -22,7 +22,7 @@
     <no-content ng-if="vm.houses.length==0" icon="dvr" text="No hay filiales registradas"
                 text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
 
-    <md-content class="no-padding no-margin" style="background-color: white;">
+    <md-content class="no-padding no-margin infinity-scroll" style="background-color: white;">
 
         <div class="col-lg-12 col-md-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
             <div class="col-md-12 col-xs-12 col-sm-12 no-padding "
@@ -235,14 +235,14 @@
                     </md-card>
                 </div>
             </div>
-            <md-button ui-sref="resident.new" style="position: fixed"
+            <md-button has-any-authority="ROLE_MANAGER" ui-sref="resident.new" style="position: fixed"
                        class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
                 <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar usuario</md-tooltip>
                 <md-icon class="white-color">add</md-icon>
             </md-button>
         </div>
     </md-content>
-
+</div>
     <script>
         function centerModal() {
             $(this).css('display', 'block');
