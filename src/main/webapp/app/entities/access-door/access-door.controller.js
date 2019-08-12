@@ -350,11 +350,11 @@
 
         vm.showKeys = function (data) {
             var emergencyKey, securityKey;
-            emergencyKey = data.house.emergencyKey == null ? "No definida" : data.house.emergencyKey;
-            securityKey = data.house.securityKey == null ? "No definida" : data.house.securityKey;
+            emergencyKey = data.houseClean.emergencyKey == null ? "No definida" : data.houseClean.emergencyKey;
+            securityKey = data.houseClean.securityKey == null ? "No definida" : data.houseClean.securityKey;
             Modal.customDialog("<md-dialog>" +
                 "<md-dialog-content class='md-dialog-content text-center'>" +
-                "<h1 class='md-title'>Claves filial <b>" + data.house.housenumber + "</b></h1>" +
+                "<h1 class='md-title'>Claves filial <b>" + data.houseClean.housenumber + "</b></h1>" +
                 "<div class='md-dialog-content-body'>" +
                 "<p>Emergencia: <b style='font-size: 20px'>" + emergencyKey + "</b></p>" +
                 "<p>Seguridad: <b style='font-size: 20px'>" + securityKey + "</b></p>" +
@@ -487,8 +487,6 @@
                     $rootScope.officers.push(officer);
                 }
             }
-            console.log(officer);
-            console.log($rootScope.officers)
         }
 
         function receiveVehicle(vehicle) {

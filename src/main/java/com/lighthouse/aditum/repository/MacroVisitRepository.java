@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 @SuppressWarnings("unused")
 @Repository
 public interface MacroVisitRepository extends JpaRepository<MacroVisit, Long> {
+
     Page<MacroVisit> findByMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndNameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLastnameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndSecondlastnameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIdentificationnumberContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLicenseplateContainsOrderByArrivaltimeDesc(
         Pageable pageable, Long macroCondominiumId1, ZonedDateTime initialDate1, ZonedDateTime finalDate1, String name1,
         Long macroCondominiumId2, ZonedDateTime initialDate2, ZonedDateTime finalDate2, String name2,
@@ -36,6 +37,8 @@ public interface MacroVisitRepository extends JpaRepository<MacroVisit, Long> {
 
 
     Page<MacroVisit> findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdOrderByArrivaltimeDesc(Pageable pageable, ZonedDateTime initialDate, ZonedDateTime finalDate, Long companyId);
+    MacroVisit findFirstByMacroCondominiumIdAndLicenseplateOrderByIdDesc(Long macroId,String plate);
+    MacroVisit findFirstByMacroCondominiumIdAndIdentificationnumberOrderByIdDesc(Long macroId,String plate);
 
 
 }

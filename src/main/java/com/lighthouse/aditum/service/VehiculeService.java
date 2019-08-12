@@ -202,7 +202,20 @@ public class VehiculeService {
             return formatVehiculleAccessDoor(vehiculeDTO);
         });
     }
-
+    @Transactional(readOnly = true)
+    public VehiculeDTO getOneByMacroWithIdentification(Long macroId,  String identificationnumber) {
+        log.debug("Request to get all Residents");
+        Vehicule result;
+        List<Long> companiesId = new ArrayList<>();
+        macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
+            companiesId.add(companyDTO.getId());
+        });
+        result = vehiculeRepository.findByEnabledAndDeletedAndLicenseplateAndCompanyIdIn(1,0,identificationnumber,companiesId);
+        if(result!=null){
+            return formatVehiculleAccessDoor(vehiculeMapper.toDto(result));
+        }
+        return null;
+    }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");

@@ -130,6 +130,22 @@ public class MacroVisitResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroVisitDTO));
     }
 
+    @GetMapping("/macro-visits/{macroId}/plate/{plate}")
+    @Timed
+    public ResponseEntity<MacroVisitDTO> getMacroVisitByPlate(@PathVariable Long macroId, @PathVariable String plate) {
+        log.debug("REST request to get MacroVisit : {}", plate);
+        MacroVisitDTO macroVisitDTO = macroVisitService.findOneByMacroAndPlate(macroId,plate);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroVisitDTO));
+    }
+
+    @GetMapping("/macro-visits/{macroId}/identification/{identification}")
+    @Timed
+    public ResponseEntity<MacroVisitDTO> getMacroVisitByIdentification(@PathVariable Long macroId, @PathVariable String identification) {
+        log.debug("REST request to get MacroVisit : {}", identification);
+        MacroVisitDTO macroVisitDTO = macroVisitService.findOneByMacroAndIdentification(macroId,identification);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroVisitDTO));
+    }
+
     /**
      * DELETE  /macro-visits/:id : delete the "id" macroVisit.
      *

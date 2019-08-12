@@ -35,6 +35,30 @@
                     name: '@name'
                 }
             },
+            'getByMacroIdAndPlate': {
+                url:'api/macro-visits/:macroId/plate/:plate',
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.arrivaltime = DateUtils.convertDateTimeFromServer(data.arrivaltime);
+                        data.departuretime = DateUtils.convertDateTimeFromServer(data.departuretime);
+                    }
+                    return data;
+                }
+            },
+            'getByMacroIdAndIdentification': {
+                url:'api/macro-visits/:macroId/identification/:identification',
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                        data.arrivaltime = DateUtils.convertDateTimeFromServer(data.arrivaltime);
+                        data.departuretime = DateUtils.convertDateTimeFromServer(data.departuretime);
+                    }
+                    return data;
+                }
+            },
         });
     }
 })();

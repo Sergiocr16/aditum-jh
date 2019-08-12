@@ -51,7 +51,10 @@ public class InvitationScheduleService {
         return invitationScheduleRepository.findByVisitantInvitationId(invitationId).stream()
             .map(invitationScheduleMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
-
+    }
+    public InvitationScheduleDTO findOneSchedulesByInvitation(Long invitationId) {
+        log.debug("Request to get all Visitants in last month by house");
+        return invitationScheduleMapper.toDto(invitationScheduleRepository.findOneByVisitantInvitationId(invitationId));
     }
     /**
      * Get all the invitationSchedules.
