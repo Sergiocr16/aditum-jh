@@ -72,7 +72,7 @@ public class PresupuestoService {
             concepto = "Eliminación del presupuesto: " + presupuestoDTO.getAnno();
         }
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,4, "presupuesto-detail","Presupuestos",presupuesto.getId(),presupuesto.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,4, "presupuesto-detail","Presupuestos",presupuesto.getId(),presupuesto.getCompany().getId(),null));
 
         return presupuestoMapper.toDto(presupuesto);
     }

@@ -10,13 +10,13 @@
 
 
         <div class="col-md-9 col-sm-9 no-padding">
-            <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Bitácora de acciones - {{vm.companySelected.name}}</h3>
+            <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Bitácora de acciones {{vm.companySelected.name}}</h3>
 
 
         </div>
-        <div class="col-md-3 col-sm-3 no-padding">
+        <div class="col-md-3 col-sm-3 no-padding" ng-if="vm.userType==1">
             <md-input-container class="md-block no-margin" >
-                <md-select ng-model="vm.companySelected" ng-change="vm.loadAll()">
+                <md-select ng-model="vm.companySelected" ng-change="vm.changeCompany()">
                     <md-option ng-repeat="company in vm.companies " ng-value="company">
                         {{company.name}}
                     </md-option>
@@ -48,37 +48,37 @@
                 ng-class="{'accountStatusBtnActive':vm.type==0,'accountStatusBtnDesactive':vm.type!==0}">
                 Todo
                 </button>
-                <button ng-click="vm.searchByType(1)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(1)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                 ng-class="{'accountStatusBtnActive':vm.type==1,'accountStatusBtnDesactive':vm.type!==1}">
                 Egresos
                 </button>
-                <button ng-click="vm.searchByType(5)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(5)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                         ng-class="{'accountStatusBtnActive':vm.type==5,'accountStatusBtnDesactive':vm.type!==5}">
                     Ingresos
                 </button>
-                <button ng-click="vm.searchByType(6)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(6)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                 ng-class="{'accountStatusBtnActive':vm.type==6,'accountStatusBtnDesactive':vm.type!==6}">
                 Cuotas
                 </button>
-                <button ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(3)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                 ng-class="{'accountStatusBtnActive':vm.type==3,'accountStatusBtnDesactive':vm.type!==3}">
                 Config general
                 </button>
-                <button ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(4)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                         ng-class="{'accountStatusBtnActive':vm.type==4,'accountStatusBtnDesactive':vm.type!==4}">
                     Presupuestos
                 </button>
-                <button ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(2)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                         ng-class="{'accountStatusBtnActive':vm.type==2,'accountStatusBtnDesactive':vm.type!==2}">
                     Bancos
                 </button>
-                <button ng-click="vm.searchByType(7)" style="border-left:0px!important; border-radius: 0px!Important;"
+                <button ng-if="vm.hasContability" ng-click="vm.searchByType(7)" style="border-left:0px!important; border-radius: 0px!Important;"
                         class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
                         ng-class="{'accountStatusBtnActive':vm.type==7,'accountStatusBtnDesactive':vm.type!==7}">
                     Transferencias
@@ -93,6 +93,11 @@
                         ng-class="{'accountStatusBtnActive':vm.type==9,'accountStatusBtnDesactive':vm.type!==9}">
                     Vehículos
                 </button>
+                <button ng-click="vm.searchByType(10)" style="border-left:0px!important; border-radius: 0px!Important;"
+                        class="btn  col-md-1 col-sm-1 col-xs-12  accountStatusBtn"
+                        ng-class="{'accountStatusBtnActive':vm.type==10,'accountStatusBtnDesactive':vm.type!==10}">
+                    Visitantes
+                </button>
             </div>
             <no-content class="margin-top-30" ng-if="vm.bitacoraAcciones.length == 0" icon="chrome_reader_mode" text="No hay ninguna acción registrada"></no-content>
 
@@ -101,6 +106,7 @@
                     <thead  style="background-color: #fafafa;" class="">
                     <tr class="text-center" jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                         <th>Concepto</th>
+                        <th class="text-center">Filial</th>
                         <th class="text-center">Responsable</th>
                         <th class="text-center">Rol</th>
                         <th class="text-center">Fecha y hora</th>
@@ -113,6 +119,7 @@
 
                     <tr class="text-center" ng-repeat="bitacoraAcciones in vm.bitacoraAcciones  | filter:vm.search  | orderBy:'ejecutionDate':true" >
                         <td class="text-left">{{bitacoraAcciones.concept}}</td>
+                        <td class="text-center">{{bitacoraAcciones.houseNumber}}</td>
                         <td>{{bitacoraAcciones.responsable.firstName}} {{bitacoraAcciones.responsable.lastName}}</td>
                         <td class="text-center">{{bitacoraAcciones.rol}}</td>
                         <td>{{bitacoraAcciones.ejecutionDate | formatDate}}</td>

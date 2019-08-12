@@ -20,7 +20,6 @@
 
 
         var data = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
-        console.log(data)
         if (data.hasContability == 1) {
             vm.hasContability = true;
         } else {

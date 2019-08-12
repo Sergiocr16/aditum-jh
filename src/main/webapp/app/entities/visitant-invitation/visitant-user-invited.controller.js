@@ -23,35 +23,28 @@
                     vm.userType = 2;
                     break;
             }
+            if ($localStorage.timeFormat != undefined) {
+                loadAll($localStorage.timeFormat);
+            } else {
+                loadAll(0);
+            }
+            ;
+
         });
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
-        Principal.identity().then(function (account) {
-            switch (account.authorities[0]) {
-                case "ROLE_USER":
-                    vm.userType = 1;
-                    break;
-                case "ROLE_MANAGER":
-                    vm.userType = 2;
-                    break;
-            }
-        });
 
-        if ($localStorage.timeFormat != undefined) {
-            loadAll($localStorage.timeFormat);
-        } else {
-            loadAll(0);
-        }
-        ;
+
 
 
         function loadAll(timeFormat) {
             vm.timeFormat = timeFormat;
             vm.isReady = false;
             vm.timeFormatTitle = timeFormat == 0 ? 'por intervalo de fechas' : 'por programaciones semanales';
+           console.log(vm.userType)
             if (vm.userType == 1) {
                 VisitantInvitation.findInvitedByHouse({
                     companyId: globalCompany.getId(),

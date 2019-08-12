@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static com.lighthouse.aditum.service.util.RandomUtil.createBitacoraAcciones;
+
 
 /**
  * Service Implementation for managing VisitantInvitation.
@@ -33,15 +35,20 @@ public class VisitantInvitationService {
 
     private final VisitantInvitationMapper visitantInvitationMapper;
 
+    private final BitacoraAccionesService bitacoraAccionesService;
+
+
     private final InvitationScheduleService invitationScheduleService;
 
     private final MacroCondominiumService macroCondominiumService;
 
 
-    public VisitantInvitationService(MacroCondominiumService macroCondominiumService, InvitationScheduleService invitationScheduleService, VisitantInvitationRepository visitantInvitationRepository, VisitantInvitationMapper visitantInvitationMapper) {
+
+    public VisitantInvitationService( MacroCondominiumService macroCondominiumService,BitacoraAccionesService bitacoraAccionesService, InvitationScheduleService invitationScheduleService,VisitantInvitationRepository visitantInvitationRepository, VisitantInvitationMapper visitantInvitationMapper) {
         this.visitantInvitationRepository = visitantInvitationRepository;
         this.visitantInvitationMapper = visitantInvitationMapper;
         this.invitationScheduleService = invitationScheduleService;
+        this.bitacoraAccionesService = bitacoraAccionesService;
         this.macroCondominiumService = macroCondominiumService;
     }
 
@@ -55,6 +62,12 @@ public class VisitantInvitationService {
         log.debug("Request to save VisitantInvitation : {}", visitantInvitationDTO);
         VisitantInvitation visitantInvitation = visitantInvitationMapper.toEntity(visitantInvitationDTO);
         visitantInvitation = visitantInvitationRepository.save(visitantInvitation);
+
+        String concepto = "Invitación al visitante: " + visitantInvitation.getName() + " " + visitantInvitation.getSecondlastname();
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,10, null,"Visitantes",visitantInvitation.getId(),visitantInvitation.getCompanyId(),visitantInvitation.getHouseId()));
+
+
+
         return visitantInvitationMapper.toDto(visitantInvitation);
     }
 

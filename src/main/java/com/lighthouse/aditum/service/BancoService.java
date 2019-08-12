@@ -94,7 +94,7 @@ public class BancoService {
                 concepto = "Eliminación del banco: " + bancoDTO.getBeneficiario();
             }
 
-            bitacoraAccionesService.save(createBitacoraAcciones(concepto,2, null,"Bancos",banco.getId(),banco.getCompany().getId()));
+            bitacoraAccionesService.save(createBitacoraAcciones(concepto,2, null,"Bancos",banco.getId(),banco.getCompany().getId(),null));
 
 
         }
