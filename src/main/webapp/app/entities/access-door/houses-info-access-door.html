@@ -111,7 +111,7 @@
                                 <span class="md-subhead" ng-if="resident.type==2">Residente inquilino</span>
                                 <span class="md-subhead" ng-if="resident.type==3">Visitante autorizado</span>
                                 <span class="md-subhead" ng-if="resident.type==null">Tipo de residente no definido</span>
-                                <span class="md-subhead" ng-if="vm.house=='all'"><b>Filial: {{resident.house.housenumber}}</b></span>
+                                <span class="md-subhead" ng-if="vm.house=='all'"><b>Filial: {{resident.houseClean.housenumber}}</b></span>
                                 <span class="md-subhead">Cédula: {{resident.identificationnumber.toUpperCase()}}</span>
                                 <span class="md-subhead">Teléfono: <span ng-if="resident.phonenumber==undefined">No definido</span>
                                  <span ng-if="resident.phonenumber!=undefined">{{resident.phonenumber}}</span></span>
@@ -180,7 +180,7 @@
                                         </md-tooltip>
                                         error</i>
                                 </span>
-                                <span class="md-subhead" style="padding-top: 15px!important;" ng-if="vm.house=='all'"><b>Filial: {{vehicule.house.housenumber}}</b></span>
+                                <span class="md-subhead" style="padding-top: 15px!important;" ng-if="vm.house=='all'"><b>Filial: {{vehicule.houseClean.housenumber}}</b></span>
                                 <span class="md-subhead" ng-class="{'padding-top-15':vm.house!='all'}">Marca: {{vehicule.brand.toUpperCase()}}</span>
                             </md-card-title-text>
                             <md-card-title-media>

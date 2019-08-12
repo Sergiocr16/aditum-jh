@@ -123,7 +123,7 @@ public class PaymentService {
 
         }
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,5, null,"Ingresos",payment.getId(),Long.parseLong(paymentDTO.getCompanyId()+"")));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,5, null,"Ingresos",payment.getId(),Long.parseLong(paymentDTO.getCompanyId()+""),payment.getHouse().getId()));
 
         return paymentMapper.toDto(payment);
     }

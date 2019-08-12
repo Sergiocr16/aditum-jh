@@ -19,6 +19,11 @@
                     return data;
                 }
             },
+            'findResidentsMacroByFilter': {
+                method: 'GET',
+                isArray: true,
+                url:'api/residents/macro/:macroId/filter/:filter'
+            },
             'update': { method:'PUT' },
             'getResidents': {
                 method: 'GET',

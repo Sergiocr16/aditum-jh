@@ -5,9 +5,9 @@
         .module('aditumApp')
         .controller('LoginController', LoginController);
 
-    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration'];
+    LoginController.$inject = ['$rootScope', '$state', 'Principal', '$timeout', 'Auth', 'MultiCompany', 'House', '$localStorage', 'CommonMethods', 'Modal', 'CompanyConfiguration', 'AdministrationConfiguration', 'MacroCondominium'];
 
-    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration) {
+    function LoginController($rootScope, $state, Principal, $timeout, Auth, MultiCompany, House, $localStorage, CommonMethods, Modal, CompanyConfiguration, AdministrationConfiguration, MacroCondominium) {
 
         var vm = this;
         vm.isIdentityResolved = Principal.isIdentityResolved;
@@ -75,7 +75,6 @@
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(user.companies[0].id);
                                 var companiesConfigArray = "";
                                 var showInitialConfigArray = "";
-
                                 for (var i = 0; i < user.companies.length; i++) {
                                     CompanyConfiguration.get({id: user.companies[i].id}, function (companyConfig) {
                                         AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
@@ -83,7 +82,6 @@
                                             companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
                                             showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
                                             if (user.companies.length == i) {
-                                                $rootScope.companyId = user.companies[0].id;
                                                 vm.backgroundSelectCompany = true;
                                                 $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
                                                 $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
@@ -94,8 +92,42 @@
                                 }
                             })
                             break;
+                        case "ROLE_MANAGER_MACRO":
+                            MultiCompany.getCurrentUserCompany().then(function (user) {
+                                $rootScope.companyUser = user;
+                                $rootScope.showSelectCompany = false;
+                                var companiesConfigArray = "";
+                                var showInitialConfigArray = "";
+                                MacroCondominium.get({id: user.macroCondominiumId}, function (macroCondo) {
+                                    $rootScope.companyUser.companies = macroCondo.companies;
+                                    $localStorage.companyId = CommonMethods.encryptIdUrl(macroCondo.companies[0].id);
+                                    $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(user.macroCondominiumId);
+                                    for (var i = 0; i < macroCondo.companies.length; i++) {
+                                        CompanyConfiguration.get({id: macroCondo.companies[i].id}, function (companyConfig) {
+                                            AdministrationConfiguration.get({companyId: companyConfig.companyId}, function (result) {
+                                                var administrationConfiguration = result;
+                                                companiesConfigArray += companyConfig.companyId + ";" + companyConfig.hasContability + ";" + companyConfig.minDate + ";" + companyConfig.hasAccessDoor + ";" + administrationConfiguration.incomeStatement + ";" + administrationConfiguration.monthlyIncomeStatement + ";" + administrationConfiguration.bookCommonArea + ";" + administrationConfiguration.initialConfiguration + "|";
+                                                showInitialConfigArray += companyConfig.companyId + ";" + administrationConfiguration.initialConfiguration + "|";
+                                                if (macroCondo.companies.length == i) {
+                                                    vm.backgroundSelectCompany = true;
+                                                    $localStorage.companiesConfig = CommonMethods.encryptIdUrl(companiesConfigArray);
+                                                    $localStorage.initialConfig = CommonMethods.encryptIdUrl(showInitialConfigArray);
+                                                    $state.go('dashboard');
+                                                }
+                                            });
+                                        })
+                                    }
+                                })
+                            })
+                            break;
                         case "ROLE_OFFICER":
                             $state.go('main-access-door');
+                            break;
+                        case "ROLE_OFFICER_MACRO":
+                            MultiCompany.getCurrentUserCompany().then(function (data) {
+                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                                $state.go('access-door-macro.access');
+                            });
                             break;
                         case "ROLE_USER":
                             MultiCompany.getCurrentUserCompany().then(function (data) {

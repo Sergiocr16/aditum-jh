@@ -5,18 +5,14 @@
         .module('aditumApp')
         .service('MultiCompany', MultiCompany);
 
-    MultiCompany.$inject = ['Principal','AdminInfo','Resident','OfficerAccount','RHAccount','$rootScope','JuntaDirectivaAccount'];
+    MultiCompany.$inject = ['Principal','AdminInfo','Resident','OfficerAccount','RHAccount','$rootScope','JuntaDirectivaAccount','MacroOfficerAccount','MacroAdminAccount'];
 
-    function MultiCompany (Principal,AdminInfo,Resident,OfficerAccount, RHAccount, $rootScope,JuntaDirectivaAccount) {
-
+    function MultiCompany (Principal,AdminInfo,Resident,OfficerAccount, RHAccount, $rootScope,JuntaDirectivaAccount, MacroOfficerAccount,MacroAdminAccount) {
         var companyId;
         var service = {
             getCurrentUserCompany:getCurrentUserCompany,
         };
-
         return service;
-
-
         function getCurrentUserCompany(){
             return Principal.identity().then(function(account){
             if(account!=undefined){
@@ -42,6 +38,12 @@
                     case "ROLE_JD":
                         return isJD(account.id);
                     break;
+                    case "ROLE_OFFICER_MACRO":
+                        return isOfficerMacro(account.id);
+                    break;
+                    case "ROLE_MANAGER_MACRO":
+                        return isAdminMacro(account.id);
+                        break;
                 }
                 }
             })
@@ -67,6 +69,12 @@
           }
         function isJD(accountId){
             return JuntaDirectivaAccount.findByUserId({id: accountId}).$promise
+        }
+        function isOfficerMacro(accountId){
+            return MacroOfficerAccount.findByUserId({id: accountId}).$promise
+        }
+        function isAdminMacro(accountId){
+            return MacroAdminAccount.findByUserId({id: accountId}).$promise
         }
 
     }

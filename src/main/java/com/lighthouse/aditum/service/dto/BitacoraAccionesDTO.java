@@ -34,6 +34,10 @@ public class BitacoraAccionesDTO implements Serializable {
 
     private String urlState;
 
+    private Long houseId;
+
+    private String houseNumber;
+
     private Long companyId;
 
     private String rol;
@@ -159,5 +163,21 @@ public class BitacoraAccionesDTO implements Serializable {
 
     public void setRol(String rol) {
         this.rol = rol;
+    }
+
+    public Long getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(Long houseId) {
+        this.houseId = houseId;
+    }
+
+    public String getHouseNumber() {
+        return houseNumber;
+    }
+
+    public void setHouseNumber(String houseNumber) {
+        this.houseNumber = houseNumber;
     }
 }

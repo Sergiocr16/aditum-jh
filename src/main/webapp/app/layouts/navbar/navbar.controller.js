@@ -4,13 +4,14 @@
     angular
         .module('aditumApp')
         .controller('NavbarController', NavbarController);
-    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
+    NavbarController.$inject = ['WSHouse', 'WSResident', 'WSVehicle', 'WSNote', 'WSVisitor', 'WSOfficer', '$timeout', 'CommonMethods', '$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', 'MultiCompany', '$rootScope', '$scope', 'companyUser', 'Company','MacroCondominium', 'House', '$mdSidenav', '$localStorage', 'globalCompany', 'WSDeleteEntity', 'WSEmergency'];
 
-    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
+    function NavbarController(WSHouse, WSResident, WSVehicle, WSNote, WSVisitor, WSOfficer, $timeout, CommonMethods, $state, Auth, Principal, ProfileService, LoginService, MultiCompany, $rootScope, $scope, companyUser, Company,MacroCondominium, House, $mdSidenav, $localStorage, globalCompany, WSDeleteEntity, WSEmergency) {
         var vm = this;
         vm.colors = {primary: "rgb(0,150,136)", secondary: "#E1F5FE", normalColorFont: "#37474f"};
         $rootScope.colors = vm.colors;
         vm.hasContability = false;
+        $rootScope.currentUserImage = null;
         vm.colorsMenu = {
             mainButton: {
                 color: 'color:' + '#37474f',
@@ -54,15 +55,28 @@
             vm.menu = [];
         })
         vm.chargeMenu = function (hasComta) {
-            console.log(hasComta);
             vm.menu = [
                 {
                     title: "ADMINISTRACIÓN",
-                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress",
+                    activeOn: "company,condons,admins,recursosHumanos,brands,destinies,dataprogress,macro-condominium",
                     authoritites: "ROLE_ADMIN",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
+                        {
+                            title: "Condominios Macro",
+                            icon: "account_balance",
+                            authoritites: "ROLE_ADMIN",
+                            activeOn: "macro-condominium",
+                            collapsable: false,
+                            uisref: "macro-condominium",
+                            menuId: "",
+                            hover: false,
+                            thirdItems: [],
+                            showXs: true,
+                            showLg: true,
+
+                        },
                         {
                             title: "Condominios",
                             icon: "home",
@@ -288,14 +302,14 @@
                 {
                     title: "Condominio",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Dashboard",
                             icon: "dashboard",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                             activeOn: "dashboard",
                             collapsable: false,
                             uisref: "dashboard",
@@ -387,7 +401,7 @@
                         {
                             title: "Gestionar quejas",
                             icon: "sentiment_very_dissatisfied",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "complaint",
                             collapsable: false,
                             uisref: "complaint",
@@ -708,6 +722,39 @@
                             showLg: true,
                         },
 
+                    ]
+                },
+                {
+                    title: "Mis visitas",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Reportar visita",
+                            icon: "perm_identity",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "reportInvitation",
+                            collapsable: false,
+                            uisref: "visitant-invited-user.new",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        },
+                        {
+                            title: "Visitantes invitados",
+                            icon: "account_circle",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "residentsInvitedVisitors",
+                            collapsable: false,
+                            uisref: "visitant-invited-user",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                        }
                     ]
                 },
                 {
@@ -1485,9 +1532,45 @@
                     ]
                 },
                 {
+                    title: "Macro condominio",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER_MACRO",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Administradores",
+                            icon: "supervised_user_circle",
+                            authoritites: "ROLE_MANAGER_MACRO",
+                            activeOn: "adminsByCompanyMacro",
+                            collapsable: false,
+                            uisref: "admin-info-by-company",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: []
+                        },
+                        {
+                            title: "Bitácora visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER_MACRO",
+                            activeOn: "adminMacroVisitors",
+                            collapsable: false,
+                            uisref: "macro-visit",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: []
+                        },
+
+                    ]
+                },
+                {
                     title: "Soporte",
                     icon: "contact_support",
-                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
+                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
                     activeOn: "soporte",
                     collapsable: false,
                     uisref: "soporte",
@@ -1500,7 +1583,7 @@
                         {
                             title: "Soporte",
                             icon: "live_help",
-                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
+                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
                             activeOn: "soporte-user",
                             collapsable: false,
                             uisref: "soporte-user",
@@ -1525,7 +1608,6 @@
             vm.showEstadoResultados = companyConfig.showEstadoResultados;
             vm.showEjecPresu = companyConfig.showEjecPresu;
             vm.bookCommonArea = companyConfig.bookCommonArea;
-            console.log(companyConfig)
             if (companyConfig == "admin") {
                 vm.hasContability = false;
             } else {
@@ -1664,14 +1746,14 @@
                 return {
                     title: "Administración",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Usuarios",
                             icon: "group",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
                             collapsable: false,
                             uisref: "resident",
@@ -1683,7 +1765,7 @@
                         {
                             title: "Filiales",
                             icon: "home",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "houses",
                             collapsable: false,
                             uisref: "houses-tabs.house",
@@ -1695,7 +1777,7 @@
                         {
                             title: "Vehículos",
                             icon: "directions_car",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "vehicules",
                             collapsable: false,
                             uisref: "vehicule",
@@ -1707,10 +1789,22 @@
                         {
                             title: "Visitantes",
                             icon: "group_add",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "adminVisitors",
                             collapsable: false,
                             uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -1724,11 +1818,11 @@
         }
 
         function showCondoAdministrationContability() {
-            if (vm.hasContability == true) {
+            if (vm.hasContability === true) {
                 return {
                     title: "Administración",
                     icon: "location_city",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                     activeOn: "residents,vehicules,houses,adminVisitors",
                     collapsable: true,
                     uisref: "",
@@ -1740,7 +1834,7 @@
                         {
                             title: "Usuarios",
                             icon: "group",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
                             collapsable: false,
                             uisref: "resident",
@@ -1780,6 +1874,18 @@
                             activeOn: "adminVisitors",
                             collapsable: false,
                             uisref: "visitant-admin",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true
+                        },
+                        {
+                            title: "Bitácora de acciones",
+                            icon: "chrome_reader_mode",
+                            authoritites: "ROLE_MANAGER",
+                            activeOn: "bitacoraAcciones",
+                            collapsable: false,
+                            uisref: "bitacora-acciones",
                             menuId: "",
                             hover: false,
                             showXs: true,
@@ -1808,6 +1914,10 @@
             Principal.identity().then(function (account) {
                 switch (account.authorities[0]) {
                     case "ROLE_OFFICER":
+                        $timeout.cancel($rootScope.timerAd);
+                        unsubscribe();
+                        break;
+                    case "ROLE_OFFICER_MACRO":
                         $timeout.cancel($rootScope.timerAd);
                         unsubscribe();
                         break;
@@ -1898,6 +2008,43 @@
                             $rootScope.hideFilial = true;
                         });
                         break;
+                    case "ROLE_MANAGER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            if ($localStorage.macroCompanyId == undefined) {
+                                $rootScope.companyUser = data;
+                                $rootScope.companyUser.companyId = data.macroCondominiumId;
+                                $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            }
+                            MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
+                                vm.contextLiving = macroCondo.name;
+                                $rootScope.companyName = macroCondo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = data.imageUrl;
+                                $rootScope.companyUser.companies = macroCondo.companies;
+                                if (data.enabled == 0) {
+                                    logout();
+                                }
+                            });
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
+                    case "ROLE_OFFICER_MACRO":
+                        MultiCompany.getCurrentUserCompany().then(function (data) {
+                            $rootScope.companyUser = data;
+                            $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                            if (data != null) {
+                                vm.contextLiving = $rootScope.companyUser.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                $rootScope.currentUserImage = null;
+                            }
+                            MacroCondominium.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                if (!condo.enabled || !data.enabled) {
+                                    logout();
+                                }
+                            })
+                            $rootScope.hideFilial = true;
+                        });
+                        break;
                     case "ROLE_OFFICER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
@@ -1907,16 +2054,23 @@
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = null;
                             }
+                            Company.get({id: parseInt(globalCompany.getId())}, function (condo) {
+                                vm.contextLiving = condo.name;
+                                $rootScope.contextLiving = vm.contextLiving;
+                                if (condo.active == 0 || data.enable == 0) {
+                                    logout();
+                                }
+                            })
                             $rootScope.hideFilial = true;
                         });
                         break;
                     case "ROLE_USER":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
                             $rootScope.companyUser = data;
-                            House.get({id: parseInt(data.houseId)}, function (house) {
+                            // House.get({id: parseInt(data.houseId)}, function (house) {
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.hideFilial = false;
-                                $rootScope.filialNumber = house.housenumber;
+                                $rootScope.filialNumber = data.houseClean.housenumber;
                                 $localStorage.companyId = CommonMethods.encryptIdUrl(data.companyId);
                                 $rootScope.currentUserImage = data.image_url;
                                 $rootScope.companyUser = data;
@@ -1927,8 +2081,8 @@
                                         logout();
                                     }
                                 })
-                            })
-                        })
+                            // })
+                        });
                         break;
                     case "ROLE_RH":
                         MultiCompany.getCurrentUserCompany().then(function (data) {

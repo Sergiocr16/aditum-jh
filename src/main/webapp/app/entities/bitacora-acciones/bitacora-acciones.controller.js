@@ -5,13 +5,35 @@
         .module('aditumApp')
         .controller('BitacoraAccionesController', BitacoraAccionesController);
 
-    BitacoraAccionesController.$inject = ['$rootScope','Company','$localStorage','CommonMethods','$state', 'BitacoraAcciones', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
+    BitacoraAccionesController.$inject = ['Principal','globalCompany','$rootScope','Company','$localStorage','CommonMethods','$state', 'BitacoraAcciones', 'ParseLinks', 'AlertService', 'paginationConstants', 'pagingParams'];
 
-    function BitacoraAccionesController($rootScope,Company,$localStorage,CommonMethods,$state, BitacoraAcciones, ParseLinks, AlertService, paginationConstants, pagingParams) {
+    function BitacoraAccionesController(Principal,globalCompany,$rootScope,Company,$localStorage,CommonMethods,$state, BitacoraAcciones, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
         $rootScope.active = "bitacoraAcciones";
+        var companyConfig = CommonMethods.getCurrentCompanyConfig(globalCompany.getId());
+        if (companyConfig.hasContability == 1) {
+            vm.hasContability = true;
+        } else {
+            vm.hasContability = false;
+        }
+        Principal.identity().then(function (account) {
+            vm.adminInfo = account;
+            switch (account.authorities[0]) {
+                case "ROLE_ADMIN":
+                    vm.userType = 1;
+                    loadAllCompanies();
 
+                    break;
+                case "ROLE_MANAGER":
+                    vm.userType = 2;
+                    vm.companyId = globalCompany.getId();
+                    vm.loadAll();
+                    break;
+            }
+
+
+        });
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -21,8 +43,6 @@
         vm.type = 0;
 
 
-        loadAllCompanies();
-
         function loadAllCompanies () {
             Company.query({
                 page: pagingParams.page - 1,
@@ -31,6 +51,7 @@
             function onSuccess(data, headers) {
                 vm.companies = data;
                 vm.companySelected = vm.companies[0];
+                vm.companyId = vm.companySelected.id;
                 vm.loadAll();
             }
             function onError(error) {
@@ -42,12 +63,19 @@
             vm.type = type;
             vm.loadAll();
         };
+        vm.changeCompany = function () {
+            vm.companyId = vm.companySelected.id;
+            vm.loadAll();
+        };
+
+
+
         vm.loadAll = function() {
             vm.isReady = false;
             BitacoraAcciones.query({
                 page: pagingParams.page - 1,
                 size: vm.itemsPerPage,
-                companyId: vm.companySelected.id,
+                companyId: vm.companyId,
                 type: vm.type,
                 sort: sort()
             }, onSuccess, onError);
@@ -65,12 +93,12 @@
                 vm.queryCount = vm.totalItems;
                 vm.bitacoraAcciones = data;
                 vm.page = pagingParams.page;
-                console.log(data)
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
         }
+
 
 
         vm.detail = function (bitacoraAcciones) {

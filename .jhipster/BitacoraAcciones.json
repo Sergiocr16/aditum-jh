@@ -42,6 +42,10 @@
         {
             "fieldName": "urlState",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "houseId",
+            "fieldType": "Long"
         }
     ],
     "changelogDate": "20190325212922",

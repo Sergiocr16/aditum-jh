@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/houses',
                 data: {
-                    authorities: ['ROLE_ADMIN','ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
                 views: {
                     'content@': {
@@ -305,7 +305,7 @@
             .state('houses-tabs.house', {
                 url: '/house?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
                 templateUrl: 'app/entities/house/house-index.html',
                 controller: 'HouseController',

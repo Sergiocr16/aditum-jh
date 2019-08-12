@@ -3,6 +3,8 @@ package com.lighthouse.aditum.service;
 import com.lighthouse.aditum.domain.Vehicule;
 import com.lighthouse.aditum.repository.VehiculeRepository;
 import com.lighthouse.aditum.service.dto.BitacoraAccionesDTO;
+import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
+import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.service.dto.VehiculeDTO;
 import com.lighthouse.aditum.service.mapper.VehiculeMapper;
 import org.slf4j.Logger;
@@ -41,18 +43,19 @@ public class VehiculeService {
 
     private final BitacoraAccionesService bitacoraAccionesService;
 
-    private final AdminInfoService adminInfoService;
+    private final MacroCondominiumService macroCondominiumService;
 
-    private final UserService userService;
+    private final CompanyService companyService;
 
 
-    public VehiculeService(UserService userService, AdminInfoService adminInfoService, BitacoraAccionesService bitacoraAccionesService, VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper, @Lazy HouseService houseService) {
+
+    public VehiculeService(CompanyService companyService,MacroCondominiumService macroCondominiumService, BitacoraAccionesService bitacoraAccionesService, VehiculeRepository vehiculeRepository, VehiculeMapper vehiculeMapper, @Lazy HouseService houseService) {
         this.vehiculeRepository = vehiculeRepository;
         this.vehiculeMapper = vehiculeMapper;
         this.houseService = houseService;
         this.bitacoraAccionesService = bitacoraAccionesService;
-        this.adminInfoService = adminInfoService;
-        this.userService = userService;
+        this.macroCondominiumService = macroCondominiumService;
+        this.companyService = companyService;
     }
 
     /**
@@ -84,7 +87,7 @@ public class VehiculeService {
             }
 
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones(concepto,9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
 
         VehiculeDTO result = vehiculeMapper.toDto(vehicule);
         return result;
@@ -102,8 +105,7 @@ public class VehiculeService {
 
         return new PageImpl<>(result).map(vehicule -> {
             VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
-            vehiculeDTO.setHouse(houseService.findOne(vehiculeDTO.getHouseId()));
-            return vehiculeDTO;
+            return formatVehiculleAccessDoor(vehiculeDTO);
         });
     }
 
@@ -118,7 +120,7 @@ public class VehiculeService {
         log.debug("Request to get Vehicule : {}", id);
         Vehicule vehicule = vehiculeRepository.findOne(id);
         VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
-        return vehiculeDTO;
+        return formatVehiculleAccessDoor(vehiculeDTO);
     }
 
     @Transactional(readOnly = true)
@@ -151,9 +153,7 @@ public class VehiculeService {
         Vehicule vehicule = vehiculeMapper.toEntity(this.findOne(id));
         vehicule.setDeleted(1);
 
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-
-        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate(),9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId()));
+        bitacoraAccionesService.save(createBitacoraAcciones("Eliminación del vehículo: " + vehicule.getBrand() + ", placa: " + vehicule.getLicenseplate(),9, null,"Vehículos",vehicule.getId(),vehicule.getCompany().getId(),vehicule.getHouse().getId()));
 
         vehiculeRepository.save(vehicule);
     }
@@ -183,13 +183,39 @@ public class VehiculeService {
             }
         }
         return result.map(vehicule -> {
-            VehiculeDTO vehiculeDto = vehiculeMapper.toDto(vehicule);
-            vehiculeDto.setHouse(houseService.findOne(vehiculeDto.getHouseId()));
-            return vehiculeDto;
+            VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
+            return formatVehiculleAccessDoor(vehiculeDTO);
         });
     }
-
-
+    @Transactional(readOnly = true)
+    public Page<VehiculeDTO> getAllByMacroWithFilter(Pageable pageable, Long macroId,  String filter) {
+        log.debug("Request to get all Residents");
+        Page<Vehicule> result;
+        List<Long> companiesId = new ArrayList<>();
+        macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
+            companiesId.add(companyDTO.getId());
+        });
+        result = vehiculeRepository.findByEnabledAndCompanyIdInAndDeletedAndLicenseplateContains(
+            pageable,1,companiesId,0,filter);
+        return result.map(vehicule -> {
+            VehiculeDTO vehiculeDTO = vehiculeMapper.toDto(vehicule);
+            return formatVehiculleAccessDoor(vehiculeDTO);
+        });
+    }
+    @Transactional(readOnly = true)
+    public VehiculeDTO getOneByMacroWithIdentification(Long macroId,  String identificationnumber) {
+        log.debug("Request to get all Residents");
+        Vehicule result;
+        List<Long> companiesId = new ArrayList<>();
+        macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
+            companiesId.add(companyDTO.getId());
+        });
+        result = vehiculeRepository.findByEnabledAndDeletedAndLicenseplateAndCompanyIdIn(1,0,identificationnumber,companiesId);
+        if(result!=null){
+            return formatVehiculleAccessDoor(vehiculeMapper.toDto(result));
+        }
+        return null;
+    }
     @Transactional(readOnly = true)
     public Page<VehiculeDTO> findDisabled(Pageable pageable, Long companyId) {
         log.debug("Request to get all Residents");
@@ -213,6 +239,17 @@ public class VehiculeService {
         return new PageImpl<>(result).map(vehicule -> vehiculeMapper.toDto(vehicule));
 
     }
-
+    private VehiculeDTO formatVehiculleAccessDoor(VehiculeDTO vehiculeDTO){
+        HouseAccessDoorDTO houseClean= new HouseAccessDoorDTO();
+        HouseDTO houseDTO = houseService.findOne(vehiculeDTO.getHouseId());
+        houseClean.setId(houseDTO.getId());
+        houseClean.setHousenumber(houseDTO.getHousenumber());
+        houseClean.setEmergencyKey(houseDTO.getEmergencyKey());
+        houseClean.setSecurityKey(houseDTO.getSecurityKey());
+        vehiculeDTO.setHouseClean(houseClean);
+        vehiculeDTO.setHouse(null);
+        vehiculeDTO.setCompanyName(this.companyService.findOne(vehiculeDTO.getCompanyId()).getName());
+        return vehiculeDTO;
+    }
 
 }

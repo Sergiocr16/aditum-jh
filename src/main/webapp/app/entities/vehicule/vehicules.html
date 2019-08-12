@@ -22,7 +22,7 @@
                 text2="Proceda a registrar filiales para utilizar esta funcionalidad"></no-content>
 
 
-    <md-content class="no-padding no-margin" style="background-color: white;">
+    <md-content class="no-padding no-margin infinity-scroll" style="background-color: white;">
 
         <div class="col-lg-12 col-md-12  fade-in" ng-if="vm.isReady && vm.houses.length>0">
             <div class="col-md-12 no-padding" layout="row" layout-align="space-between center"
@@ -102,7 +102,7 @@
             <div class="portlet-body fade-in" infinite-scroll="vm.loadPage(vm.page + 1)"
                  infinite-scroll-disabled="vm.page >= vm.links['last']"
                  infinite-scroll-distance="1"
-                 infinite-scroll-container="'.all-content'">
+                 infinite-scroll-container='".infinity-scroll"'>
                 <no-content ng-if="vm.vehicules.length == 0" icon="directions_car"
                             text="No hay vehículos registrados" class="margin-top-30"></no-content>
                 <div class="col-md-4 no-padding col-sm-6 col-xs-12   "
@@ -115,7 +115,7 @@
                                         <span
                                             class="md-headline font-20">{{vehicule.licenseplate.toUpperCase()}} </span>
                                 <span class="md-subhead" style="padding-top: 15px!important;">Marca: {{vehicule.brand.toUpperCase()}}</span>
-                                <span class="md-subhead">Filial: {{vehicule.house.housenumber}}</span>
+                                <span class="md-subhead">Filial: {{vehicule.houseClean.housenumber}}</span>
                             </md-card-title-text>
                             <md-card-title-media>
                                 <div class="md-media-sm card-media">
@@ -186,7 +186,7 @@
         </div>
     </md-content>
 
-    <md-button ui-sref="vehicule.new" style="position: fixed"
+    <md-button has-any-authority="ROLE_MANAGER"  ui-sref="vehicule.new" style="position: fixed"
                class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
         <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar vehículo</md-tooltip>
         <md-icon class="white-color">add</md-icon>

@@ -109,7 +109,7 @@ public class CompanyConfigurationResourceIntTest {
         int databaseSizeBeforeCreate = companyConfigurationRepository.findAll().size();
 
         // Create the CompanyConfiguration
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -133,7 +133,7 @@ public class CompanyConfigurationResourceIntTest {
         // Create the CompanyConfiguration with an existing ID
         CompanyConfiguration existingCompanyConfiguration = new CompanyConfiguration();
         existingCompanyConfiguration.setId(1L);
-        CompanyConfigurationDTO existingCompanyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(existingCompanyConfiguration);
+        CompanyConfigurationDTO existingCompanyConfigurationDTO = companyConfigurationMapper.toDto(existingCompanyConfiguration);
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
@@ -154,7 +154,7 @@ public class CompanyConfigurationResourceIntTest {
         companyConfiguration.setQuantityhouses(null);
 
         // Create the CompanyConfiguration, which fails.
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -173,7 +173,7 @@ public class CompanyConfigurationResourceIntTest {
         companyConfiguration.setQuantityadmins(null);
 
         // Create the CompanyConfiguration, which fails.
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -192,7 +192,7 @@ public class CompanyConfigurationResourceIntTest {
         companyConfiguration.setQuantityaccessdoor(null);
 
         // Create the CompanyConfiguration, which fails.
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(post("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -256,7 +256,7 @@ public class CompanyConfigurationResourceIntTest {
                 .quantityhouses(UPDATED_QUANTITYHOUSES)
                 .quantityadmins(UPDATED_QUANTITYADMINS)
                 .quantityaccessdoor(UPDATED_QUANTITYACCESSDOOR);
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(updatedCompanyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(updatedCompanyConfiguration);
 
         restCompanyConfigurationMockMvc.perform(put("/api/company-configurations")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -278,7 +278,7 @@ public class CompanyConfigurationResourceIntTest {
         int databaseSizeBeforeUpdate = companyConfigurationRepository.findAll().size();
 
         // Create the CompanyConfiguration
-        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.companyConfigurationToCompanyConfigurationDTO(companyConfiguration);
+        CompanyConfigurationDTO companyConfigurationDTO = companyConfigurationMapper.toDto(companyConfiguration);
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
         restCompanyConfigurationMockMvc.perform(put("/api/company-configurations")

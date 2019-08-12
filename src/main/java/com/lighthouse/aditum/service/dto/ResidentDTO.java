@@ -3,8 +3,6 @@ package com.lighthouse.aditum.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -57,7 +55,11 @@ public class ResidentDTO implements Serializable {
 
     private Long companyId;
 
+    private String companyName;
+
     private Long houseId;
+
+    private HouseAccessDoorDTO houseClean;
 
     private HouseDTO house;
 
@@ -245,6 +247,24 @@ public class ResidentDTO implements Serializable {
             "}";
     }
 
+
+    public Integer getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
+
+    public HouseAccessDoorDTO getHouseClean() {
+        return houseClean;
+    }
+
+    public void setHouseClean(HouseAccessDoorDTO houseClean) {
+        this.houseClean = houseClean;
+    }
+
     public HouseDTO getHouse() {
         return house;
     }
@@ -253,11 +273,11 @@ public class ResidentDTO implements Serializable {
         this.house = house;
     }
 
-    public Integer getDeleted() {
-        return deleted;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setDeleted(Integer deleted) {
-        this.deleted = deleted;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }
