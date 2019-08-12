@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/vehicule?page&sort&search',
                 data: {
-                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
                 views: {
                     'content@': {

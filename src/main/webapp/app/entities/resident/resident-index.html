@@ -233,13 +233,14 @@
                     </md-card>
                 </div>
             </div>
-            <md-button ui-sref="resident.new" style="position: fixed"
+            <md-button has-any-authority="ROLE_MANAGER" ui-sref="resident.new" style="position: fixed"
                        class="md-fab md-fab-bottom-right orange-button-oficial" aria-label="Add new">
                 <md-tooltip md-direction="left" class="font-13 bold white-color">Registrar usuario</md-tooltip>
                 <md-icon class="white-color">add</md-icon>
             </md-button>
         </div>
     </md-content>
+</div>
     <script>
         function centerModal() {
             $(this).css('display', 'block');

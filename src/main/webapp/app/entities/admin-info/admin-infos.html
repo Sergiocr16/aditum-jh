@@ -8,7 +8,20 @@
 
 <div ng-if="vm.isReady" class="row fade-in" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
-        <h3 class="page-title col-md-12 col-lg-12 col-xs-12 col-sm-12 caption-subject font-green-sharp font-weight-600">Administradores</h3>
+        <div class="col-md-9 col-sm-9 no-padding">
+            <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Bitácora de acciones {{vm.companySelected.name}}</h3>
+
+
+        </div>
+        <div class="col-md-3 col-sm-3 no-padding" >
+            <md-input-container class="md-block no-margin" >
+                <md-select ng-model="vm.companySelected" ng-change="vm.changeCompany()">
+                    <md-option ng-repeat="company in vm.companies " ng-value="company">
+                        {{company.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </div>
 
         <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.adminInfos.length> 0 ">
             <div class="">

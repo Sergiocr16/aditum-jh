@@ -13,7 +13,7 @@
             parent: 'entity',
             url: '/macro-condominium-admin-account/{id}',
             data: {
-                authorities: ['ROLE_ADMIN'],
+                authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO'],
                 pageTitle: 'aditumApp.macroAdminAccount.home.title'
             },
             views: {
@@ -31,6 +31,28 @@
                 }]
             }
         })
+            .state('macro-condominium-macro-admin-account', {
+                parent: 'entity',
+                url: '/macro-condominium-admin-account',
+                data: {
+                    authorities: ['ROLE_ADMIN','ROLE_MANAGER_MACRO'],
+                    pageTitle: 'aditumApp.macroAdminAccount.home.title'
+                },
+                views: {
+                    'content@': {
+                        templateUrl: 'app/entities/macro-admin-account/macro-admin-accounts.html',
+                        controller: 'MacroAdminAccountController',
+                        controllerAs: 'vm'
+                    }
+                },
+                resolve: {
+                    translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('macroAdminAccount');
+                        $translatePartialLoader.addPart('global');
+                        return $translate.refresh();
+                    }]
+                }
+            })
         .state('macro-admin-account-detail', {
             parent: 'macro-admin-account',
             url: '/macro-admin-account/{id}',

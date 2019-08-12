@@ -22,6 +22,19 @@
                     return data;
                 }
             },
+            'update': { method:'PUT' },
+            'findByFilter': {
+                method: 'GET',
+                url: 'api/macro-visits/filter/:initial_time/:final_time/byMacro/:macroCondominiumId/byCompany/:companyId/byName/:name',
+                isArray: true,
+                params: {
+                    initial_time: '@initial_time',
+                    final_time: '@final_time',
+                    macroCondominiumId: '@macroCondominiumId',
+                    companyId: '@companyId',
+                    name: '@name'
+                }
+            },
             'getByMacroIdAndPlate': {
                 url:'api/macro-visits/:macroId/plate/:plate',
                 method: 'GET',
@@ -46,7 +59,6 @@
                     return data;
                 }
             },
-            'update': { method:'PUT' }
         });
     }
 })();

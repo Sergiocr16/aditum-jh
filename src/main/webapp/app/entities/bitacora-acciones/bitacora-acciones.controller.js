@@ -44,7 +44,6 @@
 
 
         function loadAllCompanies () {
-            console.log('adfad')
             Company.query({
                 page: pagingParams.page - 1,
                 size: 20

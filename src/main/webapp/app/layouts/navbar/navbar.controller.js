@@ -302,14 +302,14 @@
                 {
                     title: "Condominio",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Dashboard",
                             icon: "dashboard",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER_MACRO,ROLE_MANAGER",
                             activeOn: "dashboard",
                             collapsable: false,
                             uisref: "dashboard",
@@ -401,7 +401,7 @@
                         {
                             title: "Gestionar quejas",
                             icon: "sentiment_very_dissatisfied",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "complaint",
                             collapsable: false,
                             uisref: "complaint",
@@ -1532,9 +1532,45 @@
                     ]
                 },
                 {
+                    title: "Macro condominio",
+                    activeOn: "",
+                    authoritites: "ROLE_MANAGER_MACRO",
+                    showXs: true,
+                    hasContability: true,
+                    secondaryItems: [
+                        {
+                            title: "Administradores",
+                            icon: "supervised_user_circle",
+                            authoritites: "ROLE_MANAGER_MACRO",
+                            activeOn: "adminsByCompanyMacro",
+                            collapsable: false,
+                            uisref: "admin-info-by-company",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: []
+                        },
+                        {
+                            title: "Bitácora visitantes",
+                            icon: "group_add",
+                            authoritites: "ROLE_MANAGER_MACRO",
+                            activeOn: "adminMacroVisitors",
+                            collapsable: false,
+                            uisref: "macro-visit",
+                            menuId: "",
+                            hover: false,
+                            showXs: true,
+                            showLg: true,
+                            thirdItems: []
+                        },
+
+                    ]
+                },
+                {
                     title: "Soporte",
                     icon: "contact_support",
-                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
+                    authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
                     activeOn: "soporte",
                     collapsable: false,
                     uisref: "soporte",
@@ -1547,7 +1583,7 @@
                         {
                             title: "Soporte",
                             icon: "live_help",
-                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD",
+                            authoritites: "ROLE_RH,ROLE_MANAGER,ROLE_USER,ROLE_JD,ROLE_MANAGER_MACRO",
                             activeOn: "soporte-user",
                             collapsable: false,
                             uisref: "soporte-user",
@@ -1710,14 +1746,14 @@
                 return {
                     title: "Administración",
                     activeOn: "",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                     showXs: true,
                     hasContability: true,
                     secondaryItems: [
                         {
                             title: "Usuarios",
                             icon: "group",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
                             collapsable: false,
                             uisref: "resident",
@@ -1729,7 +1765,7 @@
                         {
                             title: "Filiales",
                             icon: "home",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "houses",
                             collapsable: false,
                             uisref: "houses-tabs.house",
@@ -1741,7 +1777,7 @@
                         {
                             title: "Vehículos",
                             icon: "directions_car",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "vehicules",
                             collapsable: false,
                             uisref: "vehicule",
@@ -1753,7 +1789,7 @@
                         {
                             title: "Visitantes",
                             icon: "group_add",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "adminVisitors",
                             collapsable: false,
                             uisref: "visitant-admin",
@@ -1782,11 +1818,11 @@
         }
 
         function showCondoAdministrationContability() {
-            if (vm.hasContability == true) {
+            if (vm.hasContability === true) {
                 return {
                     title: "Administración",
                     icon: "location_city",
-                    authoritites: "ROLE_MANAGER",
+                    authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                     activeOn: "residents,vehicules,houses,adminVisitors",
                     collapsable: true,
                     uisref: "",
@@ -1798,7 +1834,7 @@
                         {
                             title: "Usuarios",
                             icon: "group",
-                            authoritites: "ROLE_MANAGER",
+                            authoritites: "ROLE_MANAGER,ROLE_MANAGER_MACRO",
                             activeOn: "residents",
                             collapsable: false,
                             uisref: "resident",
@@ -1974,16 +2010,17 @@
                         break;
                     case "ROLE_MANAGER_MACRO":
                         MultiCompany.getCurrentUserCompany().then(function (data) {
-                            if ($localStorage.companyId == undefined) {
+                            if ($localStorage.macroCompanyId == undefined) {
                                 $rootScope.companyUser = data;
                                 $rootScope.companyUser.companyId = data.macroCondominiumId;
-                                $localStorage.companyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
+                                $localStorage.macroCompanyId = CommonMethods.encryptIdUrl(data.macroCondominiumId);
                             }
                             MacroCondominium.get({id: data.macroCondominiumId}, function (macroCondo) {
                                 vm.contextLiving = macroCondo.name;
                                 $rootScope.companyName = macroCondo.name;
                                 $rootScope.contextLiving = vm.contextLiving;
                                 $rootScope.currentUserImage = data.imageUrl;
+                                $rootScope.companyUser.companies = macroCondo.companies;
                                 if (data.enabled == 0) {
                                     logout();
                                 }

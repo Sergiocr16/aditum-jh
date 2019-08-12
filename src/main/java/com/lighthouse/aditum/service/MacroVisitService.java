@@ -7,9 +7,13 @@ import com.lighthouse.aditum.service.mapper.MacroVisitMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
 
 
 /**
@@ -67,6 +71,51 @@ public class MacroVisitService {
         MacroVisit macroVisit = macroVisitRepository.findOne(id);
         return macroVisitMapper.toDto(macroVisit);
     }
+
+    @Transactional(readOnly = true)
+    public Page<MacroVisitDTO> findByFilter(Pageable pageable, Long macroCondominiumId, String companyId,
+                                          ZonedDateTime initialTime, ZonedDateTime finalTime, String name) {
+        log.debug("Request to get all Visitants in last month by house");
+        ZonedDateTime zd_initialTime = initialTime.withHour(0).withMinute(0).withSecond(0);
+        ZonedDateTime zd_finalTime = finalTime.withHour(23).withMinute(59).withSecond(59);
+        Page<MacroVisit> result = new PageImpl<MacroVisit>(new ArrayList<MacroVisit>(),pageable,0);
+
+        if (!name.equals("empty")) {
+            if (companyId.equals("empty")) {
+                result = macroVisitRepository.findByMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndNameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLastnameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndSecondlastnameContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIdentificationnumberContainsOrMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLicenseplateContainsOrderByArrivaltimeDesc(
+                    pageable, macroCondominiumId, zd_initialTime, zd_finalTime, name,
+                    macroCondominiumId, zd_initialTime, zd_finalTime, name,
+                    macroCondominiumId, zd_initialTime, zd_finalTime, name,
+                    macroCondominiumId, zd_initialTime, zd_finalTime, name,
+                    macroCondominiumId, zd_initialTime, zd_finalTime, name
+                );
+            } else {
+                result = macroVisitRepository.findByCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndNameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndSecondlastnameContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndIdentificationnumberContainsOrCompanyIdAndArrivaltimeAfterAndArrivaltimeBeforeAndLicenseplateContainsOrderByArrivaltimeDesc(
+                    pageable, Long.parseLong(companyId), zd_initialTime, zd_finalTime, name,
+                    Long.parseLong(companyId), zd_initialTime, zd_finalTime, name,
+                    Long.parseLong(companyId), zd_initialTime, zd_finalTime, name,
+                    Long.parseLong(companyId), zd_initialTime, zd_finalTime, name,
+                    Long.parseLong(companyId), zd_initialTime, zd_finalTime, name
+                );
+            }
+        }else{
+            if (companyId.equals("empty")) {
+                result = macroVisitRepository.findByMacroCondominiumIdAndArrivaltimeAfterAndArrivaltimeBeforeOrderByArrivaltimeDesc( pageable,macroCondominiumId, zd_initialTime, zd_finalTime);
+            } else {
+                result = macroVisitRepository.findByArrivaltimeAfterAndArrivaltimeBeforeAndCompanyIdOrderByArrivaltimeDesc(pageable,zd_initialTime, zd_finalTime,Long.parseLong(companyId));
+            }
+        }
+        return result.map(visitant -> {
+            MacroVisitDTO visitantDTO = macroVisitMapper.toDto(visitant);
+//            if(visitant.getCompany()!=null){
+//                visitantDTO.setHouseNumber(this.houseService.findOne(visitant.getHouse().getId()).getHousenumber());
+//            }else{
+//                visitantDTO.setHouseNumber(visitant.getResponsableofficer());
+//            }
+            return visitantDTO;
+        });
+    }
+
     @Transactional(readOnly = true)
     public MacroVisitDTO findOneByMacroAndPlate(Long macroId,String plate) {
         log.debug("Request to get MacroVisit : {}", plate);

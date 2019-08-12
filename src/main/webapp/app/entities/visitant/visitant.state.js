@@ -13,7 +13,7 @@
                 parent: 'entity',
                 url: '/visitant?page&sort&search',
                 data: {
-                    authorities: ['ROLE_USER','ROLE_MANAGER'],
+                    authorities: ['ROLE_ADMIN', 'ROLE_MANAGER', 'ROLE_MANAGER_MACRO'],
                 },
                 views: {
                     'content@': {
@@ -57,7 +57,7 @@
                 parent: 'entity',
                 url: '/visitant/manage/?page&sort&search',
                 data: {
-                    authorities: ['ROLE_MANAGER','ROLE_JD'],
+                    authorities: ['ROLE_MANAGER','ROLE_JD', 'ROLE_MANAGER_MACRO'],
 
                 },
                 views: {
