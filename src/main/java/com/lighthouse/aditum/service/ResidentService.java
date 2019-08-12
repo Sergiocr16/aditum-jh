@@ -224,6 +224,21 @@ public class ResidentService {
             return formatResidentAccessDoor(residentDTO);
         });
     }
+
+    @Transactional(readOnly = true)
+    public ResidentDTO getOneByMacroWithIdentification(Long macroId,  String identificationnumber) {
+        log.debug("Request to get all Residents");
+        Resident result;
+        List<Long> companiesId = new ArrayList<>();
+        macroCondominiumService.findOne(macroId).getCompanies().forEach(companyDTO -> {
+            companiesId.add(companyDTO.getId());
+        });
+        result = residentRepository.findByEnabledAndDeletedAndIdentificationnumberAndCompanyIdIn(1,0,identificationnumber,companiesId);
+        if(result!=null){
+            return formatResidentAccessDoor(residentMapper.toDto(result));
+        }
+        return null;
+    }
     @Transactional(readOnly = true)
     public Page<ResidentDTO> getAllInFilter(Pageable pageable, Long companyId, int enabled, String houseId, String owner, String name) {
         log.debug("Request to get all Residents");

@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.lighthouse.aditum.domain.House;
 import com.lighthouse.aditum.service.HouseService;
 import com.lighthouse.aditum.service.MacroCondominiumService;
+import com.lighthouse.aditum.service.dto.AuthorizedUserAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseAccessDoorDTO;
 import com.lighthouse.aditum.service.dto.HouseDTO;
 import com.lighthouse.aditum.web.rest.util.HeaderUtil;
@@ -117,6 +118,22 @@ public class MacroCondominiumResource {
         log.debug("REST request to get MacroCondominium : {}", id);
         MacroCondominiumDTO macroCondominiumDTO = macroCondominiumService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(macroCondominiumDTO));
+    }
+
+    @GetMapping("/macro-condominiums/{id}/findAuthorized/{identification}")
+    @Timed
+    public ResponseEntity<AuthorizedUserAccessDoorDTO> getMacroCondominiumAthorized(@PathVariable Long id, @PathVariable String identification) {
+        log.debug("REST request to get MacroCondominium : {}", id);
+        AuthorizedUserAccessDoorDTO authorizedUserAccessDoorDTO = macroCondominiumService.findAuthorized(id,identification);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(authorizedUserAccessDoorDTO));
+    }
+
+    @GetMapping("/macro-condominiums/{id}/findAuthorizedByPlate/{plate}")
+    @Timed
+    public ResponseEntity<AuthorizedUserAccessDoorDTO> getMacroCondominiumAthorizedVehicule(@PathVariable Long id, @PathVariable String plate) {
+        log.debug("REST request to get MacroCondominium : {}", id);
+        AuthorizedUserAccessDoorDTO authorizedUserAccessDoorDTO = macroCondominiumService.findAuthorizedVehicules(id,plate);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(authorizedUserAccessDoorDTO));
     }
 
     @GetMapping("/macro-condominiums/find-micros/{id}")

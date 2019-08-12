@@ -15,4 +15,6 @@ import java.util.List;
 @Repository
 public interface InvitationScheduleRepository extends JpaRepository<InvitationSchedule, Long> {
     List<InvitationSchedule> findByVisitantInvitationId(Long invitationId);
+    InvitationSchedule findOneByVisitantInvitationId(Long invitationId);
+
 }

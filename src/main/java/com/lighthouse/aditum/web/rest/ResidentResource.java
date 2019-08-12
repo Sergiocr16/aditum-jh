@@ -145,6 +145,7 @@ public class ResidentResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+
     @GetMapping("/residentsDisabled/{companyId}")
     @Timed
     public ResponseEntity<List<ResidentDTO>> getDisabledResidents(@ApiParam Pageable pageable, @PathVariable Long companyId)

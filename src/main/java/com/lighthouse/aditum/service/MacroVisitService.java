@@ -55,7 +55,6 @@ public class MacroVisitService {
         return macroVisitRepository.findAll(pageable)
             .map(macroVisitMapper::toDto);
     }
-
     /**
      * Get one macroVisit by id.
      *
@@ -68,7 +67,18 @@ public class MacroVisitService {
         MacroVisit macroVisit = macroVisitRepository.findOne(id);
         return macroVisitMapper.toDto(macroVisit);
     }
-
+    @Transactional(readOnly = true)
+    public MacroVisitDTO findOneByMacroAndPlate(Long macroId,String plate) {
+        log.debug("Request to get MacroVisit : {}", plate);
+        MacroVisit macroVisit = macroVisitRepository.findFirstByMacroCondominiumIdAndLicenseplateOrderByIdDesc(macroId,plate);
+        return macroVisitMapper.toDto(macroVisit);
+    }
+    @Transactional(readOnly = true)
+    public MacroVisitDTO findOneByMacroAndIdentification(Long macroId,String identification) {
+        log.debug("Request to get MacroVisit : {}", identification);
+        MacroVisit macroVisit = macroVisitRepository.findFirstByMacroCondominiumIdAndIdentificationnumberOrderByIdDesc(macroId,identification);
+        return macroVisitMapper.toDto(macroVisit);
+    }
     /**
      * Delete the macroVisit by id.
      *

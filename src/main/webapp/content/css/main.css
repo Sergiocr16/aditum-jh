@@ -2284,7 +2284,7 @@ md-nav-bar.md-default-theme md-nav-ink-bar, md-nav-bar md-nav-ink-bar {
 
 .disabledBtn {
     pointer-events: none;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.5)!important;
 }
 
 .disabledDiv2 {
@@ -2802,4 +2802,21 @@ color: #009587!important;
     height: 420px;
     overflow: auto;
     margin: 15px 0px;
+}
+
+.input-macro-access-door{
+    font-size: 25px!important;
+    margin-bottom: 5px;
+    height: 45px!important;
+}
+.input-macro-access-door[disabled]{
+    background-image:unset!important;
+    background-color: #eeeeee69!important;
+    border-radius: 8px!important;
+}
+.margin-bottom-40{
+    margin-bottom: 40px!important;
+}
+.margin-bottom-20{
+    margin-bottom: 20px!important;
 }
