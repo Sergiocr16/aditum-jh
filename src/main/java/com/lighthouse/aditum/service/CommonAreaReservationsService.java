@@ -92,33 +92,49 @@ public class CommonAreaReservationsService {
             commonAreaReservationsDTO1.setCharge(chargeService.findOne(commonAreaReservationsDTO1.getChargeIdId()));
         }
         commonAreaReservationsDTO1.setCommonArea(commonAreaService.findOne(commonAreaReservationsDTO1.getCommonAreaId()));
-        String concepto = "Solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
-
-        if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()) {
+        String concepto = "";
+        String url = "";
+        boolean saveBitacora = false;
+        if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()==false) {
+            concepto = "Solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
+            url = "common-area-administration.reservationDetail";
+        }else if (commonAreaReservationsDTO.getId() == null && commonAreaReservationsDTO.isSendPendingEmail()) {
             this.commonAreaMailService.sendNewCommonAreaReservationEmailToResident(commonAreaReservationsDTO1);
-            if (commonAreaReservationsDTO.isSendPendingEmail()) {
                 this.commonAreaMailService.sendNewCommonAreaReservationEmailToAdmin(commonAreaReservationsDTO1);
-            }
-            concepto = "Solicitud de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+
+            concepto = "Solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
+            url = "common-area-administration.reservationDetail";
         } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 2) {
             commonAreaReservationsDTO1.getResident().setEmail(commonAreaReservationsDTO.getResident().getEmail());
             this.commonAreaMailService.sendAcceptedCommonAreaReservationEmail(commonAreaReservationsDTO1);
             concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
+
+            url = "common-area-administration.acceptedReservationsDetail";
         } else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 3) {
             this.commonAreaMailService.sendCanceledCommonAreaReservationEmail(commonAreaReservationsDTO1);
             concepto = "Rechazo de solicitud de reservación del área común: " +commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
         }else if (commonAreaReservationsDTO.getId() != null && commonAreaReservationsDTO.isSendPendingEmail() && commonAreaReservations.getStatus() == 11) {
             this.commonAreaMailService.sendCanceledCommonAreaReservationAprobedEmail(commonAreaReservationsDTO1);
             concepto = "Cancelación de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
         }else if (commonAreaReservationsDTO.getId() != null & commonAreaReservations.getStatus() == 2) {
             concepto = "Aprobación de solicitud de reservación del área común: " + commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
+            url = "common-area-administration.acceptedReservationsDetail";
         }else if(commonAreaReservationsDTO.getId() != null && commonAreaReservations.getStatus() == 10){
             concepto = "Rechazo de solicitud de reservación del área común: " +commonAreaReservationsDTO1.getCommonArea().getName();
+            saveBitacora = true;
         }
 
 
+        if(saveBitacora){
+            bitacoraAccionesService.save(createBitacoraAcciones(concepto,11, url,"Reservaciones",commonAreaReservationsDTO1.getId(),commonAreaReservationsDTO1.getCompanyId(),commonAreaReservationsDTO1.getHouse().getId()));
 
-        bitacoraAccionesService.save(createBitacoraAcciones(concepto,11, null,"Reservaciones",commonAreaReservationsDTO1.getId(),commonAreaReservationsDTO1.getCompanyId(),commonAreaReservationsDTO1.getHouse().getId()));
+        }
 
 
         return commonAreaReservationsDTO1;
@@ -237,8 +253,12 @@ public class CommonAreaReservationsService {
             if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2|| zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getChargeIdId() != null && commonAreaReservationsDTOPage.getContent().get(i).getDevolutionAmmount() == 0  && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2) {
                 commonAreaReservationsDTOPage.getContent().get(i).setStatus(5);
             }
-            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 1) {
-                commonAreaReservationsDTOPage.getContent().get(i).setStatus(9);
+//            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 1) {
+//                commonAreaReservationsDTOPage.getContent().get(i).setStatus(9);
+//            }
+
+            if (zonedDateTime.isAfter(commonAreaReservationsDTOPage.getContent().get(i).getFinalDate()) && commonAreaReservationsDTOPage.getContent().get(i).getPaymentId() == null && commonAreaReservationsDTOPage.getContent().get(i).getStatus() == 2  && commonAreaReservationsDTOPage.getContent().get(i).getReservationCharge()>0) {
+                commonAreaReservationsDTOPage.getContent().get(i).setStatus(7);
             }
         }
         return commonAreaReservationsDTOPage;

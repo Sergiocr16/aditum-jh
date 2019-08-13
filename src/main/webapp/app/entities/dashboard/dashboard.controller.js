@@ -23,7 +23,7 @@
         } else {
             vm.hasContability = false;
         }
-
+console.log(CommonMethods.getInitialConfig(globalCompany.getId()))
         if(CommonMethods.getInitialConfig(globalCompany.getId()).initialConfiguration==0 && CommonMethods.getInitialConfig(globalCompany.getId()).hasContability==1){
             $state.go('dashboard.initialConfiguration');
         }
