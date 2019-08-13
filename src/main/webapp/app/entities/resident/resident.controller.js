@@ -70,8 +70,6 @@
                 vm.filter.houseId = house;
             }
 
-
-            vm.vehicules = [];
             loadResidents();
 
         };

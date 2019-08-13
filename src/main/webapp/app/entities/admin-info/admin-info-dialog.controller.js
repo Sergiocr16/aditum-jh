@@ -41,18 +41,16 @@
             loadCondos();
 
             function loadCondos() {
-                MacroCondominium.getCondos({id: globalCompany.getMacroId()}, onSuccessHouses);
-
-                function onSuccessHouses(data) {
-                    vm.condos = data.companies;
+                Company.query(onSuccessCompany);
+                function onSuccessCompany(data) {
+                    vm.condos = data;
                     vm.isReady = true;
-
 
                     if (vm.adminInfo.id !== null) {
                         User.getUserById({id: vm.adminInfo.userId}, onSuccess);
                         vm.title = "Editar administrador";
                         vm.button = "Editar";
-                        angular.forEach(data.companies, function (company, key) {
+                        angular.forEach(data, function (company, key) {
                             angular.forEach(vm.adminInfo.companies, function (userCompany, key) {
                                 if(company.id ==userCompany.id){
                                     company.selected = true;
@@ -61,8 +59,8 @@
                         });
 
                     } else {
-                        angular.forEach(data.companies, function (value, key) {
-                            data.selected = false;
+                        angular.forEach(data, function (value, key) {
+                            value.selected = false;
                         });
                         vm.title = "Registrar administrador ";
                         vm.button = "Registrar";
@@ -230,7 +228,7 @@
 
                 });
 
-                console.log(  vm.adminInfo.companies)
+
                 if (vm.adminInfo.id === undefined || vm.adminInfo.id === null) {
                     var wordOnModal = "registrar";
                 } else {
@@ -246,7 +244,6 @@
                             vm.adminInfo.name = vm.adminInfo.name.toUpperCase();
                             vm.adminInfo.lastname = vm.adminInfo.lastname.toUpperCase();
                             vm.adminInfo.secondlastname = vm.adminInfo.secondlastname.toUpperCase();
-                            vm.isSaving = true;
 
                             if (vm.adminInfo.id !== null) {
                                 if (indentification !== vm.adminInfo.identificationnumber) {
@@ -261,10 +258,7 @@
                                 }
 
                             } else {
-                                // Resident.getByCompanyAndIdentification({
-                                //     companyId: globalCompany.getId(),
-                                //     identificationID: vm.adminInfo.identificationnumber
-                                // }, alreadyExist, allClearInsert)
+
                                 allClearInsert();
                             }
                         })
@@ -274,7 +268,7 @@
 
                 }
 
-                function allClearInsert(data) {
+                function allClearInsert() {
                     Modal.showLoadingBar();
                     createAccount(1);
                 }
@@ -303,7 +297,7 @@
 
                 function updateAdmin() {
 
-                    updateAccount(0);
+                    updateAccount();
 
                 }
 
@@ -331,7 +325,7 @@
                     switch (error.data.login) {
                         case "emailexist":
                             Modal.toast("El correo electrónico ingresado ya existe.");
-                            bootbox.hideAll();
+                            Modal.hideLoadingBar();
                             break;
                         case "userexist":
                             vm.user.login = generateLogin(1);
@@ -354,21 +348,26 @@
                     if (fileImage !== null) {
                         SaveImageCloudinary
                             .save(fileImage, vm.imageUser)
-                            .then(onSaveImageSuccessSave, onSaveError, onNotify);
+                            .then(saveUser, onSaveError, onNotify);
 
 
-                    } else {
+                    }else{
+                        saveUser();
 
+                    }
+                    function saveUser(data) {
+                        if(data!==undefined){
+                            vm.adminInfo.image_url = "https://res.cloudinary.com/aditum/image/upload/v1501920877/" + data.imageUrl + ".jpg";
+                        }
                         if (vm.adminInfo.identificationnumber !== undefined || vm.adminInfo.identificationnumber != null) {
                             vm.adminInfo.identificationnumber = vm.adminInfo.identificationnumber.toUpperCase()
                         }
 
                         AdminInfo.save(vm.adminInfo, onSaveSuccess, onSaveError);
-
-
                     }
 
-                    function onSaveSuccess(result) {
+
+                    function onSaveSuccess() {
                         vm.isSaving = false;
                         Modal.hideLoadingBar();
                         $state.go('admin-info-by-company');
@@ -376,12 +375,18 @@
                     }
                 }
 
-                function updateAccount(status) {
+                function updateAccount() {
                     User.getUserById({id: vm.adminInfo.userId}, onSuccess);
 
                     function onSuccess(user) {
                         user.id = vm.adminInfo.userId;
-                        user.activated = status;
+                        console.log(vm.adminInfo.enabled)
+                        if(vm.adminInfo.enabled==1){
+
+                            user.activated = true;
+                        }else{
+                            user.activated = false;
+                        }
                         user.firstName = vm.adminInfo.name;
                         user.lastName = vm.adminInfo.lastname + ' ' + vm.adminInfo.secondlastname;
                         user.email = vm.adminInfo.email;
@@ -407,7 +412,7 @@
 
                 }
 
-                function onUpdateSuccess(result) {
+                function onUpdateSuccess() {
                     vm.isSaving = false;
                     $state.go('admin-info-by-company');
                     Modal.hideLoadingBar();
@@ -471,21 +476,25 @@
                     vm.isSaving = false;
                 }
 
-                vm.setImage = function ($file) {
-                    if ($file && $file.$error === 'pattern') {
-                        return;
-                    }
-                    if ($file) {
-                        DataUtils.toBase64($file, function (base64Data) {
-                            $scope.$apply(function () {
-                                vm.displayImage = base64Data;
-                                vm.displayImageType = $file.type;
-                            });
-                        });
-                        fileImage = $file;
-                    }
-                };
+
             }
+
+            vm.setImage = function ($file) {
+                console.log('adfad')
+                if ($file && $file.$error === 'pattern') {
+                    return;
+                }
+                if ($file) {
+                    DataUtils.toBase64($file, function (base64Data) {
+                        $scope.$apply(function () {
+                            vm.displayImage = base64Data;
+                            vm.displayImageType = $file.type;
+                        });
+                    });
+                    fileImage = $file;
+                }
+            };
+
         }
     }
 

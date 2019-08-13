@@ -97,7 +97,7 @@
                             authoritites: "ROLE_ADMIN",
                             activeOn: "admins",
                             collapsable: false,
-                            uisref: "admin-info",
+                            uisref: "admin-info-by-company",
                             menuId: "",
                             hover: false,
                             thirdItems: [],

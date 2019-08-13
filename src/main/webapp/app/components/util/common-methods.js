@@ -72,6 +72,7 @@
                                 return {
                                     companyId: companyId,
                                     initialConfiguration: companiesArray[i].split(";")[1],
+                                    hasContability: companiesArray[i].split(";")[2]
                                 }
                             }
                         }

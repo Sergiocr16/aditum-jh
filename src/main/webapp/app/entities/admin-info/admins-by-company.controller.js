@@ -5,36 +5,48 @@
         .module('aditumApp')
         .controller('AdminsByCompanyController', AdminsByCompanyController);
 
-    AdminsByCompanyController.$inject = ['globalCompany','MacroCondominium','$state', '$stateParams', 'Company', 'DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'Principal', '$rootScope', 'CommonMethods'];
+    AdminsByCompanyController.$inject = ['User', 'Modal', 'globalCompany', 'MacroCondominium', '$state', '$stateParams', 'Company', 'DataUtils', 'AdminInfo', 'ParseLinks', 'AlertService', 'paginationConstants', 'Principal', '$rootScope', 'CommonMethods'];
 
-    function AdminsByCompanyController(globalCompany,MacroCondominium,$state, $stateParams, Company, DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, Principal, $rootScope, CommonMethods) {
+    function AdminsByCompanyController(User, Modal, globalCompany, MacroCondominium, $state, $stateParams, Company, DataUtils, AdminInfo, ParseLinks, AlertService, paginationConstants, Principal, $rootScope, CommonMethods) {
 
         var vm = this;
-        $rootScope.active = "adminsByCompanyMacro";
+        $rootScope.active = "admins";
         vm.isAuthenticated = Principal.isAuthenticated;
         vm.loadPage = loadPage;
         var admins = [];
         vm.isReady = false;
-        if ($stateParams.companyId!==undefined) {
+        if ($stateParams.companyId !== undefined) {
             var companyId = CommonMethods.decryptIdUrl($stateParams.companyId);
-        }else{
+        } else {
             loadCondos();
         }
 
         function loadCondos() {
-            MacroCondominium.getCondos({id: globalCompany.getMacroId()}, onSuccessHouses);
-            function onSuccessHouses(data, headers) {
-                vm.condos = data.companies;
-                vm.companySelected = data.companies[0];
+            Company.query(onSuccessCompany);
+
+            function onSuccessCompany(data, headers) {
+                vm.condos = data;
+                vm.companySelected = data[0];
                 loadAll();
             }
         }
 
-        vm.changeCompany = function () {
-            loadAll();
+        vm.changeCompany = function (company, i) {
             vm.isReady = false;
-        };
+            vm.adminInfos = [];
 
+            if (company !== undefined) {
+                vm.selectedIndex = i;
+                vm.companySelected = company;
+
+
+            } else {
+
+            }
+
+            loadAll();
+
+        };
 
         function loadAll() {
             AdminInfo.getAdminsByCompanyId({
@@ -84,12 +96,71 @@
             vm.transition();
         }
 
-        function transition() {
-            $state.transitionTo($state.$current, {
-                page: vm.page,
-                sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
-                search: vm.currentSearch
+        vm.deleteAdmin = function (admin) {
+
+            Modal.confirmDialog("¿Está seguro que desea eliminar al administrador " + admin.name + "?", "Una vez eliminado no podrá recuperar los datos",
+                function () {
+                    Modal.showLoadingBar();
+                    vm.login = admin.userLogin;
+                    AdminInfo.delete({
+                        id: admin.id
+                    }, onSuccessDelete);
+                });
+
+
+        };
+
+        function onSuccessDelete() {
+            User.delete({login: vm.login},
+                function () {
+                    Modal.hideLoadingBar();
+                    Modal.toast("Se ha eliminado el administrador correctamente.");
+                    loadAll();
+                });
+        }
+
+
+        vm.disableEnabledAdmin = function (adminInfo) {
+
+            var correctMessage;
+
+            if (adminInfo.enabled == 1) {
+                correctMessage = "¿Está seguro que desea deshabilitar al administrador " + adminInfo.name + "?";
+                adminInfo.enabled = 0;
+
+            } else {
+                correctMessage = "¿Está seguro que desea habilitar al administrador " + adminInfo.name + "?";
+                adminInfo.enabled = 1;
+            }
+
+            Modal.confirmDialog(correctMessage, "", function () {
+                Modal.showLoadingBar();
+                AdminInfo.update(adminInfo, onSuccessDisabledAdmin);
             });
+
+        };
+
+        function onSuccessDisabledAdmin(data) {
+            User.getUserById({
+                id: data.userId
+            }, onSuccessGetDisabledUser);
+
+        }
+
+        function onSuccessGetDisabledUser(data) {
+            if (data.activated == 1) {
+                data.activated = 0;
+            } else {
+                data.activated = 1;
+            }
+
+            User.update(data, onSuccessDisabledUser);
+
+            function onSuccessDisabledUser(data, headers) {
+                Modal.toast("Se ha deshabilitado el usuario correctamente.");
+                Modal.hideLoadingBar();
+                loadAll();
+            }
         }
     }
 })();

@@ -3,10 +3,9 @@
             style="width:100%; margin-top: -16px!important; min-height: 50px!important;">
     <md-tabs md-selected="vm.selectedIndex" md-dynamic-height="" md-border-bottom=""
              class=" green-bg-on-xs  ">
-        <md-tab ng-click="vm.changeHouse(undefined,$index)" label="TODAS">
-        </md-tab>
+
         <md-tab ng-repeat="company in vm.condos"
-                ng-click="vm.changeCompany(house,$index)" label="{{company.name}}">
+                ng-click="vm.changeCompany(company,$index)" label="{{company.name}}">
         </md-tab>
     </md-tabs>
 
@@ -18,7 +17,7 @@
     <md-progress-circular md-mode="indeterminate" md-diameter="90px" ></md-progress-circular>
 </div>
 
-<div ng-if="vm.isReady" class="row fade-in" >
+<div ng-if="vm.isReady" class="row fade-in margin-top-20" >
     <div class="col-md-12 col-sm-12 col-xs-12 col-lg-12 ">
         <div class="col-md-9 col-sm-9 no-padding">
             <h3 class="page-title col-md-9 col-lg-9 col-xs-12 col-sm-9 caption-subject font-green-sharp font-weight-600">Administradores del condominio {{vm.companySelected.name}}</h3>
@@ -26,13 +25,7 @@
 
         </div>
         <div class="col-md-3 col-sm-3 no-padding" >
-            <md-input-container class="md-block no-margin" >
-                <md-select ng-model="vm.companySelected" ng-change="vm.changeCompany()">
-                    <md-option ng-repeat="company in vm.condos " ng-value="company">
-                        {{company.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
+
         </div>
 
         <div class="col-md-12 no-padding margin-top-20 margin-bottom-20" ng-if="vm.adminInfos.length> 0 ">
